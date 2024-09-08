@@ -82,8 +82,10 @@ HRESULT CPlayer::Add_Component()
 void CPlayer::Key_Input(const _float& fTimeDelta)
 {
 	_vec3	vLook;
+	_vec3   vRight;
 
 	m_pTransformCom->Get_Info(INFO_LOOK, &vLook);
+	m_pTransformCom->Get_Info(INFO_RIGHT, &vRight);
 
 	if (GetAsyncKeyState(VK_UP))
 	{
@@ -97,12 +99,12 @@ void CPlayer::Key_Input(const _float& fTimeDelta)
 	}
 	else if (GetAsyncKeyState(VK_LEFT))
 	{
-		m_pTransformCom->Rotation(ROT_Y, D3DXToRadian(-180.f * fTimeDelta));
+		m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, 20.f);
 		m_pAnimatorCom->Set_CurState(WALK, 7, 10, 15);
 	}
 	else if (GetAsyncKeyState(VK_RIGHT))
 	{
-		m_pTransformCom->Rotation(ROT_Y, D3DXToRadian(180.f * fTimeDelta));
+		m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, -20.f);
 		m_pAnimatorCom->Set_CurState(WALK, 7, 10, 15);
 	}
 	else
