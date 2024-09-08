@@ -22,7 +22,6 @@ HRESULT CLogo::Ready_Scene()
 
 	FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Layer_Environment"), E_FAIL);
 
-
 	return S_OK;
 }
 
