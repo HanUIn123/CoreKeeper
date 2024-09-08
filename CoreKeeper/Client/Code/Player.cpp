@@ -94,14 +94,14 @@ void CPlayer::Key_Input(const _float& fTimeDelta)
 	}
 	else if (GetAsyncKeyState(VK_LEFT))
 	{
-		//m_pTransformCom->Rotation(ROT_Y, D3DXToRadian(-180.f * fTimeDelta));
+		m_pTransformCom->Rotation(ROT_Y, D3DXToRadian(-180.f * fTimeDelta));
 		m_pAnimatorCom->Set_CurState(WALK, 7, 10, 15);
 	}
-	//else if (GetAsyncKeyState(VK_RIGHT))
-	//{
-	//	//m_pTransformCom->Rotation(ROT_Y, D3DXToRadian(180.f * fTimeDelta));
-	//	m_pAnimatorCom->Set_CurState(WALK, 7, 10, 15);
-	//}
+	else if (GetAsyncKeyState(VK_RIGHT))
+	{
+		m_pTransformCom->Rotation(ROT_Y, D3DXToRadian(180.f * fTimeDelta));
+		m_pAnimatorCom->Set_CurState(WALK, 7, 10, 15);
+	}
 	else
 	{
 		m_pAnimatorCom->Set_CurState(IDLE, 0, 0, 15);
