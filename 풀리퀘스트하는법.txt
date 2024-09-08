@@ -1,0 +1,7 @@
+풀리퀘스트 혹은 싱크 포크 하는 법
+
+본인 깃허브 포크한 레포지토리에서 좌상단에 Pull requests->New pull request->Create pull request->제목이랑 설명 알아서 적어주세요(자세히)Create pull request!
+
+
+
+본인 깃허브 포크한 레포지토리에 sync fork있을겁니다 이거 누르면 제(박상은) 레포지토리랑 동기화하는거인듯 ㅋㅋ
