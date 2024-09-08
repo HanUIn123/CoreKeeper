@@ -84,12 +84,12 @@ void CPlayer::Key_Input(const _float& fTimeDelta)
 
 	if (GetAsyncKeyState(VK_UP))
 	{
-		m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, 5.f);
+		m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, 20.f);
 		m_pAnimatorCom->Set_CurState(WALK, 11, 14, 15);
 	}
 	else if (GetAsyncKeyState(VK_DOWN))
 	{
-		m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, -5.f);
+		m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, -20.f);
 		m_pAnimatorCom->Set_CurState(WALK, 3, 6, 15);
 	}
 	else if (GetAsyncKeyState(VK_LEFT))
