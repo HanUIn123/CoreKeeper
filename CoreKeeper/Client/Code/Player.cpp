@@ -16,15 +16,18 @@ HRESULT CPlayer::Ready_GameObject()
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
+	m_pTransformCom->Set_Pos(m_pTransformCom->m_vInfo->x, m_pTransformCom->m_vInfo->y + 1.0f, m_pTransformCom->m_vInfo->z);
 
 	return S_OK;
 }
 
 _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 {
+
 	Key_Input(fTimeDelta);
 
 	Add_RenderGroup(RENDER_ALPHA, this);
+
 
 	return Engine::CGameObject::Update_GameObject(fTimeDelta);
 }
