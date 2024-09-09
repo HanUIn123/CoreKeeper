@@ -20,4 +20,4 @@ namespace Engine
 
 	enum STATE {IDLE, WALK, SWING, DEAD, STATE_END};
 }
-#endif // Engine_Enum_h__
+#endif // Engine_Enum_h__	
