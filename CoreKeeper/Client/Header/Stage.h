@@ -4,6 +4,8 @@
 
 #include "Player.h"
 #include "Monster.h"
+#include "Item.h"
+#include "Shadow.h"
 
 #include "Terrain.h"
 #include "SkyBox.h"

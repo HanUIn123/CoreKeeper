@@ -15,9 +15,6 @@ HRESULT CTerrain::Ready_GameObject()
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-
-
-
 	return S_OK;
 }
 

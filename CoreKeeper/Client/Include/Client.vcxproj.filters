@@ -49,6 +49,12 @@
     <Filter Include="02. GameObject\05. SkyBox">
       <UniqueIdentifier>{c37e17d5-20ce-4387-9f1e-4a9b27e5a146}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\06. Item">
+      <UniqueIdentifier>{f0f24d78-2f89-4492-80aa-02e261414ff4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\99. Shadow">
+      <UniqueIdentifier>{1504c984-122f-46ed-845d-5917c493744e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -99,6 +105,12 @@
     <ClInclude Include="..\Header\SkyBox.h">
       <Filter>02. GameObject\05. SkyBox</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\Item.h">
+      <Filter>02. GameObject\06. Item</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\Shadow.h">
+      <Filter>02. GameObject\99. Shadow</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -136,6 +148,12 @@
     </ClCompile>
     <ClCompile Include="..\Code\SkyBox.cpp">
       <Filter>02. GameObject\05. SkyBox</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Item.cpp">
+      <Filter>02. GameObject\06. Item</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Shadow.cpp">
+      <Filter>02. GameObject\99. Shadow</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
