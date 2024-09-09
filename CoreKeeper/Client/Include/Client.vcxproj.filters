@@ -55,9 +55,6 @@
     <Filter Include="02. GameObject\99. Shadow">
       <UniqueIdentifier>{1504c984-122f-46ed-845d-5917c493744e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\07.BasicFilter">
-      <UniqueIdentifier>{9d19a7e1-0398-4ce1-a51a-37265de1293d}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
