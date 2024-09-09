@@ -22,6 +22,11 @@ public:
 		*pWorld = m_matWorld;
 	}
 
+	void						Set_WorldMatrix(const _matrix* pWorld)
+	{
+		m_matWorld = *pWorld;
+	}
+
 	void						Move_Pos(const _vec3* pDir, const _float& fTimeDelta, const _float& fSpeed)
 	{
 		m_vInfo[INFO_POS] += *pDir * fTimeDelta * fSpeed;

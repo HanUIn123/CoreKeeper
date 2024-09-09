@@ -38,12 +38,11 @@ _uint CLoading::Loading_Stage()
 	lstrcpy(m_szLoading, L"Buffer Loading...");
 	// BUFFER
 
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TriCol", Engine::CTriCol::Create(m_pGraphicDev)), E_FAIL);
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_RcCol", Engine::CRcCol::Create(m_pGraphicDev)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_RcTex", Engine::CRcTex::Create(m_pGraphicDev)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TerrainTex", Engine::CTerrainTex::Create(m_pGraphicDev, VTXCNTX, VTXCNTZ, VTXITV)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_CubeTex", Engine::CCubeTex::Create(m_pGraphicDev)), E_FAIL);
 
-	//¿ÃπÃ¡ˆ ∞≥ºˆ ≥÷¿∏∏È µÀ¥œ¥Ÿ ex) Miner.png∫∏∏È ∞°∑Œ 15∞≥ ºº∑Œ 2∞≥
+	//Ïù¥ÎØ∏ÏßÄ Í∞úÏàò ÎÑ£ÏúºÎ©¥ Îê©ÎãàÎã§ ex) Miner.pngÎ≥¥Î©¥ Í∞ÄÎ°ú 15Í∞ú ÏÑ∏Î°ú 2Í∞ú
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_AnimTex", Engine::CAnimTex::Create(m_pGraphicDev, 15, 2)), E_FAIL);
 
 
@@ -52,10 +51,13 @@ _uint CLoading::Loading_Stage()
 	// TEXTURE
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_PlayerTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Player/Miner.png", TEX_NORMAL)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TerrainTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Terrain/Terrain0.png", TEX_NORMAL)), E_FAIL);
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TerrainTexture2", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Terrain/Grass_%d.tga", TEX_NORMAL, 2)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SkyBox", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/SkyBox/burger%d.dds", TEX_CUBE, 4)), E_FAIL);
 
-	lstrcpy(m_szLoading, L"Press Enter");
+
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ItemTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/seed_%d.png", TEX_NORMAL, 2)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ShadowTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Shadow/shadow%d.png", TEX_NORMAL, 3)), E_FAIL);
+
+	lstrcpy(m_szLoading, L"PRESS ENTER");
 
 	m_bFinish = true;
 
