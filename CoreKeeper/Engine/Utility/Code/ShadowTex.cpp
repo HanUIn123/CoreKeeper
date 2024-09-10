@@ -1,24 +1,24 @@
-#include "..\..\Header\RcTex.h"
+#include "..\..\Header\ShadowTex.h"
 
-CRcTex::CRcTex()
+CShadowTex::CShadowTex()
 {
 }
 
-CRcTex::CRcTex(LPDIRECT3DDEVICE9 pGraphicDev)
+CShadowTex::CShadowTex(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CVIBuffer(pGraphicDev)
 {
 }
 
-CRcTex::CRcTex(const CRcTex & rhs)
+CShadowTex::CShadowTex(const CShadowTex & rhs)
 	: CVIBuffer(rhs)
 {
 }
 
-CRcTex::~CRcTex()
+CShadowTex::~CShadowTex()
 {
 }
 
-HRESULT CRcTex::Ready_Buffer()
+HRESULT CShadowTex::Ready_Buffer()
 {
 	m_dwTriCnt = 2;
 	m_dwVtxCnt = 4;
@@ -67,14 +67,14 @@ HRESULT CRcTex::Ready_Buffer()
 	return S_OK;
 }
 
-void CRcTex::Render_Buffer()
+void CShadowTex::Render_Buffer()
 {
 	CVIBuffer::Render_Buffer();
 }
 
-CRcTex * CRcTex::Create(LPDIRECT3DDEVICE9 pGraphicDev)
+CShadowTex * CShadowTex::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 {
-	CRcTex *	pInstance = new CRcTex(pGraphicDev);
+	CShadowTex *	pInstance = new CShadowTex(pGraphicDev);
 
 	if (FAILED(pInstance->Ready_Buffer()))
 	{
@@ -86,12 +86,12 @@ CRcTex * CRcTex::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 	return pInstance;
 }
 
-CComponent * CRcTex::Clone()
+CComponent * CShadowTex::Clone()
 {
-	return new CRcTex(*this);
+	return new CShadowTex(*this);
 }
 
-void CRcTex::Free()
+void CShadowTex::Free()
 {
 	CVIBuffer::Free();
 }
