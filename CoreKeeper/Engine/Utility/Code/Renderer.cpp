@@ -1,5 +1,6 @@
 #include "..\..\Header\Renderer.h"
-
+#include "..\..\Header\Management.h"
+#include "..\..\Header\Camera.h"
 IMPLEMENT_SINGLETON(CRenderer)
 
 CRenderer::CRenderer()
@@ -22,11 +23,23 @@ void CRenderer::Add_RenderGroup(RENDERID eType, CGameObject * pGameObject)
 
 void CRenderer::Render_GameObject(LPDIRECT3DDEVICE9 & pGraphicDev)
 {
+	CCamera* pCamera = dynamic_cast<CCamera*>(Engine::CManagement::GetInstance()->Get_GameObject(L"Layer_Environment", L"DynamicCamera"));
+
+	// 원근 투영
+	if (pCamera)
+	{
+		pCamera->Set_Render(TYPE_PERSPECTIVE);
+	}
 	Render_Priority(pGraphicDev);
 	Render_NonAlpha(pGraphicDev);
 	Render_Alpha(pGraphicDev);
+	// UI 출력시에만 직교 투영하도록 정해줌
+	if (pCamera)
+	{
+		pCamera->Set_Render(TYPE_ORTHOGRAPHIC);
+	}
 	Render_UI(pGraphicDev);
-	
+
 	Clear_RenderGroup();
 }
 

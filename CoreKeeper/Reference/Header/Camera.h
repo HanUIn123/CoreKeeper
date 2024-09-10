@@ -13,7 +13,10 @@ public:
 	virtual			HRESULT			Ready_GameObject();
 	virtual			_int			Update_GameObject(const _float& fTimeDelta);
 	virtual			void			LateUpdate_GameObject();
-	
+
+public:
+	void            Set_Render(RENDERTYPE _eType); // 렌더 타입 결정
+
 protected:
 	_vec3			m_vEye, m_vAt, m_vUp;
 	_float			m_fFov, m_fAspect, m_fNear, m_fFar;
