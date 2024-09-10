@@ -17,13 +17,21 @@ HRESULT CShadow::Ready_GameObject()
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
 	m_pTransformCom->m_vScale = { 0.15f, 0.15f, 0.15f };
-	m_pTransformCom->Set_Pos(m_pTransformCom->m_vInfo->x, m_pTransformCom->m_vInfo->y, m_pTransformCom->m_vInfo->z);
 	
 	return S_OK;
 }
 
 _int CShadow::Update_GameObject(const _float& fTimeDelta)
 {
+	Engine::CTransform* pItemTransform = dynamic_cast<Engine::CTransform*>
+		(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Item", L"Com_Transform"));
+	NULL_CHECK_RETURN(pItemTransform, -1);
+
+	_vec3		vItemPos;
+	pItemTransform->Get_Info(INFO_POS, &vItemPos);
+
+	m_pTransformCom->Set_Pos(pItemTransform->m_vInfo->x, pItemTransform->m_vInfo->y, pItemTransform->m_vInfo->z);
+
 	Add_RenderGroup(RENDER_ALPHA, this);
 
 	return Engine::CGameObject::Update_GameObject(fTimeDelta);
