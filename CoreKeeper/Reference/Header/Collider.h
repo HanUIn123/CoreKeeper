@@ -24,10 +24,10 @@ private:
 
 private:
 	float m_fRadius;            // 충돌 반지름
-	_vec3 m_vCenterPos;			// 콜라이더의 중심 좌표
-	_matrix m_matWorld;       // 월드 행렬
+	_vec3 m_vCenterPos;			// 콜라이더 중심 좌표
+	_matrix m_matWorld;			
 
-	// 구를 그리기 위한 변수 추가
+	// 구를 그리기 위한 변수 추가(test)
 	LPD3DXMESH  m_pSphereMesh;  // 구 메시
 	LPDIRECT3DDEVICE9 m_pGraphicDev;
 };
