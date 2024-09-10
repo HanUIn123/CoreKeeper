@@ -87,22 +87,22 @@ void CPlayer::Key_Input(const _float& fTimeDelta)
 	m_pTransformCom->Get_Info(INFO_LOOK, &vLook);
 	m_pTransformCom->Get_Info(INFO_RIGHT, &vRight);
 
-	if (GetAsyncKeyState(VK_UP))
+	if (Engine::Get_DIKeyState(DIK_W) & 0x80)
 	{
 		m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, 5.f);
 		m_pAnimatorCom->Set_CurState(WALK, 11, 14, 15);
 	}
-	else if (GetAsyncKeyState(VK_DOWN))
+	else if (Engine::Get_DIKeyState(DIK_S) & 0x80)
 	{
 		m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, -5.f);
 		m_pAnimatorCom->Set_CurState(WALK, 3, 6, 15);
 	}
-	else if (GetAsyncKeyState(VK_LEFT))
+	else if (Engine::Get_DIKeyState(DIK_A) & 0x80)
 	{
 		m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, -5.f);
 		m_pAnimatorCom->Set_CurState(WALK, 7, 10, 15);
 	}
-	else if (GetAsyncKeyState(VK_RIGHT))
+	else if (Engine::Get_DIKeyState(DIK_D) & 0x80)
 	{
 		m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, 5.f);
 		m_pAnimatorCom->Set_CurState(WALK, 7, 10, 15);
