@@ -78,9 +78,12 @@
     </Filter>
     <Filter Include="04. Component\05. Collider">
       <UniqueIdentifier>{c547edbb-f374-457e-b2a1-3ed356dd56b1}</UniqueIdentifier>
-	</Filter>
+    </Filter>
     <Filter Include="03. GameObject\Camera">
       <UniqueIdentifier>{b40b5cbb-79c4-4cb4-9b64-5d4aaaa00821}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Component\00. VIBuffer\06. ShadowTex">
+      <UniqueIdentifier>{d2f16391-531f-4ab5-9c63-32d36eb7eea5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -146,6 +149,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\Animator.cpp">
       <Filter>04. Component\04. Animator</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\ShadowTex.cpp">
+      <Filter>04. Component\00. VIBuffer\06. ShadowTex</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -214,6 +220,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Header\Animator.h">
       <Filter>04. Component\04. Animator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Header\ShadowTex.h">
+      <Filter>04. Component\00. VIBuffer\06. ShadowTex</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
