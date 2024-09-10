@@ -153,6 +153,9 @@
     <ClCompile Include="..\Code\ShadowTex.cpp">
       <Filter>04. Component\00. VIBuffer\06. ShadowTex</Filter>
     </ClCompile>
+    <ClCompile Include="..\Code\Collider.cpp">
+      <Filter>04. Component\05. Collider</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Header\Scene.h">
@@ -223,6 +226,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Header\ShadowTex.h">
       <Filter>04. Component\00. VIBuffer\06. ShadowTex</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Header\Collider.h">
+      <Filter>04. Component\05. Collider</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

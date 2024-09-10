@@ -56,7 +56,15 @@ void CItem::Render_GameObject()
 
 	m_pTextureCom->Set_Texture(m_iTextureNumber);
 
-	m_pBufferCom->Render_Buffer();
+	Engine::CCollider* pPlayerCollider = dynamic_cast<Engine::CCollider*>
+		(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Collider"));
+
+	if (!m_pColliderCom->Check_Collision(pPlayerCollider))
+	{
+		m_pBufferCom->Render_Buffer();
+	}
+	
+	//m_pColliderCom->Render_Collider();
 
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
@@ -76,6 +84,10 @@ HRESULT CItem::Add_Component()
 	pComponent = m_pTransformCom = dynamic_cast<CTransform*>(Engine::Clone_Proto(L"Proto_Transform"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_DYNAMIC].insert({ L"Com_Transform", pComponent });
+
+	pComponent = m_pColliderCom = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Proto_ItemCollider"));
+	NULL_CHECK_RETURN(pComponent, E_FAIL);
+	m_mapComponent[ID_DYNAMIC].insert({ L"Com_Collider", pComponent });
 
 	return S_OK;
 }

@@ -26,6 +26,8 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 
 	Key_Input(fTimeDelta);
 
+	m_pColliderCom->Update_Collider(m_pTransformCom->Get_WorldMatrix());
+
 	Add_RenderGroup(RENDER_ALPHA, this);
 
 
@@ -49,6 +51,8 @@ void CPlayer::Render_GameObject()
 	m_pBufferCom->Set_Index(m_pAnimatorCom->Get_MotionIndex());
 	m_pBufferCom->Render_Buffer();
 
+	//m_pColliderCom->Render_Collider();
+	
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
@@ -75,6 +79,10 @@ HRESULT CPlayer::Add_Component()
 	pComponent = m_pAnimatorCom = dynamic_cast<CAnimator*>(Engine::Clone_Proto(L"Proto_Animator"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_DYNAMIC].insert({ L"Com_Animator", pComponent });
+
+	pComponent = m_pColliderCom = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Proto_PlayerCollider"));
+	NULL_CHECK_RETURN(pComponent, E_FAIL);
+	m_mapComponent[ID_DYNAMIC].insert({ L"Com_Collider", pComponent });
 
 	return S_OK;
 }

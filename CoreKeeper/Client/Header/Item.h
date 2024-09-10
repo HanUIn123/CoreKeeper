@@ -6,6 +6,7 @@ BEGIN(Engine)
 class CRcTex;
 class CTransform;
 class CTexture;
+class CCollider;
 
 END
 
@@ -29,6 +30,7 @@ private:
 	Engine::CRcTex* m_pBufferCom;
 	Engine::CTransform* m_pTransformCom;
 	Engine::CTexture* m_pTextureCom;
+	Engine::CCollider* m_pColliderCom;
 
 public:
 	static CItem* Create(LPDIRECT3DDEVICE9 pGraphicDev);

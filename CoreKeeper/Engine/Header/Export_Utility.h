@@ -18,6 +18,7 @@
 #include "Camera.h"
 #include "Calculator.h"
 #include "Animator.h"
+#include "Collider.h"
 
 BEGIN(Engine)
 

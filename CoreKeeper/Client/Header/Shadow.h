@@ -3,7 +3,7 @@
 
 BEGIN(Engine)
 
-class CRcTex;
+class CShadowTex;
 class CTransform;
 class CTexture;
 
@@ -26,7 +26,7 @@ private:
 	void			Apply_Billboard();
 
 private:
-	Engine::CRcTex* m_pBufferCom;
+	Engine::CShadowTex* m_pBufferCom;
 	Engine::CTransform* m_pTransformCom;
 	Engine::CTexture* m_pTextureCom;
 

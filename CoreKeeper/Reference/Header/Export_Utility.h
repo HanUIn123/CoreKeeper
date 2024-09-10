@@ -11,6 +11,7 @@
 #include "TerrainTex.h"
 #include "CubeTex.h"
 #include "AnimTex.h"
+#include "ShadowTex.h"
 
 #include "Texture.h"
 
@@ -18,6 +19,7 @@
 #include "Camera.h"
 #include "Calculator.h"
 #include "Animator.h"
+#include "Collider.h"
 
 BEGIN(Engine)
 

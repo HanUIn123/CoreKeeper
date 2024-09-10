@@ -9,6 +9,7 @@ class CTransform;
 class CTexture;
 class CCalculator;
 class CAnimator;
+class CCollider;
 
 END
 
@@ -34,6 +35,7 @@ private:
 	Engine::CTexture* m_pTextureCom;
 	Engine::CCalculator* m_pCalculatorCom;
 	Engine::CAnimator* m_pAnimatorCom;
+	Engine::CCollider* m_pColliderCom;
 
 public:
 	static CPlayer* Create(LPDIRECT3DDEVICE9 pGraphicDev);
