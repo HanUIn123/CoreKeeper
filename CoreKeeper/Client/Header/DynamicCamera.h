@@ -4,6 +4,8 @@
 #include "Base.h"
 #include "Define.h"
 
+
+
 class CDynamicCamera :	public CCamera
 {
 private:
