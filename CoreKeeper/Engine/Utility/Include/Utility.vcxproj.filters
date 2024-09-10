@@ -58,9 +58,6 @@
     <Filter Include="04. Component\00. VIBuffer\03. TerrainTex">
       <UniqueIdentifier>{e17c08ed-6820-4455-9a53-99be79b9bb05}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03. GameObject\Camera">
-      <UniqueIdentifier>{b40b5cbb-79c4-4cb4-9b64-5d4aaaa00821}</UniqueIdentifier>
-    </Filter>
     <Filter Include="04. Component\00. VIBuffer\04. CubeTex">
       <UniqueIdentifier>{6bd88add-2ede-4f00-845e-6457371ccc68}</UniqueIdentifier>
     </Filter>
@@ -79,8 +76,13 @@
     <Filter Include="04. Component\04. Animator">
       <UniqueIdentifier>{e3d206ad-a405-402a-92ee-cf9f2529e0b1}</UniqueIdentifier>
     </Filter>
+<<<<<<< HEAD
     <Filter Include="04. Component\05. Collider">
       <UniqueIdentifier>{c547edbb-f374-457e-b2a1-3ed356dd56b1}</UniqueIdentifier>
+=======
+    <Filter Include="03. GameObject\Camera">
+      <UniqueIdentifier>{b40b5cbb-79c4-4cb4-9b64-5d4aaaa00821}</UniqueIdentifier>
+>>>>>>> b8616c0402e8227faf3106e3d57b04af9ab83ca4
     </Filter>
   </ItemGroup>
   <ItemGroup>

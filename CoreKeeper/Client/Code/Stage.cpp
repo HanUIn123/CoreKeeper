@@ -124,10 +124,36 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
 	NULL_CHECK_RETURN(pLayer, E_FAIL);
 
 	Engine::CGameObject* pGameObject = nullptr;
-
+	/*
 	pGameObject = CUIStatus::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UIStatus", pGameObject), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UIStatus", pGameObject), E_FAIL); // UI Ãß°¡
+	*/
+	_vec2 vPos = { 780.f, 480.f };
+	_vec2 vSize = { 35.f, 35.f };
+
+	pGameObject = CUIScreenIcon::Create(m_pGraphicDev, vPos, vSize, 0);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UIScreenicon_Bag", pGameObject), E_FAIL);
+
+	vPos = { 850.f , 480.f };
+
+	pGameObject = CUIScreenIcon::Create(m_pGraphicDev, vPos, vSize, 1);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UIScreenicon_Map", pGameObject), E_FAIL);
+
+	vPos = { 850.f , 550.f };
+
+	pGameObject = CUIScreenIcon::Create(m_pGraphicDev, vPos, vSize, 2);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UIScreenicon_Hand", pGameObject), E_FAIL);
+
+	vPos = { 780.f , 550.f };
+
+	pGameObject = CUIScreenIcon::Create(m_pGraphicDev, vPos, vSize, 4);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UIScreenicon_Install", pGameObject), E_FAIL);
+
 
 	m_mapLayer.insert({ pLayerTag , pLayer });
 

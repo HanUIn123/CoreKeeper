@@ -156,6 +156,7 @@
     <ClInclude Include="..\Header\SkyBox.h" />
     <ClInclude Include="..\Header\Stage.h" />
     <ClInclude Include="..\Header\Terrain.h" />
+    <ClInclude Include="..\Header\UIScreenIcon.h" />
     <ClInclude Include="..\Header\UIStatus.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="framework.h" />
@@ -176,6 +177,7 @@
     <ClCompile Include="..\Code\SkyBox.cpp" />
     <ClCompile Include="..\Code\Stage.cpp" />
     <ClCompile Include="..\Code\Terrain.cpp" />
+    <ClCompile Include="..\Code\UIScreenIcon.cpp" />
     <ClCompile Include="..\Code\UIStatus.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="pch.cpp">
