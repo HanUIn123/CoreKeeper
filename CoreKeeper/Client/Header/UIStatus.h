@@ -4,7 +4,7 @@
 
 BEGIN(Engine)
 
-class CAnimTex;
+class CRcTex;
 class CTransform;
 class CTexture;
 //class CCalculator;
@@ -32,7 +32,7 @@ private:
 	_matrix m_UIMatrix;
 
 private:
-	Engine::CAnimTex* m_pBufferCom;
+	Engine::CRcTex* m_pBufferCom;
 	Engine::CTransform* m_pTransformCom;
 	Engine::CTexture* m_pTextureCom;
 	//Engine::CCalculator* m_pCalculatorCom;

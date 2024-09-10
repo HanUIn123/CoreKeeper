@@ -11,6 +11,7 @@
 #include "SkyBox.h"
 
 #include "UIStatus.h"
+#include "UIScreenIcon.h"
 
 class CStage : public Engine::CScene
 {

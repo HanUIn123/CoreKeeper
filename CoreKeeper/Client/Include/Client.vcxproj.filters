@@ -52,14 +52,17 @@
     <Filter Include="02. GameObject\06. Item">
       <UniqueIdentifier>{f0f24d78-2f89-4492-80aa-02e261414ff4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\99. Shadow">
-      <UniqueIdentifier>{1504c984-122f-46ed-845d-5917c493744e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\07. UI">
       <UniqueIdentifier>{42cb11e9-7868-48ac-b6ba-82b17192fff5}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameObject\07. UI\00. Status">
       <UniqueIdentifier>{5534ff0c-7767-46ae-a9dd-70bd4ef43f2d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\99. Shadow">
+      <UniqueIdentifier>{1504c984-122f-46ed-845d-5917c493744e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\07. UI\01. UIScreenIcon">
+      <UniqueIdentifier>{10a3a682-7f16-4c4b-91fb-22aec50c9cb8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -120,6 +123,9 @@
     <ClInclude Include="..\Header\UIStatus.h">
       <Filter>02. GameObject\07. UI\00. Status</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\UIScreenIcon.h">
+      <Filter>02. GameObject\07. UI\01. UIScreenIcon</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -166,6 +172,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\UIStatus.cpp">
       <Filter>02. GameObject\07. UI\00. Status</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\UIScreenIcon.cpp">
+      <Filter>02. GameObject\07. UI\01. UIScreenIcon</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
