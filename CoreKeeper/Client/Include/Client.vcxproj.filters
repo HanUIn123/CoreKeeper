@@ -55,10 +55,10 @@
     <Filter Include="02. GameObject\99. Shadow">
       <UniqueIdentifier>{1504c984-122f-46ed-845d-5917c493744e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\06. UI">
+    <Filter Include="02. GameObject\07. UI">
       <UniqueIdentifier>{42cb11e9-7868-48ac-b6ba-82b17192fff5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\06. UI\00. Status">
+    <Filter Include="02. GameObject\07. UI\00. Status">
       <UniqueIdentifier>{5534ff0c-7767-46ae-a9dd-70bd4ef43f2d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -118,7 +118,7 @@
       <Filter>02. GameObject\99. Shadow</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\UIStatus.h">
-      <Filter>02. GameObject\06. UI\00. Status</Filter>
+      <Filter>02. GameObject\07. UI\00. Status</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -165,7 +165,7 @@
       <Filter>02. GameObject\99. Shadow</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\UIStatus.cpp">
-      <Filter>02. GameObject\06. UI\00. Status</Filter>
+      <Filter>02. GameObject\07. UI\00. Status</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
