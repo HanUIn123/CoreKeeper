@@ -1,6 +1,7 @@
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            #include "pch.h"
 #include "..\Header\DynamicCamera.h"
 #include "Export_System.h"
+#include "Export_Utility.h"
 
 CDynamicCamera::CDynamicCamera(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CCamera(pGraphicDev), m_bFix(false), m_bCheck(false)
@@ -32,17 +33,27 @@ _int CDynamicCamera::Update_GameObject(const _float & fTimeDelta)
 {
 	_int iExit = CCamera::Update_GameObject(fTimeDelta);
 
-	Key_Input(fTimeDelta);
+	// Key_Input(fTimeDelta);
 
 	return iExit;
 }
 
 void CDynamicCamera::LateUpdate_GameObject()
 {
+	CTransform* pPlayerTransform = dynamic_cast<CTransform*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Transform"));
+	NULL_CHECK(pPlayerTransform);
+	_vec3 vPlayerPos;
+	pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
+	m_vAt = vPlayerPos;
+
+	vPlayerPos.z -= 10.f;
+	vPlayerPos.y += 10.f;
+
+	m_vEye = vPlayerPos;
 	if(false == m_bFix)
 	{ 
 		Mouse_Fix();
-		Mouse_Move();
+		//Mouse_Move();
 	}
 
 
@@ -76,51 +87,6 @@ void CDynamicCamera::Key_Input(const _float & fTimeDelta)
 {
 	_matrix		matCamWorld;
 	D3DXMatrixInverse(&matCamWorld, 0, &m_matView);
-
-	if (Engine::Get_DIKeyState(DIK_W) & 0x80)
-	{
-		_vec3	vLook;
-		memcpy(&vLook, &matCamWorld.m[2][0], sizeof(_vec3));
-
-		_vec3	vLength = *D3DXVec3Normalize(&vLook, &vLook) * fTimeDelta * 5.f;
-
-		m_vEye += vLength;
-		m_vAt  += vLength;
-	}
-
-	if (Engine::Get_DIKeyState(DIK_S) & 0x80)
-	{
-		_vec3	vLook;
-		memcpy(&vLook, &matCamWorld.m[2][0], sizeof(_vec3));
-
-		_vec3	vLength = *D3DXVec3Normalize(&vLook, &vLook) * fTimeDelta * 5.f;
-
-		m_vEye -= vLength;
-		m_vAt  -= vLength;
-	}
-
-
-	if (Engine::Get_DIKeyState(DIK_D) & 0x80)
-	{
-		_vec3	vRight;
-		memcpy(&vRight, &matCamWorld.m[0][0], sizeof(_vec3));
-
-		_vec3	vLength = *D3DXVec3Normalize(&vRight, &vRight) * fTimeDelta * 5.f;
-
-		m_vEye += vLength;
-		m_vAt  += vLength;
-	}
-
-	if (Engine::Get_DIKeyState(DIK_A) & 0x80)
-	{
-		_vec3	vRight;
-		memcpy(&vRight, &matCamWorld.m[0][0], sizeof(_vec3));
-
-		_vec3	vLength = *D3DXVec3Normalize(&vRight, &vRight) * fTimeDelta * 5.f;
-
-		m_vEye -= vLength;
-		m_vAt  -= vLength;
-	}
 
 	if (Engine::Get_DIKeyState(DIK_TAB) & 0x80)
 	{
