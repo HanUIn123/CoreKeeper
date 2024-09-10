@@ -50,7 +50,7 @@ void CShadow::Render_GameObject()
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
-	m_pTextureCom->Set_Texture(2);
+	m_pTextureCom->Set_Texture(1);
 
 	m_pBufferCom->Render_Buffer();
 

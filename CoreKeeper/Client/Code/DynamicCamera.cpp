@@ -52,7 +52,7 @@ void CDynamicCamera::LateUpdate_GameObject()
 	m_vEye = vPlayerPos;
 	if(false == m_bFix)
 	{ 
-		Mouse_Fix();
+		//Mouse_Fix();
 		//Mouse_Move();
 	}
 
