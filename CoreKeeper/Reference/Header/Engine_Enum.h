@@ -19,5 +19,7 @@ namespace Engine
 	enum MOUSEMOVESTATE {	DIMS_X, DIMS_Y, DIMS_Z, DIMS_END };
 
 	enum STATE {IDLE, WALK, SWING, DEAD, STATE_END};
+
+	enum RENDERTYPE {TYPE_PERSPECTIVE, TYPE_ORTHOGRAPHIC, TYPE_END};
 }
 #endif // Engine_Enum_h__	

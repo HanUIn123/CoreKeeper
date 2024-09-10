@@ -125,7 +125,9 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
 
 	Engine::CGameObject* pGameObject = nullptr;
 
-
+	pGameObject = CUIStatus::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UIStatus", pGameObject), E_FAIL);
 
 	m_mapLayer.insert({ pLayerTag , pLayer });
 

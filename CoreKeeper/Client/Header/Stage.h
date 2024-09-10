@@ -10,6 +10,8 @@
 #include "Terrain.h"
 #include "SkyBox.h"
 
+#include "UIStatus.h"
+
 class CStage : public Engine::CScene
 {
 private:

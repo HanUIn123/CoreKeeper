@@ -18,6 +18,13 @@ CComponent* CManagement::Get_Component(COMPONENTID eID, const _tchar* pLayerTag,
 	return m_pScene->Get_Component(eID, pLayerTag, pObjTag, pComponentTag);
 }
 
+CGameObject* CManagement::Get_GameObject(const _tchar* pLayerTag, const _tchar* pObjTag)
+{
+	NULL_CHECK_RETURN(m_pScene, nullptr);
+
+	return m_pScene->Get_GameObject(pLayerTag, pObjTag);
+}
+
 HRESULT CManagement::Set_Scene(CScene* pScene)
 {
 	Safe_Release(m_pScene);
