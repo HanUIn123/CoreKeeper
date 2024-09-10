@@ -79,6 +79,9 @@
     <Filter Include="04. Component\04. Animator">
       <UniqueIdentifier>{e3d206ad-a405-402a-92ee-cf9f2529e0b1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04. Component\05. Collider">
+      <UniqueIdentifier>{c547edbb-f374-457e-b2a1-3ed356dd56b1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Code\Scene.cpp">
