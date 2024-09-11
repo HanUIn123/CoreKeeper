@@ -4,6 +4,7 @@
 #include "Export_Utility.h"
 #include "..\Header\Stage.h"
 
+
 CLogo::CLogo(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CScene(pGraphicDev), m_pLoading(nullptr)
 {
