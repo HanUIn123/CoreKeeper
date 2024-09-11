@@ -23,7 +23,7 @@ _int CMonster::Update_GameObject(const _float& fTimeDelta)
 {
 	_int iExit = Engine::CGameObject::Update_GameObject(fTimeDelta);
 
-	Engine::CTransform* pPlayerTransform = dynamic_cast<Engine::CTransform*>
+	/*Engine::CTransform* pPlayerTransform = dynamic_cast<Engine::CTransform*>
 		(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Transform"));
 	NULL_CHECK_RETURN(pPlayerTransform, -1);
 
@@ -32,7 +32,7 @@ _int CMonster::Update_GameObject(const _float& fTimeDelta)
 
 	m_pTransformCom->Chase_Target(&vPlayerPos, 5.f * fTimeDelta);
 
-	Add_RenderGroup(RENDER_NONALPHA, this);
+	Add_RenderGroup(RENDER_NONALPHA, this);*/
 
 	return iExit;
 }
@@ -55,7 +55,7 @@ void CMonster::Render_GameObject()
 
 HRESULT CMonster::Add_Component()
 {
-	CComponent* pComponent = NULL;
+	/*CComponent* pComponent = NULL;
 
 	pComponent = m_pBufferCom = dynamic_cast<CTriCol*>(Engine::Clone_Proto(L"Proto_TriCol"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
@@ -63,7 +63,7 @@ HRESULT CMonster::Add_Component()
 
 	pComponent = m_pTransformCom = dynamic_cast<CTransform*>(Engine::Clone_Proto(L"Proto_Transform"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
-	m_mapComponent[ID_STATIC].insert({ L"Com_Transform", pComponent });
+	m_mapComponent[ID_STATIC].insert({ L"Com_Transform", pComponent });*/
 
 	return S_OK;
 }
