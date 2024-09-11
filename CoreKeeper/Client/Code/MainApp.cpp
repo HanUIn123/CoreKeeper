@@ -28,6 +28,13 @@ int CMainApp::Update_MainApp(const float& fTimeDelta)
 
 	CImguiMgr::GetInstance()->ImGui_Tick();
 
+	if (m_bSampleWindow)
+	{
+		ImGui::Begin("Window2", &m_bSampleWindow);
+		ImGui::Text("This is Sample Window");
+		ImGui::End();
+	}
+
 	return 0;
 }
 
