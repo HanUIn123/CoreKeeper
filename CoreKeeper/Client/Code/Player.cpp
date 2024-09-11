@@ -2,6 +2,7 @@
 #include "..\Header\Player.h"
 
 #include "Export_Utility.h"
+#include "..\Header\UIHealth.h"
 
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CGameObject(pGraphicDev)
@@ -37,6 +38,12 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 	{
 		ShoulderView_Control(fTimeDelta);
 	}
+
+	CUIHealth* pUI = dynamic_cast<CUIHealth*>
+		(Engine::Get_GameObject(L"Layer_UI", L"UI_Health"));
+	NULL_CHECK_RETURN(pUI, -1);
+
+	pUI->Set_Hp(100, 100);
 
 	m_pColliderCom->Update_Collider(m_pTransformCom->Get_WorldMatrix());
 	Add_RenderGroup(RENDER_ALPHA, this);
