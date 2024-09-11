@@ -7,6 +7,7 @@ class CRcTex;
 class CTransform;
 class CTexture;
 class CCollider;
+class CShadowTex;
 
 END
 
@@ -32,14 +33,21 @@ private:
 	Engine::CTexture* m_pTextureCom;
 	Engine::CCollider* m_pColliderCom;
 
+	Engine::CShadowTex* m_pShadowBufferCom;
+	Engine::CTransform* m_pShadowTransformCom;
+	Engine::CTexture* m_pShadowTextureCom;
+
 public:
 	static CItem* Create(LPDIRECT3DDEVICE9 pGraphicDev);
 
 private:
 	virtual void		Free();
 
+public:
+	bool		Get_Active() { return m_bActive; }
 private:
 	int		m_iTextureNumber;
 	float	m_fFirstY;
 	float	m_fTimeAcc;
+	bool	m_bActive;
 };
