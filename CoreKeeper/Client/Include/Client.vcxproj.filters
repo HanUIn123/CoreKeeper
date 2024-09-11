@@ -67,6 +67,9 @@
     <Filter Include="98.ImguiMgr">
       <UniqueIdentifier>{72fb9d2b-55eb-4956-b943-c0153718c855}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. Scene\99.MapEditorScene">
+      <UniqueIdentifier>{6edbe3c5-5cf7-4aa5-be52-c214f5f762cb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -153,6 +156,9 @@
     <ClInclude Include="imconfig.h">
       <Filter>99.Imgui</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\MapEditorScene.h">
+      <Filter>01. Scene\99.MapEditorScene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -223,6 +229,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\ImguiMgr.cpp">
       <Filter>98.ImguiMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\MapEditorScene.cpp">
+      <Filter>01. Scene\99.MapEditorScene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
