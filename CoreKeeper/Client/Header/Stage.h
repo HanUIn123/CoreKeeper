@@ -3,6 +3,7 @@
 #include "BackGround.h"
 
 #include "Player.h"
+#include "Slime.h"
 #include "Monster.h"
 #include "Item.h"
 
