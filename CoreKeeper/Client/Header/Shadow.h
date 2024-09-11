@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "Item.h"
 
 BEGIN(Engine)
 
@@ -37,5 +38,6 @@ private:
 	virtual void		Free();
 
 private:
+	CItem*	m_pItem;
 	int		m_iTextureNumber;
 };

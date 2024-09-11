@@ -16,6 +16,8 @@ HRESULT CShadow::Ready_GameObject()
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
+	m_pItem = dynamic_cast<CItem*>(Engine::CManagement::GetInstance()->Get_GameObject(L"Layer_GameLogic", L"Item"));
+
 	m_pTransformCom->m_vScale = { 0.15f, 0.15f, 0.15f };
 	
 	return S_OK;
@@ -53,6 +55,7 @@ void CShadow::Render_GameObject()
 	m_pTextureCom->Set_Texture(1);
 
 	m_pBufferCom->Render_Buffer();
+	
 
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
