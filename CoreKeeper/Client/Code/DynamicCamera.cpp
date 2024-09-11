@@ -1,10 +1,10 @@
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           #include "pch.h"
+#include "pch.h"
 #include "..\Header\DynamicCamera.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
 
 CDynamicCamera::CDynamicCamera(LPDIRECT3DDEVICE9 pGraphicDev)
-	: CCamera(pGraphicDev), m_bFix(false), m_bCheck(false)
+	: CCamera(pGraphicDev), m_bFix(false)
 {
 }
 
@@ -13,7 +13,7 @@ CDynamicCamera::~CDynamicCamera()
 {
 }
 
-HRESULT CDynamicCamera::Ready_GameObject(const _vec3 * pEye, const _vec3 * pAt, const _vec3 * pUp, const _float & _fFov, const _float & _fAspect, const _float & _fNear, const _float & _fFar)
+HRESULT CDynamicCamera::Ready_GameObject(const _vec3* pEye, const _vec3* pAt, const _vec3* pUp, const _float& _fFov, const _float& _fAspect, const _float& _fNear, const _float& _fFar)
 {
 	m_vEye = *pEye;
 	m_vAt = *pAt;
@@ -29,11 +29,11 @@ HRESULT CDynamicCamera::Ready_GameObject(const _vec3 * pEye, const _vec3 * pAt, 
 	return S_OK;
 }
 
-_int CDynamicCamera::Update_GameObject(const _float & fTimeDelta)
+_int CDynamicCamera::Update_GameObject(const _float& fTimeDelta)
 {
 	_int iExit = CCamera::Update_GameObject(fTimeDelta);
 
-	// Key_Input(fTimeDelta);
+	Key_Input(fTimeDelta);
 
 	return iExit;
 }
@@ -46,27 +46,27 @@ void CDynamicCamera::LateUpdate_GameObject()
 	pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
 	m_vAt = vPlayerPos;
 
+
+
 	vPlayerPos.z -= 10.f;
 	vPlayerPos.y += 10.f;
 
 	m_vEye = vPlayerPos;
-	if(false == m_bFix)
-	{ 
-		//Mouse_Fix();
-		//Mouse_Move();
+
+	if (!g_bIsTopCamera)
+	{
+		Mouse_Fix();
+		Mouse_Move();
 	}
-
-
-
 	CCamera::LateUpdate_GameObject();
 }
 
-CDynamicCamera * CDynamicCamera::Create(LPDIRECT3DDEVICE9 pGraphicDev,
-	const _vec3 * pEye, const _vec3 * pAt, const _vec3 * pUp,
-	const _float & _fFov, const _float & _fAspect, 
-	const _float & _fNear, const _float & _fFar)
+CDynamicCamera* CDynamicCamera::Create(LPDIRECT3DDEVICE9 pGraphicDev,
+	const _vec3* pEye, const _vec3* pAt, const _vec3* pUp,
+	const _float& _fFov, const _float& _fAspect,
+	const _float& _fNear, const _float& _fFar)
 {
-	CDynamicCamera*		pCamera = new CDynamicCamera(pGraphicDev);
+	CDynamicCamera* pCamera = new CDynamicCamera(pGraphicDev);
 
 	if (FAILED(pCamera->Ready_GameObject(pEye, pAt, pUp, _fFov, _fAspect, _fNear, _fFar)))
 	{
@@ -83,30 +83,16 @@ void CDynamicCamera::Free()
 	CCamera::Free();
 }
 
-void CDynamicCamera::Key_Input(const _float & fTimeDelta)
+void CDynamicCamera::Key_Input(const _float& fTimeDelta)
 {
 	_matrix		matCamWorld;
 	D3DXMatrixInverse(&matCamWorld, 0, &m_matView);
 
 	if (Engine::Get_DIKeyState(DIK_TAB) & 0x80)
 	{
-		if (m_bCheck)
-			return;
-
-		m_bCheck = true;
-		
-		if (m_bFix)
-			m_bFix = false;
-		else
-			m_bFix = true;
+		g_bIsTopCamera = g_bIsTopCamera ? false : true;
+		m_bFix = !g_bIsTopCamera;
 	}
-
-	else
-		m_bCheck = false;
-
-	if (false == m_bFix)
-		return;
-
 }
 
 void CDynamicCamera::Mouse_Move()
