@@ -4,6 +4,7 @@
 #include "Export_Utility.h"
 #include "..\Header\Stage.h"
 
+#include "../Header/MapEditorScene.h"
 
 CLogo::CLogo(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CScene(pGraphicDev), m_pLoading(nullptr)
@@ -35,6 +36,19 @@ _int CLogo::Update_Scene(const _float& fTimeDelta)
 		if (GetAsyncKeyState(VK_RETURN) & 0x8000)
 		{
 			Engine::CScene* pStage = CStage::Create(m_pGraphicDev);
+			NULL_CHECK_RETURN(pStage, -1);
+
+			FAILED_CHECK_RETURN(Engine::Set_Scene(pStage), E_FAIL);
+
+			return 0;
+		}
+	}
+
+	if (true == m_pLoading->Get_Finish())
+	{
+		if (GetAsyncKeyState('M') & 0x8000)
+		{
+			Engine::CScene* pStage = CMapEditorScene::Create(m_pGraphicDev);
 			NULL_CHECK_RETURN(pStage, -1);
 
 			FAILED_CHECK_RETURN(Engine::Set_Scene(pStage), E_FAIL);
