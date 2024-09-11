@@ -41,18 +41,22 @@ _int CDynamicCamera::Update_GameObject(const _float& fTimeDelta)
 void CDynamicCamera::LateUpdate_GameObject()
 {
 	CTransform* pPlayerTransform = dynamic_cast<CTransform*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Transform"));
-	NULL_CHECK(pPlayerTransform);
-	_vec3 vPlayerPos;
-	pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
-	m_vAt = vPlayerPos;
+	
+	//NULL_CHECK(pPlayerTransform);
+	
+	if (pPlayerTransform)
+	{
+		_vec3 vPlayerPos;
+		pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
+		m_vAt = vPlayerPos;
 
 
 
-	vPlayerPos.z -= 10.f;
-	vPlayerPos.y += 10.f;
+		vPlayerPos.z -= 10.f;
+		vPlayerPos.y += 10.f;
 
-	m_vEye = vPlayerPos;
-
+		m_vEye = vPlayerPos;
+	}
 	if (!g_bIsTopCamera)
 	{
 		Mouse_Fix();

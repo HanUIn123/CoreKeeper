@@ -42,10 +42,7 @@ _int CLogo::Update_Scene(const _float& fTimeDelta)
 
 			return 0;
 		}
-	}
 
-	if (true == m_pLoading->Get_Finish())
-	{
 		if (GetAsyncKeyState('M') & 0x8000)
 		{
 			Engine::CScene* pStage = CMapEditorScene::Create(m_pGraphicDev);
