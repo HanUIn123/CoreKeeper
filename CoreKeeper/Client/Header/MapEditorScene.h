@@ -1,23 +1,12 @@
 #pragma once
 #include "Scene.h"
-#include "BackGround.h"
+#include "../Client/Header/ImguiMgr.h"
 
-#include "Player.h"
-#include "Monster.h"
-#include "Item.h"
-
-#include "Terrain.h"
-#include "SkyBox.h"
-
-#include "UIStatus.h"
-#include "UIScreenIcon.h"
-#include "UIHealth.h"
-
-class CStage : public Engine::CScene
+class CMapEditorScene : public Engine::CScene
 {
 private:
-	explicit CStage(LPDIRECT3DDEVICE9 pGraphicDev);
-	virtual ~CStage();
+	explicit CMapEditorScene(LPDIRECT3DDEVICE9 _pGraphicDevice);
+	virtual ~CMapEditorScene();
 
 public:
 	virtual			HRESULT			Ready_Scene();
@@ -26,15 +15,21 @@ public:
 	virtual			void			Render_Scene();
 
 private:
-	HRESULT		Ready_LightInfo();
 	HRESULT		Ready_Layer_Environment(const _tchar* pLayerTag);
 	HRESULT		Ready_Layer_GameLogic(const _tchar* pLayerTag);
 	HRESULT		Ready_Layer_UI(const _tchar* pLayerTag);
 
 public:
-	static	CStage*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
+	static	CMapEditorScene* Create(LPDIRECT3DDEVICE9 pGraphicDev);
 private:
 	virtual void		Free();
+
+private:
+	void Show_ImguiWindow();
+	void Setting_Menu();
+	void Setting_TileList();
+
+
 
 };
 

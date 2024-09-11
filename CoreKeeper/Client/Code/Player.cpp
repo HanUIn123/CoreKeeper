@@ -1,11 +1,15 @@
 #include "pch.h"
 #include "..\Header\Player.h"
-#include "Export_System.h"
+
 #include "Export_Utility.h"
 
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CGameObject(pGraphicDev)
 {
+	m_eDir = DIRECTION_END;
+	m_eState = STATE_END;
+	m_fSpeed = 5.f;
+	m_fDiagSpeed = sqrt(pow(m_fSpeed, 2) / 2);
 }
 
 CPlayer::~CPlayer()
@@ -23,13 +27,19 @@ HRESULT CPlayer::Ready_GameObject()
 
 _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 {
-
-	Key_Input(fTimeDelta);
+	if (g_bIsTopCamera)
+	{
+		Mouse_Direction();
+		Key_Position(fTimeDelta);
+		Animation_SetUp(m_eState, m_eDir);
+	}
+	else
+	{
+		ShoulderView_Control(fTimeDelta);
+	}
 
 	m_pColliderCom->Update_Collider(m_pTransformCom->Get_WorldMatrix());
-
 	Add_RenderGroup(RENDER_ALPHA, this);
-
 
 	return Engine::CGameObject::Update_GameObject(fTimeDelta);
 }
@@ -37,7 +47,7 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 void CPlayer::LateUpdate_GameObject()
 {
 	m_pAnimatorCom->Update_Animation();
-	
+
 	Engine::CGameObject::LateUpdate_GameObject();
 }
 
@@ -51,8 +61,6 @@ void CPlayer::Render_GameObject()
 	m_pBufferCom->Set_Index(m_pAnimatorCom->Get_MotionIndex());
 	m_pBufferCom->Render_Buffer();
 
-	//m_pColliderCom->Render_Collider();
-	
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
@@ -87,44 +95,131 @@ HRESULT CPlayer::Add_Component()
 	return S_OK;
 }
 
-void CPlayer::Key_Input(const _float& fTimeDelta)
+void CPlayer::Key_Position(const _float& fTimeDelta)
 {
-	_vec3	vLook;
-	_vec3   vRight;
+	_vec3	vLook, vRight;
 
 	m_pTransformCom->Get_Info(INFO_LOOK, &vLook);
 	m_pTransformCom->Get_Info(INFO_RIGHT, &vRight);
 
-	if (Engine::Get_DIKeyState(DIK_W) & 0x80)
+	// TOP (RIGHT, LEFT)
+	if (Engine::Get_DIKeyState(DIK_W))
 	{
-		m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, 5.f);
-		m_pAnimatorCom->Set_CurState(WALK, 11, 14, 15);
+		m_eState = WALK;
+		if (Engine::Get_DIKeyState(DIK_D))
+		{
+			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, m_fDiagSpeed);
+			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, m_fDiagSpeed);
+		}
+		else if (Engine::Get_DIKeyState(DIK_A))
+		{
+			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, m_fDiagSpeed);
+			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, -m_fDiagSpeed);
+		}
+		else
+			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, m_fSpeed);
 	}
-	else if (Engine::Get_DIKeyState(DIK_S) & 0x80)
+	// BOTTOM (RIGHT, LEFT)
+	else if (Engine::Get_DIKeyState(DIK_S))
 	{
-		m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, -5.f);
-		m_pAnimatorCom->Set_CurState(WALK, 3, 6, 15);
+		m_eState = WALK;
+		if (Engine::Get_DIKeyState(DIK_D))
+		{
+			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, -m_fDiagSpeed);
+			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, m_fDiagSpeed);
+		}
+		else if (Engine::Get_DIKeyState(DIK_A))
+		{
+			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, -m_fDiagSpeed);
+			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, -m_fDiagSpeed);
+		}
+		else
+			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, -m_fSpeed);
 	}
-	else if (Engine::Get_DIKeyState(DIK_A) & 0x80)
+	// L
+	else if (Engine::Get_DIKeyState(DIK_A))
 	{
-		m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, -5.f);
-		m_pAnimatorCom->Set_CurState(WALK, 7, 10, 15);
+		m_eState = WALK;
+		m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, -m_fSpeed);
 	}
-	else if (Engine::Get_DIKeyState(DIK_D) & 0x80)
+	// R
+	else if (Engine::Get_DIKeyState(DIK_D))
 	{
-		m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, 5.f);
-		m_pAnimatorCom->Set_CurState(WALK, 7, 10, 15);
+		m_eState = WALK;
+		m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, m_fSpeed);
 	}
 	else
 	{
-		m_pAnimatorCom->Set_CurState(IDLE, 0, 0, 15);
+		m_eState = IDLE;
 	}
-
-	/*if (Engine::Get_DIMouseState(DIM_LB) & 0x80)
-	{
-		
-	}*/
 }
+
+void CPlayer::Mouse_Click()
+{
+	if (Engine::Get_DIMouseState(DIM_LB) & 0x80)
+	{
+
+	}
+}
+
+void CPlayer::Mouse_Direction()
+{
+	POINT	ptMouse{};
+	GetCursorPos(&ptMouse);
+	ScreenToClient(g_hWnd, &ptMouse);
+
+	float diagLBtoRT = -((float)WINCY / WINCX * ptMouse.x) + WINCY - ptMouse.y;
+	float diagLTtoRB = ((float)WINCY / WINCX * ptMouse.x) - ptMouse.y;
+
+	// 우측
+	if (diagLBtoRT < 0 && diagLTtoRB > 0)
+		m_eDir = RIGHT;
+	// 하단
+	else if (diagLBtoRT <= 0 && diagLTtoRB <= 0)
+		m_eDir = FRONT;
+	// 좌측
+	else if (diagLBtoRT >= 0 && diagLTtoRB <= 0)
+		m_eDir = LEFT;
+	// 상단
+	else if (diagLBtoRT >= 0 && diagLTtoRB >= 0)
+		m_eDir = BACK;
+}
+
+void CPlayer::Animation_SetUp(STATE st, DIRECTION dir)
+{
+	switch (st)
+	{
+	case IDLE:
+		if (m_eDir == FRONT)
+			m_pAnimatorCom->Set_CurState(st, 0, 0, 15);
+		else if (m_eDir == LEFT)
+			m_pAnimatorCom->Set_CurState(st, 1, 1, 15);
+		else if (m_eDir == BACK)
+			m_pAnimatorCom->Set_CurState(st, 2, 2, 15);
+		else if (m_eDir == RIGHT)
+			m_pAnimatorCom->Set_CurState(st, 1, 1, 15);
+		break;
+	case WALK:
+		if (m_eDir == FRONT)
+			m_pAnimatorCom->Set_CurState(st, 3, 6, 15);
+		else if (m_eDir == LEFT)
+			m_pAnimatorCom->Set_CurState(st, 7, 10, 15);
+		else if (m_eDir == BACK)
+			m_pAnimatorCom->Set_CurState(st, 11, 14, 15);
+		else if (m_eDir == RIGHT)
+			m_pAnimatorCom->Set_CurState(st, 7, 10, 15);
+		break;
+	case SWING:
+		break;
+	}
+}
+
+void CPlayer::ShoulderView_Control(const _float& fTimeDelta)
+{
+
+}
+
+
 
 CPlayer* CPlayer::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 {

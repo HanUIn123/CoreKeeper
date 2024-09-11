@@ -58,14 +58,22 @@
     <Filter Include="02. GameObject\07. UI\00. Status">
       <UniqueIdentifier>{5534ff0c-7767-46ae-a9dd-70bd4ef43f2d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\99. Shadow">
-      <UniqueIdentifier>{1504c984-122f-46ed-845d-5917c493744e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\07. UI\01. UIScreenIcon">
       <UniqueIdentifier>{10a3a682-7f16-4c4b-91fb-22aec50c9cb8}</UniqueIdentifier>
     </Filter>
+<<<<<<< HEAD
     <Filter Include="02. GameObject\07. UI\02. UIHealth">
       <UniqueIdentifier>{5f789f66-086f-4154-b4fe-59e0c4ace950}</UniqueIdentifier>
+=======
+    <Filter Include="99.Imgui">
+      <UniqueIdentifier>{1ae26c7e-6b26-4660-a02d-7cd7eaac8604}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98.ImguiMgr">
+      <UniqueIdentifier>{72fb9d2b-55eb-4956-b943-c0153718c855}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Scene\99.MapEditorScene">
+      <UniqueIdentifier>{6edbe3c5-5cf7-4aa5-be52-c214f5f762cb}</UniqueIdentifier>
+>>>>>>> origin/main
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -120,17 +128,46 @@
     <ClInclude Include="..\Header\Item.h">
       <Filter>02. GameObject\06. Item</Filter>
     </ClInclude>
-    <ClInclude Include="..\Header\Shadow.h">
-      <Filter>02. GameObject\99. Shadow</Filter>
-    </ClInclude>
     <ClInclude Include="..\Header\UIStatus.h">
       <Filter>02. GameObject\07. UI\00. Status</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\UIScreenIcon.h">
       <Filter>02. GameObject\07. UI\01. UIScreenIcon</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="..\Header\UIHealth.h">
       <Filter>02. GameObject\07. UI\02. UIHealth</Filter>
+=======
+    <ClInclude Include="imgui.h">
+      <Filter>99.Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_impl_dx9.h">
+      <Filter>99.Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_impl_win32.h">
+      <Filter>99.Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_internal.h">
+      <Filter>99.Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imstb_rectpack.h">
+      <Filter>99.Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imstb_textedit.h">
+      <Filter>99.Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imstb_truetype.h">
+      <Filter>99.Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\ImguiMgr.h">
+      <Filter>98.ImguiMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="imconfig.h">
+      <Filter>99.Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\MapEditorScene.h">
+      <Filter>01. Scene\99.MapEditorScene</Filter>
+>>>>>>> origin/main
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -173,17 +210,43 @@
     <ClCompile Include="..\Code\Item.cpp">
       <Filter>02. GameObject\06. Item</Filter>
     </ClCompile>
-    <ClCompile Include="..\Code\Shadow.cpp">
-      <Filter>02. GameObject\99. Shadow</Filter>
-    </ClCompile>
     <ClCompile Include="..\Code\UIStatus.cpp">
       <Filter>02. GameObject\07. UI\00. Status</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\UIScreenIcon.cpp">
       <Filter>02. GameObject\07. UI\01. UIScreenIcon</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="..\Code\UIHealth.cpp">
       <Filter>02. GameObject\07. UI\02. UIHealth</Filter>
+=======
+    <ClCompile Include="imgui.cpp">
+      <Filter>99.Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_demo.cpp">
+      <Filter>99.Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_draw.cpp">
+      <Filter>99.Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_impl_dx9.cpp">
+      <Filter>99.Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_impl_win32.cpp">
+      <Filter>99.Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_tables.cpp">
+      <Filter>99.Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_widgets.cpp">
+      <Filter>99.Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\ImguiMgr.cpp">
+      <Filter>98.ImguiMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\MapEditorScene.cpp">
+      <Filter>01. Scene\99.MapEditorScene</Filter>
+>>>>>>> origin/main
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -198,5 +261,10 @@
     <Image Include="Client.ico">
       <Filter>리소스 파일</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="imgui.ini">
+      <Filter>99.Imgui</Filter>
+    </None>
   </ItemGroup>
 </Project>

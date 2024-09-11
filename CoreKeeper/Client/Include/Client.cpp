@@ -4,6 +4,7 @@
 #include "pch.h"
 #include "Client.h"
 #include "../Header/MainApp.h"
+#include "../Client/Header/ImguiMgr.h"
 
 #define MAX_LOADSTRING 100
 
@@ -12,6 +13,7 @@ HINSTANCE g_hInst;                                // 현재 인스턴스입니�
 WCHAR szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스트입니다.
 WCHAR szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름입니다.
 HWND	g_hWnd;
+bool  g_bIsTopCamera;
 
 // 이 코드 모듈에 들어 있는 함수의 정방향 선언입니다.
 ATOM                MyRegisterClass(HINSTANCE hInstance);
@@ -47,7 +49,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     MSG msg;
     msg.message = WM_NULL;
 
+    g_bIsTopCamera = true;
+
     CMainApp* pMainApp = CMainApp::Create();
+
+    CImguiMgr::GetInstance()->ImGui_SetUp();
+
 
     if (nullptr == pMainApp)
         return FALSE;
@@ -97,6 +104,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         MSG_BOX("MainApp Release Failed");
         return FALSE;
     }
+
+    CImguiMgr::GetInstance()->DestroyInstance();
 
     return (int)msg.wParam;
 }
@@ -174,8 +183,13 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //  WM_DESTROY  - 종료 메시지를 게시하고 반환합니다.
 //
 //
+
+extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+    ImGui_ImplWin32_WndProcHandler(hWnd, message, wParam, lParam);
+
     switch (message)
     {
     case WM_COMMAND:

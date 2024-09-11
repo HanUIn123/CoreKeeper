@@ -20,6 +20,8 @@ namespace Engine
 
 	enum STATE {IDLE, WALK, SWING, DEAD, STATE_END};
 
+	enum DIRECTION { FRONT, LEFT, BACK, RIGHT, DIRECTION_END };
+
 	enum RENDERTYPE { TYPE_PERSPECTIVE, TYPE_ORTHOGRAPHIC, TYPE_END };
 }
 #endif // Engine_Enum_h__	

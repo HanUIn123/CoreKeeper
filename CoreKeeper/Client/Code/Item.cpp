@@ -4,7 +4,7 @@
 #include "Export_Utility.h"
 
 CItem::CItem(LPDIRECT3DDEVICE9 pGraphicDev)
-	: Engine::CGameObject(pGraphicDev), m_iTextureNumber(0), m_fFirstY(0.f), m_fTimeAcc(0.f)
+	: Engine::CGameObject(pGraphicDev), m_iTextureNumber(0), m_fFirstY(0.f), m_fTimeAcc(0.f), m_bActive(true)
 {
 }
 
@@ -17,8 +17,11 @@ HRESULT CItem::Ready_GameObject()
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
 	m_pTransformCom->m_vScale = { 0.2f, 0.2f, 0.2f };
+	m_pShadowTransformCom->m_vScale = { 0.2f, 0.2f, 0.2f };
+
 	m_pTransformCom->Set_Pos(m_pTransformCom->m_vInfo->x, m_pTransformCom->m_vInfo->y + 0.7f, m_pTransformCom->m_vInfo->z);
-	
+	m_pShadowTransformCom->Set_Pos(m_pTransformCom->m_vInfo->x, 0.1f, m_pTransformCom->m_vInfo->z);
+
 	// 원래의 Y 위치 저장
 	m_fFirstY = m_pTransformCom->m_vInfo->y + 0.7f;
 
@@ -36,6 +39,14 @@ _int CItem::Update_GameObject(const _float& fTimeDelta)
 	float fNewy = m_fFirstY + fAmplitude * sinf(m_fTimeAcc * fFrequency);
 	m_pTransformCom->Set_Pos(m_pTransformCom->m_vInfo->x, fNewy, m_pTransformCom->m_vInfo->z);
 
+	m_pShadowTransformCom->Set_Pos(m_pTransformCom->m_vInfo->x, 0.1f, m_pTransformCom->m_vInfo->z);
+
+	Engine::CCollider* pPlayerCollider = dynamic_cast<Engine::CCollider*>
+		(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Collider"));
+
+	// 충돌하면 FALSE, 충돌안하면 TRUE
+	m_bActive = !(m_pColliderCom->Check_Collision(pPlayerCollider));
+	
 	Add_RenderGroup(RENDER_ALPHA, this);
 
 	return Engine::CGameObject::Update_GameObject(fTimeDelta);
@@ -49,21 +60,27 @@ void CItem::LateUpdate_GameObject()
 void CItem::Render_GameObject()
 {
 	// 카메라를 바라보게 하면서 스케일 유지
-	Apply_Billboard();  
+	//Apply_Billboard();  
 
-	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
+	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
+
 	m_pTextureCom->Set_Texture(m_iTextureNumber);
-
-	Engine::CCollider* pPlayerCollider = dynamic_cast<Engine::CCollider*>
-		(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Collider"));
-
-	if (!m_pColliderCom->Check_Collision(pPlayerCollider))
+	
+	if (m_bActive)
 	{
 		m_pBufferCom->Render_Buffer();
 	}
-	
+
+	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pShadowTransformCom->Get_WorldMatrix());
+
+	m_pShadowTextureCom->Set_Texture(1);
+
+	if (m_bActive)
+	{
+		m_pShadowBufferCom->Render_Buffer();
+	}
 	//m_pColliderCom->Render_Collider();
 
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
@@ -88,6 +105,18 @@ HRESULT CItem::Add_Component()
 	pComponent = m_pColliderCom = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Proto_ItemCollider"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_DYNAMIC].insert({ L"Com_Collider", pComponent });
+
+	pComponent = m_pShadowBufferCom = dynamic_cast<CShadowTex*>(Engine::Clone_Proto(L"Proto_ShadowTex"));
+	NULL_CHECK_RETURN(pComponent, E_FAIL);
+	m_mapComponent[ID_DYNAMIC].insert({ L"Com_ShadowCom", pComponent });
+
+	pComponent = m_pShadowTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_ShadowTexture"));
+	NULL_CHECK_RETURN(pComponent, E_FAIL);
+	m_mapComponent[ID_DYNAMIC].insert({ L"Com_ShadowTexture", pComponent });
+
+	pComponent = m_pShadowTransformCom = dynamic_cast<CTransform*>(Engine::Clone_Proto(L"Proto_Transform"));
+	NULL_CHECK_RETURN(pComponent, E_FAIL);
+	m_mapComponent[ID_DYNAMIC].insert({ L"Com_ShadowTransform", pComponent });
 
 	return S_OK;
 }
