@@ -1,21 +1,17 @@
 #include "Export_Utility.h"
 
 CCollider::CCollider(LPDIRECT3DDEVICE9 pGraphicDev)
-    : CComponent(pGraphicDev), m_pGraphicDev(pGraphicDev), m_fRadius(0.f), m_vCenterPos(0.f, 0.f, 0.f), m_pSphereMesh(nullptr)
+    : CComponent(pGraphicDev), m_fRadius(0.f), m_vCenterPos(0.f, 0.f, 0.f)
 {
 }
 
 CCollider::~CCollider()
 {
-    //Safe_Delete(m_pSphereMesh);
 }
 
 HRESULT CCollider::Ready_Collider(float fRadius)
 {
     m_fRadius = fRadius;
-
-    // 구 메시 생성
-    FAILED_CHECK_RETURN(D3DXCreateSphere(m_pGraphicDev, fRadius, 20, 20, &m_pSphereMesh, nullptr), E_FAIL);
 
     return S_OK;
 }
@@ -43,13 +39,6 @@ bool CCollider::Check_Collision(CCollider* pTarget)
 void CCollider::Render_Collider()
 {
     m_pGraphicDev->SetTransform(D3DTS_WORLD, &m_matWorld);
-
-    m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DFILL_WIREFRAME);
-
-    if (m_pSphereMesh)
-        m_pSphereMesh->DrawSubset(0);
-
-    m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DFILL_SOLID);
 }
 
 CCollider* CCollider::Create(LPDIRECT3DDEVICE9 pGraphicDev, float fRadius)
@@ -72,7 +61,5 @@ CCollider* CCollider::Clone()
 
 void CCollider::Free()
 {
-    //Safe_Delete(m_pSphereMesh);
-
     CComponent::Free();
 }

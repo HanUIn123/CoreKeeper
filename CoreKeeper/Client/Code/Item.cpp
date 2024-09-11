@@ -81,7 +81,8 @@ void CItem::Render_GameObject()
 	{
 		m_pShadowBufferCom->Render_Buffer();
 	}
-	//m_pColliderCom->Render_Collider();
+
+	m_pColliderCom->Render_Collider();
 
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }

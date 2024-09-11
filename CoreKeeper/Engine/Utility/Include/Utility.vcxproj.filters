@@ -85,6 +85,9 @@
     <Filter Include="04. Component\00. VIBuffer\06. ShadowTex">
       <UniqueIdentifier>{d2f16391-531f-4ab5-9c63-32d36eb7eea5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04. Component\00. VIBuffer\07. SphereCol">
+      <UniqueIdentifier>{89abcc9b-3e32-44d0-a630-f51109503767}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Code\Scene.cpp">
