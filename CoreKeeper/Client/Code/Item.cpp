@@ -17,7 +17,7 @@ HRESULT CItem::Ready_GameObject()
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
 	m_pTransformCom->m_vScale = { 0.2f, 0.2f, 0.2f };
-	m_pShadowTransformCom->m_vScale = { 0.02f, 0.02f, 0.02f };
+	m_pShadowTransformCom->m_vScale = { 0.2f, 0.2f, 0.2f };
 
 	m_pTransformCom->Set_Pos(m_pTransformCom->m_vInfo->x, m_pTransformCom->m_vInfo->y + 0.7f, m_pTransformCom->m_vInfo->z);
 	m_pShadowTransformCom->Set_Pos(m_pTransformCom->m_vInfo->x, 0.1f, m_pTransformCom->m_vInfo->z);
@@ -116,7 +116,7 @@ HRESULT CItem::Add_Component()
 
 	pComponent = m_pShadowTransformCom = dynamic_cast<CTransform*>(Engine::Clone_Proto(L"Proto_Transform"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
-	m_mapComponent[ID_DYNAMIC].insert({ L"Com_Transform", pComponent });
+	m_mapComponent[ID_DYNAMIC].insert({ L"Com_ShadowTransform", pComponent });
 
 	return S_OK;
 }
