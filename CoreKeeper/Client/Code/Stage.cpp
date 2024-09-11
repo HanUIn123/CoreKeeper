@@ -154,17 +154,28 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UIScreenicon_Install", pGameObject), E_FAIL);
 
-	vPos = { 180.f,  50.f };
-	vSize = { 120.f, 11.f };
+	vPos = { 347.f, 50.f };
+	vSize = { 293.f, 9.f };
 
 	pGameObject = CUIHealth::Create(m_pGraphicDev, vPos, vSize, 0);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Health", pGameObject), E_FAIL);
 
-	vSize = { 125.f, 14.f };
+	vPos = { 350.f,  50.f };
+	vSize = { 300.f, 12.f };
+
 	pGameObject = CUIHealth::Create(m_pGraphicDev, vPos, vSize, 1);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Health_bar", pGameObject), E_FAIL);
+
+	vPos = { 350.f,  50.f };
+	vSize = { 5.f, 10.f };
+
+	pGameObject = CHpDivider::Create(m_pGraphicDev, vPos, vSize, 300.f);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Health_Divider", pGameObject), E_FAIL);
+
+
 
 	m_mapLayer.insert({ pLayerTag , pLayer });
 

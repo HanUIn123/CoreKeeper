@@ -4,7 +4,7 @@
 
 BEGIN(Engine)
 
-class CAnimTex;
+class CRangeTex;
 class CTransform;
 class CTexture;
 class CAnimator;
@@ -28,10 +28,10 @@ public:
 		return  ::PtInRect(&m_BRect, _screenPos);
 	}
 
-	/*
-	_bool           Get_Exit() { return m_bExit; }
-	void            Set_Exit() { m_bExit = true; } // 인벤토리 열렸을때 호출할 함수
-	*/
+	void            Set_Hp(_int _iMaxHp, _int _iCurHp) { m_iMaxHp = _iMaxHp, m_iHp = _iCurHp; }
+	_int            Get_MaxHp() { return m_iMaxHp; }
+	_int            Get_CurHp() { return m_iHp; }
+
 private:
 	HRESULT			Add_Component();
 
@@ -42,14 +42,15 @@ private:
 	_matrix ButtonWorld;
 	_int  m_iIndex;
 
+	_int m_iMaxHp, m_iHp;
+
 	_bool m_bCollapse;
 
 	_bool m_bExit;
 private:
-	Engine::CAnimTex* m_pBufferCom;
+	Engine::CRangeTex* m_pBufferCom;
 	Engine::CTransform* m_pTransformCom;
 	Engine::CTexture* m_pTextureCom;
-	Engine::CTexture* m_pColTextureCom;
 	Engine::CAnimator* m_pAnimatorCom;
 
 public:

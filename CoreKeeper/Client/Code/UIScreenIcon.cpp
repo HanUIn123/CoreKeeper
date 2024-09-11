@@ -22,8 +22,8 @@ HRESULT CUIScreenIcon::Ready_GameObject(_vec2 vPos, _vec2 vSize, const _uint iIn
 	_D3DVIEWPORT9 Viewport;
 
 	m_pGraphicDev->GetViewport(&Viewport);
-	float height = Viewport.Height;
-	float width = Viewport.Width;
+	float height = (_float)Viewport.Height;
+	float width = (_float)Viewport.Width;
 
 	float x = vPos.x - width / 2;
 	float y = height / 2 - vPos.y;

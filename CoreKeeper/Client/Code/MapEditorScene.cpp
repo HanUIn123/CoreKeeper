@@ -1,5 +1,8 @@
 #include "pch.h"
 #include "../Header/MapEditorScene.h"
+#include "Export_Utility.h"
+#include "Export_System.h"
+#include "..\Header\DynamicCamera.h"
 
 CMapEditorScene::CMapEditorScene(LPDIRECT3DDEVICE9 _pGraphicDevice)
     :Engine::CScene(_pGraphicDevice)
@@ -10,13 +13,34 @@ CMapEditorScene::~CMapEditorScene()
 {
 }
 
+
+HRESULT CMapEditorScene::Ready_LightInfo()
+{
+
+    D3DLIGHT9		tLightInfo;
+    ZeroMemory(&tLightInfo, sizeof(D3DLIGHT9));
+
+    tLightInfo.Type = D3DLIGHT_DIRECTIONAL;
+
+    tLightInfo.Diffuse = { 1.f, 1.f, 1.f, 1.f };
+    tLightInfo.Specular = { 1.f, 1.f, 1.f, 1.f };
+    tLightInfo.Ambient = { 1.f, 1.f, 1.f, 1.f };
+    tLightInfo.Direction = { 1.f, -1.f, 1.f };
+
+    FAILED_CHECK_RETURN(Engine::Ready_Light(m_pGraphicDev, &tLightInfo, 0), E_FAIL);
+
+    return S_OK;
+}
+
 HRESULT CMapEditorScene::Ready_Scene()
 {
+
+    FAILED_CHECK_RETURN(Ready_LightInfo(), E_FAIL);
     FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Layer_Environment"), E_FAIL);
     FAILED_CHECK_RETURN(Ready_Layer_GameLogic(L"Layer_GameLogic"), E_FAIL);
     FAILED_CHECK_RETURN(Ready_Layer_UI(L"Layer_UI"), E_FAIL);
 
-    //m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
+    m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 
     return S_OK;
 }
@@ -50,6 +74,18 @@ HRESULT CMapEditorScene::Ready_Layer_Environment(const _tchar* pLayerTag)
 
     Engine::CGameObject* pGameObject = nullptr;
 
+    _vec3 eye(0.f, 10.f, -10.f);
+    _vec3 at(0.f, 0.f, 1.f);
+    _vec3 up(0.f, 1.f, 0.f);
+
+    pGameObject = CDynamicCamera::Create(m_pGraphicDev,
+        &eye,
+        &at,
+        &up);
+
+    NULL_CHECK_RETURN(pGameObject, E_FAIL);
+    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"DynamicCamera", pGameObject), E_FAIL);
+
     m_mapLayer.insert({ pLayerTag , pLayer });
 
     return S_OK;
@@ -59,6 +95,12 @@ HRESULT CMapEditorScene::Ready_Layer_GameLogic(const _tchar* pLayerTag)
 {
     Engine::CLayer* pLayer = CLayer::Create();
     NULL_CHECK_RETURN(pLayer, E_FAIL);
+
+    Engine::CGameObject* pGameObject = nullptr;
+
+    pGameObject = CTerrain::Create(m_pGraphicDev);
+    NULL_CHECK_RETURN(pGameObject, E_FAIL);
+    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"CTerrain", pGameObject), E_FAIL);
 
     m_mapLayer.insert({ pLayerTag , pLayer });
     return S_OK;

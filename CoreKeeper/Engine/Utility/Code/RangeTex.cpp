@@ -1,19 +1,19 @@
 #include "..\..\Header\RangeTex.h"
 
 CRangeTex::CRangeTex()
-	: m_iTexWidth(0), m_iCurIndex(0), m_iCurWidth(0)
+	: m_iCurIndex(0), m_iCurWidth(0)
 {
 }
 
-CRangeTex::CRangeTex(LPDIRECT3DDEVICE9 pGraphicDev, _int _iTexWidth)
+CRangeTex::CRangeTex(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CVIBuffer(pGraphicDev),
-	m_iTexWidth(_iTexWidth), m_iCurIndex(0), m_iCurWidth(0)
+      m_iCurIndex(0), m_iCurWidth(100)
 {
 }
 
 CRangeTex::CRangeTex(const CRangeTex& rhs)
 	: CVIBuffer(rhs),
-	m_iTexWidth(rhs.m_iTexWidth), m_iCurIndex(rhs.m_iCurIndex), m_iCurWidth(m_iCurWidth)
+	m_iCurIndex(rhs.m_iCurIndex), m_iCurWidth(rhs.m_iCurWidth)
 {
 }
 
@@ -40,10 +40,10 @@ HRESULT CRangeTex::Ready_Buffer()
 	pVertex[0].vPosition = { -1.f, 1.f, 0.f };
 	pVertex[0].vTexUV = { 0.f, 0.f };
 
-	pVertex[1].vPosition = { (_float)m_iTexWidth, 1.f, 0.f}; // ³ÐÀÌ ÁöÁ¤
+	pVertex[1].vPosition = { 1.f, 1.f, 0.f};
 	pVertex[1].vTexUV = { 1.f, 0.f };
 
-	pVertex[2].vPosition = { (_float)m_iTexWidth, -1.f, 0.f };
+	pVertex[2].vPosition = { 1.f, -1.f, 0.f };
 	pVertex[2].vTexUV = { 1.f, 1.f };
 
 	pVertex[3].vPosition = { -1.f, -1.f, 0.f };
@@ -76,19 +76,23 @@ void CRangeTex::Render_Buffer()
 
 	m_pVB->Lock(0, 0, (void**)&pVertex, 0);
 	
-	pVertex[1].vPosition = { (_float)m_iCurWidth  * (100.f / (_float)m_iTexWidth), 1.f, 0.f}; // ÅØ½ºÃÄ ³ÐÀÌ ¹éºÐÀ²·Î ³ª´²ÁÜ
+	pVertex[0].vPosition = { -1.f, 1.f, 0.f };
+	pVertex[0].vTexUV = { 0.f, 0.f };
+	pVertex[1].vPosition = { ((_float)m_iCurWidth / 200.f * 2.f) - 1.f,  1.f, 0.f}; // ÅØ½ºÃÄ ³ÐÀÌ ¹éºÐÀ²·Î ³ª´²ÁÜ
 	pVertex[1].vTexUV = { (_float)m_iCurWidth / 100.f, 0.f };
-	pVertex[2].vPosition = { (_float)m_iCurWidth * (100.f / (_float)m_iTexWidth), -1.f, 0.f};
+	pVertex[2].vPosition = { ((_float)m_iCurWidth / 200.f * 2.f) - 1.f, -1.f, 0.f};
 	pVertex[2].vTexUV = { (_float)m_iCurWidth / 100.f, 1.f };
+	pVertex[3].vPosition = { -1.f, -1.f, 0.f };
+	pVertex[3].vTexUV = { 0.f, 1.f };
 
 	m_pVB->Unlock();
 	
 	CVIBuffer::Render_Buffer();
 }
 
-CRangeTex* CRangeTex::Create(LPDIRECT3DDEVICE9 pGraphicDev, _int _iTexWidth)
+CRangeTex* CRangeTex::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 {
-	CRangeTex* pInstance = new CRangeTex(pGraphicDev, _iTexWidth);
+	CRangeTex* pInstance = new CRangeTex(pGraphicDev);
 
 	if (FAILED(pInstance->Ready_Buffer()))
 	{
