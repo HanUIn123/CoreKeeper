@@ -1,6 +1,7 @@
 #pragma once
 #include "GameObject.h"
 #include "Define.h"
+#include "Export_System.h"
 
 BEGIN(Engine)
 
@@ -27,7 +28,17 @@ public:
 
 private:
 	HRESULT			Add_Component();
-	void			Key_Input(const _float& fTimeDelta);
+
+	// ºä °øÅë
+	void			Mouse_Click();
+
+	// Å¾ºä ÇÔ¼ö
+	void			Key_Position(const _float& fTimeDelta);
+	void			Mouse_Direction();
+	void			Animation_SetUp(STATE st, DIRECTION dir);
+
+	// ¼ñ´õºä ÇÔ¼ö
+	void			ShoulderView_Control(const _float& fTimeDelta);
 
 private:
 	Engine::CAnimTex* m_pBufferCom;
@@ -36,6 +47,11 @@ private:
 	Engine::CCalculator* m_pCalculatorCom;
 	Engine::CAnimator* m_pAnimatorCom;
 	Engine::CCollider* m_pColliderCom;
+
+	Engine::DIRECTION		m_eDir;
+	Engine::STATE			m_eState;
+	float					m_fSpeed;
+	float					m_fDiagSpeed;
 
 public:
 	static CPlayer* Create(LPDIRECT3DDEVICE9 pGraphicDev);
