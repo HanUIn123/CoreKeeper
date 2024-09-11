@@ -1,18 +1,24 @@
 #include "Export_Utility.h"
 
 CCollider::CCollider(LPDIRECT3DDEVICE9 pGraphicDev)
-    : CComponent(pGraphicDev), m_fRadius(0.f), m_vCenterPos(0.f, 0.f, 0.f)
+    : CComponent(pGraphicDev), m_fRadius(1.f), m_vCenterPos(0.f, 0.f, 0.f), m_pBufferCom(nullptr)
 {
 }
 
 CCollider::~CCollider()
 {
+    Safe_Release(m_pBufferCom);
 }
 
 HRESULT CCollider::Ready_Collider(float fRadius)
 {
     m_fRadius = fRadius;
 
+    m_pBufferCom = CRcCol::Create(m_pGraphicDev);
+    if (!m_pBufferCom)
+    {
+        return E_FAIL;
+    }
     return S_OK;
 }
 
@@ -35,10 +41,14 @@ bool CCollider::Check_Collision(CCollider* pTarget)
     return fDistance < (m_fRadius + pTarget->m_fRadius);
 }
 
-//test, ·»´õ ¾ÈµÊ ¤Ð¤Ð
 void CCollider::Render_Collider()
 {
     m_pGraphicDev->SetTransform(D3DTS_WORLD, &m_matWorld);
+    m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
+
+    m_pBufferCom->Render_Buffer();
+
+    m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
 }
 
 CCollider* CCollider::Create(LPDIRECT3DDEVICE9 pGraphicDev, float fRadius)

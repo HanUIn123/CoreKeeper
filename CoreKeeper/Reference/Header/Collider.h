@@ -1,5 +1,6 @@
 #pragma once
 #include "Component.h"
+#include "RcCol.h"
 
 BEGIN(Engine)
 
@@ -26,6 +27,8 @@ private:
 	float m_fRadius;            // 충돌 반지름
 	_vec3 m_vCenterPos;			// 콜라이더 중심 좌표
 	_matrix m_matWorld;			
+
+	CRcCol* m_pBufferCom;
 };
 
 END

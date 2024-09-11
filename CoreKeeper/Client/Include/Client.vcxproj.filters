@@ -69,6 +69,7 @@
     </Filter>
     <Filter Include="01. Scene\99.MapEditorScene">
       <UniqueIdentifier>{6edbe3c5-5cf7-4aa5-be52-c214f5f762cb}</UniqueIdentifier>
+	</Filter>
     <Filter Include="02. GameObject\02. Monster\00. Slime">
       <UniqueIdentifier>{51933e60-7d91-4ce4-a7ed-3da061167b5b}</UniqueIdentifier>
     </Filter>
@@ -166,6 +167,7 @@
     </ClInclude>
     <ClInclude Include="..\Header\MapEditorScene.h">
       <Filter>01. Scene\99.MapEditorScene</Filter>
+	</ClInclude>
     <ClInclude Include="..\Header\Slime.h">
       <Filter>02. GameObject\02. Monster\00. Slime</Filter>
     </ClInclude>
@@ -242,6 +244,7 @@
     </ClCompile>
     <ClCompile Include="..\Code\MapEditorScene.cpp">
       <Filter>01. Scene\99.MapEditorScene</Filter>
+	</ClCompile>
     <ClCompile Include="..\Code\Slime.cpp">
       <Filter>02. GameObject\02. Monster\00. Slime</Filter>
     </ClCompile>

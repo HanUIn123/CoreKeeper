@@ -82,6 +82,7 @@ void CItem::Render_GameObject()
 		m_pShadowBufferCom->Render_Buffer();
 	}
 
+	m_pColliderCom->Update_Collider(m_pTransformCom->Get_WorldMatrix());
 	m_pColliderCom->Render_Collider();
 
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);

@@ -159,6 +159,9 @@
     <ClCompile Include="..\Code\Collider.cpp">
       <Filter>04. Component\05. Collider</Filter>
     </ClCompile>
+    <ClCompile Include="..\Code\SphereCol.cpp">
+      <Filter>04. Component\00. VIBuffer\07. SphereCol</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Header\Scene.h">
@@ -232,6 +235,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Header\Collider.h">
       <Filter>04. Component\05. Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Header\SphereCol.h">
+      <Filter>04. Component\00. VIBuffer\07. SphereCol</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
