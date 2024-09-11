@@ -50,7 +50,7 @@ void CVIBuffer::Render_Buffer()
 
 	m_pGraphicDev->SetFVF(m_dwFVF);
 
-	//m_pGraphicDev->DrawPrimitive(D3DPT_TRIANGLELIST, 0, m_dwTriCnt);
+	//m_pGraphicDev->DrawPrimitive(D3DPT_LINELIST, 0, m_dwTriCnt);
 
 	m_pGraphicDev->SetIndices(m_pIB);
 	m_pGraphicDev->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, m_dwVtxCnt, 0, m_dwTriCnt);
