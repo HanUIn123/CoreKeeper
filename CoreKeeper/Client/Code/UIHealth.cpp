@@ -1,19 +1,19 @@
 #include "pch.h"
-#include "..\Header\UIScreenIcon.h"
+#include "..\Header\UIHealth.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
 
-CUIScreenIcon::CUIScreenIcon(LPDIRECT3DDEVICE9 pGraphicDev)
+CUIHealth::CUIHealth(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CGameObject(pGraphicDev), m_bCollapse(false), m_bExit(false)
 
 {
 }
 
-CUIScreenIcon::~CUIScreenIcon()
+CUIHealth::~CUIHealth()
 {
 }
 
-HRESULT CUIScreenIcon::Ready_GameObject(_vec2 vPos, _vec2 vSize, const _uint iIndex)
+HRESULT CUIHealth::Ready_GameObject(_vec2 vPos, _vec2 vSize, const _uint iIndex)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
@@ -41,7 +41,7 @@ HRESULT CUIScreenIcon::Ready_GameObject(_vec2 vPos, _vec2 vSize, const _uint iIn
 	return S_OK;
 }
 
-_int CUIScreenIcon::Update_GameObject(const _float& fTimeDelta)
+_int CUIHealth::Update_GameObject(const _float& fTimeDelta)
 {
 	_int iExit = Engine::CGameObject::Update_GameObject(fTimeDelta);
 
@@ -61,24 +61,9 @@ _int CUIScreenIcon::Update_GameObject(const _float& fTimeDelta)
 			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), 1.f, 10.f);
 			*/
 
-			// 충돌 확인용 코드=
-			switch (m_iIndex)
-			{
-			case ICON_BAG:
-				break;
+			// 충돌 확인용 코드
 
-			case ICON_MAP:
-				break;
-
-			case ICON_HAND:
-				break;
-
-			case ICON_INSTALL:
-				break;
-
-			default:
-				break;
-			}
+		
 			//인덱스에 따라 출력되는 창 변경
 		}
 
@@ -92,33 +77,36 @@ _int CUIScreenIcon::Update_GameObject(const _float& fTimeDelta)
 	return iExit;
 }
 
-void CUIScreenIcon::LateUpdate_GameObject()
+void CUIHealth::LateUpdate_GameObject()
 {
 	m_pAnimatorCom->Update_Animation();
 
 	Engine::CGameObject::LateUpdate_GameObject();
 }
 
-void CUIScreenIcon::Render_GameObject()
+void CUIHealth::Render_GameObject()
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
 
 	//인벤토리 오픈했을때 출력
+	/*
 	if (m_bExit)
 		m_pBufferCom->Set_Index(3);
 	else
 		m_pBufferCom->Set_Index(m_iIndex);
-
+		*/
 	//현재 마우스와 충돌중일때 출력
-	if (!m_bCollapse)
-		m_pTextureCom->Set_Texture(0);
-	else
-		m_pColTextureCom->Set_Texture();
-
+	
+	//if (!m_bCollapse)
+		m_pTextureCom->Set_Texture(m_iIndex);
+	/*else
+	
+	m_pColTextureCom->Set_Texture(m_iIndex);
+	*/
 	m_pBufferCom->Render_Buffer();
 }
 
-HRESULT CUIScreenIcon::Add_Component()
+HRESULT CUIHealth::Add_Component()
 {
 	CComponent* pComponent = NULL;
 
@@ -126,13 +114,9 @@ HRESULT CUIScreenIcon::Add_Component()
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Buffer", pComponent });
 
-	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_UITex"));
+	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_UIHealthTex"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Texture", pComponent });
-
-	pComponent = m_pColTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_UIColTex"));
-	NULL_CHECK_RETURN(pComponent, E_FAIL);
-	m_mapComponent[ID_STATIC].insert({ L"Com_ColTexture", pComponent });
 
 	pComponent = m_pTransformCom = dynamic_cast<CTransform*>(Engine::Clone_Proto(L"Proto_Transform"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
@@ -145,21 +129,21 @@ HRESULT CUIScreenIcon::Add_Component()
 	return S_OK;
 }
 
-CUIScreenIcon* CUIScreenIcon::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec2 vPos, _vec2 vSize, const _uint iIndex)
+CUIHealth* CUIHealth::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec2 vPos, _vec2 vSize, const _uint iIndex)
 {
-	CUIScreenIcon* pUIScreenIcon = new CUIScreenIcon(pGraphicDev);
+	CUIHealth* pUIHealth = new CUIHealth(pGraphicDev);
 
-	if (FAILED(pUIScreenIcon->Ready_GameObject(vPos, vSize, iIndex)))
+	if (FAILED(pUIHealth->Ready_GameObject(vPos, vSize, iIndex)))
 	{
-		Safe_Release(pUIScreenIcon);
-		MSG_BOX("UIScreenIcon Create Failed");
+		Safe_Release(pUIHealth);
+		MSG_BOX("UIHealth Create Failed");
 		return nullptr;
 	}
 
-	return pUIScreenIcon;
+	return pUIHealth;
 }
 
-void CUIScreenIcon::Free()
+void CUIHealth::Free()
 {
 	Engine::CGameObject::Free();
 }

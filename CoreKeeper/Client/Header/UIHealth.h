@@ -11,14 +11,11 @@ class CAnimator;
 
 END
 
-class CUIScreenIcon : public Engine::CGameObject
+class CUIHealth : public Engine::CGameObject
 {
 private:
-
-	enum ICONTYPE {ICON_MAP, ICON_BAG, ICON_HAND, ICON_INSTALL };
-private:
-	explicit CUIScreenIcon(LPDIRECT3DDEVICE9 pGraphicDev);
-	virtual ~CUIScreenIcon();
+	explicit CUIHealth(LPDIRECT3DDEVICE9 pGraphicDev);
+	virtual ~CUIHealth();
 
 public:
 	virtual			HRESULT			Ready_GameObject(_vec2 vPos, _vec2 vSize, const _uint iIndex);
@@ -31,8 +28,10 @@ public:
 		return  ::PtInRect(&m_BRect, _screenPos);
 	}
 
+	/*
 	_bool           Get_Exit() { return m_bExit; }
 	void            Set_Exit() { m_bExit = true; } // 인벤토리 열렸을때 호출할 함수
+	*/
 private:
 	HRESULT			Add_Component();
 
@@ -54,7 +53,7 @@ private:
 	Engine::CAnimator* m_pAnimatorCom;
 
 public:
-	static CUIScreenIcon* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec2 vPos, _vec2 vSize, const _uint iIndex);
+	static CUIHealth* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec2 vPos, _vec2 vSize, const _uint iIndex);
 
 private:
 	virtual void		Free();

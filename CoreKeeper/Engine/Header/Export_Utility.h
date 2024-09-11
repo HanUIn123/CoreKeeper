@@ -13,6 +13,8 @@
 #include "AnimTex.h"
 
 #include "Texture.h"
+#include "ShadowTex.h"
+#include "RangeTex.h"
 
 #include "Transform.h"
 #include "Camera.h"

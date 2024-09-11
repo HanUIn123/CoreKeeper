@@ -64,6 +64,9 @@
     <Filter Include="02. GameObject\07. UI\01. UIScreenIcon">
       <UniqueIdentifier>{10a3a682-7f16-4c4b-91fb-22aec50c9cb8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\07. UI\02. UIHealth">
+      <UniqueIdentifier>{5f789f66-086f-4154-b4fe-59e0c4ace950}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -126,6 +129,9 @@
     <ClInclude Include="..\Header\UIScreenIcon.h">
       <Filter>02. GameObject\07. UI\01. UIScreenIcon</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\UIHealth.h">
+      <Filter>02. GameObject\07. UI\02. UIHealth</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -175,6 +181,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\UIScreenIcon.cpp">
       <Filter>02. GameObject\07. UI\01. UIScreenIcon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\UIHealth.cpp">
+      <Filter>02. GameObject\07. UI\02. UIHealth</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

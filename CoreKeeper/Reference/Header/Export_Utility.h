@@ -11,9 +11,10 @@
 #include "TerrainTex.h"
 #include "CubeTex.h"
 #include "AnimTex.h"
-#include "ShadowTex.h"
 
 #include "Texture.h"
+#include "ShadowTex.h"
+#include "RangeTex.h"
 
 #include "Transform.h"
 #include "Camera.h"

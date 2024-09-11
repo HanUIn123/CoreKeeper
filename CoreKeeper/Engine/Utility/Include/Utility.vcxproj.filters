@@ -85,6 +85,9 @@
     <Filter Include="04. Component\00. VIBuffer\06. ShadowTex">
       <UniqueIdentifier>{d2f16391-531f-4ab5-9c63-32d36eb7eea5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04. Component\00. VIBuffer\07. RangeTex">
+      <UniqueIdentifier>{a99557b7-d46c-47d6-b950-1478589110d6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Code\Scene.cpp">
@@ -155,6 +158,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\Collider.cpp">
       <Filter>04. Component\05. Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\RangeTex.cpp">
+      <Filter>04. Component\00. VIBuffer\07. RangeTex</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -229,6 +235,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Header\Collider.h">
       <Filter>04. Component\05. Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Header\RangeTex.h">
+      <Filter>04. Component\00. VIBuffer\07. RangeTex</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

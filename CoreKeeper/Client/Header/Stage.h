@@ -12,6 +12,7 @@
 
 #include "UIStatus.h"
 #include "UIScreenIcon.h"
+#include "UIHealth.h"
 
 class CStage : public Engine::CScene
 {
