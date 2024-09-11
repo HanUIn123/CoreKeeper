@@ -15,14 +15,13 @@ CImguiMgr::~CImguiMgr()
 
 void CImguiMgr::ImGui_SetUp()
 {
-    // create context 
 
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO();
-    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
-    io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
-    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
+    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
 
     ImGui_ImplWin32_Init(g_hWnd);
@@ -41,10 +40,10 @@ void CImguiMgr::ImGui_Tick()
 
 void CImguiMgr::ImGui_Render()
 {
-    // imgui ::render ~~ 
+
     ImGui::Render();
     ImGui_ImplDX9_RenderDrawData(ImGui::GetDrawData());
-    // (Your code calls swapchain's Present() function)
+
     ImGui::EndFrame();
 
 }

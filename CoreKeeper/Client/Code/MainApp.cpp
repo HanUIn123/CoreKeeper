@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "..\Header\MainApp.h"
-#include "../Client/Header/ImguiMgr.h"
-
+#include"../Client/Header/ImguiMgr.h"
 
 CMainApp::CMainApp()
 {
@@ -27,19 +26,12 @@ int CMainApp::Update_MainApp(const float& fTimeDelta)
 
 	m_pManagementClass->Update_Scene(fTimeDelta);
 
-	ImGui_ImplDX9_NewFrame();
-	ImGui_ImplWin32_NewFrame();
-	ImGui::NewFrame();
-
+	CImguiMgr::GetInstance()->ImGui_Tick();
 
 	if (m_bSampleWindow)
 	{
 		ImGui::Begin("Window2", &m_bSampleWindow);
 		ImGui::Text("This is Sample Window");
-		//if (ImGui::Button("Close"))
-		//{
-		//	m_bSampleWindow = false;
-		//}
 		ImGui::End();
 	}
 
@@ -65,8 +57,6 @@ void CMainApp::Render_MainApp()
 	m_pManagementClass->Render_Scene(m_pGraphicDev);
 
 	CImguiMgr::GetInstance()->ImGui_Render();
-
-
 
 	Engine::Render_End();
 }
