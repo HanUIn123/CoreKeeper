@@ -12,6 +12,9 @@
 
 #include "UIStatus.h"
 #include "UIScreenIcon.h"
+#include "UIHealth.h"
+
+#include "HpDivider.h"
 
 class CStage : public Engine::CScene
 {
