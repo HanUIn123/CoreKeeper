@@ -4,6 +4,7 @@
 #include "pch.h"
 #include "Client.h"
 #include "../Header/MainApp.h"
+#include "../Client/Header/ImguiMgr.h"
 
 #define MAX_LOADSTRING 100
 
@@ -48,6 +49,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     msg.message = WM_NULL;
 
     CMainApp* pMainApp = CMainApp::Create();
+
+    CImguiMgr::GetInstance()->ImGui_SetUp();
+
 
     if (nullptr == pMainApp)
         return FALSE;
@@ -97,6 +101,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         MSG_BOX("MainApp Release Failed");
         return FALSE;
     }
+
+    CImguiMgr::GetInstance()->DestroyInstance();
 
     return (int)msg.wParam;
 }
@@ -174,8 +180,13 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //  WM_DESTROY  - 종료 메시지를 게시하고 반환합니다.
 //
 //
+
+extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+    ImGui_ImplWin32_WndProcHandler(hWnd, message, wParam, lParam);
+
     switch (message)
     {
     case WM_COMMAND:

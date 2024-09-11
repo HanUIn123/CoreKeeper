@@ -64,6 +64,12 @@
     <Filter Include="02. GameObject\07. UI\01. UIScreenIcon">
       <UniqueIdentifier>{10a3a682-7f16-4c4b-91fb-22aec50c9cb8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="99.Imgui">
+      <UniqueIdentifier>{1ae26c7e-6b26-4660-a02d-7cd7eaac8604}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98.ImguiMgr">
+      <UniqueIdentifier>{72fb9d2b-55eb-4956-b943-c0153718c855}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -126,6 +132,33 @@
     <ClInclude Include="..\Header\UIScreenIcon.h">
       <Filter>02. GameObject\07. UI\01. UIScreenIcon</Filter>
     </ClInclude>
+    <ClInclude Include="imgui.h">
+      <Filter>99.Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_impl_dx9.h">
+      <Filter>99.Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_impl_win32.h">
+      <Filter>99.Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_internal.h">
+      <Filter>99.Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imstb_rectpack.h">
+      <Filter>99.Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imstb_textedit.h">
+      <Filter>99.Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imstb_truetype.h">
+      <Filter>99.Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\ImguiMgr.h">
+      <Filter>98.ImguiMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="imconfig.h">
+      <Filter>99.Imgui</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -176,6 +209,30 @@
     <ClCompile Include="..\Code\UIScreenIcon.cpp">
       <Filter>02. GameObject\07. UI\01. UIScreenIcon</Filter>
     </ClCompile>
+    <ClCompile Include="imgui.cpp">
+      <Filter>99.Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_demo.cpp">
+      <Filter>99.Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_draw.cpp">
+      <Filter>99.Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_impl_dx9.cpp">
+      <Filter>99.Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_impl_win32.cpp">
+      <Filter>99.Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_tables.cpp">
+      <Filter>99.Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_widgets.cpp">
+      <Filter>99.Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\ImguiMgr.cpp">
+      <Filter>98.ImguiMgr</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -189,5 +246,10 @@
     <Image Include="Client.ico">
       <Filter>리소스 파일</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="imgui.ini">
+      <Filter>99.Imgui</Filter>
+    </None>
   </ItemGroup>
 </Project>
