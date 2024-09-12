@@ -35,6 +35,10 @@ HRESULT CSword::Ready_GameObject()
 
 _int CSword::Update_GameObject(const _float& fTimeDelta)
 {
+	_vec3 vSwordPos;
+	m_pTransformCom->Get_Info(INFO_POS, &vSwordPos);
+	m_pShadowTransformCom->Set_Pos(vSwordPos.x, 0.1f, vSwordPos.z);
+
 	if (m_bActive)
 	{
 		// 아이템 움직임

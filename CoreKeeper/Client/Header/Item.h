@@ -58,6 +58,8 @@ protected:
 	int			m_iTextureNumber;
 	float		m_fFirstY;
 	float		m_fTimeAcc;
+	float		m_fSpeed;
+
 	bool		m_bActive;
 	bool		m_bDrop;	// 플레이어가 떨궜을때
 
