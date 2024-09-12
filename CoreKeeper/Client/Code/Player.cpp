@@ -36,6 +36,7 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 	}
 	else
 	{
+		Key_Position(fTimeDelta);
 		ShoulderView_Control(fTimeDelta);
 	}
 
@@ -198,23 +199,23 @@ void CPlayer::Animation_SetUp(STATE st, DIRECTION dir)
 	{
 	case IDLE:
 		if (m_eDir == FRONT)
-			m_pAnimatorCom->Set_CurState(st, 0, 0, 15);
-		else if (m_eDir == LEFT)
-			m_pAnimatorCom->Set_CurState(st, 1, 1, 15);
-		else if (m_eDir == BACK)
-			m_pAnimatorCom->Set_CurState(st, 2, 2, 15);
+			m_pAnimatorCom->Set_CurState(st, 0, 0, 20);
 		else if (m_eDir == RIGHT)
-			m_pAnimatorCom->Set_CurState(st, 1, 1, 15);
+			m_pAnimatorCom->Set_CurState(st, 1, 1, 20);
+		else if (m_eDir == BACK)
+			m_pAnimatorCom->Set_CurState(st, 2, 2, 20);
+		else if (m_eDir == LEFT)
+			m_pAnimatorCom->Set_CurState(st, 3, 3, 20);
 		break;
 	case WALK:
 		if (m_eDir == FRONT)
-			m_pAnimatorCom->Set_CurState(st, 3, 6, 15);
-		else if (m_eDir == LEFT)
-			m_pAnimatorCom->Set_CurState(st, 7, 10, 15);
-		else if (m_eDir == BACK)
-			m_pAnimatorCom->Set_CurState(st, 11, 14, 15);
+			m_pAnimatorCom->Set_CurState(st, 4, 7, 20);
 		else if (m_eDir == RIGHT)
-			m_pAnimatorCom->Set_CurState(st, 7, 10, 15);
+			m_pAnimatorCom->Set_CurState(st, 8, 11, 20);
+		else if (m_eDir == BACK)
+			m_pAnimatorCom->Set_CurState(st, 12, 15, 20);
+		else if (m_eDir == LEFT)
+			m_pAnimatorCom->Set_CurState(st, 16, 19, 20);
 		break;
 	case SWING:
 		break;
@@ -223,7 +224,76 @@ void CPlayer::Animation_SetUp(STATE st, DIRECTION dir)
 
 void CPlayer::ShoulderView_Control(const _float& fTimeDelta)
 {
+	_vec3	vLook, vRight;
 
+	m_pTransformCom->Get_Info(INFO_LOOK, &vLook);
+	m_pTransformCom->Get_Info(INFO_RIGHT, &vRight);
+
+	// TOP (RIGHT, LEFT)
+	if (Engine::Get_DIKeyState(DIK_W))
+	{
+		m_eState = WALK;
+		if (Engine::Get_DIKeyState(DIK_D))
+		{
+			m_pAnimatorCom->Set_CurState(WALK, 8, 11, 20);
+			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, m_fDiagSpeed);
+			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, m_fDiagSpeed);
+
+		}
+		else if (Engine::Get_DIKeyState(DIK_A))
+		{
+			m_pAnimatorCom->Set_CurState(WALK, 16, 19, 20);
+			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, m_fDiagSpeed);
+			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, -m_fDiagSpeed);
+		}
+		else
+		{
+			m_pAnimatorCom->Set_CurState(WALK, 12, 15, 20);
+			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, m_fSpeed);
+		}
+	}
+	// BOTTOM (RIGHT, LEFT)
+	else if (Engine::Get_DIKeyState(DIK_S))
+	{
+		m_eState = WALK;
+		if (Engine::Get_DIKeyState(DIK_D))
+		{
+			m_pAnimatorCom->Set_CurState(WALK, 8, 11, 20);
+			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, -m_fDiagSpeed);
+			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, m_fDiagSpeed);
+		}
+		else if (Engine::Get_DIKeyState(DIK_A))
+		{
+			m_pAnimatorCom->Set_CurState(WALK, 16, 19, 20);
+			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, -m_fDiagSpeed);
+			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, -m_fDiagSpeed);
+		}
+		else
+		{
+			m_pAnimatorCom->Set_CurState(WALK, 4, 7, 20);
+			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, -m_fSpeed);
+		}
+	}
+	// L
+	else if (Engine::Get_DIKeyState(DIK_A))
+	{
+		m_eState = WALK;
+		m_pAnimatorCom->Set_CurState(WALK, 16, 19, 20);
+		m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, -m_fSpeed);
+	}
+	// R
+	else if (Engine::Get_DIKeyState(DIK_D))
+	{
+		m_eState = WALK;
+		m_pAnimatorCom->Set_CurState(WALK, 8, 11, 20);
+		m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, m_fSpeed);
+	}
+	else
+	{
+		m_eState = IDLE;
+		m_pAnimatorCom->Set_CurState(IDLE, 0, 0, 20);
+		// m_pAnimatorCom->Set_CurState(IDLE, 2, 2, 20);
+	}
 }
 
 
