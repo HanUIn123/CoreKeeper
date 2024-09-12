@@ -1,22 +1,27 @@
 #include "pch.h"
-#include "..\Header\Item.h"
+#include "..\Header\Sword.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
 
-CItem::CItem(LPDIRECT3DDEVICE9 pGraphicDev)
-	: Engine::CGameObject(pGraphicDev), m_iTextureNumber(0), m_fFirstY(0.f), m_fTimeAcc(0.f), m_bActive(true), m_bDrop(false)
+CSword::CSword(LPDIRECT3DDEVICE9 pGraphicDev)
+	: CItem(pGraphicDev)
+{
+	ZeroMemory(&m_tStat, sizeof(STAT));
+
+	m_tStat.iAttack = 10;
+
+	m_bDrop = true;
+}
+
+CSword::~CSword()
 {
 }
 
-CItem::~CItem()
-{
-}
-
-HRESULT CItem::Ready_GameObject()
+HRESULT CSword::Ready_GameObject()
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_pTransformCom->m_vScale = { 0.2f, 0.2f, 0.2f };
+	//m_pTransformCom->m_vScale = { 0.2f, 0.2f, 0.2f };
 	m_pShadowTransformCom->m_vScale = { 0.2f, 0.2f, 0.2f };
 
 	m_pTransformCom->Set_Pos(m_pTransformCom->m_vInfo->x, m_pTransformCom->m_vInfo->y + 0.7f, m_pTransformCom->m_vInfo->z);
@@ -28,7 +33,7 @@ HRESULT CItem::Ready_GameObject()
 	return S_OK;
 }
 
-_int CItem::Update_GameObject(const _float& fTimeDelta)
+_int CSword::Update_GameObject(const _float& fTimeDelta)
 {
 	if (m_bDrop)
 	{
@@ -55,12 +60,12 @@ _int CItem::Update_GameObject(const _float& fTimeDelta)
 	return Engine::CGameObject::Update_GameObject(fTimeDelta);
 }
 
-void CItem::LateUpdate_GameObject()
+void CSword::LateUpdate_GameObject()
 {
 	Engine::CGameObject::LateUpdate_GameObject();
 }
 
-void CItem::Render_GameObject()
+void CSword::Render_GameObject()
 {
 	// 카메라를 바라보게 하면서 스케일 유지
 	//Apply_Billboard();  
@@ -95,7 +100,7 @@ void CItem::Render_GameObject()
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
-HRESULT CItem::Add_Component()
+HRESULT CSword::Add_Component()
 {
 	CComponent* pComponent = NULL;
 
@@ -130,7 +135,7 @@ HRESULT CItem::Add_Component()
 	return S_OK;
 }
 
-void CItem::Apply_Billboard()
+void CSword::Apply_Billboard()
 {
 	D3DXMATRIX matWorld, matView, matBill, matScale;
 
@@ -159,9 +164,9 @@ void CItem::Apply_Billboard()
 	m_pTransformCom->Set_WorldMatrix(&matFinal);
 }
 
-CItem* CItem::Create(LPDIRECT3DDEVICE9 pGraphicDev)
+CSword* CSword::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 {
-	CItem* pPlayer = new CItem(pGraphicDev);
+	CSword* pPlayer = new CSword(pGraphicDev);
 
 	if (FAILED(pPlayer->Ready_GameObject()))
 	{
@@ -173,7 +178,7 @@ CItem* CItem::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 	return pPlayer;
 }
 
-void CItem::Free()
+void CSword::Free()
 {
 	Engine::CGameObject::Free();
 }
