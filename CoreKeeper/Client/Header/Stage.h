@@ -16,6 +16,7 @@
 #include "UIScreenInv.h"
 
 #include "HpDivider.h"
+#include "Inventory.h"
 
 class CStage : public Engine::CScene
 {

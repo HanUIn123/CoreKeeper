@@ -12,6 +12,7 @@ class CCalculator;
 class CAnimator;
 class CCollider;
 class CState;
+class CInventory;
 
 END
 
@@ -49,6 +50,7 @@ private:
 	Engine::CAnimator*		m_pAnimatorCom;
 	Engine::CCollider*		m_pColliderCom;
 	Engine::CState*			m_pStateCom;
+	Engine::CInventory*		m_pInventoryCom;
 
 	Engine::DIRECTION		m_eDir;
 	Engine::STATE			m_eState;

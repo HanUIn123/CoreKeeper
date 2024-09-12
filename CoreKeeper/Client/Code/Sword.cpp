@@ -56,6 +56,12 @@ _int CSword::Update_GameObject(const _float& fTimeDelta)
 
 		// 충돌하면 FALSE, 충돌안하면 TRUE
 		m_bActive = !(m_pColliderCom->Check_Collision(pPlayerCollider));
+
+		Engine::CInventory* pPlayerInventory = dynamic_cast<Engine::CInventory*>
+			(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
+
+		pPlayerInventory->Add_Item(m_eItemNum);
+		m_bDrop = false;
 	}
 	
 	Add_RenderGroup(RENDER_ALPHA, this);

@@ -40,9 +40,6 @@
     <Filter Include="03. FontMgr\Font">
       <UniqueIdentifier>{0d414aa2-4538-498c-a7d8-5caf5b00f805}</UniqueIdentifier>
     </Filter>
-    <Filter Include="05.Imgui">
-      <UniqueIdentifier>{b3e7b095-96d6-46c2-9176-d07eaab45b9d}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Code\GraphicDev.cpp">

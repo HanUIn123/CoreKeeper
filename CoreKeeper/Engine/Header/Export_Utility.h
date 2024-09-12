@@ -23,6 +23,7 @@
 #include "Animator.h"
 #include "Collider.h"
 #include "State.h"
+#include "Inventory.h"
 
 BEGIN(Engine)
 
