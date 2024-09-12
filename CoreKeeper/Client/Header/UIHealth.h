@@ -51,6 +51,7 @@ private:
 	_float m_fLength;
 private:
 	Engine::CRangeTex* m_pBufferCom;
+	Engine::CRangeTex* m_pBarBufferCom;
 	Engine::CTransform* m_pTransformCom;
 	Engine::CTexture* m_pTextureCom;
 	Engine::CAnimator* m_pAnimatorCom;

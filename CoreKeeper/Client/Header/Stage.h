@@ -13,6 +13,7 @@
 #include "UIStatus.h"
 #include "UIScreenIcon.h"
 #include "UIHealth.h"
+#include "UIScreenInv.h"
 
 #include "HpDivider.h"
 

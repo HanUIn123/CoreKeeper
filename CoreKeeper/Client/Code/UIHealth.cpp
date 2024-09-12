@@ -48,25 +48,20 @@ _int CUIHealth::Update_GameObject(const _float& fTimeDelta)
 {
 	_int iExit = Engine::CGameObject::Update_GameObject(fTimeDelta);
 
-	if (m_iIndex == 1) // 체력 바 위에 마우스 커서가 있을시 (체력 바 껍데기 X)
+	POINT pt;
+	GetCursorPos(&pt);
+	ScreenToClient(g_hWnd, &pt);
+
+
+	if (Map_Picked(pt))
 	{
-		POINT pt;
-		GetCursorPos(&pt);
-		ScreenToClient(g_hWnd, &pt);
-
-
-		if (Map_Picked(pt))
-		{
-			m_bCollapse = true;
-		}
-		else
-			m_bCollapse = false;
+		m_bCollapse = true;
 	}
+	else
+		m_bCollapse = false;
 
-	if (m_iIndex == 1) // 렌더 순서 정하기용 (이거 안하면 현재 체력 출력 된 후에 체력 바가 출력 되서 현재 체력이 안 보입니다)
-	{
-		Add_RenderGroup(RENDER_UI, this);
-	}
+
+	Add_RenderGroup(RENDER_UI, this);
 
 	return iExit;
 }
@@ -75,20 +70,33 @@ void CUIHealth::LateUpdate_GameObject()
 {
 	m_pAnimatorCom->Update_Animation();
 
-	if (m_iIndex == 0 || m_iIndex == 3)
-	{
-		Add_RenderGroup(RENDER_UI, this);
-	}
-
 	Engine::CGameObject::LateUpdate_GameObject();
 }
 
 void CUIHealth::Render_GameObject()
 {
-	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
+	_matrix matWorld;
+
+	m_pTransformCom->Get_WorldMatrix(&matWorld);
+
+	m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
 
 	m_pBufferCom->Set_Width((m_iHp / m_iMaxHp) * 100.f);
+
 	m_pTextureCom->Set_Texture(m_iIndex);
+
+	m_pBufferCom->Render_Buffer();
+
+	matWorld._41 -= 3.5f;
+
+	matWorld._11 -= 7.f;
+	matWorld._22 -= 2.25f;
+
+	m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
+
+	m_pTextureCom->Set_Texture(m_iIndex - 1);
+
+	m_pBarBufferCom->Render_Buffer();
 
 	if (m_bCollapse)
 	{
@@ -113,8 +121,6 @@ void CUIHealth::Render_GameObject()
 		Engine::Render_Font(L"Font_Default", , &pos, D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
 		*/
 	}
-
-	m_pBufferCom->Render_Buffer();
 }
 
 void CUIHealth::Set_Hp(_int _iMaxHp, _int _iCurHp)
@@ -131,7 +137,7 @@ void CUIHealth::Set_Hp(_int _iMaxHp, _int _iCurHp)
 
 	_float _fCurLength = m_fLength / iCount;
 
-	for (int i = 0; i < iCount; i++)
+	for (int i = 1; i < iCount + 1; i++)
 	{
 		std::wstring string;
 		string = L"UI_Health_Divider_" + std::to_wstring(i);
@@ -152,6 +158,10 @@ HRESULT CUIHealth::Add_Component()
 	pComponent = m_pBufferCom = dynamic_cast<CRangeTex*>(Engine::Clone_Proto(L"Proto_UIHealthTexRc"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Buffer", pComponent });
+
+	pComponent = m_pBarBufferCom = dynamic_cast<CRangeTex*>(Engine::Clone_Proto(L"Proto_UIHealthTexRc"));
+	NULL_CHECK_RETURN(pComponent, E_FAIL);
+	m_mapComponent[ID_STATIC].insert({ L"Com_BarBuffer", pComponent });
 
 	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_UIHealthTex"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);

@@ -161,16 +161,16 @@ void CItem::Apply_Billboard()
 
 CItem* CItem::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 {
-	CItem* pPlayer = new CItem(pGraphicDev);
+	CItem* pItem = new CItem(pGraphicDev);
 
-	if (FAILED(pPlayer->Ready_GameObject()))
+	if (FAILED(pItem->Ready_GameObject()))
 	{
-		Safe_Release(pPlayer);
-		MSG_BOX("pPlayer Create Failed");
+		Safe_Release(pItem);
+		MSG_BOX("pItem Create Failed");
 		return nullptr;
 	}
 
-	return pPlayer;
+	return pItem;
 }
 
 void CItem::Free()

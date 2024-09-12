@@ -45,12 +45,14 @@ protected:
 
 public:
 	bool		Get_Active() { return m_bActive; }
-
+	Engine::ITEMNUM		Get_ItemNum() { return m_eItemNum; }
 protected:
-	int		m_iTextureNumber;
-	float	m_fFirstY;
-	float	m_fTimeAcc;
-	bool	m_bActive;
-	bool	m_bDrop;	// 땅에 있는 상태인지
-	STAT	m_tStat;
+	int			m_iTextureNumber;
+	float		m_fFirstY;
+	float		m_fTimeAcc;
+	bool		m_bActive;
+	bool		m_bDrop;	// 땅에 있는 상태인지
+
+	STAT		m_tStat;
+	Engine::ITEMNUM		m_eItemNum;
 };

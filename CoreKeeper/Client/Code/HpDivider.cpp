@@ -41,6 +41,11 @@ _int CHpDivider::Update_GameObject(const _float& fTimeDelta)
 {
 	_int iExit = Engine::CGameObject::Update_GameObject(fTimeDelta);
 
+	return iExit;
+}
+
+void CHpDivider::LateUpdate_GameObject()
+{
 	if (m_bActive)
 	{
 		/*
@@ -54,11 +59,7 @@ _int CHpDivider::Update_GameObject(const _float& fTimeDelta)
 
 		Add_RenderGroup(RENDER_UI, this);
 	}
-	return iExit;
-}
 
-void CHpDivider::LateUpdate_GameObject()
-{
 	Engine::CGameObject::LateUpdate_GameObject();
 }
 

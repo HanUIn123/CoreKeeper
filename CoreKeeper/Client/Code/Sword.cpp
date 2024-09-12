@@ -10,6 +10,9 @@ CSword::CSword(LPDIRECT3DDEVICE9 pGraphicDev)
 
 	m_tStat.iAttack = 10;
 
+	m_eItemNum = ITEM_SWORD;
+
+	// юс╫ц
 	m_bDrop = true;
 }
 
@@ -166,16 +169,16 @@ void CSword::Apply_Billboard()
 
 CSword* CSword::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 {
-	CSword* pPlayer = new CSword(pGraphicDev);
+	CSword* pSword = new CSword(pGraphicDev);
 
-	if (FAILED(pPlayer->Ready_GameObject()))
+	if (FAILED(pSword->Ready_GameObject()))
 	{
-		Safe_Release(pPlayer);
-		MSG_BOX("pPlayer Create Failed");
+		Safe_Release(pSword);
+		MSG_BOX("pSword Create Failed");
 		return nullptr;
 	}
 
-	return pPlayer;
+	return pSword;
 }
 
 void CSword::Free()
