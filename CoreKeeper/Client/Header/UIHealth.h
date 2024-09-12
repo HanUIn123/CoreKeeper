@@ -28,7 +28,7 @@ public:
 		return  ::PtInRect(&m_BRect, _screenPos);
 	}
 
-	void            Set_Hp(_int _iMaxHp, _int _iCurHp) { m_iMaxHp = _iMaxHp, m_iHp = _iCurHp; }
+	void            Set_Hp(_int _iMaxHp, _int _iCurHp);
 	_int            Get_MaxHp() { return m_iMaxHp; }
 	_int            Get_CurHp() { return m_iHp; }
 
@@ -47,6 +47,8 @@ private:
 	_bool m_bCollapse;
 
 	_bool m_bExit;
+
+	_float m_fLength;
 private:
 	Engine::CRangeTex* m_pBufferCom;
 	Engine::CTransform* m_pTransformCom;

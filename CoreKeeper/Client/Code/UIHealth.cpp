@@ -2,6 +2,7 @@
 #include "..\Header\UIHealth.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
+#include "..\Header\HpDivider.h"
 
 CUIHealth::CUIHealth(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CGameObject(pGraphicDev), m_bCollapse(false), m_bExit(false), m_iHp(100), m_iMaxHp(100)
@@ -37,6 +38,8 @@ HRESULT CUIHealth::Ready_GameObject(_vec2 vPos, _vec2 vSize, const _uint iIndex)
 	m_BRect.bottom = _long(vPos.y + vSize.y / 2);
 
 	m_iIndex = iIndex;
+
+	m_fLength = _float(m_BRect.right - m_BRect.left);
 
 	return S_OK;
 }
@@ -112,6 +115,34 @@ void CUIHealth::Render_GameObject()
 	}
 
 	m_pBufferCom->Render_Buffer();
+}
+
+void CUIHealth::Set_Hp(_int _iMaxHp, _int _iCurHp)
+{
+	m_iMaxHp = _iMaxHp, m_iHp = _iCurHp;
+
+	_int iCount;
+	if (_iCurHp % 25 == 0)
+	{
+		iCount = _iMaxHp / 25;
+	}
+	else
+		iCount = _iMaxHp / 25 + 1;
+
+	_float _fCurLength = m_fLength / iCount;
+
+	for (int i = 0; i < iCount; i++)
+	{
+		std::wstring string;
+		string = L"UI_Health_Divider_" + std::to_wstring(i);
+
+		CHpDivider* pUI = dynamic_cast<CHpDivider*>(Engine::Get_GameObject(L"Layer_UI", string.c_str()));
+
+		if (pUI)
+		{
+			pUI->Calculate_Pos(_fCurLength * i, _iCurHp, _iMaxHp);
+		}
+	}
 }
 
 HRESULT CUIHealth::Add_Component()

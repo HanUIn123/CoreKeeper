@@ -17,7 +17,7 @@ private:
 	virtual ~CHpDivider();
 
 public:
-	virtual			HRESULT			Ready_GameObject(_vec2 vPos, _vec2 vSize, _float _fLength);
+	virtual			HRESULT			Ready_GameObject(_vec2 vPos, _vec2 vSize, _int iIndex);
 	virtual			_int			Update_GameObject(const _float& fTimeDelta);
 	virtual			void			LateUpdate_GameObject();
 	virtual			void			Render_GameObject();
@@ -25,11 +25,17 @@ public:
 private:
 	HRESULT			Add_Component();
 
-private:
-	_int m_iCurHp, m_iMaxHp;
-	_bool m_bFirst;
+public:
+	void            Calculate_Pos(_float _fCurLength, int _iCurHp, int _iMaxHp);
 
-	_float m_fLength;
+private:
+	//_int m_iCurHp, m_iMaxHp;
+	_bool m_bActive;
+
+	//_float m_fLength;
+	_vec2 m_vPos;
+
+	_int m_iIndex;
 
 private:
 	Engine::CRcTex* m_pBufferCom;
@@ -37,7 +43,7 @@ private:
 	Engine::CTexture* m_pTextureCom;
 
 public:
-	static CHpDivider* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec2 vPos, _vec2 vSize, _float _fLength);
+	static CHpDivider* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec2 vPos, _vec2 vSize, _int iIndex);
 
 private:
 	virtual void		Free();

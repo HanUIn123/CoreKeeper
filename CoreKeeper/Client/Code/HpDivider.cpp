@@ -5,7 +5,7 @@
 #include "..\Header\UIHealth.h"
 
 CHpDivider::CHpDivider(LPDIRECT3DDEVICE9 pGraphicDev)
-	: Engine::CGameObject(pGraphicDev), m_iCurHp(0), m_iMaxHp(0), m_bFirst(true)
+	: Engine::CGameObject(pGraphicDev),  m_bActive(false)
 {
 }
 
@@ -13,10 +13,11 @@ CHpDivider::~CHpDivider()
 {
 }
 
-HRESULT CHpDivider::Ready_GameObject( _vec2 vPos, _vec2 vSize, _float _fLength)
+HRESULT CHpDivider::Ready_GameObject(_vec2 vPos, _vec2 vSize,  _int iIndex)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
+	
 	_D3DVIEWPORT9 Viewport;
 
 	m_pGraphicDev->GetViewport(&Viewport);
@@ -26,10 +27,12 @@ HRESULT CHpDivider::Ready_GameObject( _vec2 vPos, _vec2 vSize, _float _fLength)
 	float x = vPos.x - width / 2;
 	float y = height / 2 - vPos.y;
 
-	m_pTransformCom->m_vScale = { vSize.x, vSize.y , 1.f };
-	m_pTransformCom->Set_Pos(x, y, 0);
+	m_pTransformCom->m_vScale = { vSize.x, vSize.y , 1.f }; 
 
-	m_fLength = _fLength;
+	m_pTransformCom->Set_Pos(vPos.x, vPos.y, 0);
+	m_vPos = { x, y };
+
+	m_iIndex = iIndex;
 
 	return S_OK;
 }
@@ -38,32 +41,24 @@ _int CHpDivider::Update_GameObject(const _float& fTimeDelta)
 {
 	_int iExit = Engine::CGameObject::Update_GameObject(fTimeDelta);
 
-	CUIHealth* pUI = dynamic_cast<CUIHealth*>
-		(Engine::Get_GameObject(L"Layer_UI", L"UI_Health"));
-	NULL_CHECK_RETURN(pUI, -1);
+	if (m_bActive)
+	{
+		/*
+		CUIHealth* pUI = dynamic_cast<CUIHealth*>
+			(Engine::Get_GameObject(L"Layer_UI", L"UI_Health"));
+		NULL_CHECK_RETURN(pUI, -1);
 
-	m_iMaxHp = pUI->Get_MaxHp();
-	m_iCurHp = pUI->Get_CurHp();
+		m_iMaxHp = pUI->Get_MaxHp();
+		m_iCurHp = pUI->Get_CurHp();
+		*/
 
-	Add_RenderGroup(RENDER_UI, this);
-
+		Add_RenderGroup(RENDER_UI, this);
+	}
 	return iExit;
 }
 
 void CHpDivider::LateUpdate_GameObject()
 {
-	/*
-	Engine::CTransform* pUIHealth = dynamic_cast<Engine::CTransform*>
-			(Engine::Get_Component(ID_DYNAMIC, L"Layer_UI", L"UI_Health_bar", L"Com_UITransform"));
-		NULL_CHECK_RETURN(pUIHealth);
-
-		_vec3 vPos;
-		pUIHealth->Get_Info(INFO_POS, &vPos);
-
-		m_pTransformCom->Set_Pos(vPos.x, vPos.y, vPos.z);
-
-		m_bFirst = false;*/
-
 	Engine::CGameObject::LateUpdate_GameObject();
 }
 
@@ -72,21 +67,11 @@ void CHpDivider::Render_GameObject()
 	_matrix matWorld;
 	m_pTransformCom->Get_WorldMatrix(&matWorld);
 
+	m_pTextureCom->Set_Texture(m_iIndex);
 
-	m_pTextureCom->Set_Texture(2);
+	m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
 
-	_int iNum = m_iMaxHp / m_iCurHp;
-
-	_float fInterval = (float)m_fLength / iNum;
-
-	for (int i = 0; i < iNum; i++)
-	{
-	    matWorld._41 += fInterval;
-
-		m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
-
-		m_pBufferCom->Render_Buffer();
-	}
+	m_pBufferCom->Render_Buffer();
 }
 
 HRESULT CHpDivider::Add_Component()
@@ -113,11 +98,31 @@ HRESULT CHpDivider::Add_Component()
 	return S_OK;
 }
 
-CHpDivider* CHpDivider::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec2 vPos, _vec2 vSize, _float fLength)
+void CHpDivider::Calculate_Pos(_float _fCurLength, _int _iCurHp, _int _iMaxHp)
+{
+	/*
+	_int iCount;
+	if (_iCurHp % 25 == 0)
+	{
+		iCount = _iMaxHp / 25 ;
+	}
+	else
+		 iCount = _iMaxHp / 25 + 1;
+
+	_float fCurLength = m_fLength / iCount;
+	fCurLength *= iIndex;
+	*/
+
+	m_pTransformCom->Set_Pos(m_vPos.x + _fCurLength , m_vPos.y , 0.f);
+
+	m_bActive = true;
+}
+
+CHpDivider* CHpDivider::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec2 vPos, _vec2 vSize, _int iIndex)
 {
 	CHpDivider* pHpDivider = new CHpDivider(pGraphicDev);
 
-	if (FAILED(pHpDivider->Ready_GameObject(vPos, vSize, fLength)))
+	if (FAILED(pHpDivider->Ready_GameObject(vPos, vSize, iIndex)))
 	{
 		Safe_Release(pHpDivider);
 		MSG_BOX("HpDivider Create Failed");

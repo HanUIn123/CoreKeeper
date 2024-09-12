@@ -176,13 +176,21 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Health_bar", pGameObject), E_FAIL);
 
-	vPos = { 350.f,  50.f };
+	
+	vPos = { 200.f,  50.f };
 	vSize = { 5.f, 10.f };
 
-	pGameObject = CHpDivider::Create(m_pGraphicDev, vPos, vSize, 300.f);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Health_Divider", pGameObject), E_FAIL);
+	wstring string[10];
 
+	for (int i = 0; i < 10; i++)
+	{
+		pGameObject = CHpDivider::Create(m_pGraphicDev, vPos, vSize, 2);
+		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+
+		//std::wstring string; 
+		string[i] = L"UI_Health_Divider_" + std::to_wstring(i);
+		FAILED_CHECK_RETURN(pLayer->Add_GameObject(string[i].c_str(), pGameObject), E_FAIL);
+	}
 
 	vPos = { 350.f,  80.f };
 	vSize = { 300.f, 12.f };
