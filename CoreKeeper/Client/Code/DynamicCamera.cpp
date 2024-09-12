@@ -45,7 +45,6 @@ void CDynamicCamera::LateUpdate_GameObject()
 		Key_Input();
 		if (g_bIsTopCamera)
 		{
-
 			_matrix		matPlayerWorld;
 			memcpy(&matPlayerWorld, pPlayerTransform->Get_WorldMatrix(), sizeof(_matrix));
 

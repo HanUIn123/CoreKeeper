@@ -5,6 +5,7 @@ CAnimator::CAnimator(LPDIRECT3DDEVICE9 pGraphicDev)
 {
 	m_tAnim.ePreState = STATE_END;
 	m_tAnim.eCurState = STATE_END;
+	m_bMotionEnd = true;
 }
 
 
@@ -29,6 +30,7 @@ void CAnimator::Update_Animation()
 
 	if (m_tAnim.iMotion > m_tAnim.iEnd)
 	{
+		m_bMotionEnd = true;
 		m_tAnim.iMotion = m_tAnim.iStart;
 	}
 }
@@ -47,6 +49,7 @@ void CAnimator::Set_CurState(STATE _eCurState, int _iStart, int _iEnd, int _iCou
 
 		m_tAnim.ePreState = m_tAnim.eCurState;
 		m_tAnim.eCurState = _eCurState;
+		m_bMotionEnd = false;
 	}
 }
 

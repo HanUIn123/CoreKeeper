@@ -32,15 +32,18 @@ private:
 	HRESULT			Add_Component();
 
 	// 뷰 공통
-	void			Mouse_Click();
+	void			Mouse_Click();								// 클릭 시 스윙, 스윙 끝 판단
 
 	// 탑뷰 함수
-	void			Key_Position(const _float& fTimeDelta);
-	void			Mouse_Direction();
-	void			Animation_SetUp(STATE st, DIRECTION dir);
+	void			Key_Position(const _float& fTimeDelta);		// 플레이어 이동
+	void			Mouse_Direction();							// 마우스 위치에 따른 캐릭터 방향 설정
+	void			Animation_SetUp(STATE st, DIRECTION dir);	// 애니메이션 설정
 
 	// 숄더뷰 함수
-	void			ShoulderView_Control(const _float& fTimeDelta);
+	void			ShoulderView_Control(const _float& fTimeDelta); // 숄더 뷰 시점 플레이어 조작(회전, 스윙 제외)
+	void			ShoulderView_Swing();
+
+	void			Swing_Equipment();
 
 private:
 	Engine::CAnimTex*		m_pBufferCom;
@@ -56,6 +59,9 @@ private:
 	Engine::STATE			m_eState;
 	float					m_fSpeed;
 	float					m_fDiagSpeed;
+	bool					m_bSwing;
+
+	CGameObject*			m_pWeapon;
 
 public:
 	static CPlayer* Create(LPDIRECT3DDEVICE9 pGraphicDev);
