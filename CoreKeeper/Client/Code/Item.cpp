@@ -65,12 +65,19 @@ void CItem::Render_GameObject()
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
+	m_pColliderCom->Update_Collider(m_pTransformCom->Get_WorldMatrix());
 
 	m_pTextureCom->Set_Texture(m_iTextureNumber);
 	
 	if (m_bActive)
 	{
 		m_pBufferCom->Render_Buffer();
+	}
+
+	// 콜라이더 렌더링 추가
+	if (m_bActive)
+	{
+		m_pColliderCom->Render_Collider();
 	}
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pShadowTransformCom->Get_WorldMatrix());
@@ -81,9 +88,6 @@ void CItem::Render_GameObject()
 	{
 		m_pShadowBufferCom->Render_Buffer();
 	}
-
-	m_pColliderCom->Update_Collider(m_pTransformCom->Get_WorldMatrix());
-	m_pColliderCom->Render_Collider();
 
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }

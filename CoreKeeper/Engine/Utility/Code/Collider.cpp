@@ -1,24 +1,18 @@
 #include "Export_Utility.h"
 
 CCollider::CCollider(LPDIRECT3DDEVICE9 pGraphicDev)
-    : CComponent(pGraphicDev), m_fRadius(1.f), m_vCenterPos(0.f, 0.f, 0.f), m_pBufferCom(nullptr)
+    : CComponent(pGraphicDev), m_fRadius(1.f), m_vCenterPos(0.f, 0.f, 0.f)
 {
 }
 
 CCollider::~CCollider()
 {
-    Safe_Release(m_pBufferCom);
 }
 
 HRESULT CCollider::Ready_Collider(float fRadius)
 {
     m_fRadius = fRadius;
 
-    m_pBufferCom = CRcCol::Create(m_pGraphicDev);
-    if (!m_pBufferCom)
-    {
-        return E_FAIL;
-    }
     return S_OK;
 }
 
@@ -43,12 +37,18 @@ bool CCollider::Check_Collision(CCollider* pTarget)
 
 void CCollider::Render_Collider()
 {
+#ifdef _DEBUG
     m_pGraphicDev->SetTransform(D3DTS_WORLD, &m_matWorld);
+
+    LPD3DXMESH pSphereMesh = nullptr;
+    D3DXCreateSphere(m_pGraphicDev, m_fRadius, 20, 20, &pSphereMesh, NULL);
+
+    m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
+    pSphereMesh->DrawSubset(0);
     m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
 
-    m_pBufferCom->Render_Buffer();
-
-    m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
+    Safe_Release(pSphereMesh);
+#endif
 }
 
 CCollider* CCollider::Create(LPDIRECT3DDEVICE9 pGraphicDev, float fRadius)
