@@ -50,6 +50,10 @@ public:
 	bool				Get_Active() { return m_bActive; }
 	Engine::ITEMNUM		Get_ItemNum() { return m_eItemNum; }
 
+	// юс╫ц
+	void				Set_Active(bool bActive) { m_bActive = bActive; }
+	void				Set_Drop(bool bDrop) { m_bDrop = bDrop; }
+
 protected:
 	int			m_iTextureNumber;
 	float		m_fFirstY;
