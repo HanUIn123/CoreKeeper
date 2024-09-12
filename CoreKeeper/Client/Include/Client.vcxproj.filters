@@ -88,9 +88,6 @@
     <Filter Include="02. GameObject\06. Item\00. Sword">
       <UniqueIdentifier>{7fee5be1-2bad-437b-b928-120eaa060638}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\08. Inventory">
-      <UniqueIdentifier>{9d63a27d-066e-4963-b713-74f975c7df28}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -192,9 +189,6 @@
     <ClInclude Include="..\Header\Sword.h">
       <Filter>02. GameObject\06. Item\00. Sword</Filter>
     </ClInclude>
-    <ClInclude Include="..\Header\Inventory.h">
-      <Filter>02. GameObject\08. Inventory</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -280,9 +274,6 @@
     </ClCompile>
     <ClCompile Include="..\Code\Sword.cpp">
       <Filter>02. GameObject\06. Item\00. Sword</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Code\Inventory.cpp">
-      <Filter>02. GameObject\08. Inventory</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

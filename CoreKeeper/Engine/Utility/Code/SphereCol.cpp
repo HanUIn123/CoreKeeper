@@ -21,40 +21,6 @@ CSphereCol::~CSphereCol()
 
 HRESULT CSphereCol::Ready_Buffer()
 {
-#pragma region 버텍스 버퍼만 이용했을 때
-	/*m_dwTriCnt = 2;
-	m_dwVtxCnt = 6;
-	m_dwVtxSize = sizeof(VTXCOL);
-	m_dwFVF = FVF_COL;
-
-
-	FAILED_CHECK_RETURN(CVIBuffer::Ready_Buffer(), E_FAIL);
-
-	VTXCOL*		pVertex = NULL;
-
-	m_pVB->Lock(0, 0, (void**)&pVertex, 0);
-
-	pVertex[0].vPosition = { -1.f, 1.f, 0.f };
-	pVertex[0].dwColor = D3DXCOLOR(1.f, 0.f, 0.f, 1.f);
-
-	pVertex[1].vPosition = { 1.f, 1.f, 0.f };
-	pVertex[1].dwColor = D3DXCOLOR(1.f, 0.f, 0.f, 1.f);
-
-	pVertex[2].vPosition = { 1.f, -1.f, 0.f };
-	pVertex[2].dwColor = D3DXCOLOR(1.f, 0.f, 0.f, 1.f);
-
-	pVertex[3].vPosition = { -1.f, 1.f, 0.f };
-	pVertex[3].dwColor = D3DXCOLOR(0.f, 1.f, 0.f, 1.f);
-
-	pVertex[4].vPosition = { 1.f, -1.f, 0.f };
-	pVertex[4].dwColor = D3DXCOLOR(0.f, 1.f, 0.f, 1.f);
-
-	pVertex[5].vPosition = { -1.f, -1.f, 0.f };
-	pVertex[5].dwColor = D3DXCOLOR(0.f, 1.f, 0.f, 1.f);
-
-	m_pVB->Unlock();*/
-#pragma endregion 버텍스 버퍼만 이용했을 때
-
 	m_dwTriCnt = 2;
 	m_dwVtxCnt = 4;
 	m_dwVtxSize = sizeof(VTXCOL);

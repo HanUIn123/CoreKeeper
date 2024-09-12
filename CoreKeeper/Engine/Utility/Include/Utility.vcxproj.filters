@@ -85,14 +85,17 @@
     <Filter Include="04. Component\00. VIBuffer\06. ShadowTex">
       <UniqueIdentifier>{d2f16391-531f-4ab5-9c63-32d36eb7eea5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="04. Component\00. VIBuffer\07. SphereCol">
-      <UniqueIdentifier>{89abcc9b-3e32-44d0-a630-f51109503767}</UniqueIdentifier>
-    </Filter>
     <Filter Include="04. Component\00. VIBuffer\07. RangeTex">
       <UniqueIdentifier>{a99557b7-d46c-47d6-b950-1478589110d6}</UniqueIdentifier>
     </Filter>
     <Filter Include="04. Component\06. State">
       <UniqueIdentifier>{13f3778a-1f87-4f78-a498-b87ce8db204e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Component\00. VIBuffer\08. SphereCol">
+      <UniqueIdentifier>{89abcc9b-3e32-44d0-a630-f51109503767}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Component\07. Inventory">
+      <UniqueIdentifier>{952c26af-68a4-441f-a2b8-33412336e3b1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -166,13 +169,16 @@
       <Filter>04. Component\05. Collider</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\SphereCol.cpp">
-      <Filter>04. Component\00. VIBuffer\07. SphereCol</Filter>
+      <Filter>04. Component\00. VIBuffer\08. SphereCol</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\RangeTex.cpp">
       <Filter>04. Component\00. VIBuffer\07. RangeTex</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\State.cpp">
       <Filter>04. Component\06. State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Inventory.cpp">
+      <Filter>04. Component\07. Inventory</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -249,13 +255,16 @@
       <Filter>04. Component\05. Collider</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Header\SphereCol.h">
-      <Filter>04. Component\00. VIBuffer\07. SphereCol</Filter>
+      <Filter>04. Component\00. VIBuffer\08. SphereCol</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Header\RangeTex.h">
       <Filter>04. Component\00. VIBuffer\07. RangeTex</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Header\State.h">
       <Filter>04. Component\06. State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Header\Inventory.h">
+      <Filter>04. Component\07. Inventory</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
