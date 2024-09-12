@@ -72,7 +72,7 @@ void CUIHealth::LateUpdate_GameObject()
 {
 	m_pAnimatorCom->Update_Animation();
 
-	if (m_iIndex == 0)
+	if (m_iIndex == 0 || m_iIndex == 3)
 	{
 		Add_RenderGroup(RENDER_UI, this);
 	}

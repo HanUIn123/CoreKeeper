@@ -180,6 +180,21 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Health_Divider", pGameObject), E_FAIL);
 
 
+	vPos = { 350.f,  80.f };
+	vSize = { 300.f, 12.f };
+
+	pGameObject = CUIHealth::Create(m_pGraphicDev, vPos, vSize, 1);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Health_bar2", pGameObject), E_FAIL);
+
+	vPos = { 347.f, 80.f };
+	vSize = { 293.f, 9.f };
+
+	pGameObject = CUIHealth::Create(m_pGraphicDev, vPos, vSize, 3);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Mp", pGameObject), E_FAIL);
+
+
 
 	m_mapLayer.insert({ pLayerTag , pLayer });
 
