@@ -87,9 +87,12 @@
     </Filter>
     <Filter Include="04. Component\00. VIBuffer\07. SphereCol">
       <UniqueIdentifier>{89abcc9b-3e32-44d0-a630-f51109503767}</UniqueIdentifier>
-	</Filter>
-	<Filter Include="04. Component\00. VIBuffer\07. RangeTex">
+    </Filter>
+    <Filter Include="04. Component\00. VIBuffer\07. RangeTex">
       <UniqueIdentifier>{a99557b7-d46c-47d6-b950-1478589110d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Component\06. State">
+      <UniqueIdentifier>{13f3778a-1f87-4f78-a498-b87ce8db204e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -164,9 +167,12 @@
     </ClCompile>
     <ClCompile Include="..\Code\SphereCol.cpp">
       <Filter>04. Component\00. VIBuffer\07. SphereCol</Filter>
-	</ClCompile>
-	<ClCompile Include="..\Code\RangeTex.cpp">
+    </ClCompile>
+    <ClCompile Include="..\Code\RangeTex.cpp">
       <Filter>04. Component\00. VIBuffer\07. RangeTex</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\State.cpp">
+      <Filter>04. Component\06. State</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -244,9 +250,12 @@
     </ClInclude>
     <ClInclude Include="..\..\Header\SphereCol.h">
       <Filter>04. Component\00. VIBuffer\07. SphereCol</Filter>
-	</ClInclude>
-	<ClInclude Include="..\..\Header\RangeTex.h">
+    </ClInclude>
+    <ClInclude Include="..\..\Header\RangeTex.h">
       <Filter>04. Component\00. VIBuffer\07. RangeTex</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Header\State.h">
+      <Filter>04. Component\06. State</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

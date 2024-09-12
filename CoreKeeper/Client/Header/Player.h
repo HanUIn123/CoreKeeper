@@ -11,6 +11,7 @@ class CTexture;
 class CCalculator;
 class CAnimator;
 class CCollider;
+class CState;
 
 END
 
@@ -41,12 +42,13 @@ private:
 	void			ShoulderView_Control(const _float& fTimeDelta);
 
 private:
-	Engine::CAnimTex* m_pBufferCom;
-	Engine::CTransform* m_pTransformCom;
-	Engine::CTexture* m_pTextureCom;
-	Engine::CCalculator* m_pCalculatorCom;
-	Engine::CAnimator* m_pAnimatorCom;
-	Engine::CCollider* m_pColliderCom;
+	Engine::CAnimTex*		m_pBufferCom;
+	Engine::CTransform*		m_pTransformCom;
+	Engine::CTexture*		m_pTextureCom;
+	Engine::CCalculator*	m_pCalculatorCom;
+	Engine::CAnimator*		m_pAnimatorCom;
+	Engine::CCollider*		m_pColliderCom;
+	Engine::CState*			m_pStateCom;
 
 	Engine::DIRECTION		m_eDir;
 	Engine::STATE			m_eState;
