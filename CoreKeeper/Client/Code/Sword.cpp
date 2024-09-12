@@ -11,9 +11,6 @@ CSword::CSword(LPDIRECT3DDEVICE9 pGraphicDev)
 	m_tStat.iAttack = 10;
 
 	m_eItemNum = ITEM_SWORD;
-
-	// 임시
-	m_bDrop = true;
 }
 
 CSword::~CSword()
@@ -38,30 +35,24 @@ HRESULT CSword::Ready_GameObject()
 
 _int CSword::Update_GameObject(const _float& fTimeDelta)
 {
-	if (m_bDrop)
+	if (m_bActive)
 	{
-		// 둥실거리는 효과를 위한 Y 위치 변동
-		const _float fAmplitude = 0.2f;  // 둥실거리는 높이
-		const _float fFrequency = 3.0f;  // 둥실거리는 속도
-
-		m_fTimeAcc += fTimeDelta;
-
-		float fNewy = m_fFirstY + fAmplitude * sinf(m_fTimeAcc * fFrequency);
-		m_pTransformCom->Set_Pos(m_pTransformCom->m_vInfo->x, fNewy, m_pTransformCom->m_vInfo->z);
-
-		m_pShadowTransformCom->Set_Pos(m_pTransformCom->m_vInfo->x, 0.1f, m_pTransformCom->m_vInfo->z);
+		// 아이템 움직임
+		CItem::Wave(fTimeDelta);
 
 		Engine::CCollider* pPlayerCollider = dynamic_cast<Engine::CCollider*>
 			(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Collider"));
 
-		// 충돌하면 FALSE, 충돌안하면 TRUE
-		m_bActive = !(m_pColliderCom->Check_Collision(pPlayerCollider));
+		// 플레이어와 충돌
+		if (m_pColliderCom->Check_Collision(pPlayerCollider))
+		{
+			Engine::CInventory* pPlayerInventory = dynamic_cast<Engine::CInventory*>
+				(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
 
-		Engine::CInventory* pPlayerInventory = dynamic_cast<Engine::CInventory*>
-			(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
+			pPlayerInventory->Add_Item(m_eItemNum);
 
-		pPlayerInventory->Add_Item(m_eItemNum);
-		m_bDrop = false;
+			m_bActive = false;
+		}
 	}
 	
 	Add_RenderGroup(RENDER_ALPHA, this);
@@ -77,7 +68,7 @@ void CSword::LateUpdate_GameObject()
 void CSword::Render_GameObject()
 {
 	// 카메라를 바라보게 하면서 스케일 유지
-	//Apply_Billboard();  
+	//CItem::Apply_Billboard();  
 
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
@@ -142,35 +133,6 @@ HRESULT CSword::Add_Component()
 	m_mapComponent[ID_DYNAMIC].insert({ L"Com_ShadowTransform", pComponent });
 
 	return S_OK;
-}
-
-void CSword::Apply_Billboard()
-{
-	D3DXMATRIX matWorld, matView, matBill, matScale;
-
-	m_pTransformCom->Get_WorldMatrix(&matWorld);
-
-	m_pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
-
-	D3DXMatrixIdentity(&matBill);
-
-	matBill._11 = matView._11;
-	matBill._13 = matView._13;
-	matBill._31 = matView._31;
-	matBill._33 = matView._33;
-
-	D3DXMatrixInverse(&matBill, 0, &matBill);
-
-	// 스케일 행렬을 따로 계산
-	D3DXMatrixScaling(&matScale, m_pTransformCom->m_vScale.x, m_pTransformCom->m_vScale.y, m_pTransformCom->m_vScale.z);
-	
-	D3DXMATRIX matInverseScale;
-	D3DXMatrixInverse(&matInverseScale, 0, &matScale);
-
-	// 최종 월드 행렬: 스케일 적용 후 빌보드 회전 적용
-	D3DXMATRIX matFinal = matScale * matBill * matInverseScale * matWorld;
-
-	m_pTransformCom->Set_WorldMatrix(&matFinal);
 }
 
 CSword* CSword::Create(LPDIRECT3DDEVICE9 pGraphicDev)
