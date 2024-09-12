@@ -3,7 +3,7 @@
 
 BEGIN(Engine)
 
-class CRcTex;
+class CAnimTex;
 class CTransform;
 class CTexture;
 class CCollider;
@@ -13,7 +13,7 @@ END
 
 class CItem : public Engine::CGameObject
 {
-private:
+protected:
 	explicit CItem(LPDIRECT3DDEVICE9 pGraphicDev);
 	virtual ~CItem();
 
@@ -23,12 +23,12 @@ public:
 	virtual			void			LateUpdate_GameObject();
 	virtual			void			Render_GameObject();
 
-private:
+protected:
 	HRESULT			Add_Component();
 	void			Apply_Billboard();
 
-private:
-	Engine::CRcTex* m_pBufferCom;
+protected:
+	Engine::CAnimTex* m_pBufferCom;
 	Engine::CTransform* m_pTransformCom;
 	Engine::CTexture* m_pTextureCom;
 	Engine::CCollider* m_pColliderCom;
@@ -40,14 +40,17 @@ private:
 public:
 	static CItem* Create(LPDIRECT3DDEVICE9 pGraphicDev);
 
-private:
+protected:
 	virtual void		Free();
 
 public:
 	bool		Get_Active() { return m_bActive; }
-private:
+
+protected:
 	int		m_iTextureNumber;
 	float	m_fFirstY;
 	float	m_fTimeAcc;
 	bool	m_bActive;
+	bool	m_bDrop;	// 땅에 있는 상태인지
+	STAT	m_tStat;
 };

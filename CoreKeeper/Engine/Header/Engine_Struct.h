@@ -62,6 +62,16 @@ namespace Engine
 
 	}ANIM;
 
+	typedef struct tagStat
+	{
+		int iHp;
+		int iMaxHp;
+		int iMp;
+		int iMaxMp;
+		int iAttack;
+		int iDefense;
+
+	}STAT;
 }
 
 
