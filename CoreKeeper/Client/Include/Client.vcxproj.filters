@@ -61,6 +61,9 @@
     <Filter Include="02. GameObject\07. UI\01. UIScreenIcon">
       <UniqueIdentifier>{10a3a682-7f16-4c4b-91fb-22aec50c9cb8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\07. UI\02. UIHealth">
+      <UniqueIdentifier>{5f789f66-086f-4154-b4fe-59e0c4ace950}</UniqueIdentifier>
+    </Filter>
     <Filter Include="99.Imgui">
       <UniqueIdentifier>{1ae26c7e-6b26-4660-a02d-7cd7eaac8604}</UniqueIdentifier>
     </Filter>
@@ -78,6 +81,9 @@
     </Filter>
     <Filter Include="02. GameObject\02. Monster\02. Shaman">
       <UniqueIdentifier>{d3b29687-be3f-49ac-b924-2eb65a269e00}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\07. UI\02. UIHealth\HpDivider">
+      <UniqueIdentifier>{4a8d7bab-fa59-424b-95bd-11cf26cfe01e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -135,8 +141,8 @@
     <ClInclude Include="..\Header\UIStatus.h">
       <Filter>02. GameObject\07. UI\00. Status</Filter>
     </ClInclude>
-    <ClInclude Include="..\Header\UIScreenIcon.h">
-      <Filter>02. GameObject\07. UI\01. UIScreenIcon</Filter>
+    <ClInclude Include="..\Header\UIHealth.h">
+      <Filter>02. GameObject\07. UI\02. UIHealth</Filter>
     </ClInclude>
     <ClInclude Include="imgui.h">
       <Filter>99.Imgui</Filter>
@@ -170,6 +176,12 @@
 	</ClInclude>
     <ClInclude Include="..\Header\Slime.h">
       <Filter>02. GameObject\02. Monster\00. Slime</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\UIScreenIcon.h">
+      <Filter>02. GameObject\07. UI\01. UIScreenIcon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\HpDivider.h">
+      <Filter>02. GameObject\07. UI\02. UIHealth\HpDivider</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -218,6 +230,9 @@
     <ClCompile Include="..\Code\UIScreenIcon.cpp">
       <Filter>02. GameObject\07. UI\01. UIScreenIcon</Filter>
     </ClCompile>
+    <ClCompile Include="..\Code\UIHealth.cpp">
+      <Filter>02. GameObject\07. UI\02. UIHealth</Filter>
+    </ClCompile>
     <ClCompile Include="imgui.cpp">
       <Filter>99.Imgui</Filter>
     </ClCompile>
@@ -247,6 +262,9 @@
 	</ClCompile>
     <ClCompile Include="..\Code\Slime.cpp">
       <Filter>02. GameObject\02. Monster\00. Slime</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\HpDivider.cpp">
+      <Filter>02. GameObject\07. UI\02. UIHealth\HpDivider</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

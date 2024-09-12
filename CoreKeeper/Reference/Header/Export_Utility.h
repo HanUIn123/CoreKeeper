@@ -14,6 +14,8 @@
 #include "ShadowTex.h"
 
 #include "Texture.h"
+#include "ShadowTex.h"
+#include "RangeTex.h"
 
 #include "Transform.h"
 #include "Camera.h"
@@ -25,7 +27,8 @@ BEGIN(Engine)
 
 inline HRESULT				Create_Management(LPDIRECT3DDEVICE9 pGraphicDev, CManagement** ppManagement);
 
-inline CComponent* Get_Component(COMPONENTID eID, const _tchar* pLayerTag, const _tchar* pObjTag, const _tchar* pComponentTag);
+inline CComponent*          Get_Component(COMPONENTID eID, const _tchar* pLayerTag, const _tchar* pObjTag, const _tchar* pComponentTag);
+inline CGameObject*         Get_GameObject(const _tchar* pLayerTag, const _tchar* pObjTag);
 inline	HRESULT				Set_Scene(CScene* pScene);
 inline	_int				Update_Scene(const _float& fTimeDelta);
 inline	void				LateUpdate_Scene();

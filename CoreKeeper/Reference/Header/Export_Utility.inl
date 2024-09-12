@@ -13,6 +13,11 @@ inline CComponent* Get_Component(COMPONENTID eID, const _tchar* pLayerTag, const
 	return CManagement::GetInstance()->Get_Component(eID, pLayerTag, pObjTag, pComponentTag);
 }
 
+inline CGameObject* Get_GameObject(const _tchar* pLayerTag, const _tchar* pObjTag)
+{
+	return CManagement::GetInstance()->Get_GameObject(pLayerTag, pObjTag);
+}
+
 inline HRESULT Set_Scene(CScene* pScene)
 {
 	return CManagement::GetInstance()->Set_Scene(pScene);

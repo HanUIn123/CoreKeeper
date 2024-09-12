@@ -22,8 +22,8 @@ HRESULT CUIScreenIcon::Ready_GameObject(_vec2 vPos, _vec2 vSize, const _uint iIn
 	_D3DVIEWPORT9 Viewport;
 
 	m_pGraphicDev->GetViewport(&Viewport);
-	float height = Viewport.Height;
-	float width = Viewport.Width;
+	float height = (_float)Viewport.Height;
+	float width = (_float)Viewport.Width;
 
 	float x = vPos.x - width / 2;
 	float y = height / 2 - vPos.y;
@@ -61,7 +61,25 @@ _int CUIScreenIcon::Update_GameObject(const _float& fTimeDelta)
 			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), 1.f, 10.f);
 			*/
 
-			// 충돌 확인용 코드
+			// 충돌 확인용 코드=
+			switch (m_iIndex)
+			{
+			case ICON_BAG:
+				break;
+
+			case ICON_MAP:
+				break;
+
+			case ICON_HAND:
+				break;
+
+			case ICON_INSTALL:
+				break;
+
+			default:
+				break;
+			}
+			//인덱스에 따라 출력되는 창 변경
 		}
 
 		m_bCollapse = true;
@@ -85,13 +103,13 @@ void CUIScreenIcon::Render_GameObject()
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
 
+	//인벤토리 오픈했을때 출력
 	if (m_bExit)
-	{
 		m_pBufferCom->Set_Index(3);
-	}
 	else
 		m_pBufferCom->Set_Index(m_iIndex);
 
+	//현재 마우스와 충돌중일때 출력
 	if (!m_bCollapse)
 		m_pTextureCom->Set_Texture(0);
 	else

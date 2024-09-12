@@ -2,6 +2,8 @@
 #include "Scene.h"
 #include "../Client/Header/ImguiMgr.h"
 
+#include "Terrain.h"
+
 class CMapEditorScene : public Engine::CScene
 {
 private:
@@ -9,6 +11,7 @@ private:
 	virtual ~CMapEditorScene();
 
 public:
+	HRESULT         Ready_LightInfo();
 	virtual			HRESULT			Ready_Scene();
 	virtual			_int			Update_Scene(const _float& fTimeDelta);
 	virtual			void			LateUpdate_Scene();
