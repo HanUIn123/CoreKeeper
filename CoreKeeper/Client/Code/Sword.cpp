@@ -11,6 +11,11 @@ CSword::CSword(LPDIRECT3DDEVICE9 pGraphicDev)
 	m_tStat.iAttack = 10;
 
 	m_eItemNum = ITEM_SWORD;
+
+	// 아직 몬스터 없으니까 테스트용
+	m_bDrop = true;
+
+
 }
 
 CSword::~CSword()
@@ -21,7 +26,7 @@ HRESULT CSword::Ready_GameObject()
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	//m_pTransformCom->m_vScale = { 0.2f, 0.2f, 0.2f };
+	m_pTransformCom->m_vScale = { 1.2f, 1.2f, 1.2f };
 	m_pShadowTransformCom->m_vScale = { 0.2f, 0.2f, 0.2f };
 
 	m_pTransformCom->Set_Pos(m_pTransformCom->m_vInfo->x, m_pTransformCom->m_vInfo->y + 0.7f, m_pTransformCom->m_vInfo->z);
@@ -35,11 +40,24 @@ HRESULT CSword::Ready_GameObject()
 
 _int CSword::Update_GameObject(const _float& fTimeDelta)
 {
-	_vec3 vSwordPos;
-	m_pTransformCom->Get_Info(INFO_POS, &vSwordPos);
-	m_pShadowTransformCom->Set_Pos(vSwordPos.x, 0.1f, vSwordPos.z);
+	_vec3 vPos;
+	m_pTransformCom->Get_Info(INFO_POS, &vPos);
+	m_pShadowTransformCom->Set_Pos(vPos.x, 0.1f, vPos.z);
 
-	if (m_bActive)
+	if (m_bUse)
+	{
+		m_bActive = true;
+		m_bDrop = false;
+
+		Engine::CTransform* pPlayerTransform = dynamic_cast<Engine::CTransform*>
+			(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Transform"));
+
+		_vec3 vPlayerPos;
+		pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
+		m_pTransformCom->Set_Pos(vPlayerPos.x, 0.7f, vPlayerPos.z);
+	}
+
+	if (m_bDrop)
 	{
 		// 아이템 움직임
 		CItem::Wave(fTimeDelta);
@@ -56,6 +74,7 @@ _int CSword::Update_GameObject(const _float& fTimeDelta)
 			pPlayerInventory->Add_Item(m_eItemNum, 1, m_pTextureCom->Get_Texture());
 
 			m_bActive = false;
+			m_bDrop = false;
 		}
 	}
 	
@@ -96,7 +115,7 @@ void CSword::Render_GameObject()
 
 	m_pShadowTextureCom->Set_Texture(1);
 
-	if (m_bActive)
+	if (m_bActive && !m_bUse)
 	{
 		m_pShadowBufferCom->Render_Buffer();
 	}

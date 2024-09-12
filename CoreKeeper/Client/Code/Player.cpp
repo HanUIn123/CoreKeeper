@@ -347,6 +347,8 @@ void CPlayer::Swing_Equipment()
 	weaponTransform->Set_Pos(vecPlayerPos.x, vecPlayerPos.y, vecPlayerPos.z);
 	dynamic_cast<CSword*>(m_pWeapon)->Set_Active(true);
 	dynamic_cast<CSword*>(m_pWeapon)->Set_Drop(false);
+	dynamic_cast<CSword*>(m_pWeapon)->Set_Use(true);
+
 	// m_pWeapon->Get_Component(ID_DYNAMIC, L"")
 }
 
