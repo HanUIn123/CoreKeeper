@@ -28,17 +28,6 @@ _int CSlime::Update_GameObject(const _float& fTimeDelta)
 
     m_pAnimatorCom->Set_CurState(WALK, 0, 8, 8);
 
-    /*Engine::CTransform* pPlayerTransform = dynamic_cast<Engine::CTransform*>
-        (Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Transform"));
-    NULL_CHECK_RETURN(pPlayerTransform, -1);
-
-    _vec3		vPlayerPos;
-    pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
-
-    m_pTransformCom->Chase_Target(&vPlayerPos, 5.f * fTimeDelta);
-
-    Add_RenderGroup(RENDER_ALPHA, this);*/
-
     Add_RenderGroup(RENDER_ALPHA, this);
 
     return iExit;
