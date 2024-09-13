@@ -46,13 +46,7 @@ _int CSword::Update_GameObject(const _float& fTimeDelta)
 	{
 		m_bActive = true;
 		m_bDrop = false;
-
-		Engine::CTransform* pPlayerTransform = dynamic_cast<Engine::CTransform*>
-			(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Transform"));
-
-		_vec3 vPlayerPos;
-		pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
-		m_pTransformCom->Set_Pos(vPlayerPos.x, 0.7f, vPlayerPos.z);
+		m_pTransformCom->Set_Scale(1.5f, 1.5f, 1.5f);
 	}
 
 	if (m_bDrop)

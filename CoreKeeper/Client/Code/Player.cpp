@@ -13,6 +13,9 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	m_fSpeed = 5.f;
 	m_fDiagSpeed = sqrt(pow(m_fSpeed, 2) / 2);
 	m_bSwing = false;
+	m_fFirstY = 1.f;
+	m_fTimeAcc = 0.f;
+	m_fWalkYSpeed = 1.8f;
 }
 
 CPlayer::~CPlayer()
@@ -23,7 +26,9 @@ HRESULT CPlayer::Ready_GameObject()
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_pTransformCom->Set_Pos(m_pTransformCom->m_vInfo->x, m_pTransformCom->m_vInfo->y + 1.0f, m_pTransformCom->m_vInfo->z);
+	_vec3 vPos;
+	m_pTransformCom->Get_Info(INFO_POS, &vPos);
+	m_pTransformCom->Set_Pos(vPos.x, m_fFirstY, vPos.z);
 
 	return S_OK;
 }
@@ -32,6 +37,15 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 {
 	m_pAnimatorCom->Update_Animation();
 	Mouse_Click();
+	Show_Equipment();
+	if (m_eState == WALK)
+		Walk_Y(fTimeDelta);
+	else
+	{
+		_vec3 vPos;
+		m_pTransformCom->Get_Info(INFO_POS, &vPos);
+		m_pTransformCom->Set_Pos(vPos.x, m_fFirstY, vPos.z);
+	}
 	if (g_bIsTopCamera)
 	{
 		if (!m_bSwing)
@@ -198,7 +212,21 @@ void CPlayer::Mouse_Click()
 		}
 	}
 }
+void CPlayer::Walk_Y(const _float& fTimeDelta)
+{
+	m_fTimeAcc += fTimeDelta * 11.f;
 
+	if (m_fTimeAcc >= 1.0f)
+	{
+		m_fWalkYSpeed *= -1;
+		m_fTimeAcc = 0.0f;
+	}
+	_vec3 vUp;
+	m_pTransformCom->Get_Info(INFO_UP, &vUp);
+
+	m_pTransformCom->Move_Pos(&vUp, fTimeDelta, m_fWalkYSpeed);
+	dynamic_cast<CItem*>(m_pWeapon)->Walk_Equipped(fTimeDelta);
+}
 void CPlayer::Mouse_Direction()
 {
 	POINT	ptMouse{};
@@ -238,23 +266,23 @@ void CPlayer::Animation_SetUp(STATE st, DIRECTION dir)
 		break;
 	case WALK:
 		if (m_eDir == FRONT)
-			m_pAnimatorCom->Set_CurState(st, 4, 7, 20);
+			m_pAnimatorCom->Set_CurState(st, 4, 7, 6);
 		else if (m_eDir == RIGHT)
-			m_pAnimatorCom->Set_CurState(st, 8, 11, 20);
+			m_pAnimatorCom->Set_CurState(st, 8, 11, 6);
 		else if (m_eDir == BACK)
-			m_pAnimatorCom->Set_CurState(st, 12, 15, 20);
+			m_pAnimatorCom->Set_CurState(st, 12, 15, 6);
 		else if (m_eDir == LEFT)
-			m_pAnimatorCom->Set_CurState(st, 16, 19, 20);
+			m_pAnimatorCom->Set_CurState(st, 16, 19, 6);
 		break;
 	case SWING:
 		if (m_eDir == FRONT)
-			m_pAnimatorCom->Set_CurState(st, 20, 20, 20);
+			m_pAnimatorCom->Set_CurState(st, 20, 20, 10);
 		else if (m_eDir == RIGHT)
-			m_pAnimatorCom->Set_CurState(st, 21, 23, 20);
+			m_pAnimatorCom->Set_CurState(st, 21, 23, 10);
 		else if (m_eDir == BACK)
-			m_pAnimatorCom->Set_CurState(st, 24, 25, 20);
+			m_pAnimatorCom->Set_CurState(st, 24, 25, 10);
 		else if (m_eDir == LEFT)
-			m_pAnimatorCom->Set_CurState(st, 26, 28, 20);
+			m_pAnimatorCom->Set_CurState(st, 26, 28, 10);
 		break;
 	}
 }
@@ -272,20 +300,20 @@ void CPlayer::ShoulderView_Control(const _float& fTimeDelta)
 		m_eState = WALK;
 		if (Engine::Get_DIKeyState(DIK_D))
 		{
-			m_pAnimatorCom->Set_CurState(WALK, 8, 11, 20);
+			m_pAnimatorCom->Set_CurState(WALK, 8, 11, 6);
 			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, m_fDiagSpeed);
 			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, m_fDiagSpeed);
 
 		}
 		else if (Engine::Get_DIKeyState(DIK_A))
 		{
-			m_pAnimatorCom->Set_CurState(WALK, 16, 19, 20);
+			m_pAnimatorCom->Set_CurState(WALK, 16, 19, 6);
 			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, m_fDiagSpeed);
 			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, -m_fDiagSpeed);
 		}
 		else
 		{
-			m_pAnimatorCom->Set_CurState(WALK, 12, 15, 20);
+			m_pAnimatorCom->Set_CurState(WALK, 12, 15, 6);
 			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, m_fSpeed);
 		}
 	}
@@ -295,19 +323,19 @@ void CPlayer::ShoulderView_Control(const _float& fTimeDelta)
 		m_eState = WALK;
 		if (Engine::Get_DIKeyState(DIK_D))
 		{
-			m_pAnimatorCom->Set_CurState(WALK, 8, 11, 20);
+			m_pAnimatorCom->Set_CurState(WALK, 8, 11, 6);
 			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, -m_fDiagSpeed);
 			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, m_fDiagSpeed);
 		}
 		else if (Engine::Get_DIKeyState(DIK_A))
 		{
-			m_pAnimatorCom->Set_CurState(WALK, 16, 19, 20);
+			m_pAnimatorCom->Set_CurState(WALK, 16, 19, 6);
 			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, -m_fDiagSpeed);
 			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, -m_fDiagSpeed);
 		}
 		else
 		{
-			m_pAnimatorCom->Set_CurState(WALK, 4, 7, 20);
+			m_pAnimatorCom->Set_CurState(WALK, 4, 7, 6);
 			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, -m_fSpeed);
 		}
 	}
@@ -315,41 +343,63 @@ void CPlayer::ShoulderView_Control(const _float& fTimeDelta)
 	else if (Engine::Get_DIKeyState(DIK_A))
 	{
 		m_eState = WALK;
-		m_pAnimatorCom->Set_CurState(WALK, 16, 19, 20);
+		m_pAnimatorCom->Set_CurState(WALK, 16, 19, 6);
 		m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, -m_fSpeed);
 	}
 	// R
 	else if (Engine::Get_DIKeyState(DIK_D))
 	{
 		m_eState = WALK;
-		m_pAnimatorCom->Set_CurState(WALK, 8, 11, 20);
+		m_pAnimatorCom->Set_CurState(WALK, 8, 11, 6);
 		m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, m_fSpeed);
 	}
 	else
 	{
 		m_eState = IDLE;
-		m_pAnimatorCom->Set_CurState(IDLE, 0, 0, 20);
+		m_pAnimatorCom->Set_CurState(IDLE, 0, 0, 6);
 	}
 }
 
 void CPlayer::ShoulderView_Swing()
 {
-	m_pAnimatorCom->Set_CurState(SWING, 24, 25, 20);
+	m_pAnimatorCom->Set_CurState(SWING, 24, 25, 10);
 }
-
-void CPlayer::Swing_Equipment()
+void CPlayer::Show_Equipment()
 {
 	m_pWeapon = Get_GameObject(L"Layer_GameLogic", L"Sword");
 	CTransform* weaponTransform = dynamic_cast<CTransform*>(m_pWeapon->Get_Component(ID_DYNAMIC, L"Com_Transform"));
-	CTransform* playerTransform = dynamic_cast<CTransform*>(Get_Component(ID_DYNAMIC, L"Com_Transform"));
-	_vec3 vecPlayerPos;
-	playerTransform->Get_Info(INFO_POS, &vecPlayerPos);
-	weaponTransform->Set_Pos(vecPlayerPos.x, vecPlayerPos.y, vecPlayerPos.z);
-	dynamic_cast<CSword*>(m_pWeapon)->Set_Active(true);
-	dynamic_cast<CSword*>(m_pWeapon)->Set_Drop(false);
+	_vec3 vPlayerPos;
+	m_pTransformCom->Get_Info(INFO_POS, &vPlayerPos);
 	dynamic_cast<CSword*>(m_pWeapon)->Set_Use(true);
 
-	// m_pWeapon->Get_Component(ID_DYNAMIC, L"")
+	if (g_bIsTopCamera)
+	{
+		switch (m_eDir)
+		{
+		case FRONT:
+			weaponTransform->Set_Pos(vPlayerPos.x - 0.5f, 0.85f, vPlayerPos.z - 0.1f);
+			break;
+		case RIGHT:
+			weaponTransform->Set_Pos(vPlayerPos.x - 0.4f, 0.8f, vPlayerPos.z - 0.1f);
+			break;
+		case BACK:
+			weaponTransform->Set_Pos(vPlayerPos.x + 0.5f, 0.8f, vPlayerPos.z + 0.1f);
+			break;
+		case LEFT:
+			weaponTransform->Set_Pos(vPlayerPos.x + 0.5f, 0.8f, vPlayerPos.z - 0.1f);
+			break;
+		}
+	}
+	else
+	{
+
+	}
+
+
+}
+void CPlayer::Swing_Equipment()
+{
+	
 }
 
 CPlayer* CPlayer::Create(LPDIRECT3DDEVICE9 pGraphicDev)

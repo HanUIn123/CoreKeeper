@@ -6,6 +6,7 @@
 CItem::CItem(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CGameObject(pGraphicDev), m_iTextureNumber(0), m_fFirstY(0.f), m_fTimeAcc(0.f), m_fSpeed(0.5f), m_bActive(true), m_bDrop(false), m_bDropSelf(false), m_bUse(false), m_iCount(1)
 {
+	m_fWalkYSpeed = 2.4f;
 }
 
 CItem::~CItem()
@@ -161,8 +162,21 @@ void CItem::Wave(const _float& fTimeDelta)
 	}
 	_vec3 vUp;
 	m_pTransformCom->Get_Info(INFO_UP, &vUp);
-
 	m_pTransformCom->Move_Pos(&vUp, fTimeDelta, m_fSpeed);
+}
+
+void CItem::Walk_Equipped(const _float& fTimeDelta)
+{
+	m_fTimeAcc += fTimeDelta * 11.f;
+
+	if (m_fTimeAcc >= 1.0f)
+	{
+		m_fWalkYSpeed *= -1;
+		m_fTimeAcc = 0.0f;
+	}
+	_vec3 vUp;
+	m_pTransformCom->Get_Info(INFO_UP, &vUp);
+	m_pTransformCom->Move_Pos(&vUp, fTimeDelta, m_fWalkYSpeed);
 }
 
 CItem* CItem::Create(LPDIRECT3DDEVICE9 pGraphicDev)
