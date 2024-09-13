@@ -123,6 +123,36 @@ void CInventory::Remove_Item(ITEMNUM _eItemNum)
 	//}
 }
 
+bool CInventory::Check_Empty(_int iIndex)
+{
+	if (m_vecItems.empty())
+	{
+		return true;
+	}
+
+	int i = 1;
+
+	// i값이 index값과 같아질 때까지 for문 돌리기
+	for (auto iter : m_vecItems)
+	{
+		if (i == iIndex)
+		{
+			if (iter->Get_Count() == 0)
+			{
+				return true;
+			}
+			else
+				return false;
+		}
+
+		i++;
+	}
+
+	return true;
+}
+
+
+
 CInventory* CInventory::Create(LPDIRECT3DDEVICE9 pGraphicDev, int _iSlotCount)
 {
 	CInventory* pInventory = new CInventory(pGraphicDev);
