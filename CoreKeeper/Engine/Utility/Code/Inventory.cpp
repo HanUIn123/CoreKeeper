@@ -30,15 +30,19 @@ void CInventory::Add_Item(ITEMNUM _eItemNum, int _iCount, IDirect3DBaseTexture9*
 
 	bool bItemFound = false;
 
-	for (auto itemInfo : m_vecItems)
+	if (_eItemNum > 30)
 	{
-		if (itemInfo.eItemNum == _eItemNum)
+		for (auto itemInfo : m_vecItems)
 		{
-			itemInfo.iCount+= _iCount;
-			bItemFound = true;
-			break;
+			if (itemInfo.eItemNum == _eItemNum)
+			{
+				itemInfo.iCount += _iCount;
+				bItemFound = true;
+				break;
+			}
 		}
 	}
+	
 
 	if (!bItemFound)
 	{
