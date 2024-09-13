@@ -198,16 +198,14 @@
     <ClInclude Include="..\Header\Sword.h">
       <Filter>02. GameObject\06. Item\00. Sword</Filter>
     </ClInclude>
-<<<<<<< HEAD
     <ClInclude Include="..\Header\MapToolCamera.h">
       <Filter>02. GameObject\95.MapToolCamera</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\MapToolTerrain.h">
       <Filter>02. GameObject\96.MapToolTerrain</Filter>
-=======
+	</ClInclude>
     <ClInclude Include="..\Header\UIScreenInv.h">
       <Filter>02. GameObject\07. UI\03. UIScreenInv</Filter>
->>>>>>> origin/main
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -295,16 +293,14 @@
     <ClCompile Include="..\Code\Sword.cpp">
       <Filter>02. GameObject\06. Item\00. Sword</Filter>
     </ClCompile>
-<<<<<<< HEAD
     <ClCompile Include="..\Code\MapToolCamera.cpp">
       <Filter>02. GameObject\95.MapToolCamera</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\MapToolTerrain.cpp">
       <Filter>02. GameObject\96.MapToolTerrain</Filter>
-=======
+	</ClCompile>
     <ClCompile Include="..\Code\UIScreenInv.cpp">
       <Filter>02. GameObject\07. UI\03. UIScreenInv</Filter>
->>>>>>> origin/main
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
