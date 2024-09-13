@@ -33,6 +33,7 @@ private:
 
 	// 뷰 공통
 	void			Mouse_Click();								// 클릭 시 스윙, 스윙 끝 판단
+	void			Walk_Y(const _float& fTimeDelta);
 
 	// 탑뷰 함수
 	void			Key_Position(const _float& fTimeDelta);		// 플레이어 이동
@@ -43,6 +44,7 @@ private:
 	void			ShoulderView_Control(const _float& fTimeDelta); // 숄더 뷰 시점 플레이어 조작(회전, 스윙 제외)
 	void			ShoulderView_Swing();
 
+	void			Show_Equipment();
 	void			Swing_Equipment();
 
 	// 손에 든 인벤토리 번호 가져오는 함수
@@ -67,6 +69,9 @@ private:
 	_int                    m_iHandNum;
 
 	CGameObject*			m_pWeapon;
+	float					m_fFirstY;
+	float					m_fTimeAcc;
+	float					m_fWalkYSpeed;
 
 public:
 	static CPlayer* Create(LPDIRECT3DDEVICE9 pGraphicDev);

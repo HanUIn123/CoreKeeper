@@ -30,6 +30,9 @@ protected:
 	void			Apply_Billboard();
 	void			Wave(const _float& fTimeDelta);
 
+public:
+	void			Walk_Equipped(const _float& fTimeDelta);
+
 protected:
 	Engine::CAnimTex* m_pBufferCom;
 	Engine::CTransform* m_pTransformCom;
@@ -67,6 +70,7 @@ protected:
 	float		m_fFirstY;
 	float		m_fTimeAcc;
 	float		m_fSpeed;
+	float		m_fWalkYSpeed;
 
 	bool		m_bActive;
 	bool		m_bDrop;		// 땅에 떨어진 상태일 때

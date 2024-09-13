@@ -61,9 +61,10 @@ void CDynamicCamera::LateUpdate_GameObject()
 			pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
 
 			m_vAt = vPlayerPos;
+			m_vAt.y = 0.f;
 			vPlayerPos.z -= 10.f;
-			vPlayerPos.y += 10.f;
 			m_vEye = vPlayerPos;
+			m_vEye.y = 12.f;
 		}
 		else
 		{
