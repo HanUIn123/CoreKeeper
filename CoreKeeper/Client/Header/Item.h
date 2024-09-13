@@ -23,9 +23,12 @@ public:
 	virtual			void			LateUpdate_GameObject();
 	virtual			void			Render_GameObject();
 
-protected:
+private:
 	HRESULT			Add_Component();
+
+protected:
 	void			Apply_Billboard();
+	void			Wave(const _float& fTimeDelta);
 
 protected:
 	Engine::CAnimTex* m_pBufferCom;
@@ -44,14 +47,24 @@ protected:
 	virtual void		Free();
 
 public:
-	bool		Get_Active() { return m_bActive; }
+	bool				Get_Active() { return m_bActive; }
 	Engine::ITEMNUM		Get_ItemNum() { return m_eItemNum; }
+
+	// 임시
+	void				Set_Active(bool bActive) { m_bActive = bActive; }
+	void				Set_Drop(bool bDrop) { m_bDrop = bDrop; }
+	void				Set_Use(bool bUse) { m_bUse = bUse; }
+
 protected:
 	int			m_iTextureNumber;
 	float		m_fFirstY;
 	float		m_fTimeAcc;
+	float		m_fSpeed;
+
 	bool		m_bActive;
-	bool		m_bDrop;	// 땅에 있는 상태인지
+	bool		m_bDrop;		// 땅에 떨어진 상태일 때
+	bool		m_bDropSelf;	// 플레이어가 떨궜을때
+	bool		m_bUse;			// 플레이어가 사용중
 
 	STAT		m_tStat;
 	Engine::ITEMNUM		m_eItemNum;

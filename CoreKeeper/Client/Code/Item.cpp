@@ -4,7 +4,7 @@
 #include "Export_Utility.h"
 
 CItem::CItem(LPDIRECT3DDEVICE9 pGraphicDev)
-	: Engine::CGameObject(pGraphicDev), m_iTextureNumber(0), m_fFirstY(0.f), m_fTimeAcc(0.f), m_bActive(true), m_bDrop(false)
+	: Engine::CGameObject(pGraphicDev), m_iTextureNumber(0), m_fFirstY(0.f), m_fTimeAcc(0.f), m_fSpeed(0.5f), m_bActive(true), m_bDrop(false), m_bDropSelf(false), m_bUse(false)
 {
 }
 
@@ -32,16 +32,7 @@ _int CItem::Update_GameObject(const _float& fTimeDelta)
 {
 	if (m_bDrop)
 	{
-		// 둥실거리는 효과를 위한 Y 위치 변동
-		const _float fAmplitude = 0.2f;  // 둥실거리는 높이
-		const _float fFrequency = 3.0f;  // 둥실거리는 속도
-
-		m_fTimeAcc += fTimeDelta;
-
-		float fNewy = m_fFirstY + fAmplitude * sinf(m_fTimeAcc * fFrequency);
-		m_pTransformCom->Set_Pos(m_pTransformCom->m_vInfo->x, fNewy, m_pTransformCom->m_vInfo->z);
-
-		m_pShadowTransformCom->Set_Pos(m_pTransformCom->m_vInfo->x, 0.1f, m_pTransformCom->m_vInfo->z);
+		Wave(fTimeDelta);
 
 		Engine::CCollider* pPlayerCollider = dynamic_cast<Engine::CCollider*>
 			(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Collider"));
@@ -157,6 +148,21 @@ void CItem::Apply_Billboard()
 	D3DXMATRIX matFinal = matScale * matBill * matInverseScale * matWorld;
 
 	m_pTransformCom->Set_WorldMatrix(&matFinal);
+}
+
+void CItem::Wave(const _float& fTimeDelta)
+{
+	m_fTimeAcc += fTimeDelta;
+
+	if (m_fTimeAcc >= 1.0f)
+	{
+		m_fSpeed *= -1;
+		m_fTimeAcc = 0.0f;
+	}
+	_vec3 vUp;
+	m_pTransformCom->Get_Info(INFO_UP, &vUp);
+
+	m_pTransformCom->Move_Pos(&vUp, fTimeDelta, m_fSpeed);
 }
 
 CItem* CItem::Create(LPDIRECT3DDEVICE9 pGraphicDev)

@@ -3,6 +3,7 @@
 
 #include "Export_Utility.h"
 #include "..\Header\UIHealth.h"
+#include "..\Header\Sword.h"
 
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CGameObject(pGraphicDev)
@@ -11,6 +12,7 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	m_eState = STATE_END;
 	m_fSpeed = 5.f;
 	m_fDiagSpeed = sqrt(pow(m_fSpeed, 2) / 2);
+	m_bSwing = false;
 }
 
 CPlayer::~CPlayer()
@@ -28,16 +30,26 @@ HRESULT CPlayer::Ready_GameObject()
 
 _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 {
+	m_pAnimatorCom->Update_Animation();
+	Mouse_Click();
 	if (g_bIsTopCamera)
 	{
-		Mouse_Direction();
-		Key_Position(fTimeDelta);
+		if (!m_bSwing)
+		{
+			Key_Position(fTimeDelta);
+			Mouse_Direction();
+		}
 		Animation_SetUp(m_eState, m_eDir);
 	}
 	else
 	{
-		Key_Position(fTimeDelta);
-		ShoulderView_Control(fTimeDelta);
+		if (!m_bSwing)
+		{
+			Key_Position(fTimeDelta);
+			ShoulderView_Control(fTimeDelta);
+		}
+		else
+			ShoulderView_Swing();
 	}
 
 	CUIHealth* pUI = dynamic_cast<CUIHealth*>
@@ -47,6 +59,7 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 	pUI->Set_Hp(100, 100);
 
 	m_pColliderCom->Update_Collider(m_pTransformCom->Get_WorldMatrix());
+	
 	Add_RenderGroup(RENDER_ALPHA, this);
 
 	return Engine::CGameObject::Update_GameObject(fTimeDelta);
@@ -54,8 +67,6 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 
 void CPlayer::LateUpdate_GameObject()
 {
-	m_pAnimatorCom->Update_Animation();
-
 	Engine::CGameObject::LateUpdate_GameObject();
 }
 
@@ -172,9 +183,19 @@ void CPlayer::Key_Position(const _float& fTimeDelta)
 
 void CPlayer::Mouse_Click()
 {
-	if (Engine::Get_DIMouseState(DIM_LB) & 0x80)
+	if (m_bSwing)
 	{
-
+		if (m_pAnimatorCom->Get_MotionEnd())
+			m_bSwing = false;
+	}
+	else
+	{
+		if (Engine::Get_DIMouseState(DIM_LB) & 0x80)
+		{
+			m_eState = SWING;
+			m_bSwing = true;
+			Swing_Equipment();
+		}
 	}
 }
 
@@ -226,6 +247,14 @@ void CPlayer::Animation_SetUp(STATE st, DIRECTION dir)
 			m_pAnimatorCom->Set_CurState(st, 16, 19, 20);
 		break;
 	case SWING:
+		if (m_eDir == FRONT)
+			m_pAnimatorCom->Set_CurState(st, 20, 20, 20);
+		else if (m_eDir == RIGHT)
+			m_pAnimatorCom->Set_CurState(st, 21, 23, 20);
+		else if (m_eDir == BACK)
+			m_pAnimatorCom->Set_CurState(st, 24, 25, 20);
+		else if (m_eDir == LEFT)
+			m_pAnimatorCom->Set_CurState(st, 26, 28, 20);
 		break;
 	}
 }
@@ -300,11 +329,28 @@ void CPlayer::ShoulderView_Control(const _float& fTimeDelta)
 	{
 		m_eState = IDLE;
 		m_pAnimatorCom->Set_CurState(IDLE, 0, 0, 20);
-		// m_pAnimatorCom->Set_CurState(IDLE, 2, 2, 20);
 	}
 }
 
+void CPlayer::ShoulderView_Swing()
+{
+	m_pAnimatorCom->Set_CurState(SWING, 24, 25, 20);
+}
 
+void CPlayer::Swing_Equipment()
+{
+	m_pWeapon = Get_GameObject(L"Layer_GameLogic", L"Sword");
+	CTransform* weaponTransform = dynamic_cast<CTransform*>(m_pWeapon->Get_Component(ID_DYNAMIC, L"Com_Transform"));
+	CTransform* playerTransform = dynamic_cast<CTransform*>(Get_Component(ID_DYNAMIC, L"Com_Transform"));
+	_vec3 vecPlayerPos;
+	playerTransform->Get_Info(INFO_POS, &vecPlayerPos);
+	weaponTransform->Set_Pos(vecPlayerPos.x, vecPlayerPos.y, vecPlayerPos.z);
+	dynamic_cast<CSword*>(m_pWeapon)->Set_Active(true);
+	dynamic_cast<CSword*>(m_pWeapon)->Set_Drop(false);
+	dynamic_cast<CSword*>(m_pWeapon)->Set_Use(true);
+
+	// m_pWeapon->Get_Component(ID_DYNAMIC, L"")
+}
 
 CPlayer* CPlayer::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 {

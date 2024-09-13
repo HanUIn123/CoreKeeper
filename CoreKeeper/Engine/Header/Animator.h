@@ -14,7 +14,8 @@ public:
 	void			Update_Animation();
 
 	void			Set_CurState(STATE _eCurState, int _iStart, int _iEnd, int _iCount);
-	int				Get_MotionIndex() { return m_tAnim.iMotion; }	
+	int				Get_MotionIndex() { return m_tAnim.iMotion; }
+	bool			Get_MotionEnd() { return m_bMotionEnd; }
 
 public:
 	static CAnimator*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
@@ -25,6 +26,7 @@ private:
 
 private:
 	ANIM	m_tAnim;
+	bool	m_bMotionEnd;
 };
 
 END

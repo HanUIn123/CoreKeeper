@@ -20,7 +20,7 @@ HRESULT CInventory::Ready_Inventory(int _iSlotCount)
 }
 
 
-void CInventory::Add_Item(ITEMNUM _eItemNum)
+void CInventory::Add_Item(ITEMNUM _eItemNum, int _iCount, IDirect3DBaseTexture9* _pItemTexture)
 {
 	if (m_vecItems.size() >= m_iSlotCount)
 	{
@@ -30,13 +30,11 @@ void CInventory::Add_Item(ITEMNUM _eItemNum)
 
 	bool bItemFound = false;
 
-	for (auto map : m_vecItems)
+	for (auto itemInfo : m_vecItems)
 	{
-		auto iter = map.find(_eItemNum);
-
-		if (iter != map.end())
+		if (itemInfo.eItemNum == _eItemNum)
 		{
-			iter->second++;
+			itemInfo.iCount+= _iCount;
 			bItemFound = true;
 			break;
 		}
@@ -44,48 +42,49 @@ void CInventory::Add_Item(ITEMNUM _eItemNum)
 
 	if (!bItemFound)
 	{
-		map<ITEMNUM, int> newItemMap;
-		newItemMap[_eItemNum] = 1;
-		m_vecItems.push_back(newItemMap);
+		ItemInfo newItem;
+		newItem.eItemNum = _eItemNum;
+		newItem.iCount = _iCount;
+		newItem.pItemTexture = _pItemTexture;
 	}
 }
 
 void CInventory::Remove_Item(ITEMNUM _eItemNum)
 {
-	if (m_vecItems.empty())
-	{
-		// 슬롯이 비어 있으면 리턴
-		return;
-	}
+	//if (m_vecItems.empty())
+	//{
+	//	// 슬롯이 비어 있으면 리턴
+	//	return;
+	//}
 
-	auto iter = find_if(m_vecItems.begin(), m_vecItems.end(),
-		[_eItemNum](map<ITEMNUM, int>& itemMap)
-		{
-			return itemMap.find(_eItemNum) != itemMap.end();
-		});
+	//auto iter = find_if(m_vecItems.begin(), m_vecItems.end(),
+	//	[_eItemNum](map<ITEMNUM, int>& itemMap)
+	//	{
+	//		return itemMap.find(_eItemNum) != itemMap.end();
+	//	});
 
-	if (iter != m_vecItems.end())
-	{
-		auto& itemMap = *iter;
-		auto itemIter = itemMap.find(_eItemNum);
+	//if (iter != m_vecItems.end())
+	//{
+	//	auto& itemMap = *iter;
+	//	auto itemIter = itemMap.find(_eItemNum);
 
-		if (itemIter != itemMap.end())
-		{
-			itemIter->second--;
+	//	if (itemIter != itemMap.end())
+	//	{
+	//		itemIter->second--;
 
-			// 개수가 0 이하가 되면 아이템을 맵에서 제거
-			if (itemIter->second <= 0)
-			{
-				itemMap.erase(itemIter);
+	//		// 개수가 0 이하가 되면 아이템을 맵에서 제거
+	//		if (itemIter->second <= 0)
+	//		{
+	//			itemMap.erase(itemIter);
 
-				// 맵이 비어 있으면 벡터에서 제거
-				if (itemMap.empty())
-				{
-					m_vecItems.erase(iter);
-				}
-			}
-		}
-	}
+	//			// 맵이 비어 있으면 벡터에서 제거
+	//			if (itemMap.empty())
+	//			{
+	//				m_vecItems.erase(iter);
+	//			}
+	//		}
+	//	}
+	//}
 }
 
 

@@ -17,6 +17,8 @@ public:
 	HRESULT		Ready_Texture(const _tchar* pPath, TEXTUREID eType, const int& iCnt);
 	void		Set_Texture(const _uint& iIndex = 0);
 
+	IDirect3DBaseTexture9* Get_Texture(_uint _iIndex = 0) { return m_vecTexture[_iIndex]; }
+
 private:
 	vector<IDirect3DBaseTexture9*>			m_vecTexture;
 
