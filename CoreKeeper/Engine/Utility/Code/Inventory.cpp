@@ -46,6 +46,8 @@ void CInventory::Add_Item(ITEMNUM _eItemNum, int _iCount, IDirect3DBaseTexture9*
 		newItem.eItemNum = _eItemNum;
 		newItem.iCount = _iCount;
 		newItem.pItemTexture = _pItemTexture;
+
+		m_vecItems.push_back(newItem);
 	}
 }
 
@@ -85,6 +87,34 @@ void CInventory::Remove_Item(ITEMNUM _eItemNum)
 	//		}
 	//	}
 	//}
+}
+
+bool CInventory::Check_Empty(_int iIndex)
+{
+	if (m_vecItems.empty())
+	{
+		return true;
+	}
+
+	int i = 1;
+
+	// i값이 index값과 같아질 때까지 for문 돌리기
+	for (auto iter : m_vecItems)
+	{
+		if (i == iIndex)
+		{
+			if (iter.iCount == 0)
+			{
+				return true;
+			}
+			else
+				return false;
+		}
+
+		i++;
+	}
+
+	return true;
 }
 
 

@@ -2,6 +2,8 @@
 #include "..\Header\UIScreenInv.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
+#include "Engine_Enum.h"
+#include "..\Header\Item.h"
 
 CUIScreenInv::CUIScreenInv(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CGameObject(pGraphicDev), m_iCurInv(2)
@@ -28,7 +30,7 @@ HRESULT CUIScreenInv::Ready_GameObject(_vec2 vPos, _int _iIndex)
 
 	m_pTransformCom->Set_Pos(x, y, 0);
 
-	_vec2 vSize = { 20.f, 20.f };
+	_vec2 vSize = { 25.f, 25.f };
 
 	m_pTransformCom->m_vScale = { vSize.x, vSize.y, 1.f };
 
@@ -60,12 +62,6 @@ _int CUIScreenInv::Update_GameObject(const _float& fTimeDelta)
 		}
 	}
 
-	Engine::CInventory* pPlayerInv = dynamic_cast<Engine::CInventory*>
-		(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
-	NULL_CHECK_RETURN(pPlayerInv, -1);
-
-	//pPlayerInv->Get_vecItems();
-
 	Add_RenderGroup(RENDER_UI, this);
 
 	return iExit;
@@ -84,24 +80,38 @@ void CUIScreenInv::Render_GameObject()
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
 
-
+	
 	if (m_iCurInv == m_iIndex)
 	{
 		m_pTextureCom->Set_Texture(1);
 	}
 	else
 		m_pTextureCom->Set_Texture();
+		
+	m_pRcTextureCom->Render_Buffer();
 
-	m_pBufferCom->Render_Buffer();
+	Engine::CInventory* pPlayerInv = dynamic_cast<Engine::CInventory*>
+		(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
 
-	m_pItemTextureCom->Set_Texture(0);
+	vector<Engine::CInventory::ItemInfo> vecItem = pPlayerInv->Get_VecItem();
 
-	matWorld._11 = 10.f;
-	matWorld._22 = 10.f;
 
-	m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
+	if (!pPlayerInv->Check_Empty(m_iIndex))
+	{
+		m_pGraphicDev->SetTexture(0, vecItem[m_iIndex - 1].pItemTexture);
 
-	m_pBufferCom->Render_Buffer();
+
+		matWorld._11 = 30.f;
+		matWorld._22 = 30.f;
+
+		matWorld._42 -= 5.f;
+
+		m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
+
+		m_pAnimatorCom->Set_CurState(IDLE, 0, 0, 9);
+
+		m_pBufferCom->Render_Buffer();
+	}
 	
 }
 
@@ -109,17 +119,17 @@ HRESULT CUIScreenInv::Add_Component()
 {
 	CComponent* pComponent = NULL;
 
-	pComponent = m_pBufferCom = dynamic_cast<CRcTex*>(Engine::Clone_Proto(L"Proto_RcTex"));
+	pComponent = m_pRcTextureCom = dynamic_cast<CRcTex*>(Engine::Clone_Proto(L"Proto_RcTex"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
-	m_mapComponent[ID_STATIC].insert({ L"Com_Buffer", pComponent });
+	m_mapComponent[ID_STATIC].insert({ L"Com_RcBuffer", pComponent });
+
+	pComponent = m_pBufferCom = dynamic_cast<CAnimTex*>(Engine::Clone_Proto(L"Proto_SwordAnimTex"));
+	NULL_CHECK_RETURN(pComponent, E_FAIL);
+	m_mapComponent[ID_STATIC].insert({ L"Com_AnimBuffer", pComponent });
 
 	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_UIScreenInvTex"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Texture", pComponent });
-
-	pComponent = m_pItemTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_ItemTex"));
-	NULL_CHECK_RETURN(pComponent, E_FAIL);
-	m_mapComponent[ID_STATIC].insert({ L"Com_UITexture", pComponent });
 
 	pComponent = m_pTransformCom = dynamic_cast<CTransform*>(Engine::Clone_Proto(L"Proto_Transform"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
@@ -128,6 +138,10 @@ HRESULT CUIScreenInv::Add_Component()
 	pComponent = m_pInventoryCom = dynamic_cast<CInventory*>(Engine::Clone_Proto(L"Proto_PlayerInventory"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Inventory", pComponent });
+
+	pComponent = m_pAnimatorCom = dynamic_cast<CAnimator*>(Engine::Clone_Proto(L"Proto_Animator"));
+	NULL_CHECK_RETURN(pComponent, E_FAIL);
+	m_mapComponent[ID_STATIC].insert({ L"Com_Animator", pComponent });
 	return S_OK;
 }
 

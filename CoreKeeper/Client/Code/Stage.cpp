@@ -196,10 +196,9 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
 	
 	pGameObject = CHpDivider::Create(m_pGraphicDev, vPos, vSize, 2);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-
-	/*
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Health_Divider_1", pGameObject), E_FAIL);
 
+	/*
 	pGameObject = CHpDivider::Create(m_pGraphicDev, vPos, vSize, 2);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Health_Divider_2", pGameObject), E_FAIL);
@@ -238,7 +237,7 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_ScreenInv1", pGameObject), E_FAIL);
 
-	vPos = { 383.f, 550.f };
+	vPos = { 410.f, 550.f };
 
 	pGameObject = CUIScreenInv::Create(m_pGraphicDev, vPos, 2);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);

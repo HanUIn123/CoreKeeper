@@ -23,7 +23,8 @@ public:
 	void			Add_Item(ITEMNUM _eItemNum, int _iCount, IDirect3DBaseTexture9* _pItemTexture);
 	void			Remove_Item(ITEMNUM _eItemNum);
 
-	vector<map<ITEMNUM, int>> Get_vecItems() { return m_vecItems; }
+	bool            Check_Empty(_int iIndex);
+	vector<ItemInfo> Get_VecItem()           { return m_vecItems; }
 	_int             Get_Slot()              { return m_iSlotCount; }
 
 public:

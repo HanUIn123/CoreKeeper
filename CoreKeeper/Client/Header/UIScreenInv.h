@@ -8,6 +8,8 @@ class CRcTex;
 class CTransform;
 class CTexture;
 class CInventory;
+class CAnimTex;
+class CAnimator;
 
 END
 
@@ -42,11 +44,13 @@ private:
 	_int m_iCurInv;
 
 private:
-	Engine::CRcTex* m_pBufferCom;
+	Engine::CAnimTex* m_pBufferCom;
 	Engine::CTransform* m_pTransformCom;
 	Engine::CTexture* m_pTextureCom;
-	Engine::CTexture* m_pItemTextureCom;
+//	Engine::CTexture* m_pItemTextureCom;
 	Engine::CInventory* m_pInventoryCom;
+	Engine::CAnimator* m_pAnimatorCom;
+	Engine::CRcTex* m_pRcTextureCom;
 
 public:
 	static CUIScreenInv* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec2 vPos, _int _iIndex);
