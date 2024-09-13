@@ -12,7 +12,7 @@
 
 #include "UIStatus.h"
 #include "UIScreenIcon.h"
-#include "UIHealth.h"
+#include "UIStatusBar.h"
 #include "UIScreenInv.h"
 
 #include "HpDivider.h"
@@ -31,7 +31,7 @@ public:
 	virtual			void			Render_Scene();
 
 public:
-	HRESULT     Create_GameObject(const _tchar* pLayerTag); //, CGameObject* _pObject, const _tchar* pObjectTag
+	HRESULT     Create_GameObject(const _tchar* pLayerTag, _int _iCount, _float _fLength, const _tchar* pKeyTag); 
 
 private:
 	HRESULT		Ready_LightInfo();

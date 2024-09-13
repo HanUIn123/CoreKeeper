@@ -42,7 +42,7 @@ void CStage::Render_Scene()
 
 }
 
-HRESULT CStage::Create_GameObject(const _tchar* pLayerTag) // CGameObject* _pObject, const _tchar* pObjectTag
+HRESULT CStage::Create_GameObject(const _tchar* pLayerTag, _int _iCount, _float _fLength, const _tchar* pKeyTag) 
 {
 	auto	iter = find_if(m_mapLayer.begin(), m_mapLayer.end(), CTag_Finder(pLayerTag));
 
@@ -51,16 +51,12 @@ HRESULT CStage::Create_GameObject(const _tchar* pLayerTag) // CGameObject* _pObj
 
 	Engine::CGameObject* pGameObject = nullptr;
 
-	_vec2 vPos = { 50.f,  50.f };
+	_vec2 vPos = { 0.f + (_iCount * _fLength),  +100.f };
 	_vec2 vSize = { 2.f, 6.f };
-
-
-	wstring string = L"UIHpDivider";
-
 
 	pGameObject = CHpDivider::Create(m_pGraphicDev, vPos, vSize, 0);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(iter->second->Add_GameObject(L"UIHpDivider", pGameObject), E_FAIL);
+	FAILED_CHECK_RETURN(iter->second->Add_GameObject(pKeyTag, pGameObject), E_FAIL);
 
 
 	m_mapLayer.insert({ pLayerTag, iter->second });
@@ -139,8 +135,6 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar* pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Sword", pGameObject), E_FAIL);
 
-
-
 	pGameObject = CSword::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Sword2", pGameObject), E_FAIL);
@@ -193,7 +187,7 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
 	vPos = { 347.f, 50.f };
 	vSize = { 293.f, 9.f };
 
-	pGameObject = CUIHealth::Create(m_pGraphicDev, vPos, vSize, 1);
+	pGameObject = CUIStatusBar::Create(m_pGraphicDev, vPos, vSize, 1);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Health", pGameObject), E_FAIL);
 
@@ -207,7 +201,7 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
 	vPos = { 347.f, 80.f };
 	vSize = { 293.f, 9.f };
 
-	pGameObject = CUIHealth::Create(m_pGraphicDev, vPos, vSize, 4);
+	pGameObject = CUIStatusBar::Create(m_pGraphicDev, vPos, vSize, 4);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Mp", pGameObject), E_FAIL);
 

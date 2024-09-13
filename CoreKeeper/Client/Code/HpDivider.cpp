@@ -2,7 +2,7 @@
 #include "..\Header\HpDivider.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
-#include "..\Header\UIHealth.h"
+#include "..\Header\UIStatusBar.h"
 
 CHpDivider::CHpDivider(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CGameObject(pGraphicDev),  m_bActive(false), m_iCurHp(100), m_iMaxHp(100)
@@ -29,8 +29,7 @@ HRESULT CHpDivider::Ready_GameObject(_vec2 vPos, _vec2 vSize,  _int iIndex)
 
 	m_pTransformCom->m_vScale = { vSize.x, vSize.y , 1.f }; 
 
-	m_pTransformCom->Set_Pos(vPos.x, vPos.y, 0);
-	m_vPos = { x, y };
+	m_pTransformCom->Set_Pos(x, y, 0);
 
 	m_iIndex = iIndex;
 
@@ -46,8 +45,7 @@ _int CHpDivider::Update_GameObject(const _float& fTimeDelta)
 
 void CHpDivider::LateUpdate_GameObject()
 {
-	if (m_bActive)
-	{
+
 		/*
 		CUIHealth* pUI = dynamic_cast<CUIHealth*>
 			(Engine::Get_GameObject(L"Layer_UI", L"UI_Health"));
@@ -58,7 +56,7 @@ void CHpDivider::LateUpdate_GameObject()
 		*/
 
 		Add_RenderGroup(RENDER_UI, this);
-	}
+	
 
 	Engine::CGameObject::LateUpdate_GameObject();
 }

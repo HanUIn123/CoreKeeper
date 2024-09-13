@@ -137,7 +137,7 @@ bool CInventory::Check_Empty(_int iIndex)
 	{
 		if (i == iIndex)
 		{
-			if (iter.iCount == 0)
+			if (iter->Get_Count() == 0)
 			{
 				return true;
 			}

@@ -52,18 +52,6 @@
     <Filter Include="02. GameObject\06. Item">
       <UniqueIdentifier>{f0f24d78-2f89-4492-80aa-02e261414ff4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\07. UI">
-      <UniqueIdentifier>{42cb11e9-7868-48ac-b6ba-82b17192fff5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\07. UI\00. Status">
-      <UniqueIdentifier>{5534ff0c-7767-46ae-a9dd-70bd4ef43f2d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\07. UI\01. UIScreenIcon">
-      <UniqueIdentifier>{10a3a682-7f16-4c4b-91fb-22aec50c9cb8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\07. UI\02. UIHealth">
-      <UniqueIdentifier>{5f789f66-086f-4154-b4fe-59e0c4ace950}</UniqueIdentifier>
-    </Filter>
     <Filter Include="99.Imgui">
       <UniqueIdentifier>{1ae26c7e-6b26-4660-a02d-7cd7eaac8604}</UniqueIdentifier>
     </Filter>
@@ -82,11 +70,23 @@
     <Filter Include="02. GameObject\02. Monster\02. Shaman">
       <UniqueIdentifier>{d3b29687-be3f-49ac-b924-2eb65a269e00}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\07. UI\02. UIHealth\HpDivider">
-      <UniqueIdentifier>{4a8d7bab-fa59-424b-95bd-11cf26cfe01e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\06. Item\00. Sword">
       <UniqueIdentifier>{7fee5be1-2bad-437b-b928-120eaa060638}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\07. UI">
+      <UniqueIdentifier>{42cb11e9-7868-48ac-b6ba-82b17192fff5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\07. UI\00. Status">
+      <UniqueIdentifier>{5534ff0c-7767-46ae-a9dd-70bd4ef43f2d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\07. UI\01. UIScreenIcon">
+      <UniqueIdentifier>{10a3a682-7f16-4c4b-91fb-22aec50c9cb8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\07. UI\02. UIHealth">
+      <UniqueIdentifier>{5f789f66-086f-4154-b4fe-59e0c4ace950}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\07. UI\02. UIHealth\HpDivider">
+      <UniqueIdentifier>{4a8d7bab-fa59-424b-95bd-11cf26cfe01e}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameObject\07. UI\03. UIScreenInv">
       <UniqueIdentifier>{a2f426ca-8dba-448c-93e3-81a22574946a}</UniqueIdentifier>
@@ -147,7 +147,7 @@
     <ClInclude Include="..\Header\UIStatus.h">
       <Filter>02. GameObject\07. UI\00. Status</Filter>
     </ClInclude>
-    <ClInclude Include="..\Header\UIHealth.h">
+    <ClInclude Include="..\Header\UIStatusBar.h">
       <Filter>02. GameObject\07. UI\02. UIHealth</Filter>
     </ClInclude>
     <ClInclude Include="imgui.h">
@@ -242,7 +242,7 @@
     <ClCompile Include="..\Code\UIScreenIcon.cpp">
       <Filter>02. GameObject\07. UI\01. UIScreenIcon</Filter>
     </ClCompile>
-    <ClCompile Include="..\Code\UIHealth.cpp">
+    <ClCompile Include="..\Code\UIStatusBar.cpp">
       <Filter>02. GameObject\07. UI\02. UIHealth</Filter>
     </ClCompile>
     <ClCompile Include="imgui.cpp">

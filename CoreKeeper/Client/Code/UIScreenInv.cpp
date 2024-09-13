@@ -93,13 +93,11 @@ void CUIScreenInv::Render_GameObject()
 	Engine::CInventory* pPlayerInv = dynamic_cast<Engine::CInventory*>
 		(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
 
-	vector<Engine::CInventory::ItemInfo> vecItem = pPlayerInv->Get_VecItem();
-
-
+	vector<CItem*> vecItem = pPlayerInv->Get_VecItem();
+	
 	if (!pPlayerInv->Check_Empty(m_iIndex))
 	{
-		m_pGraphicDev->SetTexture(0, vecItem[m_iIndex - 1].pItemTexture);
-
+		vecItem[m_iIndex - 1]->Get_Texture()->Set_Texture();
 
 		matWorld._11 = 30.f;
 		matWorld._22 = 30.f;
@@ -110,7 +108,7 @@ void CUIScreenInv::Render_GameObject()
 
 		m_pAnimatorCom->Set_CurState(IDLE, 0, 0, 9);
 
-		m_pBufferCom->Render_Buffer();
+		vecItem[m_iIndex - 1]->Get_Buffer()->Render_Buffer();
 	}
 	
 }
@@ -122,10 +120,6 @@ HRESULT CUIScreenInv::Add_Component()
 	pComponent = m_pRcTextureCom = dynamic_cast<CRcTex*>(Engine::Clone_Proto(L"Proto_RcTex"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_RcBuffer", pComponent });
-
-	pComponent = m_pBufferCom = dynamic_cast<CAnimTex*>(Engine::Clone_Proto(L"Proto_SwordAnimTex"));
-	NULL_CHECK_RETURN(pComponent, E_FAIL);
-	m_mapComponent[ID_STATIC].insert({ L"Com_AnimBuffer", pComponent });
 
 	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_UIScreenInvTex"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);

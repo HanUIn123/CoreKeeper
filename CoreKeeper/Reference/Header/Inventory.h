@@ -32,7 +32,7 @@ public:
 	void			Remove_Item(ITEMNUM _eItemNum);
 
 	bool            Check_Empty(_int iIndex);
-	vector<ItemInfo> Get_VecItem()           { return m_vecItems; }
+	vector<CItem*>   Get_VecItem()           { return m_vecItems; }
 	_int             Get_Slot()              { return m_iSlotCount; }
 
 public:

@@ -45,6 +45,9 @@ private:
 
 	void			Swing_Equipment();
 
+	// 손에 든 인벤토리 번호 가져오는 함수
+	_int            Get_iHandNum() { return m_iHandNum; }
+
 private:
 	Engine::CAnimTex*		m_pBufferCom;
 	Engine::CTransform*		m_pTransformCom;
@@ -60,6 +63,8 @@ private:
 	float					m_fSpeed;
 	float					m_fDiagSpeed;
 	bool					m_bSwing;
+
+	_int                    m_iHandNum;
 
 	CGameObject*			m_pWeapon;
 
