@@ -15,6 +15,8 @@ private:
 public:
 	CComponent*			Get_Component(COMPONENTID eID, const _tchar* pLayerTag, const _tchar* pObjTag, const _tchar* pComponentTag);
 	CGameObject*        Get_GameObject(const _tchar* pLayerTag, const _tchar* pObjTag);  // 게임 오브젝트 포인터 찾기용
+	CScene*             Get_Scene() { return m_pScene; }
+
 public:
 	HRESULT				Set_Scene(CScene* pScene);
 

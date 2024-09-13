@@ -2,6 +2,8 @@
 #include "..\Header\UIHealth.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
+#include "..\Header\HpDivider.h"
+#include "..\Header\Stage.h"
 
 CUIHealth::CUIHealth(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CGameObject(pGraphicDev), m_bCollapse(false), m_bExit(false), m_iHp(100), m_iMaxHp(100)
@@ -38,6 +40,8 @@ HRESULT CUIHealth::Ready_GameObject(_vec2 vPos, _vec2 vSize, const _uint iIndex)
 
 	m_iIndex = iIndex;
 
+	m_fLength = _float(m_BRect.right - m_BRect.left);
+
 	return S_OK;
 }
 
@@ -45,25 +49,19 @@ _int CUIHealth::Update_GameObject(const _float& fTimeDelta)
 {
 	_int iExit = Engine::CGameObject::Update_GameObject(fTimeDelta);
 
-	if (m_iIndex == 1) // 체력 바 위에 마우스 커서가 있을시 (체력 바 껍데기 X)
+	POINT pt;
+	GetCursorPos(&pt);
+	ScreenToClient(g_hWnd, &pt);
+
+
+	if (Map_Picked(pt))
 	{
-		POINT pt;
-		GetCursorPos(&pt);
-		ScreenToClient(g_hWnd, &pt);
-
-
-		if (Map_Picked(pt))
-		{
-			m_bCollapse = true;
-		}
-		else
-			m_bCollapse = false;
+		m_bCollapse = true;
 	}
+	else
+		m_bCollapse = false;
 
-	if (m_iIndex == 1) // 렌더 순서 정하기용 (이거 안하면 현재 체력 출력 된 후에 체력 바가 출력 되서 현재 체력이 안 보입니다)
-	{
-		Add_RenderGroup(RENDER_UI, this);
-	}
+	Add_RenderGroup(RENDER_UI, this);
 
 	return iExit;
 }
@@ -72,46 +70,97 @@ void CUIHealth::LateUpdate_GameObject()
 {
 	m_pAnimatorCom->Update_Animation();
 
-	if (m_iIndex == 0)
-	{
-		Add_RenderGroup(RENDER_UI, this);
-	}
-
 	Engine::CGameObject::LateUpdate_GameObject();
 }
 
 void CUIHealth::Render_GameObject()
 {
-	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
+	_matrix matWorld;
+
+	m_pTransformCom->Get_WorldMatrix(&matWorld);
+
+	m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
 
 	m_pBufferCom->Set_Width((m_iHp / m_iMaxHp) * 100.f);
+
 	m_pTextureCom->Set_Texture(m_iIndex);
 
-	if (m_bCollapse)
-	{
-
-		/*
-		string sFront = "체력              ";
-		sFront += to_string(m_iHp);
-
-		string sBack = "/";
-		sBack += to_string(m_iMaxHp);
-		
-		string sTotal = sFront + sBack;
-		const char* cTotal = sTotal.c_str();
-
-
-
-		_tchar tText[128] = ;
-	
-
-		_vec2 pos(125, 400);
-
-		Engine::Render_Font(L"Font_Default", , &pos, D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
-		*/
-	}
-
 	m_pBufferCom->Render_Buffer();
+
+	matWorld._41 -= 3.5f;
+
+	matWorld._11 -= 7.f;
+	matWorld._22 -= 2.25f;
+
+	m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
+
+	m_pTextureCom->Set_Texture(m_iIndex - 1);
+
+	m_pBarBufferCom->Render_Buffer();
+
+	if (m_bCollapse && (m_iIndex - 1)== 0)
+	{
+		std::wstring sFront = L"체력                      " + std::to_wstring(m_iHp);
+
+		wstring sBack = L"/" + std::to_wstring(m_iMaxHp);
+
+		wstring sTotal = sFront + sBack;
+
+		const _tchar* tTotal = sTotal.c_str();
+
+		_vec2 pos(m_BRect.left - 140.f , m_BRect.bottom);
+
+		Engine::Render_Font(L"Font_HP", tTotal, &pos, D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
+	}
+	else if (m_bCollapse && (m_iIndex - 1) == 3)
+	{
+		std::wstring sFront = L"마나                      " + std::to_wstring(m_iHp);
+
+		wstring sBack = L"/" + std::to_wstring(m_iMaxHp);
+
+		wstring sTotal = sFront + sBack;
+
+		const _tchar* tTotal = sTotal.c_str();
+
+		_vec2 pos(m_BRect.left - 140.f, m_BRect.bottom);
+
+		Engine::Render_Font(L"Font_HP", tTotal, &pos, D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
+	}
+}
+
+void CUIHealth::Set_Hp(_int _iMaxHp, _int _iCurHp)
+{
+	m_iMaxHp = _iMaxHp, m_iHp = _iCurHp;
+
+	_int iCount;
+	if (_iCurHp % 25 == 0)
+	{
+		iCount = _iMaxHp / 25;
+	}
+	else
+		iCount = _iMaxHp / 25 + 1;
+
+	for (int i = 0; i < iCount; i++ )
+	{
+	//	CStage* pScene = dynamic_cast<CStage*>(Engine::Get_Scene());
+	//	NULL_CHECK_RETURN(pScene);
+
+	//	pScene->Create_GameObject(L"Layer_UI");
+	}
+	_float _fCurLength = m_fLength / iCount;
+
+	for (int i = 1; i < iCount + 1; i++)
+	{
+		std::wstring string;
+		string = L"UI_Health_Divider_" + std::to_wstring(i);
+
+		CHpDivider* pUI = dynamic_cast<CHpDivider*>(Engine::Get_GameObject(L"Layer_UI", string.c_str()));
+
+		if (pUI)
+		{
+			pUI->Calculate_Pos(_fCurLength * i, _iCurHp, _iMaxHp);
+		}
+	}
 }
 
 HRESULT CUIHealth::Add_Component()
@@ -121,6 +170,10 @@ HRESULT CUIHealth::Add_Component()
 	pComponent = m_pBufferCom = dynamic_cast<CRangeTex*>(Engine::Clone_Proto(L"Proto_UIHealthTexRc"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Buffer", pComponent });
+
+	pComponent = m_pBarBufferCom = dynamic_cast<CRangeTex*>(Engine::Clone_Proto(L"Proto_UIHealthTexRc"));
+	NULL_CHECK_RETURN(pComponent, E_FAIL);
+	m_mapComponent[ID_STATIC].insert({ L"Com_BarBuffer", pComponent });
 
 	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_UIHealthTex"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);

@@ -57,6 +57,10 @@ public:
 	void				Set_Drop(bool bDrop) { m_bDrop = bDrop; }
 	void				Set_Use(bool bUse) { m_bUse = bUse; }
 
+public: // UI에서 가져갈 Component들
+	CAnimTex*          Get_Buffer() { return m_pBufferCom; }
+	CTexture*          Get_Texture() { return m_pTextureCom; }
+
 protected:
 	int			m_iTextureNumber;
 	int			m_iCount;		// 개수
