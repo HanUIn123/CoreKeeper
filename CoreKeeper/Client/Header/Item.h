@@ -51,7 +51,7 @@ public:
 	Engine::ITEMNUM		Get_ItemNum() { return m_eItemNum; }
 	int					Get_Count() { return m_iCount; }
 
-	void				Add_Count(int _iAddCount) { return m_iCount += _iAddCount; }
+	void				Add_Count(int _iAddCount) {m_iCount += _iAddCount; }
 	// юс╫ц
 	void				Set_Active(bool bActive) { m_bActive = bActive; }
 	void				Set_Drop(bool bDrop) { m_bDrop = bDrop; }
