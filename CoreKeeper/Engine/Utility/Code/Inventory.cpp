@@ -19,8 +19,7 @@ HRESULT CInventory::Ready_Inventory(int _iSlotCount)
 	return S_OK;
 }
 
-
-void CInventory::Add_Item(ITEMNUM _eItemNum, int _iCount, IDirect3DBaseTexture9* _pItemTexture)
+void CInventory::Add_Item(CItem* _pItem)
 {
 	if (m_vecItems.size() >= m_iSlotCount)
 	{
@@ -30,30 +29,61 @@ void CInventory::Add_Item(ITEMNUM _eItemNum, int _iCount, IDirect3DBaseTexture9*
 
 	bool bItemFound = false;
 
-	if (_eItemNum > 30)
+	if (_pItem->Get_ItemNum() > 30)
 	{
-		for (auto itemInfo : m_vecItems)
+		for (auto pItem : m_vecItems)
 		{
-			if (itemInfo.eItemNum == _eItemNum)
+			if (pItem->Get_ItemNum() == _pItem->Get_ItemNum())
 			{
-				itemInfo.iCount += _iCount;
+				pItem->Add_Count(_pItem->Get_Count());
 				bItemFound = true;
 				break;
 			}
 		}
 	}
-	
+
 
 	if (!bItemFound)
 	{
-		ItemInfo newItem;
-		newItem.eItemNum = _eItemNum;
-		newItem.iCount = _iCount;
-		newItem.pItemTexture = _pItemTexture;
-
-		m_vecItems.push_back(newItem);
+		m_vecItems.push_back(_pItem);
 	}
 }
+
+
+//void CInventory::Add_Item(ITEMNUM _eItemNum, int _iCount, IDirect3DBaseTexture9* _pItemTexture)
+//{
+//	if (m_vecItems.size() >= m_iSlotCount)
+//	{
+//		// ½½·ÔÀÌ ²Ë Â÷ÀÖÀ¸¸é ¸®ÅÏ
+//		return;
+//	}
+//
+//	bool bItemFound = false;
+//
+//	if (_eItemNum > 30)
+//	{
+//		for (auto itemInfo : m_vecItems)
+//		{
+//			if (itemInfo.eItemNum == _eItemNum)
+//			{
+//				itemInfo.iCount += _iCount;
+//				bItemFound = true;
+//				break;
+//			}
+//		}
+//	}
+//	
+//
+//	if (!bItemFound)
+//	{
+//		ItemInfo newItem;
+//		newItem.eItemNum = _eItemNum;
+//		newItem.iCount = _iCount;
+//		newItem.pItemTexture = _pItemTexture;
+//
+//		m_vecItems.push_back(newItem);
+//	}
+//}
 
 void CInventory::Remove_Item(ITEMNUM _eItemNum)
 {

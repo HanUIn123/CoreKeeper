@@ -1,5 +1,12 @@
 #pragma once
 #include "Component.h"
+#include "../Client/Header/Item.h"
+
+BEGIN(Client)
+
+class CItem;
+
+END
 
 BEGIN(Engine)
 
@@ -20,7 +27,8 @@ private:
 public:
 	HRESULT			Ready_Inventory(int _iSlotCount);
 
-	void			Add_Item(ITEMNUM _eItemNum, int _iCount, IDirect3DBaseTexture9* _pItemTexture);
+	void			Add_Item(CItem* _pItem);
+	//void			Add_Item(ITEMNUM _eItemNum, int _iCount, IDirect3DBaseTexture9* _pItemTexture);
 	void			Remove_Item(ITEMNUM _eItemNum);
 
 	bool            Check_Empty(_int iIndex);
@@ -35,7 +43,8 @@ private:
 	virtual void Free();
 
 private:
-    vector<ItemInfo> m_vecItems;
+	vector<CItem*> m_vecItems;
+    //vector<ItemInfo> m_vecItems;
     int m_iSlotCount;
 };
 

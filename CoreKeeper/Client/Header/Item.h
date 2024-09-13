@@ -49,7 +49,9 @@ protected:
 public:
 	bool				Get_Active() { return m_bActive; }
 	Engine::ITEMNUM		Get_ItemNum() { return m_eItemNum; }
+	int					Get_Count() { return m_iCount; }
 
+	void				Add_Count(int _iAddCount) {m_iCount += _iAddCount; }
 	// 임시
 	void				Set_Active(bool bActive) { m_bActive = bActive; }
 	void				Set_Drop(bool bDrop) { m_bDrop = bDrop; }
@@ -57,6 +59,7 @@ public:
 
 protected:
 	int			m_iTextureNumber;
+	int			m_iCount;		// 개수
 	float		m_fFirstY;
 	float		m_fTimeAcc;
 	float		m_fSpeed;
