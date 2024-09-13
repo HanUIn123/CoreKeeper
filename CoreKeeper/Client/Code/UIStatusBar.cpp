@@ -1,21 +1,21 @@
 #include "pch.h"
-#include "..\Header\UIHealth.h"
+#include "..\Header\UIStatusBar.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
 #include "..\Header\HpDivider.h"
 #include "..\Header\Stage.h"
 
-CUIHealth::CUIHealth(LPDIRECT3DDEVICE9 pGraphicDev)
-	: Engine::CGameObject(pGraphicDev), m_bCollapse(false), m_bExit(false), m_iHp(100), m_iMaxHp(100)
+CUIStatusBar::CUIStatusBar(LPDIRECT3DDEVICE9 pGraphicDev)
+	: Engine::CGameObject(pGraphicDev), m_bCollapse(false), m_bExit(false), m_iHp(100), m_iMaxHp(100), m_iCurHp(0), m_iPreHp(0)
 
 {
 }
 
-CUIHealth::~CUIHealth()
+CUIStatusBar::~CUIStatusBar()
 {
 }
 
-HRESULT CUIHealth::Ready_GameObject(_vec2 vPos, _vec2 vSize, const _uint iIndex)
+HRESULT CUIStatusBar::Ready_GameObject(_vec2 vPos, _vec2 vSize, const _uint iIndex)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
@@ -45,7 +45,7 @@ HRESULT CUIHealth::Ready_GameObject(_vec2 vPos, _vec2 vSize, const _uint iIndex)
 	return S_OK;
 }
 
-_int CUIHealth::Update_GameObject(const _float& fTimeDelta)
+_int CUIStatusBar::Update_GameObject(const _float& fTimeDelta)
 {
 	_int iExit = Engine::CGameObject::Update_GameObject(fTimeDelta);
 
@@ -66,14 +66,14 @@ _int CUIHealth::Update_GameObject(const _float& fTimeDelta)
 	return iExit;
 }
 
-void CUIHealth::LateUpdate_GameObject()
+void CUIStatusBar::LateUpdate_GameObject()
 {
 	m_pAnimatorCom->Update_Animation();
 
 	Engine::CGameObject::LateUpdate_GameObject();
 }
 
-void CUIHealth::Render_GameObject()
+void CUIStatusBar::Render_GameObject()
 {
 	_matrix matWorld;
 
@@ -98,7 +98,7 @@ void CUIHealth::Render_GameObject()
 
 	m_pBarBufferCom->Render_Buffer();
 
-	if (m_bCollapse && (m_iIndex - 1)== 0)
+	if (m_bCollapse && (m_iIndex - 1)== 0) // 체력 마나 표시용
 	{
 		std::wstring sFront = L"체력                      " + std::to_wstring(m_iHp);
 
@@ -128,42 +128,51 @@ void CUIHealth::Render_GameObject()
 	}
 }
 
-void CUIHealth::Set_Hp(_int _iMaxHp, _int _iCurHp)
+void CUIStatusBar::Set_Hp(_int _iMaxHp, _int _iCurHp)
 {
-	m_iMaxHp = _iMaxHp, m_iHp = _iCurHp;
+	m_iMaxHp = _iMaxHp, m_iHp = _iCurHp, m_iCurHp = _iCurHp;
 
-	_int iCount;
-	if (_iCurHp % 25 == 0)
+	if (m_iCurHp != m_iPreHp)
 	{
-		iCount = _iMaxHp / 25;
-	}
-	else
-		iCount = _iMaxHp / 25 + 1;
-
-	for (int i = 0; i < iCount; i++ )
-	{
-	//	CStage* pScene = dynamic_cast<CStage*>(Engine::Get_Scene());
-	//	NULL_CHECK_RETURN(pScene);
-
-	//	pScene->Create_GameObject(L"Layer_UI");
-	}
-	_float _fCurLength = m_fLength / iCount;
-
-	for (int i = 1; i < iCount + 1; i++)
-	{
-		std::wstring string;
-		string = L"UI_Health_Divider_" + std::to_wstring(i);
-
-		CHpDivider* pUI = dynamic_cast<CHpDivider*>(Engine::Get_GameObject(L"Layer_UI", string.c_str()));
-
-		if (pUI)
+		_int iCount;
+		if (_iCurHp % 25 == 0)
 		{
-			pUI->Calculate_Pos(_fCurLength * i, _iCurHp, _iMaxHp);
+			iCount = _iMaxHp / 25;
 		}
+		else
+			iCount = _iMaxHp / 25 + 1;
+
+		_float _fCurLength = m_fLength / iCount;
+
+		wstring string[10];
+
+		for (int i = 0; i < iCount; i++)
+		{
+			string[i] = L"UI_Health_Divider_" + std::to_wstring(i);
+
+			CStage* pScene = dynamic_cast<CStage*>(Engine::Get_Scene());
+			NULL_CHECK_RETURN(pScene);
+
+			pScene->Create_GameObject(L"Layer_UI", i, _fCurLength, string[i].c_str());
+		}
+		/*
+		for (int i = 1; i < iCount + 1; i++)
+		{
+			std::wstring wstring;
+			wstring = L"UI_Health_Divider_" + std::to_wstring(i);
+
+			CHpDivider* pUI = dynamic_cast<CHpDivider*>(Engine::Get_GameObject(L"Layer_UI", wstring.c_str()));
+
+			if (pUI)
+			{
+				pUI->Calculate_Pos(_fCurLength * i, _iCurHp, _iMaxHp);
+			}
+		}*/
 	}
+	m_iPreHp = _iCurHp;
 }
 
-HRESULT CUIHealth::Add_Component()
+HRESULT CUIStatusBar::Add_Component()
 {
 	CComponent* pComponent = NULL;
 
@@ -190,21 +199,21 @@ HRESULT CUIHealth::Add_Component()
 	return S_OK;
 }
 
-CUIHealth* CUIHealth::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec2 vPos, _vec2 vSize, const _uint iIndex)
+CUIStatusBar* CUIStatusBar::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec2 vPos, _vec2 vSize, const _uint iIndex)
 {
-	CUIHealth* pUIHealth = new CUIHealth(pGraphicDev);
+	CUIStatusBar* pUIStatusBar = new CUIStatusBar(pGraphicDev);
 
-	if (FAILED(pUIHealth->Ready_GameObject(vPos, vSize, iIndex)))
+	if (FAILED(pUIStatusBar->Ready_GameObject(vPos, vSize, iIndex)))
 	{
-		Safe_Release(pUIHealth);
+		Safe_Release(pUIStatusBar);
 		MSG_BOX("UIHealth Create Failed");
 		return nullptr;
 	}
 
-	return pUIHealth;
+	return pUIStatusBar;
 }
 
-void CUIHealth::Free()
+void CUIStatusBar::Free()
 {
 	Engine::CGameObject::Free();
 }

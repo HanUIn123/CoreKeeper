@@ -11,11 +11,11 @@ class CAnimator;
 
 END
 
-class CUIHealth : public Engine::CGameObject
+class CUIStatusBar : public Engine::CGameObject
 {
 private:
-	explicit CUIHealth(LPDIRECT3DDEVICE9 pGraphicDev);
-	virtual ~CUIHealth();
+	explicit CUIStatusBar(LPDIRECT3DDEVICE9 pGraphicDev);
+	virtual ~CUIStatusBar();
 
 public:
 	virtual			HRESULT			Ready_GameObject(_vec2 vPos, _vec2 vSize, const _uint iIndex);
@@ -32,6 +32,9 @@ public:
 	_int            Get_MaxHp() { return m_iMaxHp; }
 	_int            Get_CurHp() { return m_iHp; }
 
+	_int            Get_MaxMp() { return m_iMaxHp; }
+	_int            Get_CurMp() { return m_iHp; }
+
 private:
 	HRESULT			Add_Component();
 
@@ -43,6 +46,7 @@ private:
 	_int  m_iIndex;
 
 	_int m_iMaxHp, m_iHp;
+	_int m_iPreHp, m_iCurHp;
 
 	_bool m_bCollapse;
 
@@ -57,7 +61,7 @@ private:
 	Engine::CAnimator* m_pAnimatorCom;
 
 public:
-	static CUIHealth* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec2 vPos, _vec2 vSize, const _uint iIndex);
+	static CUIStatusBar* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec2 vPos, _vec2 vSize, const _uint iIndex);
 
 private:
 	virtual void		Free();
