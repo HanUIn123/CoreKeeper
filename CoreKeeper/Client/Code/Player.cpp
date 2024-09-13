@@ -2,7 +2,7 @@
 #include "..\Header\Player.h"
 
 #include "Export_Utility.h"
-#include "..\Header\UIHealth.h"
+#include "..\Header\UIStatusBar.h"
 #include "..\Header\Sword.h"
 
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -52,7 +52,7 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 			ShoulderView_Swing();
 	}
 
-	CUIHealth* pUI = dynamic_cast<CUIHealth*>
+	CUIStatusBar* pUI = dynamic_cast<CUIStatusBar*>
 		(Engine::Get_GameObject(L"Layer_UI", L"UI_Health"));
 	NULL_CHECK_RETURN(pUI, -1);
 

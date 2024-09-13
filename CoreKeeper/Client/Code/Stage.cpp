@@ -42,6 +42,28 @@ void CStage::Render_Scene()
 
 }
 
+HRESULT CStage::Create_GameObject(const _tchar* pLayerTag, _int _iCount, _float _fLength, const _tchar* pKeyTag) 
+{
+	auto	iter = find_if(m_mapLayer.begin(), m_mapLayer.end(), CTag_Finder(pLayerTag));
+
+	if (iter == m_mapLayer.end())
+		return E_FAIL;
+
+	Engine::CGameObject* pGameObject = nullptr;
+
+	_vec2 vPos = { 0.f + (_iCount * _fLength),  +100.f };
+	_vec2 vSize = { 2.f, 6.f };
+
+	pGameObject = CHpDivider::Create(m_pGraphicDev, vPos, vSize, 0);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(iter->second->Add_GameObject(pKeyTag, pGameObject), E_FAIL);
+
+
+	m_mapLayer.insert({ pLayerTag, iter->second });
+
+	return S_OK;
+}
+
 HRESULT CStage::Ready_LightInfo()
 {
 
@@ -112,6 +134,10 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar* pLayerTag)
 	pGameObject = CSword::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Sword", pGameObject), E_FAIL);
+
+	pGameObject = CSword::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Sword2", pGameObject), E_FAIL);
 	 
 	//pGameObject = CItem::Create(m_pGraphicDev);
 	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
@@ -161,24 +187,43 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
 	vPos = { 347.f, 50.f };
 	vSize = { 293.f, 9.f };
 
-	pGameObject = CUIHealth::Create(m_pGraphicDev, vPos, vSize, 0);
+	pGameObject = CUIStatusBar::Create(m_pGraphicDev, vPos, vSize, 1);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Health", pGameObject), E_FAIL);
 
-	vPos = { 350.f,  50.f };
-	vSize = { 300.f, 12.f };
-
-	pGameObject = CUIHealth::Create(m_pGraphicDev, vPos, vSize, 1);
+	vPos = { 50.f,  50.f };
+	vSize = { 2.f, 6.f };
+	
+	pGameObject = CHpDivider::Create(m_pGraphicDev, vPos, vSize, 2);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Health_bar", pGameObject), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Health_Divider_1", pGameObject), E_FAIL);
 
-	vPos = { 350.f,  50.f };
-	vSize = { 5.f, 10.f };
+	vPos = { 347.f, 80.f };
+	vSize = { 293.f, 9.f };
 
-	pGameObject = CHpDivider::Create(m_pGraphicDev, vPos, vSize, 300.f);
+	pGameObject = CUIStatusBar::Create(m_pGraphicDev, vPos, vSize, 4);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Health_Divider", pGameObject), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Mp", pGameObject), E_FAIL);
 
+	wstring string[10];
+
+	for (int i = 0; i < 10; i++)
+	{
+		vPos = { 230.f + (55.f * i), 550.f };
+
+		string[i] = L"UI_ScreenInv_" + std::to_wstring(i);
+
+		pGameObject = CUIScreenInv::Create(m_pGraphicDev, vPos, i + 1);
+		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		FAILED_CHECK_RETURN(pLayer->Add_GameObject(string[i].c_str(), pGameObject), E_FAIL);
+	}
+/*
+	vPos = { 410.f, 550.f };
+
+	pGameObject = CUIScreenInv::Create(m_pGraphicDev, vPos, 2);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_ScreenInv2", pGameObject), E_FAIL);
+	*/
 	m_mapLayer.insert({ pLayerTag , pLayer });
 
 	return S_OK;

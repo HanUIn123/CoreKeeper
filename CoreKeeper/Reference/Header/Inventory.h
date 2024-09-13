@@ -31,10 +31,14 @@ public:
 	//void			Add_Item(ITEMNUM _eItemNum, int _iCount, IDirect3DBaseTexture9* _pItemTexture);
 	void			Remove_Item(ITEMNUM _eItemNum);
 
+	bool            Check_Empty(_int iIndex);
+	vector<CItem*>   Get_VecItem()           { return m_vecItems; }
+	_int             Get_Slot()              { return m_iSlotCount; }
+
 public:
 	static	CInventory*		Create(LPDIRECT3DDEVICE9 pGraphicDev, int _iSlotCount);
 	virtual CInventory*		Clone();
-
+	
 private:
 	virtual void Free();
 

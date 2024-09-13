@@ -18,6 +18,11 @@ inline CGameObject* Get_GameObject(const _tchar* pLayerTag, const _tchar* pObjTa
 	return CManagement::GetInstance()->Get_GameObject(pLayerTag, pObjTag);
 }
 
+inline CScene* Get_Scene()
+{
+	return CManagement::GetInstance()->Get_Scene();
+}
+
 inline HRESULT Set_Scene(CScene* pScene)
 {
 	return CManagement::GetInstance()->Set_Scene(pScene);

@@ -11,11 +11,11 @@ class CAnimator;
 
 END
 
-class CUIHealth : public Engine::CGameObject
+class CUIStatusBar : public Engine::CGameObject
 {
 private:
-	explicit CUIHealth(LPDIRECT3DDEVICE9 pGraphicDev);
-	virtual ~CUIHealth();
+	explicit CUIStatusBar(LPDIRECT3DDEVICE9 pGraphicDev);
+	virtual ~CUIStatusBar();
 
 public:
 	virtual			HRESULT			Ready_GameObject(_vec2 vPos, _vec2 vSize, const _uint iIndex);
@@ -28,9 +28,12 @@ public:
 		return  ::PtInRect(&m_BRect, _screenPos);
 	}
 
-	void            Set_Hp(_int _iMaxHp, _int _iCurHp) { m_iMaxHp = _iMaxHp, m_iHp = _iCurHp; }
+	void            Set_Hp(_int _iMaxHp, _int _iCurHp);
 	_int            Get_MaxHp() { return m_iMaxHp; }
 	_int            Get_CurHp() { return m_iHp; }
+
+	_int            Get_MaxMp() { return m_iMaxHp; }
+	_int            Get_CurMp() { return m_iHp; }
 
 private:
 	HRESULT			Add_Component();
@@ -43,18 +46,22 @@ private:
 	_int  m_iIndex;
 
 	_int m_iMaxHp, m_iHp;
+	_int m_iPreHp, m_iCurHp;
 
 	_bool m_bCollapse;
 
 	_bool m_bExit;
+
+	_float m_fLength;
 private:
 	Engine::CRangeTex* m_pBufferCom;
+	Engine::CRangeTex* m_pBarBufferCom;
 	Engine::CTransform* m_pTransformCom;
 	Engine::CTexture* m_pTextureCom;
 	Engine::CAnimator* m_pAnimatorCom;
 
 public:
-	static CUIHealth* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec2 vPos, _vec2 vSize, const _uint iIndex);
+	static CUIStatusBar* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec2 vPos, _vec2 vSize, const _uint iIndex);
 
 private:
 	virtual void		Free();
