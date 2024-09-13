@@ -60,6 +60,12 @@ _int CUIScreenInv::Update_GameObject(const _float& fTimeDelta)
 		}
 	}
 
+	Engine::CInventory* pPlayerInv = dynamic_cast<Engine::CInventory*>
+		(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
+	NULL_CHECK_RETURN(pPlayerInv, -1);
+
+	//pPlayerInv->Get_vecItems();
+
 	Add_RenderGroup(RENDER_UI, this);
 
 	return iExit;
@@ -118,6 +124,10 @@ HRESULT CUIScreenInv::Add_Component()
 	pComponent = m_pTransformCom = dynamic_cast<CTransform*>(Engine::Clone_Proto(L"Proto_Transform"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_DYNAMIC].insert({ L"Com_UITransform", pComponent });
+
+	pComponent = m_pInventoryCom = dynamic_cast<CInventory*>(Engine::Clone_Proto(L"Proto_PlayerInventory"));
+	NULL_CHECK_RETURN(pComponent, E_FAIL);
+	m_mapComponent[ID_STATIC].insert({ L"Com_Inventory", pComponent });
 	return S_OK;
 }
 

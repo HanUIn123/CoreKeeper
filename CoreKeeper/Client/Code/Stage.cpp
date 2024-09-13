@@ -42,6 +42,32 @@ void CStage::Render_Scene()
 
 }
 
+HRESULT CStage::Create_GameObject(const _tchar* pLayerTag) // CGameObject* _pObject, const _tchar* pObjectTag
+{
+	auto	iter = find_if(m_mapLayer.begin(), m_mapLayer.end(), CTag_Finder(pLayerTag));
+
+	if (iter == m_mapLayer.end())
+		return E_FAIL;
+
+	Engine::CGameObject* pGameObject = nullptr;
+
+	_vec2 vPos = { 50.f,  50.f };
+	_vec2 vSize = { 2.f, 6.f };
+
+
+	wstring string = L"UIHpDivider";
+
+
+	pGameObject = CHpDivider::Create(m_pGraphicDev, vPos, vSize, 0);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(iter->second->Add_GameObject(L"UIHpDivider", pGameObject), E_FAIL);
+
+
+	m_mapLayer.insert({ pLayerTag, iter->second });
+
+	return S_OK;
+}
+
 HRESULT CStage::Ready_LightInfo()
 {
 
@@ -165,14 +191,13 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Health", pGameObject), E_FAIL);
 
-	vPos = { 47.f,  50.f };
+	vPos = { 50.f,  50.f };
 	vSize = { 2.f, 6.f };
 	
 	pGameObject = CHpDivider::Create(m_pGraphicDev, vPos, vSize, 2);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 
-	//std::wstring string; 
-	//string[i] = L"UI_Health_Divider_" + std::to_wstring(i);
+	/*
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Health_Divider_1", pGameObject), E_FAIL);
 
 	pGameObject = CHpDivider::Create(m_pGraphicDev, vPos, vSize, 2);
@@ -198,7 +223,7 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
 	pGameObject = CHpDivider::Create(m_pGraphicDev, vPos, vSize, 2);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Health_Divider_7", pGameObject), E_FAIL);
-
+	*/
 	vPos = { 347.f, 80.f };
 	vSize = { 293.f, 9.f };
 

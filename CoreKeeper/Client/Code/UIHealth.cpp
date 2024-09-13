@@ -3,6 +3,7 @@
 #include "Export_System.h"
 #include "Export_Utility.h"
 #include "..\Header\HpDivider.h"
+#include "..\Header\Stage.h"
 
 CUIHealth::CUIHealth(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CGameObject(pGraphicDev), m_bCollapse(false), m_bExit(false), m_iHp(100), m_iMaxHp(100)
@@ -60,7 +61,6 @@ _int CUIHealth::Update_GameObject(const _float& fTimeDelta)
 	else
 		m_bCollapse = false;
 
-
 	Add_RenderGroup(RENDER_UI, this);
 
 	return iExit;
@@ -98,28 +98,33 @@ void CUIHealth::Render_GameObject()
 
 	m_pBarBufferCom->Render_Buffer();
 
-	if (m_bCollapse)
+	if (m_bCollapse && (m_iIndex - 1)== 0)
 	{
+		std::wstring sFront = L"체력                      " + std::to_wstring(m_iHp);
 
-		/*
-		string sFront = "체력              ";
-		sFront += to_string(m_iHp);
+		wstring sBack = L"/" + std::to_wstring(m_iMaxHp);
 
-		string sBack = "/";
-		sBack += to_string(m_iMaxHp);
-		
-		string sTotal = sFront + sBack;
-		const char* cTotal = sTotal.c_str();
+		wstring sTotal = sFront + sBack;
 
+		const _tchar* tTotal = sTotal.c_str();
 
+		_vec2 pos(m_BRect.left - 140.f , m_BRect.bottom);
 
-		_tchar tText[128] = ;
-	
+		Engine::Render_Font(L"Font_HP", tTotal, &pos, D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
+	}
+	else if (m_bCollapse && (m_iIndex - 1) == 3)
+	{
+		std::wstring sFront = L"마나                      " + std::to_wstring(m_iHp);
 
-		_vec2 pos(125, 400);
+		wstring sBack = L"/" + std::to_wstring(m_iMaxHp);
 
-		Engine::Render_Font(L"Font_Default", , &pos, D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
-		*/
+		wstring sTotal = sFront + sBack;
+
+		const _tchar* tTotal = sTotal.c_str();
+
+		_vec2 pos(m_BRect.left - 140.f, m_BRect.bottom);
+
+		Engine::Render_Font(L"Font_HP", tTotal, &pos, D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
 	}
 }
 
@@ -135,6 +140,13 @@ void CUIHealth::Set_Hp(_int _iMaxHp, _int _iCurHp)
 	else
 		iCount = _iMaxHp / 25 + 1;
 
+	for (int i = 0; i < iCount; i++ )
+	{
+	//	CStage* pScene = dynamic_cast<CStage*>(Engine::Get_Scene());
+	//	NULL_CHECK_RETURN(pScene);
+
+	//	pScene->Create_GameObject(L"Layer_UI");
+	}
 	_float _fCurLength = m_fLength / iCount;
 
 	for (int i = 1; i < iCount + 1; i++)

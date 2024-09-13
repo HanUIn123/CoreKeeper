@@ -29,13 +29,14 @@ public:
 	void            Calculate_Pos(_float _fCurLength, int _iCurHp, int _iMaxHp);
 
 private:
-	//_int m_iCurHp, m_iMaxHp;
+	_int m_iCurHp, m_iMaxHp;
 	_bool m_bActive;
 
 	//_float m_fLength;
 	_vec2 m_vPos;
 
 	_int m_iIndex;
+
 
 private:
 	Engine::CRcTex* m_pBufferCom;

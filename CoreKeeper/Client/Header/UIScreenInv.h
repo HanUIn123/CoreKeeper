@@ -7,6 +7,7 @@ BEGIN(Engine)
 class CRcTex;
 class CTransform;
 class CTexture;
+class CInventory;
 
 END
 
@@ -45,6 +46,7 @@ private:
 	Engine::CTransform* m_pTransformCom;
 	Engine::CTexture* m_pTextureCom;
 	Engine::CTexture* m_pItemTextureCom;
+	Engine::CInventory* m_pInventoryCom;
 
 public:
 	static CUIScreenInv* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec2 vPos, _int _iIndex);

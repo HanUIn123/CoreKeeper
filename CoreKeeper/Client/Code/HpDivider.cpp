@@ -5,7 +5,7 @@
 #include "..\Header\UIHealth.h"
 
 CHpDivider::CHpDivider(LPDIRECT3DDEVICE9 pGraphicDev)
-	: Engine::CGameObject(pGraphicDev),  m_bActive(false)
+	: Engine::CGameObject(pGraphicDev),  m_bActive(false), m_iCurHp(100), m_iMaxHp(100)
 {
 }
 
@@ -101,19 +101,6 @@ HRESULT CHpDivider::Add_Component()
 
 void CHpDivider::Calculate_Pos(_float _fCurLength, _int _iCurHp, _int _iMaxHp)
 {
-	/*
-	_int iCount;
-	if (_iCurHp % 25 == 0)
-	{
-		iCount = _iMaxHp / 25 ;
-	}
-	else
-		 iCount = _iMaxHp / 25 + 1;
-
-	_float fCurLength = m_fLength / iCount;
-	fCurLength *= iIndex;
-	*/
-
 	m_pTransformCom->Set_Pos(m_vPos.x + _fCurLength , m_vPos.y , 0.f);
 
 	m_bActive = true;

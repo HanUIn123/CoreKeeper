@@ -30,6 +30,9 @@ public:
 	virtual			void			LateUpdate_Scene();
 	virtual			void			Render_Scene();
 
+public:
+	HRESULT     Create_GameObject(const _tchar* pLayerTag); //, CGameObject* _pObject, const _tchar* pObjectTag
+
 private:
 	HRESULT		Ready_LightInfo();
 	HRESULT		Ready_Layer_Environment(const _tchar* pLayerTag);

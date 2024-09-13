@@ -88,6 +88,8 @@ void CInventory::Remove_Item(ITEMNUM _eItemNum)
 	}
 }
 
+
+
 CInventory* CInventory::Create(LPDIRECT3DDEVICE9 pGraphicDev, int _iSlotCount)
 {
 	CInventory* pInventory = new CInventory(pGraphicDev);
