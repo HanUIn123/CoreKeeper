@@ -36,6 +36,7 @@ public:	// 按眉 积己 窃荐
 
 private:	// 按眉 家戈 窃荐
 	virtual		void		Free();
+	bool					m_bSwitch;
 private:
 	bool m_bSampleWindow;
 };

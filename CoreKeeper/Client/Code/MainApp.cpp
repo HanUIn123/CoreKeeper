@@ -2,7 +2,7 @@
 #include "..\Header\MainApp.h"
 #include"../Client/Header/ImguiMgr.h"
 
-CMainApp::CMainApp()
+CMainApp::CMainApp() : m_bSwitch(false)
 {
 }
 
@@ -28,26 +28,27 @@ int CMainApp::Update_MainApp(const float& fTimeDelta)
 
 	CImguiMgr::GetInstance()->ImGui_Tick();
 
-	if (m_bSampleWindow)
-	{
-		ImGui::Begin("Window2", &m_bSampleWindow);
-		ImGui::Text("This is Sample Window");
-		ImGui::End();
-	}
-
 	return 0;
 }
 
 void CMainApp::LateUpdate_MainApp()
 {
-	/*_ulong	Mousemove(0);
-
-	if (Mousemove = Engine::Get_DIMouseMove(DIMS_Z))
-	{
-		int	a = 0;
-	}*/
-
 	m_pManagementClass->LateUpdate_Scene();
+
+	ImGui::Begin("Switch Terrain", NULL, ImGuiWindowFlags_MenuBar);
+
+	ImGui::Checkbox("Switcing Terrain", &m_bSwitch);
+	if (ImGui::Button("Switch!"))
+		m_bSwitch = true;
+	if (ImGui::Button("Switch Off"))
+		m_bSwitch = false;
+
+	if (m_bSwitch)
+		m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
+	else
+		m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
+
+	ImGui::End();
 }
 
 void CMainApp::Render_MainApp()

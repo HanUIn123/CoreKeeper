@@ -91,6 +91,12 @@
     <Filter Include="02. GameObject\07. UI\03. UIScreenInv">
       <UniqueIdentifier>{a2f426ca-8dba-448c-93e3-81a22574946a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\95.MapToolCamera">
+      <UniqueIdentifier>{e01a8bcd-8a96-4be5-9e44-dd9966bb616b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\96.MapToolTerrain">
+      <UniqueIdentifier>{49d3ed79-d51e-4093-b234-1f4869bd570e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -192,8 +198,16 @@
     <ClInclude Include="..\Header\Sword.h">
       <Filter>02. GameObject\06. Item\00. Sword</Filter>
     </ClInclude>
+<<<<<<< HEAD
+    <ClInclude Include="..\Header\MapToolCamera.h">
+      <Filter>02. GameObject\95.MapToolCamera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\MapToolTerrain.h">
+      <Filter>02. GameObject\96.MapToolTerrain</Filter>
+=======
     <ClInclude Include="..\Header\UIScreenInv.h">
       <Filter>02. GameObject\07. UI\03. UIScreenInv</Filter>
+>>>>>>> origin/main
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -281,8 +295,16 @@
     <ClCompile Include="..\Code\Sword.cpp">
       <Filter>02. GameObject\06. Item\00. Sword</Filter>
     </ClCompile>
+<<<<<<< HEAD
+    <ClCompile Include="..\Code\MapToolCamera.cpp">
+      <Filter>02. GameObject\95.MapToolCamera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\MapToolTerrain.cpp">
+      <Filter>02. GameObject\96.MapToolTerrain</Filter>
+=======
     <ClCompile Include="..\Code\UIScreenInv.cpp">
       <Filter>02. GameObject\07. UI\03. UIScreenInv</Filter>
+>>>>>>> origin/main
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
