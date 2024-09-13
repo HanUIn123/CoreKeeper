@@ -14,8 +14,6 @@ CSword::CSword(LPDIRECT3DDEVICE9 pGraphicDev)
 
 	// 아직 몬스터 없으니까 테스트용
 	m_bDrop = true;
-
-
 }
 
 CSword::~CSword()

@@ -46,6 +46,8 @@ void CInventory::Add_Item(ITEMNUM _eItemNum, int _iCount, IDirect3DBaseTexture9*
 		newItem.eItemNum = _eItemNum;
 		newItem.iCount = _iCount;
 		newItem.pItemTexture = _pItemTexture;
+
+		m_vecItems.push_back(newItem);
 	}
 }
 
