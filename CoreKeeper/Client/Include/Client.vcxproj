@@ -153,6 +153,8 @@
     <ClInclude Include="..\Header\Logo.h" />
     <ClInclude Include="..\Header\MainApp.h" />
     <ClInclude Include="..\Header\MapEditorScene.h" />
+    <ClInclude Include="..\Header\MapToolCamera.h" />
+    <ClInclude Include="..\Header\MapToolTerrain.h" />
     <ClInclude Include="..\Header\Monster.h" />
     <ClInclude Include="..\Header\Player.h" />
     <ClInclude Include="..\Header\SkyBox.h" />
@@ -187,6 +189,8 @@
     <ClCompile Include="..\Code\Logo.cpp" />
     <ClCompile Include="..\Code\MainApp.cpp" />
     <ClCompile Include="..\Code\MapEditorScene.cpp" />
+    <ClCompile Include="..\Code\MapToolCamera.cpp" />
+    <ClCompile Include="..\Code\MapToolTerrain.cpp" />
     <ClCompile Include="..\Code\Monster.cpp" />
     <ClCompile Include="..\Code\Player.cpp" />
     <ClCompile Include="..\Code\SkyBox.cpp" />

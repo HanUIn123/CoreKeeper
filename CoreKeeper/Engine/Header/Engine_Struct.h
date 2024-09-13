@@ -24,6 +24,14 @@ namespace Engine
 
 	const _ulong	FVF_TEX = D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_TEX1;
 
+	typedef struct tagMapToolVertexTexure
+	{
+		_vec3		vPosition;
+		_vec2		vTextUV;
+	}VTXTOOLTEX;
+
+	const _ulong FVF_TOOLTEX = D3DFVF_XYZ | D3DFVF_TEX1;
+
 	typedef struct tagVertexCubeTexture
 	{
 		_vec3		vPosition;
