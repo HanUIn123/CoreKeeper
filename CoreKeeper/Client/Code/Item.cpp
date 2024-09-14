@@ -4,7 +4,7 @@
 #include "Export_Utility.h"
 
 CItem::CItem(LPDIRECT3DDEVICE9 pGraphicDev)
-	: Engine::CGameObject(pGraphicDev), m_iTextureNumber(0), m_fFirstY(0.f), m_fTimeAcc(0.f), m_fSpeed(0.5f), m_bActive(true), m_bDrop(false), m_bDropSelf(false), m_bUse(false), m_iCount(1)
+	: Engine::CGameObject(pGraphicDev), m_iTextureNumber(0), m_fFirstY(0.f), m_fTimeAcc(0.f), m_fSpeed(0.5f), m_bActive(true), m_bDrop(false), m_bDropSelf(false), m_bUse(false), m_bSwing(false), m_iCount(1), m_bHasRotated(false), m_fAngle(0.f)
 {
 	m_fWalkYSpeed = 2.4f;
 }
@@ -111,6 +111,10 @@ HRESULT CItem::Add_Component()
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_DYNAMIC].insert({ L"Com_ShadowCom", pComponent });
 
+	pComponent = m_pAnimatorCom = dynamic_cast<CAnimator*>(Engine::Clone_Proto(L"Proto_Animator"));
+	NULL_CHECK_RETURN(pComponent, E_FAIL);
+	m_mapComponent[ID_DYNAMIC].insert({ L"Com_Animator", pComponent });
+
 	pComponent = m_pShadowTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_ShadowTexture"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_DYNAMIC].insert({ L"Com_ShadowTexture", pComponent });
@@ -163,6 +167,52 @@ void CItem::Wave(const _float& fTimeDelta)
 	_vec3 vUp;
 	m_pTransformCom->Get_Info(INFO_UP, &vUp);
 	m_pTransformCom->Move_Pos(&vUp, fTimeDelta, m_fSpeed);
+}
+
+void CItem::Swing(int start, int end, int Count)
+{
+	if (m_bSwing)
+	{
+		if (!m_bHasRotated)
+		{
+			switch (m_eDir)
+			{
+			case FRONT:
+				m_fAngle = -90.f;
+				break;
+			case LEFT:
+				m_fAngle = 180.f;
+				break;
+			case BACK:
+				m_fAngle = 90.f;
+				break;
+			default:
+				m_fAngle = 0.0f;
+			}
+			m_pTransformCom->Rotation(ROT_Z, D3DXToRadian(m_fAngle));
+
+			m_bHasRotated = true;
+		}
+
+		m_pAnimatorCom->Set_CurState(SWING, start, end, Count);
+
+		if (m_pAnimatorCom->Get_MotionEnd())
+		{
+			if (m_bHasRotated)
+			{
+				m_pTransformCom->Rotation(ROT_Z, D3DXToRadian(-m_fAngle));
+				m_fAngle = 0.0f;
+			}
+
+			m_bSwing = false;
+			m_bHasRotated = false;
+		}
+	}
+	else
+	{
+		m_pAnimatorCom->Set_CurState(IDLE, 0, 0, 10);
+		m_bHasRotated = false;
+	}
 }
 
 void CItem::Walk_Equipped(const _float& fTimeDelta)

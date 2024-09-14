@@ -7,6 +7,7 @@ class CAnimTex;
 class CTransform;
 class CTexture;
 class CCollider;
+class CAnimator;
 class CShadowTex;
 
 END
@@ -29,6 +30,7 @@ private:
 protected:
 	void			Apply_Billboard();
 	void			Wave(const _float& fTimeDelta);
+	void			Swing(int start, int end, int Count);
 
 public:
 	void			Walk_Equipped(const _float& fTimeDelta);
@@ -38,6 +40,7 @@ protected:
 	Engine::CTransform* m_pTransformCom;
 	Engine::CTexture* m_pTextureCom;
 	Engine::CCollider* m_pColliderCom;
+	Engine::CAnimator* m_pAnimatorCom;
 
 	Engine::CShadowTex* m_pShadowBufferCom;
 	Engine::CTransform* m_pShadowTransformCom;
@@ -59,6 +62,7 @@ public:
 	void				Set_Active(bool bActive) { m_bActive = bActive; }
 	void				Set_Drop(bool bDrop) { m_bDrop = bDrop; }
 	void				Set_Use(bool bUse) { m_bUse = bUse; }
+	void				Set_Swing(DIRECTION eDir, bool bSwing) { m_eDir = eDir; m_bSwing = bSwing; }
 
 public: // UI에서 가져갈 Component들
 	CAnimTex*          Get_Buffer() { return m_pBufferCom; }
@@ -71,12 +75,16 @@ protected:
 	float		m_fTimeAcc;
 	float		m_fSpeed;
 	float		m_fWalkYSpeed;
+	float		m_fAngle;		// 휘두를때 회전 각도
 
 	bool		m_bActive;
 	bool		m_bDrop;		// 땅에 떨어진 상태일 때
 	bool		m_bDropSelf;	// 플레이어가 떨궜을때
 	bool		m_bUse;			// 플레이어가 사용중
+	bool		m_bSwing;
+	bool		m_bHasRotated;	//Swing에서 회전했는지 안했는지 체크용
 
 	STAT		m_tStat;
 	Engine::ITEMNUM		m_eItemNum;
+	DIRECTION	m_eDir;
 };
