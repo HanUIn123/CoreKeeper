@@ -10,7 +10,7 @@ CMapToolTerrain::CMapToolTerrain(LPDIRECT3DDEVICE9 pGraphicDev)
     , m_pTextureCom(nullptr)
     , m_pCalculatorCom(nullptr)
     , vPickPos(0, 0, 0)
-    , m_iTileImageNum(0)
+    , m_iTerrainImageNum(0)
 {
 }
 
@@ -52,7 +52,7 @@ void CMapToolTerrain::Render_GameObject()
 
     //FAILED_CHECK_RETURN(Setup_Material(), );
 
-    m_pTextureCom->Set_Texture(m_iTileImageNum);
+    m_pTextureCom->Set_Texture(m_iTerrainImageNum);
 
     m_pBufferCom->Render_Buffer();
 
