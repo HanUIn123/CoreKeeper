@@ -5,6 +5,7 @@
 #include "Engine_Define.h"
 
 #include "MapToolTerrain.h"
+#include "Tile.h"
 
 BEGIN(Engine)
 
@@ -31,10 +32,8 @@ private:
 	HRESULT									Ready_Layer_UI(const _tchar* pLayerTag);
 
 
-	void									InClude_GameObject();
-
 public:
-	static	CMapEditorScene* Create(LPDIRECT3DDEVICE9 _pGraphicDeivce);
+	static	CMapEditorScene*				Create(LPDIRECT3DDEVICE9 _pGraphicDeivce);
 
 private:
 	virtual void							Free();
@@ -60,7 +59,21 @@ private:
 	// ImGui 창 위 마우스 존재 판단 bool변수
 	bool									m_bGuiHovered;
 
+public:
+	// Tile Object는 이 함수를 통해 생성.(레이어 / 중복방지 Count -> ex Tile1, Tile2 .. 키값 변경 / 피킹한 MaptoolTerrain의 좌표)
+	HRESULT									Create_TileObject(const _tchar* pLayerTag, _int _iCount, _vec3 _vTilePos);
+
 private:
 	Engine::CGameObject* m_pMTGameObjectCom;
+	Engine::CGameObject* m_pTileCom;
+
+	int										m_iPikingCount;
+	bool									m_bPushed;
+
+	// Picking 가능한 타일 키 값 개수. 현재는 360개
+	wstring									m_wsTileNameString[360];
+	bool									m_bSaved;
+
+	HANDLE									m_hFile;
 };
 

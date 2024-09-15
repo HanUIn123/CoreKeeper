@@ -168,6 +168,7 @@ call CopyUtility.bat</Command>
     <ClCompile Include="..\Code\State.cpp" />
     <ClCompile Include="..\Code\TerrainTex.cpp" />
     <ClCompile Include="..\Code\Texture.cpp" />
+    <ClCompile Include="..\Code\TileTex.cpp" />
     <ClCompile Include="..\Code\Transform.cpp" />
     <ClCompile Include="..\Code\TriCol.cpp" />
     <ClCompile Include="..\Code\VIBuffer.cpp" />
@@ -199,6 +200,7 @@ call CopyUtility.bat</Command>
     <ClInclude Include="..\..\Header\State.h" />
     <ClInclude Include="..\..\Header\TerrainTex.h" />
     <ClInclude Include="..\..\Header\Texture.h" />
+    <ClInclude Include="..\..\Header\TileTex.h" />
     <ClInclude Include="..\..\Header\Transform.h" />
     <ClInclude Include="..\..\Header\TriCol.h" />
     <ClInclude Include="..\..\Header\VIBuffer.h" />

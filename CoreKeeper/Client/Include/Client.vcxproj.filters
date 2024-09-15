@@ -97,6 +97,9 @@
     <Filter Include="02. GameObject\96.MapToolTerrain">
       <UniqueIdentifier>{49d3ed79-d51e-4093-b234-1f4869bd570e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\93.Tile">
+      <UniqueIdentifier>{8d077375-37b3-4c59-a14c-a58958b5d20c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -203,9 +206,12 @@
     </ClInclude>
     <ClInclude Include="..\Header\MapToolTerrain.h">
       <Filter>02. GameObject\96.MapToolTerrain</Filter>
-	</ClInclude>
-	<ClInclude Include="..\Header\UIScreenInv.h">
+    </ClInclude>
+    <ClInclude Include="..\Header\UIScreenInv.h">
       <Filter>02. GameObject\07. UI\03. UIScreenInv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\Tile.h">
+      <Filter>02. GameObject\93.Tile</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -298,9 +304,12 @@
     </ClCompile>
     <ClCompile Include="..\Code\MapToolTerrain.cpp">
       <Filter>02. GameObject\96.MapToolTerrain</Filter>
-	</ClCompile>
-	<ClCompile Include="..\Code\UIScreenInv.cpp">
+    </ClCompile>
+    <ClCompile Include="..\Code\UIScreenInv.cpp">
       <Filter>02. GameObject\07. UI\03. UIScreenInv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Tile.cpp">
+      <Filter>02. GameObject\93.Tile</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
