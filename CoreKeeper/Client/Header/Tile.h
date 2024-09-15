@@ -15,18 +15,21 @@ END
 class CTile : public Engine::CGameObject
 {
 private:
-	explicit CTile(LPDIRECT3DDEVICE9 pGraphicDev);
-	virtual ~CTile();
+	explicit															CTile(LPDIRECT3DDEVICE9 pGraphicDev);
+	virtual																~CTile();
 
 public:
-	virtual			HRESULT			Ready_GameObject(_vec3 _tilePos);
-	virtual			_int			Update_GameObject(const _float& fTimeDelta);
-	virtual			void			LateUpdate_GameObject();
-	virtual			void			Render_GameObject();
+	virtual			HRESULT												Ready_GameObject(_vec3 _tilePos);
+	virtual			_int												Update_GameObject(const _float& fTimeDelta);
+	virtual			void												LateUpdate_GameObject();
+	virtual			void												Render_GameObject();
+
+	_int																Get_TileNumber() { return m_iTileImageNum; }
+	void																Set_TileNumber(_int _iTileNum) { m_iTileImageNum = _iTileNum; }
 
 private:
-	HRESULT							Add_Component();
-	_vec3							Picking_OnTerrain();
+	HRESULT																Add_Component();
+	_vec3																Picking_OnTerrain();
 private:
 	Engine::CTransform* m_pTransformCom;
 	Engine::CTexture* m_pTextureCom;
@@ -39,11 +42,12 @@ public:
 	static CTile* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 _vTilePos);
 
 private:
-	virtual void		Free();
+	virtual void														Free();
+
+	_vec3																m_vTilePosition;
+	_int																m_iTileImageNum;
 
 
-
-	_vec3				m_vTilePosition;
 };
 
 

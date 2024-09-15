@@ -33,7 +33,7 @@ private:
 
 
 public:
-	static	CMapEditorScene*				Create(LPDIRECT3DDEVICE9 _pGraphicDeivce);
+	static	CMapEditorScene* Create(LPDIRECT3DDEVICE9 _pGraphicDeivce);
 
 private:
 	virtual void							Free();
@@ -42,17 +42,23 @@ public:
 	// ImGui 기초 세팅 함수
 	void									Show_ImguiWindow();
 	void									Setting_Menu();
+	void									Setting_TerrainList();
 	void									Setting_TileList();
 
 	// Tile 이미지 등록.
+	HRESULT									Resister_TerrainImage_ImGui(LPDIRECT3DDEVICE9 _pGraphicDeivce, const _tchar* _ImageFilePath, TEXTUREID _eTextureId, const int& _iImageNumber);
 	HRESULT									Resister_TileImage_ImGui(LPDIRECT3DDEVICE9 _pGraphicDeivce, const _tchar* _ImageFilePath, TEXTUREID _eTextureId, const int& _iImageNumber);
 
 	// 일단 만들어 둠. (아직은 안씀)
 	void									Set_Texture(const _uint& iIndex = 0);
 
 private:
-	vector<IDirect3DBaseTexture9*>			m_vecTexture;
-	LPDIRECT3DTEXTURE9						m_TextureInfo = NULL;
+	vector<IDirect3DBaseTexture9*>			m_vecTerrainTexture;
+	vector<IDirect3DBaseTexture9*>			m_vecTileTexture;
+
+	LPDIRECT3DTEXTURE9						m_TerrainTextureInfo = NULL;
+	LPDIRECT3DTEXTURE9						m_TileTextureInfo = NULL;
+
 	D3DXIMAGE_INFO							m_tImageInfo;
 
 

@@ -47,7 +47,7 @@ HRESULT CTileTex::Ready_Buffer(const _ulong& dwCntX, const _ulong& dwCntZ, const
 
             pVertex[dwIndex].vPosition = _vec3(_float(j) * dwVtxItv, 0.f, _float(i) * dwVtxItv);
 
-            pVertex[dwIndex].vTextUV = _vec2(_float(j) / (dwCntX - 1) * 50.0f, _float(i) / (dwCntZ - 1) * 50.0f);
+            pVertex[dwIndex].vTextUV = _vec2(_float(j) / (dwCntX - 1), _float(i) / (dwCntZ - 1));
         }
     }
 

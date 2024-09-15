@@ -24,8 +24,8 @@ public:
 	virtual			void								Render_GameObject();
 
 	_vec3												Get_PikingPos() { return Picking_OnTerrain(); }
-	_int												Get_TileNumber() { return m_iTileImageNum; }
-	void												Set_TileNumber(_int _iTileNum) { m_iTileImageNum = _iTileNum; }
+	_int												Get_TerrainNumber() { return m_iTerrainImageNum; }
+	void												Set_TerrainNumber(_int _iTerrainNum) { m_iTerrainImageNum = _iTerrainNum; }
 
 
 private:
@@ -34,18 +34,18 @@ private:
 	_vec3												Picking_OnTerrain();
 
 private:
-	Engine::CMapToolTex*								m_pBufferCom;
-	Engine::CTransform*									m_pTransformCom;
-	Engine::CTexture*									m_pTextureCom;
-	Engine::CCalculator*								m_pCalculatorCom;
+	Engine::CMapToolTex* m_pBufferCom;
+	Engine::CTransform* m_pTransformCom;
+	Engine::CTexture* m_pTextureCom;
+	Engine::CCalculator* m_pCalculatorCom;
 
 public:
-	static CMapToolTerrain*								Create(LPDIRECT3DDEVICE9 pGraphicDev);
+	static CMapToolTerrain* Create(LPDIRECT3DDEVICE9 pGraphicDev);
 
 private:
 	virtual void										Free();
 
 	_vec3												vPickPos;
-	_int												m_iTileImageNum;
+	_int												m_iTerrainImageNum;
 };
 

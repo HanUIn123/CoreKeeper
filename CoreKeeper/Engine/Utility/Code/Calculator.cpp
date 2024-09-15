@@ -85,7 +85,7 @@ _vec3 CCalculator::Picking_OnTerrain(HWND _hWnd, CMapToolTex* _pMapToolBufferCom
 				x1 = pMapToolTerrainTexPos[dwVtxId[1]].x + fU * (pMapToolTerrainTexPos[dwVtxId[2]].x - pMapToolTerrainTexPos[dwVtxId[1]].x);
 				z1 = pMapToolTerrainTexPos[dwVtxId[1]].z + fV * (pMapToolTerrainTexPos[dwVtxId[0]].z - pMapToolTerrainTexPos[dwVtxId[1]].z);
 
-				return _vec3(x1, 0.f, z1);
+				return _vec3(x1 - 1, 0.f, z1 - 1);
 			}
 
 			// ¿ÞÂÊ ¾Æ·¡
