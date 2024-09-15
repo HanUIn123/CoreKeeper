@@ -13,6 +13,7 @@
 #include "AnimTex.h"
 #include "ShadowTex.h"
 #include "MapToolTex.h"
+#include "TileTex.h"
 
 #include "Texture.h"
 #include "ShadowTex.h"

@@ -4,7 +4,15 @@
 #include "Export_System.h"
 #include "../Header/MapToolCamera.h"
 
-CMapEditorScene::CMapEditorScene(LPDIRECT3DDEVICE9 _pGraphicDevice) : Engine::CScene(_pGraphicDevice), m_bGuiHovered(false), m_pMTGameObjectCom(nullptr)
+CMapEditorScene::CMapEditorScene(LPDIRECT3DDEVICE9 _pGraphicDevice)
+    : Engine::CScene(_pGraphicDevice)
+    , m_bGuiHovered(false)
+    , m_pMTGameObjectCom(nullptr)
+    , m_iPikingCount(0)
+    , m_pTileCom(nullptr)
+    , m_bPushed(false)
+    , m_bSaved(false)
+
 {
     ZeroMemory(&m_tImageInfo, sizeof(D3DXIMAGE_INFO));
 
@@ -51,14 +59,34 @@ _int CMapEditorScene::Update_Scene(const _float& fTimeDelta)
 {
     _int	iExit = Engine::CScene::Update_Scene(fTimeDelta);
 
+    if (Engine::Get_DIMouseState(DIM_LB) & 0x80)
+    {
+        m_bPushed = true;
+    }
+    if (!(Engine::Get_DIMouseState(DIM_LB) & 0x80) && m_bPushed)
+    {
+        m_iPikingCount++;
 
+        Create_TileObject(L"Layer_GameLogic", m_iPikingCount, dynamic_cast<CMapToolTerrain*>(m_pMTGameObjectCom)->Get_PikingPos());
+        m_bPushed = false;
+    }
+
+    // 나중에 Save기능 추가해서 변경 예정.
+    //if (Engine::Get_DIKeyState(DIK_V) & 0x80)
+    //{
+    //    m_bSaved = true;
+    //}
+    //if (!(Engine::Get_DIKeyState(DIK_V) & 0x80) && m_bSaved)
+    //{
+    //    //Save_MapFile();
+    //    m_bSaved = false;
+    //}
 
     return iExit;
 }
 
 void CMapEditorScene::LateUpdate_Scene()
 {
-
     Engine::CScene::LateUpdate_Scene();
 }
 
@@ -96,11 +124,8 @@ HRESULT CMapEditorScene::Ready_Layer_GameLogic(const _tchar* pLayerTag)
     Engine::CLayer* pLayer = CLayer::Create();
     NULL_CHECK_RETURN(pLayer, E_FAIL);
 
-    m_pMTGameObjectCom = nullptr;
-
     m_pMTGameObjectCom = CMapToolTerrain::Create(m_pGraphicDev);
     NULL_CHECK_RETURN(m_pMTGameObjectCom, E_FAIL);
-
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"MapToolTerrain", m_pMTGameObjectCom), E_FAIL);
 
     m_mapLayer.insert({ pLayerTag , pLayer });
@@ -118,11 +143,6 @@ HRESULT CMapEditorScene::Ready_Layer_UI(const _tchar* pLayerTag)
     return S_OK;
 }
 
-void CMapEditorScene::InClude_GameObject()
-{
-
-}
-
 CMapEditorScene* CMapEditorScene::Create(LPDIRECT3DDEVICE9 _pGraphicDeivce)
 {
     CMapEditorScene* pMapEditorScene = new CMapEditorScene(_pGraphicDeivce);
@@ -135,11 +155,6 @@ CMapEditorScene* CMapEditorScene::Create(LPDIRECT3DDEVICE9 _pGraphicDeivce)
     }
 
     return pMapEditorScene;
-}
-
-void CMapEditorScene::Free()
-{
-    Engine::CScene::Free();
 }
 
 void CMapEditorScene::Show_ImguiWindow()
@@ -222,7 +237,6 @@ void CMapEditorScene::Setting_TileList()
         {
             if (ImGui::ImageButton("Tile", m_vecTexture[i], ImVec2(50.0f, 50.0f)))
             {
-                //dynamic_cast<CWireTerrain*>(pGameObject)->Set_TileNumber(i);
                 dynamic_cast<CMapToolTerrain*>(m_pMTGameObjectCom)->Set_TileNumber(i);
             }
         }
@@ -260,4 +274,28 @@ void CMapEditorScene::Set_Texture(const _uint& iIndex)
         return;
 
     m_pGraphicDev->SetTexture(0, m_vecTexture[iIndex]);
+}
+
+HRESULT CMapEditorScene::Create_TileObject(const _tchar* pLayerTag, _int _iCount, _vec3 _vTilePos)
+{
+    auto	iter = find_if(m_mapLayer.begin(), m_mapLayer.end(), CTag_Finder(pLayerTag));
+
+    if (iter == m_mapLayer.end())
+        return E_FAIL;
+
+    m_pTileCom = CTile::Create(m_pGraphicDev, _vTilePos);
+    NULL_CHECK_RETURN(m_pTileCom, E_FAIL);
+
+    m_wsTileNameString[_iCount] = L"Tile_" + std::to_wstring(_iCount);
+
+    FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsTileNameString[_iCount].c_str(), m_pTileCom), E_FAIL);
+
+    m_mapLayer.insert({ pLayerTag, iter->second });
+
+    return S_OK;
+}
+
+void CMapEditorScene::Free()
+{
+    Engine::CScene::Free();
 }

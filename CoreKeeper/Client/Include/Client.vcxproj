@@ -162,6 +162,7 @@
     <ClInclude Include="..\Header\Stage.h" />
     <ClInclude Include="..\Header\Sword.h" />
     <ClInclude Include="..\Header\Terrain.h" />
+    <ClInclude Include="..\Header\Tile.h" />
     <ClInclude Include="..\Header\UIStatusBar.h" />
     <ClInclude Include="..\Header\UIScreenIcon.h" />
     <ClInclude Include="..\Header\UIScreenInv.h" />
@@ -199,6 +200,7 @@
     <ClCompile Include="..\Code\Stage.cpp" />
     <ClCompile Include="..\Code\Sword.cpp" />
     <ClCompile Include="..\Code\Terrain.cpp" />
+    <ClCompile Include="..\Code\Tile.cpp" />
     <ClCompile Include="..\Code\UIStatusBar.cpp" />
     <ClCompile Include="..\Code\UIScreenIcon.cpp" />
     <ClCompile Include="..\Code\UIScreenInv.cpp" />

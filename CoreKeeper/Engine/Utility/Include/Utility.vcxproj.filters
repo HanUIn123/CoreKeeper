@@ -100,6 +100,9 @@
     <Filter Include="04. Component\00. VIBuffer\99.MapToolTex">
       <UniqueIdentifier>{f91e46fe-c0b6-4c16-a371-e3529391931a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04. Component\00. VIBuffer\97.TileTex">
+      <UniqueIdentifier>{132b9cb0-c60d-4ade-995a-7b940c9be1f6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Code\Scene.cpp">
@@ -185,6 +188,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\MapToolTex.cpp">
       <Filter>04. Component\00. VIBuffer\99.MapToolTex</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\TileTex.cpp">
+      <Filter>04. Component\00. VIBuffer\97.TileTex</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -274,6 +280,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Header\MapToolTex.h">
       <Filter>04. Component\00. VIBuffer\99.MapToolTex</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Header\TileTex.h">
+      <Filter>04. Component\00. VIBuffer\97.TileTex</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
