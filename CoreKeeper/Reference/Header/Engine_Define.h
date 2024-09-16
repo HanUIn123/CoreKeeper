@@ -19,6 +19,14 @@
 #include "Engine_Typedef.h"
 #include "Engine_Function.h"
 
+// »ç¿îµå
+#include "FMOD/fmod.h"
+#include "FMOD/fmod.hpp"
+#pragma comment(lib, "fmod_vc.lib")
+
+#include <io.h>
+#include <iostream>
+
 #define DIRECTINPUT_VERSION	0x0800
 #include <dinput.h>
 

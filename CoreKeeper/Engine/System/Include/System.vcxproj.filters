@@ -40,6 +40,9 @@
     <Filter Include="03. FontMgr\Font">
       <UniqueIdentifier>{0d414aa2-4538-498c-a7d8-5caf5b00f805}</UniqueIdentifier>
     </Filter>
+    <Filter Include="05. SoundMgr">
+      <UniqueIdentifier>{d6553d0d-aa25-4d77-954d-97cc7b42d7aa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Code\GraphicDev.cpp">
@@ -65,6 +68,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\MyFont.cpp">
       <Filter>03. FontMgr\Font</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Utility\Code\SoundMgr.cpp">
+      <Filter>05. SoundMgr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -94,6 +100,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Header\MyFont.h">
       <Filter>03. FontMgr\Font</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Header\SoundMgr.h">
+      <Filter>05. SoundMgr</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

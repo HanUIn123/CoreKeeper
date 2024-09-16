@@ -5,7 +5,7 @@
 #include "FrameMgr.h"
 #include "FontMgr.h"
 #include "InputDev.h"
-
+#include "SoundMgr.h"
 
 BEGIN(Engine)
 
@@ -43,6 +43,17 @@ inline _byte	Get_DIMouseState(MOUSEKEYSTATE eMouse);
 inline _long	Get_DIMouseMove(MOUSEMOVESTATE eMouseState);
 inline HRESULT Ready_InputDev(HINSTANCE hInst, HWND hWnd);
 inline void	Update_InputDev(void);
+
+
+// SoundMgr
+inline	HRESULT Ready_Sound();
+
+inline	void Play(const TCHAR* pSoundKey, CHANNELID eID, float fVolume);
+inline	void PlayBGM(const TCHAR* pSoundKey, float fVolume);
+inline	void PlayBGMOnce(const TCHAR* pSoundKey, CHANNELID eID, float fVolume);
+inline	void StopSound(CHANNELID eID);
+inline	void StopAll();
+inline	void SetChannelVolume(CHANNELID eID, float fVolume);
 
 inline void		Release_System();
 

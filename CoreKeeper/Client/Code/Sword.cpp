@@ -33,6 +33,8 @@ HRESULT CSword::Ready_GameObject()
 	// 원래의 Y 위치 저장
 	m_fFirstY = m_pTransformCom->m_vInfo->y + 0.7f;
 
+	m_pAnimatorCom->Set_CurState(IDLE, 0, 0, 3);
+
 	return S_OK;
 }
 

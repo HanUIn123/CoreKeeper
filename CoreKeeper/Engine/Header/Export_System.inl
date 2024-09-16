@@ -72,9 +72,44 @@ void	Update_InputDev(void)
 	CInputDev::GetInstance()->Update_InputDev();
 }
 
+HRESULT Ready_Sound()
+{
+	CSoundMgr::GetInstance()->Ready_Sound();
+}
+
+void Play(const TCHAR* pSoundKey, CHANNELID eID, float fVolume)
+{
+	CSoundMgr::GetInstance()->Play(pSoundKey, eID, fVolume);
+}
+
+void PlayBGM(const TCHAR* pSoundKey, float fVolume)
+{
+	CSoundMgr::GetInstance()->PlayBGM(pSoundKey, fVolume);
+}
+
+void PlayBGMOnce(const TCHAR* pSoundKey, CHANNELID eID, float fVolume)
+{
+	CSoundMgr::GetInstance()->PlayBGMOnce(pSoundKey, eID, fVolume);
+}
+
+void StopSound(CHANNELID eID)
+{
+	CSoundMgr::GetInstance()->StopSound(eID);
+}
+void StopAll()
+{
+	CSoundMgr::GetInstance()->StopAll();
+}
+
+void SetChannelVolume(CHANNELID eID, float fVolume)
+{
+	CSoundMgr::GetInstance()->SetChannelVolume(eID, fVolume);
+}
+
 void		Release_System()
 {
 	CInputDev::GetInstance()->DestroyInstance();
+	CSoundMgr::GetInstance()->DestroyInstance();
 	CFontMgr::GetInstance()->DestroyInstance();
 	CFrameMgr::GetInstance()->DestroyInstance();
 	CTimerMgr::GetInstance()->DestroyInstance();
