@@ -123,6 +123,10 @@
       <AdditionalDependencies>d3d9.lib;d3dx9.lib;dxguid.lib;System.lib;Utility.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>../../Reference/Library</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>cd /d $(SolutionDir)
+call Copy.bat</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -163,6 +167,7 @@
     <ClInclude Include="..\Header\Terrain.h" />
     <ClInclude Include="..\Header\UICursor.h" />
     <ClInclude Include="..\Header\UIInventory.h" />
+    <ClInclude Include="..\Header\Tile.h" />
     <ClInclude Include="..\Header\UIStatusBar.h" />
     <ClInclude Include="..\Header\UIScreenIcon.h" />
     <ClInclude Include="..\Header\UIScreenInv.h" />
@@ -199,6 +204,7 @@
     <ClCompile Include="..\Code\Stage.cpp" />
     <ClCompile Include="..\Code\Sword.cpp" />
     <ClCompile Include="..\Code\Terrain.cpp" />
+    <ClCompile Include="..\Code\Tile.cpp" />
     <ClCompile Include="..\Code\UICursor.cpp" />
     <ClCompile Include="..\Code\UIInventory.cpp" />
     <ClCompile Include="..\Code\UIStatusBar.cpp" />

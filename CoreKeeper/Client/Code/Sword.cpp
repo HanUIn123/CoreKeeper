@@ -38,12 +38,16 @@ HRESULT CSword::Ready_GameObject()
 
 _int CSword::Update_GameObject(const _float& fTimeDelta)
 {
+	m_pAnimatorCom->Update_Animation();
+
 	_vec3 vPos;
 	m_pTransformCom->Get_Info(INFO_POS, &vPos);
 	m_pShadowTransformCom->Set_Pos(vPos.x, 0.1f, vPos.z);
 
 	if (m_bUse)
 	{
+		Swing(0, 3, 10);
+
 		m_bActive = true;
 		m_bDrop = false;
 		m_pTransformCom->Set_Scale(1.5f, 1.5f, 1.5f);
@@ -92,7 +96,9 @@ void CSword::Render_GameObject()
 	m_pColliderCom->Update_Collider(m_pTransformCom->Get_WorldMatrix());
 
 	m_pTextureCom->Set_Texture(m_iTextureNumber);
-	
+
+	m_pBufferCom->Set_Index(m_pAnimatorCom->Get_MotionIndex());
+
 	if (m_bActive)
 	{
 		m_pBufferCom->Render_Buffer();
@@ -135,6 +141,10 @@ HRESULT CSword::Add_Component()
 	pComponent = m_pColliderCom = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Proto_ItemCollider"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_DYNAMIC].insert({ L"Com_Collider", pComponent });
+
+	pComponent = m_pAnimatorCom = dynamic_cast<CAnimator*>(Engine::Clone_Proto(L"Proto_Animator"));
+	NULL_CHECK_RETURN(pComponent, E_FAIL);
+	m_mapComponent[ID_DYNAMIC].insert({ L"Com_Animator", pComponent });
 
 	pComponent = m_pShadowBufferCom = dynamic_cast<CShadowTex*>(Engine::Clone_Proto(L"Proto_ShadowTex"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);

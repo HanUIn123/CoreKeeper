@@ -50,9 +50,20 @@ void CVIBuffer::Render_Buffer()
 
 	m_pGraphicDev->SetFVF(m_dwFVF);
 
-	//m_pGraphicDev->DrawPrimitive(D3DPT_LINELIST, 0, m_dwTriCnt);
-
 	m_pGraphicDev->SetIndices(m_pIB);
+	// DrawIndexedPrimitive: 
+	// ( 그릴 모형 타입 / 정점 버퍼 내에서 시작 정점의 인덱스 / 사용할 최소 정점 인덱스 / 
+	// 그릴 정점의 개수 / 인덱스 버퍼에서 시작할 위치 / 그릴 모형 갯수  
+
+	//m_pGraphicDev->SetTexture(0, NULL);
+	//m_pGraphicDev->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, 4, 0, 2);
+
+	// 0,0,0 쪽 사각형이 빠진 채의 모양.ㅇ 
+	//m_pGraphicDev->SetTexture(0, NULL);
+	//m_pGraphicDev->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 2, m_dwVtxCnt - 4, 6, m_dwTriCnt / m_dwTriCnt);
+
+	//m_pGraphicDev->SetTexture(0, NULL);
+
 	m_pGraphicDev->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, m_dwVtxCnt, 0, m_dwTriCnt);
 }
 

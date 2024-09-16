@@ -91,7 +91,7 @@
     <Filter Include="02. GameObject\96.MapToolTerrain">
       <UniqueIdentifier>{49d3ed79-d51e-4093-b234-1f4869bd570e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\07. UI\04. Cursor">
+	  <Filter Include="02. GameObject\07. UI\04. Cursor">
       <UniqueIdentifier>{612cb866-c093-4ab6-8e82-fea3e30611ac}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameObject\07. UI\05. MiniMap">
@@ -99,6 +99,9 @@
     </Filter>
     <Filter Include="02. GameObject\07. UI\02. UIStatus">
       <UniqueIdentifier>{5f789f66-086f-4154-b4fe-59e0c4ace950}</UniqueIdentifier>
+	</Filter>
+    <Filter Include="02. GameObject\93.Tile">
+      <UniqueIdentifier>{8d077375-37b3-4c59-a14c-a58958b5d20c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -212,6 +215,9 @@
     </ClInclude>
     <ClInclude Include="..\Header\UIInventory.h">
       <Filter>02. GameObject\07. UI\05. MiniMap</Filter>
+	</ClInclude>
+    <ClInclude Include="..\Header\Tile.h">
+      <Filter>02. GameObject\93.Tile</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -310,6 +316,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\UIInventory.cpp">
       <Filter>02. GameObject\07. UI\05. MiniMap</Filter>
+	</ClCompile>
+    <ClCompile Include="..\Code\Tile.cpp">
+      <Filter>02. GameObject\93.Tile</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -361,9 +361,10 @@ void CPlayer::ShoulderView_Swing()
 {
 	m_pAnimatorCom->Set_CurState(SWING, 24, 25, 10);
 }
+
 void CPlayer::Show_Equipment()
 {
-	m_pWeapon = Get_GameObject(L"Layer_GameLogic", L"Sword");
+	m_pWeapon = Get_GameObject(L"Layer_GameLogic", L"Sword2");
 	CTransform* weaponTransform = dynamic_cast<CTransform*>(m_pWeapon->Get_Component(ID_DYNAMIC, L"Com_Transform"));
 	_vec3 vPlayerPos;
 	m_pTransformCom->Get_Info(INFO_POS, &vPlayerPos);
@@ -391,12 +392,10 @@ void CPlayer::Show_Equipment()
 	{
 
 	}
-
-
 }
 void CPlayer::Swing_Equipment()
 {
-	
+	dynamic_cast<CItem*>(m_pWeapon)->Set_Swing(m_eDir, true);
 }
 
 void CPlayer::Set_UI()

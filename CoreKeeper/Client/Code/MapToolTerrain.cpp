@@ -9,9 +9,8 @@ CMapToolTerrain::CMapToolTerrain(LPDIRECT3DDEVICE9 pGraphicDev)
     , m_pTransformCom(nullptr)
     , m_pTextureCom(nullptr)
     , m_pCalculatorCom(nullptr)
-    , m_pPos(nullptr)
     , vPickPos(0, 0, 0)
-    , m_iTileImageNum(0)
+    , m_iTerrainImageNum(0)
 {
 }
 
@@ -28,21 +27,15 @@ HRESULT CMapToolTerrain::Ready_GameObject()
 
 _int CMapToolTerrain::Update_GameObject(const _float& fTimeDelta)
 {
-    if (Engine::Get_DIMouseState(DIM_LB) & 0x80)
-    {
-        _vec3   pickPos;
-        pickPos = Picking_OnTerrain();
-    }
-
     Add_RenderGroup(RENDER_NONALPHA, this);
+
+    m_pTransformCom->Set_Pos(0, 0, 0);
 
     return Engine::CGameObject::Update_GameObject(fTimeDelta);
 }
 
 void CMapToolTerrain::LateUpdate_GameObject()
 {
-    //Switch_Terrain();
-
     Engine::CGameObject::LateUpdate_GameObject();
 }
 
@@ -59,7 +52,7 @@ void CMapToolTerrain::Render_GameObject()
 
     //FAILED_CHECK_RETURN(Setup_Material(), );
 
-    m_pTextureCom->Set_Texture(m_iTileImageNum);
+    m_pTextureCom->Set_Texture(m_iTerrainImageNum);
 
     m_pBufferCom->Render_Buffer();
 
