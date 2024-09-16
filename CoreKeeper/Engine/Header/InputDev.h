@@ -22,7 +22,7 @@ public:
 
 	_byte	Get_DIMouseState(MOUSEKEYSTATE eMouse) 
 	{ 	
-		return m_tMouseState.rgbButtons[eMouse]; 	
+		return m_tMouseState.rgbButtons[eMouse];
 	}
 
 	// 현재 마우스의 특정 축 좌표를 반환

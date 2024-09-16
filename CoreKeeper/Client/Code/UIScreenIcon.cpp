@@ -49,19 +49,10 @@ _int CUIScreenIcon::Update_GameObject(const _float& fTimeDelta)
 	GetCursorPos(&pt);
 	ScreenToClient(g_hWnd, &pt);
 
-
 	if (Map_Picked(pt))
 	{
 		if (Engine::Get_DIMouseState(DIM_LB))
 		{
-			/*
-			_vec3	vRight;
-			m_pTransformCom->Get_Info(INFO_RIGHT, &vRight);
-
-			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), 1.f, 10.f);
-			*/
-
-			// 충돌 확인용 코드=
 			switch (m_iIndex)
 			{
 			case ICON_BAG:
@@ -73,16 +64,16 @@ _int CUIScreenIcon::Update_GameObject(const _float& fTimeDelta)
 			case ICON_HAND:
 				break;
 
-			case ICON_INSTALL:
-				break;
-
 			default:
 				break;
 			}
 			//인덱스에 따라 출력되는 창 변경
 		}
 
-		m_bCollapse = true;
+		if (m_iIndex == ICON_BAG || m_iIndex == ICON_MAP)
+		{
+			m_bCollapse = true;
+		}
 	}
 	else
 		m_bCollapse = false;
@@ -94,8 +85,6 @@ _int CUIScreenIcon::Update_GameObject(const _float& fTimeDelta)
 
 void CUIScreenIcon::LateUpdate_GameObject()
 {
-	m_pAnimatorCom->Update_Animation();
-
 	Engine::CGameObject::LateUpdate_GameObject();
 }
 
@@ -104,17 +93,17 @@ void CUIScreenIcon::Render_GameObject()
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
 
 	//인벤토리 오픈했을때 출력
-	if (m_bExit)
-		m_pBufferCom->Set_Index(3);
+	if (m_bExit && m_iIndex == ICON_HAND)
+	{
+		m_pTextureCom->Set_Texture(ICON_EXIT);
+	}
 	else
-		m_pBufferCom->Set_Index(m_iIndex);
-
-	//현재 마우스와 충돌중일때 출력
-	if (!m_bCollapse)
-		m_pTextureCom->Set_Texture(0);
-	else
-		m_pColTextureCom->Set_Texture();
-
+	{
+		if (m_bCollapse)
+			m_pTextureCom->Set_Texture(m_iIndex + 1);
+		else
+			m_pTextureCom->Set_Texture(m_iIndex);
+	}
 	m_pBufferCom->Render_Buffer();
 }
 
@@ -122,25 +111,17 @@ HRESULT CUIScreenIcon::Add_Component()
 {
 	CComponent* pComponent = NULL;
 
-	pComponent = m_pBufferCom = dynamic_cast<CAnimTex*>(Engine::Clone_Proto(L"Proto_UIScreenIconTex"));
+	pComponent = m_pBufferCom = dynamic_cast<CRcTex*>(Engine::Clone_Proto(L"Proto_RcTex"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Buffer", pComponent });
 
-	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_UITex"));
+	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_UIIconTex"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Texture", pComponent });
-
-	pComponent = m_pColTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_UIColTex"));
-	NULL_CHECK_RETURN(pComponent, E_FAIL);
-	m_mapComponent[ID_STATIC].insert({ L"Com_ColTexture", pComponent });
 
 	pComponent = m_pTransformCom = dynamic_cast<CTransform*>(Engine::Clone_Proto(L"Proto_Transform"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_DYNAMIC].insert({ L"Com_UITransform", pComponent });
-
-	pComponent = m_pAnimatorCom = dynamic_cast<CAnimator*>(Engine::Clone_Proto(L"Proto_Animator"));
-	NULL_CHECK_RETURN(pComponent, E_FAIL);
-	m_mapComponent[ID_DYNAMIC].insert({ L"Com_Animator", pComponent });
 
 	return S_OK;
 }

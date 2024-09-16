@@ -53,6 +53,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     CMainApp* pMainApp = CMainApp::Create();
 
+    ShowCursor(false);
+
     CImguiMgr::GetInstance()->ImGui_SetUp();
 
 

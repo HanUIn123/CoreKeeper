@@ -14,8 +14,8 @@
 #include "UIScreenIcon.h"
 #include "UIStatusBar.h"
 #include "UIScreenInv.h"
+#include "UICursor.h"
 
-#include "HpDivider.h"
 #include "Inventory.h"
 
 class CStage : public Engine::CScene
@@ -44,5 +44,8 @@ public:
 private:
 	virtual void		Free();
 
+private:
+
+	wstring m_Invstring[10];
 };
 

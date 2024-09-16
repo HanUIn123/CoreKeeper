@@ -13,11 +13,11 @@ class CAnimator;
 
 END
 
-class CUIScreenInv : public Engine::CGameObject
+class CUIInventory : public Engine::CGameObject
 {
 private:
-	explicit CUIScreenInv(LPDIRECT3DDEVICE9 pGraphicDev);
-	virtual ~CUIScreenInv();
+	explicit CUIInventory(LPDIRECT3DDEVICE9 pGraphicDev);
+	virtual ~CUIInventory();
 
 public:
 	virtual			HRESULT			Ready_GameObject(_vec2 vPos, _int _iIndex);
@@ -45,8 +45,6 @@ private:
 
 	_bool m_bCollapse;
 
-//	vector <CItem*> m_vecItem;
-
 	_bool m_bFirst;
 
 private:
@@ -56,13 +54,12 @@ private:
 	Engine::CTexture* m_pNumTextureCom;
 	Engine::CTexture* m_pColTextureCom;
 	Engine::CTexture* m_pItemNumTextureCom;
-//	Engine::CTexture* m_pItemTextureCom;
 	Engine::CInventory* m_pInventoryCom;
 	Engine::CAnimator* m_pAnimatorCom;
 	Engine::CRcTex* m_pRcTextureCom;
 
 public:
-	static CUIScreenInv* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec2 vPos, _int _iIndex);
+	static CUIInventory* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec2 vPos, _int _iIndex);
 
 private:
 	virtual void		Free();

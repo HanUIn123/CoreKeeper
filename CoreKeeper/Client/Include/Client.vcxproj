@@ -146,7 +146,6 @@
     <ClInclude Include="..\Header\BackGround.h" />
     <ClInclude Include="..\Header\Define.h" />
     <ClInclude Include="..\Header\DynamicCamera.h" />
-    <ClInclude Include="..\Header\HpDivider.h" />
     <ClInclude Include="..\Header\ImguiMgr.h" />
     <ClInclude Include="..\Header\Item.h" />
     <ClInclude Include="..\Header\Loading.h" />
@@ -162,6 +161,8 @@
     <ClInclude Include="..\Header\Stage.h" />
     <ClInclude Include="..\Header\Sword.h" />
     <ClInclude Include="..\Header\Terrain.h" />
+    <ClInclude Include="..\Header\UICursor.h" />
+    <ClInclude Include="..\Header\UIInventory.h" />
     <ClInclude Include="..\Header\UIStatusBar.h" />
     <ClInclude Include="..\Header\UIScreenIcon.h" />
     <ClInclude Include="..\Header\UIScreenInv.h" />
@@ -183,7 +184,6 @@
   <ItemGroup>
     <ClCompile Include="..\Code\BackGround.cpp" />
     <ClCompile Include="..\Code\DynamicCamera.cpp" />
-    <ClCompile Include="..\Code\HpDivider.cpp" />
     <ClCompile Include="..\Code\ImguiMgr.cpp" />
     <ClCompile Include="..\Code\Item.cpp" />
     <ClCompile Include="..\Code\Loading.cpp" />
@@ -199,6 +199,8 @@
     <ClCompile Include="..\Code\Stage.cpp" />
     <ClCompile Include="..\Code\Sword.cpp" />
     <ClCompile Include="..\Code\Terrain.cpp" />
+    <ClCompile Include="..\Code\UICursor.cpp" />
+    <ClCompile Include="..\Code\UIInventory.cpp" />
     <ClCompile Include="..\Code\UIStatusBar.cpp" />
     <ClCompile Include="..\Code\UIScreenIcon.cpp" />
     <ClCompile Include="..\Code\UIScreenInv.cpp" />

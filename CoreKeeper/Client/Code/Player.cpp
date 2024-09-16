@@ -16,6 +16,7 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	m_fFirstY = 1.f;
 	m_fTimeAcc = 0.f;
 	m_fWalkYSpeed = 1.8f;
+	m_iHandNum = 1;
 }
 
 CPlayer::~CPlayer()
@@ -66,11 +67,7 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 			ShoulderView_Swing();
 	}
 
-	CUIStatusBar* pUI = dynamic_cast<CUIStatusBar*>
-		(Engine::Get_GameObject(L"Layer_UI", L"UI_Health"));
-	NULL_CHECK_RETURN(pUI, -1);
-
-	pUI->Set_Hp(100, 100);
+	Set_UI();
 
 	m_pColliderCom->Update_Collider(m_pTransformCom->Get_WorldMatrix());
 	
@@ -400,6 +397,41 @@ void CPlayer::Show_Equipment()
 void CPlayer::Swing_Equipment()
 {
 	
+}
+
+void CPlayer::Set_UI()
+{
+	CUIStatusBar* pHp = dynamic_cast<CUIStatusBar*>
+		(Engine::Get_GameObject(L"Layer_UI", L"UI_Health"));
+	NULL_CHECK_RETURN(pHp);
+
+	pHp->Set_InfoH(150, 260); // (체력 , 최대체력)
+
+	CUIStatusBar* pMp = dynamic_cast<CUIStatusBar*>
+		(Engine::Get_GameObject(L"Layer_UI", L"UI_Mp"));
+	NULL_CHECK_RETURN(pMp);
+
+	pMp->Set_InfoH(80, 100); // (마나 , 최대마나)
+
+	if (Engine::Get_DIMouseMove(DIMS_Z))
+	{
+		if (Engine::Get_DIMouseMove(DIMS_Z) < 0)
+			m_iHandNum++;
+		else
+			m_iHandNum--;
+
+
+		if (m_iHandNum > 9)
+		{
+			m_iHandNum = 0;
+		}
+		else if (m_iHandNum < 0)
+		{
+			m_iHandNum = 9;
+		}
+	}
+
+
 }
 
 CPlayer* CPlayer::Create(LPDIRECT3DDEVICE9 pGraphicDev)

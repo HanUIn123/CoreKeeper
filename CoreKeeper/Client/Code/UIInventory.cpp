@@ -1,22 +1,22 @@
 #include "pch.h"
-#include "..\Header\UIScreenInv.h"
+#include "..\Header\UIInventory.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
 #include "Engine_Enum.h"
 #include "..\Header\Item.h"
 #include "..\Header\Player.h"
 
-CUIScreenInv::CUIScreenInv(LPDIRECT3DDEVICE9 pGraphicDev)
+CUIInventory::CUIInventory(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CGameObject(pGraphicDev), m_iCurInv(0), m_bFirst(true), m_bCollapse(false)
 
 {
 }
 
-CUIScreenInv::~CUIScreenInv()
+CUIInventory::~CUIInventory()
 {
 }
 
-HRESULT CUIScreenInv::Ready_GameObject(_vec2 vPos, _int _iIndex)
+HRESULT CUIInventory::Ready_GameObject(_vec2 vPos, _int _iIndex)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
@@ -45,74 +45,13 @@ HRESULT CUIScreenInv::Ready_GameObject(_vec2 vPos, _int _iIndex)
 	return S_OK;
 }
 
-_int CUIScreenInv::Update_GameObject(const _float& fTimeDelta)
+_int CUIInventory::Update_GameObject(const _float& fTimeDelta)
 {
 	_int iExit = Engine::CGameObject::Update_GameObject(fTimeDelta);
-
-	CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
-	NULL_CHECK_RETURN(pPlayer, -1);
-
-	m_iCurInv = pPlayer->Get_iHandNum();
 
 	POINT pt;
 	GetCursorPos(&pt);
 	ScreenToClient(g_hWnd, &pt);
-
-	_byte byKey;
-
-	switch (m_iIndex)
-	{
-	case 0:
-		byKey = DIK_0;
-		break;
-
-	case 1:
-		byKey = DIK_1;
-		break;
-
-	case 2:
-		byKey = DIK_2;
-		break;
-
-	case 3:
-		byKey = DIK_3;
-		break;
-
-	case 4:
-		byKey = DIK_4;
-		break;
-
-	case 5:
-		byKey = DIK_5;
-		break;
-
-	case 6:
-		byKey = DIK_6;
-		break;
-
-	case 7:
-		byKey = DIK_7;
-		break;
-
-	case 8:
-		byKey = DIK_8;
-		break;
-
-	case 9:
-		byKey = DIK_9;
-		break;
-
-	default:
-		byKey = DIK_0;
-		break;
-
-	}
-
-	if (Engine::Get_DIKeyState(byKey))
-	{
-		pPlayer->Set_iHandNum(m_iIndex);
-	}
-
 
 	if (Map_Picked(pt))
 	{
@@ -120,7 +59,6 @@ _int CUIScreenInv::Update_GameObject(const _float& fTimeDelta)
 		{
 			m_iCurInv = m_iIndex;
 
-			pPlayer->Set_iHandNum(m_iCurInv);
 		}
 
 		m_bCollapse = true;
@@ -135,21 +73,20 @@ _int CUIScreenInv::Update_GameObject(const _float& fTimeDelta)
 	return iExit;
 }
 
-void CUIScreenInv::LateUpdate_GameObject()
+void CUIInventory::LateUpdate_GameObject()
 {
 	
 
 	Engine::CGameObject::LateUpdate_GameObject();
 }
 
-void CUIScreenInv::Render_GameObject()
+void CUIInventory::Render_GameObject()
 {
 
 	_matrix matWorld;
 	m_pTransformCom->Get_WorldMatrix(&matWorld);
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
-
 	
 	if (m_iCurInv == m_iIndex)
 	{
@@ -175,6 +112,7 @@ void CUIScreenInv::Render_GameObject()
 	if (!pPlayerInv->Check_Empty(m_iIndex))
 	{
 		_int iCount = vecItem[m_iIndex - 1]->Get_Count();
+
 		if (iCount != 1)
 		{
 			_int iFront = iCount % 10;
@@ -206,7 +144,10 @@ void CUIScreenInv::Render_GameObject()
 				m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
 
 				m_pRcTextureCom->Render_Buffer();
+
+				matWorld._41 += 2.f;
 			}
+			matWorld._42 -= 5.f;
 		}
 
 		vecItem[m_iIndex - 1]->Get_Texture()->Set_Texture();
@@ -237,7 +178,7 @@ void CUIScreenInv::Render_GameObject()
 	
 }
 
-HRESULT CUIScreenInv::Add_Component()
+HRESULT CUIInventory::Add_Component()
 {
 	CComponent* pComponent = NULL;
 
@@ -276,21 +217,21 @@ HRESULT CUIScreenInv::Add_Component()
 	return S_OK;
 }
 
-CUIScreenInv* CUIScreenInv::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec2 vPos, _int _iIndex)
+CUIInventory* CUIInventory::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec2 vPos, _int _iIndex)
 {
-	CUIScreenInv* pUIScreenInv = new CUIScreenInv(pGraphicDev);
+	CUIInventory* pUIInventory = new CUIInventory(pGraphicDev);
 
-	if (FAILED(pUIScreenInv->Ready_GameObject(vPos, _iIndex)))
+	if (FAILED(pUIInventory->Ready_GameObject(vPos, _iIndex)))
 	{
-		Safe_Release(pUIScreenInv);
-		MSG_BOX("UIScreenInv Create Failed");
+		Safe_Release(pUIInventory);
+		MSG_BOX("UIInventory Create Failed");
 		return nullptr;
 	}
 
-	return pUIScreenInv;
+	return pUIInventory;
 }
 
-void CUIScreenInv::Free()
+void CUIInventory::Free()
 {
 	Engine::CGameObject::Free();
 }
