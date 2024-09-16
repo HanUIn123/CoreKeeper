@@ -9,7 +9,7 @@ CMapEditorScene::CMapEditorScene(LPDIRECT3DDEVICE9 _pGraphicDevice)
     : Engine::CScene(_pGraphicDevice)
     , m_bGuiHovered(false)
     , m_pMTGameObjectCom(nullptr)
-    , m_iPikingCount(0)
+    , m_iTileCreateCount(0)
     , m_pTileCom(nullptr)
     , m_bPushed(false)
     , m_bSaved(false)
@@ -18,8 +18,8 @@ CMapEditorScene::CMapEditorScene(LPDIRECT3DDEVICE9 _pGraphicDevice)
     ZeroMemory(&m_tImageInfo, sizeof(D3DXIMAGE_INFO));
 
     // 시작할 때, ImGui에 Terrain 이미지 등록함.
-    if (!m_TerrainTextureInfo)
-        Resister_TerrainImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/MapTerrain/Terrain_%d.png", TEX_NORMAL, 9);
+    //if (!m_TerrainTextureInfo)
+    //    Resister_TerrainImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/MapTerrain/Terrain_%d.png", TEX_NORMAL, 9);
 
     // 시작할 때, ImGui에 Tile 이미지 등록함.
     if (!m_TileTextureInfo)
@@ -75,35 +75,70 @@ _int CMapEditorScene::Update_Scene(const _float& fTimeDelta)
         // 피킹으로 Terrain에 Tile 피킹되게 처리.
         if (Engine::Get_DIMouseState(DIM_LB) & 0x80)
         {
+            //m_bPushed = true;
+
+            //CMapToolTerrain* pTerrain = dynamic_cast<CMapToolTerrain*>(Engine::Get_GameObject(L"Layer_GameLogic", L"MapToolTerrain"));
+            //CCalculator* pPickPos = dynamic_cast<CCalculator*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"MapToolTerrain", L"Com_Calculator"));
+            //CMapToolTex* pMapToolBufferCom = dynamic_cast<CMapToolTex*>(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"MapToolTerrain", L"Com_Buffer"));
+            //CTransform* pMapToolTransformCom = dynamic_cast<CTransform*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"MapToolTerrain", L"Com_Transform"));
+
+            //m_vPickPos = pPickPos->Picking_OnTerrain(g_hWnd, pMapToolBufferCom, pMapToolTransformCom);
+
+            //for (_ulong i = 0;  i < VTXCNTZ * VTXCNTX; ++i)
+            //{
+            //    wstring string = m_wsTileNameString[i];
+
+            //    CTile* pTile = dynamic_cast<CTile*>(Engine::Get_GameObject(L"Layer_GameLogic", string.c_str()));
+
+            //    if (m_vPickPos.x == pTile->Get_TilePos().x && m_vPickPos.z == pTile->Get_TilePos().z)
+            //    {
+            //        pTile->Set_TileNumber(1);
+
+            //        m_pTileCom = pTile;
+
+            //        break;
+            //    }
+            //}
+
+            //
             m_bPushed = true;
+
         }
         if (!(Engine::Get_DIMouseState(DIM_LB) & 0x80) && m_bPushed)
         {
-            m_iPikingCount++;
 
-            Create_TileObject(L"Layer_GameLogic", m_iPikingCount, dynamic_cast<CMapToolTerrain*>(m_pMTGameObjectCom)->Get_PikingPos());
+            CMapToolTerrain* pTerrain = dynamic_cast<CMapToolTerrain*>(Engine::Get_GameObject(L"Layer_GameLogic", L"MapToolTerrain"));
+            CCalculator* pPickPos = dynamic_cast<CCalculator*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"MapToolTerrain", L"Com_Calculator"));
+            CMapToolTex* pMapToolBufferCom = dynamic_cast<CMapToolTex*>(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"MapToolTerrain", L"Com_Buffer"));
+            CTransform* pMapToolTransformCom = dynamic_cast<CTransform*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"MapToolTerrain", L"Com_Transform"));
+
+            m_vPickPos = pPickPos->Picking_OnTerrain(g_hWnd, pMapToolBufferCom, pMapToolTransformCom);
+
+            for (_ulong i = 0; i < VTXCNTZ * VTXCNTX; ++i)
+            {
+                wstring string = m_wsTileNameString[i];
+
+                CTile* pTile = dynamic_cast<CTile*>(Engine::Get_GameObject(L"Layer_GameLogic", string.c_str()));
+
+                if (m_vPickPos.x == pTile->Get_TilePos().x && m_vPickPos.z == pTile->Get_TilePos().z)
+                {
+                    pTile->Set_TileNumber(1);
+                    
+                    break;
+                }
+            }
+
             m_bPushed = false;
         }
     }
-
-
-
-    // 나중에 Save기능 추가해서 변경 예정.
-    //if (Engine::Get_DIKeyState(DIK_V) & 0x80)
-    //{
-    //    m_bSaved = true;
-    //}
-    //if (!(Engine::Get_DIKeyState(DIK_V) & 0x80) && m_bSaved)
-    //{
-    //    //Save_MapFile();
-    //    m_bSaved = false;
-    //}
 
     return iExit;
 }
 
 void CMapEditorScene::LateUpdate_Scene()
 {
+
+
     Engine::CScene::LateUpdate_Scene();
 }
 
@@ -144,6 +179,24 @@ HRESULT CMapEditorScene::Ready_Layer_GameLogic(const _tchar* pLayerTag)
     m_pMTGameObjectCom = CMapToolTerrain::Create(m_pGraphicDev);
     NULL_CHECK_RETURN(m_pMTGameObjectCom, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"MapToolTerrain", m_pMTGameObjectCom), E_FAIL);
+
+    for (_ulong i = 0; i < VTXCNTX; ++i)
+    {
+        for (_ulong j = 0; j < VTXCNTZ; ++j)
+        {
+            _float fX = (VTXITV >> 1) + _float(VTXITV * j);
+            _float fZ = (VTXITV >> 1) + _float(VTXITV * i);
+
+            m_pTileCom = CTile::Create(m_pGraphicDev, fX, fZ);
+            //m_vecTileObject.push_back(m_pTileCom);
+            NULL_CHECK_RETURN(m_pTileCom, E_FAIL);
+
+            m_wsTileNameString[m_iTileCreateCount] = L"Tile_" + std::to_wstring(m_iTileCreateCount);
+            FAILED_CHECK_RETURN(pLayer->Add_GameObject(m_wsTileNameString[m_iTileCreateCount].c_str(), m_pTileCom), E_FAIL);
+            m_iTileCreateCount++;
+        }
+    }
+    m_iTileCreateCount = 0;
 
     m_mapLayer.insert({ pLayerTag , pLayer });
 
@@ -212,8 +265,6 @@ void CMapEditorScene::Show_ImguiWindow()
     // MapTool 에서 사용할 타일 고르는 함수.
     Setting_TileList();
 
-
-
     ImGui::End();
 }
 
@@ -269,7 +320,7 @@ void CMapEditorScene::Setting_TerrainList()
         {
             if (ImGui::ImageButton("Terrain", m_vecTerrainTexture[i], ImVec2(50.0f, 50.0f)))
             {
-                dynamic_cast<CMapToolTerrain*>(m_pMTGameObjectCom)->Set_TerrainNumber(i);
+                //dynamic_cast<CMapToolTerrain*>(m_pMTGameObjectCom)->Set_TerrainNumber(i);
             }
         }
     }
@@ -370,25 +421,6 @@ void CMapEditorScene::Set_Texture(const _uint& iIndex)
         return;
 
     m_pGraphicDev->SetTexture(0, m_vecTerrainTexture[iIndex]);
-}
-
-HRESULT CMapEditorScene::Create_TileObject(const _tchar* pLayerTag, _int _iCount, _vec3 _vTilePos)
-{
-    auto	iter = find_if(m_mapLayer.begin(), m_mapLayer.end(), CTag_Finder(pLayerTag));
-
-    if (iter == m_mapLayer.end())
-        return E_FAIL;
-
-    m_pTileCom = CTile::Create(m_pGraphicDev, _vTilePos);
-    NULL_CHECK_RETURN(m_pTileCom, E_FAIL);
-
-    m_wsTileNameString[_iCount] = L"Tile_" + std::to_wstring(_iCount);
-
-    FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsTileNameString[_iCount].c_str(), m_pTileCom), E_FAIL);
-
-    m_mapLayer.insert({ pLayerTag, iter->second });
-
-    return S_OK;
 }
 
 void CMapEditorScene::Free()

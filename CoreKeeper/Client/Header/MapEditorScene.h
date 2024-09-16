@@ -6,6 +6,7 @@
 
 #include "MapToolTerrain.h"
 #include "Tile.h"
+#include "Wall.h"
 
 BEGIN(Engine)
 
@@ -67,19 +68,24 @@ private:
 
 public:
 	// Tile Object는 이 함수를 통해 생성.(레이어 / 중복방지 Count -> ex Tile1, Tile2 .. 키값 변경 / 피킹한 MaptoolTerrain의 좌표)
-	HRESULT									Create_TileObject(const _tchar* pLayerTag, _int _iCount, _vec3 _vTilePos);
 
 private:
-	Engine::CGameObject* m_pMTGameObjectCom;
-	Engine::CGameObject* m_pTileCom;
+	Engine::CGameObject*					m_pMTGameObjectCom;
+	Engine::CGameObject*					m_pTileCom;
+	Engine::CGameObject*					m_pWallCom;
 
+	int										m_iTileCreateCount;
 	int										m_iPikingCount;
 	bool									m_bPushed;
 
 	// Picking 가능한 타일 키 값 개수. 현재는 360개
-	wstring									m_wsTileNameString[360];
+	wstring									m_wsTileNameString[VTXCNTX * VTXCNTZ];
 	bool									m_bSaved;
 
 	HANDLE									m_hFile;
+
+	vector<Engine::CGameObject*>			m_vecTileObject;
+
+	_vec3                                   m_vPickPos;
 };
 
