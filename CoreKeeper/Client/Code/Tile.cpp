@@ -6,6 +6,7 @@
 
 CTile::CTile(LPDIRECT3DDEVICE9 pGraphicDev)
     : Engine::CGameObject(pGraphicDev)
+    , m_iTileImageNum(0)
 {
 }
 
@@ -13,22 +14,29 @@ CTile::~CTile()
 {
 }
 
-HRESULT CTile::Ready_GameObject(_vec3 _tilePos)
+HRESULT CTile::Ready_GameObject(_float _fTileX, _float _fTileZ)
 {
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-    m_vTilePosition = _tilePos;
+    m_vTilePosition.x = _fTileX;
+    m_vTilePosition.y = 0.0f;
+    m_vTilePosition.z = _fTileZ;
+    //m_vTilePosition = { _fTileX, 0.0f, _fTileZ };
+
+    m_pTransformCom->Set_Pos(_fTileX, 0.0f, _fTileZ);
+
 
     return S_OK;
 }
 
 _int CTile::Update_GameObject(const _float& fTimeDelta)
 {
-    Add_RenderGroup(RENDER_NONALPHA, this);
-
+  
     // 이 Set_Pos를 통해서, 최초 피킹 시, 해당 타일의 그 위치에, Set_Pos가 안된다 -> Render에서 
     // 직접적으로 행렬 원소에 피킹 좌표 주고 있음.
     //m_pTransformCom->Set_Pos(m_pTransformCom->m_vInfo->x, m_pTransformCom->m_vInfo->y, m_pTransformCom->m_vInfo->z);
+    Add_RenderGroup(RENDER_NONALPHA, this);
+
     return Engine::CGameObject::Update_GameObject(fTimeDelta);
 }
 
@@ -43,14 +51,16 @@ void CTile::Render_GameObject()
     m_pTransformCom->Get_WorldMatrix(&matWorld);
 
     matWorld._41 = m_vTilePosition.x;
-    matWorld._42 = m_vTilePosition.y + 0.1f;
+    matWorld._42 = m_vTilePosition.y + 0.01f;
     matWorld._43 = m_vTilePosition.z;
-
     m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
+    
+    //m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
 
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
     m_pTextureCom->Set_Texture(m_iTileImageNum);
+    //m_pTextureCom->Set_Texture(0);
 
     m_pTileTexCom->Render_Buffer();
 
@@ -63,7 +73,7 @@ HRESULT CTile::Add_Component()
 
     pComponent = m_pTransformCom = dynamic_cast<CTransform*>(Engine::Clone_Proto(L"Proto_Transform"));
     NULL_CHECK_RETURN(pComponent, E_FAIL);
-    m_mapComponent[ID_STATIC].insert({ L"Com_Transform", pComponent });
+    m_mapComponent[ID_DYNAMIC].insert({ L"Com_Transform", pComponent });
 
     pComponent = m_pTileTexCom = dynamic_cast<CTileTex*>(Engine::Clone_Proto(L"Proto_TileTex"));
     NULL_CHECK_RETURN(pComponent, E_FAIL);
@@ -81,17 +91,17 @@ HRESULT CTile::Add_Component()
     return S_OK;
 }
 
-_vec3 CTile::Picking_OnTerrain()
+_vec3 CTile::Picking_OnTile()
 {
-    return m_pCalculatorCom->Picking_OnTerrain(g_hWnd, m_pMapToolBufferCom, m_pTransformCom);
+    return m_pCalculatorCom->Picking_OnTile(g_hWnd, m_pTileTexCom, m_pTransformCom);
 }
 
-CTile* CTile::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 _vTilePos)
+
+CTile* CTile::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _fTileX, _float _fTileZ)
 {
     CTile* pTile = new CTile(pGraphicDev);
 
-
-    if (FAILED(pTile->Ready_GameObject(_vTilePos)))
+    if (FAILED(pTile->Ready_GameObject(_fTileX,_fTileZ)))
     {
         Safe_Release(pTile);
         MSG_BOX("Failed Create Tile");

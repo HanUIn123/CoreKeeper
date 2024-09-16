@@ -1,12 +1,13 @@
 #pragma once
 #include "GameObject.h"
 #include "../Client/Header/ImguiMgr.h"
+#include "Export_Utility.h"
 
 BEGIN(Engine)
 
 class CMapToolTex;
 class CTransform;
-class CTexture;
+//class CTexture;
 class CCalculator;
 
 END
@@ -36,7 +37,7 @@ private:
 private:
 	Engine::CMapToolTex* m_pBufferCom;
 	Engine::CTransform* m_pTransformCom;
-	Engine::CTexture* m_pTextureCom;
+	//Engine::CTexture* m_pTextureCom;
 	Engine::CCalculator* m_pCalculatorCom;
 
 public:

@@ -4,6 +4,7 @@
 BEGIN(Engine)
 
 class CMapToolTex;
+class CTileTex;
 class CTerrainTex;
 class CTransform;
 
@@ -16,6 +17,7 @@ private:
 public:
 	HRESULT			Ready_Calculator();
 	_vec3			Picking_OnTerrain(HWND _hWnd, CMapToolTex* _pMapToolBufferCom, CTransform* _pWireTerrainTransform);
+	_vec3			Picking_OnTile(HWND _hWnd, CTileTex* _pTileBufferCom, CTransform* _TileTransform);
 
 
 public:
