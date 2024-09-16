@@ -4,7 +4,7 @@
 
 BEGIN(Engine)
 
-class CAnimTex;
+class CRcTex;
 class CTransform;
 class CTexture;
 class CAnimator;
@@ -13,9 +13,9 @@ END
 
 class CUIScreenIcon : public Engine::CGameObject
 {
-private:
+public:
 
-	enum ICONTYPE {ICON_MAP, ICON_BAG, ICON_HAND, ICON_INSTALL };
+	enum ICONTYPE {ICON_HAND, ICON_HAND_COL, ICON_MAP, ICON_MAP_COL, ICON_BAG, ICON_BAG_COL, ICON_EXIT };
 private:
 	explicit CUIScreenIcon(LPDIRECT3DDEVICE9 pGraphicDev);
 	virtual ~CUIScreenIcon();
@@ -44,14 +44,13 @@ private:
 	_int  m_iIndex;
 
 	_bool m_bCollapse;
+	_bool m_bClicked;
 
 	_bool m_bExit;
 private:
-	Engine::CAnimTex* m_pBufferCom;
+	Engine::CRcTex* m_pBufferCom;
 	Engine::CTransform* m_pTransformCom;
 	Engine::CTexture* m_pTextureCom;
-	Engine::CTexture* m_pColTextureCom;
-	Engine::CAnimator* m_pAnimatorCom;
 
 public:
 	static CUIScreenIcon* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec2 vPos, _vec2 vSize, const _uint iIndex);

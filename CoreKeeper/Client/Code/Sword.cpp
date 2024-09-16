@@ -29,7 +29,6 @@ HRESULT CSword::Ready_GameObject()
 
 	m_pTransformCom->Set_Pos(m_pTransformCom->m_vInfo->x, m_pTransformCom->m_vInfo->y + 0.7f, m_pTransformCom->m_vInfo->z);
 	m_pShadowTransformCom->Set_Pos(m_pTransformCom->m_vInfo->x, 0.1f, m_pTransformCom->m_vInfo->z);
-
 	// 원래의 Y 위치 저장
 	m_fFirstY = m_pTransformCom->m_vInfo->y + 0.7f;
 

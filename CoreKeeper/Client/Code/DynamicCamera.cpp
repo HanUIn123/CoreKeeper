@@ -2,6 +2,7 @@
 #include "..\Header\DynamicCamera.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
+#include "..\Header\UICursor.h"
 
 CDynamicCamera::CDynamicCamera(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CCamera(pGraphicDev), m_bFix(false)
@@ -103,6 +104,10 @@ void CDynamicCamera::Key_Input()
 	{
 		g_bIsTopCamera = g_bIsTopCamera ? false : true;
 		m_bFix = !g_bIsTopCamera;
+
+		CUICursor* pCursor = dynamic_cast<CUICursor*>(Engine::Get_GameObject(L"Layer_UI", L"UI_Cursor"));
+
+		pCursor->Set_Cursor_Disable();
 	}
 }
 
