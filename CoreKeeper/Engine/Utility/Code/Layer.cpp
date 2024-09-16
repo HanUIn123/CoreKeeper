@@ -1,4 +1,6 @@
 #include "..\..\Header\Layer.h"
+#include "..\..\Header\Renderer.h"
+#include "..\..\Header\Export_Utility.h"
 
 CLayer::CLayer()
 {
@@ -66,6 +68,22 @@ void CLayer::Render_Layer()
 {
 	for (auto& pObj : m_mapObject)
 		pObj.second->Render_GameObject();
+}
+
+void CLayer::Delete_GameMap(const _tchar* tObjTag)
+{
+	auto iter = find_if(m_mapObject.begin(), m_mapObject.end(), CTag_Finder(tObjTag));
+
+	if (iter == m_mapObject.end())
+		return;
+
+	//CRenderer::GetInstance()->Delete_Renderer(RENDER_UI, iter->second);
+	
+	//iter->second->Free_Component();
+	Safe_Delete(iter->second);
+	
+	m_mapObject.erase(iter);
+
 }
 
 CLayer * CLayer::Create()

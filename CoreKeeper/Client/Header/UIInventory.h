@@ -36,7 +36,6 @@ private:
 	HRESULT			Add_Component();
 
 private:
-	_vec2 m_vPos;
 	_int m_iIndex;
 
 	RECT m_BRect;

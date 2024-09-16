@@ -31,7 +31,7 @@ HRESULT CUIInventory::Ready_GameObject(_vec2 vPos, _int _iIndex)
 
 	m_pTransformCom->Set_Pos(x, y, 0);
 
-	_vec2 vSize = { 25.f, 25.f };
+	_vec2 vSize = { 15.f, 15.f };
 
 	m_pTransformCom->m_vScale = { vSize.x, vSize.y, 1.f };
 

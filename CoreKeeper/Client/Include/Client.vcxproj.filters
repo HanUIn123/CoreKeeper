@@ -91,17 +91,23 @@
     <Filter Include="02. GameObject\96.MapToolTerrain">
       <UniqueIdentifier>{49d3ed79-d51e-4093-b234-1f4869bd570e}</UniqueIdentifier>
     </Filter>
-	  <Filter Include="02. GameObject\07. UI\04. Cursor">
+    <Filter Include="02. GameObject\07. UI\04. Cursor">
       <UniqueIdentifier>{612cb866-c093-4ab6-8e82-fea3e30611ac}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\07. UI\05. MiniMap">
-      <UniqueIdentifier>{6209e4eb-d697-45e9-ac69-1570c246f771}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameObject\07. UI\02. UIStatus">
       <UniqueIdentifier>{5f789f66-086f-4154-b4fe-59e0c4ace950}</UniqueIdentifier>
-	</Filter>
+    </Filter>
     <Filter Include="02. GameObject\93.Tile">
       <UniqueIdentifier>{8d077375-37b3-4c59-a14c-a58958b5d20c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\07. UI\05. UIInventory">
+      <UniqueIdentifier>{6209e4eb-d697-45e9-ac69-1570c246f771}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\07. UI\05. UIInventory\00. UIInventory">
+      <UniqueIdentifier>{db2c7fa8-7d9c-435a-8a60-cf6280a80677}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\07. UI\05. UIInventory\01. InvPlate">
+      <UniqueIdentifier>{0ac47d63-794f-4ff2-a171-21b40ac20b90}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -213,11 +219,14 @@
     <ClInclude Include="..\Header\UICursor.h">
       <Filter>02. GameObject\07. UI\04. Cursor</Filter>
     </ClInclude>
-    <ClInclude Include="..\Header\UIInventory.h">
-      <Filter>02. GameObject\07. UI\05. MiniMap</Filter>
-	</ClInclude>
     <ClInclude Include="..\Header\Tile.h">
       <Filter>02. GameObject\93.Tile</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\UIInventory.h">
+      <Filter>02. GameObject\07. UI\05. UIInventory\00. UIInventory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\UIInvPlate.h">
+      <Filter>02. GameObject\07. UI\05. UIInventory\01. InvPlate</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -314,11 +323,14 @@
     <ClCompile Include="..\Code\UICursor.cpp">
       <Filter>02. GameObject\07. UI\04. Cursor</Filter>
     </ClCompile>
-    <ClCompile Include="..\Code\UIInventory.cpp">
-      <Filter>02. GameObject\07. UI\05. MiniMap</Filter>
-	</ClCompile>
     <ClCompile Include="..\Code\Tile.cpp">
       <Filter>02. GameObject\93.Tile</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\UIInventory.cpp">
+      <Filter>02. GameObject\07. UI\05. UIInventory\00. UIInventory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\UIInvPlate.cpp">
+      <Filter>02. GameObject\07. UI\05. UIInventory\01. InvPlate</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

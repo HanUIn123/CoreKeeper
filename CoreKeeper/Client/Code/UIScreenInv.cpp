@@ -7,7 +7,7 @@
 #include "..\Header\Player.h"
 
 CUIScreenInv::CUIScreenInv(LPDIRECT3DDEVICE9 pGraphicDev)
-	: Engine::CGameObject(pGraphicDev), m_iCurInv(0), m_bFirst(true), m_bCollapse(false)
+	: Engine::CGameObject(pGraphicDev), m_iCurInv(0), m_bFirst(true), m_bCollapse(false), m_bMove(false)
 
 {
 }
@@ -31,7 +31,7 @@ HRESULT CUIScreenInv::Ready_GameObject(_vec2 vPos, _int _iIndex)
 
 	m_pTransformCom->Set_Pos(x, y, 0);
 
-	_vec2 vSize = { 25.f, 25.f };
+	_vec2 vSize = { 20.f, 20.f };
 
 	m_pTransformCom->m_vScale = { vSize.x, vSize.y, 1.f };
 
@@ -41,6 +41,13 @@ HRESULT CUIScreenInv::Ready_GameObject(_vec2 vPos, _int _iIndex)
 	m_BRect.bottom = vPos.y + vSize.y / 2;
 
 	m_iIndex = _iIndex;
+
+	if (m_iIndex == 0)
+	{
+		m_iIndex = 10;
+	}
+
+	m_fPosX = x;
 
 	return S_OK;
 }
@@ -130,21 +137,21 @@ _int CUIScreenInv::Update_GameObject(const _float& fTimeDelta)
 		m_bCollapse = false;
 	}
 
-	Add_RenderGroup(RENDER_UI, this);
+	
 
 	return iExit;
 }
 
 void CUIScreenInv::LateUpdate_GameObject()
 {
-	
+	Add_RenderGroup(RENDER_UI, this);
 
 	Engine::CGameObject::LateUpdate_GameObject();
 }
 
 void CUIScreenInv::Render_GameObject()
 {
-
+	
 	_matrix matWorld;
 	m_pTransformCom->Get_WorldMatrix(&matWorld);
 
@@ -167,6 +174,7 @@ void CUIScreenInv::Render_GameObject()
 		m_pRcTextureCom->Render_Buffer();
 	}
 
+	
 	CInventory* pPlayerInv = dynamic_cast<Engine::CInventory*>
 		(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
 
@@ -175,6 +183,7 @@ void CUIScreenInv::Render_GameObject()
 	if (!pPlayerInv->Check_Empty(m_iIndex))
 	{
 		_int iCount = vecItem[m_iIndex - 1]->Get_Count();
+		
 		if (iCount != 1)
 		{
 			_int iFront = iCount % 10;
@@ -187,8 +196,8 @@ void CUIScreenInv::Render_GameObject()
 
 			m_pItemNumTextureCom->Set_Texture(iBack);
 
-			matWorld._11 = 5.f;
-			matWorld._22 = 5.f;
+			matWorld._11 = 2.f;
+			matWorld._22 = 2.f;
 
 			//matWorld._41 +=
 			matWorld._42 += 5.f;
@@ -209,8 +218,8 @@ void CUIScreenInv::Render_GameObject()
 			}
 		}
 
-		vecItem[m_iIndex - 1]->Get_Texture()->Set_Texture();
-
+		vecItem[m_iIndex - 1]->Get_Texture()->Set_Texture(0);
+		
 		matWorld._11 = 30.f;
 		matWorld._22 = 30.f;
 
@@ -218,23 +227,60 @@ void CUIScreenInv::Render_GameObject()
 
 		m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
 
+		vecItem[m_iIndex - 1]->Get_Buffer()->Set_Index(vecItem[m_iIndex - 1]->Get_Animator()->Get_MotionIndex());
+		
 		vecItem[m_iIndex - 1]->Get_Buffer()->Render_Buffer();
 
 		matWorld._42 += 5.f;
 	}
 
-	m_pNumTextureCom->Set_Texture(m_iIndex);
+	if (m_iIndex == 10)
+	{
+		m_pNumTextureCom->Set_Texture(0);
+	}
+	else
+		m_pNumTextureCom->Set_Texture(m_iIndex);
 
-	matWorld._11 = 5.f;
+	matWorld._11 = 4.f;
 	matWorld._22 = 5.f;
 
-	matWorld._41 += 15.f;
-	matWorld._42 += 15.f;
+	matWorld._41 += 12.f;
+	matWorld._42 += 12.f;
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
 
 	m_pRcTextureCom->Render_Buffer();
-	
+
+}
+
+void CUIScreenInv::Move_Pos()
+{
+
+	_float y;
+
+	if (!m_bMove)
+	{
+		m_pTransformCom->Set_Pos(m_fPosX, 0.f, 0);
+		m_bMove = true;
+
+		y = 300.f;
+	}
+	else
+	{
+		m_pTransformCom->Set_Pos(m_fPosX, -250.f, 0);
+		m_bMove = false;
+
+		y = 550.f;
+	}
+
+	_vec3 vPos, vSize;
+	m_pTransformCom->Get_Info(INFO_POS, &vPos);
+
+
+	vSize = { m_pTransformCom->m_vScale.x, m_pTransformCom->m_vScale.y, m_pTransformCom->m_vScale.z };
+
+	m_BRect.top = y - vSize.y / 2;
+	m_BRect.bottom = y + vSize.y / 2;
 }
 
 HRESULT CUIScreenInv::Add_Component()

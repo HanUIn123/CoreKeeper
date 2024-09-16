@@ -15,6 +15,7 @@
 #include "UIStatusBar.h"
 #include "UIScreenInv.h"
 #include "UICursor.h"
+#include "UIInvPlate.h"
 
 #include "Inventory.h"
 
@@ -31,7 +32,7 @@ public:
 	virtual			void			Render_Scene();
 
 public:
-	HRESULT     Create_GameObject(const _tchar* pLayerTag, _int _iCount, _float _fLength, const _tchar* pKeyTag); 
+	HRESULT     Create_Inventory(const _tchar* pLayerTag); 
 
 private:
 	HRESULT		Ready_LightInfo();
@@ -45,7 +46,7 @@ private:
 	virtual void		Free();
 
 private:
-
-	wstring m_Invstring[10];
+	wstring m_Invstring[50];
+	_bool   m_bInvCheck;
 };
 
