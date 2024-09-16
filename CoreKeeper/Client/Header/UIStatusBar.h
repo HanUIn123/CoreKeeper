@@ -4,6 +4,7 @@
 
 BEGIN(Engine)
 
+class CRcTex;
 class CRangeTex;
 class CTransform;
 class CTexture;
@@ -28,7 +29,7 @@ public:
 		return  ::PtInRect(&m_BRect, _screenPos);
 	}
 
-	void            Set_Hp(_int _iMaxHp, _int _iCurHp);
+	void            Set_InfoH(_int _iCurHp, _int _iMaxHp) { m_iMaxHp = _iMaxHp, m_iHp = _iCurHp; }
 	_int            Get_MaxHp() { return m_iMaxHp; }
 	_int            Get_CurHp() { return m_iHp; }
 
@@ -54,6 +55,7 @@ private:
 
 	_float m_fLength;
 private:
+	Engine::CRcTex* m_pDividerBufferCom[10];
 	Engine::CRangeTex* m_pBufferCom;
 	Engine::CRangeTex* m_pBarBufferCom;
 	Engine::CTransform* m_pTransformCom;

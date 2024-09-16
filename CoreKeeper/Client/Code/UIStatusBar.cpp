@@ -2,7 +2,6 @@
 #include "..\Header\UIStatusBar.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
-#include "..\Header\HpDivider.h"
 #include "..\Header\Stage.h"
 
 CUIStatusBar::CUIStatusBar(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -81,8 +80,6 @@ void CUIStatusBar::Render_GameObject()
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
 
-	m_pBufferCom->Set_Width((m_iHp / m_iMaxHp) * 100.f);
-
 	m_pTextureCom->Set_Texture(m_iIndex);
 
 	m_pBufferCom->Render_Buffer();
@@ -94,13 +91,51 @@ void CUIStatusBar::Render_GameObject()
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
 
+	m_pBarBufferCom->Set_Width(((_float)m_iHp / (_float)m_iMaxHp) * 100.f);
+
 	m_pTextureCom->Set_Texture(m_iIndex - 1);
 
 	m_pBarBufferCom->Render_Buffer();
 
-	if (m_bCollapse && (m_iIndex - 1)== 0) // 체력 마나 표시용
+	m_pTextureCom->Set_Texture(m_iIndex + 1);
+
+	matWorld._11 = 2.f;
+	matWorld._22 = 6.f;
+
+	_int _iCurHp = m_iCurHp;
+	_int _iMaxHp = m_iMaxHp;
+
+	m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
+
+	_int iCount;
+
+	if (_iCurHp % 25 == 0)
 	{
-		std::wstring sFront = L"체력                      " + std::to_wstring(m_iHp);
+		iCount = _iMaxHp / 25 - 1;
+	}
+	else
+		iCount = _iMaxHp / 25 ;
+
+	_float _fCurLength = m_fLength / (iCount + 1);
+
+	matWorld._41 -= m_fLength;
+
+	iCount = m_iHp / 25.f;
+
+	for (int i = 0; i < iCount; i++)
+	{
+		matWorld._41 += _fCurLength - 1.5f;
+		//matWorld->_42 = 0.f;
+
+		m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
+
+		m_pDividerBufferCom[i]->Render_Buffer();
+	}
+    //Set_Pos(&matWorld);
+
+	if (m_bCollapse && (m_iIndex - 1)== 0) // 체력
+	{
+		std::wstring sFront = L"체력                    " + std::to_wstring(m_iHp);
 
 		wstring sBack = L"/" + std::to_wstring(m_iMaxHp);
 
@@ -108,13 +143,13 @@ void CUIStatusBar::Render_GameObject()
 
 		const _tchar* tTotal = sTotal.c_str();
 
-		_vec2 pos(m_BRect.left - 140.f , m_BRect.bottom);
+		_vec2 pos(m_BRect.left - 130.f , m_BRect.top);
 
 		Engine::Render_Font(L"Font_HP", tTotal, &pos, D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
 	}
-	else if (m_bCollapse && (m_iIndex - 1) == 3)
+	else if (m_bCollapse && (m_iIndex - 1) == 3) // 마나 표시용
 	{
-		std::wstring sFront = L"마나                      " + std::to_wstring(m_iHp);
+		std::wstring sFront = L"마나                    " + std::to_wstring(m_iHp);
 
 		wstring sBack = L"/" + std::to_wstring(m_iMaxHp);
 
@@ -122,60 +157,27 @@ void CUIStatusBar::Render_GameObject()
 
 		const _tchar* tTotal = sTotal.c_str();
 
-		_vec2 pos(m_BRect.left - 140.f, m_BRect.bottom);
+		_vec2 pos(m_BRect.left - 130.f, m_BRect.top);
 
 		Engine::Render_Font(L"Font_HP", tTotal, &pos, D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
 	}
-}
-
-void CUIStatusBar::Set_Hp(_int _iMaxHp, _int _iCurHp)
-{
-	m_iMaxHp = _iMaxHp, m_iHp = _iCurHp, m_iCurHp = _iCurHp;
-
-	if (m_iCurHp != m_iPreHp)
-	{
-		_int iCount;
-		if (_iCurHp % 25 == 0)
-		{
-			iCount = _iMaxHp / 25;
-		}
-		else
-			iCount = _iMaxHp / 25 + 1;
-
-		_float _fCurLength = m_fLength / iCount;
-
-		wstring string[10];
-
-		for (int i = 0; i < iCount; i++)
-		{
-			string[i] = L"UI_Health_Divider_" + std::to_wstring(i);
-
-			CStage* pScene = dynamic_cast<CStage*>(Engine::Get_Scene());
-			NULL_CHECK_RETURN(pScene);
-
-			pScene->Create_GameObject(L"Layer_UI", i, _fCurLength, string[i].c_str());
-		}
-		/*
-		for (int i = 1; i < iCount + 1; i++)
-		{
-			std::wstring wstring;
-			wstring = L"UI_Health_Divider_" + std::to_wstring(i);
-
-			CHpDivider* pUI = dynamic_cast<CHpDivider*>(Engine::Get_GameObject(L"Layer_UI", wstring.c_str()));
-
-			if (pUI)
-			{
-				pUI->Calculate_Pos(_fCurLength * i, _iCurHp, _iMaxHp);
-			}
-		}*/
-	}
-	m_iPreHp = _iCurHp;
 }
 
 HRESULT CUIStatusBar::Add_Component()
 {
 	CComponent* pComponent = NULL;
 
+
+	wstring string[20];
+	for (_int i = 0; i < 10; i++)
+	{
+		pComponent = m_pDividerBufferCom[i] = dynamic_cast<CRcTex*>(Engine::Clone_Proto(L"Proto_RcTex"));
+        NULL_CHECK_RETURN(pComponent, E_FAIL);
+		
+		string[i] = L"Com_DividerBuffer_%d" + std::to_wstring(i);
+		
+		m_mapComponent[ID_STATIC].insert({ string[i].c_str(), pComponent});
+	}
 	pComponent = m_pBufferCom = dynamic_cast<CRangeTex*>(Engine::Clone_Proto(L"Proto_UIHealthTexRc"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Buffer", pComponent });

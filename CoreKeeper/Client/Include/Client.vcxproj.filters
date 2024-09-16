@@ -82,12 +82,6 @@
     <Filter Include="02. GameObject\07. UI\01. UIScreenIcon">
       <UniqueIdentifier>{10a3a682-7f16-4c4b-91fb-22aec50c9cb8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\07. UI\02. UIHealth">
-      <UniqueIdentifier>{5f789f66-086f-4154-b4fe-59e0c4ace950}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\07. UI\02. UIHealth\HpDivider">
-      <UniqueIdentifier>{4a8d7bab-fa59-424b-95bd-11cf26cfe01e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\07. UI\03. UIScreenInv">
       <UniqueIdentifier>{a2f426ca-8dba-448c-93e3-81a22574946a}</UniqueIdentifier>
     </Filter>
@@ -97,8 +91,23 @@
     <Filter Include="02. GameObject\96.MapToolTerrain">
       <UniqueIdentifier>{49d3ed79-d51e-4093-b234-1f4869bd570e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\07. UI\04. Cursor">
+      <UniqueIdentifier>{612cb866-c093-4ab6-8e82-fea3e30611ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\07. UI\02. UIStatus">
+      <UniqueIdentifier>{5f789f66-086f-4154-b4fe-59e0c4ace950}</UniqueIdentifier>
+    </Filter>
     <Filter Include="02. GameObject\93.Tile">
       <UniqueIdentifier>{8d077375-37b3-4c59-a14c-a58958b5d20c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\07. UI\05. UIInventory">
+      <UniqueIdentifier>{6209e4eb-d697-45e9-ac69-1570c246f771}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\07. UI\05. UIInventory\00. UIInventory">
+      <UniqueIdentifier>{db2c7fa8-7d9c-435a-8a60-cf6280a80677}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\07. UI\05. UIInventory\01. InvPlate">
+      <UniqueIdentifier>{0ac47d63-794f-4ff2-a171-21b40ac20b90}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -157,7 +166,7 @@
       <Filter>02. GameObject\07. UI\00. Status</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\UIStatusBar.h">
-      <Filter>02. GameObject\07. UI\02. UIHealth</Filter>
+      <Filter>02. GameObject\07. UI\02. UIStatus</Filter>
     </ClInclude>
     <ClInclude Include="imgui.h">
       <Filter>99.Imgui</Filter>
@@ -195,9 +204,6 @@
     <ClInclude Include="..\Header\UIScreenIcon.h">
       <Filter>02. GameObject\07. UI\01. UIScreenIcon</Filter>
     </ClInclude>
-    <ClInclude Include="..\Header\HpDivider.h">
-      <Filter>02. GameObject\07. UI\02. UIHealth\HpDivider</Filter>
-    </ClInclude>
     <ClInclude Include="..\Header\Sword.h">
       <Filter>02. GameObject\06. Item\00. Sword</Filter>
     </ClInclude>
@@ -210,8 +216,17 @@
     <ClInclude Include="..\Header\UIScreenInv.h">
       <Filter>02. GameObject\07. UI\03. UIScreenInv</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\UICursor.h">
+      <Filter>02. GameObject\07. UI\04. Cursor</Filter>
+    </ClInclude>
     <ClInclude Include="..\Header\Tile.h">
       <Filter>02. GameObject\93.Tile</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\UIInventory.h">
+      <Filter>02. GameObject\07. UI\05. UIInventory\00. UIInventory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\UIInvPlate.h">
+      <Filter>02. GameObject\07. UI\05. UIInventory\01. InvPlate</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -261,7 +276,7 @@
       <Filter>02. GameObject\07. UI\01. UIScreenIcon</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\UIStatusBar.cpp">
-      <Filter>02. GameObject\07. UI\02. UIHealth</Filter>
+      <Filter>02. GameObject\07. UI\02. UIStatus</Filter>
     </ClCompile>
     <ClCompile Include="imgui.cpp">
       <Filter>99.Imgui</Filter>
@@ -293,9 +308,6 @@
     <ClCompile Include="..\Code\Slime.cpp">
       <Filter>02. GameObject\02. Monster\00. Slime</Filter>
     </ClCompile>
-    <ClCompile Include="..\Code\HpDivider.cpp">
-      <Filter>02. GameObject\07. UI\02. UIHealth\HpDivider</Filter>
-    </ClCompile>
     <ClCompile Include="..\Code\Sword.cpp">
       <Filter>02. GameObject\06. Item\00. Sword</Filter>
     </ClCompile>
@@ -308,8 +320,17 @@
     <ClCompile Include="..\Code\UIScreenInv.cpp">
       <Filter>02. GameObject\07. UI\03. UIScreenInv</Filter>
     </ClCompile>
+    <ClCompile Include="..\Code\UICursor.cpp">
+      <Filter>02. GameObject\07. UI\04. Cursor</Filter>
+    </ClCompile>
     <ClCompile Include="..\Code\Tile.cpp">
       <Filter>02. GameObject\93.Tile</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\UIInventory.cpp">
+      <Filter>02. GameObject\07. UI\05. UIInventory\00. UIInventory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\UIInvPlate.cpp">
+      <Filter>02. GameObject\07. UI\05. UIInventory\01. InvPlate</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

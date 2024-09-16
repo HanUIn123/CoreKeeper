@@ -47,8 +47,11 @@ private:
 	void			Show_Equipment();
 	void			Swing_Equipment();
 
+	void            Set_UI();
+public:
 	// 손에 든 인벤토리 번호 가져오는 함수
-	_int            Get_iHandNum() { return m_iHandNum; }
+	_int            Get_iHandNum()          { return m_iHandNum; }
+	void            Set_iHandNum(_int iNum) { m_iHandNum = iNum; }
 
 private:
 	Engine::CAnimTex*		m_pBufferCom;
