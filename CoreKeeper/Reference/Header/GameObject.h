@@ -7,7 +7,7 @@ BEGIN(Engine)
 
 class ENGINE_DLL CGameObject :	public CBase
 {
-protected:
+public:
 	explicit CGameObject(LPDIRECT3DDEVICE9 pGraphicDev);
 	explicit CGameObject(const CGameObject& rhs);
 	virtual ~CGameObject();
@@ -30,6 +30,9 @@ private:
 
 protected:
 	virtual void		Free();
+
+public:
+	void		Free_Component();
 };
 
 END

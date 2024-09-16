@@ -31,12 +31,13 @@ public:
 	}
 
 	void            Set_CurInv(_int _iCurInv) { m_iCurInv = _iCurInv; }
+	void            Move_Pos();
 
 private:
 	HRESULT			Add_Component();
 
 private:
-	_vec2 m_vPos;
+	_float m_fPosX;
 	_int m_iIndex;
 
 	RECT m_BRect;
@@ -49,6 +50,7 @@ private:
 
 	_bool m_bFirst;
 
+	_bool m_bMove;
 private:
 	Engine::CAnimTex* m_pBufferCom;
 	Engine::CTransform* m_pTransformCom;

@@ -4,7 +4,7 @@
 #include "..\Header\DynamicCamera.h"
 
 CStage::CStage(LPDIRECT3DDEVICE9 pGraphicDev)
-	: Engine::CScene(pGraphicDev)
+	: Engine::CScene(pGraphicDev), m_bInvCheck(false)
 {
 }
 
@@ -42,17 +42,40 @@ void CStage::Render_Scene()
 
 }
 
-HRESULT CStage::Create_GameObject(const _tchar* pLayerTag, _int _iCount, _float _fLength, const _tchar* pKeyTag) 
+HRESULT CStage::Create_Inventory(const _tchar* pLayerTag) 
 {
-	auto	iter = find_if(m_mapLayer.begin(), m_mapLayer.end(), CTag_Finder(pLayerTag));
+	/*if (!m_bInvCheck)
+	{
+		auto	iter = find_if(m_mapLayer.begin(), m_mapLayer.end(), CTag_Finder(pLayerTag));
 
-	if (iter == m_mapLayer.end())
-		return E_FAIL;
+		if (iter == m_mapLayer.end())
+			return E_FAIL;
 
-	Engine::CGameObject* pGameObject = nullptr;
+		Engine::CGameObject* pGameObject = nullptr;
 
-	m_mapLayer.insert({ pLayerTag, iter->second });
+		_vec2 vPos = { 500.f, 200.f };
+		_vec2 vSize = { 230.f, 25.f };
 
+		pGameObject = CUIInvPlate::Create(m_pGraphicDev, vPos, vSize);
+		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		FAILED_CHECK_RETURN(iter->second->Add_GameObject(L"UI_Plate", pGameObject), E_FAIL);
+
+		m_mapLayer.insert({ pLayerTag, iter->second });
+
+		m_bInvCheck = true;
+	}
+	else
+	{
+		m_bInvCheck = false;
+
+		auto	iter = find_if(m_mapLayer.begin(), m_mapLayer.end(), CTag_Finder(pLayerTag));
+
+		if (iter == m_mapLayer.end())
+			return E_FAIL;
+			
+		iter->second->Delete_GameMap(L"UI_Plate");
+	}
+	*/
 	return S_OK;
 }
 
@@ -123,6 +146,10 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar* pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Slime", pGameObject), E_FAIL);
 
+
+	pGameObject = CSword::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Sword", pGameObject), E_FAIL);
 
 	pGameObject = CSword::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
@@ -207,11 +234,25 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
 	{
 		if (i == 0)
 		{
-			vPos = { 710.f, 550.f };
+			vPos = { 670.f, 550.f };
 		}
 		else
-			vPos = { 180.f + (53.f * i), 550.f };
+			vPos = { 240.f + (43.f * i), 550.f };
 			
+		m_Invstring[i] = L"UI_ScreenInv_" + std::to_wstring(i);
+
+		pGameObject = CUIScreenInv::Create(m_pGraphicDev, vPos, i);
+		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		FAILED_CHECK_RETURN(pLayer->Add_GameObject(m_Invstring[i].c_str(), pGameObject), E_FAIL);
+	}
+
+	for (int i = 11; i < 41; i++)
+	{
+		if(i % 10 != 0)
+			vPos = { 240.f + (43.f * (_float)(i - (i / 10) * 10)), 300.f - (_float)(i / 10) * 43.f};
+		else
+			vPos = { 240.f + (43.f * (_float)(i - (((i - 1)  / 10) * 10 ))), 300.f - (_float)((i - 1) / 10) * 43.f };
+
 		m_Invstring[i] = L"UI_ScreenInv_" + std::to_wstring(i);
 
 		pGameObject = CUIScreenInv::Create(m_pGraphicDev, vPos, i);
@@ -222,6 +263,13 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
 	pGameObject = CUICursor::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Cursor", pGameObject), E_FAIL)
+
+	vPos = { 475.f, 299.f };
+	vSize = { 220.f, 25.f };
+
+	pGameObject = CUIInvPlate::Create(m_pGraphicDev, vPos, vSize);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Plate", pGameObject), E_FAIL);
 
 	m_mapLayer.insert({ pLayerTag , pLayer });
 

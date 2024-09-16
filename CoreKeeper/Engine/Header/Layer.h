@@ -24,6 +24,10 @@ public:
 	void				LateUpdate_Layer();
 	void				Render_Layer();
 
+public:
+	
+	void                Delete_GameMap(const _tchar* tObjTag);
+
 private:
 	map<const _tchar*, CGameObject*>			m_mapObject;
 
