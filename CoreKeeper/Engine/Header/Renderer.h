@@ -17,7 +17,6 @@ public:
 	void			Add_RenderGroup(RENDERID eType, CGameObject* pGameObject);
 	void			Render_GameObject(LPDIRECT3DDEVICE9& pGraphicDev);
 	void			Clear_RenderGroup();
-	void            Delete_Renderer(RENDERID _eType, CGameObject* pGameObject);
 
 private:
 	void			Render_Priority(LPDIRECT3DDEVICE9& pGraphicDev);

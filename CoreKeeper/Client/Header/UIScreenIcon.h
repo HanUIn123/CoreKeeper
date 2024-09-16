@@ -44,7 +44,6 @@ private:
 	_int  m_iIndex;
 
 	_bool m_bCollapse;
-	_bool m_bClicked;
 
 	_bool m_bExit;
 private:

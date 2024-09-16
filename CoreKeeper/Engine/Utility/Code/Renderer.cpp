@@ -52,21 +52,6 @@ void CRenderer::Clear_RenderGroup()
 	}
 }
 
-void CRenderer::Delete_Renderer(RENDERID _eType, CGameObject* pGameObject)
-{
-	if (RENDER_END <= _eType || nullptr == pGameObject)
-		return;
-	
-	for (auto iter : m_RenderGroup[_eType])
-	{
-		if (iter == pGameObject)
-		{
-			m_RenderGroup[_eType].remove(iter);
-			return;
-		}
-	}
-}
-
 void CRenderer::Render_Priority(LPDIRECT3DDEVICE9 & pGraphicDev)
 {
 	for (auto& pGameObject : m_RenderGroup[RENDER_PRIORITY])
@@ -106,7 +91,6 @@ void CRenderer::Render_UI(LPDIRECT3DDEVICE9 & pGraphicDev)
 	pGraphicDev->SetRenderState(D3DRS_ALPHAREF, 0xc0);
 
 	for (auto& pGameObject : m_RenderGroup[RENDER_UI])
-
 		pGameObject->Render_GameObject();
 
 	pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);

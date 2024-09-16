@@ -65,9 +65,8 @@ public:
 	void				Set_Swing(DIRECTION eDir, bool bSwing) { m_eDir = eDir; m_bSwing = bSwing; }
 
 public: // UI에서 가져갈 Component들
- 	CAnimTex*          Get_Buffer() { return m_pBufferCom; }
+	CAnimTex*          Get_Buffer() { return m_pBufferCom; }
 	CTexture*          Get_Texture() { return m_pTextureCom; }
-	CAnimator* Get_Animator() { return m_pAnimatorCom; }
 
 protected:
 	int			m_iTextureNumber;

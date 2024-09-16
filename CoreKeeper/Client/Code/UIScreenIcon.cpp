@@ -3,11 +3,8 @@
 #include "Export_System.h"
 #include "Export_Utility.h"
 
-#include "..\Header\UIInvPlate.h"
-#include "..\Header\UIScreenInv.h"
-
 CUIScreenIcon::CUIScreenIcon(LPDIRECT3DDEVICE9 pGraphicDev)
-	: Engine::CGameObject(pGraphicDev), m_bCollapse(false), m_bExit(false), m_bClicked(false)
+	: Engine::CGameObject(pGraphicDev), m_bCollapse(false), m_bExit(false)
 
 {
 }
@@ -56,34 +53,19 @@ _int CUIScreenIcon::Update_GameObject(const _float& fTimeDelta)
 	{
 		if (Engine::Get_DIMouseState(DIM_LB))
 		{
-			m_bClicked = true;
-		}
-		else if ((!Engine::Get_DIMouseState(DIM_LB)) && m_bClicked)
-		{
-			m_bClicked = false;
-
-			if (m_iIndex == ICON_BAG || m_iIndex == ICON_BAG_COL)
+			switch (m_iIndex)
 			{
-				CUIInvPlate* pPlate = dynamic_cast<CUIInvPlate*>(Engine::Get_GameObject(L"Layer_UI", L"UI_Plate"));
-				NULL_CHECK_RETURN(pPlate, -1);
+			case ICON_BAG:
+				break;
 
-				pPlate->Set_Render();
+			case ICON_MAP:
+				break;
 
-				for (int i = 0; i < 10; i++)
-				{
-					wstring string;
+			case ICON_HAND:
+				break;
 
-					string = L"UI_ScreenInv_" + std::to_wstring(i);
-
-					CUIScreenInv* pInv = dynamic_cast<CUIScreenInv*>(Engine::Get_GameObject(L"Layer_UI", string.c_str()));
-
-					pInv->Move_Pos();
-				}
-
-			}
-			else if(m_iIndex == ICON_MAP || m_iIndex == ICON_MAP_COL)
-			{
-
+			default:
+				break;
 			}
 			//인덱스에 따라 출력되는 창 변경
 		}

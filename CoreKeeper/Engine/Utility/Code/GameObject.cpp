@@ -65,12 +65,3 @@ void CGameObject::Free()
 
 	Safe_Release(m_pGraphicDev);
 }
-
-void CGameObject::Free_Component()
-{
-	for (_uint i = 0; i < ID_END; ++i)
-	{
-		//for_each(m_mapComponent[i].begin(), m_mapComponent[i].end(), CDeleteMap());
-		m_mapComponent[i].clear();
-	}
-}
