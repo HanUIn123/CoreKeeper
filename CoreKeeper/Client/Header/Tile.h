@@ -32,11 +32,9 @@ public:
 	_vec3																Get_TilePos() { return m_vTilePosition; }
 	void																Set_TilePos(_vec3 _iTilePos) { m_vTilePosition = _iTilePos; }
 
-	_vec3																Get_PikingPos() {return Picking_OnTile();}
-
 private:
 	HRESULT																Add_Component();
-	_vec3																Picking_OnTile();
+
 private:
 	Engine::CTransform* m_pTransformCom;
 	Engine::CTexture* m_pTextureCom;

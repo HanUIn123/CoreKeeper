@@ -6,7 +6,6 @@
 
 #include "MapToolTerrain.h"
 #include "Tile.h"
-#include "Wall.h"
 
 BEGIN(Engine)
 

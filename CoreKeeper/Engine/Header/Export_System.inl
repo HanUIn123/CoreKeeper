@@ -74,7 +74,7 @@ void	Update_InputDev(void)
 
 HRESULT Ready_Sound()
 {
-	CSoundMgr::GetInstance()->Ready_Sound();
+	return CSoundMgr::GetInstance()->Ready_Sound();
 }
 
 void Play(const TCHAR* pSoundKey, CHANNELID eID, float fVolume)

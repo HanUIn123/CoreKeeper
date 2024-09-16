@@ -17,8 +17,6 @@ private:
 public:
 	HRESULT			Ready_Calculator();
 	_vec3			Picking_OnTerrain(HWND _hWnd, CMapToolTex* _pMapToolBufferCom, CTransform* _pWireTerrainTransform);
-	_vec3			Picking_OnTile(HWND _hWnd, CTileTex* _pTileBufferCom, CTransform* _TileTransform);
-
 
 public:
 	static CCalculator*		Create(LPDIRECT3DDEVICE9 pGraphicDev);

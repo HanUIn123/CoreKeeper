@@ -91,12 +91,6 @@ HRESULT CTile::Add_Component()
     return S_OK;
 }
 
-_vec3 CTile::Picking_OnTile()
-{
-    return m_pCalculatorCom->Picking_OnTile(g_hWnd, m_pTileTexCom, m_pTransformCom);
-}
-
-
 CTile* CTile::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _fTileX, _float _fTileZ)
 {
     CTile* pTile = new CTile(pGraphicDev);
