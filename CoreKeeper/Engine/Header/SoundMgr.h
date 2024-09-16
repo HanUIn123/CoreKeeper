@@ -1,0 +1,40 @@
+#pragma once
+
+#include "Base.h"
+#include "Engine_Define.h"
+
+BEGIN(Engine)
+
+class ENGINE_DLL CSoundMgr : public CBase
+{
+	DECLARE_SINGLETON(CSoundMgr)
+
+private:
+	explicit CSoundMgr();
+	virtual ~CSoundMgr();
+
+public:
+    HRESULT Ready_Sound();
+
+public:
+    void Play(const TCHAR* pSoundKey, CHANNELID eID, float fVolume);
+    void PlayBGM(const TCHAR* pSoundKey, float fVolume);
+    void PlayBGMOnce(const TCHAR* pSoundKey, CHANNELID eID, float fVolume);
+    void StopSound(CHANNELID eID);
+    void StopAll();
+    void SetChannelVolume(CHANNELID eID, float fVolume);
+
+private:
+    void LoadSoundFile();
+
+private:
+	map<const TCHAR*, FMOD::Sound*> m_mapSound;
+	FMOD::Channel* m_pChannelArr[MAXCHANNEL];
+	FMOD::System* m_pSystem;
+
+private:
+	virtual void		Free();
+
+};
+
+END
