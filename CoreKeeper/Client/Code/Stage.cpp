@@ -4,7 +4,9 @@
 #include "..\Header\DynamicCamera.h"
 
 CStage::CStage(LPDIRECT3DDEVICE9 pGraphicDev)
-	: Engine::CScene(pGraphicDev), m_bInvCheck(false)
+	: Engine::CScene(pGraphicDev)
+	, m_bInvCheck(false)
+	, m_iLoadTileCount(0)
 {
 }
 
@@ -18,6 +20,11 @@ HRESULT CStage::Ready_Scene()
 	FAILED_CHECK_RETURN(Ready_LightInfo(), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Layer_Environment"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_GameLogic(L"Layer_GameLogic"), E_FAIL);
+
+
+	Load_MapFile();
+
+
 	FAILED_CHECK_RETURN(Ready_Layer_UI(L"Layer_UI"), E_FAIL);
 
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
@@ -39,7 +46,6 @@ void CStage::LateUpdate_Scene()
 
 void CStage::Render_Scene()
 {
-
 }
 
 HRESULT CStage::Create_Inventory(const _tchar* pLayerTag) 
@@ -134,9 +140,9 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar* pLayerTag)
 
 	Engine::CGameObject* pGameObject = nullptr;
 
-	pGameObject = CTerrain::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Terrain", pGameObject), E_FAIL);
+	//pGameObject = CTerrain::Create(m_pGraphicDev);
+	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Terrain", pGameObject), E_FAIL);
 
 	pGameObject = CPlayer::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
@@ -290,7 +296,54 @@ CStage* CStage::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 	return pStage;
 }
 
+HRESULT CStage::Load_MapFile()
+{
+	auto	iter = find_if(m_mapLayer.begin(), m_mapLayer.end(), CTag_Finder(L"Layer_Environment"));
+
+	if (iter == m_mapLayer.end())
+		return E_FAIL;
+
+	Engine::CGameObject* pGameObject = nullptr;
+
+	const _tchar* strFileName = L"../../Data/MapData.txt";
+
+	m_hFile = CreateFile(strFileName, GENERIC_READ, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+
+	if (INVALID_HANDLE_VALUE == m_hFile)
+	{
+		MSG_BOX("Fail Open file");
+		return E_FAIL;
+	}
+
+	_vec3 vTempTilePos(0.0f, 0.0f, 0.0f);
+	_int vTempTileImgNum(0);
+
+	DWORD dwByte = 0;
+
+	while (true)
+	{
+		ReadFile(m_hFile, &vTempTilePos, sizeof(_vec3), &dwByte, nullptr);
+		ReadFile(m_hFile, &vTempTileImgNum, sizeof(_int), &dwByte, nullptr);
+
+		if (dwByte == 0)  
+			break;
+
+		CTile* pTile = CTile::Create(m_pGraphicDev, vTempTilePos.x, vTempTilePos.z, vTempTileImgNum);
+		NULL_CHECK_RETURN(pTile, E_FAIL);
+		m_wsTileNameString[m_iLoadTileCount] = L"Tile_" + std::to_wstring(m_iLoadTileCount);
+		FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsTileNameString[m_iLoadTileCount].c_str(), pTile), E_FAIL);
+
+		m_iLoadTileCount++;
+	}
+
+	CloseHandle(m_hFile);
+	MSG_BOX("Success Load File");
+
+	return S_OK;
+}
+
 void CStage::Free()
 {
 	Engine::CScene::Free();
+
 }
