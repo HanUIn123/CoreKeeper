@@ -12,18 +12,15 @@ CMapEditorScene::CMapEditorScene(LPDIRECT3DDEVICE9 _pGraphicDevice)
     , m_iTileCreateCount(0)
     , m_pTileCom(nullptr)
     , m_bPushed(false)
-    , m_bSaved(false)
-
 {
     ZeroMemory(&m_tImageInfo, sizeof(D3DXIMAGE_INFO));
 
-    // 시작할 때, ImGui에 Terrain 이미지 등록함.
-    //if (!m_TerrainTextureInfo)
-    //    Resister_TerrainImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/MapTerrain/Terrain_%d.png", TEX_NORMAL, 9);
-
     // 시작할 때, ImGui에 Tile 이미지 등록함.
     if (!m_TileTextureInfo)
-        Resister_TileImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/Tile/Tile_%d.png", TEX_NORMAL, 6);
+    {
+        Resister_TileImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/Tile/BasicTile/BasicTile_%d.png", TEX_NORMAL, 11);
+        //Resister_TileImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/MapTerrain/Terrain_%d.png", TEX_NORMAL, 8);
+    }
 }
 
 CMapEditorScene::~CMapEditorScene()
@@ -76,11 +73,9 @@ _int CMapEditorScene::Update_Scene(const _float& fTimeDelta)
         if (Engine::Get_DIMouseState(DIM_LB) & 0x80)
         {
             m_bPushed = true;
-
         }
         if (!(Engine::Get_DIMouseState(DIM_LB) & 0x80) && m_bPushed)
         {
-
             CMapToolTerrain* pTerrain = dynamic_cast<CMapToolTerrain*>(Engine::Get_GameObject(L"Layer_GameLogic", L"MapToolTerrain"));
             CCalculator* pPickPos = dynamic_cast<CCalculator*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"MapToolTerrain", L"Com_Calculator"));
             CMapToolTex* pMapToolBufferCom = dynamic_cast<CMapToolTex*>(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"MapToolTerrain", L"Com_Buffer"));
@@ -88,22 +83,17 @@ _int CMapEditorScene::Update_Scene(const _float& fTimeDelta)
 
             m_vPickPos = pPickPos->Picking_OnTerrain(g_hWnd, pMapToolBufferCom, pMapToolTransformCom);
 
-            for (_ulong i = 0; i < VTXCNTZ * VTXCNTX; ++i)
-            {
-                wstring string = m_wsTileNameString[i];
-
-                CTile* pTile = dynamic_cast<CTile*>(Engine::Get_GameObject(L"Layer_GameLogic", string.c_str()));
-
-                if (m_vPickPos.x == pTile->Get_TilePos().x && m_vPickPos.z == pTile->Get_TilePos().z)
-                {
-                    pTile->Set_TileNumber(1);
-                    
-                    break;
-                }
-            }
+            m_vecTileObject[m_vPickPos.z * VTXCNTX + m_vPickPos.x]->Set_TileNumber(m_iImageNumber);
 
             m_bPushed = false;
+
+           // m_listChangedTile.push_back(m_vecTileObject[m_vPickPos.z * VTXCNTX + m_vPickPos.x]);
         }
+    }
+
+    if (Engine::Get_DIKeyState(DIK_V))
+    {
+        MapFile_Save();
     }
 
     return iExit;
@@ -111,7 +101,7 @@ _int CMapEditorScene::Update_Scene(const _float& fTimeDelta)
 
 void CMapEditorScene::LateUpdate_Scene()
 {
-
+    Setting_TileList();
 
     Engine::CScene::LateUpdate_Scene();
 }
@@ -154,6 +144,7 @@ HRESULT CMapEditorScene::Ready_Layer_GameLogic(const _tchar* pLayerTag)
     NULL_CHECK_RETURN(m_pMTGameObjectCom, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"MapToolTerrain", m_pMTGameObjectCom), E_FAIL);
 
+    
     for (_ulong i = 0; i < VTXCNTX; ++i)
     {
         for (_ulong j = 0; j < VTXCNTZ; ++j)
@@ -161,8 +152,10 @@ HRESULT CMapEditorScene::Ready_Layer_GameLogic(const _tchar* pLayerTag)
             _float fX = (VTXITV >> 1) + _float(VTXITV * j);
             _float fZ = (VTXITV >> 1) + _float(VTXITV * i);
 
-            m_pTileCom = CTile::Create(m_pGraphicDev, fX, fZ);
-            //m_vecTileObject.push_back(m_pTileCom);
+            m_pTileCom = CTile::Create(m_pGraphicDev, fX, fZ, 0);
+
+            m_vecTileObject.push_back(dynamic_cast<CTile*>(m_pTileCom));
+
             NULL_CHECK_RETURN(m_pTileCom, E_FAIL);
 
             m_wsTileNameString[m_iTileCreateCount] = L"Tile_" + std::to_wstring(m_iTileCreateCount);
@@ -171,6 +164,7 @@ HRESULT CMapEditorScene::Ready_Layer_GameLogic(const _tchar* pLayerTag)
         }
     }
     m_iTileCreateCount = 0;
+    
 
     m_mapLayer.insert({ pLayerTag , pLayer });
 
@@ -234,10 +228,10 @@ void CMapEditorScene::Show_ImguiWindow()
     Setting_Menu();
 
     // MapTool 에서 사용할 지형terrain을 고르는 함수.
-    Setting_TerrainList();
+    //Setting_TerrainList();
 
-    // MapTool 에서 사용할 타일 고르는 함수.
-    Setting_TileList();
+    //// MapTool 에서 사용할 타일 고르는 함수.
+    //Setting_TileList();
 
     ImGui::End();
 }
@@ -257,47 +251,6 @@ void CMapEditorScene::Setting_Menu()
     ImGui::SameLine(0.0f, 0.0f);
     static int pos[2] = { 0,0 };
     ImGui::SliderInt2("##", pos, 0, 10);
-}
-
-void CMapEditorScene::Setting_TerrainList()
-{
-    if (!ImGui::CollapsingHeader("Terrain List"))
-        return;
-
-    CComponent* pComponent = NULL;
-
-    // 여기서 Imgui에서 직접적으로 몇 개의 타일을 등록할 것인지,
-    // 추가 공부해서 몇 개의 타일을 등록한 뒤에, 그 만큼 타일리스트 나와서
-    // 각 타일 항목마다 맞는 이미지 출력하게 해야함.
-
-    /*
-      for (_int i = 0; i < _iImageNumber; ++i)
-    {
-        TCHAR                       szImageFileName[128] = L"";
-        const _tchar*               _ImageFilePath
-        wsprintf(szImageFileName, _ImageFilePath, i);
-    }
-    */
-
-    //m_wsTileNameString[_iCount] = L"Tile_" + std::to_wstring(_iCount);
-    //
-    //FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsTileNameString[_iCount].c_str(), m_pTileCom), E_FAIL);
-
-    const char* items[] = { "Terrain01","Terrain02","Terrain03","Terrain04","Terrain05","Terrain06","Terrain07","Terrain08","Terrain09" };
-
-    static int nCurrentItem = 0;
-    ImGui::Combo("##2", &nCurrentItem, items, IM_ARRAYSIZE(items));
-
-    for (_int i = 0; i < m_vecTerrainTexture.size(); ++i)
-    {
-        if (nCurrentItem == i)
-        {
-            if (ImGui::ImageButton("Terrain", m_vecTerrainTexture[i], ImVec2(50.0f, 50.0f)))
-            {
-                //dynamic_cast<CMapToolTerrain*>(m_pMTGameObjectCom)->Set_TerrainNumber(i);
-            }
-        }
-    }
 }
 
 void CMapEditorScene::Setting_TileList()
@@ -321,9 +274,9 @@ void CMapEditorScene::Setting_TileList()
     //ImGui::Combo("##3", &nCurrentItem, items, IM_ARRAYSIZE(items))
 
 
-    const char* items[] = { "Tile01","Tile02","Tile03", "Tile04","Tile05","Tile06" };
+    const char* items[] = { "Tile01","Tile02","Tile03", "Tile04","Tile05","Tile06","Tile07","Tile08","Tile09","Tile10" };
 
-    static int nCurrentItem = 0;
+    static int	nCurrentItem = 0;
     ImGui::Combo("##3", &nCurrentItem, items, IM_ARRAYSIZE(items));
 
     for (_int i = 0; i < m_vecTileTexture.size(); ++i)
@@ -333,37 +286,13 @@ void CMapEditorScene::Setting_TileList()
             if (ImGui::ImageButton("Tile", m_vecTileTexture[i], ImVec2(50.0f, 50.0f)))
             {
                 if (m_pTileCom != nullptr)       //-> 이거 안하면 터짐.
-                    dynamic_cast<CTile*>(m_pTileCom)->Set_TileNumber(i);
+                {
+                    m_iImageNumber = nCurrentItem;
+
+                }
             }
         }
     }
-}
-
-HRESULT CMapEditorScene::Resister_TerrainImage_ImGui(LPDIRECT3DDEVICE9 _pGraphicDeivce, const _tchar* _ImageFilePath, TEXTUREID _eTextureId, const int& _iImageNumber)
-{
-    m_vecTerrainTexture.reserve(_iImageNumber);
-    m_vecTileTexture.reserve(_iImageNumber);
-
-    for (_int i = 0; i < _iImageNumber; ++i)
-    {
-        TCHAR       szImageFileName[128] = L"";
-
-        wsprintf(szImageFileName, _ImageFilePath, i);
-
-        switch (_eTextureId)
-        {
-        case TEX_NORMAL:
-            FAILED_CHECK_RETURN(D3DXCreateTextureFromFile(m_pGraphicDev, szImageFileName, &m_TerrainTextureInfo), E_FAIL);
-            break;
-
-        case TEX_CUBE:
-            FAILED_CHECK_RETURN(D3DXCreateCubeTextureFromFile(m_pGraphicDev, szImageFileName, (LPDIRECT3DCUBETEXTURE9*)&m_TerrainTextureInfo), E_FAIL);
-            break;
-        }
-        m_vecTerrainTexture.emplace_back(m_TerrainTextureInfo);
-    }
-
-    return S_OK;
 }
 
 HRESULT CMapEditorScene::Resister_TileImage_ImGui(LPDIRECT3DDEVICE9 _pGraphicDeivce, const _tchar* _ImageFilePath, TEXTUREID _eTextureId, const int& _iImageNumber)
@@ -389,12 +318,79 @@ HRESULT CMapEditorScene::Resister_TileImage_ImGui(LPDIRECT3DDEVICE9 _pGraphicDei
     return S_OK;
 }
 
-void CMapEditorScene::Set_Texture(const _uint& iIndex)
+void CMapEditorScene::MapFile_Save()
 {
-    if (m_vecTerrainTexture.size() < iIndex)
+    const _tchar* strFileName = L"../../Data/MapData.txt";
+
+    m_hFile = CreateFile(strFileName, GENERIC_WRITE, 0, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
+
+    if (INVALID_HANDLE_VALUE == m_hFile)
+    {
+        MSG_BOX("Failed Create File");
+        return;
+    }
+
+    if (m_vecTileObject.empty())
         return;
 
-    m_pGraphicDev->SetTexture(0, m_vecTerrainTexture[iIndex]);
+    _vec3   vTempTilePos(0.0f,0.0f,0.0f);
+    _int    vTempTileImgNum(0);
+
+    _vec3   vTempChangeTilePos(0.0f,0.0f,0.0f);
+    _int   vTempChangeTileNum(0);
+
+    list<CTile*> vTempChangedTile;
+    
+
+    DWORD	dwByte(0);
+
+    for (auto& iter : m_vecTileObject)
+    {
+        vTempTilePos = (*iter).Get_TilePos();
+        vTempTileImgNum = (*iter).Get_TileNumber();
+
+        WriteFile(m_hFile, &vTempTilePos, sizeof(_vec3), &dwByte, nullptr);
+        WriteFile(m_hFile, &vTempTileImgNum, sizeof(_int), &dwByte, nullptr);
+    }
+
+    CloseHandle(m_hFile);
+}
+
+void CMapEditorScene::MapFile_Load()
+{
+    const _tchar* strFileName = L"../../Data/MapData.txt";
+
+    m_hFile = CreateFile(strFileName, GENERIC_READ, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+
+    if (INVALID_HANDLE_VALUE == m_hFile)
+    {
+        MSG_BOX("Failed Open file");
+        return;
+    }
+
+    _vec3   vTempTilePos(0.0f, 0.0f, 0.0f);
+    _int    vTempTileImgNum(0);
+
+    DWORD   dwByte = 0;
+
+    while (true)
+    {
+        ReadFile(m_hFile, &vTempTilePos, sizeof(_vec3), &dwByte, NULL);
+        ReadFile(m_hFile, &vTempTileImgNum, sizeof(_int), &dwByte, NULL);
+
+        if (0 == dwByte)
+            break;
+
+        CTile* pTile = CTile::Create(m_pGraphicDev, vTempTilePos.x, vTempTilePos.z, vTempTileImgNum);
+
+        dynamic_cast<CTile*>(pTile)->Set_TilePos(vTempTilePos);
+        dynamic_cast<CTile*>(pTile)->Set_TileNumber(vTempTileImgNum);
+
+        m_vecTileObject.push_back(pTile);
+    }
+
+    CloseHandle(m_hFile);
+    MSG_BOX("Succed Load Tile");
 }
 
 void CMapEditorScene::Free()

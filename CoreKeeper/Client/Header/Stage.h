@@ -10,6 +10,7 @@
 
 #include "Terrain.h"
 #include "SkyBox.h"
+#include "Tile.h"
 
 #include "UIPlayerStatus.h"
 #include "UIScreenIcon.h"
@@ -36,20 +37,33 @@ public:
 	virtual			void			Render_Scene();
 
 public:
-	HRESULT     Create_Inventory(const _tchar* pLayerTag); 
+	HRESULT							Create_Inventory(const _tchar* pLayerTag); 
 
 private:
-	HRESULT		Ready_LightInfo();
-	HRESULT		Ready_Layer_Environment(const _tchar* pLayerTag);
-	HRESULT		Ready_Layer_GameLogic(const _tchar* pLayerTag);
-	HRESULT		Ready_Layer_UI(const _tchar* pLayerTag);
+	HRESULT							Ready_LightInfo();
+	HRESULT							Ready_Layer_Environment(const _tchar* pLayerTag);
+	HRESULT							Ready_Layer_GameLogic(const _tchar* pLayerTag);
+	HRESULT							Ready_Layer_UI(const _tchar* pLayerTag);
 
 public:
-	static	CStage*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
-private:
-	virtual void		Free();
+	static	CStage*					Create(LPDIRECT3DDEVICE9 pGraphicDev);
+
+
+	HRESULT							Load_MapFile();
+
+
 
 private:
+	virtual void					Free();
+
+private:
+	wstring							m_Invstring[50];
+	_bool							m_bInvCheck;
+	HANDLE							m_hFile;
+
+	wstring							m_wsTileNameString[VTXCNTX * VTXCNTZ];
+	_int							m_iLoadTileCount;
+
 	wstring m_Invstring[50];
 	wstring m_ItemSlot[10];
 	_bool   m_bInvCheck;
