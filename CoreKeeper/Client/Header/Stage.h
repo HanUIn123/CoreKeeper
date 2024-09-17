@@ -58,14 +58,11 @@ private:
 
 private:
 	wstring							m_Invstring[50];
+	wstring							m_ItemSlot[10];
 	_bool							m_bInvCheck;
 	HANDLE							m_hFile;
 
 	wstring							m_wsTileNameString[VTXCNTX * VTXCNTZ];
 	_int							m_iLoadTileCount;
-
-	wstring m_Invstring[50];
-	wstring m_ItemSlot[10];
-	_bool   m_bInvCheck;
 };
 
