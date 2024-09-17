@@ -112,9 +112,6 @@
     <Filter Include="02. GameObject\06. Item\01. Seed">
       <UniqueIdentifier>{4d87b991-086f-41a7-a2a2-cdc69b86e9f4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\06. Item\01. Seed\00. Seed">
-      <UniqueIdentifier>{20872a88-b53c-41a0-bf77-3ff8f0f3b558}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -234,6 +231,9 @@
     <ClInclude Include="..\Header\UIInvPlate.h">
       <Filter>02. GameObject\07. UI\05. UIInventory\01. InvPlate</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\Seed.h">
+      <Filter>02. GameObject\06. Item\01. Seed</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -337,6 +337,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\UIInvPlate.cpp">
       <Filter>02. GameObject\07. UI\05. UIInventory\01. InvPlate</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Seed.cpp">
+      <Filter>02. GameObject\06. Item\01. Seed</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

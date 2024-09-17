@@ -163,6 +163,7 @@ call Copy.bat</Command>
     <ClInclude Include="..\Header\MapToolTerrain.h" />
     <ClInclude Include="..\Header\Monster.h" />
     <ClInclude Include="..\Header\Player.h" />
+    <ClInclude Include="..\Header\Seed.h" />
     <ClInclude Include="..\Header\SkyBox.h" />
     <ClInclude Include="..\Header\Slime.h" />
     <ClInclude Include="..\Header\Stage.h" />
@@ -203,6 +204,7 @@ call Copy.bat</Command>
     <ClCompile Include="..\Code\MapToolTerrain.cpp" />
     <ClCompile Include="..\Code\Monster.cpp" />
     <ClCompile Include="..\Code\Player.cpp" />
+    <ClCompile Include="..\Code\Seed.cpp" />
     <ClCompile Include="..\Code\SkyBox.cpp" />
     <ClCompile Include="..\Code\Slime.cpp" />
     <ClCompile Include="..\Code\Stage.cpp" />

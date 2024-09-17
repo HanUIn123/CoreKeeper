@@ -6,6 +6,7 @@
 #include "Slime.h"
 #include "Monster.h"
 #include "Sword.h"
+#include "Seed.h"
 
 #include "Terrain.h"
 #include "SkyBox.h"
