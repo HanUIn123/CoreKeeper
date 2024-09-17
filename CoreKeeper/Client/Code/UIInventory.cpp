@@ -31,7 +31,7 @@ HRESULT CUIInventory::Ready_GameObject(_vec2 vPos, _int _iIndex)
 
 	m_pTransformCom->Set_Pos(x, y, 0);
 
-	_vec2 vSize = { 15.f, 15.f };
+	_vec2 vSize = { 20.f, 20.f };
 
 	m_pTransformCom->m_vScale = { vSize.x, vSize.y, 1.f };
 
@@ -88,11 +88,12 @@ void CUIInventory::Render_GameObject()
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
 	
+	/*
 	if (m_iCurInv == m_iIndex)
 	{
 		m_pTextureCom->Set_Texture(1);
 	}
-	else
+	else*/
 		m_pTextureCom->Set_Texture();
 		
 	m_pRcTextureCom->Render_Buffer();
@@ -164,6 +165,7 @@ void CUIInventory::Render_GameObject()
 		matWorld._42 += 5.f;
 	}
 
+	/*
 	m_pNumTextureCom->Set_Texture(m_iIndex);
 
 	matWorld._11 = 5.f;
@@ -175,7 +177,7 @@ void CUIInventory::Render_GameObject()
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
 
 	m_pRcTextureCom->Render_Buffer();
-	
+	*/
 }
 
 HRESULT CUIInventory::Add_Component()

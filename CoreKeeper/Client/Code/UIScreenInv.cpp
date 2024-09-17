@@ -260,7 +260,7 @@ void CUIScreenInv::Move_Pos()
 
 	if (!m_bMove)
 	{
-		m_pTransformCom->Set_Pos(m_fPosX, 0.f, 0);
+		m_pTransformCom->Set_Pos(m_fPosX, -39.f, 0);
 		m_bMove = true;
 
 		y = 300.f;

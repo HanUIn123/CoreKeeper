@@ -16,6 +16,7 @@
 #include "UIScreenInv.h"
 #include "UICursor.h"
 #include "UIInvPlate.h"
+#include "UIInventory.h"
 
 #include "Inventory.h"
 
