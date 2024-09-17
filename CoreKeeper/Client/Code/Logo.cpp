@@ -56,6 +56,8 @@ _int CLogo::Update_Scene(const _float& fTimeDelta)
 
 			FAILED_CHECK_RETURN(Engine::Set_Scene(pStage), E_FAIL);
 
+			ShowCursor(true);
+
 			return 0;
 		}
 	}

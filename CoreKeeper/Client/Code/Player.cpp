@@ -420,13 +420,13 @@ void CPlayer::Set_UI()
 			m_iHandNum--;
 
 
-		if (m_iHandNum > 9)
+		if (m_iHandNum > 10)
 		{
-			m_iHandNum = 0;
+			m_iHandNum = 1;
 		}
-		else if (m_iHandNum < 0)
+		else if (m_iHandNum <= 0)
 		{
-			m_iHandNum = 9;
+			m_iHandNum = 10;
 		}
 	}
 

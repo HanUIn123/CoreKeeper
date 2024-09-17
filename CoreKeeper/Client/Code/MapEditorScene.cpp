@@ -75,32 +75,6 @@ _int CMapEditorScene::Update_Scene(const _float& fTimeDelta)
         // 피킹으로 Terrain에 Tile 피킹되게 처리.
         if (Engine::Get_DIMouseState(DIM_LB) & 0x80)
         {
-            //m_bPushed = true;
-
-            //CMapToolTerrain* pTerrain = dynamic_cast<CMapToolTerrain*>(Engine::Get_GameObject(L"Layer_GameLogic", L"MapToolTerrain"));
-            //CCalculator* pPickPos = dynamic_cast<CCalculator*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"MapToolTerrain", L"Com_Calculator"));
-            //CMapToolTex* pMapToolBufferCom = dynamic_cast<CMapToolTex*>(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"MapToolTerrain", L"Com_Buffer"));
-            //CTransform* pMapToolTransformCom = dynamic_cast<CTransform*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"MapToolTerrain", L"Com_Transform"));
-
-            //m_vPickPos = pPickPos->Picking_OnTerrain(g_hWnd, pMapToolBufferCom, pMapToolTransformCom);
-
-            //for (_ulong i = 0;  i < VTXCNTZ * VTXCNTX; ++i)
-            //{
-            //    wstring string = m_wsTileNameString[i];
-
-            //    CTile* pTile = dynamic_cast<CTile*>(Engine::Get_GameObject(L"Layer_GameLogic", string.c_str()));
-
-            //    if (m_vPickPos.x == pTile->Get_TilePos().x && m_vPickPos.z == pTile->Get_TilePos().z)
-            //    {
-            //        pTile->Set_TileNumber(1);
-
-            //        m_pTileCom = pTile;
-
-            //        break;
-            //    }
-            //}
-
-            //
             m_bPushed = true;
 
         }

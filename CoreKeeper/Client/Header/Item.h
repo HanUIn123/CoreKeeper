@@ -67,6 +67,11 @@ public:
 public: // UI에서 가져갈 Component들
  	CAnimTex*          Get_Buffer() { return m_pBufferCom; }
 	CTexture*          Get_Texture() { return m_pTextureCom; }
+	CTransform*        Get_Transform() { return m_pTransformCom; }
+
+	Engine::ITEMNUM    Get_ItenNum()  { return m_eItemNum; }
+
+
 	CAnimator* Get_Animator() { return m_pAnimatorCom; }
 
 protected:

@@ -5,9 +5,14 @@
 
 #include "..\Header\UIInvPlate.h"
 #include "..\Header\UIScreenInv.h"
+#include "..\Header\Player.h"
+#include "..\Header\UIInventory.h"
+#include "..\Header\UIItemSlot.h"
+#include "..\Header\UIPlayerStatus.h"
+#include "..\Header\UIPlayerStats.h"
 
 CUIScreenIcon::CUIScreenIcon(LPDIRECT3DDEVICE9 pGraphicDev)
-	: Engine::CGameObject(pGraphicDev), m_bCollapse(false), m_bExit(false), m_bClicked(false)
+	: Engine::CGameObject(pGraphicDev), m_bCollapse(false), m_bExit(false), m_bClicked(false), m_bFirst(true)
 
 {
 }
@@ -48,6 +53,15 @@ _int CUIScreenIcon::Update_GameObject(const _float& fTimeDelta)
 {
 	_int iExit = Engine::CGameObject::Update_GameObject(fTimeDelta);
 
+	if (m_bFirst)
+	{
+		CInventory* pPlayer = dynamic_cast<CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
+
+		m_vecItem = pPlayer->Get_VecItem();
+
+		m_bFirst = false;
+	}
+
 	POINT pt;
 	GetCursorPos(&pt);
 	ScreenToClient(g_hWnd, &pt);
@@ -64,26 +78,17 @@ _int CUIScreenIcon::Update_GameObject(const _float& fTimeDelta)
 
 			if (m_iIndex == ICON_BAG || m_iIndex == ICON_BAG_COL)
 			{
-				CUIInvPlate* pPlate = dynamic_cast<CUIInvPlate*>(Engine::Get_GameObject(L"Layer_UI", L"UI_Plate"));
-				NULL_CHECK_RETURN(pPlate, -1);
-
-				pPlate->Set_Render();
-
-				for (int i = 0; i < 10; i++)
-				{
-					wstring string;
-
-					string = L"UI_ScreenInv_" + std::to_wstring(i);
-
-					CUIScreenInv* pInv = dynamic_cast<CUIScreenInv*>(Engine::Get_GameObject(L"Layer_UI", string.c_str()));
-
-					pInv->Move_Pos();
-				}
-
+				Set_Inventory();
 			}
 			else if(m_iIndex == ICON_MAP || m_iIndex == ICON_MAP_COL)
 			{
+				Set_Map();
+			}
+			else if (m_iIndex == ICON_HAND && m_bExit)
+			{
+				Set_Inventory();
 
+				m_bExit = false;
 			}
 			//인덱스에 따라 출력되는 창 변경
 		}
@@ -96,7 +101,7 @@ _int CUIScreenIcon::Update_GameObject(const _float& fTimeDelta)
 	else
 		m_bCollapse = false;
 
-	Add_RenderGroup(RENDER_UI, this);
+	Engine::Add_RenderGroup(RENDER_UI, this);
 
 	return iExit;
 }
@@ -123,6 +128,64 @@ void CUIScreenIcon::Render_GameObject()
 			m_pTextureCom->Set_Texture(m_iIndex);
 	}
 	m_pBufferCom->Render_Buffer();
+}
+
+void CUIScreenIcon::Set_Inventory()
+{
+	CUIScreenIcon* pIcon = dynamic_cast<CUIScreenIcon*>(Engine::Get_GameObject(L"Layer_UI", L"UIScreenicon_Hand"));
+	pIcon->Set_Exit();
+
+	CUIInvPlate* pPlate = dynamic_cast<CUIInvPlate*>(Engine::Get_GameObject(L"Layer_UI", L"UI_Plate"));
+
+	pPlate->Set_Render();
+
+	for (int i = 0; i < 10; i++)
+	{
+		wstring string;
+
+		string = L"UI_ScreenInv_" + std::to_wstring(i);
+
+		CUIScreenInv* pInv = dynamic_cast<CUIScreenInv*>(Engine::Get_GameObject(L"Layer_UI", string.c_str()));
+
+		pInv->Move_Pos();
+	}
+
+	CInventory* pPlayer = dynamic_cast<CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
+
+	for (int i = 11; i < pPlayer->Get_Slot() + 1; i++)
+	{
+		wstring string;
+
+		string = L"UI_Inventory_" + std::to_wstring(i);
+
+		CUIInventory* pInventory = dynamic_cast<CUIInventory*>(Engine::Get_GameObject(L"Layer_UI", string.c_str()));
+
+		pInventory->Set_Show();
+	}
+
+	for (int i = 0; i < 10; i++)
+	{
+		wstring string;
+
+		string = L"UIItemSlot_" + std::to_wstring(i);
+
+		CUIItemSlot* pSlot = dynamic_cast<CUIItemSlot*>(Engine::Get_GameObject(L"Layer_UI", string.c_str()));
+
+		pSlot->Set_Window();
+	}
+
+	CUIPlayerStatus* pStatus = dynamic_cast<CUIPlayerStatus*>(Engine::Get_GameObject(L"Layer_UI", L"UIPlayerStatus"));
+	pStatus->Set_Window();
+
+	CUIPlayerStats* pStats = dynamic_cast<CUIPlayerStats*>(Engine::Get_GameObject(L"Layer_UI", L"UIPlayerStats"));
+	pStats->Set_Window();
+
+}
+
+void CUIScreenIcon::Set_Map()
+{
+	
+
 }
 
 HRESULT CUIScreenIcon::Add_Component()
