@@ -32,6 +32,12 @@ public:
 
 	void            Set_CurInv(_int _iCurInv) { m_iCurInv = _iCurInv; }
 
+	void            Set_Show() {
+		if (m_bShow)
+			m_bShow = false;
+		else
+			m_bShow = true;
+	}
 private:
 	HRESULT			Add_Component();
 
@@ -44,7 +50,7 @@ private:
 
 	_bool m_bCollapse;
 
-	_bool m_bFirst;
+	_bool m_bShow;
 
 private:
 	Engine::CAnimTex* m_pBufferCom;

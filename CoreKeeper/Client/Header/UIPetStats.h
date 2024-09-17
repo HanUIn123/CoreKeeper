@@ -12,14 +12,14 @@ class CTexture;
 
 END
 
-class CUIStatus : public Engine::CGameObject
+class CUIPetStats : public Engine::CGameObject
 {
 private:
-	explicit CUIStatus(LPDIRECT3DDEVICE9 pGraphicDev);
-	virtual ~CUIStatus();
+	explicit CUIPetStats(LPDIRECT3DDEVICE9 pGraphicDev);
+	virtual ~CUIPetStats();
 
 public:
-	virtual			HRESULT			Ready_GameObject();
+	virtual			HRESULT			Ready_GameObject(_vec2 vPos, _vec2 vSize);
 	virtual			_int			Update_GameObject(const _float& fTimeDelta);
 	virtual			void			LateUpdate_GameObject();
 	virtual			void			Render_GameObject();
@@ -28,18 +28,15 @@ private:
 	HRESULT			Add_Component();
 
 private:
-	_vec3 vUIPos;
-	_matrix m_UIMatrix;
+	_vec2 m_vPos;
 
 private:
 	Engine::CRcTex* m_pBufferCom;
 	Engine::CTransform* m_pTransformCom;
 	Engine::CTexture* m_pTextureCom;
-	//Engine::CCalculator* m_pCalculatorCom;
-	//Engine::CAnimator* m_pAnimatorCom;
 
 public:
-	static CUIStatus* Create(LPDIRECT3DDEVICE9 pGraphicDev);
+	static CUIPetStats* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec2 vPos, _vec2 vSize);
 
 private:
 	virtual void		Free();

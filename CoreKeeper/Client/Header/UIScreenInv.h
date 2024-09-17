@@ -2,6 +2,8 @@
 #include "GameObject.h"
 #include "Define.h"
 
+#include"..\Header\Item.h"
+
 BEGIN(Engine)
 
 class CRcTex;
@@ -46,7 +48,7 @@ private:
 
 	_bool m_bCollapse;
 
-//	vector <CItem*> m_vecItem;
+	vector <CItem*> m_vecItem;
 
 	_bool m_bFirst;
 

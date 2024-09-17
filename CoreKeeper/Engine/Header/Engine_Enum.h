@@ -27,7 +27,7 @@ namespace Engine
 	// 아이템 고유값, 서로 다른 아이템이면 겹칠 수 없음
 	// 장비는 0~100의 값을 갖도록 설정하여 인벤토리에서 같은 아이템이어도 겹칠 수 없게 할 것
 	// 헬멧은 0~10, 상의는 11~20, 하의는 21~30 이런식으로 설정해서 아무칸에나 장비할 수 없도록 설정
-	enum ITEMNUM { ITEM_SWORD, ITEM_BOW, ITEM_HELM, ITEM_CHEST, ITEM_SEED, ITEM_END };
+	enum ITEMNUM { ITEM_SWORD, ITEM_BOW, ITEM_HELM, ITEM_CHEST, ITEM_SEED = 40, ITEM_END };
 
 	// 사운드 채널
 	enum CHANNELID { SOUND_EFFECT, SOUND_IMPORTANT, SOUND_BGM, MAXCHANNEL };
