@@ -7,7 +7,7 @@
 #include "..\Header\Player.h"
 
 CUIInventory::CUIInventory(LPDIRECT3DDEVICE9 pGraphicDev)
-	: Engine::CGameObject(pGraphicDev), m_iCurInv(0), m_bFirst(true), m_bCollapse(false)
+	: Engine::CGameObject(pGraphicDev), m_iCurInv(0), m_bShow(false), m_bCollapse(false)
 
 {
 }
@@ -49,27 +49,28 @@ _int CUIInventory::Update_GameObject(const _float& fTimeDelta)
 {
 	_int iExit = Engine::CGameObject::Update_GameObject(fTimeDelta);
 
-	POINT pt;
-	GetCursorPos(&pt);
-	ScreenToClient(g_hWnd, &pt);
-
-	if (Map_Picked(pt))
+	if (m_bShow)
 	{
-		if (Engine::Get_DIMouseState(DIM_LB))
-		{
-			m_iCurInv = m_iIndex;
+		POINT pt;
+		GetCursorPos(&pt);
+		ScreenToClient(g_hWnd, &pt);
 
+		if (Map_Picked(pt))
+		{
+			if (Engine::Get_DIMouseState(DIM_LB))
+			{
+				
+			}
+
+			m_bCollapse = true;
+		}
+		else
+		{
+			m_bCollapse = false;
 		}
 
-		m_bCollapse = true;
+		Add_RenderGroup(RENDER_UI, this);
 	}
-	else
-	{
-		m_bCollapse = false;
-	}
-
-	Add_RenderGroup(RENDER_UI, this);
-
 	return iExit;
 }
 
@@ -88,13 +89,7 @@ void CUIInventory::Render_GameObject()
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
 	
-	/*
-	if (m_iCurInv == m_iIndex)
-	{
-		m_pTextureCom->Set_Texture(1);
-	}
-	else*/
-		m_pTextureCom->Set_Texture();
+	m_pTextureCom->Set_Texture();
 		
 	m_pRcTextureCom->Render_Buffer();
 
@@ -114,70 +109,36 @@ void CUIInventory::Render_GameObject()
 	{
 		_int iCount = vecItem[m_iIndex - 1]->Get_Count();
 
-		if (iCount != 1)
-		{
-			_int iFront = iCount % 10;
-			_int iBack;
-
-			if (iFront > 0)
-			{
-				iBack = iCount / 10;
-			}
-
-			m_pItemNumTextureCom->Set_Texture(iBack);
-
-			matWorld._11 = 5.f;
-			matWorld._22 = 5.f;
-
-			//matWorld._41 +=
-			matWorld._42 += 5.f;
-
-			m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
-
-			m_pRcTextureCom->Render_Buffer();
-
-			if (iFront > 0)
-			{
-				m_pItemNumTextureCom->Set_Texture(iFront);
-
-				matWorld._41 -= 2.f;
-
-				m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
-
-				m_pRcTextureCom->Render_Buffer();
-
-				matWorld._41 += 2.f;
-			}
-			matWorld._42 -= 5.f;
-		}
-
 		vecItem[m_iIndex - 1]->Get_Texture()->Set_Texture();
 
-		matWorld._11 = 30.f;
-		matWorld._22 = 30.f;
+		Engine::ITEMNUM eNum = vecItem[m_iIndex - 1]->Get_ItemNum();
 
-		matWorld._42 -= 5.f;
+		switch (eNum)
+		{
+		case ITEM_SEED:
+			matWorld._11 = 10.f;
+			matWorld._22 = 10.f;
+			break;
+
+		case ITEM_SWORD:
+			matWorld._11 = 30.f;
+			matWorld._22 = 30.f;
+			break;
+
+		dafault:
+			matWorld._11 = 20.f;
+			matWorld._22 = 20.f;
+			break;
+		}
 
 		m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
 
 		vecItem[m_iIndex - 1]->Get_Buffer()->Render_Buffer();
 
-		matWorld._42 += 5.f;
+		
+
 	}
 
-	/*
-	m_pNumTextureCom->Set_Texture(m_iIndex);
-
-	matWorld._11 = 5.f;
-	matWorld._22 = 5.f;
-
-	matWorld._41 += 15.f;
-	matWorld._42 += 15.f;
-
-	m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
-
-	m_pRcTextureCom->Render_Buffer();
-	*/
 }
 
 HRESULT CUIInventory::Add_Component()

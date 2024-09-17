@@ -76,9 +76,6 @@
     <Filter Include="02. GameObject\07. UI">
       <UniqueIdentifier>{42cb11e9-7868-48ac-b6ba-82b17192fff5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\07. UI\00. Status">
-      <UniqueIdentifier>{5534ff0c-7767-46ae-a9dd-70bd4ef43f2d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\07. UI\01. UIScreenIcon">
       <UniqueIdentifier>{10a3a682-7f16-4c4b-91fb-22aec50c9cb8}</UniqueIdentifier>
     </Filter>
@@ -111,6 +108,15 @@
     </Filter>
     <Filter Include="02. GameObject\06. Item\01. Seed">
       <UniqueIdentifier>{4d87b991-086f-41a7-a2a2-cdc69b86e9f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\07. UI\00. UIPlayerStatus">
+      <UniqueIdentifier>{5534ff0c-7767-46ae-a9dd-70bd4ef43f2d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\07. UI\00. UIPlayerStatus\00. ItemSlot">
+      <UniqueIdentifier>{0c375b63-946b-4f13-a1f4-aebe6270226e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\07. UI\00. UIPlayerStatus\01. PlayerStat">
+      <UniqueIdentifier>{3ce9803a-08b8-47b4-8cc7-658d01c6f615}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -165,8 +171,8 @@
     <ClInclude Include="..\Header\Item.h">
       <Filter>02. GameObject\06. Item</Filter>
     </ClInclude>
-    <ClInclude Include="..\Header\UIStatus.h">
-      <Filter>02. GameObject\07. UI\00. Status</Filter>
+    <ClInclude Include="..\Header\UIPlayerStatus.h">
+      <Filter>02. GameObject\07. UI\00. UIPlayerStatus</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\UIStatusBar.h">
       <Filter>02. GameObject\07. UI\02. UIStatus</Filter>
@@ -234,6 +240,12 @@
     <ClInclude Include="..\Header\Seed.h">
       <Filter>02. GameObject\06. Item\01. Seed</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\UIItemSlot.h">
+      <Filter>02. GameObject\07. UI\00. UIPlayerStatus\00. ItemSlot</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\UIPlayerStats.h">
+      <Filter>02. GameObject\07. UI\00. UIPlayerStatus\01. PlayerStat</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -275,8 +287,8 @@
     <ClCompile Include="..\Code\Item.cpp">
       <Filter>02. GameObject\06. Item</Filter>
     </ClCompile>
-    <ClCompile Include="..\Code\UIStatus.cpp">
-      <Filter>02. GameObject\07. UI\00. Status</Filter>
+    <ClCompile Include="..\Code\UIPlayerStatus.cpp">
+      <Filter>02. GameObject\07. UI\00. UIPlayerStatus</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\UIScreenIcon.cpp">
       <Filter>02. GameObject\07. UI\01. UIScreenIcon</Filter>
@@ -340,6 +352,12 @@
     </ClCompile>
     <ClCompile Include="..\Code\Seed.cpp">
       <Filter>02. GameObject\06. Item\01. Seed</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\UIItemSlot.cpp">
+      <Filter>02. GameObject\07. UI\00. UIPlayerStatus\00. ItemSlot</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\UIPlayerStats.cpp">
+      <Filter>02. GameObject\07. UI\00. UIPlayerStatus\01. PlayerStat</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

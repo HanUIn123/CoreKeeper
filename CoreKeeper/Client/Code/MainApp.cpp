@@ -94,7 +94,10 @@ HRESULT CMainApp::SetUp_DefaultSetting(LPDIRECT3DDEVICE9* ppGraphicDev)
 	// 폰트 추가
 
 	FAILED_CHECK_RETURN(Engine::Ready_Font(*ppGraphicDev, L"Font_Default", L"Unifont", 40, 40, FW_NORMAL), E_FAIL);
-	FAILED_CHECK_RETURN(Engine::Ready_Font(*ppGraphicDev, L"Font_HP", L"Unifont", 15, 15, FW_NORMAL), E_FAIL);
+
+	FAILED_CHECK_RETURN(Engine::Ready_Font(*ppGraphicDev, L"Font_HP", L"Unifont", 15, 15, FW_NORMAL), E_FAIL); //HP출력용
+	FAILED_CHECK_RETURN(Engine::Ready_Font(*ppGraphicDev, L"Font_Inv", L"Unifont", 18, 18, FW_ULTRABOLD), E_FAIL);//Item용
+	FAILED_CHECK_RETURN(Engine::Ready_Font(*ppGraphicDev, L"Font_Item", L"Unifont", 15, 15, FW_ULTRABOLD), E_FAIL);//Item용
 
 	//FAILED_CHECK_RETURN(Engine::Ready_Font(*ppGraphicDev, L"Font_Default", L"궁서", 20, 20, FW_HEAVY), E_FAIL);
 	//FAILED_CHECK_RETURN(Engine::Ready_Font(*ppGraphicDev, L"Font_Myungjo", L"명조", 20, 20, FW_NORMAL), E_FAIL);

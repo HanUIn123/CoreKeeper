@@ -56,6 +56,10 @@ _int CUIScreenInv::Update_GameObject(const _float& fTimeDelta)
 {
 	_int iExit = Engine::CGameObject::Update_GameObject(fTimeDelta);
 
+	CInventory* pInventory = dynamic_cast<CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
+
+	m_vecItem = pInventory->Get_VecItem();
+
 	CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
 	NULL_CHECK_RETURN(pPlayer, -1);
 
@@ -174,82 +178,76 @@ void CUIScreenInv::Render_GameObject()
 		m_pRcTextureCom->Render_Buffer();
 	}
 
-	
 	CInventory* pPlayerInv = dynamic_cast<Engine::CInventory*>
 		(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
 
-	vector<CItem*> vecItem = pPlayerInv->Get_VecItem();
-
 	if (!pPlayerInv->Check_Empty(m_iIndex))
 	{
-		_int iCount = vecItem[m_iIndex - 1]->Get_Count();
+		_int iCount = m_vecItem[m_iIndex - 1]->Get_Count();
 		
 		if (iCount != 1)
 		{
-			_int iFront = iCount % 10;
-			_int iBack;
+			wstring sFont = std::to_wstring(iCount);
 
-			if (iFront > 0)
-			{
-				iBack = iCount / 10;
-			}
+			const _tchar* tFont = sFont.c_str();
 
-			m_pItemNumTextureCom->Set_Texture(iBack);
+			_vec2 pos(m_BRect.right - 1.f, m_BRect.top + 12.f);
 
-			matWorld._11 = 2.f;
-			matWorld._22 = 2.f;
-
-			//matWorld._41 +=
-			matWorld._42 += 5.f;
-
-			m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
-
-			m_pRcTextureCom->Render_Buffer();
-
-			if (iFront > 0)
-			{
-				m_pItemNumTextureCom->Set_Texture(iFront);
-
-				matWorld._41 -= 2.f;
-
-				m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
-
-				m_pRcTextureCom->Render_Buffer();
-			}
+			Engine::Render_Font(L"Font_Item", tFont, &pos, D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
 		}
 
-		vecItem[m_iIndex - 1]->Get_Texture()->Set_Texture(0);
-		
-		matWorld._11 = 30.f;
-		matWorld._22 = 30.f;
+		m_vecItem[m_iIndex - 1]->Get_Texture()->Set_Texture();
 
-		matWorld._42 -= 5.f;
+		_vec3 vScale = m_vecItem[m_iIndex - 1]->Get_Transform()->m_vScale;
+		
+		Engine::ITEMNUM eNum = m_vecItem[m_iIndex - 1]->Get_ItemNum();
+
+		switch (eNum)
+		{
+		case ITEM_SEED:
+			matWorld._11 = 10.f;
+			matWorld._22 = 10.f;
+			break;
+
+		case ITEM_SWORD:
+			matWorld._11 = 30.f;
+			matWorld._22 = 30.f;
+
+			matWorld._42 -= 5.f;
+			break;
+
+		dafault:
+			matWorld._11 = 20.f;
+			matWorld._22 = 20.f;
+			break;
+		}
 
 		m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
 
-		vecItem[m_iIndex - 1]->Get_Buffer()->Set_Index(vecItem[m_iIndex - 1]->Get_Animator()->Get_MotionIndex());
-		
-		vecItem[m_iIndex - 1]->Get_Buffer()->Render_Buffer();
+		m_vecItem[m_iIndex - 1]->Get_Buffer()->Render_Buffer();
 
-		matWorld._42 += 5.f;
 	}
 
 	if (m_iIndex == 10)
 	{
-		m_pNumTextureCom->Set_Texture(0);
+		wstring sFont = std::to_wstring(0);
+
+		const _tchar* tFont = sFont.c_str();
+
+		_vec2 pos(m_BRect.right - 5.f, m_BRect.top - 8.f);
+
+		Engine::Render_Font(L"Font_Inv", tFont, &pos, D3DXCOLOR(0.5f, 0.5f, 0.5f, 1.f));
 	}
 	else
-		m_pNumTextureCom->Set_Texture(m_iIndex);
+	{
+		wstring sFont = std::to_wstring(m_iIndex);
 
-	matWorld._11 = 4.f;
-	matWorld._22 = 5.f;
+		const _tchar* tFont = sFont.c_str();
 
-	matWorld._41 += 12.f;
-	matWorld._42 += 12.f;
+		_vec2 pos(m_BRect.right - 5.f, m_BRect.top - 8.f);
 
-	m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
-
-	m_pRcTextureCom->Render_Buffer();
+		Engine::Render_Font(L"Font_Inv", tFont, &pos, D3DXCOLOR(0.5f, 0.5f, 0.5f, 1.f));
+	}
 
 }
 
@@ -263,7 +261,7 @@ void CUIScreenInv::Move_Pos()
 		m_pTransformCom->Set_Pos(m_fPosX, -39.f, 0);
 		m_bMove = true;
 
-		y = 300.f;
+		y = 339.f;
 	}
 	else
 	{

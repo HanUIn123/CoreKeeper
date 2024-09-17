@@ -1,6 +1,7 @@
 #pragma once
 #include "GameObject.h"
 #include "Define.h"
+#include "..\Header\Item.h"
 
 BEGIN(Engine)
 
@@ -8,6 +9,7 @@ class CRcTex;
 class CTransform;
 class CTexture;
 class CAnimator;
+class CInventory;
 
 END
 
@@ -32,11 +34,22 @@ public:
 	}
 
 	_bool           Get_Exit() { return m_bExit; }
-	void            Set_Exit() { m_bExit = true; } // 인벤토리 열렸을때 호출할 함수
+	void            Set_Exit() {
+
+		if (!m_bExit)
+		{
+			m_bExit = true;
+		}
+		else
+			m_bExit = false;
+	} // 인벤토리 열렸을때 호출할 함수
+
+
+	void           Set_Inventory();
+	void           Set_Map();
+
 private:
 	HRESULT			Add_Component();
-
-
 
 private:
 	RECT m_BRect;
@@ -47,6 +60,11 @@ private:
 	_bool m_bClicked;
 
 	_bool m_bExit;
+
+	_bool m_bFirst;
+
+	vector<CItem*> m_vecItem;
+
 private:
 	Engine::CRcTex* m_pBufferCom;
 	Engine::CTransform* m_pTransformCom;

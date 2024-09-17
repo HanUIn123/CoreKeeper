@@ -11,13 +11,15 @@
 #include "Terrain.h"
 #include "SkyBox.h"
 
-#include "UIStatus.h"
+#include "UIPlayerStatus.h"
 #include "UIScreenIcon.h"
 #include "UIStatusBar.h"
 #include "UIScreenInv.h"
 #include "UICursor.h"
 #include "UIInvPlate.h"
 #include "UIInventory.h"
+#include "UIItemSlot.h"
+#include "UIPlayerStats.h"
 
 #include "Inventory.h"
 
@@ -49,6 +51,7 @@ private:
 
 private:
 	wstring m_Invstring[50];
+	wstring m_ItemSlot[10];
 	_bool   m_bInvCheck;
 };
 
