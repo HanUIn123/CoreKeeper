@@ -109,6 +109,12 @@
     <Filter Include="02. GameObject\07. UI\05. UIInventory\01. InvPlate">
       <UniqueIdentifier>{0ac47d63-794f-4ff2-a171-21b40ac20b90}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\06. Item\01. Seed">
+      <UniqueIdentifier>{4d87b991-086f-41a7-a2a2-cdc69b86e9f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\01. Seed\00. Seed">
+      <UniqueIdentifier>{20872a88-b53c-41a0-bf77-3ff8f0f3b558}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
