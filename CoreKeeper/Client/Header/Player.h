@@ -34,6 +34,7 @@ private:
 	// 뷰 공통
 	void			Mouse_Click();								// 클릭 시 스윙, 스윙 끝 판단
 	void			Walk_Y(const _float& fTimeDelta);
+	void			Flip();
 
 	// 탑뷰 함수
 	void			Key_Position(const _float& fTimeDelta);		// 플레이어 이동
@@ -68,6 +69,8 @@ private:
 	float					m_fSpeed;
 	float					m_fDiagSpeed;
 	bool					m_bSwing;
+
+	bool					m_bFlip;
 
 	_int                    m_iHandNum;
 
