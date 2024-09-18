@@ -5,6 +5,15 @@
 #include "..\Header\UIStatusBar.h"
 #include "..\Header\Sword.h"
 
+#include "..\Header\UIPlayerCraft.h" // UI 헤더 추가
+#include "..\Header\UIScreenIcon.h"
+#include "..\Header\UIScreenInv.h"
+#include "..\Header\UIInventory.h"
+#include "..\Header\UIPlayerStatus.h"
+#include "..\Header\UIInvPlate.h"
+#include "..\Header\UIItemSlot.h"
+#include "..\Header\UIPlayerStats.h"
+
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CGameObject(pGraphicDev)
 {
@@ -16,7 +25,12 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	m_fFirstY = 1.f;
 	m_fTimeAcc = 0.f;
 	m_fWalkYSpeed = 1.8f;
+
 	m_iHandNum = 1;
+	m_bPushed = false;
+	m_bMap = false;
+	m_bInventory = false;
+	m_bCraft = false;
 }
 
 CPlayer::~CPlayer()
@@ -431,7 +445,112 @@ void CPlayer::Set_UI()
 		}
 	}
 
+	if (Engine::Get_DIKeyState(DIK_M))
+	{
 
+	}
+	
+	if (Engine::Get_DIKeyState(DIK_TAB))
+	{
+		m_bPushed = true;
+	}
+	if (!Engine::Get_DIKeyState(DIK_TAB) && m_bPushed)
+	{
+		m_bPushed = false;
+
+		Set_Inventory();
+		Set_Craft();
+
+		if (m_bInventory)
+			m_bInventory = false;
+		else
+			m_bInventory = true;
+
+		if (m_bCraft)
+			m_bCraft = false;
+		else
+			m_bCraft = true;
+	}
+	
+	/*
+	if (Engine::Get_DIKeyState(DIK_E))
+	{
+		m_bPushed = true;
+	}
+	else if (!Engine::Get_DIKeyState(DIK_E) && m_bPushed)
+	{
+		m_bPushed = false;
+
+		if (m_bCraft)
+			Set_Craft();
+
+		if (m_bInventory)
+			Set_Inventory();
+
+		if (m_bMap)
+			Set_Map();
+	}*/
+}
+
+void CPlayer::Set_Craft()
+{
+	CUIPlayerCraft* pCraft = dynamic_cast<CUIPlayerCraft*>(Engine::Get_GameObject(L"Layer_UI", L"UIPlayerCraft"));
+	pCraft->Set_Window();
+}
+
+void CPlayer::Set_Inventory()
+{
+	CUIScreenIcon* pIcon = dynamic_cast<CUIScreenIcon*>(Engine::Get_GameObject(L"Layer_UI", L"UIScreenicon_Hand"));
+	pIcon->Set_Exit();
+
+	CUIInvPlate* pPlate = dynamic_cast<CUIInvPlate*>(Engine::Get_GameObject(L"Layer_UI", L"UI_Plate"));
+
+	pPlate->Set_Render();
+
+	for (int i = 0; i < 10; i++)
+	{
+		wstring string;
+
+		string = L"UI_ScreenInv_" + std::to_wstring(i);
+
+		CUIScreenInv* pInv = dynamic_cast<CUIScreenInv*>(Engine::Get_GameObject(L"Layer_UI", string.c_str()));
+
+		pInv->Move_Pos();
+	}
+
+	CInventory* pPlayer = dynamic_cast<CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
+
+	for (int i = 11; i < pPlayer->Get_Slot() + 1; i++)
+	{
+		wstring string;
+
+		string = L"UI_Inventory_" + std::to_wstring(i);
+
+		CUIInventory* pInventory = dynamic_cast<CUIInventory*>(Engine::Get_GameObject(L"Layer_UI", string.c_str()));
+
+		pInventory->Set_Show();
+	}
+
+	for (int i = 0; i < 10; i++)
+	{
+		wstring string;
+
+		string = L"UIItemSlot_" + std::to_wstring(i);
+
+		CUIItemSlot* pSlot = dynamic_cast<CUIItemSlot*>(Engine::Get_GameObject(L"Layer_UI", string.c_str()));
+
+		pSlot->Set_Window();
+	}
+
+	CUIPlayerStatus* pStatus = dynamic_cast<CUIPlayerStatus*>(Engine::Get_GameObject(L"Layer_UI", L"UIPlayerStatus"));
+	pStatus->Set_Window();
+
+	CUIPlayerStats* pStats = dynamic_cast<CUIPlayerStats*>(Engine::Get_GameObject(L"Layer_UI", L"UIPlayerStats"));
+	pStats->Set_Window();
+}
+
+void CPlayer::Set_Map()
+{
 }
 
 CPlayer* CPlayer::Create(LPDIRECT3DDEVICE9 pGraphicDev)

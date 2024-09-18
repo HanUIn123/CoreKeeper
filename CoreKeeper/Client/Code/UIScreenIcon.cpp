@@ -56,9 +56,9 @@ _int CUIScreenIcon::Update_GameObject(const _float& fTimeDelta)
 
 	if (m_bFirst)
 	{
-		CInventory* pPlayer = dynamic_cast<CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
+		CInventory* pInv = dynamic_cast<CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
 
-		m_vecItem = pPlayer->Get_VecItem();
+		m_vecItem = pInv->Get_VecItem();
 
 		m_bFirst = false;
 	}
@@ -77,19 +77,21 @@ _int CUIScreenIcon::Update_GameObject(const _float& fTimeDelta)
 		{
 			m_bClicked = false;
 
+			CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
+
 			if (m_iIndex == ICON_BAG || m_iIndex == ICON_BAG_COL)
 			{
-				Set_Inventory();
-
-				Set_Craft();
+				pPlayer->Set_Inventory();
+				pPlayer->Set_Craft();
 			}
 			else if(m_iIndex == ICON_MAP || m_iIndex == ICON_MAP_COL)
 			{
-				Set_Map();
+				pPlayer->Set_Map();
 			}
 			else if (m_iIndex == ICON_HAND && m_bExit)
 			{
-				Set_Inventory();
+				pPlayer->Set_Inventory();
+				pPlayer->Set_Craft();
 
 				m_bExit = false;
 			}
@@ -119,7 +121,7 @@ void CUIScreenIcon::Render_GameObject()
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
 
 	//인벤토리 오픈했을때 출력
-	if (m_bExit && m_iIndex == ICON_HAND)
+	if (m_bExit && (m_iIndex == ICON_HAND))
 	{
 		m_pTextureCom->Set_Texture(ICON_EXIT);
 	}

@@ -44,7 +44,6 @@ public:
 			m_bExit = false;
 	} // 인벤토리 열렸을때 호출할 함수
 
-
 	void           Set_Inventory();
 	void           Set_Map();
 	void           Set_Craft();

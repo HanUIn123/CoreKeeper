@@ -53,6 +53,10 @@ public:
 	_int            Get_iHandNum()          { return m_iHandNum; }
 	void            Set_iHandNum(_int iNum) { m_iHandNum = iNum; }
 
+	void            Set_Craft();
+	void            Set_Inventory();
+	void            Set_Map();
+
 	// Hp 가져오는 함수
 
 private:
@@ -77,6 +81,13 @@ private:
 	float					m_fFirstY;
 	float					m_fTimeAcc;
 	float					m_fWalkYSpeed;
+
+
+	_bool                   m_bPushed; 
+
+	_bool                   m_bInventory; // Inventory 창 확인용
+	_bool                   m_bCraft;     // Craft 창 확인용
+	_bool                   m_bMap;       // Map 창 확인용
 
 public:
 	static CPlayer* Create(LPDIRECT3DDEVICE9 pGraphicDev);
