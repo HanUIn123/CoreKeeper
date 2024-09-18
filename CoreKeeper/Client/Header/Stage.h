@@ -11,6 +11,7 @@
 #include "Terrain.h"
 #include "SkyBox.h"
 #include "Tile.h"
+#include "Wall.h"
 
 #include "UIPlayerStatus.h"
 #include "UIScreenIcon.h"
@@ -62,8 +63,11 @@ private:
 	wstring							m_ItemSlot[10];
 	_bool							m_bInvCheck;
 	HANDLE							m_hFile;
+	HANDLE							m_hWallFile;
 
 	wstring							m_wsTileNameString[VTXCNTX * VTXCNTZ];
+	wstring							m_wsWallNameString[VTXCNTX * VTXCNTZ];
 	_int							m_iLoadTileCount;
+	_int							m_iLoadWallCount;
 };
 

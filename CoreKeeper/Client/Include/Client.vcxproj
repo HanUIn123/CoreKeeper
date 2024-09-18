@@ -180,6 +180,7 @@ call Copy.bat</Command>
     <ClInclude Include="..\Header\UIScreenIcon.h" />
     <ClInclude Include="..\Header\UIScreenInv.h" />
     <ClInclude Include="..\Header\UIPlayerStatus.h" />
+    <ClInclude Include="..\Header\Wall.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="imconfig.h" />
@@ -224,6 +225,7 @@ call Copy.bat</Command>
     <ClCompile Include="..\Code\UIScreenIcon.cpp" />
     <ClCompile Include="..\Code\UIScreenInv.cpp" />
     <ClCompile Include="..\Code\UIPlayerStatus.cpp" />
+    <ClCompile Include="..\Code\Wall.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="imgui.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
