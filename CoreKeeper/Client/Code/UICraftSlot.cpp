@@ -1,19 +1,19 @@
 #include "pch.h"
-#include "..\Header\UIItemSlot.h"
+#include "..\Header\UICraftSlot.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
 
-CUIItemSlot::CUIItemSlot(LPDIRECT3DDEVICE9 pGraphicDev)
+CUICraftSlot::CUICraftSlot(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CGameObject(pGraphicDev), m_bCollapse(false), m_bFirst(false), m_bWindow(false), m_iIndex(0)
 
 {
 }
 
-CUIItemSlot::~CUIItemSlot()
+CUICraftSlot::~CUICraftSlot()
 {
 }
 
-HRESULT CUIItemSlot::Ready_GameObject(_vec2 vPos, _vec2 vSize, SLOTTYPE _eType)
+HRESULT CUICraftSlot::Ready_GameObject(_vec2 vPos, _vec2 vSize, CSLOTTYPE _eType)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
@@ -37,57 +37,10 @@ HRESULT CUIItemSlot::Ready_GameObject(_vec2 vPos, _vec2 vSize, SLOTTYPE _eType)
 
 	m_eSlotType = _eType;
 
-	switch (m_eSlotType)
-	{
-	case SLOT_HELM:
-		m_iIndex = 0;
-		break;
-
-	case SLOT_CHEST:
-		m_iIndex = 1;
-		break;
-
-	case SLOT_LEGGINGS:
-		m_iIndex = 5;
-		break;
-
-	case SLOT_WEAPON:
-		m_iIndex = 2;
-		break;
-
-	case SLOT_NECKLACE:
-		m_iIndex = 6;
-		break;
-
-	case SLOT_RING1:
-		m_iIndex = 7;
-		break;
-
-	case SLOT_RING2:
-		m_iIndex = 7;
-		break;
-
-	case SLOT_BAG:
-		m_iIndex = 3;
-		break;
-
-	case SLOT_LANTTERN:
-		m_iIndex = 4;
-		break;
-
-	case SLOT_PET:
-		m_iIndex = 8;
-		break;
-
-	default:
-		break;
-	}
-
-
 	return S_OK;
 }
 
-_int CUIItemSlot::Update_GameObject(const _float& fTimeDelta)
+_int CUICraftSlot::Update_GameObject(const _float& fTimeDelta)
 {
 	_int iExit = Engine::CGameObject::Update_GameObject(fTimeDelta);
 
@@ -105,46 +58,7 @@ _int CUIItemSlot::Update_GameObject(const _float& fTimeDelta)
 			{
 				switch (m_eSlotType)
 				{
-				case SLOT_HELM:
-
-					break;
-
-				case SLOT_CHEST:
-
-					break;
-
-				case SLOT_LEGGINGS:
-
-					break;
-
-				case SLOT_WEAPON:
-
-					break;
-
-				case SLOT_NECKLACE:
-
-					break;
-
-				case SLOT_RING1:
-
-					break;
-
-				case SLOT_RING2:
-
-					break;
-
-				case SLOT_BAG:
-
-					break;
-
-				case SLOT_LANTTERN:
-
-					break;
-
-				case SLOT_PET:
-
-					break;
-
+				
 				default:
 					break;
 				}
@@ -158,7 +72,7 @@ _int CUIItemSlot::Update_GameObject(const _float& fTimeDelta)
 	return iExit;
 }
 
-void CUIItemSlot::LateUpdate_GameObject()
+void CUICraftSlot::LateUpdate_GameObject()
 {
 	if (m_bWindow)
 	{
@@ -167,13 +81,9 @@ void CUIItemSlot::LateUpdate_GameObject()
 	Engine::CGameObject::LateUpdate_GameObject();
 }
 
-void CUIItemSlot::Render_GameObject()	
+void CUICraftSlot::Render_GameObject()
 {
-	_matrix matWorld;
-
-	m_pTransformCom->Get_WorldMatrix(&matWorld);
-
-	m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
+	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
 
 	m_pTextureCom->Set_Texture();
 
@@ -185,48 +95,17 @@ void CUIItemSlot::Render_GameObject()
 	}
 	m_pBufferCom->Render_Buffer();
 
-	CInventory* pPlayerInv = dynamic_cast<Engine::CInventory*>
-		(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_EquipInventory"));
+	/*
+	m_pSlotBufferCom->Set_Index(m_iIndex);
 
-	vector<CItem*> vecItem = pPlayerInv->Get_VecItem();
+	m_pSlotTextureCom->Set_Texture();
 
-	if (!pPlayerInv->Check_Empty(m_eSlotType))
-	{
-		_int iCount = vecItem[m_iIndex - 1]->Get_Count();
-
-		vecItem[m_iIndex - 1]->Get_Texture()->Set_Texture();
-
-		Engine::ITEMNUM eNum = vecItem[m_iIndex - 1]->Get_ItemNum();
-
-		switch (eNum)
-		{
-		case ITEM_HELM:
-			break;
-
-		case ITEM_CHEST:
-			break;
-
-		dafault:
-			break;
-		}
-
-		m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
-
-		vecItem[m_iIndex - 1]->Get_Buffer()->Render_Buffer();
-	}
-	else
-	{
-		m_pSlotBufferCom->Set_Index(m_iIndex);
-
-		m_pSlotTextureCom->Set_Texture();
-
-		m_pSlotBufferCom->Render_Buffer();
-	}
-	//m_pTextureCom->Set_Texture();
+	m_pSlotBufferCom->Render_Buffer();
+	*/
 
 }
 
-HRESULT CUIItemSlot::Add_Component()
+HRESULT CUICraftSlot::Add_Component()
 {
 	CComponent* pComponent = NULL;
 
@@ -257,21 +136,21 @@ HRESULT CUIItemSlot::Add_Component()
 	return S_OK;
 }
 
-CUIItemSlot* CUIItemSlot::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec2 vPos, _vec2 vSize, SLOTTYPE _eType)
+CUICraftSlot* CUICraftSlot::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec2 vPos, _vec2 vSize, CSLOTTYPE _eType)
 {
-	CUIItemSlot* pUIItemslot = new CUIItemSlot(pGraphicDev);
+	CUICraftSlot* pUICraftSlot = new CUICraftSlot(pGraphicDev);
 
-	if (FAILED(pUIItemslot->Ready_GameObject(vPos, vSize, _eType)))
+	if (FAILED(pUICraftSlot->Ready_GameObject(vPos, vSize, _eType)))
 	{
-		Safe_Release(pUIItemslot);
+		Safe_Release(pUICraftSlot);
 		MSG_BOX("UIStatus Create Failed");
 		return nullptr;
 	}
 
-	return pUIItemslot;
+	return pUICraftSlot;
 }
 
-void CUIItemSlot::Free()
+void CUICraftSlot::Free()
 {
 	Engine::CGameObject::Free();
 }

@@ -53,6 +53,9 @@ public:
 	// 손에 든 인벤토리 번호 가져오는 함수
 	_int            Get_iHandNum()          { return m_iHandNum; }
 	void            Set_iHandNum(_int iNum) { m_iHandNum = iNum; }
+	void            Set_InvWindow();
+	void            Set_CraftWindow(); 
+	void            Set_MapWindow();
 
 	void            Set_Craft();
 	void            Set_Inventory();
@@ -69,6 +72,8 @@ private:
 	Engine::CCollider*		m_pColliderCom;
 	Engine::CState*			m_pStateCom;
 	Engine::CInventory*		m_pInventoryCom;
+
+	Engine::CInventory*     m_pEquipInventoryCom; // 장비 인벤토리
 
 	Engine::DIRECTION		m_eDir;
 	Engine::STATE			m_eState;
