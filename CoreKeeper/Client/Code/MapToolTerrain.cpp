@@ -5,10 +5,8 @@ CMapToolTerrain::CMapToolTerrain(LPDIRECT3DDEVICE9 pGraphicDev)
     : Engine::CGameObject(pGraphicDev)
     , m_pBufferCom(nullptr)
     , m_pTransformCom(nullptr)
-    //, m_pTextureCom(nullptr)
     , m_pCalculatorCom(nullptr)
     , vPickPos(0, 0, 0)
-    //, m_iTerrainImageNum(0)
 {
 }
 
@@ -26,10 +24,6 @@ HRESULT CMapToolTerrain::Ready_GameObject()
 _int CMapToolTerrain::Update_GameObject(const _float& fTimeDelta)
 {
     Add_RenderGroup(RENDER_NONALPHA, this);
-
-    //m_pTransformCom->Set_Pos(0, 0, 0);
-
-
 
     return Engine::CGameObject::Update_GameObject(fTimeDelta);
 }
@@ -81,10 +75,6 @@ HRESULT CMapToolTerrain::Add_Component()
     NULL_CHECK_RETURN(pComponent, E_FAIL);
     m_mapComponent[ID_STATIC].insert({ L"Com_Buffer", pComponent });
 
-    //pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_MapToolTerrainTexture"));
-    //NULL_CHECK_RETURN(pComponent, E_FAIL);
-    //m_mapComponent[ID_STATIC].insert({ L"Com_Texture", pComponent });
-
     pComponent = m_pTransformCom = dynamic_cast<CTransform*>(Engine::Clone_Proto(L"Proto_Transform"));
     NULL_CHECK_RETURN(pComponent, E_FAIL);
     m_mapComponent[ID_DYNAMIC].insert({ L"Com_Transform", pComponent });
@@ -116,14 +106,9 @@ HRESULT CMapToolTerrain::Setup_Material()
 
 _vec3 CMapToolTerrain::Picking_OnTerrain()
 {   
-    //return m_pCalculatorCom->Picking_OnTerrain(g_hWnd, m_pBufferCom, m_pTransformCom);
-    //return _vec3(0, 0, 0);
-
-    //return m_pCalculatorCom->Picking_OnTile(g_hWnd, m_pBufferCom, m_pTransformCom);
-
     _vec3 vPickPos = m_pCalculatorCom->Picking_OnTerrain(g_hWnd, m_pBufferCom, m_pTransformCom);
+
     return vPickPos;
-    //return _vec3(0, 0, 0);
 }
 
 CMapToolTerrain* CMapToolTerrain::Create(LPDIRECT3DDEVICE9 pGraphicDev)
