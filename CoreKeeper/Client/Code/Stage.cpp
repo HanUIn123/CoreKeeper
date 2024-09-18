@@ -315,7 +315,7 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UIPlayerStats", pGameObject), E_FAIL);
 
-	vPos = { 330.f, 200.f };
+	vPos = { 340.f, 225.f };
 	vSize = { 75.f, 75.f };
 
 	pGameObject = CUIPlayerCraft::Create(m_pGraphicDev, vPos, vSize);

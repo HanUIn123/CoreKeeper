@@ -62,6 +62,7 @@ private:
 	Engine::CTransform* m_pTransformCom;
 	Engine::CTexture* m_pTextureCom;
 	Engine::CTexture* m_pColTextureCom;
+	//Engine::CTexture* m_pSTextureCom;
 
 public:
 	static CUIItemSlot* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec2 vPos, _vec2 vSize, SLOTTYPE _eType);

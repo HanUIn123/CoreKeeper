@@ -118,11 +118,11 @@
     <Filter Include="02. GameObject\07. UI\00. UIPlayerStatus\01. PlayerStat">
       <UniqueIdentifier>{3ce9803a-08b8-47b4-8cc7-658d01c6f615}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\07. UI\00. UIPlayerStatus\02. PlayerCraft">
-      <UniqueIdentifier>{06a7d7b5-241f-4a7b-b257-c37509900efa}</UniqueIdentifier>
-	</Filter>
     <Filter Include="02. GameObject\94.Wall">
       <UniqueIdentifier>{9e769398-2d95-40c2-9c55-b97bbdf6ec0e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\07. UI\06. PlayerCraft">
+      <UniqueIdentifier>{06a7d7b5-241f-4a7b-b257-c37509900efa}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -253,8 +253,8 @@
       <Filter>02. GameObject\07. UI\00. UIPlayerStatus\01. PlayerStat</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\UIPlayerCraft.h">
-      <Filter>02. GameObject\07. UI\00. UIPlayerStatus\02. PlayerCraft</Filter>
-	</ClInclude>
+      <Filter>02. GameObject\07. UI\06. PlayerCraft</Filter>
+    </ClInclude>
     <ClInclude Include="..\Header\Wall.h">
       <Filter>02. GameObject\94.Wall</Filter>
     </ClInclude>
@@ -372,8 +372,8 @@
       <Filter>02. GameObject\07. UI\00. UIPlayerStatus\01. PlayerStat</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\UIPlayerCraft.cpp">
-      <Filter>02. GameObject\07. UI\00. UIPlayerStatus\02. PlayerCraft</Filter>
-	</ClCompile>
+      <Filter>02. GameObject\07. UI\06. PlayerCraft</Filter>
+    </ClCompile>
     <ClCompile Include="..\Code\Wall.cpp">
       <Filter>02. GameObject\94.Wall</Filter>
     </ClCompile>

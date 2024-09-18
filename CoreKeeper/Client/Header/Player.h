@@ -82,9 +82,6 @@ private:
 	float					m_fTimeAcc;
 	float					m_fWalkYSpeed;
 
-
-	_bool                   m_bPushed; 
-
 	_bool                   m_bInventory; // Inventory 창 확인용
 	_bool                   m_bCraft;     // Craft 창 확인용
 	_bool                   m_bMap;       // Map 창 확인용

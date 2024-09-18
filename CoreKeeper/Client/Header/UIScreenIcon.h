@@ -17,7 +17,7 @@ class CUIScreenIcon : public Engine::CGameObject
 {
 public:
 
-	enum ICONTYPE {ICON_HAND, ICON_HAND_COL, ICON_MAP, ICON_MAP_COL, ICON_BAG, ICON_BAG_COL, ICON_EXIT };
+	enum ICONTYPE {ICON_HAND, ICON_HAND_COL, ICON_MAP, ICON_MAP_COL, ICON_BAG, ICON_BAG_COL, ICON_EXIT, ICON_INTERACT};
 private:
 	explicit CUIScreenIcon(LPDIRECT3DDEVICE9 pGraphicDev);
 	virtual ~CUIScreenIcon();

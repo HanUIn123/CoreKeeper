@@ -27,7 +27,6 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	m_fWalkYSpeed = 1.8f;
 
 	m_iHandNum = 1;
-	m_bPushed = false;
 	m_bMap = false;
 	m_bInventory = false;
 	m_bCraft = false;
@@ -445,19 +444,18 @@ void CPlayer::Set_UI()
 		}
 	}
 
-	if (Engine::Get_DIKeyState(DIK_M))
+	if (Engine::Key_Down(DIK_M))
 	{
+		Set_Map();
+
+		if (m_bMap)
+			m_bMap = false;
+		else
+			m_bMap = true;
 
 	}
-	
-	if (Engine::Get_DIKeyState(DIK_TAB))
+	if (Engine::Key_Down(DIK_TAB))
 	{
-		m_bPushed = true;
-	}
-	if (!Engine::Get_DIKeyState(DIK_TAB) && m_bPushed)
-	{
-		m_bPushed = false;
-
 		Set_Inventory();
 		Set_Craft();
 
@@ -472,24 +470,28 @@ void CPlayer::Set_UI()
 			m_bCraft = true;
 	}
 	
-	/*
-	if (Engine::Get_DIKeyState(DIK_E))
+	if (Engine::Key_Down(DIK_E))
 	{
-		m_bPushed = true;
-	}
-	else if (!Engine::Get_DIKeyState(DIK_E) && m_bPushed)
-	{
-		m_bPushed = false;
-
 		if (m_bCraft)
+		{
 			Set_Craft();
 
+			m_bCraft = false;
+		}
 		if (m_bInventory)
+		{
 			Set_Inventory();
 
+			m_bInventory = false;
+		}
 		if (m_bMap)
+		{
 			Set_Map();
-	}*/
+
+			m_bMap = false;
+		}
+	}
+
 }
 
 void CPlayer::Set_Craft()
@@ -542,7 +544,7 @@ void CPlayer::Set_Inventory()
 		pSlot->Set_Window();
 	}
 
-	CUIPlayerStatus* pStatus = dynamic_cast<CUIPlayerStatus*>(Engine::Get_GameObject(L"Layer_UI", L"UIPlayerStatus"));
+ 	CUIPlayerStatus* pStatus = dynamic_cast<CUIPlayerStatus*>(Engine::Get_GameObject(L"Layer_UI", L"UIPlayerStatus"));
 	pStatus->Set_Window();
 
 	CUIPlayerStats* pStats = dynamic_cast<CUIPlayerStats*>(Engine::Get_GameObject(L"Layer_UI", L"UIPlayerStats"));
