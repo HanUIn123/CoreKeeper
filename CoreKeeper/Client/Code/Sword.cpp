@@ -47,7 +47,7 @@ _int CSword::Update_GameObject(const _float& fTimeDelta)
 
 	if (m_bUse)
 	{
-		Swing(0, 3, 10);
+		Swing(0, 4, 6);
 
 		m_bActive = true;
 		m_bDrop = false;

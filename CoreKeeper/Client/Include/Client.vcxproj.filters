@@ -121,6 +121,21 @@
     <Filter Include="02. GameObject\94.Wall">
       <UniqueIdentifier>{9e769398-2d95-40c2-9c55-b97bbdf6ec0e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\01. Player\00. Eyes">
+      <UniqueIdentifier>{4a833dcc-9966-4821-99a8-4deb21a37bc8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. Player\02. Pants">
+      <UniqueIdentifier>{6e3961a9-ff4a-46f4-9e3a-6eda803035c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. Player\04. HairShade">
+      <UniqueIdentifier>{15a4632e-e6fc-4d23-ab37-25c4b66898f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. Player\03. Hair">
+      <UniqueIdentifier>{5503935b-92ff-4c15-86b7-7809d01eaa0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. Player\01. Shirt">
+      <UniqueIdentifier>{9c4f8f9c-26aa-4930-a6e2-aed8b4b12133}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -252,6 +267,21 @@
     <ClInclude Include="..\Header\Wall.h">
       <Filter>02. GameObject\94.Wall</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\Eye.h">
+      <Filter>02. GameObject\01. Player\00. Eyes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\Hair.h">
+      <Filter>02. GameObject\01. Player\03. Hair</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\HairShade.h">
+      <Filter>02. GameObject\01. Player\04. HairShade</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\Shirt.h">
+      <Filter>02. GameObject\01. Player\01. Shirt</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\Pants.h">
+      <Filter>02. GameObject\01. Player\02. Pants</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -367,6 +397,21 @@
     </ClCompile>
     <ClCompile Include="..\Code\Wall.cpp">
       <Filter>02. GameObject\94.Wall</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Eye.cpp">
+      <Filter>02. GameObject\01. Player\00. Eyes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Hair.cpp">
+      <Filter>02. GameObject\01. Player\03. Hair</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\HairShade.cpp">
+      <Filter>02. GameObject\01. Player\04. HairShade</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Shirt.cpp">
+      <Filter>02. GameObject\01. Player\01. Shirt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Pants.cpp">
+      <Filter>02. GameObject\01. Player\02. Pants</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
