@@ -21,6 +21,8 @@ BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
 
+void LoadFont();
+
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     _In_opt_ HINSTANCE hPrevInstance,
     _In_ LPWSTR    lpCmdLine,
@@ -58,6 +60,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     ShowCursor(false);
 
     CImguiMgr::GetInstance()->ImGui_SetUp();
+
+    LoadFont();
 
     if (nullptr == pMainApp)
         return FALSE;
@@ -259,4 +263,26 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
         break;
     }
     return (INT_PTR)FALSE;
+}
+
+void LoadFont()
+{
+    ImGuiIO& io = ImGui::GetIO();
+    ImFont* font = nullptr;
+
+    std::string font_file = "./TTF/malgunbd.ttf";
+
+    std::ifstream ifile;
+    ifile.open(font_file);
+    if (ifile)
+    {
+        cout << "file exists\n";
+        font = io.Fonts->AddFontFromFileTTF(font_file.c_str(), 16.0f, NULL, io.Fonts->GetGlyphRangesKorean());
+    }
+    else
+    {
+        cout << "file Not Exist\n";
+        font = io.Fonts->AddFontDefault();
+    }
+    IM_ASSERT(font != NULL);
 }
