@@ -13,6 +13,7 @@
 #include "..\Header\UIInvPlate.h"
 #include "..\Header\UIItemSlot.h"
 #include "..\Header\UIPlayerStats.h"
+#include "..\Header\UICraftSlot.h"
 
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CGameObject(pGraphicDev)
@@ -45,6 +46,8 @@ HRESULT CPlayer::Ready_GameObject()
 	_vec3 vPos;
 	m_pTransformCom->Get_Info(INFO_POS, &vPos);
 	m_pTransformCom->Set_Pos(vPos.x, m_fFirstY, vPos.z);
+
+	m_pEquipInventoryCom->Set_SlotCount(10);
 
 	return S_OK;
 }
@@ -143,6 +146,10 @@ HRESULT CPlayer::Add_Component()
 	pComponent = m_pInventoryCom = dynamic_cast<CInventory*>(Engine::Clone_Proto(L"Proto_PlayerInventory"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Inventory", pComponent });
+
+	pComponent = m_pEquipInventoryCom = dynamic_cast<CInventory*>(Engine::Clone_Proto(L"Proto_PlayerInventory"));
+	NULL_CHECK_RETURN(pComponent, E_FAIL);
+	m_mapComponent[ID_STATIC].insert({ L"Com_EquipInventory", pComponent });
 
 	return S_OK;
 }
@@ -567,6 +574,21 @@ void CPlayer::Set_UI()
 
 }
 
+void CPlayer::Set_InvWindow()
+{
+	m_bInventory = false;
+}
+
+void CPlayer::Set_CraftWindow()
+{
+	m_bCraft = false;
+}
+
+void CPlayer::Set_MapWindow()
+{
+	m_bMap = false;
+}
+
 void CPlayer::Set_Craft()
 {
 	CUIPlayerCraft* pCraft = dynamic_cast<CUIPlayerCraft*>(Engine::Get_GameObject(L"Layer_UI", L"UIPlayerCraft"));
@@ -622,6 +644,17 @@ void CPlayer::Set_Inventory()
 
 	CUIPlayerStats* pStats = dynamic_cast<CUIPlayerStats*>(Engine::Get_GameObject(L"Layer_UI", L"UIPlayerStats"));
 	pStats->Set_Window();
+
+	for (int i = 0; i < 5; i++)
+	{
+		wstring string;
+
+		string = L"UICraftSlot_" + std::to_wstring(i);
+
+		CUICraftSlot* pSlot = dynamic_cast<CUICraftSlot*>(Engine::Get_GameObject(L"Layer_UI", string.c_str()));
+
+		pSlot->Set_Window();
+	}
 }
 
 void CPlayer::Set_Map()

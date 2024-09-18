@@ -34,6 +34,7 @@ public:
 	bool            Check_Empty(_int iIndex);
 	vector<CItem*>   Get_VecItem()           { return m_vecItems; }
 	_int             Get_Slot()              { return m_iSlotCount; }
+	void            Set_SlotCount(_int iCount) { m_iSlotCount = iCount; }
 
 public:
 	static	CInventory*		Create(LPDIRECT3DDEVICE9 pGraphicDev, int _iSlotCount);

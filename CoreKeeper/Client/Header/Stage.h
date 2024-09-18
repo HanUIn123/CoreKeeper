@@ -28,6 +28,7 @@
 #include "UIItemSlot.h"
 #include "UIPlayerStats.h"
 #include "UIPlayerCraft.h"
+#include "UICraftSlot.h"
 
 #include "Inventory.h"
 
@@ -66,6 +67,7 @@ private:
 private:
 	wstring							m_Invstring[50];
 	wstring							m_ItemSlot[10];
+	wstring                         m_CraftSlot[10];
 	_bool							m_bInvCheck;
 	HANDLE							m_hFile;
 	HANDLE							m_hWallFile;
