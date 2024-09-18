@@ -66,71 +66,59 @@ HRESULT CCubeTex::Ready_Buffer()
 
 	m_pIB->Lock(0, 0, (void**)&pIndex, 0);
 
-	// X+
-	// 오른쪽 위
+	// x+ 오른쪽 위 
 	pIndex[0]._0 = 1;
 	pIndex[0]._1 = 5;
 	pIndex[0]._2 = 6;
 
-	// 왼쪽 아래
 	pIndex[1]._0 = 1;
 	pIndex[1]._1 = 6;
 	pIndex[1]._2 = 2;
 
-	// X-
-	// 오른쪽 위
+	// x- 오른 위 
 	pIndex[2]._0 = 4;
 	pIndex[2]._1 = 0;
 	pIndex[2]._2 = 3;
 
-	// 왼쪽 아래
 	pIndex[3]._0 = 4;
 	pIndex[3]._1 = 3;
 	pIndex[3]._2 = 7;
 
-	// Y+
-	// 오른쪽 위
+	// y+ 오른 위 
 	pIndex[4]._0 = 4;
 	pIndex[4]._1 = 5;
 	pIndex[4]._2 = 1;
 
-	// 왼쪽 아래
 	pIndex[5]._0 = 4;
 	pIndex[5]._1 = 1;
 	pIndex[5]._2 = 0;
 
-	// Y-
-	// 오른쪽 위
+	// y- 오른 위 
 	pIndex[6]._0 = 3;
 	pIndex[6]._1 = 2;
 	pIndex[6]._2 = 6;
 
-	// 왼쪽 아래
 	pIndex[7]._0 = 3;
 	pIndex[7]._1 = 6;
 	pIndex[7]._2 = 7;
 
-	// Z+
-	// 오른쪽 위
-	pIndex[8]._0 = 7;
-	pIndex[8]._1 = 6;
-	pIndex[8]._2 = 5;
+	// z- 오른위
+	pIndex[8]._0 = 0;
+	pIndex[8]._1 = 1;
+	pIndex[8]._2 = 2;
 
-	// 왼쪽 아래
-	pIndex[9]._0 = 7;
-	pIndex[9]._1 = 5;
-	pIndex[9]._2 = 4;
+	pIndex[9]._0 = 0;
+	pIndex[9]._1 = 2;
+	pIndex[9]._2 = 3;
 
-	// Z-
-	// 오른쪽 위
-	pIndex[10]._0 = 0;
-	pIndex[10]._1 = 1;
-	pIndex[10]._2 = 2;
+	// z+ 오른위 
+	pIndex[10]._0 = 7;
+	pIndex[10]._1 = 6;
+	pIndex[10]._2 = 5;
 
-	// 왼쪽 아래
-	pIndex[11]._0 = 0;
-	pIndex[11]._1 = 2;
-	pIndex[11]._2 = 3;
+	pIndex[11]._0 = 7;
+	pIndex[11]._1 = 5;
+	pIndex[11]._2 = 4;
 
 	m_pIB->Unlock();
 

@@ -103,6 +103,9 @@
     <Filter Include="04. Component\00. VIBuffer\97.TileTex">
       <UniqueIdentifier>{132b9cb0-c60d-4ade-995a-7b940c9be1f6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04. Component\00. VIBuffer\98.WallTex">
+      <UniqueIdentifier>{ad27f67b-b568-46c1-9335-ac165822c865}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Code\Scene.cpp">
@@ -191,6 +194,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\TileTex.cpp">
       <Filter>04. Component\00. VIBuffer\97.TileTex</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\WallTex.cpp">
+      <Filter>04. Component\00. VIBuffer\98.WallTex</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -283,6 +289,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Header\TileTex.h">
       <Filter>04. Component\00. VIBuffer\97.TileTex</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Header\WallTex.h">
+      <Filter>04. Component\00. VIBuffer\98.WallTex</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

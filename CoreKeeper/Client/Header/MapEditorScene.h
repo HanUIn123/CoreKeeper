@@ -6,6 +6,7 @@
 
 #include "MapToolTerrain.h"
 #include "Tile.h"
+#include "Wall.h"
 
 BEGIN(Engine)
 
@@ -42,13 +43,19 @@ public:
 	// ImGui 기초 세팅 함수
 	void									Show_ImguiWindow();
 	void									Setting_Menu();
+
 	void									Setting_TileList();
+	void									Piking_Tile();
+
+	void									Setting_WallList();
+	HRESULT									Piking_Wall();
 
 	// Tile 이미지 등록.
 	HRESULT									Resister_TileImage_ImGui(LPDIRECT3DDEVICE9 _pGraphicDeivce, const _tchar* _ImageFilePath, TEXTUREID _eTextureId, const int& _iImageNumber);
 
 private:
 	vector<IDirect3DBaseTexture9*>			m_vecTileTexture;
+	vector<IDirect3DBaseTexture9*>			m_vecWallTexture;
 
 	LPDIRECT3DTEXTURE9						m_TileTextureInfo = NULL;
 
@@ -69,13 +76,22 @@ private:
 	Engine::CGameObject*					m_pWallCom;
 
 	int										m_iTileCreateCount;
-	int										m_iPikingCount;
+	int										m_iWallCreateCount;
 	bool									m_bPushed;
+	bool									m_bWallClickPushed;
+	bool									m_bSelectTile;
+	bool									m_bSelectWall;
+	bool									m_bCanInstall;
 
 	// Picking 가능한 타일 키 값 개수. 현재는 VTXCNTX * VTXCNTZ개
 	wstring									m_wsTileNameString[VTXCNTX * VTXCNTZ];
+	wstring									m_wsWallNameString[VTXCNTX * VTXCNTZ];
 	HANDLE									m_hFile;
+	HANDLE									m_hWallFile;
 	vector<CTile*>							m_vecTileObject;
+	vector<CWall*>							m_vecWallObject;
+
+	_vec3									m_vCheckPos;
 	_vec3                                   m_vPickPos;
 };
 
