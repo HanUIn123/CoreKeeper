@@ -36,12 +36,18 @@ public:
 	{
 		memcpy(pInfo, &m_matWorld.m[eType][0], sizeof(_vec3));
 	}
-
+	const _vec3* Get_Scale() { return &m_vScale; }
 	void    Set_Scale(_float _fX, _float _fY, _float _fZ) { m_vScale = { _fX, _fY, _fZ }; }
 
 	void	Rotation(ROTATION eType, const _float& fAngle)
 	{
 		*(((_float*)&m_vAngle) + eType) += fAngle;
+	}
+
+	const _vec3* Get_Angle() { return &m_vAngle; }
+	void Set_Angle(_float _fX, _float _fY, _float _fZ)
+	{
+		m_vAngle = { _fX, _fY, _fZ };
 	}
 
 	void	Set_Pos(_float _fX, _float _fY, _float _fZ)

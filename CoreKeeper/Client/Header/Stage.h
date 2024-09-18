@@ -3,6 +3,11 @@
 #include "BackGround.h"
 
 #include "Player.h"
+#include "Eye.h"
+#include "Shirt.h"
+#include "Pants.h"
+#include "Hair.h"
+#include "HairShade.h"
 #include "Slime.h"
 #include "Monster.h"
 #include "Sword.h"
