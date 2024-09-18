@@ -306,13 +306,13 @@ void CPlayer::Animation_SetUp(STATE st, DIRECTION dir)
 		break;
 	case SWING:
 		if (m_eDir == FRONT)
-			m_pAnimatorCom->Set_CurState(st, 36, 36, 10);
+			m_pAnimatorCom->Set_CurState(st, 36, 36, 5);
 		else if (m_eDir == RIGHT)
-			m_pAnimatorCom->Set_CurState(st, 37, 39, 10);
+			m_pAnimatorCom->Set_CurState(st, 37, 39, 5);
 		else if (m_eDir == BACK)
-			m_pAnimatorCom->Set_CurState(st, 40, 41, 10);
+			m_pAnimatorCom->Set_CurState(st, 40, 41, 5);
 		else if (m_eDir == LEFT)
-			m_pAnimatorCom->Set_CurState(st, 37, 39, 10);
+			m_pAnimatorCom->Set_CurState(st, 37, 39, 5);
 		break;
 	}
 }
@@ -401,7 +401,7 @@ void CPlayer::ShoulderView_Control(const _float& fTimeDelta)
 
 void CPlayer::ShoulderView_Swing()
 {
-	m_pAnimatorCom->Set_CurState(SWING, 40, 41, 10);
+	m_pAnimatorCom->Set_CurState(SWING, 40, 41, 5);
 }
 
 void CPlayer::Show_Equipment()
