@@ -47,6 +47,7 @@ public:
 
 	void           Set_Inventory();
 	void           Set_Map();
+	void           Set_Craft();
 
 private:
 	HRESULT			Add_Component();

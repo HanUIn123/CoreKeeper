@@ -400,17 +400,18 @@ void CPlayer::Swing_Equipment()
 
 void CPlayer::Set_UI()
 {
+	
 	CUIStatusBar* pHp = dynamic_cast<CUIStatusBar*>
 		(Engine::Get_GameObject(L"Layer_UI", L"UI_Health"));
 	NULL_CHECK_RETURN(pHp);
 
-	pHp->Set_InfoH(150, 260); // (체력 , 최대체력)
+	pHp->Set_InfoH(150, 400); // (체력 , 최대체력)
 
 	CUIStatusBar* pMp = dynamic_cast<CUIStatusBar*>
 		(Engine::Get_GameObject(L"Layer_UI", L"UI_Mp"));
 	NULL_CHECK_RETURN(pMp);
 
-	pMp->Set_InfoH(80, 100); // (마나 , 최대마나)
+	pMp->Set_InfoH(40, 100); // (마나 , 최대마나)
 
 	if (Engine::Get_DIMouseMove(DIMS_Z))
 	{

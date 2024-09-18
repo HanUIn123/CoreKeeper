@@ -20,6 +20,7 @@
 #include "UIInventory.h"
 #include "UIItemSlot.h"
 #include "UIPlayerStats.h"
+#include "UIPlayerCraft.h"
 
 #include "Inventory.h"
 

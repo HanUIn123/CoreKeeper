@@ -10,6 +10,7 @@
 #include "..\Header\UIItemSlot.h"
 #include "..\Header\UIPlayerStatus.h"
 #include "..\Header\UIPlayerStats.h"
+#include "..\Header\UIPlayerCraft.h"
 
 CUIScreenIcon::CUIScreenIcon(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CGameObject(pGraphicDev), m_bCollapse(false), m_bExit(false), m_bClicked(false), m_bFirst(true)
@@ -79,6 +80,8 @@ _int CUIScreenIcon::Update_GameObject(const _float& fTimeDelta)
 			if (m_iIndex == ICON_BAG || m_iIndex == ICON_BAG_COL)
 			{
 				Set_Inventory();
+
+				Set_Craft();
 			}
 			else if(m_iIndex == ICON_MAP || m_iIndex == ICON_MAP_COL)
 			{
@@ -184,7 +187,14 @@ void CUIScreenIcon::Set_Inventory()
 
 void CUIScreenIcon::Set_Map()
 {
-	
+
+
+}
+
+void CUIScreenIcon::Set_Craft()
+{
+	CUIPlayerCraft* pCraft = dynamic_cast<CUIPlayerCraft*>(Engine::Get_GameObject(L"Layer_UI", L"UIPlayerCraft"));
+	pCraft->Set_Window();
 
 }
 

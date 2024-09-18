@@ -53,6 +53,8 @@ public:
 	_int            Get_iHandNum()          { return m_iHandNum; }
 	void            Set_iHandNum(_int iNum) { m_iHandNum = iNum; }
 
+	// Hp 가져오는 함수
+
 private:
 	Engine::CAnimTex*		m_pBufferCom;
 	Engine::CTransform*		m_pTransformCom;
