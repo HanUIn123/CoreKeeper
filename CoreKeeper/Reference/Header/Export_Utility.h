@@ -14,6 +14,7 @@
 #include "ShadowTex.h"
 #include "MapToolTex.h"
 #include "TileTex.h"
+#include "WallTex.h"
 
 #include "Texture.h"
 #include "ShadowTex.h"

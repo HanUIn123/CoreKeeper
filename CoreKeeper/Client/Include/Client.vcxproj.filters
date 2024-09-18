@@ -118,6 +118,9 @@
     <Filter Include="02. GameObject\07. UI\00. UIPlayerStatus\01. PlayerStat">
       <UniqueIdentifier>{3ce9803a-08b8-47b4-8cc7-658d01c6f615}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\94.Wall">
+      <UniqueIdentifier>{9e769398-2d95-40c2-9c55-b97bbdf6ec0e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -246,6 +249,9 @@
     <ClInclude Include="..\Header\UIPlayerStats.h">
       <Filter>02. GameObject\07. UI\00. UIPlayerStatus\01. PlayerStat</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\Wall.h">
+      <Filter>02. GameObject\94.Wall</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -358,6 +364,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\UIPlayerStats.cpp">
       <Filter>02. GameObject\07. UI\00. UIPlayerStatus\01. PlayerStat</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Wall.cpp">
+      <Filter>02. GameObject\94.Wall</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

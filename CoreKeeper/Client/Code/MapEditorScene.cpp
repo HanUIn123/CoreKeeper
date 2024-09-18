@@ -10,8 +10,14 @@ CMapEditorScene::CMapEditorScene(LPDIRECT3DDEVICE9 _pGraphicDevice)
     , m_bGuiHovered(false)
     , m_pMTGameObjectCom(nullptr)
     , m_iTileCreateCount(0)
+    , m_iWallCreateCount(0)
     , m_pTileCom(nullptr)
+    , m_pWallCom(nullptr)
     , m_bPushed(false)
+    , m_bWallClickPushed(false)
+    , m_bSelectTile(false)
+    , m_bSelectWall(false)
+    , m_bCanInstall(false)
 {
     ZeroMemory(&m_tImageInfo, sizeof(D3DXIMAGE_INFO));
 
@@ -19,7 +25,7 @@ CMapEditorScene::CMapEditorScene(LPDIRECT3DDEVICE9 _pGraphicDevice)
     if (!m_TileTextureInfo)
     {
         Resister_TileImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/Tile/BasicTile/BasicTile_%d.png", TEX_NORMAL, 11);
-        //Resister_TileImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/MapTerrain/Terrain_%d.png", TEX_NORMAL, 8);
+        Resister_TileImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/Wall/Wall_2.dds", TEX_CUBE, 11);
     }
 }
 
@@ -67,29 +73,9 @@ _int CMapEditorScene::Update_Scene(const _float& fTimeDelta)
     else
         m_bGuiHovered = false;
 
-    if (!m_bGuiHovered)
-    {
-        // 피킹으로 Terrain에 Tile 피킹되게 처리.
-        if (Engine::Get_DIMouseState(DIM_LB) & 0x80)
-        {
-            m_bPushed = true;
-        }
-        if (!(Engine::Get_DIMouseState(DIM_LB) & 0x80) && m_bPushed)
-        {
-            CMapToolTerrain* pTerrain = dynamic_cast<CMapToolTerrain*>(Engine::Get_GameObject(L"Layer_GameLogic", L"MapToolTerrain"));
-            CCalculator* pPickPos = dynamic_cast<CCalculator*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"MapToolTerrain", L"Com_Calculator"));
-            CMapToolTex* pMapToolBufferCom = dynamic_cast<CMapToolTex*>(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"MapToolTerrain", L"Com_Buffer"));
-            CTransform* pMapToolTransformCom = dynamic_cast<CTransform*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"MapToolTerrain", L"Com_Transform"));
+    Piking_Tile();
 
-            m_vPickPos = pPickPos->Picking_OnTerrain(g_hWnd, pMapToolBufferCom, pMapToolTransformCom);
-
-            m_vecTileObject[m_vPickPos.z * VTXCNTX + m_vPickPos.x]->Set_TileNumber(m_iImageNumber);
-
-            m_bPushed = false;
-
-           // m_listChangedTile.push_back(m_vecTileObject[m_vPickPos.z * VTXCNTX + m_vPickPos.x]);
-        }
-    }
+    Piking_Wall();
 
     if (Engine::Get_DIKeyState(DIK_V))
     {
@@ -101,7 +87,10 @@ _int CMapEditorScene::Update_Scene(const _float& fTimeDelta)
 
 void CMapEditorScene::LateUpdate_Scene()
 {
+    // MapTool 에서 사용할 타일 고르는 함수.
     Setting_TileList();
+
+    Setting_WallList();
 
     Engine::CScene::LateUpdate_Scene();
 }
@@ -144,7 +133,7 @@ HRESULT CMapEditorScene::Ready_Layer_GameLogic(const _tchar* pLayerTag)
     NULL_CHECK_RETURN(m_pMTGameObjectCom, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"MapToolTerrain", m_pMTGameObjectCom), E_FAIL);
 
-    
+
     for (_ulong i = 0; i < VTXCNTX; ++i)
     {
         for (_ulong j = 0; j < VTXCNTZ; ++j)
@@ -164,7 +153,6 @@ HRESULT CMapEditorScene::Ready_Layer_GameLogic(const _tchar* pLayerTag)
         }
     }
     m_iTileCreateCount = 0;
-    
 
     m_mapLayer.insert({ pLayerTag , pLayer });
 
@@ -227,12 +215,6 @@ void CMapEditorScene::Show_ImguiWindow()
 
     Setting_Menu();
 
-    // MapTool 에서 사용할 지형terrain을 고르는 함수.
-    //Setting_TerrainList();
-
-    //// MapTool 에서 사용할 타일 고르는 함수.
-    //Setting_TileList();
-
     ImGui::End();
 }
 
@@ -260,20 +242,6 @@ void CMapEditorScene::Setting_TileList()
 
     CComponent* pComponent = NULL;
 
-    // 여기서 Imgui에서 직접적으로 몇 개의 타일을 등록할 것인지,
-    // 추가 공부해서 몇 개의 타일을 등록한 뒤에, 그 만큼 타일리스트 나와서
-    // 각 타일 항목마다 맞는 이미지 출력하게 해야함.
-    //bool ImGui::Combo(const char* label, int* current_item, const char* (*getter)(void* user_data, int idx), void* user_data, int items_count, int popup_max_height_in_items)
-
-    //for (int i = 0; i < 9; ++i)
-    //{
-    //    wstring items[] = { L"Tile0" + std::to_wstring(i) };
-    //    static int nCurrentItem = 0;
-    //    ImGui::Combo("##3", &nCurrentItem, items, IM_ARRAYSIZE(items));
-    //}
-    //ImGui::Combo("##3", &nCurrentItem, items, IM_ARRAYSIZE(items))
-
-
     const char* items[] = { "Tile01","Tile02","Tile03", "Tile04","Tile05","Tile06","Tile07","Tile08","Tile09","Tile10" };
 
     static int	nCurrentItem = 0;
@@ -288,11 +256,127 @@ void CMapEditorScene::Setting_TileList()
                 if (m_pTileCom != nullptr)       //-> 이거 안하면 터짐.
                 {
                     m_iImageNumber = nCurrentItem;
-
+                    m_bSelectWall = false;
+                    m_bSelectTile = true;
                 }
             }
         }
     }
+}
+
+void CMapEditorScene::Piking_Tile()
+{
+    if (!m_bGuiHovered)
+    {
+        if (Engine::Get_DIMouseState(DIM_LB) & 0x80 && m_bSelectTile)
+        {
+            m_bPushed = true;
+
+            CMapToolTerrain* pTerrain = dynamic_cast<CMapToolTerrain*>(Engine::Get_GameObject(L"Layer_GameLogic", L"MapToolTerrain"));
+            CCalculator* pPickPos = dynamic_cast<CCalculator*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"MapToolTerrain", L"Com_Calculator"));
+            CMapToolTex* pMapToolBufferCom = dynamic_cast<CMapToolTex*>(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"MapToolTerrain", L"Com_Buffer"));
+            CTransform* pMapToolTransformCom = dynamic_cast<CTransform*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"MapToolTerrain", L"Com_Transform"));
+
+            m_vPickPos = pPickPos->Picking_OnTerrain(g_hWnd, pMapToolBufferCom, pMapToolTransformCom);
+
+            m_vecTileObject[m_vPickPos.z * VTXCNTX + m_vPickPos.x]->Set_TileNumber(m_iImageNumber);
+        }
+        if (!(Engine::Get_DIMouseState(DIM_LB) & 0x80))
+            m_bPushed = false;
+    }
+}
+
+void CMapEditorScene::Setting_WallList()
+{
+    if (!ImGui::CollapsingHeader("Wall List"))
+        return;
+
+    CComponent* pComponent = NULL;
+
+    const char* items[] = { "Wall01","Wall02","Wall03", "Wall04","Wall05" };
+
+    static int	nCurrentItem = 0;
+    ImGui::Combo("##3", &nCurrentItem, items, IM_ARRAYSIZE(items));
+
+    for (_int i = 0; i < m_vecWallTexture.size(); ++i)
+    {
+        if (nCurrentItem == i)
+        {
+            if (ImGui::ImageButton("Wall", m_vecWallTexture[i], ImVec2(50.0f, 50.0f)))
+            {
+                m_bSelectTile = false;
+                m_bSelectWall = true;
+
+                if (m_pWallCom == nullptr)       //-> 이거 안하면 터짐.
+                {
+                    m_iImageNumber = nCurrentItem;
+                }
+            }
+        }
+    }
+}
+
+HRESULT CMapEditorScene::Piking_Wall()
+{
+    auto	iter = find_if(m_mapLayer.begin(), m_mapLayer.end(), CTag_Finder(L"Layer_GameLogic"));
+
+    if (iter == m_mapLayer.end())
+        return E_FAIL;
+
+    if (!m_bGuiHovered)
+    {
+        if (Engine::Get_DIMouseState(DIM_LB) & 0x80 && m_bSelectWall)
+        {
+            m_bWallClickPushed = true;
+
+            CMapToolTerrain* pTerrain = dynamic_cast<CMapToolTerrain*>(Engine::Get_GameObject(L"Layer_GameLogic", L"MapToolTerrain"));
+            CCalculator* pPickPos = dynamic_cast<CCalculator*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"MapToolTerrain", L"Com_Calculator"));
+            CMapToolTex* pMapToolBufferCom = dynamic_cast<CMapToolTex*>(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"MapToolTerrain", L"Com_Buffer"));
+            CTransform* pMapToolTransformCom = dynamic_cast<CTransform*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"MapToolTerrain", L"Com_Transform"));
+
+            m_vPickPos = pPickPos->Picking_OnTerrain(g_hWnd, pMapToolBufferCom, pMapToolTransformCom);
+
+            // 이미 설치되어 있으면, 벽 옵젝 벡터 검사해서, 찍는 위치랑 같으면, 
+            // 이미 설치되어있다는 불 값 true
+            bool bAlreadyInstalled = false;
+            for (const auto& wall : m_vecWallObject)
+            {
+                if (wall->Get_WallPos() == m_vPickPos)
+                {
+                    bAlreadyInstalled = true;
+                    break;
+                }
+            }
+
+            // 이미 설치되어있따면, 설치할 수 있다는 값을 false로,
+            // checkpos라는 픽하고 나서 딱 설치된 시점의(벽 전 위치값 느낌)
+            // 둘이 같으면 설치 불가능 (설치된 전의 값하고 또 그자리에 피킹할 때 포지션값이 같으면 설치불가)
+            // 그 외는 설치 가능.
+            if (bAlreadyInstalled)
+                m_bCanInstall = false;
+            else if (m_vCheckPos == m_vPickPos)
+                m_bCanInstall = false;
+            else
+                m_bCanInstall = true;
+
+            if (m_bCanInstall)
+            {
+                m_pWallCom = CWall::Create(m_pGraphicDev, m_vPickPos.x, m_vPickPos.z, 0);
+                m_vecWallObject.emplace_back(dynamic_cast<CWall*>(m_pWallCom));
+                NULL_CHECK_RETURN(m_pWallCom, E_FAIL);
+
+                m_wsWallNameString[m_iWallCreateCount] = L"Wall_" + std::to_wstring(m_iWallCreateCount);
+                FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsWallNameString[m_iWallCreateCount].c_str(), m_pWallCom), E_FAIL);
+
+                m_iWallCreateCount++;
+                m_vCheckPos = m_vPickPos;
+            }
+        }
+        if (!(Engine::Get_DIMouseState(DIM_LB) & 0x80))
+            m_bWallClickPushed = false;
+    }
+
+    return S_OK;
 }
 
 HRESULT CMapEditorScene::Resister_TileImage_ImGui(LPDIRECT3DDEVICE9 _pGraphicDeivce, const _tchar* _ImageFilePath, TEXTUREID _eTextureId, const int& _iImageNumber)
@@ -307,22 +391,25 @@ HRESULT CMapEditorScene::Resister_TileImage_ImGui(LPDIRECT3DDEVICE9 _pGraphicDei
         {
         case TEX_NORMAL:
             FAILED_CHECK_RETURN(D3DXCreateTextureFromFile(m_pGraphicDev, szImageFileName, &m_TileTextureInfo), E_FAIL);
+            m_vecTileTexture.emplace_back(m_TileTextureInfo);
             break;
 
         case TEX_CUBE:
             FAILED_CHECK_RETURN(D3DXCreateCubeTextureFromFile(m_pGraphicDev, szImageFileName, (LPDIRECT3DCUBETEXTURE9*)&m_TileTextureInfo), E_FAIL);
+            m_vecWallTexture.emplace_back(m_TileTextureInfo);
             break;
         }
-        m_vecTileTexture.emplace_back(m_TileTextureInfo);
     }
     return S_OK;
 }
 
 void CMapEditorScene::MapFile_Save()
 {
-    const _tchar* strFileName = L"../../Data/MapData.txt";
+    const _tchar* strFileName = L"../../Data/TileData.txt";
+    const _tchar* strWallFileName = L"../../Data/WallData.txt";
 
     m_hFile = CreateFile(strFileName, GENERIC_WRITE, 0, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
+    m_hWallFile = CreateFile(strWallFileName, GENERIC_WRITE, 0, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
 
     if (INVALID_HANDLE_VALUE == m_hFile)
     {
@@ -330,17 +417,17 @@ void CMapEditorScene::MapFile_Save()
         return;
     }
 
+    if (INVALID_HANDLE_VALUE == m_hWallFile)
+    {
+        MSG_BOX("Failed Wall Create File");
+        return;
+    }
+
     if (m_vecTileObject.empty())
         return;
 
-    _vec3   vTempTilePos(0.0f,0.0f,0.0f);
-    _int    vTempTileImgNum(0);
-
-    _vec3   vTempChangeTilePos(0.0f,0.0f,0.0f);
-    _int   vTempChangeTileNum(0);
-
-    list<CTile*> vTempChangedTile;
-    
+    _vec3  vTempTilePos(0.0f, 0.0f, 0.0f);
+    _int   vTempTileImgNum(0);
 
     DWORD	dwByte(0);
 
@@ -349,16 +436,34 @@ void CMapEditorScene::MapFile_Save()
         vTempTilePos = (*iter).Get_TilePos();
         vTempTileImgNum = (*iter).Get_TileNumber();
 
+        // 타일 저장.
         WriteFile(m_hFile, &vTempTilePos, sizeof(_vec3), &dwByte, nullptr);
         WriteFile(m_hFile, &vTempTileImgNum, sizeof(_int), &dwByte, nullptr);
     }
 
+    _vec3 vTempWallPos(0.0f, 0.0f, 0.0f);
+    _int  vTempWallImgNum(0);
+
+    DWORD	dwByte2(0);
+
+    for (auto& iter : m_vecWallObject)
+    {
+        vTempWallPos = (*iter).Get_WallPos();
+        vTempWallImgNum = (*iter).Get_WallNumber();
+
+        // 벽 저장.
+        WriteFile(m_hWallFile, &vTempWallPos, sizeof(_vec3), &dwByte2, nullptr);
+        WriteFile(m_hWallFile, &vTempWallImgNum, sizeof(_int), &dwByte2, nullptr);
+    }
+
     CloseHandle(m_hFile);
+    CloseHandle(m_hWallFile);
 }
 
 void CMapEditorScene::MapFile_Load()
 {
     const _tchar* strFileName = L"../../Data/MapData.txt";
+   
 
     m_hFile = CreateFile(strFileName, GENERIC_READ, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
 

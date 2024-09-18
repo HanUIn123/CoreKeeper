@@ -7,6 +7,7 @@ CStage::CStage(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CScene(pGraphicDev)
 	, m_bInvCheck(false)
 	, m_iLoadTileCount(0)
+	, m_iLoadWallCount(0)
 {
 }
 
@@ -21,9 +22,7 @@ HRESULT CStage::Ready_Scene()
 	FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Layer_Environment"), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_GameLogic(L"Layer_GameLogic"), E_FAIL);
 
-
 	Load_MapFile();
-
 
 	FAILED_CHECK_RETURN(Ready_Layer_UI(L"Layer_UI"), E_FAIL);
 
@@ -437,9 +436,11 @@ HRESULT CStage::Load_MapFile()
 
 	Engine::CGameObject* pGameObject = nullptr;
 
-	const _tchar* strFileName = L"../../Data/MapData.txt";
+	const _tchar* strFileName = L"../../Data/TileData.txt";
+	const _tchar* strWallFileName = L"../../Data/WallData.txt";
 
 	m_hFile = CreateFile(strFileName, GENERIC_READ, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+	m_hWallFile = CreateFile(strWallFileName, GENERIC_READ, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
 
 	if (INVALID_HANDLE_VALUE == m_hFile)
 	{
@@ -447,10 +448,21 @@ HRESULT CStage::Load_MapFile()
 		return E_FAIL;
 	}
 
+	if (INVALID_HANDLE_VALUE == m_hWallFile)
+	{
+		MSG_BOX("Fail Open Wall file");
+		return E_FAIL;
+	}
+
 	_vec3 vTempTilePos(0.0f, 0.0f, 0.0f);
 	_int vTempTileImgNum(0);
 
 	DWORD dwByte = 0;
+
+	_vec3 vTempWallPos(0.0f, 0.0f, 0.0f);
+	_int vTempWallImgNum(0);
+
+	DWORD dwByte2 = 0;
 
 	while (true)
 	{
@@ -464,11 +476,26 @@ HRESULT CStage::Load_MapFile()
 		NULL_CHECK_RETURN(pTile, E_FAIL);
 		m_wsTileNameString[m_iLoadTileCount] = L"Tile_" + std::to_wstring(m_iLoadTileCount);
 		FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsTileNameString[m_iLoadTileCount].c_str(), pTile), E_FAIL);
+		m_iLoadTileCount++;		
+	}
 
-		m_iLoadTileCount++;
+	while (true)
+	{
+		ReadFile(m_hWallFile, &vTempWallPos, sizeof(_vec3), &dwByte2, nullptr);
+		ReadFile(m_hWallFile, &vTempWallImgNum, sizeof(_int), &dwByte2, nullptr);
+
+		if (dwByte2 == 0)
+			break;
+
+		CWall* pWall = CWall::Create(m_pGraphicDev, vTempWallPos.x, vTempWallPos.z, vTempWallImgNum);
+		NULL_CHECK_RETURN(pWall, E_FAIL);
+		m_wsWallNameString[m_iLoadWallCount] = L"Wall_" + std::to_wstring(m_iLoadWallCount);
+		FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsWallNameString[m_iLoadWallCount].c_str(), pWall), E_FAIL);
+		m_iLoadWallCount++;
 	}
 
 	CloseHandle(m_hFile);
+	CloseHandle(m_hWallFile);
 	MSG_BOX("Success Load File");
 
 	return S_OK;
