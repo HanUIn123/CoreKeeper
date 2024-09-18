@@ -64,12 +64,13 @@ private:
 
 	// ImGui 창 위 마우스 존재 판단 bool변수
 	bool									m_bGuiHovered;
+	bool									m_bSwitch;
 
 	// n번 째 타일인지 담는 변수.
 	_int									m_iImageNumber;
 public:
 	void									MapFile_Save();
-	void									MapFile_Load();
+	HRESULT									MapFile_Load();
 private:
 	Engine::CGameObject*					m_pMTGameObjectCom;
 	Engine::CGameObject*					m_pTileCom;
@@ -86,12 +87,17 @@ private:
 	// Picking 가능한 타일 키 값 개수. 현재는 VTXCNTX * VTXCNTZ개
 	wstring									m_wsTileNameString[VTXCNTX * VTXCNTZ];
 	wstring									m_wsWallNameString[VTXCNTX * VTXCNTZ];
+
 	HANDLE									m_hFile;
 	HANDLE									m_hWallFile;
+
 	vector<CTile*>							m_vecTileObject;
 	vector<CWall*>							m_vecWallObject;
 
 	_vec3									m_vCheckPos;
 	_vec3                                   m_vPickPos;
+
+	_int									m_iLoadTileCount;
+	_int									m_iLoadWallCount;
 };
 

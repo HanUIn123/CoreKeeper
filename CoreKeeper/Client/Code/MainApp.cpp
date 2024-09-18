@@ -2,7 +2,7 @@
 #include "..\Header\MainApp.h"
 #include"../Client/Header/ImguiMgr.h"
 
-CMainApp::CMainApp() : m_bSwitch(false)
+CMainApp::CMainApp()
 {
 }
 
@@ -34,21 +34,6 @@ int CMainApp::Update_MainApp(const float& fTimeDelta)
 void CMainApp::LateUpdate_MainApp()
 {
 	m_pManagementClass->LateUpdate_Scene();
-
-	ImGui::Begin("Switch Terrain", NULL, ImGuiWindowFlags_MenuBar);
-
-	ImGui::Checkbox("Switcing Terrain", &m_bSwitch);
-	if (ImGui::Button("Switch!"))
-		m_bSwitch = true;
-	if (ImGui::Button("Switch Off"))
-		m_bSwitch = false;
-
-	if (m_bSwitch)
-		m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
-	else
-		m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
-
-	ImGui::End();
 }
 
 void CMainApp::Render_MainApp()

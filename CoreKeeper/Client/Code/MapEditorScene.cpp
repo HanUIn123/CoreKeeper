@@ -15,9 +15,12 @@ CMapEditorScene::CMapEditorScene(LPDIRECT3DDEVICE9 _pGraphicDevice)
     , m_pWallCom(nullptr)
     , m_bPushed(false)
     , m_bWallClickPushed(false)
+    , m_bSwitch(false)
     , m_bSelectTile(false)
     , m_bSelectWall(false)
     , m_bCanInstall(false)
+    , m_iLoadTileCount(0)
+    , m_iLoadWallCount(0)
 {
     ZeroMemory(&m_tImageInfo, sizeof(D3DXIMAGE_INFO));
 
@@ -79,7 +82,7 @@ _int CMapEditorScene::Update_Scene(const _float& fTimeDelta)
 
     if (Engine::Get_DIKeyState(DIK_V))
     {
-        MapFile_Save();
+        /* MapFile_Save();*/
     }
 
     return iExit;
@@ -88,9 +91,24 @@ _int CMapEditorScene::Update_Scene(const _float& fTimeDelta)
 void CMapEditorScene::LateUpdate_Scene()
 {
     // MapTool 에서 사용할 타일 고르는 함수.
-    Setting_TileList();
 
+    ImGui::Begin("Object List", NULL, ImGuiWindowFlags_MenuBar);
+    Setting_TileList();
     Setting_WallList();
+    ImGui::End();
+
+
+    ImGui::Begin("Switch Terrain", NULL, ImGuiWindowFlags_MenuBar);
+    ImGui::Checkbox("Switcing Terrain", &m_bSwitch);
+    if (ImGui::Button("Switch!"))
+        m_bSwitch = true;
+    if (ImGui::Button("Switch Off"))
+        m_bSwitch = false;
+    if (m_bSwitch)
+        m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
+    else
+        m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
+    ImGui::End();
 
     Engine::CScene::LateUpdate_Scene();
 }
@@ -197,16 +215,17 @@ void CMapEditorScene::Show_ImguiWindow()
         // Menus
         if (ImGui::BeginMenu("File"))
         {
-            if (ImGui::MenuItem("Save"))
+            if (ImGui::MenuItem("Save File"))
             {
-                printf("Save Clicked\n");
-
+                MapFile_Save();
+                MSG_BOX("Save Complete!");
             }
             ImGui::Separator();
-            if (ImGui::MenuItem("Open"))
+            if (ImGui::MenuItem("Load File"))
             {
-                printf("Open Clicked\n");
-
+                //printf("Open Clicked\n");
+                MapFile_Load();
+                MSG_BOX("Load Complete!");
             }
             ImGui::EndMenu();
         }
@@ -245,7 +264,7 @@ void CMapEditorScene::Setting_TileList()
     const char* items[] = { "Tile01","Tile02","Tile03", "Tile04","Tile05","Tile06","Tile07","Tile08","Tile09","Tile10" };
 
     static int	nCurrentItem = 0;
-    ImGui::Combo("##3", &nCurrentItem, items, IM_ARRAYSIZE(items));
+    ImGui::Combo("##", &nCurrentItem, items, IM_ARRAYSIZE(items));
 
     for (_int i = 0; i < m_vecTileTexture.size(); ++i)
     {
@@ -460,42 +479,49 @@ void CMapEditorScene::MapFile_Save()
     CloseHandle(m_hWallFile);
 }
 
-void CMapEditorScene::MapFile_Load()
+HRESULT CMapEditorScene::MapFile_Load()
 {
-    const _tchar* strFileName = L"../../Data/MapData.txt";
-   
+    auto	iter = find_if(m_mapLayer.begin(), m_mapLayer.end(), CTag_Finder(L"Layer_Environment"));
 
-    m_hFile = CreateFile(strFileName, GENERIC_READ, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+    if (iter == m_mapLayer.end())
+        return E_FAIL;
 
-    if (INVALID_HANDLE_VALUE == m_hFile)
+    Engine::CGameObject* pGameObject = nullptr;
+
+    const _tchar* strWallFileName = L"../../Data/WallData.txt";
+
+    m_hWallFile = CreateFile(strWallFileName, GENERIC_READ, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+
+    if (INVALID_HANDLE_VALUE == m_hWallFile)
     {
-        MSG_BOX("Failed Open file");
-        return;
+        MSG_BOX("Fail Open Wall file");
+        return E_FAIL;
     }
 
-    _vec3   vTempTilePos(0.0f, 0.0f, 0.0f);
-    _int    vTempTileImgNum(0);
+    _vec3 vTempWallPos(0.0f, 0.0f, 0.0f);
+    _int vTempWallImgNum(0);
 
-    DWORD   dwByte = 0;
+    DWORD dwByte2 = 0;
 
     while (true)
     {
-        ReadFile(m_hFile, &vTempTilePos, sizeof(_vec3), &dwByte, NULL);
-        ReadFile(m_hFile, &vTempTileImgNum, sizeof(_int), &dwByte, NULL);
+        ReadFile(m_hWallFile, &vTempWallPos, sizeof(_vec3), &dwByte2, nullptr);
+        ReadFile(m_hWallFile, &vTempWallImgNum, sizeof(_int), &dwByte2, nullptr);
 
-        if (0 == dwByte)
+        if (dwByte2 == 0)
             break;
 
-        CTile* pTile = CTile::Create(m_pGraphicDev, vTempTilePos.x, vTempTilePos.z, vTempTileImgNum);
-
-        dynamic_cast<CTile*>(pTile)->Set_TilePos(vTempTilePos);
-        dynamic_cast<CTile*>(pTile)->Set_TileNumber(vTempTileImgNum);
-
-        m_vecTileObject.push_back(pTile);
+        CWall* pWall = CWall::Create(m_pGraphicDev, vTempWallPos.x, vTempWallPos.z, vTempWallImgNum);
+        NULL_CHECK_RETURN(pWall, E_FAIL);
+        m_wsWallNameString[m_iLoadWallCount] = L"Wall_" + std::to_wstring(m_iLoadWallCount);
+        FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsWallNameString[m_iLoadWallCount].c_str(), pWall), E_FAIL);
+        m_iLoadWallCount++;
     }
 
-    CloseHandle(m_hFile);
-    MSG_BOX("Succed Load Tile");
+    CloseHandle(m_hWallFile);
+    MSG_BOX("Success Load File");
+
+    return S_OK;
 }
 
 void CMapEditorScene::Free()

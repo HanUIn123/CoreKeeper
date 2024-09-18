@@ -25,6 +25,7 @@
 #include <algorithm>
 #include <functional>
 #include <process.h>
+#include <fstream>
 
 #ifdef _DEBUG
 
