@@ -335,14 +335,13 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UIPlayerStats", pGameObject), E_FAIL);
 
-	/*
-	vPos = { 663.f, 269.f };
-	vSize = { 7.f, 20.f };
+	vPos = { 340.f, 225.f };
+	vSize = { 75.f, 75.f };
 
-	pGameObject = CUIPlayerStats::Create(m_pGraphicDev, vPos, vSize);
+	pGameObject = CUIPlayerCraft::Create(m_pGraphicDev, vPos, vSize);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UIPetStats", pGameObject), E_FAIL);
-	*/
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UIPlayerCraft", pGameObject), E_FAIL);
+
 
 	vPos = { 780.f, 480.f };
 	vSize = { 25.f, 35.f };

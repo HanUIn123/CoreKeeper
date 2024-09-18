@@ -117,7 +117,7 @@ void CUIItemSlot::LateUpdate_GameObject()
 {
 	if (m_bWindow)
 	{
-		Add_RenderGroup(RENDER_UI, this);
+		Engine::Add_RenderGroup(RENDER_UI, this);
 	}
 	Engine::CGameObject::LateUpdate_GameObject();
 }
@@ -130,12 +130,13 @@ void CUIItemSlot::Render_GameObject()
 
 	m_pBufferCom->Render_Buffer();
 
-
 	if (m_bCollapse)
 	{
 		m_pColTextureCom->Set_Texture();
 	}
 	m_pBufferCom->Render_Buffer();
+
+	//m_pTextureCom->Set_Texture();
 
 }
 
@@ -150,6 +151,11 @@ HRESULT CUIItemSlot::Add_Component()
 	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_UISlot"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Texture", pComponent });
+
+	/*
+	pComponent = m_pSTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_UISlot"));
+	NULL_CHECK_RETURN(pComponent, E_FAIL);
+	m_mapComponent[ID_STATIC].insert({ L"Com_Texture", pComponent });*/
 
 	pComponent = m_pTransformCom = dynamic_cast<CTransform*>(Engine::Clone_Proto(L"Proto_Transform"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);

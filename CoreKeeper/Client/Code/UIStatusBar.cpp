@@ -52,7 +52,6 @@ _int CUIStatusBar::Update_GameObject(const _float& fTimeDelta)
 	GetCursorPos(&pt);
 	ScreenToClient(g_hWnd, &pt);
 
-
 	if (Map_Picked(pt))
 	{
 		m_bCollapse = true;
@@ -118,11 +117,11 @@ void CUIStatusBar::Render_GameObject()
 
 	_float _fCurLength = m_fLength / (iCount + 1);
 
-	matWorld._41 -= m_fLength;
+	matWorld._41 -= m_fLength - 5.f;
 
 	iCount = m_iHp / 25.f;
 
-	for (int i = 0; i < iCount; i++)
+	for (int i = 0; i < iCount; ++i)
 	{
 		matWorld._41 += _fCurLength - 1.5f;
 		//matWorld->_42 = 0.f;

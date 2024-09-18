@@ -121,6 +121,9 @@
     <Filter Include="02. GameObject\94.Wall">
       <UniqueIdentifier>{9e769398-2d95-40c2-9c55-b97bbdf6ec0e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\07. UI\06. PlayerCraft">
+      <UniqueIdentifier>{06a7d7b5-241f-4a7b-b257-c37509900efa}</UniqueIdentifier>
+	</Filter>
     <Filter Include="02. GameObject\01. Player\00. Eyes">
       <UniqueIdentifier>{4a833dcc-9966-4821-99a8-4deb21a37bc8}</UniqueIdentifier>
     </Filter>
@@ -264,6 +267,9 @@
     <ClInclude Include="..\Header\UIPlayerStats.h">
       <Filter>02. GameObject\07. UI\00. UIPlayerStatus\01. PlayerStat</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\UIPlayerCraft.h">
+      <Filter>02. GameObject\07. UI\06. PlayerCraft</Filter>
+    </ClInclude>
     <ClInclude Include="..\Header\Wall.h">
       <Filter>02. GameObject\94.Wall</Filter>
     </ClInclude>
@@ -394,6 +400,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\UIPlayerStats.cpp">
       <Filter>02. GameObject\07. UI\00. UIPlayerStatus\01. PlayerStat</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\UIPlayerCraft.cpp">
+      <Filter>02. GameObject\07. UI\06. PlayerCraft</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\Wall.cpp">
       <Filter>02. GameObject\94.Wall</Filter>

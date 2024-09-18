@@ -5,6 +5,7 @@ IMPLEMENT_SINGLETON(CInputDev)
 Engine::CInputDev::CInputDev(void)
 {
 	ZeroMemory(m_byKeyState, sizeof(m_byKeyState));
+	ZeroMemory(m_byOldKeyState, sizeof(m_byOldKeyState));
 }
 
 Engine::CInputDev::~CInputDev(void)
@@ -47,13 +48,22 @@ HRESULT Engine::CInputDev::Ready_InputDev(HINSTANCE hInst, HWND hWnd)
 	// 장치에 대한 access 버전을 받아오는 함수
 	m_pMouse->Acquire();
 
-
 	return S_OK;
 }
 
 void Engine::CInputDev::Update_InputDev(void)
 {
 	m_pKeyBoard->GetDeviceState(256, m_byKeyState);
+
+	for (int i = 0; i < 256; ++i)
+	{
+		if ((m_byOldKeyState[i] == true) && ((m_byKeyState[i] & 0x8000) == false))
+			m_byOldKeyState[i] = false;
+
+		if ((m_byOldKeyState[i] == false) && (((m_byKeyState[i]) & 0x8000) == true))
+			m_byOldKeyState[i] = true;
+	}
+
 	m_pMouse->GetDeviceState(sizeof(m_tMouseState), &m_tMouseState);
 }
 

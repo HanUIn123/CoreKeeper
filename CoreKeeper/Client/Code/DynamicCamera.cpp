@@ -100,7 +100,7 @@ void CDynamicCamera::Free()
 
 void CDynamicCamera::Key_Input()
 {
-	if (Engine::Get_DIKeyState(DIK_TAB))
+	if (Engine::Key_Down(DIK_LALT)) // 잠시 변경 하겠습니다 (TAB->LALT)
 	{
 		g_bIsTopCamera = g_bIsTopCamera ? false : true;
 		m_bFix = !g_bIsTopCamera;

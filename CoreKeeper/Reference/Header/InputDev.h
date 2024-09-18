@@ -25,8 +25,30 @@ public:
 		return m_tMouseState.rgbButtons[eMouse];
 	}
 
+	_bool   Key_Down(_ubyte byKeyID)
+	{
+		if ((m_byOldKeyState[byKeyID] == false) && (m_byKeyState[byKeyID] & 0x8000))
+		{
+			m_byOldKeyState[byKeyID] = true;
+			return true;
+		}
+				
+		return false;
+	}
+
+	_bool   Key_Up(_ubyte byKeyID)
+	{
+			if ((m_byOldKeyState[byKeyID] == true) && (!(m_byKeyState[byKeyID] & 0x8000)))
+		{
+			m_byOldKeyState[byKeyID] = false;
+			return true;
+		}
+
+		return false;
+	}
+
 	// 현재 마우스의 특정 축 좌표를 반환
-	_long	Get_DIMouseMove(MOUSEMOVESTATE eMouseState)	
+	_long	Get_DIMouseMove(MOUSEMOVESTATE eMouseState)		
 	{	
 		return *(((_long*)&m_tMouseState) + eMouseState);	
 	}
@@ -43,6 +65,7 @@ private:
 	LPDIRECTINPUTDEVICE8	m_pMouse	= nullptr;
 
 private:
+	_bool                   m_byOldKeyState[256];
 	_byte					m_byKeyState[256];		// 키보드에 있는 모든 키값을 저장하기 위한 변수
 	DIMOUSESTATE			m_tMouseState;	
 
