@@ -63,6 +63,9 @@ public:
 	void            Set_Inventory();
 	void            Set_Map();
 
+	void            Set_DisMove() { m_bNoMove = true; }
+	void            Set_EnaMove() { m_bNoMove = false; }
+
 	// Hp 가져오는 함수
 
 private:
@@ -96,6 +99,8 @@ private:
 	_bool                   m_bInventory; // Inventory 창 확인용
 	_bool                   m_bCraft;     // Craft 창 확인용
 	_bool                   m_bMap;       // Map 창 확인용
+
+	_bool                   m_bNoMove;    // UI건드릴때 캐릭터 움직이지 않게하는 용도
 
 public:
 	static CPlayer* Create(LPDIRECT3DDEVICE9 pGraphicDev);

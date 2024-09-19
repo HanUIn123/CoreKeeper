@@ -1,6 +1,7 @@
 #pragma once
 #include "GameObject.h"
 #include "Define.h"
+#include "..\Header\Item.h"
 
 BEGIN(Engine)
 
@@ -51,6 +52,8 @@ private:
 	_bool m_bCollapse;
 
 	_bool m_bShow;
+
+	CItem* pItem;
 
 private:
 	Engine::CAnimTex* m_pBufferCom;

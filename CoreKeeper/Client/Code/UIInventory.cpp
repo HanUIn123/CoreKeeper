@@ -100,18 +100,19 @@ void CUIInventory::Render_GameObject()
 		m_pRcTextureCom->Render_Buffer();
 	}
 
+	
 	CInventory* pPlayerInv = dynamic_cast<Engine::CInventory*>
 		(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
 
-	vector<CItem*> vecItem = pPlayerInv->Get_VecItem();
-
 	if (!pPlayerInv->Check_Empty(m_iIndex))
 	{
-		_int iCount = vecItem[m_iIndex - 1]->Get_Count();
+		pItem = pPlayerInv->Get_Item(m_iIndex - 1);
 
-		vecItem[m_iIndex - 1]->Get_Texture()->Set_Texture();
+		_int iCount = pItem->Get_Count();
 
-		Engine::ITEMNUM eNum = vecItem[m_iIndex - 1]->Get_ItemNum();
+		pItem->Get_Texture()->Set_Texture();
+
+		Engine::ITEMNUM eNum = pItem->Get_ItemNum();
 
 		switch (eNum)
 		{
@@ -133,12 +134,8 @@ void CUIInventory::Render_GameObject()
 
 		m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
 
-		vecItem[m_iIndex - 1]->Get_Buffer()->Render_Buffer();
-
-		
-
+		pItem->Get_Buffer()->Render_Buffer();
 	}
-
 }
 
 HRESULT CUIInventory::Add_Component()

@@ -33,6 +33,7 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	m_bInventory = false;
 	m_bCraft = false;
 	m_bFlip = false;
+	m_bNoMove = false;
 }
 
 CPlayer::~CPlayer()
@@ -59,7 +60,8 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 	m_pAnimatorCom->Update_Animation();
 
 	Flip();
-	Mouse_Click();
+	if (!m_bNoMove)
+		Mouse_Click();
 	Set_Equipment();
 	if (m_eState != SWING)
 		Show_Equipment();
@@ -551,7 +553,7 @@ void CPlayer::Swing_Equipment()
 
 void CPlayer::Set_UI()
 {
-	
+
 	CUIStatusBar* pHp = dynamic_cast<CUIStatusBar*>
 		(Engine::Get_GameObject(L"Layer_UI", L"UI_Health"));
 	NULL_CHECK_RETURN(pHp);

@@ -6,6 +6,7 @@ Engine::CInputDev::CInputDev(void)
 {
 	ZeroMemory(m_byKeyState, sizeof(m_byKeyState));
 	ZeroMemory(m_byOldKeyState, sizeof(m_byOldKeyState));
+	ZeroMemory(m_bOldMouseState, sizeof(m_bOldMouseState));
 }
 
 Engine::CInputDev::~CInputDev(void)
@@ -18,10 +19,10 @@ HRESULT Engine::CInputDev::Ready_InputDev(HINSTANCE hInst, HWND hWnd)
 
 	// DInput 컴객체를 생성하는 함수
 	FAILED_CHECK_RETURN(DirectInput8Create(hInst,
-											DIRECTINPUT_VERSION,
-											IID_IDirectInput8,
-											(void**)&m_pInputSDK,
-											NULL), E_FAIL);
+		DIRECTINPUT_VERSION,
+		IID_IDirectInput8,
+		(void**)&m_pInputSDK,
+		NULL), E_FAIL);
 
 	// 키보드 객체 생성
 	FAILED_CHECK_RETURN(m_pInputSDK->CreateDevice(GUID_SysKeyboard, &m_pKeyBoard, nullptr), E_FAIL);
@@ -57,10 +58,10 @@ void Engine::CInputDev::Update_InputDev(void)
 
 	for (int i = 0; i < 256; ++i)
 	{
-		if ((m_byOldKeyState[i] == true) && ((m_byKeyState[i] & 0x8000) == false))
+		if ((m_byOldKeyState[i] == true) && ((m_byKeyState[i] & 0x80) == false))
 			m_byOldKeyState[i] = false;
 
-		if ((m_byOldKeyState[i] == false) && (((m_byKeyState[i]) & 0x8000) == true))
+		if ((m_byOldKeyState[i] == false) && (((m_byKeyState[i]) & 0x80) == true))
 			m_byOldKeyState[i] = true;
 	}
 
@@ -68,10 +69,10 @@ void Engine::CInputDev::Update_InputDev(void)
 
 	for (int i = 0; i < DIM_END; ++i)
 	{
-		if ((m_bOldMouseState[i] == true) && (m_tMouseState.rgbButtons[i] & 0x80) == false)
+		if ((m_bOldMouseState[i] == true) && (m_tMouseState.rgbButtons[i] & 0x80))
 			m_bOldMouseState[i] = false;
 
-		if ((m_bOldMouseState[i] == false) && (m_tMouseState.rgbButtons[i] & 0x80) == true)
+		if ((m_bOldMouseState[i] == false) && !(m_tMouseState.rgbButtons[i] & 0x80))
 			m_bOldMouseState[i] = true;
 	}
 }

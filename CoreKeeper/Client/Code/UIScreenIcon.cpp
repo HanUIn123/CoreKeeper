@@ -54,6 +54,7 @@ _int CUIScreenIcon::Update_GameObject(const _float& fTimeDelta)
 {
 	_int iExit = Engine::CGameObject::Update_GameObject(fTimeDelta);
 
+	/*
 	if (m_bFirst)
 	{
 		Engine::CInventory* pInv = dynamic_cast<Engine::CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
@@ -61,7 +62,7 @@ _int CUIScreenIcon::Update_GameObject(const _float& fTimeDelta)
 		m_vecItem = pInv->Get_VecItem();
 
 		m_bFirst = false;
-	}
+	}*/
 
 	POINT pt;
 	GetCursorPos(&pt);
@@ -69,6 +70,10 @@ _int CUIScreenIcon::Update_GameObject(const _float& fTimeDelta)
 
 	if (Map_Picked(pt))
 	{
+		CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
+
+		pPlayer->Set_DisMove();
+
 		if (Engine::Get_DIMouseState(DIM_LB))
 		{
 			m_bClicked = true;
@@ -76,7 +81,6 @@ _int CUIScreenIcon::Update_GameObject(const _float& fTimeDelta)
 		else if ((!Engine::Get_DIMouseState(DIM_LB)) && m_bClicked)
 		{
 			m_bClicked = false;
-
 			CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
 
 			if (m_iIndex == ICON_BAG || m_iIndex == ICON_BAG_COL)
@@ -107,8 +111,12 @@ _int CUIScreenIcon::Update_GameObject(const _float& fTimeDelta)
 			m_bCollapse = true;
 		}
 	}
-	else
+	else if(!Map_Picked(pt))
+	{
+		CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
 		m_bCollapse = false;
+		pPlayer->Set_EnaMove();
+	}
 
 	Engine::Add_RenderGroup(RENDER_UI, this);
 
