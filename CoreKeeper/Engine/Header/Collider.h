@@ -3,6 +3,12 @@
 
 BEGIN(Engine)
 
+class CColliderCube;
+
+END
+
+BEGIN(Engine)
+
 class ENGINE_DLL CCollider :	public CComponent
 {
 private:

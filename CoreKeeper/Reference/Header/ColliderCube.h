@@ -1,4 +1,11 @@
 #pragma once
+#include "Component.h"
+
+BEGIN(Engine)
+
+class CCollider;
+
+END
 
 BEGIN(Engine)
 
@@ -21,6 +28,11 @@ public:
 
 private:
     virtual void Free();
+
+public:
+    _vec3	Get_Min() { return m_vMin; }
+    _vec3	Get_Max() { return m_vMax; }
+    _vec3	Get_CenterPos() { return m_vCenterPos; }
 
 private:
     _vec3 m_vMin;       // 큐브의 최소 좌표

@@ -3,6 +3,12 @@
 
 BEGIN(Engine)
 
+class CColliderCube;
+
+END
+
+BEGIN(Engine)
+
 class ENGINE_DLL CCollider :	public CComponent
 {
 private:
@@ -13,6 +19,7 @@ public:
 	HRESULT		Ready_Collider(float fRadius);
 	void		Update_Collider(const _matrix* pWorldMatrix);
 	bool		Check_Collision(CCollider* pTarget);	
+	bool		Check_Cube_Collision(CColliderCube* pCube);
 	void		Render_Collider();
 
 public:
