@@ -27,7 +27,7 @@ public:
 
 	_bool   Key_Down(_ubyte byKeyID)
 	{
-		if ((m_byOldKeyState[byKeyID] == false) && (m_byKeyState[byKeyID] & 0x8000))
+		if ((m_byOldKeyState[byKeyID] == false) && (m_byKeyState[byKeyID] & 0x80))
 		{
 			m_byOldKeyState[byKeyID] = true;
 			return true;
@@ -38,7 +38,7 @@ public:
 
 	_bool   Key_Up(_ubyte byKeyID)
 	{
-			if ((m_byOldKeyState[byKeyID] == true) && (!(m_byKeyState[byKeyID] & 0x8000)))
+		if ((m_byOldKeyState[byKeyID] == true) && (!(m_byKeyState[byKeyID] & 0x80)))
 		{
 			m_byOldKeyState[byKeyID] = false;
 			return true;
@@ -49,7 +49,7 @@ public:
 
 	_bool   Button_Down(MOUSEKEYSTATE eMouseState)
 	{
-		if ((m_bOldMouseState[eMouseState] == false) && (m_tMouseState.rgbButtons[eMouseState] & 0x80))
+		if ((m_bOldMouseState[eMouseState] == false) && ((m_tMouseState.rgbButtons[eMouseState] & 0x80)))
 		{
 			m_bOldMouseState[eMouseState] = true;
 			return true;

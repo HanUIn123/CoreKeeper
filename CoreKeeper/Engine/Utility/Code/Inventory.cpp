@@ -69,46 +69,22 @@ CItem* CInventory::Get_HandedItem(_int iHandNum)
 {
 	if (Check_Empty(iHandNum))
 		return nullptr;
+
 	return m_vecItems[iHandNum - 1];
 }
 
 bool CInventory::Check_Empty(_int iIndex)
 {
-	if (m_vecItems.empty())
+	if (m_vecItems.empty() || m_vecItems.size() < iIndex + 1)
+		return true;
+
+	if (m_vecItems[iIndex] == nullptr || m_vecItems[iIndex]->Get_Count() == 0)
 	{
 		return true;
 	}
 
-	int i = 1;
-
-	for (auto iter : m_vecItems)
-	{
-		if (i == iIndex)
-		{
-			if (iter->Get_Count() == 0)
-			{
-				return true;
-			}
-			else
-				return false;
-		}
-
-		i++;
-	}
-
-	return true;
+	return false;
 }
-
-
-//bool CInventory::Check_Empty(_int iIndex)
-//{
-//	if (m_vecItems[iIndex] == nullptr || m_vecItems[iIndex]->Get_Count() == 0)
-//	{
-//		return true;
-//	}
-//
-//	return false;
-//}
 
 CInventory* CInventory::Create(LPDIRECT3DDEVICE9 pGraphicDev, int _iSlotCount)
 {

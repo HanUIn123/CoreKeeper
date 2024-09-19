@@ -59,16 +59,17 @@ void CUICursor::LateUpdate_GameObject()
 
 void CUICursor::Render_GameObject()
 {
-	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
+	_matrix matWorld;
 
-	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+	m_pTransformCom->Get_WorldMatrix(&matWorld);
+
+	m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
 	
 	m_pTextureCom->Set_Texture();
 	
 	m_pBufferCom->Render_Buffer();
 
-	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
-
+	
 }
 
 HRESULT CUICursor::Add_Component()
