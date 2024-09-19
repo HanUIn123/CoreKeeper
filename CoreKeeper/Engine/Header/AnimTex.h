@@ -15,6 +15,7 @@ public:
 	virtual		HRESULT		Ready_Buffer();
 	virtual		void		Render_Buffer();
 
+	void					Render_First();
 	void					Set_Index(int _iCurIndex) { m_iCurIndex = _iCurIndex; }
 public:
 	static		CAnimTex* Create(LPDIRECT3DDEVICE9 pGraphicDev, int _iTexWidth, int _iTexHeight);

@@ -48,7 +48,7 @@ private:
 
 	_bool m_bCollapse;
 
-	vector <CItem*> m_vecItem;
+	CItem*          m_pItem;
 
 	_bool m_bFirst;
 

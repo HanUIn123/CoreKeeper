@@ -53,8 +53,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     g_bIsTopCamera = true;
 
-    FAILED_CHECK_RETURN(Engine::Ready_Sound(), FALSE);
-
     CMainApp* pMainApp = CMainApp::Create();
 
     ShowCursor(false);

@@ -226,9 +226,9 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
 
 	Engine::CGameObject* pGameObject = nullptr;
 
-	_vec2 vPos = { 580.f, 200.f };
-	_vec2 vSize = {100.f, 100.f};
-	
+	_vec2 vPos = { 844.f, 190.f };
+	_vec2 vSize = { 150.f, 150.f };
+
 	pGameObject = CUIPlayerStatus::Create(m_pGraphicDev, vPos, vSize);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UIPlayerStatus", pGameObject), E_FAIL); // UI Ãß°¡
@@ -237,21 +237,22 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
 	{
 		if (i < 3)
 		{
-			vPos = { 514.f + i * 58.f , 132.f };
+			vPos = { 745.f + i * 89.f , 85.f };
+
 		}
-		else if( i >= 3 && i < 5)
+		else if (i >= 3 && i < 5)
 		{
-			vPos = { 514.f + (i - 3) * 116.f , 132.f + 45.f };
+			vPos = { 745.f + (i - 3) * 178.f , 85.f + 70.f };
 		}
-		else if( i >= 5 && i <7)
+		else if (i >= 5 && i < 7)
 		{
-			vPos = { 514.f + (i - 5) * 116.f , 132.f + 90.f };
+			vPos = { 745.f + (i - 5) * 178.f , 85.f + 140.f };
 		}
 		else if (i >= 7 && i < 10)
 		{
-			vPos = { 514.f + (i - 7) * 58.f , 132.f + 135.f };
+			vPos = { 745.f + (i - 7) * 89.f , 85.f + 210.f };
 		}
-		vSize = { 20.f, 20.f };
+		vSize = { 30.f, 30.f };
 
 		m_ItemSlot[i] = L"UIItemSlot_" + std::to_wstring(i);
 
@@ -259,7 +260,7 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
 		switch (i)
 		{
 		case 0:
-			eType =	CUIItemSlot::SLOT_HELM;
+			eType = CUIItemSlot::SLOT_HELM;
 			break;
 
 		case 1:
@@ -304,15 +305,15 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
 		FAILED_CHECK_RETURN(pLayer->Add_GameObject(m_ItemSlot[i].c_str(), pGameObject), E_FAIL);
 	}
 
-	vPos = { 663.f, 200.f };
-	vSize = { 7.f, 90.f };
+	vPos = { 970.f, 190.f };
+	vSize = { 10.f, 135 };
 
 	pGameObject = CUIPlayerStats::Create(m_pGraphicDev, vPos, vSize);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UIPlayerStats", pGameObject), E_FAIL);
 
-	vPos = { 340.f, 225.f };
-	vSize = { 75.f, 75.f };
+	vPos = { 470.f, 225.f };
+	vSize = { 120.f, 120.f };
 
 	pGameObject = CUIPlayerCraft::Create(m_pGraphicDev, vPos, vSize);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
@@ -322,12 +323,12 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
 	{
 		if (i < 3)
 		{
-			vPos = { 295.f + i * 46.f , 220.f };
+			vPos = { 400.f + i * 70.f , 220.f };
 		}
 		else
-			vPos = { 295.f + (i - 3) * 46.f, 220.f + (i / 3) * 47.f };
+			vPos = { 400.f + (i - 3) * 70.f, 220.f + (i / 3) * 70.f };
 
-		vSize = { 20.f, 20.f };
+		vSize = { 30.f, 30.f };
 
 		m_CraftSlot[i] = L"UICraftSlot_" + std::to_wstring(i);
 
@@ -336,22 +337,22 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
 		FAILED_CHECK_RETURN(pLayer->Add_GameObject(m_CraftSlot[i].c_str(), pGameObject), E_FAIL);
 	}
 
-	vPos = { 780.f, 480.f };
-	vSize = { 25.f, 35.f };
+	vPos = { 1100.f, 540.f };
+	vSize = { 35.f, 45.f };
 
 	pGameObject = CUIScreenIcon::Create(m_pGraphicDev, vPos, vSize, CUIScreenIcon::ICON_MAP);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UIScreenicon_Map", pGameObject), E_FAIL);
 
-	vSize = { 35.f, 35.f };
-	vPos = { 850.f , 480.f };
+	vSize = { 45.f, 45.f };
+	vPos = { 1200.f , 540.f };
 
 	pGameObject = CUIScreenIcon::Create(m_pGraphicDev, vPos, vSize, CUIScreenIcon::ICON_BAG);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UIScreenicon_Bag", pGameObject), E_FAIL);
 
-	vSize = { 25.f , 25.f };
-	vPos = { 845.f , 550.f };
+	vSize = { 35.f , 35.f };
+	vPos = { 1200.f , 640.f };
 
 	pGameObject = CUIScreenIcon::Create(m_pGraphicDev, vPos, vSize, CUIScreenIcon::ICON_HAND);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
@@ -365,15 +366,15 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UIScreenicon_Install", pGameObject), E_FAIL);
 	*/
 
-	vPos = { 347.f, 50.f };
-	vSize = { 293.f, 9.f };
+	vPos = { 460.f, 40.f };
+	vSize = { 420.f, 14.f };
 
 	pGameObject = CUIStatusBar::Create(m_pGraphicDev, vPos, vSize, 1);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Health", pGameObject), E_FAIL);
 
-	vPos = { 347.f, 80.f };
-	vSize = { 293.f, 9.f };
+	vPos = { 460.f, 70.f };
+	vSize = { 420.f, 12.f };
 
 	pGameObject = CUIStatusBar::Create(m_pGraphicDev, vPos, vSize, 4);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
@@ -383,11 +384,11 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
 	{
 		if (i == 0)
 		{
-			vPos = { 670.f, 550.f };
+			vPos = { 960.f, 650.f };
 		}
 		else
-			vPos = { 240.f + (43.f * i), 550.f };
-			
+			vPos = { 330.f + (63.f * i), 650.f };
+
 		m_Invstring[i] = L"UI_ScreenInv_" + std::to_wstring(i);
 
 		pGameObject = CUIScreenInv::Create(m_pGraphicDev, vPos, i);
@@ -397,10 +398,10 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
 
 	for (int i = 11; i < 31; i++)
 	{
-		if(i % 10 != 0)
-			vPos = { 240.f + (43.f * (_float)(i - (i / 10) * 10)), 350.f + (_float)(i / 10) * 43.f};
+		if (i % 10 != 0)
+			vPos = { 330.f + (63.f * (_float)(i - (i / 10) * 10)), 413.f + (_float)(i / 10) * 63.f };
 		else
-			vPos = { 240.f + (43.f * (_float)(i - (((i - 1)  / 10) * 10 ))), 350.f + (_float)((i - 1) / 10) * 43.f };
+			vPos = { 330.f + (63.f * (_float)(i - (((i - 1) / 10) * 10))), 413.f + (_float)((i - 1) / 10) * 63.f };
 
 		m_Invstring[i] = L"UI_Inventory_" + std::to_wstring(i);
 
@@ -413,8 +414,8 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Cursor", pGameObject), E_FAIL)
 
-	vPos = { 475.f, 339.f };
-	vSize = { 220.f, 25.f };
+		vPos = { 675.f, 398.f };
+	vSize = { 325.f, 40.f };
 
 	pGameObject = CUIInvPlate::Create(m_pGraphicDev, vPos, vSize);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);

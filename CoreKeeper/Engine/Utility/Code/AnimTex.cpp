@@ -86,6 +86,22 @@ void CAnimTex::Render_Buffer()
 	CVIBuffer::Render_Buffer();
 }
 
+void CAnimTex::Render_First()
+{
+	VTXTEX* pVertex = NULL;
+
+	m_pVB->Lock(0, 0, (void**)&pVertex, 0);
+
+	pVertex[0].vTexUV = { 0.0f / m_iTexWidth, 0.0f / m_iTexHeight };
+	pVertex[1].vTexUV = { 1.0f / m_iTexWidth, 0.0f / m_iTexHeight };
+	pVertex[2].vTexUV = { 1.0f / m_iTexWidth, 1.0f / m_iTexHeight };
+	pVertex[3].vTexUV = { 0.0f / m_iTexWidth, 1.0f / m_iTexHeight };
+
+	m_pVB->Unlock();
+
+	CVIBuffer::Render_Buffer();
+}
+
 CAnimTex* CAnimTex::Create(LPDIRECT3DDEVICE9 pGraphicDev, int _iTexWidth, int _iTexHeight)
 {
 	CAnimTex* pInstance = new CAnimTex(pGraphicDev, _iTexWidth, _iTexHeight);

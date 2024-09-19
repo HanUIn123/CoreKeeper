@@ -49,11 +49,11 @@ void CInventory::Add_Item(CItem* _pItem)
 	}
 }
 
-void CInventory::Swap_Item(CItem& _Item1, CItem& _Item2)
+void CInventory::Swap_Item(CItem** _ppItem1, CItem** _ppItem2)
 {
-	CItem* pTemp = &_Item1;
-	_Item1 = _Item2;
-	_Item2 = *pTemp;
+	CItem* pTemp = *_ppItem1;
+	*_ppItem1 = *_ppItem2;
+	*_ppItem2 = pTemp;
 }
 
 CItem* CInventory::Remove_Item(int _iIndex)
@@ -65,35 +65,26 @@ CItem* CInventory::Remove_Item(int _iIndex)
 	return pTemp;
 }
 
+CItem* CInventory::Get_HandedItem(_int iHandNum)
+{
+	if (Check_Empty(iHandNum))
+		return nullptr;
+
+	return m_vecItems[iHandNum - 1];
+}
+
 bool CInventory::Check_Empty(_int iIndex)
 {
-	if (m_vecItems.empty())
+	if (m_vecItems.empty() || m_vecItems.size() < iIndex + 1)
+		return true;
+
+	if (m_vecItems[iIndex] == nullptr || m_vecItems[iIndex]->Get_Count() == 0)
 	{
 		return true;
 	}
 
-	int i = 1;
-
-	// i값이 index값과 같아질 때까지 for문 돌리기
-	for (auto iter : m_vecItems)
-	{
-		if (i == iIndex)
-		{
-			if (iter->Get_Count() == 0)
-			{
-				return true;
-			}
-			else
-				return false;
-		}
-
-		i++;
-	}
-
-	return true;
+	return false;
 }
-
-
 
 CInventory* CInventory::Create(LPDIRECT3DDEVICE9 pGraphicDev, int _iSlotCount)
 {

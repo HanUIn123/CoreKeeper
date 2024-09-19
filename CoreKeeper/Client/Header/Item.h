@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "Define.h"
 
 BEGIN(Engine)
 
@@ -69,8 +70,6 @@ public: // UI에서 가져갈 Component들
 	CTexture*          Get_Texture() { return m_pTextureCom; }
 	CTransform*        Get_Transform() { return m_pTransformCom; }
 
-	Engine::ITEMNUM    Get_ItenNum()  { return m_eItemNum; }
-
 
 	CAnimator* Get_Animator() { return m_pAnimatorCom; }
 
@@ -82,6 +81,8 @@ protected:
 	float		m_fSpeed;
 	float		m_fWalkYSpeed;
 	float		m_fAngle;		// 휘두를때 회전 각도
+	float		m_fAngleX;
+	float       m_fAngleY;
 
 	bool		m_bActive;
 	bool		m_bDrop;		// 땅에 떨어진 상태일 때

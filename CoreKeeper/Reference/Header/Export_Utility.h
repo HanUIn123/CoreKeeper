@@ -25,6 +25,7 @@
 #include "Calculator.h"
 #include "Animator.h"
 #include "Collider.h"
+#include "ColliderCube.h"
 #include "State.h"
 #include "Inventory.h"
 

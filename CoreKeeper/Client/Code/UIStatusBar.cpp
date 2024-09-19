@@ -86,7 +86,7 @@ void CUIStatusBar::Render_GameObject()
 	matWorld._41 -= 3.5f;
 
 	matWorld._11 -= 7.f;
-	matWorld._22 -= 2.25f;
+	matWorld._22 -= 3.8f;
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
 
@@ -98,8 +98,10 @@ void CUIStatusBar::Render_GameObject()
 
 	m_pTextureCom->Set_Texture(m_iIndex + 1);
 
+	matWorld._41 += 3.5f;
+
 	matWorld._11 = 2.f;
-	matWorld._22 = 6.f;
+	matWorld._22 = 8.f;
 
 	_int _iCurHp = m_iCurHp;
 	_int _iMaxHp = m_iMaxHp;
@@ -113,7 +115,7 @@ void CUIStatusBar::Render_GameObject()
 		iCount = _iMaxHp / 25 - 1;
 	}
 	else
-		iCount = _iMaxHp / 25 ;
+		iCount = _iMaxHp / 25;
 
 	_float _fCurLength = m_fLength / (iCount + 1);
 
@@ -130,9 +132,9 @@ void CUIStatusBar::Render_GameObject()
 
 		m_pDividerBufferCom[i]->Render_Buffer();
 	}
-    //Set_Pos(&matWorld);
+	//Set_Pos(&matWorld);
 
-	if (m_bCollapse && (m_iIndex - 1)== 0) // 체력
+	if (m_bCollapse && (m_iIndex - 1) == 0) // 체력
 	{
 		std::wstring sFront = L"체력                    " + std::to_wstring(m_iHp);
 
@@ -142,7 +144,7 @@ void CUIStatusBar::Render_GameObject()
 
 		const _tchar* tTotal = sTotal.c_str();
 
-		_vec2 pos(m_BRect.left - 130.f , m_BRect.top);
+		_vec2 pos(m_BRect.left - 130.f, m_BRect.top);
 
 		Engine::Render_Font(L"Font_HP", tTotal, &pos, D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
 	}

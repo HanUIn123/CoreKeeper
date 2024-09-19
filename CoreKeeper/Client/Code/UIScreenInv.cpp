@@ -31,7 +31,7 @@ HRESULT CUIScreenInv::Ready_GameObject(_vec2 vPos, _int _iIndex)
 
 	m_pTransformCom->Set_Pos(x, y, 0);
 
-	_vec2 vSize = { 20.f, 20.f };
+	_vec2 vSize = { 30.f, 30.f };
 
 	m_pTransformCom->m_vScale = { vSize.x, vSize.y, 1.f };
 
@@ -55,10 +55,6 @@ HRESULT CUIScreenInv::Ready_GameObject(_vec2 vPos, _int _iIndex)
 _int CUIScreenInv::Update_GameObject(const _float& fTimeDelta)
 {
 	_int iExit = Engine::CGameObject::Update_GameObject(fTimeDelta);
-
-	CInventory* pInventory = dynamic_cast<CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
-
-	m_vecItem = pInventory->Get_VecItem();
 
 	CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
 	NULL_CHECK_RETURN(pPlayer, -1);
@@ -118,16 +114,9 @@ _int CUIScreenInv::Update_GameObject(const _float& fTimeDelta)
 		break;
 
 	}
-
-	if (Engine::Get_DIKeyState(byKey))
+	if(Map_Picked(pt))
 	{
-		pPlayer->Set_iHandNum(m_iIndex);
-	}
-
-
-	if (Map_Picked(pt))
-	{
-		if (Engine::Get_DIMouseState(DIM_LB))
+		if (Engine::Button_Down(DIM_LB))
 		{
 			m_iCurInv = m_iIndex;
 
@@ -136,11 +125,16 @@ _int CUIScreenInv::Update_GameObject(const _float& fTimeDelta)
 
 		m_bCollapse = true;
 	}
-	else
+	else if (!Map_Picked(pt))
 	{
 		m_bCollapse = false;
 	}
 
+
+	if (Engine::Get_DIKeyState(byKey))
+	{
+		pPlayer->Set_iHandNum(m_iIndex);
+	}
 	
 
 	return iExit;
@@ -183,7 +177,9 @@ void CUIScreenInv::Render_GameObject()
 
 	if (!pPlayerInv->Check_Empty(m_iIndex))
 	{
-		_int iCount = m_vecItem[m_iIndex - 1]->Get_Count();
+		m_pItem = pPlayerInv->Get_Item(m_iIndex);
+
+		_int iCount = m_pItem->Get_Count();
 		
 		if (iCount != 1)
 		{
@@ -196,11 +192,11 @@ void CUIScreenInv::Render_GameObject()
 			Engine::Render_Font(L"Font_Item", tFont, &pos, D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
 		}
 
-		m_vecItem[m_iIndex - 1]->Get_Texture()->Set_Texture();
+		m_pItem->Get_Texture()->Set_Texture();
 
-		_vec3 vScale = m_vecItem[m_iIndex - 1]->Get_Transform()->m_vScale;
+		_vec3 vScale = m_pItem->Get_Transform()->m_vScale;
 		
-		Engine::ITEMNUM eNum = m_vecItem[m_iIndex - 1]->Get_ItemNum();
+		Engine::ITEMNUM eNum = m_pItem->Get_ItemNum();
 
 		switch (eNum)
 		{
@@ -224,7 +220,7 @@ void CUIScreenInv::Render_GameObject()
 
 		m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
 
-		m_vecItem[m_iIndex - 1]->Get_Buffer()->Render_Buffer();
+		m_pItem->Get_Buffer()->Render_First();
 
 	}
 
@@ -261,14 +257,14 @@ void CUIScreenInv::Move_Pos()
 		m_pTransformCom->Set_Pos(m_fPosX, -39.f, 0);
 		m_bMove = true;
 
-		y = 339.f;
+		y = 399.f;
 	}
 	else
 	{
-		m_pTransformCom->Set_Pos(m_fPosX, -250.f, 0);
+		m_pTransformCom->Set_Pos(m_fPosX, -290.f, 0);
 		m_bMove = false;
 
-		y = 550.f;
+		y = 650.f;
 	}
 
 	_vec3 vPos, vSize;

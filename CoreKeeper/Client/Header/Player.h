@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "Define.h"
 #include "Export_System.h"
+#include "Item.h"
 
 BEGIN(Engine)
 
@@ -45,6 +46,7 @@ private:
 	void			ShoulderView_Control(const _float& fTimeDelta); // 숄더 뷰 시점 플레이어 조작(회전, 스윙 제외)
 	void			ShoulderView_Swing();
 
+	void			Set_Equipment();
 	void			Show_Equipment();
 	void			Swing_Equipment();
 
@@ -60,6 +62,9 @@ public:
 	void            Set_Craft();
 	void            Set_Inventory();
 	void            Set_Map();
+
+	void            Set_DisMove() { m_bNoMove = true; }
+	void            Set_EnaMove() { m_bNoMove = false; }
 
 	// Hp 가져오는 함수
 
@@ -83,9 +88,10 @@ private:
 
 	bool					m_bFlip;
 
-	_int                    m_iHandNum;
+	CItem*					m_pHandedItem;
+	Engine::CTransform*		m_pHandedTransformCom;
+	_int                    m_iHandNum; // 선택된 아이템 번호
 
-	CGameObject*			m_pWeapon;
 	float					m_fFirstY;
 	float					m_fTimeAcc;
 	float					m_fWalkYSpeed;
@@ -93,6 +99,8 @@ private:
 	_bool                   m_bInventory; // Inventory 창 확인용
 	_bool                   m_bCraft;     // Craft 창 확인용
 	_bool                   m_bMap;       // Map 창 확인용
+
+	_bool                   m_bNoMove;    // UI건드릴때 캐릭터 움직이지 않게하는 용도
 
 public:
 	static CPlayer* Create(LPDIRECT3DDEVICE9 pGraphicDev);
