@@ -56,10 +56,11 @@ HRESULT CPlayer::Ready_GameObject()
 
 _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 {
+	Set_Equipment();
 	Flip();
 	m_pAnimatorCom->Update_Animation();
 	Mouse_Click();
-	if (m_eState != SWING)
+	if (m_eState != SWING && m_pHandedItem)
 		Show_Equipment();
 	if (m_eState == WALK)
 		Walk_Y(fTimeDelta);
@@ -245,7 +246,8 @@ void CPlayer::Walk_Y(const _float& fTimeDelta)
 	m_pTransformCom->Get_Info(INFO_UP, &vUp);
 
 	m_pTransformCom->Move_Pos(&vUp, fTimeDelta, m_fWalkYSpeed);
-	dynamic_cast<CItem*>(m_pWeapon)->Walk_Equipped(fTimeDelta);
+	if (m_pHandedItem)
+		m_pHandedItem->Walk_Equipped(fTimeDelta);
 }
 
 void CPlayer::Flip()
@@ -314,14 +316,17 @@ void CPlayer::Animation_SetUp(STATE st, DIRECTION dir)
 			m_pAnimatorCom->Set_CurState(st, 18, 23, 6);
 		break;
 	case SWING:
-		if (m_eDir == FRONT)
-			m_pAnimatorCom->Set_CurState(st, 36, 36, 5);
-		else if (m_eDir == RIGHT)
-			m_pAnimatorCom->Set_CurState(st, 37, 39, 5);
-		else if (m_eDir == BACK)
-			m_pAnimatorCom->Set_CurState(st, 40, 41, 5);
-		else if (m_eDir == LEFT)
-			m_pAnimatorCom->Set_CurState(st, 37, 39, 5);
+		if (m_pHandedItem)
+		{
+			if (m_eDir == FRONT)
+				m_pAnimatorCom->Set_CurState(st, 36, 36, 5);
+			else if (m_eDir == RIGHT)
+				m_pAnimatorCom->Set_CurState(st, 37, 39, 5);
+			else if (m_eDir == BACK)
+				m_pAnimatorCom->Set_CurState(st, 40, 41, 5);
+			else if (m_eDir == LEFT)
+				m_pAnimatorCom->Set_CurState(st, 37, 39, 5);
+		}
 		break;
 	}
 }
@@ -410,79 +415,96 @@ void CPlayer::ShoulderView_Control(const _float& fTimeDelta)
 
 void CPlayer::ShoulderView_Swing()
 {
-	m_pAnimatorCom->Set_CurState(SWING, 40, 41, 5);
+	if (m_pHandedItem)
+		m_pAnimatorCom->Set_CurState(SWING, 40, 41, 5);
+}
+
+void CPlayer::Set_Equipment()
+{
+	m_pHandedItem = m_pInventoryCom->Get_HandedItem(m_iHandNum);
+	if (m_pHandedItem)
+		m_pHandedTransformCom = dynamic_cast<CTransform*>(m_pHandedItem->Get_Component(ID_DYNAMIC, L"Com_Transform"));
 }
 
 void CPlayer::Show_Equipment()
 {
-	m_pWeapon = Get_GameObject(L"Layer_GameLogic", L"Sword2");
-	CTransform* weaponTransform = dynamic_cast<CTransform*>(m_pWeapon->Get_Component(ID_DYNAMIC, L"Com_Transform"));
 	_vec3 vPlayerPos;
 	m_pTransformCom->Get_Info(INFO_POS, &vPlayerPos);
-	dynamic_cast<CSword*>(m_pWeapon)->Set_Use(true);
+	m_pHandedItem->Set_Use(true);
+	m_pHandedItem->Set_Active(true);
+
+	vector<CItem*>* pInventory = m_pInventoryCom->Get_VecItemP();
+	for (auto iter = pInventory->begin(); iter != pInventory->end(); iter++)
+	{
+		if ((*iter) != m_pHandedItem)
+		{
+			(*iter)->Set_Use(false);
+			(*iter)->Set_Active(false);
+		}
+	}
+
+	m_pInventoryCom->Get_VecItem();
 
 	if (g_bIsTopCamera)
 	{
 		switch (m_eDir)
 		{
 		case FRONT:
-			weaponTransform->Set_Pos(vPlayerPos.x - 0.5f, 0.85f, vPlayerPos.z - 0.1f);
+			m_pHandedTransformCom->Set_Pos(vPlayerPos.x - 0.5f, 0.85f, vPlayerPos.z - 0.1f);
 			break;
 		case RIGHT:
-			weaponTransform->Set_Pos(vPlayerPos.x - 0.4f, 0.8f, vPlayerPos.z - 0.1f);
+			m_pHandedTransformCom->Set_Pos(vPlayerPos.x - 0.4f, 0.8f, vPlayerPos.z - 0.1f);
 			break;
 		case BACK:
-			weaponTransform->Set_Pos(vPlayerPos.x + 0.5f, 0.8f, vPlayerPos.z + 0.1f);
+			m_pHandedTransformCom->Set_Pos(vPlayerPos.x + 0.5f, 0.8f, vPlayerPos.z + 0.1f);
 			break;
 		case LEFT:
-			weaponTransform->Set_Pos(vPlayerPos.x + 0.5f, 0.8f, vPlayerPos.z - 0.1f);
+			m_pHandedTransformCom->Set_Pos(vPlayerPos.x + 0.5f, 0.8f, vPlayerPos.z - 0.1f);
 			break;
 		}
 	}
 	else
 	{
 		//_vec3 vPlayerAngle = *(m_pTransformCom->Get_Angle());
-		//weaponTransform->Set_Angle(vPlayerAngle.x, vPlayerAngle.y, vPlayerAngle.z);
+		//m_pHandedTransformCom->Set_Angle(vPlayerAngle.x, vPlayerAngle.y, vPlayerAngle.z);
 		switch (m_eDir)
 		{
 		case FRONT:
-			weaponTransform->Set_Pos(vPlayerPos.x - 0.5f, 0.85f, vPlayerPos.z - 0.1f);
+			m_pHandedTransformCom->Set_Pos(vPlayerPos.x - 0.5f, 0.85f, vPlayerPos.z - 0.1f);
 			break;
 		case RIGHT:
-			weaponTransform->Set_Pos(vPlayerPos.x - 0.4f, 0.8f, vPlayerPos.z - 0.1f);
+			m_pHandedTransformCom->Set_Pos(vPlayerPos.x - 0.4f, 0.8f, vPlayerPos.z - 0.1f);
 			break;
 		case BACK:
-			weaponTransform->Set_Pos(vPlayerPos.x + 0.5f, 0.8f, vPlayerPos.z + 0.1f);
+			m_pHandedTransformCom->Set_Pos(vPlayerPos.x + 0.5f, 0.8f, vPlayerPos.z + 0.1f);
 			break;
 		case LEFT:
-			weaponTransform->Set_Pos(vPlayerPos.x + 0.5f, 0.8f, vPlayerPos.z - 0.1f);
+			m_pHandedTransformCom->Set_Pos(vPlayerPos.x + 0.5f, 0.8f, vPlayerPos.z - 0.1f);
 			break;
 		}
 	}
 }
 void CPlayer::Swing_Equipment()
 {
-	m_pWeapon = Get_GameObject(L"Layer_GameLogic", L"Sword2");
-	CTransform* weaponTransform = dynamic_cast<CTransform*>(m_pWeapon->Get_Component(ID_DYNAMIC, L"Com_Transform"));
 	_vec3 vPlayerPos;
 	m_pTransformCom->Get_Info(INFO_POS, &vPlayerPos);
-	dynamic_cast<CSword*>(m_pWeapon)->Set_Use(true);
+	m_pHandedItem->Set_Use(true);
 
 	if (g_bIsTopCamera)
 	{
 		switch (m_eDir)
 		{
 		case FRONT:
-			weaponTransform->Set_Pos(vPlayerPos.x + 0.5f, 0.85f, vPlayerPos.z - 0.1f);
+			m_pHandedTransformCom->Set_Pos(vPlayerPos.x + 0.5f, 0.85f, vPlayerPos.z - 0.1f);
 			break;
 		case RIGHT:
-			weaponTransform->Set_Pos(vPlayerPos.x + 0.6f, 0.8f, vPlayerPos.z - 0.1f);
+			m_pHandedTransformCom->Set_Pos(vPlayerPos.x + 0.6f, 0.8f, vPlayerPos.z - 0.1f);
 			break;
 		case BACK:
-			weaponTransform->Set_Pos(vPlayerPos.x - 0.5f, 0.8f, vPlayerPos.z + 0.1f);
+			m_pHandedTransformCom->Set_Pos(vPlayerPos.x - 0.5f, 0.8f, vPlayerPos.z + 0.1f);
 			break;
 		case LEFT:
-			weaponTransform->Set_Pos(vPlayerPos.x - 0.6f, 0.8f, vPlayerPos.z - 0.1f);
+			m_pHandedTransformCom->Set_Pos(vPlayerPos.x - 0.6f, 0.8f, vPlayerPos.z - 0.1f);
 			break;
 		}
 	}
@@ -490,7 +512,7 @@ void CPlayer::Swing_Equipment()
 	{
 
 	}
-	dynamic_cast<CItem*>(m_pWeapon)->Set_Swing(m_eDir, true);
+	m_pHandedItem->Set_Swing(m_eDir, true);
 }
 
 void CPlayer::Set_UI()

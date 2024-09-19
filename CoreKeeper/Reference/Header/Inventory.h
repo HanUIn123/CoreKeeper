@@ -25,16 +25,20 @@ private:
 	virtual ~CInventory();
 
 public:
-	HRESULT			Ready_Inventory(int _iSlotCount);
+	HRESULT				Ready_Inventory(int _iSlotCount);
 
-	void			Add_Item(CItem* _pItem);
-	//void			Change_Item(int _iIndex, CItem* _pPushItem, CItem* _pPullItem);
-	void			Remove_Item(ITEMNUM _eItemNum);
+	void				Add_Item(CItem* _pItem);
+	void				Swap_Item(CItem& _Item1, CItem& _Item2);
+	CItem*				Remove_Item(int _iIndex);
+	CItem*				Get_HandedItem(_int iHandNum);
 
-	bool            Check_Empty(_int iIndex);
-	vector<CItem*>   Get_VecItem()           { return m_vecItems; }
-	_int             Get_Slot()              { return m_iSlotCount; }
-	void            Set_SlotCount(_int iCount) { m_iSlotCount = iCount; }
+	bool				Check_Empty(_int iIndex);
+
+	vector<CItem*>		Get_VecItem()           { return m_vecItems; }
+	vector<CItem*>*		Get_VecItemP() { return &m_vecItems; }
+
+	_int				Get_Slot()              { return m_iSlotCount; }
+	void				Set_SlotCount(_int iCount) { m_iSlotCount = iCount; }
 
 public:
 	static	CInventory*		Create(LPDIRECT3DDEVICE9 pGraphicDev, int _iSlotCount);
