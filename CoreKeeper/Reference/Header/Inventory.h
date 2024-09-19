@@ -27,16 +27,10 @@ private:
 public:
 	HRESULT				Ready_Inventory(int _iSlotCount);
 
-<<<<<<< HEAD
-	void			Add_Item(CItem* _pItem);
-	void			Swap_Item(CItem** _pItem1, CItem** _pItem2);
-	CItem*			Remove_Item(int _iIndex);
-=======
 	void				Add_Item(CItem* _pItem);
-	void				Swap_Item(CItem& _Item1, CItem& _Item2);
+	void				Swap_Item(CItem** _ppItem1, CItem** _ppItem2);
 	CItem*				Remove_Item(int _iIndex);
 	CItem*				Get_HandedItem(_int iHandNum);
->>>>>>> c6205fa93f836097c359c2b56d30c67388028923
 
 	bool				Check_Empty(_int iIndex);
 
