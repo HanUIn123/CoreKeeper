@@ -7,6 +7,8 @@ CItem::CItem(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CGameObject(pGraphicDev), m_iTextureNumber(0), m_fFirstY(0.f), m_fTimeAcc(0.f), m_fSpeed(0.5f), m_bActive(true), m_bDrop(false), m_bDropSelf(false), m_bUse(false), m_bSwing(false), m_iCount(1), m_bHasRotated(false), m_fAngle(0.f)
 {
 	m_fWalkYSpeed = 2.4f;
+	m_fAngleX = 0.f;
+	m_fAngleY = 0.f;
 }
 
 CItem::~CItem()
@@ -175,22 +177,31 @@ void CItem::Swing(int start, int end, int Count)
 	{
 		if (!m_bHasRotated)
 		{
-			switch (m_eDir)
+			if (g_bIsTopCamera)
 			{
-			case FRONT:
-				m_fAngle = -90.f;
-				break;
-			case LEFT:
-				m_fAngle = 180.f;
-				break;
-			case BACK:
-				m_fAngle = 90.f;
-				break;
-			default:
-				m_fAngle = 0.0f;
+				switch (m_eDir)
+				{
+				case FRONT:
+					m_fAngle = -90.f;
+					m_fAngleY = 90.f;
+					break;
+				case LEFT:
+					m_fAngle = 180.f;
+					m_fAngleX = 90.f;
+					break;
+				case BACK:
+					m_fAngle = 90.f;
+					m_fAngleY = -90.f;
+					break;
+				default:
+					m_fAngle = 0.0f;
+					m_fAngleX = 90.f;
+					break;
+				}
+				m_pTransformCom->Rotation(ROT_X, D3DXToRadian(m_fAngleX));
+				m_pTransformCom->Rotation(ROT_Z, D3DXToRadian(m_fAngle));
+				m_pTransformCom->Rotation(ROT_Y, D3DXToRadian(m_fAngleY));
 			}
-			m_pTransformCom->Rotation(ROT_Z, D3DXToRadian(m_fAngle));
-
 			m_bHasRotated = true;
 		}
 
@@ -200,8 +211,15 @@ void CItem::Swing(int start, int end, int Count)
 		{
 			if (m_bHasRotated)
 			{
-				m_pTransformCom->Rotation(ROT_Z, D3DXToRadian(-m_fAngle));
-				m_fAngle = 0.0f;
+				if (g_bIsTopCamera)
+				{
+					m_pTransformCom->Rotation(ROT_Z, D3DXToRadian(-m_fAngle));
+					m_pTransformCom->Rotation(ROT_X, D3DXToRadian(-m_fAngleX));
+					m_pTransformCom->Rotation(ROT_Y, D3DXToRadian(-m_fAngleY));
+					m_fAngle = 0.f;
+					m_fAngleX = 0.f;
+					m_fAngleY = 0.f;
+				}
 			}
 
 			m_bSwing = false;
