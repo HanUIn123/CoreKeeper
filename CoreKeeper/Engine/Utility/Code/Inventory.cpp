@@ -65,6 +65,13 @@ CItem* CInventory::Remove_Item(int _iIndex)
 	return pTemp;
 }
 
+CItem* CInventory::Get_HandedItem(_int iHandNum)
+{
+	if (Check_Empty(iHandNum))
+		return nullptr;
+	return m_vecItems[iHandNum - 1];
+}
+
 bool CInventory::Check_Empty(_int iIndex)
 {
 	if (m_vecItems.empty())
