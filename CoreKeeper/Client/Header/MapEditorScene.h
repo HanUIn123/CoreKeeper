@@ -50,10 +50,13 @@ public:
 	void									Setting_WallList();
 	HRESULT									Piking_Wall();
 
+	// 인접 타일 검사하는 함수
+	void									Check_NextWall(CCalculator* _pPickPos, CMapToolTex* _pMapToolTex, CTransform* _pMapToolTrnasform, _int _iIndex);
+
 
 	HRESULT									Delete_Object(const _tchar* pLayerTag, const _tchar* pGameObjectTag);
 
-	// Tile 이미지 등록.
+	// ImGui에 Tile 미리보기 이미지 등록.
 	HRESULT									Resister_TileImage_ImGui(LPDIRECT3DDEVICE9 _pGraphicDeivce, const _tchar* _ImageFilePath, TEXTUREID _eTextureId, const int& _iImageNumber);
 
 private:
@@ -71,6 +74,9 @@ private:
 
 	// n번 째 타일인지 담는 변수.
 	_int									m_iImageNumber;
+
+	// n번 째 벽인지 담는 변수.
+	_int									m_iWallImgNumber;
 public:
 	void									MapFile_Save();
 	HRESULT									MapFile_Load();
@@ -102,5 +108,9 @@ private:
 
 	_int									m_iLoadTileCount;
 	_int									m_iLoadWallCount;
+
+	_int									m_iPikingIndex;
+
+
 };
 

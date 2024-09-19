@@ -31,16 +31,23 @@ public:
     _int													Get_WallNumber() { return m_iWallImageNum; }
     void													Set_WallNumber(_int _iWallNum) { m_iWallImageNum = _iWallNum; }
 
-    // Delete_GameObject 함수를 사용하려면, 키값이 필요한데, 그 키값(이름)을 받아올 ㅎ마수
+    // Delete_GameObject 함수를 사용하려면, 키값이 필요한데, 그 키값(이름)을 받아올 함수
     wstring													Get_PickedWallName() { return m_strPickedWallName; }
+
+    _int                                                    Get_PikingIndex() { return m_iPikingWallIndex; }
+    void                                                    Set_PikingIndex(_int _iPikingIndex) { m_iPikingWallIndex = _iPikingIndex; }
+
+
+    _bool                                                   Get_IsUpWall() { return m_bIsUpWall; }
+    void                                                    Set_IsUpWall(_bool _bIsUpWall) { m_bIsUpWall = _bIsUpWall; }
 private:
     HRESULT													Add_Component();
 
 private:
-    Engine::CTransform* m_pTransformCom;
-    Engine::CTexture* m_pTextureCom;
-    Engine::CCalculator* m_pCalculatorCom;
-    Engine::CWallTex* m_pBufferCom;
+    Engine::CTransform*                                     m_pTransformCom;
+    Engine::CTexture*                                       m_pTextureCom;
+    Engine::CCalculator*                                    m_pCalculatorCom;
+    Engine::CWallTex*                                       m_pBufferCom;
 
 public:
     static CWall* Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _fWallX, _float _fWallZ, _int iWallImageNum, const wstring _pickedWallName);
@@ -52,5 +59,9 @@ private:
     _int													m_iWallImageNum;
 
     wstring											        m_strPickedWallName;
+    _int                                                    m_iPikingWallIndex;
+
+    _bool                                                   m_bIsUpWall;
+
 };
 

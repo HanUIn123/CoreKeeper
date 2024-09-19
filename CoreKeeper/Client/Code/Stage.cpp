@@ -473,6 +473,7 @@ HRESULT CStage::Load_MapFile()
 
 	_vec3 vTempWallPos(0.0f, 0.0f, 0.0f);
 	_int vTempWallImgNum(0);
+	_int vTempIndex(0);
 
 	DWORD dwByte2 = 0;
 
@@ -495,15 +496,16 @@ HRESULT CStage::Load_MapFile()
 	{
 		ReadFile(m_hWallFile, &vTempWallPos, sizeof(_vec3), &dwByte2, nullptr);
 		ReadFile(m_hWallFile, &vTempWallImgNum, sizeof(_int), &dwByte2, nullptr);
+		ReadFile(m_hWallFile, &vTempIndex, sizeof(_int), &dwByte2, nullptr);
 
 		if (dwByte2 == 0)
 			break;
 
-		m_wsWallNameString[m_iLoadWallCount] = L"Wall_" + std::to_wstring(m_iLoadWallCount);
-		CWall* pWall = CWall::Create(m_pGraphicDev, vTempWallPos.x, vTempWallPos.z, vTempWallImgNum, m_wsWallNameString[m_iLoadWallCount].c_str());
+		m_wsWallNameString[vTempIndex] = L"Wall_" + std::to_wstring(vTempIndex);
+		CWall* pWall = CWall::Create(m_pGraphicDev, vTempWallPos.x, vTempWallPos.z, vTempWallImgNum, m_wsWallNameString[vTempIndex].c_str());
+
 		NULL_CHECK_RETURN(pWall, E_FAIL);
-		FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsWallNameString[m_iLoadWallCount].c_str(), pWall), E_FAIL);
-		m_iLoadWallCount++;
+		FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsWallNameString[vTempIndex].c_str(), pWall), E_FAIL);
 	}
 
 	CloseHandle(m_hFile);
@@ -516,5 +518,4 @@ HRESULT CStage::Load_MapFile()
 void CStage::Free()
 {
 	Engine::CScene::Free();
-
 }
