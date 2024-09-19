@@ -46,7 +46,7 @@ private:
 	Engine::CRcTex* m_pBufferCom;
 	Engine::CTransform* m_pTransformCom;
 	Engine::CTexture* m_pTextureCom;
-	Engine::CInventory* m_pInventory;
+	Engine::CInventory* m_pInventoryCom;
 
 public:
 	static CUICursor* Create(LPDIRECT3DDEVICE9 pGraphicDev);
