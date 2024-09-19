@@ -18,6 +18,7 @@ CVIBuffer::CVIBuffer(const CVIBuffer & rhs)
 	, m_dwIdxSize(rhs.m_dwIdxSize), m_IdxFmt(rhs.m_IdxFmt)
 {
 	m_pVB->AddRef();
+	m_pIB->AddRef();
 }
 
 

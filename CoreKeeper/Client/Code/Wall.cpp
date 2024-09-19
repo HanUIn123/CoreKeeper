@@ -15,9 +15,11 @@ CWall::~CWall()
 {
 }
 
-HRESULT CWall::Ready_GameObject(_float _fWallX, _float _fWallZ, _int iWallImageNum)
+HRESULT CWall::Ready_GameObject(_float _fWallX, _float _fWallZ, _int iWallImageNum, const wstring _pickedWallName)
 {
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
+
+    m_strPickedWallName = _pickedWallName;
 
     m_vWallPosition.x = _fWallX;
     m_vWallPosition.y = 0.0f;
@@ -87,11 +89,11 @@ HRESULT CWall::Add_Component()
     return S_OK;
 }
 
-CWall* CWall::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _fWallX, _float _fWallZ, _int iWallImageNum)
+CWall* CWall::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _fWallX, _float _fWallZ, _int iWallImageNum,  wstring _pickedWallName)
 {
     CWall* pWall = new CWall(pGraphicDev);
 
-    if (FAILED(pWall->Ready_GameObject(_fWallX, _fWallZ, iWallImageNum)))
+    if (FAILED(pWall->Ready_GameObject(_fWallX, _fWallZ, iWallImageNum, _pickedWallName)))
     {
         Safe_Release(pWall);
         MSG_BOX("pWall Create Failed");

@@ -56,7 +56,7 @@ _int CUIScreenIcon::Update_GameObject(const _float& fTimeDelta)
 
 	if (m_bFirst)
 	{
-		CInventory* pInv = dynamic_cast<CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
+		Engine::CInventory* pInv = dynamic_cast<Engine::CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
 
 		m_vecItem = pInv->Get_VecItem();
 

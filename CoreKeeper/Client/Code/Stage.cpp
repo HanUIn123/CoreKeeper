@@ -47,40 +47,16 @@ void CStage::Render_Scene()
 {
 }
 
-HRESULT CStage::Create_Inventory(const _tchar* pLayerTag) 
+HRESULT CStage::Create_Inventory(const _tchar* pLayerTag, const _tchar* pGameObjectTag) 
 {
-	/*if (!m_bInvCheck)
-	{
-		auto	iter = find_if(m_mapLayer.begin(), m_mapLayer.end(), CTag_Finder(pLayerTag));
+	auto	iter = find_if(m_mapLayer.begin(), m_mapLayer.end(), CTag_Finder(pLayerTag));
 
-		if (iter == m_mapLayer.end())
-			return E_FAIL;
 
-		Engine::CGameObject* pGameObject = nullptr;
-
-		_vec2 vPos = { 500.f, 200.f };
-		_vec2 vSize = { 230.f, 25.f };
-
-		pGameObject = CUIInvPlate::Create(m_pGraphicDev, vPos, vSize);
-		NULL_CHECK_RETURN(pGameObject, E_FAIL);
-		FAILED_CHECK_RETURN(iter->second->Add_GameObject(L"UI_Plate", pGameObject), E_FAIL);
-
-		m_mapLayer.insert({ pLayerTag, iter->second });
-
-		m_bInvCheck = true;
-	}
-	else
-	{
-		m_bInvCheck = false;
-
-		auto	iter = find_if(m_mapLayer.begin(), m_mapLayer.end(), CTag_Finder(pLayerTag));
-
-		if (iter == m_mapLayer.end())
-			return E_FAIL;
-			
-		iter->second->Delete_GameMap(L"UI_Plate");
-	}
-	*/
+	if (iter == m_mapLayer.end())
+		return E_FAIL;
+		
+	iter->second->Delete_GameMap(pGameObjectTag);
+	
 	return S_OK;
 }
 
@@ -523,9 +499,9 @@ HRESULT CStage::Load_MapFile()
 		if (dwByte2 == 0)
 			break;
 
-		CWall* pWall = CWall::Create(m_pGraphicDev, vTempWallPos.x, vTempWallPos.z, vTempWallImgNum);
-		NULL_CHECK_RETURN(pWall, E_FAIL);
 		m_wsWallNameString[m_iLoadWallCount] = L"Wall_" + std::to_wstring(m_iLoadWallCount);
+		CWall* pWall = CWall::Create(m_pGraphicDev, vTempWallPos.x, vTempWallPos.z, vTempWallImgNum, m_wsWallNameString[m_iLoadWallCount].c_str());
+		NULL_CHECK_RETURN(pWall, E_FAIL);
 		FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsWallNameString[m_iLoadWallCount].c_str(), pWall), E_FAIL);
 		m_iLoadWallCount++;
 	}

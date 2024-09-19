@@ -15,37 +15,42 @@ END
 class CWall : public Engine::CGameObject
 {
 private:
-	explicit												CWall(LPDIRECT3DDEVICE9 pGraphicDev);
-	virtual													~CWall();
+    explicit												CWall(LPDIRECT3DDEVICE9 pGraphicDev);
+public:
+    virtual													~CWall();
 
 public:
-	virtual			HRESULT									Ready_GameObject(_float _fWallX, _float _fWallZ, _int iWallImageNum);
-	virtual			_int									Update_GameObject(const _float& fTimeDelta);
-	virtual			void									LateUpdate_GameObject();
-	virtual			void									Render_GameObject();
+    virtual			HRESULT									Ready_GameObject(_float _fWallX, _float _fWallZ, _int iWallImageNum, const wstring _pickedWallName);
+    virtual			_int									Update_GameObject(const _float& fTimeDelta);
+    virtual			void									LateUpdate_GameObject();
+    virtual			void									Render_GameObject();
 
-	_vec3													Get_WallPos() { return m_vWallPosition; }
-	void													Set_WallPos(_vec3 _iWallPos) { m_vWallPosition = _iWallPos; }
+    _vec3													Get_WallPos() { return m_vWallPosition; }
+    void													Set_WallPos(_vec3 _iWallPos) { m_vWallPosition = _iWallPos; }
 
-	_int													Get_WallNumber() { return m_iWallImageNum; }
-	void													Set_WallNumber(_int _iWallNum) { m_iWallImageNum = _iWallNum; }
+    _int													Get_WallNumber() { return m_iWallImageNum; }
+    void													Set_WallNumber(_int _iWallNum) { m_iWallImageNum = _iWallNum; }
+
+    // Delete_GameObject 함수를 사용하려면, 키값이 필요한데, 그 키값(이름)을 받아올 ㅎ마수
+    wstring													Get_PickedWallName() { return m_strPickedWallName; }
+private:
+    HRESULT													Add_Component();
 
 private:
-	HRESULT													Add_Component();
-
-private:
-	Engine::CTransform* m_pTransformCom;
-	Engine::CTexture* m_pTextureCom;
-	Engine::CCalculator* m_pCalculatorCom;
-	Engine::CWallTex* m_pBufferCom;
+    Engine::CTransform* m_pTransformCom;
+    Engine::CTexture* m_pTextureCom;
+    Engine::CCalculator* m_pCalculatorCom;
+    Engine::CWallTex* m_pBufferCom;
 
 public:
-	static CWall* Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _fWallX, _float _fWallZ, _int iWallImageNum);
+    static CWall* Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _fWallX, _float _fWallZ, _int iWallImageNum, const wstring _pickedWallName);
 
 private:
-	virtual void											Free();
+    virtual void											Free();
 
-	_vec3													m_vWallPosition;
-	_int													m_iWallImageNum;
+    _vec3													m_vWallPosition;
+    _int													m_iWallImageNum;
+
+    wstring											        m_strPickedWallName;
 };
 
