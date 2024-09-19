@@ -28,8 +28,8 @@ public:
 	HRESULT			Ready_Inventory(int _iSlotCount);
 
 	void			Add_Item(CItem* _pItem);
-	//void			Change_Item(int _iIndex, CItem* _pPushItem, CItem* _pPullItem);
-	void			Remove_Item(ITEMNUM _eItemNum);
+	void			Swap_Item(CItem** _pItem1, CItem** _pItem2);
+	CItem*			Remove_Item(int _iIndex);
 
 	bool            Check_Empty(_int iIndex);
 	vector<CItem*>   Get_VecItem()           { return m_vecItems; }
