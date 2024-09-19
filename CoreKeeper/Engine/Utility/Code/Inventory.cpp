@@ -79,13 +79,28 @@ bool CInventory::Check_Empty(_int iIndex)
 		return true;
 	}
 
-	if (m_vecItems[iIndex]->Get_Count() == 0)
+	int i = 1;
+
+	// i���� index���� ������ ������ for�� ������
+	for (auto iter : m_vecItems)
 	{
-		return true;
+		if (i == iIndex)
+		{
+			if (iter->Get_Count() == 0)
+			{
+				return true;
+			}
+			else
+				return false;
+		}
+
+		i++;
 	}
 
-	return false;
+	return true;
 }
+
+
 
 CInventory* CInventory::Create(LPDIRECT3DDEVICE9 pGraphicDev, int _iSlotCount)
 {
