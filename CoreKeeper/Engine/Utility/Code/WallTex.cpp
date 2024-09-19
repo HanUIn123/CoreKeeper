@@ -34,7 +34,7 @@ HRESULT CWallTex::Ready_Buffer()
 
 	m_pVB->Lock(0, 0, (void**)&pVertex, 0);
 
-	_vec3	vMinusRatio = { -1.0f,-1.0f,-1.0f };
+	//_vec3	vMinusRatio = { -1.0f,-1.0f,-1.0f };
 	// Àü¸é
 	pVertex[0].vPosition = { 0.f, 1.f, 0.f };
 	pVertex[0].vTexUV = { -1.0f,1.0f,-1.0f };
