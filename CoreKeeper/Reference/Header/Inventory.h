@@ -28,7 +28,7 @@ public:
 	HRESULT			Ready_Inventory(int _iSlotCount);
 
 	void			Add_Item(CItem* _pItem);
-	void			Change_Item(CItem* _pItem);
+	//void			Change_Item(int _iIndex, CItem* _pPushItem, CItem* _pPullItem);
 	void			Remove_Item(ITEMNUM _eItemNum);
 
 	bool            Check_Empty(_int iIndex);
