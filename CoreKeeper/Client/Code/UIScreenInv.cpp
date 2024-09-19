@@ -224,7 +224,7 @@ void CUIScreenInv::Render_GameObject()
 
 		m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
 
-		m_vecItem[m_iIndex - 1]->Get_Buffer()->Render_Buffer();
+		m_vecItem[m_iIndex - 1]->Get_Buffer()->Render_First();
 
 	}
 

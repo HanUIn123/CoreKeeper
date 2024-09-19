@@ -64,6 +64,7 @@ void CItem::Render_GameObject()
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
 	m_pColliderCom->Update_Collider(m_pTransformCom->Get_WorldMatrix());
 
+	// 여러 텍스쳐 가진 애들 쓸 때
 	m_pTextureCom->Set_Texture(m_iTextureNumber);
 	
 	if (m_bActive)
