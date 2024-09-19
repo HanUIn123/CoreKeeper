@@ -11,7 +11,6 @@ CMapEditorScene::CMapEditorScene(LPDIRECT3DDEVICE9 _pGraphicDevice)
     , m_pMTGameObjectCom(nullptr)
     , m_iTileCreateCount(0)
     , m_iWallCreateCount(0)
-    , m_iImageNumber(0)
     , m_pTileCom(nullptr)
     , m_pWallCom(nullptr)
     , m_bPushed(false)
@@ -22,10 +21,9 @@ CMapEditorScene::CMapEditorScene(LPDIRECT3DDEVICE9 _pGraphicDevice)
     , m_bCanInstall(false)
     , m_iLoadTileCount(0)
     , m_iLoadWallCount(0)
-    , m_hFile(0)
-    , m_hWallFile(0)
 {
     ZeroMemory(&m_tImageInfo, sizeof(D3DXIMAGE_INFO));
+
     // 시작할 때, ImGui에 Tile 이미지 등록함.
     if (!m_TileTextureInfo)
     {
@@ -82,19 +80,24 @@ _int CMapEditorScene::Update_Scene(const _float& fTimeDelta)
 
     Piking_Wall();
 
+    if (Engine::Get_DIKeyState(DIK_V))
+    {
+        /* MapFile_Save();*/
+    }
+
     return iExit;
 }
 
 void CMapEditorScene::LateUpdate_Scene()
 {
-    // MapTool 에서 사용할 오브젝트 고르는 함수.
+    // MapTool 에서 사용할 타일 고르는 함수.
 
     ImGui::Begin("Object List", NULL, ImGuiWindowFlags_MenuBar);
     Setting_TileList();
     Setting_WallList();
     ImGui::End();
 
-    // MapTool 에서 와이어프레임 전환 가능 기능.
+
     ImGui::Begin("Switch Terrain", NULL, ImGuiWindowFlags_MenuBar);
     ImGui::Checkbox("Switcing Terrain", &m_bSwitch);
     if (ImGui::Button("Switch!"))
@@ -220,6 +223,7 @@ void CMapEditorScene::Show_ImguiWindow()
             ImGui::Separator();
             if (ImGui::MenuItem("Load File"))
             {
+                //printf("Open Clicked\n");
                 MapFile_Load();
                 MSG_BOX("Load Complete!");
             }
