@@ -49,7 +49,7 @@ _int CSeed::Update_GameObject(const _float& fTimeDelta)
 
 		m_bActive = true;
 		m_bDrop = false;
-		m_pTransformCom->Set_Scale(1.5f, 1.5f, 1.5f);
+		m_pTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
 	}
 
 	if (m_bDrop)
