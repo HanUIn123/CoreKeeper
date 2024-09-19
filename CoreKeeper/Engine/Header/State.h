@@ -24,6 +24,7 @@ public:
 	}
 	void				Set_MaxHP(int iMaxHp) { m_tStat.iMaxHp = iMaxHp; }
 	void				Set_Damaged(int iDamage) { m_tStat.iHp -= iDamage; }
+	void				Set_UseMP(int iMP) { m_tStat.iMp -= iMP; }
 	void				Set_Recovor(int iHeal) { m_tStat.iHp += iHeal; }
 	void				Set_Dead() { m_bDead = true; }
 
