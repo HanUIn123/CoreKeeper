@@ -69,7 +69,6 @@ _int CSword::Update_GameObject(const _float& fTimeDelta)
 				(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
 
 			pPlayerInventory->Add_Item(this);
-			//pPlayerInventory->Add_Item(m_eItemNum, 1, m_pTextureCom->Get_Texture());
 
 			m_bActive = false;
 			m_bDrop = false;
