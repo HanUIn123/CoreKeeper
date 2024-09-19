@@ -22,6 +22,8 @@ HRESULT CLoading::Ready_Loading(LOADINGID eLoading)
 
 	m_hThread = (HANDLE)_beginthreadex(NULL, 0, Thread_Main, this, 0, NULL);
 
+
+	
 	return S_OK;
 }
 
