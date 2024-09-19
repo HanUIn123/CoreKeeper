@@ -151,7 +151,6 @@ HRESULT CMapEditorScene::Ready_Layer_GameLogic(const _tchar* pLayerTag)
     NULL_CHECK_RETURN(m_pMTGameObjectCom, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"MapToolTerrain", m_pMTGameObjectCom), E_FAIL);
 
-
     for (_ulong i = 0; i < VTXCNTX; ++i)
     {
         for (_ulong j = 0; j < VTXCNTZ; ++j)
@@ -380,11 +379,11 @@ HRESULT CMapEditorScene::Piking_Wall()
 
             if (m_bCanInstall)
             {
-                m_pWallCom = CWall::Create(m_pGraphicDev, m_vPickPos.x, m_vPickPos.z, 0);
+                m_wsWallNameString[m_iWallCreateCount] = L"Wall_" + std::to_wstring(m_iWallCreateCount);
+                m_pWallCom = CWall::Create(m_pGraphicDev, m_vPickPos.x, m_vPickPos.z, 0, m_wsWallNameString[m_iWallCreateCount].c_str());
                 m_vecWallObject.emplace_back(dynamic_cast<CWall*>(m_pWallCom));
                 NULL_CHECK_RETURN(m_pWallCom, E_FAIL);
 
-                m_wsWallNameString[m_iWallCreateCount] = L"Wall_" + std::to_wstring(m_iWallCreateCount);
                 FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsWallNameString[m_iWallCreateCount].c_str(), m_pWallCom), E_FAIL);
 
                 m_iWallCreateCount++;
@@ -393,10 +392,45 @@ HRESULT CMapEditorScene::Piking_Wall()
         }
         if (!(Engine::Get_DIMouseState(DIM_LB) & 0x80))
             m_bWallClickPushed = false;
+
+        if (Engine::Get_DIMouseState(DIM_RB) & 0x80)
+        {
+            CMapToolTerrain* pTerrain = dynamic_cast<CMapToolTerrain*>(Engine::Get_GameObject(L"Layer_GameLogic", L"MapToolTerrain"));
+            CCalculator* pPickPos = dynamic_cast<CCalculator*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"MapToolTerrain", L"Com_Calculator"));
+            CMapToolTex* pMapToolBufferCom = dynamic_cast<CMapToolTex*>(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"MapToolTerrain", L"Com_Buffer"));
+            CTransform* pMapToolTransformCom = dynamic_cast<CTransform*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"MapToolTerrain", L"Com_Transform"));
+
+            m_vPickPos = pPickPos->Picking_OnTerrain(g_hWnd, pMapToolBufferCom, pMapToolTransformCom);
+
+            for (auto wall = m_vecWallObject.begin(); wall != m_vecWallObject.end();)
+            {
+                if ((*wall)->Get_WallPos() == m_vPickPos)
+                {
+                    Delete_Object(L"Layer_GameLogic", (*wall)->Get_PickedWallName().c_str());
+                    wall = m_vecWallObject.erase(wall);
+                }
+                else
+                    wall++;
+            }
+        }
     }
 
     return S_OK;
 }
+
+HRESULT CMapEditorScene::Delete_Object(const _tchar* pLayerTag, const _tchar* pGameObjectTag)
+{
+    auto	iter = find_if(m_mapLayer.begin(), m_mapLayer.end(), CTag_Finder(pLayerTag));
+
+    if (iter == m_mapLayer.end())
+        return E_FAIL;
+
+    iter->second->Delete_GameMap(pGameObjectTag);
+
+    return S_OK;
+}
+
+
 
 HRESULT CMapEditorScene::Resister_TileImage_ImGui(LPDIRECT3DDEVICE9 _pGraphicDeivce, const _tchar* _ImageFilePath, TEXTUREID _eTextureId, const int& _iImageNumber)
 {
@@ -511,9 +545,9 @@ HRESULT CMapEditorScene::MapFile_Load()
         if (dwByte2 == 0)
             break;
 
-        CWall* pWall = CWall::Create(m_pGraphicDev, vTempWallPos.x, vTempWallPos.z, vTempWallImgNum);
-        NULL_CHECK_RETURN(pWall, E_FAIL);
         m_wsWallNameString[m_iLoadWallCount] = L"Wall_" + std::to_wstring(m_iLoadWallCount);
+        CWall* pWall = CWall::Create(m_pGraphicDev, vTempWallPos.x, vTempWallPos.z, vTempWallImgNum, m_wsWallNameString[m_iLoadWallCount].c_str());
+        NULL_CHECK_RETURN(pWall, E_FAIL);
         FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsWallNameString[m_iLoadWallCount].c_str(), pWall), E_FAIL);
         m_iLoadWallCount++;
     }

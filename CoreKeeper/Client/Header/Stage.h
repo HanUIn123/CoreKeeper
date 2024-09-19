@@ -45,7 +45,7 @@ public:
 	virtual			void			Render_Scene();
 
 public:
-	HRESULT							Create_Inventory(const _tchar* pLayerTag); 
+	HRESULT							Create_Inventory(const _tchar* pLayerTag, const _tchar* pGameObjectTag);
 
 private:
 	HRESULT							Ready_LightInfo();

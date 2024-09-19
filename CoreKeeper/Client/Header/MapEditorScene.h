@@ -50,6 +50,9 @@ public:
 	void									Setting_WallList();
 	HRESULT									Piking_Wall();
 
+
+	HRESULT									Delete_Object(const _tchar* pLayerTag, const _tchar* pGameObjectTag);
+
 	// Tile 이미지 등록.
 	HRESULT									Resister_TileImage_ImGui(LPDIRECT3DDEVICE9 _pGraphicDeivce, const _tchar* _ImageFilePath, TEXTUREID _eTextureId, const int& _iImageNumber);
 
