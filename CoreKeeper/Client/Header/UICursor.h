@@ -7,6 +7,7 @@ BEGIN(Engine)
 class CRcTex;
 class CTransform;
 class CTexture;
+class CInventory;
 
 END
 
@@ -45,6 +46,7 @@ private:
 	Engine::CRcTex* m_pBufferCom;
 	Engine::CTransform* m_pTransformCom;
 	Engine::CTexture* m_pTextureCom;
+	Engine::CInventory* m_pInventoryCom;
 
 public:
 	static CUICursor* Create(LPDIRECT3DDEVICE9 pGraphicDev);

@@ -49,78 +49,20 @@ void CInventory::Add_Item(CItem* _pItem)
 	}
 }
 
-
-//void CInventory::Add_Item(ITEMNUM _eItemNum, int _iCount, IDirect3DBaseTexture9* _pItemTexture)
-//{
-//	if (m_vecItems.size() >= m_iSlotCount)
-//	{
-//		// 슬롯이 꽉 차있으면 리턴
-//		return;
-//	}
-//
-//	bool bItemFound = false;
-//
-//	if (_eItemNum > 30)
-//	{
-//		for (auto itemInfo : m_vecItems)
-//		{
-//			if (itemInfo.eItemNum == _eItemNum)
-//			{
-//				itemInfo.iCount += _iCount;
-//				bItemFound = true;
-//				break;
-//			}
-//		}
-//	}
-//	
-//
-//	if (!bItemFound)
-//	{
-//		ItemInfo newItem;
-//		newItem.eItemNum = _eItemNum;
-//		newItem.iCount = _iCount;
-//		newItem.pItemTexture = _pItemTexture;
-//
-//		m_vecItems.push_back(newItem);
-//	}
-//}
-
-void CInventory::Remove_Item(ITEMNUM _eItemNum)
+void CInventory::Swap_Item(CItem& _Item1, CItem& _Item2)
 {
-	//if (m_vecItems.empty())
-	//{
-	//	// 슬롯이 비어 있으면 리턴
-	//	return;
-	//}
+	CItem* pTemp = &_Item1;
+	_Item1 = _Item2;
+	_Item2 = *pTemp;
+}
 
-	//auto iter = find_if(m_vecItems.begin(), m_vecItems.end(),
-	//	[_eItemNum](map<ITEMNUM, int>& itemMap)
-	//	{
-	//		return itemMap.find(_eItemNum) != itemMap.end();
-	//	});
+CItem* CInventory::Remove_Item(int _iIndex)
+{
+	CItem* pTemp = m_vecItems[_iIndex];
 
-	//if (iter != m_vecItems.end())
-	//{
-	//	auto& itemMap = *iter;
-	//	auto itemIter = itemMap.find(_eItemNum);
+	m_vecItems[_iIndex] = nullptr;
 
-	//	if (itemIter != itemMap.end())
-	//	{
-	//		itemIter->second--;
-
-	//		// 개수가 0 이하가 되면 아이템을 맵에서 제거
-	//		if (itemIter->second <= 0)
-	//		{
-	//			itemMap.erase(itemIter);
-
-	//			// 맵이 비어 있으면 벡터에서 제거
-	//			if (itemMap.empty())
-	//			{
-	//				m_vecItems.erase(iter);
-	//			}
-	//		}
-	//	}
-	//}
+	return pTemp;
 }
 
 bool CInventory::Check_Empty(_int iIndex)

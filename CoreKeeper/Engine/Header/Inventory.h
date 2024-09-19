@@ -28,8 +28,8 @@ public:
 	HRESULT			Ready_Inventory(int _iSlotCount);
 
 	void			Add_Item(CItem* _pItem);
-	//void			Add_Item(ITEMNUM _eItemNum, int _iCount, IDirect3DBaseTexture9* _pItemTexture);
-	void			Remove_Item(ITEMNUM _eItemNum);
+	void			Swap_Item(CItem& _Item1, CItem& _Item2);
+	CItem*			Remove_Item(int _iIndex);
 
 	bool            Check_Empty(_int iIndex);
 	vector<CItem*>   Get_VecItem()           { return m_vecItems; }
