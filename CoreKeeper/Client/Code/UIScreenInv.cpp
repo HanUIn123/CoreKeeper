@@ -123,14 +123,10 @@ _int CUIScreenInv::Update_GameObject(const _float& fTimeDelta)
 			pPlayer->Set_iHandNum(m_iCurInv);
 		}
 
-		pPlayer->Set_DisMove();
-
 		m_bCollapse = true;
 	}
 	else if (!Map_Picked(pt))
 	{
-		pPlayer->Set_EnaMove();
-
 		m_bCollapse = false;
 	}
 
