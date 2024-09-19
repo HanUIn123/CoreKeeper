@@ -65,6 +65,15 @@ void Engine::CInputDev::Update_InputDev(void)
 	}
 
 	m_pMouse->GetDeviceState(sizeof(m_tMouseState), &m_tMouseState);
+
+	for (int i = 0; i < DIM_END; ++i)
+	{
+		if ((m_bOldMouseState[i] == true) && (m_tMouseState.rgbButtons[i] & 0x80) == false)
+			m_bOldMouseState[i] = false;
+
+		if ((m_bOldMouseState[i] == false) && (m_tMouseState.rgbButtons[i] & 0x80) == true)
+			m_bOldMouseState[i] = true;
+	}
 }
 
 void Engine::CInputDev::Free(void)

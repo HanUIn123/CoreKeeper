@@ -31,7 +31,7 @@ HRESULT CUIScreenInv::Ready_GameObject(_vec2 vPos, _int _iIndex)
 
 	m_pTransformCom->Set_Pos(x, y, 0);
 
-	_vec2 vSize = { 20.f, 20.f };
+	_vec2 vSize = { 30.f, 30.f };
 
 	m_pTransformCom->m_vScale = { vSize.x, vSize.y, 1.f };
 
@@ -261,14 +261,14 @@ void CUIScreenInv::Move_Pos()
 		m_pTransformCom->Set_Pos(m_fPosX, -39.f, 0);
 		m_bMove = true;
 
-		y = 339.f;
+		y = 399.f;
 	}
 	else
 	{
-		m_pTransformCom->Set_Pos(m_fPosX, -250.f, 0);
+		m_pTransformCom->Set_Pos(m_fPosX, -290.f, 0);
 		m_bMove = false;
 
-		y = 550.f;
+		y = 650.f;
 	}
 
 	_vec3 vPos, vSize;
