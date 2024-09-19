@@ -9,6 +9,7 @@ class CTransform;
 class CTexture;
 class CCalculator;
 class CWallTex;
+class CColliderCube;
 
 END
 
@@ -41,7 +42,7 @@ private:
     Engine::CTexture* m_pTextureCom;
     Engine::CCalculator* m_pCalculatorCom;
     Engine::CWallTex* m_pBufferCom;
-
+    Engine::CColliderCube* m_pColliderCom;
 public:
     static CWall* Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _fWallX, _float _fWallZ, _int iWallImageNum, const wstring _pickedWallName);
 
@@ -52,5 +53,8 @@ private:
     _int													m_iWallImageNum;
 
     wstring											        m_strPickedWallName;
+
+private:
+    bool    m_bActive;
 };
 

@@ -8,6 +8,7 @@ CWall::CWall(LPDIRECT3DDEVICE9 pGraphicDev)
     , m_pTextureCom(nullptr)
     , m_pTransformCom(nullptr)
     , m_pBufferCom(nullptr)
+    , m_bActive(true)
 {
 }
 
@@ -34,6 +35,12 @@ HRESULT CWall::Ready_GameObject(_float _fWallX, _float _fWallZ, _int iWallImageN
 
 _int CWall::Update_GameObject(const _float& fTimeDelta)
 {
+    Engine::CCollider* pPlayerCollider = dynamic_cast<Engine::CCollider*>
+        (Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Collider"));
+
+    // 플레이어와 충돌
+    m_bActive = !(m_pColliderCom->Check_Sphere_Collision(pPlayerCollider));
+
     Add_RenderGroup(RENDER_PRIORITY, this);
 
     return Engine::CGameObject::Update_GameObject(fTimeDelta);
@@ -54,6 +61,7 @@ void CWall::Render_GameObject()
 {
     _matrix matWorld;
     m_pTransformCom->Get_WorldMatrix(&matWorld);
+    m_pColliderCom->Update_Collider(m_pTransformCom->Get_WorldMatrix());
 
     matWorld._41 = m_vWallPosition.x;
     matWorld._42 = m_vWallPosition.y;
@@ -65,7 +73,10 @@ void CWall::Render_GameObject()
 
     m_pTextureCom->Set_Texture(0);
 
-    m_pBufferCom->Render_Buffer();
+    if (m_bActive)
+    {
+        m_pBufferCom->Render_Buffer();
+    }
 
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
@@ -85,6 +96,10 @@ HRESULT CWall::Add_Component()
     pComponent = m_pTransformCom = dynamic_cast<CTransform*>(Engine::Clone_Proto(L"Proto_Transform"));
     NULL_CHECK_RETURN(pComponent, E_FAIL);
     m_mapComponent[ID_DYNAMIC].insert({ L"Com_Transform", pComponent });
+
+    pComponent = m_pColliderCom = dynamic_cast<CColliderCube*>(Engine::Clone_Proto(L"Proto_WallCollider"));
+    NULL_CHECK_RETURN(pComponent, E_FAIL);
+    m_mapComponent[ID_STATIC].insert({ L"Com_Transform", pComponent });
 
     return S_OK;
 }
