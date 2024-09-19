@@ -1,6 +1,5 @@
 #pragma once
 #include "Component.h"
-#include "RcCol.h"
 
 BEGIN(Engine)
 
@@ -14,6 +13,7 @@ public:
 	HRESULT		Ready_Collider(float fRadius);
 	void		Update_Collider(const _matrix* pWorldMatrix);
 	bool		Check_Collision(CCollider* pTarget);	
+	bool		Check_Cube_Collision(CColliderCube* pCube);
 	void		Render_Collider();
 
 public:
@@ -22,6 +22,10 @@ public:
 
 private:
 	virtual void Free();
+
+public:
+	_vec3	Get_CenterPos() { return m_vCenterPos; }
+	float	Get_Radius() { return m_fRadius; }
 
 private:
 	float m_fRadius;            // 충돌 반지름

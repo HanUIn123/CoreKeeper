@@ -35,6 +35,27 @@ bool CCollider::Check_Collision(CCollider* pTarget)
     return fDistance < (m_fRadius + pTarget->m_fRadius);
 }
 
+bool CCollider::Check_Cube_Collision(CColliderCube* pCube)
+{
+    if (pCube == nullptr)
+        return false;
+
+    _vec3 vCubeMin = pCube->Get_Min() + pCube->Get_CenterPos();
+    _vec3 vCubeMax = pCube->Get_Max() + pCube->Get_CenterPos();
+
+    // 가장 가까운 점 찾기
+    _vec3 vClosestPoint;
+    vClosestPoint.x = max(vCubeMin.x, min(m_vCenterPos.x, vCubeMax.x));
+    vClosestPoint.y = max(vCubeMin.y, min(m_vCenterPos.y, vCubeMax.y));
+    vClosestPoint.z = max(vCubeMin.z, min(m_vCenterPos.z, vCubeMax.z));
+
+    // 가장 가까운 점과 구의 중심 사이의 거리
+    _vec3 vDifference = vClosestPoint - m_vCenterPos;
+    float fDistance = D3DXVec3Length(&vDifference);
+
+    return fDistance <= m_fRadius;
+}
+
 void CCollider::Render_Collider()
 {
 #ifdef _DEBUG

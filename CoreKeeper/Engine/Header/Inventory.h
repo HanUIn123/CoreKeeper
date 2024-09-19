@@ -49,7 +49,6 @@ private:
 
 private:
 	vector<CItem*> m_vecItems;
-    //vector<ItemInfo> m_vecItems;
     int m_iSlotCount;
 };
 
