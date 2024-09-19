@@ -46,7 +46,9 @@ HRESULT CPlayer::Ready_GameObject()
 	_vec3 vPos;
 	m_pTransformCom->Get_Info(INFO_POS, &vPos);
 	m_pTransformCom->Set_Pos(vPos.x, m_fFirstY, vPos.z);
-
+	m_pStateCom->Set_Stat(400, 100, 20, 0);
+	m_pStateCom->Set_Damaged(250);
+	m_pStateCom->Set_UseMP(60);
 	m_pEquipInventoryCom->Set_SlotCount(10);
 
 	return S_OK;
@@ -498,13 +500,13 @@ void CPlayer::Set_UI()
 		(Engine::Get_GameObject(L"Layer_UI", L"UI_Health"));
 	NULL_CHECK_RETURN(pHp);
 
-	pHp->Set_InfoH(150, 400); // (체력 , 최대체력)
+	pHp->Set_InfoH(m_pStateCom->Get_Stat()->iHp, m_pStateCom->Get_Stat()->iMaxHp); // (체력 , 최대체력)
 
 	CUIStatusBar* pMp = dynamic_cast<CUIStatusBar*>
 		(Engine::Get_GameObject(L"Layer_UI", L"UI_Mp"));
 	NULL_CHECK_RETURN(pMp);
 
-	pMp->Set_InfoH(40, 100); // (마나 , 최대마나)
+	pMp->Set_InfoH(m_pStateCom->Get_Stat()->iMp, m_pStateCom->Get_Stat()->iMaxMp); // (마나 , 최대마나)
 
 	if (Engine::Get_DIMouseMove(DIMS_Z))
 	{
