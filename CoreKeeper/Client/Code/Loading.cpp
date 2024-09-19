@@ -52,11 +52,12 @@ _uint CLoading::Loading_Stage()
 
 
 	//이미지 개수 넣으면 됩니다 ex) Miner.png보면 가로 15개 세로 2개
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_AnimTex", Engine::CAnimTex::Create(m_pGraphicDev, 20, 2)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_AnimTex", Engine::CAnimTex::Create(m_pGraphicDev, 9, 6)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_NormalAnimTex", Engine::CAnimTex::Create(m_pGraphicDev, 1, 1)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SwordAnimTex", Engine::CAnimTex::Create(m_pGraphicDev, 3, 3)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SlimeAnimTex", Engine::CAnimTex::Create(m_pGraphicDev, 12, 4)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UIScreenIconTex", Engine::CAnimTex::Create(m_pGraphicDev, 11, 1)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UISilhouettes", Engine::CAnimTex::Create(m_pGraphicDev, 5, 2)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TileAnimTex", Engine::CTileTex::Create(m_pGraphicDev, 16,20)), E_FAIL);
 
 
@@ -71,7 +72,15 @@ _uint CLoading::Loading_Stage()
 	lstrcpy(m_szLoading, L"Texture Loading...");
 
 	// TEXTURE
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_PlayerTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Player/Miner.png", TEX_NORMAL)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_PlayerTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Player/Miner_skin.png", TEX_NORMAL)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_PlayerTex_Eye", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Player/Miner_eyes.png", TEX_NORMAL)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_PlayerTex_Shirt", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Player/godsent_chest.png", TEX_NORMAL)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_PlayerTex_Pants", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Player/godsent_pants.png", TEX_NORMAL)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_PlayerTex_Hair", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Player/godsent_helm.png", TEX_NORMAL)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_PlayerTex_HairShade", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Player/Miner_hairShade1.png", TEX_NORMAL)), E_FAIL);
+
+
+
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SlimeTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Monster/Slime/usable/Slime.png", TEX_NORMAL)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TerrainTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Terrain/Terrain1.png", TEX_NORMAL)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SkyBox", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/SkyBox/burger%d.dds", TEX_CUBE, 4)), E_FAIL);
@@ -102,10 +111,10 @@ _uint CLoading::Loading_Stage()
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UIBoard", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/UI_Board.png", TEX_NORMAL)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UIStatusBoard", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/Character_Status_Window.png", TEX_NORMAL)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UISlot", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/Status_Slot.png", TEX_NORMAL)), E_FAIL);
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UIPetSlot", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/Pet_Select.png", TEX_NORMAL)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UIPlayerStat", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/Player_Stat_Select.png", TEX_NORMAL)), E_FAIL);
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UIPetStat", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/Pet_Select.png", TEX_NORMAL)), E_FAIL);
-	
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UIPlayerCraft", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/UI_Basic_Craft.png", TEX_NORMAL)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UISilhouette", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/equipment_slot_silhouettes.png", TEX_NORMAL)), E_FAIL);
+
 	//COLLIDER
 	//반지름 넣으면 됩니다. 콜라이더 RENDER 기능 아직 안됨 ㅠ
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_PlayerCollider", Engine::CCollider::Create(m_pGraphicDev, 0.5f)), E_FAIL);

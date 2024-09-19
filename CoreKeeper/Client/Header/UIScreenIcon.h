@@ -17,7 +17,7 @@ class CUIScreenIcon : public Engine::CGameObject
 {
 public:
 
-	enum ICONTYPE {ICON_HAND, ICON_HAND_COL, ICON_MAP, ICON_MAP_COL, ICON_BAG, ICON_BAG_COL, ICON_EXIT };
+	enum ICONTYPE {ICON_HAND, ICON_HAND_COL, ICON_MAP, ICON_MAP_COL, ICON_BAG, ICON_BAG_COL, ICON_EXIT, ICON_INTERACT};
 private:
 	explicit CUIScreenIcon(LPDIRECT3DDEVICE9 pGraphicDev);
 	virtual ~CUIScreenIcon();
@@ -44,9 +44,9 @@ public:
 			m_bExit = false;
 	} // 인벤토리 열렸을때 호출할 함수
 
-
 	void           Set_Inventory();
 	void           Set_Map();
+	void           Set_Craft();
 
 private:
 	HRESULT			Add_Component();

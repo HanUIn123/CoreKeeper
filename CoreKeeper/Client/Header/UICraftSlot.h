@@ -10,22 +10,21 @@ class CTransform;
 class CTexture;
 class CInventory;
 class CAnimTex;
-//class CCalculator;
 class CAnimator;
 
 END
 
-class CUIItemSlot : public Engine::CGameObject
+class CUICraftSlot : public Engine::CGameObject
 {
 public:
-	enum SLOTTYPE { SLOT_HELM, SLOT_NECKLACE, SLOT_RING1, SLOT_CHEST, SLOT_RING2, SLOT_LEGGINGS, SLOT_WEAPON, SLOT_LANTTERN, SLOT_BAG, SLOT_PET, SLOT_END };
+	enum CSLOTTYPE { SLOT_HELM, SLOT_NECKLACE, SLOT_RING1, SLOT_CHEST, SLOT_RING2, SLOT_LEGGINGS, SLOT_WEAPON, SLOT_LANTTERN, SLOT_BAG, SLOT_PET, SLOT_END };
 
 private:
-	explicit CUIItemSlot(LPDIRECT3DDEVICE9 pGraphicDev);
-	virtual ~CUIItemSlot();
+	explicit CUICraftSlot(LPDIRECT3DDEVICE9 pGraphicDev);
+	virtual ~CUICraftSlot();
 
 public:
-	virtual			HRESULT			Ready_GameObject(_vec2 vPos, _vec2 vSize, SLOTTYPE _eType);
+	virtual			HRESULT			Ready_GameObject(_vec2 vPos, _vec2 vSize, CSLOTTYPE _eType);
 	virtual			_int			Update_GameObject(const _float& fTimeDelta);
 	virtual			void			LateUpdate_GameObject();
 	virtual			void			Render_GameObject();
@@ -56,7 +55,7 @@ private:
 	_bool m_bCollapse;
 	_bool m_bFirst;
 
-	SLOTTYPE m_eSlotType;
+	CSLOTTYPE m_eSlotType;
 
 private:
 	Engine::CAnimTex* m_pSlotBufferCom;
@@ -68,7 +67,7 @@ private:
 	Engine::CAnimator* m_pAnimatorCom;
 
 public:
-	static CUIItemSlot* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec2 vPos, _vec2 vSize, SLOTTYPE _eType);
+	static CUICraftSlot* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec2 vPos, _vec2 vSize, CSLOTTYPE _eType);
 
 private:
 	virtual void		Free();

@@ -5,6 +5,16 @@
 #include "..\Header\UIStatusBar.h"
 #include "..\Header\Sword.h"
 
+#include "..\Header\UIPlayerCraft.h" // UI 헤더 추가
+#include "..\Header\UIScreenIcon.h"
+#include "..\Header\UIScreenInv.h"
+#include "..\Header\UIInventory.h"
+#include "..\Header\UIPlayerStatus.h"
+#include "..\Header\UIInvPlate.h"
+#include "..\Header\UIItemSlot.h"
+#include "..\Header\UIPlayerStats.h"
+#include "..\Header\UICraftSlot.h"
+
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CGameObject(pGraphicDev)
 {
@@ -16,7 +26,13 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	m_fFirstY = 1.f;
 	m_fTimeAcc = 0.f;
 	m_fWalkYSpeed = 1.8f;
+
 	m_iHandNum = 1;
+
+	m_bMap = false;
+	m_bInventory = false;
+	m_bCraft = false;
+	m_bFlip = false;
 }
 
 CPlayer::~CPlayer()
@@ -30,15 +46,21 @@ HRESULT CPlayer::Ready_GameObject()
 	_vec3 vPos;
 	m_pTransformCom->Get_Info(INFO_POS, &vPos);
 	m_pTransformCom->Set_Pos(vPos.x, m_fFirstY, vPos.z);
+	m_pStateCom->Set_Stat(400, 100, 20, 0);
+	m_pStateCom->Set_Damaged(250);
+	m_pStateCom->Set_UseMP(60);
+	m_pEquipInventoryCom->Set_SlotCount(10);
 
 	return S_OK;
 }
 
 _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 {
+	Flip();
 	m_pAnimatorCom->Update_Animation();
 	Mouse_Click();
-	Show_Equipment();
+	if (m_eState != SWING)
+		Show_Equipment();
 	if (m_eState == WALK)
 		Walk_Y(fTimeDelta);
 	else
@@ -59,10 +81,7 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 	else
 	{
 		if (!m_bSwing)
-		{
-			Key_Position(fTimeDelta);
 			ShoulderView_Control(fTimeDelta);
-		}
 		else
 			ShoulderView_Swing();
 	}
@@ -129,6 +148,10 @@ HRESULT CPlayer::Add_Component()
 	pComponent = m_pInventoryCom = dynamic_cast<CInventory*>(Engine::Clone_Proto(L"Proto_PlayerInventory"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Inventory", pComponent });
+
+	pComponent = m_pEquipInventoryCom = dynamic_cast<CInventory*>(Engine::Clone_Proto(L"Proto_PlayerInventory"));
+	NULL_CHECK_RETURN(pComponent, E_FAIL);
+	m_mapComponent[ID_STATIC].insert({ L"Com_EquipInventory", pComponent });
 
 	return S_OK;
 }
@@ -224,6 +247,25 @@ void CPlayer::Walk_Y(const _float& fTimeDelta)
 	m_pTransformCom->Move_Pos(&vUp, fTimeDelta, m_fWalkYSpeed);
 	dynamic_cast<CItem*>(m_pWeapon)->Walk_Equipped(fTimeDelta);
 }
+
+void CPlayer::Flip()
+{
+	if (m_eDir == LEFT && !m_bFlip)
+	{
+		m_bFlip = true;
+		_vec3 vSize;
+		vSize = *(m_pTransformCom->Get_Scale());
+		m_pTransformCom->Set_Scale(-vSize.x, vSize.y, vSize.z);
+	}
+	if (m_eDir != LEFT && m_bFlip)
+	{
+		m_bFlip = false;
+		_vec3 vSize;
+		vSize = *(m_pTransformCom->Get_Scale());
+		m_pTransformCom->Set_Scale(-vSize.x, vSize.y, vSize.z);
+	}
+}
+
 void CPlayer::Mouse_Direction()
 {
 	POINT	ptMouse{};
@@ -259,27 +301,27 @@ void CPlayer::Animation_SetUp(STATE st, DIRECTION dir)
 		else if (m_eDir == BACK)
 			m_pAnimatorCom->Set_CurState(st, 2, 2, 20);
 		else if (m_eDir == LEFT)
-			m_pAnimatorCom->Set_CurState(st, 3, 3, 20);
+			m_pAnimatorCom->Set_CurState(st, 1, 1, 20);
 		break;
 	case WALK:
 		if (m_eDir == FRONT)
-			m_pAnimatorCom->Set_CurState(st, 4, 7, 6);
+			m_pAnimatorCom->Set_CurState(st, 9, 14, 6);
 		else if (m_eDir == RIGHT)
-			m_pAnimatorCom->Set_CurState(st, 8, 11, 6);
+			m_pAnimatorCom->Set_CurState(st, 18, 23, 6);
 		else if (m_eDir == BACK)
-			m_pAnimatorCom->Set_CurState(st, 12, 15, 6);
+			m_pAnimatorCom->Set_CurState(st, 27, 32, 6);
 		else if (m_eDir == LEFT)
-			m_pAnimatorCom->Set_CurState(st, 16, 19, 6);
+			m_pAnimatorCom->Set_CurState(st, 18, 23, 6);
 		break;
 	case SWING:
 		if (m_eDir == FRONT)
-			m_pAnimatorCom->Set_CurState(st, 20, 20, 10);
+			m_pAnimatorCom->Set_CurState(st, 36, 36, 5);
 		else if (m_eDir == RIGHT)
-			m_pAnimatorCom->Set_CurState(st, 21, 23, 10);
+			m_pAnimatorCom->Set_CurState(st, 37, 39, 5);
 		else if (m_eDir == BACK)
-			m_pAnimatorCom->Set_CurState(st, 24, 25, 10);
+			m_pAnimatorCom->Set_CurState(st, 40, 41, 5);
 		else if (m_eDir == LEFT)
-			m_pAnimatorCom->Set_CurState(st, 26, 28, 10);
+			m_pAnimatorCom->Set_CurState(st, 37, 39, 5);
 		break;
 	}
 }
@@ -297,20 +339,23 @@ void CPlayer::ShoulderView_Control(const _float& fTimeDelta)
 		m_eState = WALK;
 		if (Engine::Get_DIKeyState(DIK_D))
 		{
-			m_pAnimatorCom->Set_CurState(WALK, 8, 11, 6);
+			m_eDir = RIGHT;
+			m_pAnimatorCom->Set_CurState(WALK, 18, 23, 6);
 			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, m_fDiagSpeed);
 			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, m_fDiagSpeed);
 
 		}
 		else if (Engine::Get_DIKeyState(DIK_A))
 		{
-			m_pAnimatorCom->Set_CurState(WALK, 16, 19, 6);
+			m_eDir = LEFT;
+			m_pAnimatorCom->Set_CurState(WALK, 18, 23, 6);
 			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, m_fDiagSpeed);
-			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, -m_fDiagSpeed);
+			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, m_fDiagSpeed);
 		}
 		else
 		{
-			m_pAnimatorCom->Set_CurState(WALK, 12, 15, 6);
+			m_eDir = BACK;
+			m_pAnimatorCom->Set_CurState(WALK, 27, 32, 6);
 			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, m_fSpeed);
 		}
 	}
@@ -320,19 +365,22 @@ void CPlayer::ShoulderView_Control(const _float& fTimeDelta)
 		m_eState = WALK;
 		if (Engine::Get_DIKeyState(DIK_D))
 		{
-			m_pAnimatorCom->Set_CurState(WALK, 8, 11, 6);
+			m_eDir = RIGHT;
+			m_pAnimatorCom->Set_CurState(WALK, 18, 23, 6);
 			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, -m_fDiagSpeed);
 			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, m_fDiagSpeed);
 		}
 		else if (Engine::Get_DIKeyState(DIK_A))
 		{
-			m_pAnimatorCom->Set_CurState(WALK, 16, 19, 6);
+			m_eDir = LEFT;
+			m_pAnimatorCom->Set_CurState(WALK, 18, 23, 6);
 			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, -m_fDiagSpeed);
-			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, -m_fDiagSpeed);
+			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, m_fDiagSpeed);
 		}
 		else
 		{
-			m_pAnimatorCom->Set_CurState(WALK, 4, 7, 6);
+			m_eDir = BACK;
+			m_pAnimatorCom->Set_CurState(WALK, 9, 14, 6);
 			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, -m_fSpeed);
 		}
 	}
@@ -340,26 +388,29 @@ void CPlayer::ShoulderView_Control(const _float& fTimeDelta)
 	else if (Engine::Get_DIKeyState(DIK_A))
 	{
 		m_eState = WALK;
-		m_pAnimatorCom->Set_CurState(WALK, 16, 19, 6);
-		m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, -m_fSpeed);
+		m_eDir = LEFT;
+		m_pAnimatorCom->Set_CurState(WALK, 18, 23, 6);
+		m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, m_fSpeed);
 	}
 	// R
 	else if (Engine::Get_DIKeyState(DIK_D))
 	{
 		m_eState = WALK;
-		m_pAnimatorCom->Set_CurState(WALK, 8, 11, 6);
+		m_eDir = RIGHT;
+		m_pAnimatorCom->Set_CurState(WALK, 18, 23, 6);
 		m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, m_fSpeed);
 	}
 	else
 	{
 		m_eState = IDLE;
-		m_pAnimatorCom->Set_CurState(IDLE, 0, 0, 6);
+		m_eDir = FRONT;
+		m_pAnimatorCom->Set_CurState(IDLE, 0, 0, 20);
 	}
 }
 
 void CPlayer::ShoulderView_Swing()
 {
-	m_pAnimatorCom->Set_CurState(SWING, 24, 25, 10);
+	m_pAnimatorCom->Set_CurState(SWING, 40, 41, 5);
 }
 
 void CPlayer::Show_Equipment()
@@ -390,27 +441,72 @@ void CPlayer::Show_Equipment()
 	}
 	else
 	{
-
+		//_vec3 vPlayerAngle = *(m_pTransformCom->Get_Angle());
+		//weaponTransform->Set_Angle(vPlayerAngle.x, vPlayerAngle.y, vPlayerAngle.z);
+		switch (m_eDir)
+		{
+		case FRONT:
+			weaponTransform->Set_Pos(vPlayerPos.x - 0.5f, 0.85f, vPlayerPos.z - 0.1f);
+			break;
+		case RIGHT:
+			weaponTransform->Set_Pos(vPlayerPos.x - 0.4f, 0.8f, vPlayerPos.z - 0.1f);
+			break;
+		case BACK:
+			weaponTransform->Set_Pos(vPlayerPos.x + 0.5f, 0.8f, vPlayerPos.z + 0.1f);
+			break;
+		case LEFT:
+			weaponTransform->Set_Pos(vPlayerPos.x + 0.5f, 0.8f, vPlayerPos.z - 0.1f);
+			break;
+		}
 	}
 }
 void CPlayer::Swing_Equipment()
 {
+	m_pWeapon = Get_GameObject(L"Layer_GameLogic", L"Sword2");
+	CTransform* weaponTransform = dynamic_cast<CTransform*>(m_pWeapon->Get_Component(ID_DYNAMIC, L"Com_Transform"));
+	_vec3 vPlayerPos;
+	m_pTransformCom->Get_Info(INFO_POS, &vPlayerPos);
+	dynamic_cast<CSword*>(m_pWeapon)->Set_Use(true);
+
+	if (g_bIsTopCamera)
+	{
+		switch (m_eDir)
+		{
+		case FRONT:
+			weaponTransform->Set_Pos(vPlayerPos.x + 0.5f, 0.85f, vPlayerPos.z - 0.1f);
+			break;
+		case RIGHT:
+			weaponTransform->Set_Pos(vPlayerPos.x + 0.6f, 0.8f, vPlayerPos.z - 0.1f);
+			break;
+		case BACK:
+			weaponTransform->Set_Pos(vPlayerPos.x - 0.5f, 0.8f, vPlayerPos.z + 0.1f);
+			break;
+		case LEFT:
+			weaponTransform->Set_Pos(vPlayerPos.x - 0.6f, 0.8f, vPlayerPos.z - 0.1f);
+			break;
+		}
+	}
+	else
+	{
+
+	}
 	dynamic_cast<CItem*>(m_pWeapon)->Set_Swing(m_eDir, true);
 }
 
 void CPlayer::Set_UI()
 {
+	
 	CUIStatusBar* pHp = dynamic_cast<CUIStatusBar*>
 		(Engine::Get_GameObject(L"Layer_UI", L"UI_Health"));
 	NULL_CHECK_RETURN(pHp);
 
-	pHp->Set_InfoH(150, 260); // (체력 , 최대체력)
+	pHp->Set_InfoH(m_pStateCom->Get_Stat()->iHp, m_pStateCom->Get_Stat()->iMaxHp); // (체력 , 최대체력)
 
 	CUIStatusBar* pMp = dynamic_cast<CUIStatusBar*>
 		(Engine::Get_GameObject(L"Layer_UI", L"UI_Mp"));
 	NULL_CHECK_RETURN(pMp);
 
-	pMp->Set_InfoH(80, 100); // (마나 , 최대마나)
+	pMp->Set_InfoH(m_pStateCom->Get_Stat()->iMp, m_pStateCom->Get_Stat()->iMaxMp); // (마나 , 최대마나)
 
 	if (Engine::Get_DIMouseMove(DIMS_Z))
 	{
@@ -430,7 +526,141 @@ void CPlayer::Set_UI()
 		}
 	}
 
+	if (Engine::Key_Down(DIK_M))
+	{
+		Set_Map();
 
+		if (m_bMap)
+			m_bMap = false;
+		else
+			m_bMap = true;
+
+	}
+	if (Engine::Key_Down(DIK_TAB))
+	{
+		Set_Inventory();
+		Set_Craft();
+
+		if (m_bInventory)
+			m_bInventory = false;
+		else
+			m_bInventory = true;
+
+		if (m_bCraft)
+			m_bCraft = false;
+		else
+			m_bCraft = true;
+	}
+	
+	if (Engine::Key_Down(DIK_E))
+	{
+		if (m_bCraft)
+		{
+			Set_Craft();
+
+			m_bCraft = false;
+		}
+		if (m_bInventory)
+		{
+			Set_Inventory();
+
+			m_bInventory = false;
+		}
+		if (m_bMap)
+		{
+			Set_Map();
+
+			m_bMap = false;
+		}
+	}
+
+}
+
+void CPlayer::Set_InvWindow()
+{
+	m_bInventory = false;
+}
+
+void CPlayer::Set_CraftWindow()
+{
+	m_bCraft = false;
+}
+
+void CPlayer::Set_MapWindow()
+{
+	m_bMap = false;
+}
+
+void CPlayer::Set_Craft()
+{
+	CUIPlayerCraft* pCraft = dynamic_cast<CUIPlayerCraft*>(Engine::Get_GameObject(L"Layer_UI", L"UIPlayerCraft"));
+	pCraft->Set_Window();
+}
+
+void CPlayer::Set_Inventory()
+{
+	CUIScreenIcon* pIcon = dynamic_cast<CUIScreenIcon*>(Engine::Get_GameObject(L"Layer_UI", L"UIScreenicon_Hand"));
+	pIcon->Set_Exit();
+
+	CUIInvPlate* pPlate = dynamic_cast<CUIInvPlate*>(Engine::Get_GameObject(L"Layer_UI", L"UI_Plate"));
+
+	pPlate->Set_Render();
+
+	for (int i = 0; i < 10; i++)
+	{
+		wstring string;
+
+		string = L"UI_ScreenInv_" + std::to_wstring(i);
+
+		CUIScreenInv* pInv = dynamic_cast<CUIScreenInv*>(Engine::Get_GameObject(L"Layer_UI", string.c_str()));
+
+		pInv->Move_Pos();
+	}
+
+	CInventory* pPlayer = dynamic_cast<CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
+
+	for (int i = 11; i < pPlayer->Get_Slot() + 1; i++)
+	{
+		wstring string;
+
+		string = L"UI_Inventory_" + std::to_wstring(i);
+
+		CUIInventory* pInventory = dynamic_cast<CUIInventory*>(Engine::Get_GameObject(L"Layer_UI", string.c_str()));
+
+		pInventory->Set_Show();
+	}
+
+	for (int i = 0; i < 10; i++)
+	{
+		wstring string;
+
+		string = L"UIItemSlot_" + std::to_wstring(i);
+
+		CUIItemSlot* pSlot = dynamic_cast<CUIItemSlot*>(Engine::Get_GameObject(L"Layer_UI", string.c_str()));
+
+		pSlot->Set_Window();
+	}
+
+ 	CUIPlayerStatus* pStatus = dynamic_cast<CUIPlayerStatus*>(Engine::Get_GameObject(L"Layer_UI", L"UIPlayerStatus"));
+	pStatus->Set_Window();
+
+	CUIPlayerStats* pStats = dynamic_cast<CUIPlayerStats*>(Engine::Get_GameObject(L"Layer_UI", L"UIPlayerStats"));
+	pStats->Set_Window();
+
+	for (int i = 0; i < 5; i++)
+	{
+		wstring string;
+
+		string = L"UICraftSlot_" + std::to_wstring(i);
+
+		CUICraftSlot* pSlot = dynamic_cast<CUICraftSlot*>(Engine::Get_GameObject(L"Layer_UI", string.c_str()));
+
+		pSlot->Set_Window();
+	}
+}
+
+void CPlayer::Set_Map()
+{
 }
 
 CPlayer* CPlayer::Create(LPDIRECT3DDEVICE9 pGraphicDev)

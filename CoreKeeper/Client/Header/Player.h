@@ -34,6 +34,7 @@ private:
 	// 뷰 공통
 	void			Mouse_Click();								// 클릭 시 스윙, 스윙 끝 판단
 	void			Walk_Y(const _float& fTimeDelta);
+	void			Flip();
 
 	// 탑뷰 함수
 	void			Key_Position(const _float& fTimeDelta);		// 플레이어 이동
@@ -52,6 +53,15 @@ public:
 	// 손에 든 인벤토리 번호 가져오는 함수
 	_int            Get_iHandNum()          { return m_iHandNum; }
 	void            Set_iHandNum(_int iNum) { m_iHandNum = iNum; }
+	void            Set_InvWindow();
+	void            Set_CraftWindow(); 
+	void            Set_MapWindow();
+
+	void            Set_Craft();
+	void            Set_Inventory();
+	void            Set_Map();
+
+	// Hp 가져오는 함수
 
 private:
 	Engine::CAnimTex*		m_pBufferCom;
@@ -63,11 +73,15 @@ private:
 	Engine::CState*			m_pStateCom;
 	Engine::CInventory*		m_pInventoryCom;
 
+	Engine::CInventory*     m_pEquipInventoryCom; // 장비 인벤토리
+
 	Engine::DIRECTION		m_eDir;
 	Engine::STATE			m_eState;
 	float					m_fSpeed;
 	float					m_fDiagSpeed;
 	bool					m_bSwing;
+
+	bool					m_bFlip;
 
 	_int                    m_iHandNum;
 
@@ -75,6 +89,10 @@ private:
 	float					m_fFirstY;
 	float					m_fTimeAcc;
 	float					m_fWalkYSpeed;
+
+	_bool                   m_bInventory; // Inventory 창 확인용
+	_bool                   m_bCraft;     // Craft 창 확인용
+	_bool                   m_bMap;       // Map 창 확인용
 
 public:
 	static CPlayer* Create(LPDIRECT3DDEVICE9 pGraphicDev);

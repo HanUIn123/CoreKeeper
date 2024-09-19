@@ -55,7 +55,7 @@ private:
 
 	_float m_fLength;
 private:
-	Engine::CRcTex* m_pDividerBufferCom[10];
+	Engine::CRcTex* m_pDividerBufferCom[50];
 	Engine::CRangeTex* m_pBufferCom;
 	Engine::CRangeTex* m_pBarBufferCom;
 	Engine::CTransform* m_pTransformCom;

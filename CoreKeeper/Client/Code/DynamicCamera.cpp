@@ -100,7 +100,7 @@ void CDynamicCamera::Free()
 
 void CDynamicCamera::Key_Input()
 {
-	if (Engine::Get_DIKeyState(DIK_TAB))
+	if (Engine::Key_Down(DIK_C)) // 잠시 변경 하겠습니다 (TAB->LALT)
 	{
 		g_bIsTopCamera = g_bIsTopCamera ? false : true;
 		m_bFix = !g_bIsTopCamera;
@@ -130,7 +130,7 @@ void CDynamicCamera::Mouse_Move()
 	memcpy(&vLook, &matPlayerWorld.m[INFO_LOOK][0], sizeof(_vec3));
 
 	m_vAt.x = vPlayerPos.x + vLook.x * 2;
-	m_vAt.y = vPlayerPos.y + 0.8f;
+	m_vAt.y = vPlayerPos.y + 0.2f;
 	m_vAt.z = vPlayerPos.z + vLook.z * 2;
 
 	m_vEye.x = vPlayerPos.x - vLook.x * 3;

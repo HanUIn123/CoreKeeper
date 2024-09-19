@@ -147,6 +147,26 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar* pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Player", pGameObject), E_FAIL);
 
+	pGameObject = CEye::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Player_Eye", pGameObject), E_FAIL);
+
+	pGameObject = CShirt::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Player_Shirt", pGameObject), E_FAIL);
+
+	pGameObject = CPants::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Player_Pants", pGameObject), E_FAIL);
+
+	pGameObject = CHair::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Player_Hair", pGameObject), E_FAIL);
+
+	pGameObject = CHairShade::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Player_HairShade", pGameObject), E_FAIL);
+
 	pGameObject = CSlime::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Slime", pGameObject), E_FAIL);
@@ -315,14 +335,30 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UIPlayerStats", pGameObject), E_FAIL);
 
-	/*
-	vPos = { 663.f, 269.f };
-	vSize = { 7.f, 20.f };
+	vPos = { 340.f, 225.f };
+	vSize = { 75.f, 75.f };
 
-	pGameObject = CUIPlayerStats::Create(m_pGraphicDev, vPos, vSize);
+	pGameObject = CUIPlayerCraft::Create(m_pGraphicDev, vPos, vSize);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UIPetStats", pGameObject), E_FAIL);
-	*/
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UIPlayerCraft", pGameObject), E_FAIL);
+
+	for (int i = 0; i < 5; i++)
+	{
+		if (i < 3)
+		{
+			vPos = { 295.f + i * 46.f , 220.f };
+		}
+		else
+			vPos = { 295.f + (i - 3) * 46.f, 220.f + (i / 3) * 47.f };
+
+		vSize = { 20.f, 20.f };
+
+		m_CraftSlot[i] = L"UICraftSlot_" + std::to_wstring(i);
+
+		pGameObject = CUICraftSlot::Create(m_pGraphicDev, vPos, vSize, CUICraftSlot::SLOT_HELM);
+		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		FAILED_CHECK_RETURN(pLayer->Add_GameObject(m_CraftSlot[i].c_str(), pGameObject), E_FAIL);
+	}
 
 	vPos = { 780.f, 480.f };
 	vSize = { 25.f, 35.f };
