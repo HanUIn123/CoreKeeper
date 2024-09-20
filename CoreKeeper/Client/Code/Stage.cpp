@@ -396,9 +396,10 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
 		FAILED_CHECK_RETURN(pLayer->Add_GameObject(m_Invstring[i].c_str(), pGameObject), E_FAIL);
 	}
 
-	for (int i = 11; i < 31; i++)
+	// ÁÂÇ¥ ¼öÁ¤
+	for (int i = 10; i < 30; i++)
 	{
-		if (i % 10 != 0)
+		if (i % 10 == 0)
 			vPos = { 330.f + (63.f * (_float)(i - (i / 10) * 10)), 413.f + (_float)(i / 10) * 63.f };
 		else
 			vPos = { 330.f + (63.f * (_float)(i - (((i - 1) / 10) * 10))), 413.f + (_float)((i - 1) / 10) * 63.f };

@@ -68,7 +68,7 @@ _int CSword::Update_GameObject(const _float& fTimeDelta)
 			Engine::CInventory* pPlayerInventory = dynamic_cast<Engine::CInventory*>
 				(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
 
-			pPlayerInventory->Add_Item(this, 0);
+			pPlayerInventory->Add_Item(this);
 
 			m_bActive = false;
 			m_bDrop = false;

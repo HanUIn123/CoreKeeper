@@ -62,30 +62,35 @@ _int CUIInventory::Update_GameObject(const _float& fTimeDelta)
 				CInventory* pCursorInv = dynamic_cast<CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_UI", L"UI_Cursor", L"Com_Inventory"));
 				CInventory* pPlayerInv = dynamic_cast<Engine::CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
 
-				if (!pCursorInv->Check_Empty(0) && !pPlayerInv->Check_Empty(m_iIndex))
-				{
-					vector<CItem*>* pCvecItem = pCursorInv->Get_VecItemP();
-					vector<CItem*>* pPvecItem = pPlayerInv->Get_VecItemP();
+				vector<CItem*>* pCvecItem = pCursorInv->Get_VecItemP();
+				vector<CItem*>* pPvecItem = pPlayerInv->Get_VecItemP();
 
-					pPlayerInv->Swap_Item(&(*pCvecItem)[0], &(*pPvecItem)[m_iIndex]);
+				pPlayerInv->Swap_Item(&(*pCvecItem)[0], &(*pPvecItem)[m_iIndex-1]);
 
-				}
-				else if (pCursorInv->Check_Empty(0) && !pPlayerInv->Check_Empty(m_iIndex))
-				{
-					vector<CItem*>* pCvecItem = pCursorInv->Get_VecItemP();
-					vector<CItem*>* pPvecItem = pPlayerInv->Get_VecItemP();
+				//if (!pCursorInv->Check_Empty(0) && !pPlayerInv->Check_Empty(m_iIndex))
+				//{
+				//	vector<CItem*>* pCvecItem = pCursorInv->Get_VecItemP();
+				//	vector<CItem*>* pPvecItem = pPlayerInv->Get_VecItemP();
 
-					pCursorInv->Add_Item((*pPvecItem)[m_iIndex], 0);
-					pPlayerInv->Remove_Item(m_iIndex);
-				}
-				else if (!pCursorInv->Check_Empty(0) && pPlayerInv->Check_Empty(m_iIndex))
-				{
-					vector<CItem*>* pCvecItem = pCursorInv->Get_VecItemP();
-					vector<CItem*>* pPvecItem = pPlayerInv->Get_VecItemP();
+				//	pPlayerInv->Swap_Item(&(*pCvecItem)[0], &(*pPvecItem)[m_iIndex]);
 
-					pPlayerInv->Add_Item((*pCvecItem)[0], m_iIndex);
-					pCursorInv->Remove_Item(0);
-				}
+				//}
+				//else if (pCursorInv->Check_Empty(0) && !pPlayerInv->Check_Empty(m_iIndex))
+				//{
+				//	vector<CItem*>* pCvecItem = pCursorInv->Get_VecItemP();
+				//	vector<CItem*>* pPvecItem = pPlayerInv->Get_VecItemP();
+
+				//	pCursorInv->Add_Item((*pPvecItem)[m_iIndex], 0);
+				//	pPlayerInv->Remove_Item(m_iIndex);
+				//}
+				//else if (!pCursorInv->Check_Empty(0) && pPlayerInv->Check_Empty(m_iIndex))
+				//{
+				//	vector<CItem*>* pCvecItem = pCursorInv->Get_VecItemP();
+				//	vector<CItem*>* pPvecItem = pPlayerInv->Get_VecItemP();
+
+				//	pPlayerInv->Add_Item((*pCvecItem)[0], m_iIndex);
+				//	pCursorInv->Remove_Item(0);
+				//}
 			}
 
 			m_bCollapse = true;
@@ -130,9 +135,9 @@ void CUIInventory::Render_GameObject()
 	CInventory* pPlayerInv = dynamic_cast<Engine::CInventory*>
 		(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
 
-	if (!pPlayerInv->Check_Empty(m_iIndex))
+	if (!pPlayerInv->Check_Empty(m_iIndex-1))
 	{
-		pItem = pPlayerInv->Get_Item(m_iIndex);
+		pItem = pPlayerInv->Get_Item(m_iIndex-1);
 
 		_int iCount = pItem->Get_Count();
 

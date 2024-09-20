@@ -19,40 +19,62 @@ HRESULT CInventory::Ready_Inventory(int _iSlotCount)
 	return S_OK;
 }
 
-void CInventory::Add_Item(CItem* _pItem, _int _iIndex)
+void CInventory::Add_Item(CItem* _pItem)
 {
-	/*
-	if (m_vecItems.size() < _iIndex)
-	{
-		// ½½·ÔÀÌ ²Ë Â÷ÀÖÀ¸¸é ¸®ÅÏ
-		return;
-	}*/
-
+	int iMinSlot(m_iSlotCount);
 	bool bItemFound = false;
 
-	vector<CItem*>::iterator it;
+	//vector<CItem*>::iterator it;
 
-	it = m_vecItems.begin();
+	//it = m_vecItems.begin();
 
 	if (_pItem->Get_ItemNum() > 30)
 	{
-		for (auto pItem : m_vecItems)
+		for (int i = 0; i < m_vecItems.size(); i++)
 		{
-			if (pItem == nullptr)
+			if (m_vecItems[i] == nullptr)
 			{
+				if (iMinSlot > i)
+				{
+					iMinSlot = i;
+				}
 				continue;
 			}
-			if (pItem->Get_ItemNum() == _pItem->Get_ItemNum())
+
+			if (m_vecItems[i]->Get_ItemNum() == _pItem->Get_ItemNum())
 			{
-				pItem->Add_Count(_pItem->Get_Count());
+				m_vecItems[i]->Add_Count(_pItem->Get_Count());
 				bItemFound = true;
 				return;
 			}
 		}
 	}
+	else
+	{
+		for (int i = 0; i < m_vecItems.size(); i++)
+		{
+			if (m_vecItems[i] == nullptr)
+			{
+				if (iMinSlot > i)
+				{
+					iMinSlot = i;
+				}
+				continue;
+			}
+		}
+	}
+	// ²ËÂ÷ÀÖÀ½
+	if (iMinSlot == m_iSlotCount)
+	{
+		return;
+	}
 
+	if (!bItemFound)
+	{
+		m_vecItems[iMinSlot] = _pItem;
+	}
 
-	if ( _iIndex == 0)
+	/*if ( _iIndex == 0)
 	{
 		if (Check_Empty(0))
 		{
@@ -76,7 +98,7 @@ void CInventory::Add_Item(CItem* _pItem, _int _iIndex)
 	{
 		m_vecItems.erase(it + _iIndex);
 		m_vecItems.insert(it + _iIndex, _pItem);
-	}
+	}*/
 
 }
 
@@ -106,9 +128,6 @@ CItem* CInventory::Get_HandedItem(_int iHandNum)
 
 bool CInventory::Check_Empty(_int iIndex)
 {
-	//if (m_vecItems.empty() || m_vecItems.size() < iIndex + 1)
-	//	return true;
-
 	if (m_vecItems[iIndex] == nullptr || m_vecItems[iIndex]->Get_Count() == 0)
 	{
 		return true;
