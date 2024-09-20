@@ -13,7 +13,7 @@ CUICraftSlot::~CUICraftSlot()
 {
 }
 
-HRESULT CUICraftSlot::Ready_GameObject(_vec2 vPos, _vec2 vSize, CSLOTTYPE _eType)
+HRESULT CUICraftSlot::Ready_GameObject(_vec2 vPos, _vec2 vSize, _int _iIndex)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
@@ -35,7 +35,18 @@ HRESULT CUICraftSlot::Ready_GameObject(_vec2 vPos, _vec2 vSize, CSLOTTYPE _eType
 	m_BRect.top = vPos.y - vSize.y / 2;
 	m_BRect.bottom = vPos.y + vSize.y / 2;
 
-	m_eSlotType = _eType;
+	switch (_iIndex)
+	{
+	case 0:
+		m_eSlotType = SLOT_HELM;
+		break;
+
+	default:
+		m_eSlotType = SLOT_HELM;
+		break;
+	}
+
+	m_iIndex = _iIndex;
 
 	return S_OK;
 }
@@ -83,7 +94,11 @@ void CUICraftSlot::LateUpdate_GameObject()
 
 void CUICraftSlot::Render_GameObject()
 {
-	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
+	_matrix matWorld;
+
+	m_pTransformCom->Get_WorldMatrix(&matWorld);
+
+	m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
 
 	m_pTextureCom->Set_Texture();
 
@@ -95,14 +110,55 @@ void CUICraftSlot::Render_GameObject()
 	}
 	m_pBufferCom->Render_Buffer();
 
-	/*
-	m_pSlotBufferCom->Set_Index(m_iIndex);
+	switch (m_iIndex)
+	{
+	case 0:
+		matWorld._11 -= 20.f;
+		matWorld._22 -= 10.f;
+		break;
 
-	m_pSlotTextureCom->Set_Texture();
+	case 1:
+		matWorld._11 -= 10.f;
+		matWorld._22 -= 10.f;
+		break;
 
-	m_pSlotBufferCom->Render_Buffer();
-	*/
+	case 2:
+		matWorld._11 -= 20.f;
+		matWorld._22 -= 10.f;
+		break;
 
+	case 3:
+		matWorld._11 -= 10.f;
+		matWorld._22 -= 10.f;
+		break;
+
+	case 4:
+		matWorld._11 -= 10.f;
+		matWorld._22 -= 10.f;
+		break;
+
+	}
+	m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
+
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+
+	m_pGraphicDev->SetRenderState(D3DRS_TEXTUREFACTOR, D3DCOLOR_ARGB(100, 255, 255, 255));
+	m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
+	m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
+	m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_TFACTOR);
+	m_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+	m_pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+
+	m_pItemTextureCom->Set_Texture(m_iIndex);
+
+	m_pBufferCom->Render_Buffer();
+
+	m_pGraphicDev->SetRenderState(D3DRS_TEXTUREFACTOR, 0xffffffff);
+
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
+
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
 }
 
 HRESULT CUICraftSlot::Add_Component()
@@ -116,6 +172,10 @@ HRESULT CUICraftSlot::Add_Component()
 	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_UISlot"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Texture", pComponent });
+
+	pComponent = m_pItemTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_UICraftItem"));
+	NULL_CHECK_RETURN(pComponent, E_FAIL);
+	m_mapComponent[ID_STATIC].insert({ L"Com_ItemTexture", pComponent });
 
 	pComponent = m_pSlotBufferCom = dynamic_cast<CAnimTex*>(Engine::Clone_Proto(L"Proto_UISilhouettes"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
@@ -136,11 +196,11 @@ HRESULT CUICraftSlot::Add_Component()
 	return S_OK;
 }
 
-CUICraftSlot* CUICraftSlot::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec2 vPos, _vec2 vSize, CSLOTTYPE _eType)
+CUICraftSlot* CUICraftSlot::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec2 vPos, _vec2 vSize, _int _iIndex)
 {
 	CUICraftSlot* pUICraftSlot = new CUICraftSlot(pGraphicDev);
 
-	if (FAILED(pUICraftSlot->Ready_GameObject(vPos, vSize, _eType)))
+	if (FAILED(pUICraftSlot->Ready_GameObject(vPos, vSize, _iIndex)))
 	{
 		Safe_Release(pUICraftSlot);
 		MSG_BOX("UIStatus Create Failed");

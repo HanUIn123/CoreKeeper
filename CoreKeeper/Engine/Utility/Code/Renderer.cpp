@@ -39,6 +39,7 @@ void CRenderer::Render_GameObject(LPDIRECT3DDEVICE9 & pGraphicDev)
 		pCamera->Set_Render(TYPE_ORTHOGRAPHIC);
 	}
 	Render_UI(pGraphicDev);
+	//Render_UIALPHA(pGraphicDev);
 
 	Clear_RenderGroup();
 }
@@ -86,8 +87,8 @@ void CRenderer::Render_Alpha(LPDIRECT3DDEVICE9 & pGraphicDev)
 	//pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 	//pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 
-
 	pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
+
 	pGraphicDev->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 	pGraphicDev->SetRenderState(D3DRS_ALPHAREF, 0xc0);
 
@@ -97,6 +98,35 @@ void CRenderer::Render_Alpha(LPDIRECT3DDEVICE9 & pGraphicDev)
 
 	pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 	//pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
+}
+
+
+void CRenderer::Render_UIALPHA(LPDIRECT3DDEVICE9& pGraphicDev)
+{
+	
+	pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+
+	pGraphicDev->SetRenderState(D3DRS_TEXTUREFACTOR, D3DCOLOR_ARGB(100, 255, 255, 255));
+	pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
+	pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
+	pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_TFACTOR);
+	pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+	pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+
+	for (auto& pGameObject : m_RenderGroup[RENDER_UIALPHA])
+		pGameObject->Render_GameObject();
+
+
+	pGraphicDev->SetRenderState(D3DRS_TEXTUREFACTOR, 0xffffffff);
+
+	pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
+	
+	
+	//pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
+	//pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_CURRENT);
+	//pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
+	//pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_ADD);
+	//pGraphicDev->SetRenderState(D3DRS_TEXTUREFACTOR, D3DCOLOR_ARGB(255, 255, 255, 255));
 }
 
 void CRenderer::Render_UI(LPDIRECT3DDEVICE9 & pGraphicDev)

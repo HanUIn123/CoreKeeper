@@ -5,6 +5,7 @@
 #include "Engine_Enum.h"
 #include "..\Header\Item.h"
 #include "..\Header\Player.h"
+#include "..\Header\UICursor.h"
 
 CUIScreenInv::CUIScreenInv(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CGameObject(pGraphicDev), m_iCurInv(0), m_bFirst(true), m_bCollapse(false), m_bMove(false)
@@ -55,6 +56,15 @@ HRESULT CUIScreenInv::Ready_GameObject(_vec2 vPos, _int _iIndex)
 _int CUIScreenInv::Update_GameObject(const _float& fTimeDelta)
 {
 	_int iExit = Engine::CGameObject::Update_GameObject(fTimeDelta);
+
+
+	if (m_bFirst)
+	{
+		CUICursor* pCursor = dynamic_cast<CUICursor*>(Engine::Get_GameObject(L"Layer_UI", L"UI_Cursor"));
+		pCursor->Set_Rect(m_iIndex - 1, m_BRect);
+
+		m_bFirst = false;
+	}
 
 	CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
 	NULL_CHECK_RETURN(pPlayer, -1);
@@ -116,7 +126,38 @@ _int CUIScreenInv::Update_GameObject(const _float& fTimeDelta)
 	}
 	if(Map_Picked(pt))
 	{
-		if (Engine::Button_Down(DIM_LB))
+	
+		if (pPlayer->Get_InvWindow() && Engine::Button_Down(DIM_LB))
+		{
+			CInventory* pCursorInv = dynamic_cast<CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_UI", L"UI_Cursor", L"Com_Inventory"));
+			CInventory* pPlayerInv = dynamic_cast<Engine::CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
+
+			if(!pCursorInv->Check_Empty(0) && !pPlayerInv->Check_Empty(m_iIndex))
+			{
+				vector<CItem*>* pCvecItem = pCursorInv->Get_VecItemP();
+				vector<CItem*>* pPvecItem = pPlayerInv->Get_VecItemP();
+
+				pPlayerInv->Swap_Item(&(*pCvecItem)[0], &(*pPvecItem)[m_iIndex]);
+				
+			}
+			else if (pCursorInv->Check_Empty(0) && !pPlayerInv->Check_Empty(m_iIndex))
+			{
+				vector<CItem*>* pCvecItem = pCursorInv->Get_VecItemP();
+				vector<CItem*>* pPvecItem = pPlayerInv->Get_VecItemP();
+
+				pCursorInv->Add_Item((*pPvecItem)[m_iIndex], 0);
+				pPlayerInv->Remove_Item(m_iIndex);
+			}
+			else if (!pCursorInv->Check_Empty(0) && pPlayerInv->Check_Empty(m_iIndex))
+			{
+				vector<CItem*>* pCvecItem = pCursorInv->Get_VecItemP();
+				vector<CItem*>* pPvecItem = pPlayerInv->Get_VecItemP();
+
+				pPlayerInv->Add_Item((*pCvecItem)[0], m_iIndex);
+				pCursorInv->Remove_Item(0);
+			}
+		}
+		else if (Engine::Button_Down(DIM_LB))
 		{
 			m_iCurInv = m_iIndex;
 
@@ -149,7 +190,7 @@ void CUIScreenInv::LateUpdate_GameObject()
 
 void CUIScreenInv::Render_GameObject()
 {
-	
+
 	_matrix matWorld;
 	m_pTransformCom->Get_WorldMatrix(&matWorld);
 
@@ -221,6 +262,7 @@ void CUIScreenInv::Render_GameObject()
 		m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
 
 		m_pItem->Get_Buffer()->Render_First();
+
 
 	}
 

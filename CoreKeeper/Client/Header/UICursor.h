@@ -1,6 +1,7 @@
 #pragma once
 #include "GameObject.h"
 #include "Define.h"
+#include "..\Header\Item.h"
 
 BEGIN(Engine)
 
@@ -41,6 +42,18 @@ public:
 		else
 			m_bDisable = true;
 	}
+
+	void Set_Rect(_int _iIndex, RECT _rect) { m_BRect[_iIndex] = _rect; }
+
+	_bool           Map_Picked(POINT _screenPos, _int _iIndex) {
+		return  ::PtInRect(&m_BRect[_iIndex], _screenPos);
+	}
+
+
+private:
+	RECT m_BRect[20];
+
+	CItem* m_pItem;
 
 private:
 	Engine::CRcTex* m_pBufferCom;

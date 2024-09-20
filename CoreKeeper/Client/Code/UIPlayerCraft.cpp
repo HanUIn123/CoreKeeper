@@ -38,7 +38,7 @@ _int CUIPlayerCraft::Update_GameObject(const _float& fTimeDelta)
 
 	if (m_bWindow)
 	{
-		Add_RenderGroup(RENDER_UI, this);
+		Engine::Add_RenderGroup(RENDER_UI, this);
 	}
 
 	return iExit;
@@ -51,12 +51,24 @@ void CUIPlayerCraft::LateUpdate_GameObject()
 
 void CUIPlayerCraft::Render_GameObject()
 {
+	/*
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+
+	m_pGraphicDev->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
+
+	m_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+	*/
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
 
 	m_pTextureCom->Set_Texture();
 
 	m_pBufferCom->Render_Buffer();
 
+	/*
+	m_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_INVSRCALPHA);
+
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+	*/
 }
 
 HRESULT CUIPlayerCraft::Add_Component()

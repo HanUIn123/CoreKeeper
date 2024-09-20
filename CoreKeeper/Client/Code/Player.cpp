@@ -60,8 +60,14 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 	m_pAnimatorCom->Update_Animation();
 
 	Flip();
-	if (!m_bNoMove)
+
+	if (!m_bNoMove && !m_bInventory && !m_bCraft && !m_bMap) // m_bNoMove -> UICursor에서 적용
+	{
 		Mouse_Click();
+	}
+	else
+		m_bSwing = false;
+
 	Set_Equipment();
 	if (m_eState != SWING)
 		Show_Equipment();

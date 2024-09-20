@@ -14,39 +14,70 @@ CInventory::~CInventory()
 HRESULT CInventory::Ready_Inventory(int _iSlotCount)
 {
 	m_iSlotCount = _iSlotCount;
-	m_vecItems.reserve(m_iSlotCount);
+	m_vecItems.resize(m_iSlotCount);
 
 	return S_OK;
 }
 
-void CInventory::Add_Item(CItem* _pItem)
+void CInventory::Add_Item(CItem* _pItem, _int _iIndex)
 {
-	if (m_vecItems.size() >= m_iSlotCount)
+	/*
+	if (m_vecItems.size() < _iIndex)
 	{
 		// ½½·ÔÀÌ ²Ë Â÷ÀÖÀ¸¸é ¸®ÅÏ
 		return;
-	}
+	}*/
 
 	bool bItemFound = false;
+
+	vector<CItem*>::iterator it;
+
+	it = m_vecItems.begin();
 
 	if (_pItem->Get_ItemNum() > 30)
 	{
 		for (auto pItem : m_vecItems)
 		{
+			if (pItem == nullptr)
+			{
+				continue;
+			}
 			if (pItem->Get_ItemNum() == _pItem->Get_ItemNum())
 			{
 				pItem->Add_Count(_pItem->Get_Count());
 				bItemFound = true;
-				break;
+				return;
 			}
 		}
 	}
 
 
-	if (!bItemFound)
+	if ( _iIndex == 0)
 	{
-		m_vecItems.push_back(_pItem);
+		if (Check_Empty(0))
+		{
+			m_vecItems.insert(it, _pItem);
+
+		}
+		else
+		{
+			for (int i = 1; ; i++)
+			{
+				if (Check_Empty(i))
+				{
+					m_vecItems.erase(it + i);
+					m_vecItems.insert(it + i, _pItem);
+					return;
+				}
+			}
+		}
 	}
+	else
+	{
+		m_vecItems.erase(it + _iIndex);
+		m_vecItems.insert(it + _iIndex, _pItem);
+	}
+
 }
 
 void CInventory::Swap_Item(CItem** _ppItem1, CItem** _ppItem2)
@@ -75,8 +106,8 @@ CItem* CInventory::Get_HandedItem(_int iHandNum)
 
 bool CInventory::Check_Empty(_int iIndex)
 {
-	if (m_vecItems.empty() || m_vecItems.size() < iIndex + 1)
-		return true;
+	//if (m_vecItems.empty() || m_vecItems.size() < iIndex + 1)
+	//	return true;
 
 	if (m_vecItems[iIndex] == nullptr || m_vecItems[iIndex]->Get_Count() == 0)
 	{

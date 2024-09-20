@@ -11,6 +11,7 @@
 #include "..\Header\UIPlayerStatus.h"
 #include "..\Header\UIPlayerStats.h"
 #include "..\Header\UIPlayerCraft.h"
+#include "..\Header\UICursor.h"
 
 CUIScreenIcon::CUIScreenIcon(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CGameObject(pGraphicDev), m_bCollapse(false), m_bExit(false), m_bClicked(false), m_bFirst(true)
@@ -54,15 +55,14 @@ _int CUIScreenIcon::Update_GameObject(const _float& fTimeDelta)
 {
 	_int iExit = Engine::CGameObject::Update_GameObject(fTimeDelta);
 
-	/*
 	if (m_bFirst)
 	{
-		Engine::CInventory* pInv = dynamic_cast<Engine::CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
-
-		m_vecItem = pInv->Get_VecItem();
+		CUICursor* pCursor = dynamic_cast<CUICursor*>(Engine::Get_GameObject(L"Layer_UI", L"UI_Cursor"));
+		pCursor->Set_Rect(10 + ( m_iIndex / 2 ), m_BRect);
 
 		m_bFirst = false;
-	}*/
+	}
+
 
 	POINT pt;
 	GetCursorPos(&pt);
@@ -72,7 +72,7 @@ _int CUIScreenIcon::Update_GameObject(const _float& fTimeDelta)
 	{
 		CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
 
-		pPlayer->Set_DisMove();
+		//pPlayer->Set_DisMove();
 
 		if (Engine::Get_DIMouseState(DIM_LB))
 		{
@@ -113,9 +113,9 @@ _int CUIScreenIcon::Update_GameObject(const _float& fTimeDelta)
 	}
 	else if(!Map_Picked(pt))
 	{
-		CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
+		//CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
 		m_bCollapse = false;
-		pPlayer->Set_EnaMove();
+		//pPlayer->Set_EnaMove();
 	}
 
 	Engine::Add_RenderGroup(RENDER_UI, this);
@@ -137,6 +137,29 @@ void CUIScreenIcon::Render_GameObject()
 	{
 		m_pTextureCom->Set_Texture(ICON_EXIT);
 	}
+	else if (m_iIndex == ICON_HAND)
+	{
+		m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+		m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+
+		m_pGraphicDev->SetRenderState(D3DRS_TEXTUREFACTOR, D3DCOLOR_ARGB(100, 255, 255, 255));
+		m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
+		m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
+		m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_TFACTOR);
+		m_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+		m_pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+		
+		m_pTextureCom->Set_Texture(ICON_HAND);
+
+		m_pBufferCom->Render_Buffer();
+
+		m_pGraphicDev->SetRenderState(D3DRS_TEXTUREFACTOR, 0xffffffff);
+
+		m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
+
+		m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
+		
+	}
 	else
 	{
 		if (m_bCollapse)
@@ -144,7 +167,9 @@ void CUIScreenIcon::Render_GameObject()
 		else
 			m_pTextureCom->Set_Texture(m_iIndex);
 	}
-	m_pBufferCom->Render_Buffer();
+
+	if(m_iIndex != ICON_HAND)
+		m_pBufferCom->Render_Buffer();
 }
 
 void CUIScreenIcon::Set_Inventory()

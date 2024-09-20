@@ -27,7 +27,7 @@ private:
 public:
 	HRESULT				Ready_Inventory(int _iSlotCount);
 
-	void				Add_Item(CItem* _pItem);
+	void				Add_Item(CItem* _pItem, _int iIndex);
 	void				Swap_Item(CItem** _ppItem1, CItem** _ppItem2);
 	CItem*				Remove_Item(int _iIndex);
 	CItem*				Get_HandedItem(_int iHandNum);
@@ -36,9 +36,7 @@ public:
 
 	vector<CItem*>		Get_VecItem()           { return m_vecItems; }
 	vector<CItem*>*		Get_VecItemP()          { return &m_vecItems; }
-	CItem* Get_Item(_int iIndex)                { 
-		return m_vecItems[iIndex]; 
-	}
+	CItem* Get_Item(_int iIndex)                { return m_vecItems[iIndex]; }
 
 	_int				Get_Slot()              { return m_iSlotCount; }
 	void				Set_SlotCount(_int iCount) { m_iSlotCount = iCount; }

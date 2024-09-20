@@ -332,7 +332,7 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
 
 		m_CraftSlot[i] = L"UICraftSlot_" + std::to_wstring(i);
 
-		pGameObject = CUICraftSlot::Create(m_pGraphicDev, vPos, vSize, CUICraftSlot::SLOT_HELM);
+		pGameObject = CUICraftSlot::Create(m_pGraphicDev, vPos, vSize, i);
 		NULL_CHECK_RETURN(pGameObject, E_FAIL);
 		FAILED_CHECK_RETURN(pLayer->Add_GameObject(m_CraftSlot[i].c_str(), pGameObject), E_FAIL);
 	}

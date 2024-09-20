@@ -24,7 +24,7 @@ private:
 	virtual ~CUICraftSlot();
 
 public:
-	virtual			HRESULT			Ready_GameObject(_vec2 vPos, _vec2 vSize, CSLOTTYPE _eType);
+	virtual			HRESULT			Ready_GameObject(_vec2 vPos, _vec2 vSize, _int iIndex);
 	virtual			_int			Update_GameObject(const _float& fTimeDelta);
 	virtual			void			LateUpdate_GameObject();
 	virtual			void			Render_GameObject();
@@ -60,6 +60,7 @@ private:
 private:
 	Engine::CAnimTex* m_pSlotBufferCom;
 	Engine::CRcTex* m_pBufferCom;
+	Engine::CTexture* m_pItemTextureCom;
 	Engine::CTransform* m_pTransformCom;
 	Engine::CTexture* m_pTextureCom;
 	Engine::CTexture* m_pColTextureCom;
@@ -67,7 +68,7 @@ private:
 	Engine::CAnimator* m_pAnimatorCom;
 
 public:
-	static CUICraftSlot* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec2 vPos, _vec2 vSize, CSLOTTYPE _eType);
+	static CUICraftSlot* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec2 vPos, _vec2 vSize, _int iIndex);
 
 private:
 	virtual void		Free();
