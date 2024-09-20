@@ -24,12 +24,25 @@ namespace Engine
 
 	enum RENDERTYPE { TYPE_PERSPECTIVE, TYPE_ORTHOGRAPHIC, TYPE_END };
 
-	// 아이템 고유값, 서로 다른 아이템이면 겹칠 수 없음
-	// 장비는 0~100의 값을 갖도록 설정하여 인벤토리에서 같은 아이템이어도 겹칠 수 없게 할 것
-	// 헬멧은 0~10, 상의는 11~20, 하의는 21~30 이런식으로 설정해서 아무칸에나 장비할 수 없도록 설정
-	enum ITEMNUM { ITEM_SWORD, ITEM_BOW, ITEM_HELM, ITEM_CHEST, ITEM_SEED = 40, ITEM_END };
-
 	// 사운드 채널
 	enum CHANNELID { SOUND_EFFECT, SOUND_IMPORTANT, SOUND_BGM, MAXCHANNEL };
+
+	// 아이템 고유값, 서로 다른 아이템이면 겹칠 수 없음
+	// 장비는 50 이하의 값을 갖도록 설정하여 인벤토리에서 같은 아이템이어도 겹칠 수 없게 할 것
+	
+	// 무기는 0~5 헬멧은 6~10, 상의는 11~15, 하의는 16~20, 악세서리는 20~30
+	enum ITEMNUM
+	{ 
+		ITEM_SWORD, ITEM_BOW, ITEM_STAFF,
+		ITEM_HELM = 6,
+		ITEM_CHEST = 11,
+		ITEM_PANTS = 16,
+		ITEM_NECKLACE = 21,
+		ITEM_RING,
+		ITEM_ETC = 50,
+		ITEM_SEED, 
+		ITEM_END
+	};
+
 }
 #endif // Engine_Enum_h__	

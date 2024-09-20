@@ -256,51 +256,51 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
 
 		m_ItemSlot[i] = L"UIItemSlot_" + std::to_wstring(i);
 
-		CUIItemSlot::SLOTTYPE eType;
-		switch (i)
-		{
-		case 0:
-			eType = CUIItemSlot::SLOT_HELM;
-			break;
+		//CUIItemSlot::SLOTTYPE eType;
+		//switch (i)
+		//{
+		//case 0:
+		//	eType = CUIItemSlot::SLOT_HELM;
+		//	break;
 
-		case 1:
-			eType = CUIItemSlot::SLOT_NECKLACE;
-			break;
+		//case 1:
+		//	eType = CUIItemSlot::SLOT_NECKLACE;
+		//	break;
 
-		case 2:
-			eType = CUIItemSlot::SLOT_RING1;
-			break;
+		//case 2:
+		//	eType = CUIItemSlot::SLOT_RING1;
+		//	break;
 
-		case 3:
-			eType = CUIItemSlot::SLOT_CHEST;
-			break;
+		//case 3:
+		//	eType = CUIItemSlot::SLOT_CHEST;
+		//	break;
 
-		case 4:
-			eType = CUIItemSlot::SLOT_RING2;
-			break;
+		//case 4:
+		//	eType = CUIItemSlot::SLOT_RING2;
+		//	break;
 
-		case 5:
-			eType = CUIItemSlot::SLOT_LEGGINGS;
-			break;
+		//case 5:
+		//	eType = CUIItemSlot::SLOT_LEGGINGS;
+		//	break;
 
-		case 6:
-			eType = CUIItemSlot::SLOT_WEAPON;
-			break;
+		//case 6:
+		//	eType = CUIItemSlot::SLOT_WEAPON;
+		//	break;
 
-		case 7:
-			eType = CUIItemSlot::SLOT_LANTTERN;
-			break;
+		//case 7:
+		//	eType = CUIItemSlot::SLOT_LANTTERN;
+		//	break;
 
-		case 8:
-			eType = CUIItemSlot::SLOT_BAG;
-			break;
+		//case 8:
+		//	eType = CUIItemSlot::SLOT_BAG;
+		//	break;
 
-		case 9:
-			eType = CUIItemSlot::SLOT_PET;
-			break;
+		//case 9:
+		//	eType = CUIItemSlot::SLOT_PET;
+		//	break;
 
-		}
-		pGameObject = CUIItemSlot::Create(m_pGraphicDev, vPos, vSize, eType);
+		//}
+		pGameObject = CUIItemSlot::Create(m_pGraphicDev, vPos, vSize, (CUIItemSlot::SLOTTYPE)i);
 		NULL_CHECK_RETURN(pGameObject, E_FAIL);
 		FAILED_CHECK_RETURN(pLayer->Add_GameObject(m_ItemSlot[i].c_str(), pGameObject), E_FAIL);
 	}
