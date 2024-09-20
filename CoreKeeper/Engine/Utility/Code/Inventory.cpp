@@ -24,11 +24,7 @@ void CInventory::Add_Item(CItem* _pItem)
 	int iMinSlot(m_iSlotCount);
 	bool bItemFound = false;
 
-	//vector<CItem*>::iterator it;
-
-	//it = m_vecItems.begin();
-
-	if (_pItem->Get_ItemNum() > 30)
+	if (_pItem->Get_ItemNum() > ITEM_ETC)
 	{
 		for (int i = 0; i < m_vecItems.size(); i++)
 		{
@@ -73,33 +69,6 @@ void CInventory::Add_Item(CItem* _pItem)
 	{
 		m_vecItems[iMinSlot] = _pItem;
 	}
-
-	/*if ( _iIndex == 0)
-	{
-		if (Check_Empty(0))
-		{
-			m_vecItems.insert(it, _pItem);
-
-		}
-		else
-		{
-			for (int i = 1; ; i++)
-			{
-				if (Check_Empty(i))
-				{
-					m_vecItems.erase(it + i);
-					m_vecItems.insert(it + i, _pItem);
-					return;
-				}
-			}
-		}
-	}
-	else
-	{
-		m_vecItems.erase(it + _iIndex);
-		m_vecItems.insert(it + _iIndex, _pItem);
-	}*/
-
 }
 
 void CInventory::Swap_Item(CItem** _ppItem1, CItem** _ppItem2)
@@ -109,13 +78,14 @@ void CInventory::Swap_Item(CItem** _ppItem1, CItem** _ppItem2)
 	*_ppItem2 = pTemp;
 }
 
-CItem* CInventory::Remove_Item(int _iIndex)
+void CInventory::Remove_Item(int _iIndex)
 {
-	CItem* pTemp = m_vecItems[_iIndex];
+	if (_iIndex >= m_vecItems.size())
+	{
+		return;
+	}
 
 	m_vecItems[_iIndex] = nullptr;
-
-	return pTemp;
 }
 
 CItem* CInventory::Get_HandedItem(_int iHandNum)
@@ -124,6 +94,18 @@ CItem* CInventory::Get_HandedItem(_int iHandNum)
 		return nullptr;
 
 	return m_vecItems[iHandNum - 1];
+}
+
+bool CInventory::Enough_Item(ITEMNUM _eItemNum, int _iCount)
+{
+	for (auto pItem : m_vecItems)
+	{
+		if (pItem->Get_ItemNum() == _eItemNum && pItem->Get_Count() >= _iCount)
+		{
+			return true;
+		}
+	}
+	return false;
 }
 
 bool CInventory::Check_Empty(_int iIndex)

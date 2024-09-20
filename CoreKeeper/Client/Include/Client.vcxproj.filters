@@ -70,9 +70,6 @@
     <Filter Include="02. GameObject\02. Monster\02. Shaman">
       <UniqueIdentifier>{d3b29687-be3f-49ac-b924-2eb65a269e00}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\06. Item\00. Sword">
-      <UniqueIdentifier>{7fee5be1-2bad-437b-b928-120eaa060638}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\07. UI">
       <UniqueIdentifier>{42cb11e9-7868-48ac-b6ba-82b17192fff5}</UniqueIdentifier>
     </Filter>
@@ -106,9 +103,6 @@
     <Filter Include="02. GameObject\07. UI\05. UIInventory\01. InvPlate">
       <UniqueIdentifier>{0ac47d63-794f-4ff2-a171-21b40ac20b90}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\06. Item\01. Seed">
-      <UniqueIdentifier>{4d87b991-086f-41a7-a2a2-cdc69b86e9f4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\07. UI\00. UIPlayerStatus">
       <UniqueIdentifier>{5534ff0c-7767-46ae-a9dd-70bd4ef43f2d}</UniqueIdentifier>
     </Filter>
@@ -141,6 +135,51 @@
     </Filter>
     <Filter Include="02. GameObject\07. UI\06. PlayerCraft\00. UICraftSlot">
       <UniqueIdentifier>{803ba04b-3425-4fed-a62c-359d9a488e36}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\01. Equip">
+      <UniqueIdentifier>{c34b66fc-113e-45f3-9b7d-14911a753029}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\01. Equip\00. Helm">
+      <UniqueIdentifier>{c591db59-5a76-4df9-a003-1c9ba1f2f832}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\01. Equip\01. Chest">
+      <UniqueIdentifier>{3c89f695-4fbc-4796-843f-e0d8b3fcc7a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\01. Equip\02. Pants">
+      <UniqueIdentifier>{a97a3e34-dcfa-441e-9489-2cf89f898f40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\10. Seed">
+      <UniqueIdentifier>{4d87b991-086f-41a7-a2a2-cdc69b86e9f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\00. Weapon">
+      <UniqueIdentifier>{7fee5be1-2bad-437b-b928-120eaa060638}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\00. Weapon\00. Sword">
+      <UniqueIdentifier>{952b757e-790e-420c-b1fb-20032f340b58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\00. Weapon\01. Bow">
+      <UniqueIdentifier>{2f9a2fbd-5a43-4c87-9922-75b530e20023}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\00. Weapon\02. Staff">
+      <UniqueIdentifier>{a5c1fe7e-ea6b-4970-882d-2a44ceaaf654}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\02. Accessory">
+      <UniqueIdentifier>{14b71d98-5ab1-43b9-97d7-7efdd353ff7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\02. Accessory\00. Necklace">
+      <UniqueIdentifier>{12eed16d-c187-43aa-9b75-4e015a8c2b70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\02. Accessory\01. Ring">
+      <UniqueIdentifier>{d5bdc2d4-7e77-4613-86cc-574d0e19b575}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\03. Lantern">
+      <UniqueIdentifier>{b118ba4c-a8c5-4a88-91a6-a32346421c25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\04. Bag">
+      <UniqueIdentifier>{3c75d086-ee82-45e4-9ea6-447afd10e5b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\05. Assistance">
+      <UniqueIdentifier>{849d3faa-bebe-4d86-b5f2-eb53c195d7f2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -237,9 +276,6 @@
     <ClInclude Include="..\Header\UIScreenIcon.h">
       <Filter>02. GameObject\07. UI\01. UIScreenIcon</Filter>
     </ClInclude>
-    <ClInclude Include="..\Header\Sword.h">
-      <Filter>02. GameObject\06. Item\00. Sword</Filter>
-    </ClInclude>
     <ClInclude Include="..\Header\MapToolCamera.h">
       <Filter>02. GameObject\95.MapToolCamera</Filter>
     </ClInclude>
@@ -262,7 +298,7 @@
       <Filter>02. GameObject\07. UI\05. UIInventory\01. InvPlate</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\Seed.h">
-      <Filter>02. GameObject\06. Item\01. Seed</Filter>
+      <Filter>02. GameObject\06. Item\10. Seed</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\UIItemSlot.h">
       <Filter>02. GameObject\07. UI\00. UIPlayerStatus\00. ItemSlot</Filter>
@@ -293,6 +329,9 @@
     </ClInclude>
     <ClInclude Include="..\Header\UICraftSlot.h">
       <Filter>02. GameObject\07. UI\06. PlayerCraft\00. UICraftSlot</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\Sword.h">
+      <Filter>02. GameObject\06. Item\00. Weapon\00. Sword</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -374,9 +413,6 @@
     <ClCompile Include="..\Code\Slime.cpp">
       <Filter>02. GameObject\02. Monster\00. Slime</Filter>
     </ClCompile>
-    <ClCompile Include="..\Code\Sword.cpp">
-      <Filter>02. GameObject\06. Item\00. Sword</Filter>
-    </ClCompile>
     <ClCompile Include="..\Code\MapToolCamera.cpp">
       <Filter>02. GameObject\95.MapToolCamera</Filter>
     </ClCompile>
@@ -399,7 +435,7 @@
       <Filter>02. GameObject\07. UI\05. UIInventory\01. InvPlate</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\Seed.cpp">
-      <Filter>02. GameObject\06. Item\01. Seed</Filter>
+      <Filter>02. GameObject\06. Item\10. Seed</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\UIItemSlot.cpp">
       <Filter>02. GameObject\07. UI\00. UIPlayerStatus\00. ItemSlot</Filter>
@@ -430,6 +466,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\UICraftSlot.cpp">
       <Filter>02. GameObject\07. UI\06. PlayerCraft\00. UICraftSlot</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Sword.cpp">
+      <Filter>02. GameObject\06. Item\00. Weapon\00. Sword</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
