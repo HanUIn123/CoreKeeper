@@ -5,9 +5,10 @@
 CWall::CWall(LPDIRECT3DDEVICE9 pGraphicDev)
     : Engine::CGameObject(pGraphicDev)
     , m_pCalculatorCom(nullptr)
-    , m_pTextureCom(nullptr)
     , m_pTransformCom(nullptr)
+    , m_pTextureCom(nullptr)
     , m_pBufferCom(nullptr)
+    , m_bIsUpWall(false)
     , m_bActive(true)
 {
 }
@@ -21,6 +22,8 @@ HRESULT CWall::Ready_GameObject(_float _fWallX, _float _fWallZ, _int iWallImageN
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
     m_strPickedWallName = _pickedWallName;
+
+    m_iWallImageNum = iWallImageNum;
 
     m_vWallPosition.x = _fWallX;
     m_vWallPosition.y = 0.0f;
@@ -69,9 +72,10 @@ void CWall::Render_GameObject()
     m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
 
     //m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
+
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
-    m_pTextureCom->Set_Texture(0);
+    m_pTextureCom->Set_Texture(m_iWallImageNum);
 
     if (m_bActive)
     {
@@ -79,6 +83,7 @@ void CWall::Render_GameObject()
     }
 
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
+
 }
 
 HRESULT CWall::Add_Component()

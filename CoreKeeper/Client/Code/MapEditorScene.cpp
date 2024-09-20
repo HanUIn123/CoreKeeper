@@ -21,6 +21,9 @@ CMapEditorScene::CMapEditorScene(LPDIRECT3DDEVICE9 _pGraphicDevice)
     , m_bCanInstall(false)
     , m_iLoadTileCount(0)
     , m_iLoadWallCount(0)
+    , m_iPikingIndex(0)
+    , m_iImageNumber(0)
+    , m_iWallImgNumber(0)
 {
     ZeroMemory(&m_tImageInfo, sizeof(D3DXIMAGE_INFO));
 
@@ -28,8 +31,10 @@ CMapEditorScene::CMapEditorScene(LPDIRECT3DDEVICE9 _pGraphicDevice)
     if (!m_TileTextureInfo)
     {
         Resister_TileImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/Tile/BasicTile/BasicTile_%d.png", TEX_NORMAL, 11);
-        Resister_TileImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/Wall/Wall_2.dds", TEX_CUBE, 11);
+        Resister_TileImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/Wall/Wall_%d.dds", TEX_CUBE, 3);
     }
+
+    m_vecWallObject.resize(VTXCNTX * VTXCNTZ);
 }
 
 CMapEditorScene::~CMapEditorScene()
@@ -79,11 +84,6 @@ _int CMapEditorScene::Update_Scene(const _float& fTimeDelta)
     Piking_Tile();
 
     Piking_Wall();
-
-    if (Engine::Get_DIKeyState(DIK_V))
-    {
-        /* MapFile_Save();*/
-    }
 
     return iExit;
 }
@@ -325,10 +325,8 @@ void CMapEditorScene::Setting_WallList()
                 m_bSelectTile = false;
                 m_bSelectWall = true;
 
-                if (m_pWallCom == nullptr)       //-> 이거 안하면 터짐.
-                {
-                    m_iImageNumber = nCurrentItem;
-                }
+                //if (m_pWallCom != nullptr)       //-> 이거 안하면 터짐.
+                m_iWallImgNumber = nCurrentItem;
             }
         }
     }
@@ -336,7 +334,7 @@ void CMapEditorScene::Setting_WallList()
 
 HRESULT CMapEditorScene::Piking_Wall()
 {
-    auto	iter = find_if(m_mapLayer.begin(), m_mapLayer.end(), CTag_Finder(L"Layer_GameLogic"));
+    auto	iter = find_if(m_mapLayer.begin(), m_mapLayer.end(), CTag_Finder(L"Layer_Environment"));
 
     if (iter == m_mapLayer.end())
         return E_FAIL;
@@ -357,14 +355,9 @@ HRESULT CMapEditorScene::Piking_Wall()
             // 이미 설치되어 있으면, 벽 옵젝 벡터 검사해서, 찍는 위치랑 같으면, 
             // 이미 설치되어있다는 불 값 true
             bool bAlreadyInstalled = false;
-            for (const auto& wall : m_vecWallObject)
-            {
-                if (wall->Get_WallPos() == m_vPickPos)
-                {
-                    bAlreadyInstalled = true;
-                    break;
-                }
-            }
+
+            if (m_vecWallObject[m_vPickPos.z * VTXCNTX + m_vPickPos.x])
+                bAlreadyInstalled = true;
 
             // 이미 설치되어있따면, 설치할 수 있다는 값을 false로,
             // checkpos라는 픽하고 나서 딱 설치된 시점의(벽 전 위치값 느낌)
@@ -379,12 +372,17 @@ HRESULT CMapEditorScene::Piking_Wall()
 
             if (m_bCanInstall)
             {
-                m_wsWallNameString[m_iWallCreateCount] = L"Wall_" + std::to_wstring(m_iWallCreateCount);
-                m_pWallCom = CWall::Create(m_pGraphicDev, m_vPickPos.x, m_vPickPos.z, 0, m_wsWallNameString[m_iWallCreateCount].c_str());
-                m_vecWallObject.emplace_back(dynamic_cast<CWall*>(m_pWallCom));
-                NULL_CHECK_RETURN(m_pWallCom, E_FAIL);
+                int i = m_vPickPos.z * VTXCNTX + m_vPickPos.x;
 
-                FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsWallNameString[m_iWallCreateCount].c_str(), m_pWallCom), E_FAIL);
+                m_wsWallNameString[i] = L"Wall_" + std::to_wstring(i);
+
+                m_pWallCom = CWall::Create(m_pGraphicDev, m_vPickPos.x, m_vPickPos.z, 0, m_wsWallNameString[i].c_str());
+                m_vecWallObject[i] = dynamic_cast<CWall*>(m_pWallCom);
+
+                NULL_CHECK_RETURN(m_pWallCom, E_FAIL);
+                FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsWallNameString[i].c_str(), m_pWallCom), E_FAIL);
+
+                m_vecWallObject[i]->Set_WallNumber(m_iWallImgNumber);
 
                 m_iWallCreateCount++;
                 m_vCheckPos = m_vPickPos;
@@ -402,20 +400,20 @@ HRESULT CMapEditorScene::Piking_Wall()
 
             m_vPickPos = pPickPos->Picking_OnTerrain(g_hWnd, pMapToolBufferCom, pMapToolTransformCom);
 
-            for (auto wall = m_vecWallObject.begin(); wall != m_vecWallObject.end();)
+            if (m_vecWallObject[m_vPickPos.z * VTXCNTX + m_vPickPos.x])
             {
-                if ((*wall)->Get_WallPos() == m_vPickPos)
-                {
-                    Delete_Object(L"Layer_GameLogic", (*wall)->Get_PickedWallName().c_str());
-                    wall = m_vecWallObject.erase(wall);
-                }
-                else
-                    wall++;
+                Delete_Object(L"Layer_Environment", m_vecWallObject[m_vPickPos.z * VTXCNTX + m_vPickPos.x]->Get_PickedWallName().c_str());
+                m_vecWallObject[m_vPickPos.z * VTXCNTX + m_vPickPos.x] = nullptr;
             }
         }
     }
 
     return S_OK;
+}
+
+void CMapEditorScene::Check_NextWall(CCalculator* _pPickPos, CMapToolTex* _pMapToolTex, CTransform* _pMapToolTrnasform, _int _iIndex)
+{
+
 }
 
 HRESULT CMapEditorScene::Delete_Object(const _tchar* pLayerTag, const _tchar* pGameObjectTag)
@@ -481,6 +479,7 @@ void CMapEditorScene::MapFile_Save()
 
     _vec3  vTempTilePos(0.0f, 0.0f, 0.0f);
     _int   vTempTileImgNum(0);
+   
 
     DWORD	dwByte(0);
 
@@ -496,17 +495,27 @@ void CMapEditorScene::MapFile_Save()
 
     _vec3 vTempWallPos(0.0f, 0.0f, 0.0f);
     _int  vTempWallImgNum(0);
+    _int  vTempIndex(0);
 
     DWORD	dwByte2(0);
 
     for (auto& iter : m_vecWallObject)
     {
+        if (iter == nullptr)
+        {
+            vTempIndex++;
+            continue;
+        }
+
         vTempWallPos = (*iter).Get_WallPos();
         vTempWallImgNum = (*iter).Get_WallNumber();
 
         // 벽 저장.
         WriteFile(m_hWallFile, &vTempWallPos, sizeof(_vec3), &dwByte2, nullptr);
         WriteFile(m_hWallFile, &vTempWallImgNum, sizeof(_int), &dwByte2, nullptr);
+        WriteFile(m_hWallFile, &vTempIndex, sizeof(_int), &dwByte2, nullptr);
+
+        vTempIndex++;
     }
 
     CloseHandle(m_hFile);
@@ -515,16 +524,27 @@ void CMapEditorScene::MapFile_Save()
 
 HRESULT CMapEditorScene::MapFile_Load()
 {
+    for (auto& iter : m_vecWallObject)
+    {
+        if (iter == nullptr)
+            continue;
+
+        // 로드 전에 wall 모두 지우기.
+        Delete_Object(L"Layer_Environment", (*iter).Get_PickedWallName().c_str());
+    }
+
     auto	iter = find_if(m_mapLayer.begin(), m_mapLayer.end(), CTag_Finder(L"Layer_Environment"));
 
     if (iter == m_mapLayer.end())
         return E_FAIL;
+
 
     Engine::CGameObject* pGameObject = nullptr;
 
     const _tchar* strWallFileName = L"../../Data/WallData.txt";
 
     m_hWallFile = CreateFile(strWallFileName, GENERIC_READ, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+
 
     if (INVALID_HANDLE_VALUE == m_hWallFile)
     {
@@ -534,6 +554,7 @@ HRESULT CMapEditorScene::MapFile_Load()
 
     _vec3 vTempWallPos(0.0f, 0.0f, 0.0f);
     _int vTempWallImgNum(0);
+    _int vTempIndex(0);
 
     DWORD dwByte2 = 0;
 
@@ -541,15 +562,17 @@ HRESULT CMapEditorScene::MapFile_Load()
     {
         ReadFile(m_hWallFile, &vTempWallPos, sizeof(_vec3), &dwByte2, nullptr);
         ReadFile(m_hWallFile, &vTempWallImgNum, sizeof(_int), &dwByte2, nullptr);
+        ReadFile(m_hWallFile, &vTempIndex, sizeof(_int), &dwByte2, nullptr);
 
         if (dwByte2 == 0)
             break;
 
-        m_wsWallNameString[m_iLoadWallCount] = L"Wall_" + std::to_wstring(m_iLoadWallCount);
-        CWall* pWall = CWall::Create(m_pGraphicDev, vTempWallPos.x, vTempWallPos.z, vTempWallImgNum, m_wsWallNameString[m_iLoadWallCount].c_str());
+        m_wsWallNameString[vTempIndex] = L"Wall_" + std::to_wstring(vTempIndex);
+        CWall* pWall = CWall::Create(m_pGraphicDev, vTempWallPos.x, vTempWallPos.z, vTempWallImgNum, m_wsWallNameString[vTempIndex].c_str());
+        m_vecWallObject[vTempIndex] = pWall;
+
         NULL_CHECK_RETURN(pWall, E_FAIL);
-        FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsWallNameString[m_iLoadWallCount].c_str(), pWall), E_FAIL);
-        m_iLoadWallCount++;
+        FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsWallNameString[vTempIndex].c_str(), pWall), E_FAIL);
     }
 
     CloseHandle(m_hWallFile);
