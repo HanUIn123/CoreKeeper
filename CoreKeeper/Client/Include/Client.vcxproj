@@ -151,9 +151,11 @@ call Copy.bat</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\Header\BackGround.h" />
+    <ClInclude Include="..\Header\Bow.h" />
     <ClInclude Include="..\Header\Define.h" />
     <ClInclude Include="..\Header\DynamicCamera.h" />
     <ClInclude Include="..\Header\Eye.h" />
+    <ClInclude Include="..\Header\Include.h" />
     <ClInclude Include="..\Header\Hair.h" />
     <ClInclude Include="..\Header\HairShade.h" />
     <ClInclude Include="..\Header\ImguiMgr.h" />
@@ -171,7 +173,11 @@ call Copy.bat</Command>
     <ClInclude Include="..\Header\Shirt.h" />
     <ClInclude Include="..\Header\SkyBox.h" />
     <ClInclude Include="..\Header\Slime.h" />
+    <ClInclude Include="..\Header\Staff.h" />
     <ClInclude Include="..\Header\Stage.h" />
+    <ClInclude Include="..\Header\Pickaxe.h" />
+    <ClInclude Include="..\Header\Hoe.h" />
+    <ClInclude Include="..\Header\Shovel.h" />
     <ClInclude Include="..\Header\Sword.h" />
     <ClInclude Include="..\Header\Terrain.h" />
     <ClInclude Include="..\Header\UICraftSlot.h" />
@@ -187,6 +193,7 @@ call Copy.bat</Command>
     <ClInclude Include="..\Header\UIScreenInv.h" />
     <ClInclude Include="..\Header\UIPlayerStatus.h" />
     <ClInclude Include="..\Header\Wall.h" />
+    <ClInclude Include="..\Header\Wood.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="imconfig.h" />
@@ -203,10 +210,12 @@ call Copy.bat</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Code\BackGround.cpp" />
+    <ClCompile Include="..\Code\Bow.cpp" />
     <ClCompile Include="..\Code\DynamicCamera.cpp" />
     <ClCompile Include="..\Code\Eye.cpp" />
     <ClCompile Include="..\Code\Hair.cpp" />
     <ClCompile Include="..\Code\HairShade.cpp" />
+    <ClCompile Include="..\Code\Hoe.cpp" />
     <ClCompile Include="..\Code\ImguiMgr.cpp" />
     <ClCompile Include="..\Code\Item.cpp" />
     <ClCompile Include="..\Code\Loading.cpp" />
@@ -217,11 +226,14 @@ call Copy.bat</Command>
     <ClCompile Include="..\Code\MapToolTerrain.cpp" />
     <ClCompile Include="..\Code\Monster.cpp" />
     <ClCompile Include="..\Code\Pants.cpp" />
+    <ClCompile Include="..\Code\Pickaxe.cpp" />
     <ClCompile Include="..\Code\Player.cpp" />
     <ClCompile Include="..\Code\Seed.cpp" />
     <ClCompile Include="..\Code\Shirt.cpp" />
+    <ClCompile Include="..\Code\Shovel.cpp" />
     <ClCompile Include="..\Code\SkyBox.cpp" />
     <ClCompile Include="..\Code\Slime.cpp" />
+    <ClCompile Include="..\Code\Staff.cpp" />
     <ClCompile Include="..\Code\Stage.cpp" />
     <ClCompile Include="..\Code\Sword.cpp" />
     <ClCompile Include="..\Code\Terrain.cpp" />
@@ -238,6 +250,7 @@ call Copy.bat</Command>
     <ClCompile Include="..\Code\UIScreenInv.cpp" />
     <ClCompile Include="..\Code\UIPlayerStatus.cpp" />
     <ClCompile Include="..\Code\Wall.cpp" />
+    <ClCompile Include="..\Code\Wood.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="imgui.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>

@@ -1,24 +1,24 @@
 #include "pch.h"
-#include "..\Header\Seed.h"
+#include "..\Header\Wood.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
 
-CSeed::CSeed(LPDIRECT3DDEVICE9 pGraphicDev)
+CWood::CWood(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CItem(pGraphicDev)
 {
 	ZeroMemory(&m_tStat, sizeof(STAT));
 
-	m_eItemNum = ITEM_SEED;
+	m_eItemNum = ITEM_WOOD;
 
 	// 아직 몬스터 없으니까 테스트용
 	m_bDrop = true;
 }
 
-CSeed::~CSeed()
+CWood::~CWood()
 {
 }
 
-HRESULT CSeed::Ready_GameObject()
+HRESULT CWood::Ready_GameObject()
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
@@ -35,7 +35,7 @@ HRESULT CSeed::Ready_GameObject()
 	return S_OK;
 }
 
-_int CSeed::Update_GameObject(const _float& fTimeDelta)
+_int CWood::Update_GameObject(const _float& fTimeDelta)
 {
 	m_pAnimatorCom->Update_Animation();
 
@@ -78,12 +78,12 @@ _int CSeed::Update_GameObject(const _float& fTimeDelta)
 	return Engine::CGameObject::Update_GameObject(fTimeDelta);
 }
 
-void CSeed::LateUpdate_GameObject()
+void CWood::LateUpdate_GameObject()
 {
 	Engine::CGameObject::LateUpdate_GameObject();
 }
 
-void CSeed::Render_GameObject()
+void CWood::Render_GameObject()
 {
 	// 카메라를 바라보게 하면서 스케일 유지
 	//CItem::Apply_Billboard();  
@@ -120,15 +120,15 @@ void CSeed::Render_GameObject()
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
-HRESULT CSeed::Add_Component()
+HRESULT CWood::Add_Component()
 {
 	CComponent* pComponent = NULL;
 
-	pComponent = m_pBufferCom = dynamic_cast<CAnimTex*>(Engine::Clone_Proto(L"Proto_SeedAnimTex"));
+	pComponent = m_pBufferCom = dynamic_cast<CAnimTex*>(Engine::Clone_Proto(L"Proto_NormalAnimTex"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Buffer", pComponent });
 
-	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_SeedTex"));
+	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_WoodTex"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Texture", pComponent });
 
@@ -159,9 +159,9 @@ HRESULT CSeed::Add_Component()
 	return S_OK;
 }
 
-CSeed* CSeed::Create(LPDIRECT3DDEVICE9 pGraphicDev)
+CWood* CWood::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 {
-	CSeed* pSeed = new CSeed(pGraphicDev);
+	CWood* pSeed = new CWood(pGraphicDev);
 
 	if (FAILED(pSeed->Ready_GameObject()))
 	{
@@ -173,7 +173,7 @@ CSeed* CSeed::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 	return pSeed;
 }
 
-void CSeed::Free()
+void CWood::Free()
 {
 	Engine::CGameObject::Free();
 }
