@@ -50,5 +50,7 @@ private:
 	wstring							m_wsWallNameString[VTXCNTX * VTXCNTZ];
 	_int							m_iLoadTileCount;
 	_int							m_iLoadWallCount;
+
+	vector<CWall*>					m_vecWall;
 };
 

@@ -9,6 +9,7 @@ CStage::CStage(LPDIRECT3DDEVICE9 pGraphicDev)
 	, m_iLoadTileCount(0)
 	, m_iLoadWallCount(0)
 {
+	m_vecWall.resize(VTXCNTX * VTXCNTZ);
 }
 
 
@@ -461,9 +462,10 @@ HRESULT CStage::Load_MapFile()
 
 		m_wsWallNameString[vTempIndex] = L"Wall_" + std::to_wstring(vTempIndex);
 		CWall* pWall = CWall::Create(m_pGraphicDev, vTempWallPos.x, vTempWallPos.z, vTempWallImgNum, m_wsWallNameString[vTempIndex].c_str());
-
 		NULL_CHECK_RETURN(pWall, E_FAIL);
 		FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsWallNameString[vTempIndex].c_str(), pWall), E_FAIL);
+
+		m_vecWall[vTempIndex] = pWall;
 	}
 
 	CloseHandle(m_hFile);
