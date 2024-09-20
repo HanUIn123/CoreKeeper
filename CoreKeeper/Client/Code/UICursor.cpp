@@ -2,6 +2,7 @@
 #include "..\Header\UICursor.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
+#include "..\Header\Player.h"
 
 CUICursor::CUICursor(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CGameObject(pGraphicDev), m_bDisable(false)
@@ -26,12 +27,12 @@ _int CUICursor::Update_GameObject(const _float& fTimeDelta)
 {
 	_int iExit = Engine::CGameObject::Update_GameObject(fTimeDelta);
 
+	POINT pt;
+	GetCursorPos(&pt);
+	ScreenToClient(g_hWnd, &pt);
+
 	if (!m_bDisable)
 	{
-		POINT pt;
-		GetCursorPos(&pt);
-		ScreenToClient(g_hWnd, &pt);
-
 		_D3DVIEWPORT9 Viewport;
 
 		m_pGraphicDev->GetViewport(&Viewport);
@@ -42,6 +43,19 @@ _int CUICursor::Update_GameObject(const _float& fTimeDelta)
 		float y = height / 2 - (_float)pt.y - 6.f;
 
 		m_pTransformCom->Set_Pos(x, y, 0);
+	}
+
+	CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
+
+	for (int i = 0; i < 13; i++)
+	{
+		if (Map_Picked(pt, i))
+		{
+			pPlayer->Set_DisMove();
+			break;
+		}
+		else if (!Map_Picked(pt, i))
+			pPlayer->Set_EnaMove();
 	}
 
 	return iExit;
@@ -68,7 +82,53 @@ void CUICursor::Render_GameObject()
 	m_pTextureCom->Set_Texture();
 	
 	m_pBufferCom->Render_Buffer();
+	
+	if (!m_pInventoryCom->Check_Empty(0))
+	{
+	
+		m_pItem = m_pInventoryCom->Get_Item(0);
 
+		_int iCount = m_pItem->Get_Count();
+
+		ITEMNUM eNum = m_pItem->Get_ItemNum();
+
+		switch (eNum)
+		{
+		case ITEM_SWORD:
+			matWorld._11 = 40.f;
+			matWorld._22 = 40.f;
+			break;
+		}
+
+		matWorld._41 -= 25.f;
+		matWorld._42 += 10.f;
+
+		m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
+
+		m_pItem->Get_Texture()->Set_Texture();
+
+		m_pItem->Get_Buffer()->Render_Buffer();
+
+		if (iCount != 1)
+		{
+			wstring sFont = std::to_wstring(iCount);
+
+			const _tchar* tFont = sFont.c_str();
+
+			D3DVIEWPORT9 ViewPort;
+
+			m_pGraphicDev->GetViewport(&ViewPort);
+			float height = (_float)ViewPort.Height;
+			float width = (_float)ViewPort.Width;
+
+			float x = (matWorld._41 + 2.f) + width / 2;
+			float y = height / 2 - (matWorld._42);
+
+			_vec2 vPos = { x, y };
+
+			Engine::Render_Font(L"Font_Inv", tFont, &vPos, D3DXCOLOR(0.5f, 0.5f, 0.5f, 1.f));
+		}
+	}
 	
 }
 

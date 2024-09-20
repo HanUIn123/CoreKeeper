@@ -66,7 +66,7 @@ _int CSeed::Update_GameObject(const _float& fTimeDelta)
 			Engine::CInventory* pPlayerInventory = dynamic_cast<Engine::CInventory*>
 				(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
 		
-			pPlayerInventory->Add_Item(this);
+			pPlayerInventory->Add_Item(this, 0);
 			//pPlayerInventory->Add_Item(m_eItemNum, 1, m_pTextureCom->Get_Texture());
 		
 			m_bActive = false;

@@ -55,6 +55,7 @@ public:
 	// 손에 든 인벤토리 번호 가져오는 함수
 	_int            Get_iHandNum()          { return m_iHandNum; }
 	void            Set_iHandNum(_int iNum) { m_iHandNum = iNum; }
+	_bool           Get_InvWindow() { return m_bInventory; }
 	void            Set_InvWindow();
 	void            Set_CraftWindow(); 
 	void            Set_MapWindow();
@@ -63,7 +64,9 @@ public:
 	void            Set_Inventory();
 	void            Set_Map();
 
-	void            Set_DisMove() { m_bNoMove = true; }
+	void            Set_DisMove() { 
+		m_bNoMove = true; 
+	}
 	void            Set_EnaMove() { m_bNoMove = false; }
 
 	// Hp 가져오는 함수
