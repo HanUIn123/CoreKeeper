@@ -684,7 +684,7 @@ void CPlayer::Set_Inventory()
 	CInventory* pPlayer = dynamic_cast<CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
 
 	for (int i = 10; i < pPlayer->Get_SlotCount(); i++)
-	{
+	{	
 		wstring string;
 
 		string = L"UI_Inventory_" + std::to_wstring(i);

@@ -42,12 +42,6 @@ HRESULT CUIScreenInv::Ready_GameObject(_vec2 vPos, _int _iIndex)
 	m_BRect.bottom = vPos.y + vSize.y / 2;
 
 	m_iIndex = _iIndex;
-
-	if (m_iIndex == 0)
-	{
-		m_iIndex = 9;
-	}
-
 	m_fPosX = x;
 
 	return S_OK;
@@ -126,36 +120,21 @@ _int CUIScreenInv::Update_GameObject(const _float& fTimeDelta)
 	}
 	if(Map_Picked(pt))
 	{
-	
 		if (pPlayer->Get_InvWindow() && Engine::Button_Down(DIM_LB))
 		{
 			CInventory* pCursorInv = dynamic_cast<CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_UI", L"UI_Cursor", L"Com_Inventory"));
 			CInventory* pPlayerInv = dynamic_cast<Engine::CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
 
-			//if(!pCursorInv->Check_Empty(0) && !pPlayerInv->Check_Empty(m_iIndex))
-			//{
-				vector<CItem*>* pCvecItem = pCursorInv->Get_VecItemP();
-				vector<CItem*>* pPvecItem = pPlayerInv->Get_VecItemP();
+			vector<CItem*>* pCvecItem = pCursorInv->Get_VecItemP();
+			vector<CItem*>* pPvecItem = pPlayerInv->Get_VecItemP();
 
-				pPlayerInv->Swap_Item(&(*pCvecItem)[0], &(*pPvecItem)[m_iIndex]);
-				
-			/*}
-			else if (pCursorInv->Check_Empty(0) && !pPlayerInv->Check_Empty(m_iIndex))
-			{
-				vector<CItem*>* pCvecItem = pCursorInv->Get_VecItemP();
-				vector<CItem*>* pPvecItem = pPlayerInv->Get_VecItemP();
+			_int iIndex = m_iIndex - 1;
 
-				pCursorInv->Add_Item((*pPvecItem)[m_iIndex]);
-				pPlayerInv->Remove_Item(m_iIndex);
-			}
-			else if (!pCursorInv->Check_Empty(0) && pPlayerInv->Check_Empty(m_iIndex))
-			{
-				vector<CItem*>* pCvecItem = pCursorInv->Get_VecItemP();
-				vector<CItem*>* pPvecItem = pPlayerInv->Get_VecItemP();
+			if (iIndex == -1)
+				iIndex = 10;
 
-				pPlayerInv->Add_Item((*pCvecItem)[0]);
-				pCursorInv->Remove_Item(0);
-			}*/
+
+			pPlayerInv->Swap_Item(&(*pCvecItem)[0], &(*pPvecItem)[iIndex]);
 		}
 		else if (Engine::Button_Down(DIM_LB))
 		{
@@ -216,9 +195,14 @@ void CUIScreenInv::Render_GameObject()
 	CInventory* pPlayerInv = dynamic_cast<Engine::CInventory*>
 		(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
 
-	if (!pPlayerInv->Check_Empty(m_iIndex))
+	_int iIndex = m_iIndex - 1;
+
+	if (iIndex == -1)
+		iIndex = 10;
+
+	if (!pPlayerInv->Check_Empty(iIndex))
 	{
-		m_pItem = pPlayerInv->Get_Item(m_iIndex);
+		m_pItem = pPlayerInv->Get_Item(iIndex);
 
 		_int iCount = m_pItem->Get_Count();
 		
@@ -266,7 +250,7 @@ void CUIScreenInv::Render_GameObject()
 
 	}
 
-	if (m_iIndex == 10)
+	if (iIndex == 10)
 	{
 		wstring sFont = std::to_wstring(0);
 
@@ -293,6 +277,7 @@ void CUIScreenInv::Move_Pos()
 {
 
 	_float y;
+
 
 	if (!m_bMove)
 	{

@@ -55,6 +55,8 @@ private:
 
 	CItem* m_pItem;
 
+	_bool m_bFirst;
+
 private:
 	Engine::CRcTex* m_pBufferCom;
 	Engine::CTransform* m_pTransformCom;

@@ -40,7 +40,7 @@ HRESULT CUIInventory::Ready_GameObject(_vec2 vPos, _int _iIndex)
 	m_BRect.top = vPos.y - vSize.y / 2;
 	m_BRect.bottom = vPos.y + vSize.y / 2;
 
-	m_iIndex = _iIndex;
+	m_iIndex = _iIndex + 1;
 
 	return S_OK;
 }
@@ -65,32 +65,7 @@ _int CUIInventory::Update_GameObject(const _float& fTimeDelta)
 				vector<CItem*>* pCvecItem = pCursorInv->Get_VecItemP();
 				vector<CItem*>* pPvecItem = pPlayerInv->Get_VecItemP();
 
-				pPlayerInv->Swap_Item(&(*pCvecItem)[0], &(*pPvecItem)[m_iIndex-1]);
-
-				//if (!pCursorInv->Check_Empty(0) && !pPlayerInv->Check_Empty(m_iIndex))
-				//{
-				//	vector<CItem*>* pCvecItem = pCursorInv->Get_VecItemP();
-				//	vector<CItem*>* pPvecItem = pPlayerInv->Get_VecItemP();
-
-				//	pPlayerInv->Swap_Item(&(*pCvecItem)[0], &(*pPvecItem)[m_iIndex]);
-
-				//}
-				//else if (pCursorInv->Check_Empty(0) && !pPlayerInv->Check_Empty(m_iIndex))
-				//{
-				//	vector<CItem*>* pCvecItem = pCursorInv->Get_VecItemP();
-				//	vector<CItem*>* pPvecItem = pPlayerInv->Get_VecItemP();
-
-				//	pCursorInv->Add_Item((*pPvecItem)[m_iIndex], 0);
-				//	pPlayerInv->Remove_Item(m_iIndex);
-				//}
-				//else if (!pCursorInv->Check_Empty(0) && pPlayerInv->Check_Empty(m_iIndex))
-				//{
-				//	vector<CItem*>* pCvecItem = pCursorInv->Get_VecItemP();
-				//	vector<CItem*>* pPvecItem = pPlayerInv->Get_VecItemP();
-
-				//	pPlayerInv->Add_Item((*pCvecItem)[0], m_iIndex);
-				//	pCursorInv->Remove_Item(0);
-				//}
+				pPlayerInv->Swap_Item(&(*pCvecItem)[0], &(*pPvecItem)[m_iIndex]);
 			}
 
 			m_bCollapse = true;
@@ -119,9 +94,9 @@ void CUIInventory::Render_GameObject()
 	m_pTransformCom->Get_WorldMatrix(&matWorld);
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
-	
+
 	m_pTextureCom->Set_Texture();
-		
+
 	m_pRcTextureCom->Render_Buffer();
 
 	if (m_bCollapse && (m_iCurInv != m_iIndex))
@@ -131,13 +106,20 @@ void CUIInventory::Render_GameObject()
 		m_pRcTextureCom->Render_Buffer();
 	}
 
-	
+
 	CInventory* pPlayerInv = dynamic_cast<Engine::CInventory*>
 		(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
 
-	if (!pPlayerInv->Check_Empty(m_iIndex-1))
+	_int iIndex = m_iIndex;
+
+	if (iIndex >= pPlayerInv->Get_SlotCount())
 	{
-		pItem = pPlayerInv->Get_Item(m_iIndex-1);
+		iIndex--;
+	}
+
+	if (!pPlayerInv->Check_Empty(iIndex))
+	{
+		pItem = pPlayerInv->Get_Item(iIndex);
 
 		_int iCount = pItem->Get_Count();
 
@@ -161,6 +143,18 @@ void CUIInventory::Render_GameObject()
 			matWorld._11 = 20.f;
 			matWorld._22 = 20.f;
 			break;
+		}
+
+
+		if (iCount != 1)
+		{
+			wstring sFont = std::to_wstring(iCount);
+
+			const _tchar* tFont = sFont.c_str();
+
+			_vec2 pos(m_BRect.right - 1.f, m_BRect.top + 12.f);
+
+			Engine::Render_Font(L"Font_Item", tFont, &pos, D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
 		}
 
 		m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
