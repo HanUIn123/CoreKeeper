@@ -100,6 +100,18 @@ void CUITrashSlot::Render_GameObject()
 		m_pBufferCom->Render_Buffer();
 	}
 
+	matWorld._11 = 15.f;
+	matWorld._22 = 15.f;
+	matWorld._42 -= 35.f;
+
+	m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
+
+	m_pArrowTextureCom->Set_Texture(1);
+
+	m_pBufferCom->Render_Buffer();
+
+	matWorld._42 += 35.f;
+
 	CInventory* pTrashInv = dynamic_cast<CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_UI", L"UI_TrashCan", L"Com_TrashInventory"));
 
 	if (!pTrashInv->Check_Empty(0))
@@ -207,16 +219,6 @@ void CUITrashSlot::Render_GameObject()
 
 		m_pItem->Get_Buffer()->Render_Buffer();
 	}
-
-	matWorld._11 = 15.f;
-	matWorld._22 = 15.f;
-	matWorld._42 -= 35.f;
-
-	m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
-
-	m_pArrowTextureCom->Set_Texture(1);
-
-	m_pBufferCom->Render_Buffer();
 
 }
 
