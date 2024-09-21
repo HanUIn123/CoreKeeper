@@ -29,7 +29,7 @@
 
 #include "Seed.h"
 #include "Wood.h"
-
+#include "Torch.h"
 
 // Etc
 #include "Terrain.h"

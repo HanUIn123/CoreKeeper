@@ -52,6 +52,35 @@ bool CInventory::Add_Item(CItem* _pItem)
 	return false;
 }
 
+bool CInventory::Minus_Item(ITEMNUM _eItemNum, int _iCount)
+{
+	for (int i = 0; i < m_vecItems.size(); i++)
+	{
+		if (!m_vecItems[i])
+			continue;
+
+		if (m_vecItems[i]->Get_ItemNum() == _eItemNum)
+		{
+			if (m_vecItems[i]->Get_Count() > _iCount)
+			{
+				m_vecItems[i]->Minus_Count(_iCount);
+				return true;
+			}
+			else if(m_vecItems[i]->Get_Count() == _iCount)
+			{
+				m_vecItems[i] = nullptr;
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+	}
+
+	return false;
+}
+
 void CInventory::Swap_Item(CItem** _ppItem1, CItem** _ppItem2)
 {
 	CItem* pTemp = *_ppItem1;

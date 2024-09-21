@@ -27,6 +27,7 @@ public:
 
 private:
 	HRESULT			Add_Component();
+	//void			SetUp_Light();
 
 protected:
 	void			Apply_Billboard();
@@ -59,6 +60,8 @@ public:
 	int					Get_Count() { return m_iCount; }
 
 	void				Add_Count(int _iAddCount) {m_iCount += _iAddCount; }
+	void				Minus_Count(int _iMinusCount) { m_iCount -= _iMinusCount; }
+
 	// юс╫ц
 	void				Set_Active(bool bActive) { m_bActive = bActive; }
 	void				Set_Drop(bool bDrop) { m_bDrop = bDrop; }

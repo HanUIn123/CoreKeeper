@@ -204,6 +204,9 @@
     </Filter>
     <Filter Include="02. GameObject\07. UI\07.UITrashCan\00. UITrashSlot">
       <UniqueIdentifier>{dcff4464-914f-4bab-a688-9543044946ab}</UniqueIdentifier>
+	</Filter>
+    <Filter Include="02. GameObject\06. Item\99. Etc\02. Torch">
+      <UniqueIdentifier>{867559b7-504c-497a-a34b-19f180acd018}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -392,6 +395,9 @@
     </ClInclude>
     <ClInclude Include="..\Header\UITrashSlot.h">
       <Filter>02. GameObject\07. UI\07.UITrashCan\00. UITrashSlot</Filter>
+	</ClInclude>
+    <ClInclude Include="..\Header\Torch.h">
+      <Filter>02. GameObject\06. Item\99. Etc\02. Torch</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -562,6 +568,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\UITrashSlot.cpp">
       <Filter>02. GameObject\07. UI\07.UITrashCan\00. UITrashSlot</Filter>
+	</ClCompile>
+    <ClCompile Include="..\Code\Torch.cpp">
+      <Filter>02. GameObject\06. Item\99. Etc\02. Torch</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
