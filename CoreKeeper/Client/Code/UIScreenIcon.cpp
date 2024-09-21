@@ -113,9 +113,7 @@ _int CUIScreenIcon::Update_GameObject(const _float& fTimeDelta)
 	}
 	else if(!Map_Picked(pt))
 	{
-		//CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
 		m_bCollapse = false;
-		//pPlayer->Set_EnaMove();
 	}
 
 	Engine::Add_RenderGroup(RENDER_UI, this);
@@ -168,7 +166,10 @@ void CUIScreenIcon::Render_GameObject()
 			m_pTextureCom->Set_Texture(m_iIndex);
 	}
 
-	if(m_iIndex != ICON_HAND)
+	if (m_iIndex != ICON_HAND && !m_bExit)
+		m_pBufferCom->Render_Buffer();
+
+	else if (m_bExit && m_iIndex == ICON_HAND)
 		m_pBufferCom->Render_Buffer();
 }
 

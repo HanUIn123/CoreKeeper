@@ -593,27 +593,11 @@ void CPlayer::Set_UI()
 	if (Engine::Key_Down(DIK_M))
 	{
 		Set_Map();
-
-		if (m_bMap)
-			m_bMap = false;
-		else
-			m_bMap = true;
-
 	}
 	if (Engine::Key_Down(DIK_TAB))
 	{
 		Set_Inventory();
 		Set_Craft();
-
-		if (m_bInventory)
-			m_bInventory = false;
-		else
-			m_bInventory = true;
-
-		if (m_bCraft)
-			m_bCraft = false;
-		else
-			m_bCraft = true;
 	}
 	
 	if (Engine::Key_Down(DIK_E))
@@ -642,23 +626,37 @@ void CPlayer::Set_UI()
 
 void CPlayer::Set_InvWindow()
 {
-	m_bInventory = false;
+	if (m_bInventory)
+		m_bInventory = false;
+	else
+		m_bInventory = true;
 }
 
 void CPlayer::Set_CraftWindow()
 {
-	m_bCraft = false;
+	if (m_bCraft)
+		m_bCraft = false;
+	else
+		m_bCraft = true;
 }
 
 void CPlayer::Set_MapWindow()
 {
-	m_bMap = false;
+	if (m_bMap)
+		m_bMap = false;
+	else
+		m_bMap = true;
 }
 
 void CPlayer::Set_Craft()
 {
 	CUIPlayerCraft* pCraft = dynamic_cast<CUIPlayerCraft*>(Engine::Get_GameObject(L"Layer_UI", L"UIPlayerCraft"));
 	pCraft->Set_Window();
+
+	if (m_bCraft)
+		m_bCraft = false;
+	else
+		m_bCraft = true;
 }
 
 void CPlayer::Set_Inventory()
@@ -684,7 +682,7 @@ void CPlayer::Set_Inventory()
 	CInventory* pPlayer = dynamic_cast<CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
 
 	for (int i = 10; i < pPlayer->Get_SlotCount(); i++)
-	{
+	{	
 		wstring string;
 
 		string = L"UI_Inventory_" + std::to_wstring(i);
@@ -721,10 +719,22 @@ void CPlayer::Set_Inventory()
 
 		pSlot->Set_Window();
 	}
+
+	if (m_bInventory)
+		m_bInventory = false;
+	else
+		m_bInventory = true;
 }
 
 void CPlayer::Set_Map()
 {
+
+	if (m_bMap)
+		m_bMap = false;
+	else
+		m_bMap = true;
+
+	m_bMap = true;
 }
 
 CPlayer* CPlayer::Create(LPDIRECT3DDEVICE9 pGraphicDev)
