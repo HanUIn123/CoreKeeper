@@ -151,6 +151,8 @@ call Copy.bat</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\Header\BackGround.h" />
+    <ClInclude Include="..\Header\Building.h" />
+    <ClInclude Include="..\Header\Core.h" />
     <ClInclude Include="..\Header\Helmet.h" />
     <ClInclude Include="..\Header\Chest.h" />
     <ClInclude Include="..\Header\Leg.h" />
@@ -217,6 +219,8 @@ call Copy.bat</Command>
   <ItemGroup>
     <ClCompile Include="..\Code\BackGround.cpp" />
     <ClCompile Include="..\Code\Bow.cpp" />
+    <ClCompile Include="..\Code\Building.cpp" />
+    <ClCompile Include="..\Code\Core.cpp" />
     <ClCompile Include="..\Code\DynamicCamera.cpp" />
     <ClCompile Include="..\Code\Eye.cpp" />
     <ClCompile Include="..\Code\Hair.cpp" />

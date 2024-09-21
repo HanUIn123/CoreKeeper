@@ -34,8 +34,11 @@
 // Etc
 #include "Terrain.h"
 #include "SkyBox.h"
+
 #include "Tile.h"
 #include "Wall.h"
+#include "Core.h"
+
 
 // UI
 #include "UIPlayerStatus.h"

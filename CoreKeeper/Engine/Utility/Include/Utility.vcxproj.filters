@@ -109,6 +109,9 @@
     <Filter Include="04. Component\98. ColliderMgr">
       <UniqueIdentifier>{c093ca2e-8ef1-4ea6-a033-c5ca66cf890c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04. Component\00. VIBuffer\09.ObjectTex">
+      <UniqueIdentifier>{181cb0d9-b59e-496e-bc18-354ab2e39bef}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Code\Scene.cpp">
@@ -203,6 +206,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\ColliderCube.cpp">
       <Filter>04. Component\05. Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\ObjectTex.cpp">
+      <Filter>04. Component\00. VIBuffer\09.ObjectTex</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -301,6 +307,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Header\ColliderCube.h">
       <Filter>04. Component\05. Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Header\ObjectTex.h">
+      <Filter>04. Component\00. VIBuffer\09.ObjectTex</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

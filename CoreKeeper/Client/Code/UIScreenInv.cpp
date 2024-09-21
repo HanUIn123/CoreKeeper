@@ -72,9 +72,14 @@ _int CUIScreenInv::Update_GameObject(const _float& fTimeDelta)
 	GetCursorPos(&pt);
 	ScreenToClient(g_hWnd, &pt);
 
+	_int iIndex = m_iIndex + 1;
+
+	if (iIndex == 10)
+		iIndex = 0;
+
 	_byte byKey;
 
-	switch (m_iIndex)
+	switch (iIndex)
 	{
 	case 0:
 		byKey = DIK_0;
