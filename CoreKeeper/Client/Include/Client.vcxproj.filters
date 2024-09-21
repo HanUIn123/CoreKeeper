@@ -136,50 +136,68 @@
     <Filter Include="02. GameObject\07. UI\06. PlayerCraft\00. UICraftSlot">
       <UniqueIdentifier>{803ba04b-3425-4fed-a62c-359d9a488e36}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\06. Item\01. Equip">
-      <UniqueIdentifier>{c34b66fc-113e-45f3-9b7d-14911a753029}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\06. Item\01. Equip\00. Helm">
-      <UniqueIdentifier>{c591db59-5a76-4df9-a003-1c9ba1f2f832}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\06. Item\01. Equip\01. Chest">
-      <UniqueIdentifier>{3c89f695-4fbc-4796-843f-e0d8b3fcc7a0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\06. Item\01. Equip\02. Pants">
-      <UniqueIdentifier>{a97a3e34-dcfa-441e-9489-2cf89f898f40}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\06. Item\10. Seed">
-      <UniqueIdentifier>{4d87b991-086f-41a7-a2a2-cdc69b86e9f4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\06. Item\00. Weapon">
-      <UniqueIdentifier>{7fee5be1-2bad-437b-b928-120eaa060638}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\06. Item\00. Weapon\00. Sword">
-      <UniqueIdentifier>{952b757e-790e-420c-b1fb-20032f340b58}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\06. Item\00. Weapon\01. Bow">
-      <UniqueIdentifier>{2f9a2fbd-5a43-4c87-9922-75b530e20023}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\06. Item\00. Weapon\02. Staff">
-      <UniqueIdentifier>{a5c1fe7e-ea6b-4970-882d-2a44ceaaf654}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\06. Item\02. Accessory">
-      <UniqueIdentifier>{14b71d98-5ab1-43b9-97d7-7efdd353ff7d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\06. Item\02. Accessory\00. Necklace">
-      <UniqueIdentifier>{12eed16d-c187-43aa-9b75-4e015a8c2b70}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\06. Item\02. Accessory\01. Ring">
-      <UniqueIdentifier>{d5bdc2d4-7e77-4613-86cc-574d0e19b575}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\06. Item\03. Lantern">
-      <UniqueIdentifier>{b118ba4c-a8c5-4a88-91a6-a32346421c25}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\06. Item\04. Bag">
       <UniqueIdentifier>{3c75d086-ee82-45e4-9ea6-447afd10e5b0}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameObject\06. Item\05. Assistance">
       <UniqueIdentifier>{849d3faa-bebe-4d86-b5f2-eb53c195d7f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\99. Etc">
+      <UniqueIdentifier>{9c04d9f1-d43c-40ad-8362-ab3550cbdabe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\99. Etc\00. Seed">
+      <UniqueIdentifier>{4d87b991-086f-41a7-a2a2-cdc69b86e9f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\99. Etc\01. Wood">
+      <UniqueIdentifier>{e5f254c0-58c4-4571-bac7-f14444de781e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\01. Weapon">
+      <UniqueIdentifier>{7fee5be1-2bad-437b-b928-120eaa060638}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\01. Weapon\00. Sword">
+      <UniqueIdentifier>{952b757e-790e-420c-b1fb-20032f340b58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\01. Weapon\01. Bow">
+      <UniqueIdentifier>{2f9a2fbd-5a43-4c87-9922-75b530e20023}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\01. Weapon\02. Staff">
+      <UniqueIdentifier>{a5c1fe7e-ea6b-4970-882d-2a44ceaaf654}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\02. Equip">
+      <UniqueIdentifier>{c34b66fc-113e-45f3-9b7d-14911a753029}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\02. Equip\00. Helm">
+      <UniqueIdentifier>{c591db59-5a76-4df9-a003-1c9ba1f2f832}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\02. Equip\01. Chest">
+      <UniqueIdentifier>{3c89f695-4fbc-4796-843f-e0d8b3fcc7a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\02. Equip\02. Pants">
+      <UniqueIdentifier>{a97a3e34-dcfa-441e-9489-2cf89f898f40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\00. Tool">
+      <UniqueIdentifier>{f8b76894-f636-48b5-b440-a5625101ec3e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\03. Accessory">
+      <UniqueIdentifier>{14b71d98-5ab1-43b9-97d7-7efdd353ff7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\03. Accessory\00. Necklace">
+      <UniqueIdentifier>{12eed16d-c187-43aa-9b75-4e015a8c2b70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\03. Accessory\01. Ring">
+      <UniqueIdentifier>{d5bdc2d4-7e77-4613-86cc-574d0e19b575}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\04. Lantern">
+      <UniqueIdentifier>{b118ba4c-a8c5-4a88-91a6-a32346421c25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\00. Tool\00. Pickaxe">
+      <UniqueIdentifier>{3540e530-1eb2-4a57-bbf1-e43cc505ee22}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\00. Tool\01. Hoe">
+      <UniqueIdentifier>{372457c2-291e-4710-9a99-6b785caff2d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\00. Tool\02. Shovel">
+      <UniqueIdentifier>{5d0b6536-a6bf-4f9a-b28e-102c0b3cbb9c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -298,7 +316,7 @@
       <Filter>02. GameObject\07. UI\05. UIInventory\01. InvPlate</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\Seed.h">
-      <Filter>02. GameObject\06. Item\10. Seed</Filter>
+      <Filter>02. GameObject\06. Item\99. Etc\00. Seed</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\UIItemSlot.h">
       <Filter>02. GameObject\07. UI\00. UIPlayerStatus\00. ItemSlot</Filter>
@@ -331,7 +349,28 @@
       <Filter>02. GameObject\07. UI\06. PlayerCraft\00. UICraftSlot</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\Sword.h">
-      <Filter>02. GameObject\06. Item\00. Weapon\00. Sword</Filter>
+      <Filter>02. GameObject\06. Item\01. Weapon\00. Sword</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\Bow.h">
+      <Filter>02. GameObject\06. Item\01. Weapon\01. Bow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\Staff.h">
+      <Filter>02. GameObject\06. Item\01. Weapon\02. Staff</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\Wood.h">
+      <Filter>02. GameObject\06. Item\99. Etc\01. Wood</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\Pickaxe.h">
+      <Filter>02. GameObject\06. Item\00. Tool\00. Pickaxe</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\Shovel.h">
+      <Filter>02. GameObject\06. Item\00. Tool\02. Shovel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\Hoe.h">
+      <Filter>02. GameObject\06. Item\00. Tool\01. Hoe</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\Include.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -435,7 +474,7 @@
       <Filter>02. GameObject\07. UI\05. UIInventory\01. InvPlate</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\Seed.cpp">
-      <Filter>02. GameObject\06. Item\10. Seed</Filter>
+      <Filter>02. GameObject\06. Item\99. Etc\00. Seed</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\UIItemSlot.cpp">
       <Filter>02. GameObject\07. UI\00. UIPlayerStatus\00. ItemSlot</Filter>
@@ -468,7 +507,25 @@
       <Filter>02. GameObject\07. UI\06. PlayerCraft\00. UICraftSlot</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\Sword.cpp">
-      <Filter>02. GameObject\06. Item\00. Weapon\00. Sword</Filter>
+      <Filter>02. GameObject\06. Item\01. Weapon\00. Sword</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Bow.cpp">
+      <Filter>02. GameObject\06. Item\01. Weapon\01. Bow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Staff.cpp">
+      <Filter>02. GameObject\06. Item\01. Weapon\02. Staff</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Wood.cpp">
+      <Filter>02. GameObject\06. Item\99. Etc\01. Wood</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Pickaxe.cpp">
+      <Filter>02. GameObject\06. Item\00. Tool\00. Pickaxe</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Hoe.cpp">
+      <Filter>02. GameObject\06. Item\00. Tool\01. Hoe</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Shovel.cpp">
+      <Filter>02. GameObject\06. Item\00. Tool\02. Shovel</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -1,36 +1,10 @@
 #pragma once
 #include "Scene.h"
-#include "BackGround.h"
 
-#include "Player.h"
-#include "Eye.h"
-#include "Shirt.h"
-#include "Pants.h"
-#include "Hair.h"
-#include "HairShade.h"
-#include "Slime.h"
-#include "Monster.h"
-#include "Sword.h"
-#include "Seed.h"
+// 게임오브젝트 개수가 많아지면서 인클루드가 너무 길어져서
+// 인클루드 헤더를 따로 만들었습니다.
+#include "Include.h"
 
-#include "Terrain.h"
-#include "SkyBox.h"
-#include "Tile.h"
-#include "Wall.h"
-
-#include "UIPlayerStatus.h"
-#include "UIScreenIcon.h"
-#include "UIStatusBar.h"
-#include "UIScreenInv.h"
-#include "UICursor.h"
-#include "UIInvPlate.h"
-#include "UIInventory.h"
-#include "UIItemSlot.h"
-#include "UIPlayerStats.h"
-#include "UIPlayerCraft.h"
-#include "UICraftSlot.h"
-
-#include "Inventory.h"
 
 class CStage : public Engine::CScene
 {
@@ -76,5 +50,7 @@ private:
 	wstring							m_wsWallNameString[VTXCNTX * VTXCNTZ];
 	_int							m_iLoadTileCount;
 	_int							m_iLoadWallCount;
+
+	vector<CWall*>					m_vecWall;
 };
 

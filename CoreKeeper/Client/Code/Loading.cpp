@@ -34,13 +34,15 @@ _uint CLoading::Loading_Stage()
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Calculator", Engine::CCalculator::Create(m_pGraphicDev)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Animator", Engine::CAnimator::Create(m_pGraphicDev)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_State", Engine::CState::Create(m_pGraphicDev)), E_FAIL);
+
+	// INVENTORY
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_PlayerInventory", Engine::CInventory::Create(m_pGraphicDev, 30)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_EquipInventory", Engine::CInventory::Create(m_pGraphicDev, 10)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MouseInventory", Engine::CInventory::Create(m_pGraphicDev, 1)), E_FAIL);
 
 	lstrcpy(m_szLoading, L"Buffer Loading...");
-	// BUFFER
 
+	// BUFFER
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_RcCol", Engine::CRcCol::Create(m_pGraphicDev)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_RcTex", Engine::CRcTex::Create(m_pGraphicDev)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TerrainTex", Engine::CTerrainTex::Create(m_pGraphicDev, VTXCNTX, VTXCNTZ, VTXITV)), E_FAIL);
@@ -56,11 +58,14 @@ _uint CLoading::Loading_Stage()
 	//이미지 개수 넣으면 됩니다 ex) Miner.png보면 가로 15개 세로 2개
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_AnimTex", Engine::CAnimTex::Create(m_pGraphicDev, 9, 6)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_NormalAnimTex", Engine::CAnimTex::Create(m_pGraphicDev, 1, 1)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ToolAnimTex", Engine::CAnimTex::Create(m_pGraphicDev, 3, 3)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SwordAnimTex", Engine::CAnimTex::Create(m_pGraphicDev, 3, 3)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_BowAnimTex", Engine::CAnimTex::Create(m_pGraphicDev, 5, 4)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_StaffAnimTex", Engine::CAnimTex::Create(m_pGraphicDev, 5, 4)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SeedAnimTex", Engine::CAnimTex::Create(m_pGraphicDev, 2, 1)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SlimeAnimTex", Engine::CAnimTex::Create(m_pGraphicDev, 12, 4)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UIScreenIconTex", Engine::CAnimTex::Create(m_pGraphicDev, 11, 1)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UISilhouettes", Engine::CAnimTex::Create(m_pGraphicDev, 5, 2)), E_FAIL);
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TileAnimTex", Engine::CTileTex::Create(m_pGraphicDev, 16,20)), E_FAIL);
 
 
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UIHealthTexRc", Engine::CRangeTex::Create(m_pGraphicDev)), E_FAIL);
@@ -95,9 +100,16 @@ _uint CLoading::Loading_Stage()
 
 
 	//아이템 종류별로 텍스쳐 저장하게 할건데 일단 임시
-	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SeedTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/seed_%d.png", TEX_NORMAL, 2)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_PickaxeTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/pickaxeWood.png", TEX_NORMAL)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_HoeTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/hoe_tin.png", TEX_NORMAL)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ShovelTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/ShovelWood.png", TEX_NORMAL)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SwordTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/sword_legendary.png", TEX_NORMAL)), E_FAIL);
-	
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_BowTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/bow_legendary.png", TEX_NORMAL)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_StaffTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Fireball_staff.png", TEX_NORMAL)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SeedTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/seed_%d.png", TEX_NORMAL, 3)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_WoodTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/wood.png", TEX_NORMAL)), E_FAIL);
+
+	// SHADOW TEXTURE
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ShadowTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Shadow/shadow%d.png", TEX_NORMAL, 3)), E_FAIL);
 
 	//UI TEXTURE
@@ -117,6 +129,10 @@ _uint CLoading::Loading_Stage()
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UIPlayerCraft", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/UI_Basic_Craft.png", TEX_NORMAL)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UISilhouette", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/equipment_slot_silhouettes.png", TEX_NORMAL)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UICraftItem", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/UI_CraftItem_%d.png", TEX_NORMAL, 5)), E_FAIL);
+
+
+	lstrcpy(m_szLoading, L"Collider Loading...");
+
 
 	//COLLIDER
 	//반지름 넣으면 됩니다. 콜라이더 RENDER 기능 아직 안됨 ㅠ

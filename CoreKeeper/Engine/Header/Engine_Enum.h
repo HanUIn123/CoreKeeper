@@ -30,14 +30,15 @@ namespace Engine
 	// 아이템 고유값, 서로 다른 아이템이면 겹칠 수 없음
 	// 장비는 50 이하의 값을 갖도록 설정하여 인벤토리에서 같은 아이템이어도 겹칠 수 없게 할 것
 	
-	// 무기는 0~5 헬멧은 6~10, 상의는 11~15, 하의는 16~20, 악세서리는 20~30
+	// 도구 0~5 무기는 6~10 헬멧은 11~15, 상의는 16~20, 하의는 21~25, 악세서리는 26~30
 	enum ITEMNUM
 	{ 
-		ITEM_SWORD, ITEM_BOW, ITEM_STAFF,
-		ITEM_HELM = 6,
-		ITEM_CHEST = 11,
-		ITEM_PANTS = 16,
-		ITEM_NECKLACE = 21,
+		ITEM_PICKAXE, ITEM_HOE, ITEM_SHOVEL,
+		ITEM_SWORD = 6, ITEM_BOW, ITEM_STAFF,
+		ITEM_HELM = 11,
+		ITEM_CHEST = 16,
+		ITEM_PANTS = 21,
+		ITEM_NECKLACE = 26,
 		ITEM_RING,
 		ITEM_ETC = 50,
 		ITEM_SEED, 

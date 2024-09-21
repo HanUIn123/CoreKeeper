@@ -1,0 +1,43 @@
+#pragma once
+
+#include "BackGround.h"
+
+// Player
+#include "Player.h"
+#include "Eye.h"
+#include "Shirt.h"
+#include "Pants.h"
+#include "Hair.h"
+#include "HairShade.h"
+
+// Monster
+#include "Monster.h"
+#include "Slime.h"
+
+// Item
+#include "Pickaxe.h"
+#include "Hoe.h"
+#include "Shovel.h"
+#include "Sword.h"
+#include "Bow.h"
+#include "Staff.h"
+#include "Seed.h"
+#include "Wood.h"
+
+#include "Terrain.h"
+#include "SkyBox.h"
+#include "Tile.h"
+#include "Wall.h"
+
+// UI
+#include "UIPlayerStatus.h"
+#include "UIScreenIcon.h"
+#include "UIStatusBar.h"
+#include "UIScreenInv.h"
+#include "UICursor.h"
+#include "UIInvPlate.h"
+#include "UIInventory.h"
+#include "UIItemSlot.h"
+#include "UIPlayerStats.h"
+#include "UIPlayerCraft.h"
+#include "UICraftSlot.h"

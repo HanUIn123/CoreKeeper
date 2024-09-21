@@ -1,28 +1,30 @@
 #include "pch.h"
-#include "..\Header\Seed.h"
+#include "..\Header\Pickaxe.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
 
-CSeed::CSeed(LPDIRECT3DDEVICE9 pGraphicDev)
+CPickaxe::CPickaxe(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CItem(pGraphicDev)
 {
 	ZeroMemory(&m_tStat, sizeof(STAT));
 
-	m_eItemNum = ITEM_SEED;
+	m_tStat.iAttack = 10;
+
+	m_eItemNum = ITEM_PICKAXE;
 
 	// 아직 몬스터 없으니까 테스트용
 	m_bDrop = true;
 }
 
-CSeed::~CSeed()
+CPickaxe::~CPickaxe()
 {
 }
 
-HRESULT CSeed::Ready_GameObject()
+HRESULT CPickaxe::Ready_GameObject()
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_pTransformCom->m_vScale = { 0.2f, 0.2f, 0.2f };
+	m_pTransformCom->m_vScale = { 1.2f, 1.2f, 1.2f };
 	m_pShadowTransformCom->m_vScale = { 0.2f, 0.2f, 0.2f };
 
 	m_pTransformCom->Set_Pos(m_pTransformCom->m_vInfo->x, m_pTransformCom->m_vInfo->y + 0.7f, m_pTransformCom->m_vInfo->z);
@@ -30,12 +32,12 @@ HRESULT CSeed::Ready_GameObject()
 	// 원래의 Y 위치 저장
 	m_fFirstY = m_pTransformCom->m_vInfo->y + 0.7f;
 
-	//m_pAnimatorCom->Set_CurState(IDLE, 0, 0, 3);
+	m_pAnimatorCom->Set_CurState(IDLE, 0, 0, 3);
 
 	return S_OK;
 }
 
-_int CSeed::Update_GameObject(const _float& fTimeDelta)
+_int CPickaxe::Update_GameObject(const _float& fTimeDelta)
 {
 	m_pAnimatorCom->Update_Animation();
 
@@ -45,11 +47,11 @@ _int CSeed::Update_GameObject(const _float& fTimeDelta)
 
 	if (m_bUse)
 	{
-		Swing(0, 3, 10);
+		Swing(0, 5, 2);
 
 		m_bActive = true;
 		m_bDrop = false;
-		m_pTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
+		m_pTransformCom->Set_Scale(1.5f, 1.5f, 1.5f);
 	}
 
 	if (m_bDrop)
@@ -65,9 +67,9 @@ _int CSeed::Update_GameObject(const _float& fTimeDelta)
 		{
 			Engine::CInventory* pPlayerInventory = dynamic_cast<Engine::CInventory*>
 				(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
-		
+
 			pPlayerInventory->Add_Item(this);
-		
+
 			m_bActive = false;
 			m_bDrop = false;
 		}
@@ -78,12 +80,12 @@ _int CSeed::Update_GameObject(const _float& fTimeDelta)
 	return Engine::CGameObject::Update_GameObject(fTimeDelta);
 }
 
-void CSeed::LateUpdate_GameObject()
+void CPickaxe::LateUpdate_GameObject()
 {
 	Engine::CGameObject::LateUpdate_GameObject();
 }
 
-void CSeed::Render_GameObject()
+void CPickaxe::Render_GameObject()
 {
 	// 카메라를 바라보게 하면서 스케일 유지
 	//CItem::Apply_Billboard();  
@@ -95,7 +97,7 @@ void CSeed::Render_GameObject()
 
 	m_pTextureCom->Set_Texture(m_iTextureNumber);
 
-	m_pBufferCom->Set_Index(0);
+	m_pBufferCom->Set_Index(m_pAnimatorCom->Get_MotionIndex());
 
 	if (m_bActive)
 	{
@@ -120,15 +122,15 @@ void CSeed::Render_GameObject()
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
-HRESULT CSeed::Add_Component()
+HRESULT CPickaxe::Add_Component()
 {
 	CComponent* pComponent = NULL;
 
-	pComponent = m_pBufferCom = dynamic_cast<CAnimTex*>(Engine::Clone_Proto(L"Proto_SeedAnimTex"));
+	pComponent = m_pBufferCom = dynamic_cast<CAnimTex*>(Engine::Clone_Proto(L"Proto_ToolAnimTex"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Buffer", pComponent });
 
-	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_SeedTex"));
+	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_PickaxeTex"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Texture", pComponent });
 
@@ -159,21 +161,21 @@ HRESULT CSeed::Add_Component()
 	return S_OK;
 }
 
-CSeed* CSeed::Create(LPDIRECT3DDEVICE9 pGraphicDev)
+CPickaxe* CPickaxe::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 {
-	CSeed* pSeed = new CSeed(pGraphicDev);
+	CPickaxe* pSword = new CPickaxe(pGraphicDev);
 
-	if (FAILED(pSeed->Ready_GameObject()))
+	if (FAILED(pSword->Ready_GameObject()))
 	{
-		Safe_Release(pSeed);
-		MSG_BOX("pSeed Create Failed");
+		Safe_Release(pSword);
+		MSG_BOX("pSword Create Failed");
 		return nullptr;
 	}
 
-	return pSeed;
+	return pSword;
 }
 
-void CSeed::Free()
+void CPickaxe::Free()
 {
 	Engine::CGameObject::Free();
 }

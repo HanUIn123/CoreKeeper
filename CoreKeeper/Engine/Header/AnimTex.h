@@ -7,12 +7,12 @@ class ENGINE_DLL CAnimTex : public CVIBuffer
 {
 private:
 	explicit CAnimTex();
-	explicit CAnimTex(LPDIRECT3DDEVICE9 pGraphicDev, int _iTexWidth, int _iTexHeight);
+	explicit CAnimTex(LPDIRECT3DDEVICE9 pGraphicDev);
 	explicit CAnimTex(const CAnimTex& rhs);
 	virtual ~CAnimTex();
 
 public:
-	virtual		HRESULT		Ready_Buffer();
+	virtual		HRESULT		Ready_Buffer(int _iTexWidth, int _iTexHeight);
 	virtual		void		Render_Buffer();
 
 	void					Render_First();

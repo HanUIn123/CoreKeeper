@@ -9,6 +9,7 @@ CStage::CStage(LPDIRECT3DDEVICE9 pGraphicDev)
 	, m_iLoadTileCount(0)
 	, m_iLoadWallCount(0)
 {
+	m_vecWall.resize(VTXCNTX * VTXCNTZ);
 }
 
 
@@ -147,6 +148,18 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar* pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Slime", pGameObject), E_FAIL);
 
+	
+	pGameObject = CPickaxe::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Pickaxe", pGameObject), E_FAIL);
+
+	pGameObject = CHoe::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Hoe", pGameObject), E_FAIL);
+
+	pGameObject = CShovel::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Shovel", pGameObject), E_FAIL);
 
 	pGameObject = CSword::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
@@ -156,39 +169,13 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar* pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Sword2", pGameObject), E_FAIL);
 
+	pGameObject = CBow::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Bow1", pGameObject), E_FAIL);
 
-	pGameObject = CSword::Create(m_pGraphicDev);
+	pGameObject = CStaff::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Sword3", pGameObject), E_FAIL);
-
-	pGameObject = CSword::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Sword4", pGameObject), E_FAIL);
-
-	pGameObject = CSword::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Sword5", pGameObject), E_FAIL);
-
-	/*
-	pGameObject = CSword::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Sword6", pGameObject), E_FAIL);
-	pGameObject = CSword::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Sword7", pGameObject), E_FAIL);
-	pGameObject = CSword::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Sword8", pGameObject), E_FAIL);
-	pGameObject = CSword::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Sword9", pGameObject), E_FAIL);
-	pGameObject = CSword::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Sword10", pGameObject), E_FAIL);
-	pGameObject = CSword::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Sword11", pGameObject), E_FAIL);*/
-
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Staff1", pGameObject), E_FAIL);
 	
 	pGameObject = CSeed::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
@@ -209,8 +196,22 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar* pLayerTag)
 	pGameObject = CSeed::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Seed4", pGameObject), E_FAIL);
-	// 
-	// 	//pGameObject = CItem::Create(m_pGraphicDev);
+	
+	pGameObject = CWood::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Wood1", pGameObject), E_FAIL);
+
+	pGameObject = CWood::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Wood2", pGameObject), E_FAIL);
+
+	pGameObject = CWood::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Wood3", pGameObject), E_FAIL);
+
+	// 아이템이 하나 인벤토리에 안들어감. 이유모름.
+
+	//pGameObject = CItem::Create(m_pGraphicDev);
 	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Item", pGameObject), E_FAIL);
 
@@ -256,50 +257,6 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
 
 		m_ItemSlot[i] = L"UIItemSlot_" + std::to_wstring(i);
 
-		//CUIItemSlot::SLOTTYPE eType;
-		//switch (i)
-		//{
-		//case 0:
-		//	eType = CUIItemSlot::SLOT_HELM;
-		//	break;
-
-		//case 1:
-		//	eType = CUIItemSlot::SLOT_NECKLACE;
-		//	break;
-
-		//case 2:
-		//	eType = CUIItemSlot::SLOT_RING1;
-		//	break;
-
-		//case 3:
-		//	eType = CUIItemSlot::SLOT_CHEST;
-		//	break;
-
-		//case 4:
-		//	eType = CUIItemSlot::SLOT_RING2;
-		//	break;
-
-		//case 5:
-		//	eType = CUIItemSlot::SLOT_LEGGINGS;
-		//	break;
-
-		//case 6:
-		//	eType = CUIItemSlot::SLOT_WEAPON;
-		//	break;
-
-		//case 7:
-		//	eType = CUIItemSlot::SLOT_LANTTERN;
-		//	break;
-
-		//case 8:
-		//	eType = CUIItemSlot::SLOT_BAG;
-		//	break;
-
-		//case 9:
-		//	eType = CUIItemSlot::SLOT_PET;
-		//	break;
-
-		//}
 		pGameObject = CUIItemSlot::Create(m_pGraphicDev, vPos, vSize, (CUIItemSlot::SLOTTYPE)i);
 		NULL_CHECK_RETURN(pGameObject, E_FAIL);
 		FAILED_CHECK_RETURN(pLayer->Add_GameObject(m_ItemSlot[i].c_str(), pGameObject), E_FAIL);
@@ -505,9 +462,10 @@ HRESULT CStage::Load_MapFile()
 
 		m_wsWallNameString[vTempIndex] = L"Wall_" + std::to_wstring(vTempIndex);
 		CWall* pWall = CWall::Create(m_pGraphicDev, vTempWallPos.x, vTempWallPos.z, vTempWallImgNum, m_wsWallNameString[vTempIndex].c_str());
-
 		NULL_CHECK_RETURN(pWall, E_FAIL);
 		FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsWallNameString[vTempIndex].c_str(), pWall), E_FAIL);
+
+		m_vecWall[vTempIndex] = pWall;
 	}
 
 	CloseHandle(m_hFile);

@@ -5,9 +5,9 @@ CAnimTex::CAnimTex()
 {
 }
 
-CAnimTex::CAnimTex(LPDIRECT3DDEVICE9 pGraphicDev, int _iTexWidth, int _iTexHeight)
+CAnimTex::CAnimTex(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CVIBuffer(pGraphicDev),
-	m_iTexWidth(_iTexWidth), m_iTexHeight(_iTexHeight), m_iCurIndex(0)
+	m_iTexWidth(0), m_iTexHeight(0), m_iCurIndex(0)
 {
 }
 
@@ -21,8 +21,11 @@ CAnimTex::~CAnimTex()
 {
 }
 
-HRESULT CAnimTex::Ready_Buffer()
+HRESULT CAnimTex::Ready_Buffer(int _iTexWidth, int _iTexHeight)
 {
+	m_iTexWidth = _iTexWidth;
+	m_iTexHeight = _iTexHeight;
+
 	m_dwTriCnt = 2;
 	m_dwVtxCnt = 4;
 	m_dwVtxSize = sizeof(VTXTEX);
@@ -104,9 +107,9 @@ void CAnimTex::Render_First()
 
 CAnimTex* CAnimTex::Create(LPDIRECT3DDEVICE9 pGraphicDev, int _iTexWidth, int _iTexHeight)
 {
-	CAnimTex* pInstance = new CAnimTex(pGraphicDev, _iTexWidth, _iTexHeight);
+	CAnimTex* pInstance = new CAnimTex(pGraphicDev);
 
-	if (FAILED(pInstance->Ready_Buffer()))
+	if (FAILED(pInstance->Ready_Buffer(_iTexWidth, _iTexHeight)))
 	{
 		Safe_Release(pInstance);
 		MSG_BOX("RcTex Create Failed");

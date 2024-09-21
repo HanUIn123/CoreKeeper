@@ -24,48 +24,29 @@ void CInventory::Add_Item(CItem* _pItem)
 	int iMinSlot(m_iSlotCount);
 	bool bItemFound = false;
 
-	if (_pItem->Get_ItemNum() > ITEM_ETC)
+	for (int i = 0; i < m_vecItems.size(); i++)
 	{
-		for (int i = 0; i < m_vecItems.size(); i++)
+		if (m_vecItems[i] == nullptr)
 		{
-			if (m_vecItems[i] == nullptr)
+			if (iMinSlot > i)
 			{
-				if (iMinSlot > i)
-				{
-					iMinSlot = i;
-				}
-				continue;
+				iMinSlot = i;
 			}
 
-			if (m_vecItems[i]->Get_ItemNum() == _pItem->Get_ItemNum())
-			{
-				m_vecItems[i]->Add_Count(_pItem->Get_Count());
-				bItemFound = true;
-				return;
-			}
+			// 겹칠 필요 없는 아이템
+			if (_pItem->Get_ItemNum() < ITEM_ETC)
+				break;
 		}
-	}
-	else
-	{
-		for (int i = 0; i < m_vecItems.size(); i++)
+		else if (m_vecItems[i]->Get_ItemNum() == _pItem->Get_ItemNum())
 		{
-			if (m_vecItems[i] == nullptr)
-			{
-				if (iMinSlot > i)
-				{
-					iMinSlot = i;
-				}
-				continue;
-			}
+			m_vecItems[i]->Add_Count(_pItem->Get_Count());
+			bItemFound = true;
+			break;
 		}
 	}
+
 	// 꽉차있음
-	if (iMinSlot == m_iSlotCount)
-	{
-		return;
-	}
-
-	if (!bItemFound)
+	if (iMinSlot < m_iSlotCount && !bItemFound)
 	{
 		m_vecItems[iMinSlot] = _pItem;
 	}
@@ -93,7 +74,7 @@ CItem* CInventory::Get_HandedItem(_int iHandNum)
 	if (Check_Empty(iHandNum))
 		return nullptr;
 
-	return m_vecItems[iHandNum - 1];
+	return m_vecItems[iHandNum];
 }
 
 bool CInventory::Enough_Item(ITEMNUM _eItemNum, int _iCount)
