@@ -22,31 +22,29 @@ HRESULT CInventory::Ready_Inventory(int _iSlotCount)
 void CInventory::Add_Item(CItem* _pItem)
 {
 	int iMinSlot(m_iSlotCount);
-	bool bItemFound = false;
-
+	
 	for (int i = 0; i < m_vecItems.size(); i++)
 	{
-		if (m_vecItems[i] == nullptr)
+		// ºó ½½·Ô Áß °¡Àå ¾Õ ½½·Ô Å½»ö
+		if (!m_vecItems[i])
 		{
-			if (iMinSlot > i)
-			{
-				iMinSlot = i;
-			}
+			iMinSlot = min(iMinSlot, i);
 
-			// °ãÄ¥ ÇÊ¿ä ¾ø´Â ¾ÆÀÌÅÛ
 			if (_pItem->Get_ItemNum() < ITEM_ETC)
-				break;
+			{
+				m_vecItems[iMinSlot] = _pItem;
+				return;
+			}
 		}
-		else if (m_vecItems[i]->Get_ItemNum() == _pItem->Get_ItemNum())
+		else if(_pItem->Get_ItemNum() > ITEM_ETC && m_vecItems[i]->Get_ItemNum() == _pItem->Get_ItemNum())
 		{
 			m_vecItems[i]->Add_Count(_pItem->Get_Count());
-			bItemFound = true;
-			break;
+			return;
 		}
 	}
 
 	// ²ËÂ÷ÀÖÀ½
-	if (iMinSlot < m_iSlotCount && !bItemFound)
+	if (iMinSlot < m_iSlotCount)
 	{
 		m_vecItems[iMinSlot] = _pItem;
 	}
