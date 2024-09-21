@@ -68,10 +68,12 @@ _int CBow::Update_GameObject(const _float& fTimeDelta)
 			Engine::CInventory* pPlayerInventory = dynamic_cast<Engine::CInventory*>
 				(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
 
-			pPlayerInventory->Add_Item(this);
-
-			m_bActive = false;
-			m_bDrop = false;
+			// 인벤토리에 들어갔다
+			if (pPlayerInventory->Add_Item(this))
+			{
+				m_bActive = false;
+				m_bDrop = false;
+			}
 		}
 	}
 	

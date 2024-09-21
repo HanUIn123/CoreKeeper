@@ -19,7 +19,7 @@ HRESULT CInventory::Ready_Inventory(int _iSlotCount)
 	return S_OK;
 }
 
-void CInventory::Add_Item(CItem* _pItem)
+bool CInventory::Add_Item(CItem* _pItem)
 {
 	int iMinSlot(m_iSlotCount);
 	
@@ -33,21 +33,23 @@ void CInventory::Add_Item(CItem* _pItem)
 			if (_pItem->Get_ItemNum() < ITEM_ETC)
 			{
 				m_vecItems[iMinSlot] = _pItem;
-				return;
+				return true;
 			}
 		}
 		else if(_pItem->Get_ItemNum() > ITEM_ETC && m_vecItems[i]->Get_ItemNum() == _pItem->Get_ItemNum())
 		{
 			m_vecItems[i]->Add_Count(_pItem->Get_Count());
-			return;
+			return true;
 		}
 	}
 
-	// ²ËÂ÷ÀÖÀ½
 	if (iMinSlot < m_iSlotCount)
 	{
 		m_vecItems[iMinSlot] = _pItem;
+		return true;
 	}
+
+	return false;
 }
 
 void CInventory::Swap_Item(CItem** _ppItem1, CItem** _ppItem2)
