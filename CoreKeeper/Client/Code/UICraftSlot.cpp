@@ -127,9 +127,14 @@ _int CUICraftSlot::Update_GameObject(const _float& fTimeDelta)
 
 			if (Engine::Get_DIMouseState(DIM_LB))
 			{
+				CInventory* pCursorInv = dynamic_cast<CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_UI", L"UI_Cursor", L"Com_Inventory"));
+				CInventory* pPlayerInv = dynamic_cast<Engine::CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
+
 				switch (m_eSlotType)
 				{
-				
+				case UCITEM_TORCH:
+					//pCursorInv->Add_Item();
+					break;
 				default:
 					break;
 				}

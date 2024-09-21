@@ -4,7 +4,7 @@
 #include "Export_Utility.h"
 
 CUIPlayerStats::CUIPlayerStats(LPDIRECT3DDEVICE9 pGraphicDev)
-	: Engine::CGameObject(pGraphicDev), m_bWindow(false)
+	: Engine::CGameObject(pGraphicDev), m_bWindow(false), m_bCollapse(false)
 
 {
 }
@@ -29,6 +29,11 @@ HRESULT CUIPlayerStats::Ready_GameObject(_vec2 vPos, _vec2 vSize)
 	m_pTransformCom->m_vScale = { vSize.x, vSize.y , 1.f };
 	m_pTransformCom->Set_Pos(x, y, 0);
 
+	m_BRect.left = vPos.x - vSize.x / 2;
+	m_BRect.right = vPos.x + vSize.x / 2;
+	m_BRect.top = vPos.y - vSize.y / 2;
+	m_BRect.bottom = vPos.y + vSize.y / 2;
+
 	return S_OK;
 }
 
@@ -36,8 +41,19 @@ _int CUIPlayerStats::Update_GameObject(const _float& fTimeDelta)
 {
 	_int iExit = Engine::CGameObject::Update_GameObject(fTimeDelta);
 
+	POINT pt;
+	GetCursorPos(&pt);
+	ScreenToClient(g_hWnd, &pt);
+
 	if (m_bWindow)
 	{
+		if (Map_Picked(pt))
+		{
+			m_bCollapse = true;
+		}
+		else
+			m_bCollapse = false;
+
 		Add_RenderGroup(RENDER_UI, this);
 	}
 	return iExit;
@@ -56,6 +72,13 @@ void CUIPlayerStats::Render_GameObject()
 
 	m_pBufferCom->Render_Buffer();
 
+	if (m_bCollapse)
+	{
+		m_pSelTextureCom->Set_Texture();
+
+		m_pBufferCom->Render_Buffer();
+	}
+
 }
 
 HRESULT CUIPlayerStats::Add_Component()
@@ -65,6 +88,10 @@ HRESULT CUIPlayerStats::Add_Component()
 	pComponent = m_pBufferCom = dynamic_cast<CRcTex*>(Engine::Clone_Proto(L"Proto_RcTex"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Buffer", pComponent });
+
+	pComponent = m_pSelTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_UIStatusSelect"));
+	NULL_CHECK_RETURN(pComponent, E_FAIL);
+	m_mapComponent[ID_STATIC].insert({ L"Com_SelTexture", pComponent });
 
 	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_UIPlayerStat"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);

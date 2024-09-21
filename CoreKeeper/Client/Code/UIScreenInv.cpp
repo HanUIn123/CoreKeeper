@@ -65,8 +65,8 @@ _int CUIScreenInv::Update_GameObject(const _float& fTimeDelta)
 
 	m_iCurInv = pPlayer->Get_iHandNum() + 1;
 
-	if (m_iCurInv > 10)
-		m_iCurInv = 0;
+	//if (m_iCurInv > 10)
+	//	m_iCurInv = 0;
 
 	POINT pt;
 	GetCursorPos(&pt);
@@ -134,7 +134,7 @@ _int CUIScreenInv::Update_GameObject(const _float& fTimeDelta)
 			_int iIndex = m_iIndex - 1;
 
 			if (iIndex == -1)
-				iIndex = 10;
+				iIndex = 9;
 
 
 			pPlayerInv->Swap_Item(&(*pCvecItem)[0], &(*pPvecItem)[iIndex]);
@@ -178,8 +178,11 @@ void CUIScreenInv::Render_GameObject()
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
 
-	
-	if (m_iCurInv == m_iIndex)
+	if (m_iCurInv == 10 && m_iIndex == 0)
+	{
+		m_pTextureCom->Set_Texture(1);
+	}
+	else if (m_iCurInv == m_iIndex)
 	{
 		m_pTextureCom->Set_Texture(1);
 	}
@@ -201,7 +204,7 @@ void CUIScreenInv::Render_GameObject()
 	_int iIndex = m_iIndex - 1;
 
 	if (iIndex == -1)
-		iIndex = 10;
+		iIndex = 9;
 
 	if (!pPlayerInv->Check_Empty(iIndex))
 	{
@@ -278,6 +281,25 @@ void CUIScreenInv::Render_GameObject()
 			matWorld._22 = 35.f;
 
 			matWorld._42 -= 8.f;
+			break;
+
+		case ITEM_HELMET:
+			matWorld._11 = 30.f;
+			matWorld._22 = 30.f;
+
+			matWorld._42 -= 13.f;
+			break;
+
+		case ITEM_CHEST:
+			matWorld._11 = 30.f;
+			matWorld._22 = 30.f;
+			break;
+
+		case ITEM_LEG:
+			matWorld._11 = 40.f;
+			matWorld._22 = 40.f;
+
+			matWorld._42 += 15.f;
 			break;
 
 		dafault:
