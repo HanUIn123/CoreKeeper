@@ -18,12 +18,20 @@
 #include "Pickaxe.h"
 #include "Hoe.h"
 #include "Shovel.h"
+
 #include "Sword.h"
 #include "Bow.h"
 #include "Staff.h"
+
+#include "Helmet.h"
+#include "Chest.h"
+#include "Leg.h"
+
 #include "Seed.h"
 #include "Wood.h"
 
+
+// Etc
 #include "Terrain.h"
 #include "SkyBox.h"
 #include "Tile.h"

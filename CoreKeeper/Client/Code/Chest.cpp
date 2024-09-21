@@ -1,26 +1,26 @@
 #include "pch.h"
-#include "..\Header\Hoe.h"
+#include "..\Header\Chest.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
 
-CHoe::CHoe(LPDIRECT3DDEVICE9 pGraphicDev)
+CChest::CChest(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CItem(pGraphicDev)
 {
 	ZeroMemory(&m_tStat, sizeof(STAT));
 
-	m_tStat.iAttack = 10;
+	m_tStat.iDefense = 10;
 
-	m_eItemNum = ITEM_HOE;
+	m_eItemNum = ITEM_CHEST;
 
 	// 아직 몬스터 없으니까 테스트용
 	m_bDrop = true;
 }
 
-CHoe::~CHoe()
+CChest::~CChest()
 {
 }
 
-HRESULT CHoe::Ready_GameObject()
+HRESULT CChest::Ready_GameObject()
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
@@ -37,7 +37,7 @@ HRESULT CHoe::Ready_GameObject()
 	return S_OK;
 }
 
-_int CHoe::Update_GameObject(const _float& fTimeDelta)
+_int CChest::Update_GameObject(const _float& fTimeDelta)
 {
 	m_pAnimatorCom->Update_Animation();
 
@@ -82,12 +82,12 @@ _int CHoe::Update_GameObject(const _float& fTimeDelta)
 	return Engine::CGameObject::Update_GameObject(fTimeDelta);
 }
 
-void CHoe::LateUpdate_GameObject()
+void CChest::LateUpdate_GameObject()
 {
 	Engine::CGameObject::LateUpdate_GameObject();
 }
 
-void CHoe::Render_GameObject()
+void CChest::Render_GameObject()
 {
 	// 카메라를 바라보게 하면서 스케일 유지
 	//CItem::Apply_Billboard();  
@@ -124,15 +124,15 @@ void CHoe::Render_GameObject()
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
-HRESULT CHoe::Add_Component()
+HRESULT CChest::Add_Component()
 {
 	CComponent* pComponent = NULL;
 
-	pComponent = m_pBufferCom = dynamic_cast<CAnimTex*>(Engine::Clone_Proto(L"Proto_ToolAnimTex"));
+	pComponent = m_pBufferCom = dynamic_cast<CAnimTex*>(Engine::Clone_Proto(L"Proto_AnimTex"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Buffer", pComponent });
 
-	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_HoeTex"));
+	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_ChestTex"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Texture", pComponent });
 
@@ -163,9 +163,9 @@ HRESULT CHoe::Add_Component()
 	return S_OK;
 }
 
-CHoe* CHoe::Create(LPDIRECT3DDEVICE9 pGraphicDev)
+CChest* CChest::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 {
-	CHoe* pSword = new CHoe(pGraphicDev);
+	CChest* pSword = new CChest(pGraphicDev);
 
 	if (FAILED(pSword->Ready_GameObject()))
 	{
@@ -177,7 +177,7 @@ CHoe* CHoe::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 	return pSword;
 }
 
-void CHoe::Free()
+void CChest::Free()
 {
 	Engine::CGameObject::Free();
 }
