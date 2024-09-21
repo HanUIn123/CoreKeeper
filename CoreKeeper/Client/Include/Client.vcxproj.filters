@@ -199,6 +199,12 @@
     <Filter Include="02. GameObject\06. Item\02. Equip\02. Leg">
       <UniqueIdentifier>{a97a3e34-dcfa-441e-9489-2cf89f898f40}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\07. UI\07.UITrashCan">
+      <UniqueIdentifier>{48fd64ef-d1e6-47a7-a524-9a6c20cdd3d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\07. UI\07.UITrashCan\00. UITrashSlot">
+      <UniqueIdentifier>{dcff4464-914f-4bab-a688-9543044946ab}</UniqueIdentifier>
+	</Filter>
     <Filter Include="02. GameObject\06. Item\99. Etc\02. Torch">
       <UniqueIdentifier>{867559b7-504c-497a-a34b-19f180acd018}</UniqueIdentifier>
     </Filter>
@@ -384,6 +390,12 @@
     <ClInclude Include="..\Header\Helmet.h">
       <Filter>02. GameObject\06. Item\02. Equip\00. Helmet</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\UITrashCan.h">
+      <Filter>02. GameObject\07. UI\07.UITrashCan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\UITrashSlot.h">
+      <Filter>02. GameObject\07. UI\07.UITrashCan\00. UITrashSlot</Filter>
+	</ClInclude>
     <ClInclude Include="..\Header\Torch.h">
       <Filter>02. GameObject\06. Item\99. Etc\02. Torch</Filter>
     </ClInclude>
@@ -551,6 +563,12 @@
     <ClCompile Include="..\Code\Chest.cpp">
       <Filter>02. GameObject\06. Item\02. Equip\01. Chest</Filter>
     </ClCompile>
+    <ClCompile Include="..\Code\UITrashCan.cpp">
+      <Filter>02. GameObject\07. UI\07.UITrashCan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\UITrashSlot.cpp">
+      <Filter>02. GameObject\07. UI\07.UITrashCan\00. UITrashSlot</Filter>
+	</ClCompile>
     <ClCompile Include="..\Code\Torch.cpp">
       <Filter>02. GameObject\06. Item\99. Etc\02. Torch</Filter>
     </ClCompile>

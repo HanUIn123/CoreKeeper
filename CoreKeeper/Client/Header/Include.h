@@ -49,3 +49,5 @@
 #include "UIPlayerStats.h"
 #include "UIPlayerCraft.h"
 #include "UICraftSlot.h"
+#include "UITrashCan.h"
+#include "UITrashSlot.h"

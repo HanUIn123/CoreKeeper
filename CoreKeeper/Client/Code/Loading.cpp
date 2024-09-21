@@ -39,6 +39,7 @@ _uint CLoading::Loading_Stage()
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_PlayerInventory", Engine::CInventory::Create(m_pGraphicDev, 30)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_EquipInventory", Engine::CInventory::Create(m_pGraphicDev, 10)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MouseInventory", Engine::CInventory::Create(m_pGraphicDev, 1)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TrashInventory", Engine::CInventory::Create(m_pGraphicDev, 1)), E_FAIL);
 
 	lstrcpy(m_szLoading, L"Buffer Loading...");
 
@@ -137,6 +138,9 @@ _uint CLoading::Loading_Stage()
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UIPlayerCraft", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/UI_Basic_Craft.png", TEX_NORMAL)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UISilhouette", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/equipment_slot_silhouettes.png", TEX_NORMAL)), E_FAIL);
 	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UICraftItem", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/UI_CraftItem_%d.png", TEX_NORMAL, 5)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UIStatusSelect", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/UI_Status_Select.png", TEX_NORMAL)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UITrashCan", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/UI_TrashCan_%d.png", TEX_NORMAL, 4)), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UITrashSlot", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/UI_TrashSlot.png", TEX_NORMAL)), E_FAIL);
 
 
 	lstrcpy(m_szLoading, L"Collider Loading...");

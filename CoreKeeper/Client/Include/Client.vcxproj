@@ -196,6 +196,8 @@ call Copy.bat</Command>
     <ClInclude Include="..\Header\UIScreenIcon.h" />
     <ClInclude Include="..\Header\UIScreenInv.h" />
     <ClInclude Include="..\Header\UIPlayerStatus.h" />
+    <ClInclude Include="..\Header\UITrashCan.h" />
+    <ClInclude Include="..\Header\UITrashSlot.h" />
     <ClInclude Include="..\Header\Wall.h" />
     <ClInclude Include="..\Header\Wood.h" />
     <ClInclude Include="Client.h" />
@@ -257,6 +259,8 @@ call Copy.bat</Command>
     <ClCompile Include="..\Code\UIScreenIcon.cpp" />
     <ClCompile Include="..\Code\UIScreenInv.cpp" />
     <ClCompile Include="..\Code\UIPlayerStatus.cpp" />
+    <ClCompile Include="..\Code\UITrashCan.cpp" />
+    <ClCompile Include="..\Code\UITrashSlot.cpp" />
     <ClCompile Include="..\Code\Wall.cpp" />
     <ClCompile Include="..\Code\Wood.cpp" />
     <ClCompile Include="Client.cpp" />

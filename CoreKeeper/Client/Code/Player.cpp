@@ -14,6 +14,8 @@
 #include "..\Header\UIItemSlot.h"
 #include "..\Header\UIPlayerStats.h"
 #include "..\Header\UICraftSlot.h"
+#include "..\Header\UITrashCan.h"
+#include "..\Header\UITrashSlot.h"
 
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CGameObject(pGraphicDev)
@@ -580,11 +582,11 @@ void CPlayer::Set_UI()
 			m_iHandNum--;
 
 
-		if (m_iHandNum > 10)
+		if (m_iHandNum > 9)
 		{
 			m_iHandNum = 0;
 		}
-		else if (m_iHandNum <= 0)
+		else if (m_iHandNum < 0)
 		{
 			m_iHandNum = 9;
 		}
@@ -719,7 +721,13 @@ void CPlayer::Set_Inventory()
 
 		pSlot->Set_Window();
 	}
+	
+	CUITrashCan* pCan = dynamic_cast<CUITrashCan*>(Engine::Get_GameObject(L"Layer_UI", L"UI_TrashCan"));
+	pCan->Set_Window();
 
+	CUITrashSlot* pCanSlot = dynamic_cast<CUITrashSlot*>(Engine::Get_GameObject(L"Layer_UI", L"UI_TrashSlot"));
+	pCanSlot->Set_Window();
+	
 	if (m_bInventory)
 		m_bInventory = false;
 	else

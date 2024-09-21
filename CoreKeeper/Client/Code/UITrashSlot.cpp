@@ -1,22 +1,20 @@
 #include "pch.h"
-#include "..\Header\UIInventory.h"
+#include "..\Header\UITrashSlot.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
-#include "Engine_Enum.h"
-#include "..\Header\Item.h"
-#include "..\Header\Player.h"
+#include "..\Header\UITrashCan.h"
 
-CUIInventory::CUIInventory(LPDIRECT3DDEVICE9 pGraphicDev)
-	: Engine::CGameObject(pGraphicDev), m_iCurInv(0), m_bShow(false), m_bCollapse(false)
+CUITrashSlot::CUITrashSlot(LPDIRECT3DDEVICE9 pGraphicDev)
+	: Engine::CGameObject(pGraphicDev), m_bCollapse(false), m_bFirst(false), m_bWindow(false)
 
 {
 }
 
-CUIInventory::~CUIInventory()
+CUITrashSlot::~CUITrashSlot()
 {
 }
 
-HRESULT CUIInventory::Ready_GameObject(_vec2 vPos, _int _iIndex)
+HRESULT CUITrashSlot::Ready_GameObject(_vec2 vPos, _vec2 vSize)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
@@ -29,108 +27,102 @@ HRESULT CUIInventory::Ready_GameObject(_vec2 vPos, _int _iIndex)
 	float x = vPos.x - width / 2;
 	float y = height / 2 - vPos.y;
 
+	m_pTransformCom->m_vScale = { vSize.x, vSize.y , 1.f };
 	m_pTransformCom->Set_Pos(x, y, 0);
-
-	_vec2 vSize = { 30.f, 30.f };
-
-	m_pTransformCom->m_vScale = { vSize.x, vSize.y, 1.f };
 
 	m_BRect.left = vPos.x - vSize.x / 2;
 	m_BRect.right = vPos.x + vSize.x / 2;
 	m_BRect.top = vPos.y - vSize.y / 2;
 	m_BRect.bottom = vPos.y + vSize.y / 2;
 
-	m_iIndex = _iIndex + 1;
-
 	return S_OK;
 }
 
-_int CUIInventory::Update_GameObject(const _float& fTimeDelta)
+_int CUITrashSlot::Update_GameObject(const _float& fTimeDelta)
 {
 	_int iExit = Engine::CGameObject::Update_GameObject(fTimeDelta);
 
-	if (m_bShow)
+	if (m_bWindow)
 	{
 		POINT pt;
 		GetCursorPos(&pt);
 		ScreenToClient(g_hWnd, &pt);
 
+		CInventory* pPlayerInv = dynamic_cast<Engine::CInventory*>
+			(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
+
+		
 		if (Map_Picked(pt))
 		{
+			m_bCollapse = true;
+
 			if (Engine::Button_Down(DIM_LB))
 			{
 				CInventory* pCursorInv = dynamic_cast<CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_UI", L"UI_Cursor", L"Com_Inventory"));
-				CInventory* pPlayerInv = dynamic_cast<Engine::CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
+				CInventory* pTrashInv = dynamic_cast<CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_UI", L"UI_TrashCan", L"Com_TrashInventory"));
 
 				vector<CItem*>* pCvecItem = pCursorInv->Get_VecItemP();
-				vector<CItem*>* pPvecItem = pPlayerInv->Get_VecItemP();
+				vector<CItem*>* pTvecItem = pTrashInv->Get_VecItemP();
 
-				_int iIndex = m_iIndex - 1;
-
-				pPlayerInv->Swap_Item(&(*pCvecItem)[0], &(*pPvecItem)[iIndex]);
+				pTrashInv->Swap_Item(&(*pCvecItem)[0], &(*pTvecItem)[0]);
 			}
 
-			m_bCollapse = true;
 		}
 		else
-		{
 			m_bCollapse = false;
-		}
 
 		Engine::Add_RenderGroup(RENDER_UI, this);
 	}
 	return iExit;
 }
 
-void CUIInventory::LateUpdate_GameObject()
+void CUITrashSlot::LateUpdate_GameObject()
 {
-	
-
 	Engine::CGameObject::LateUpdate_GameObject();
 }
 
-void CUIInventory::Render_GameObject()
+void CUITrashSlot::Render_GameObject()
 {
-
 	_matrix matWorld;
+
 	m_pTransformCom->Get_WorldMatrix(&matWorld);
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
 
 	m_pTextureCom->Set_Texture();
 
-	m_pRcTextureCom->Render_Buffer();
+	m_pBufferCom->Render_Buffer();
 
-	if (m_bCollapse && (m_iCurInv != m_iIndex))
+	if (m_bCollapse)
 	{
 		m_pColTextureCom->Set_Texture();
 
-		m_pRcTextureCom->Render_Buffer();
+		m_pBufferCom->Render_Buffer();
 	}
 
+	matWorld._11 = 15.f;
+	matWorld._22 = 15.f;
+	matWorld._42 -= 35.f;
 
-	CInventory* pPlayerInv = dynamic_cast<Engine::CInventory*>
-		(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
+	m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
 
-	_int iIndex = m_iIndex;
+	m_pArrowTextureCom->Set_Texture(1);
 
-	//if (iIndex >= pPlayerInv->Get_SlotCount())
-	//{
-		iIndex--;
-	//}
+	m_pBufferCom->Render_Buffer();
 
-	if (!pPlayerInv->Check_Empty(iIndex))
+	matWorld._42 += 35.f;
+
+	CInventory* pTrashInv = dynamic_cast<CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_UI", L"UI_TrashCan", L"Com_TrashInventory"));
+
+	if (!pTrashInv->Check_Empty(0))
 	{
-		pItem = pPlayerInv->Get_Item(iIndex);
+		m_pItem = pTrashInv->Get_Item(0);
 
-		_int iCount = pItem->Get_Count();
+		ITEMNUM pNum = m_pItem->Get_ItemNum();
 
-		pItem->Get_Texture()->Set_Texture();
+		_int iCount = m_pItem->Get_Count();
 
-		Engine::ITEMNUM eNum = pItem->Get_ItemNum();
-
-
-		switch (eNum)
+		switch (pNum)
 		{
 		case ITEM_SEED:
 			matWorld._11 = 10.f;
@@ -223,64 +215,55 @@ void CUIInventory::Render_GameObject()
 
 		m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
 
-		pItem->Get_Buffer()->Render_Buffer();
+		m_pItem->Get_Texture()->Set_Texture();
+
+		m_pItem->Get_Buffer()->Render_Buffer();
 	}
+
 }
 
-HRESULT CUIInventory::Add_Component()
+HRESULT CUITrashSlot::Add_Component()
 {
 	CComponent* pComponent = NULL;
 
-	pComponent = m_pRcTextureCom = dynamic_cast<CRcTex*>(Engine::Clone_Proto(L"Proto_RcTex"));
+	pComponent = m_pBufferCom = dynamic_cast<CRcTex*>(Engine::Clone_Proto(L"Proto_RcTex"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
-	m_mapComponent[ID_STATIC].insert({ L"Com_RcBuffer", pComponent });
+	m_mapComponent[ID_STATIC].insert({ L"Com_Buffer", pComponent });
 
-	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_UIScreenInvTex"));
+	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_UITrashSlot"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Texture", pComponent });
-
-	pComponent = m_pNumTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_UINumber"));
-	NULL_CHECK_RETURN(pComponent, E_FAIL);
-	m_mapComponent[ID_STATIC].insert({ L"Com_NumTexture", pComponent });
 
 	pComponent = m_pTransformCom = dynamic_cast<CTransform*>(Engine::Clone_Proto(L"Proto_Transform"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_DYNAMIC].insert({ L"Com_UITransform", pComponent });
 
-	pComponent = m_pInventoryCom = dynamic_cast<CInventory*>(Engine::Clone_Proto(L"Proto_PlayerInventory"));
-	NULL_CHECK_RETURN(pComponent, E_FAIL);
-	m_mapComponent[ID_STATIC].insert({ L"Com_Inventory", pComponent });
-
-	pComponent = m_pAnimatorCom = dynamic_cast<CAnimator*>(Engine::Clone_Proto(L"Proto_Animator"));
-	NULL_CHECK_RETURN(pComponent, E_FAIL);
-	m_mapComponent[ID_STATIC].insert({ L"Com_Animator", pComponent });
-
 	pComponent = m_pColTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_UIInvSelected"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_ColTexture", pComponent });
 
-	pComponent = m_pItemNumTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_UIItemNumber"));
+	pComponent = m_pArrowTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_UITrashCan"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
-	m_mapComponent[ID_STATIC].insert({ L"Com_ItemNumTexture", pComponent });
+	m_mapComponent[ID_STATIC].insert({ L"Com_ArrowTexture", pComponent });
 
 	return S_OK;
 }
 
-CUIInventory* CUIInventory::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec2 vPos, _int _iIndex)
+CUITrashSlot* CUITrashSlot::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec2 vPos, _vec2 vSize)
 {
-	CUIInventory* pUIInventory = new CUIInventory(pGraphicDev);
+	CUITrashSlot* pUICraftSlot = new CUITrashSlot(pGraphicDev);
 
-	if (FAILED(pUIInventory->Ready_GameObject(vPos, _iIndex)))
+	if (FAILED(pUICraftSlot->Ready_GameObject(vPos, vSize)))
 	{
-		Safe_Release(pUIInventory);
-		MSG_BOX("UIInventory Create Failed");
+		Safe_Release(pUICraftSlot);
+		MSG_BOX("UIStatus Create Failed");
 		return nullptr;
 	}
 
-	return pUIInventory;
+	return pUICraftSlot;
 }
 
-void CUIInventory::Free()
+void CUITrashSlot::Free()
 {
 	Engine::CGameObject::Free();
 }

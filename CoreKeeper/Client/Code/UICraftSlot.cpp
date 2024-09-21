@@ -127,9 +127,14 @@ _int CUICraftSlot::Update_GameObject(const _float& fTimeDelta)
 
 			if (Engine::Get_DIMouseState(DIM_LB))
 			{
+				CInventory* pCursorInv = dynamic_cast<CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_UI", L"UI_Cursor", L"Com_Inventory"));
+				CInventory* pPlayerInv = dynamic_cast<Engine::CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
+
 				switch (m_eSlotType)
 				{
-				
+				case UCITEM_TORCH:
+					//pCursorInv->Add_Item();
+					break;
 				default:
 					break;
 				}
@@ -225,9 +230,22 @@ void CUICraftSlot::Render_GameObject()
 	}
 	else if (m_bEnough)
 	{
+		m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
+
 		m_pItemTextureCom->Set_Texture(m_iIndex);
 
 		m_pBufferCom->Render_Buffer();
+	}
+
+	if (m_eSlotType == UCITEM_TORCH)
+	{
+		wstring sFont = std::to_wstring(3);
+
+		const _tchar* tFont = sFont.c_str();
+
+		_vec2 pos(m_BRect.right - 1.f, m_BRect.top + 12.f);
+
+		Engine::Render_Font(L"Font_Item", tFont, &pos, D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
 	}
 }
 

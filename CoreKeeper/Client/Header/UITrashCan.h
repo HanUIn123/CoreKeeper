@@ -10,22 +10,18 @@ class CTransform;
 class CTexture;
 class CInventory;
 class CAnimTex;
-//class CCalculator;
 class CAnimator;
 
 END
 
-class CUIItemSlot : public Engine::CGameObject
+class CUITrashCan : public Engine::CGameObject
 {
-public:
-	enum SLOTTYPE { SLOT_HELM, SLOT_NECKLACE, SLOT_RING1, SLOT_CHEST, SLOT_RING2, SLOT_LEGGINGS, SLOT_WEAPON, SLOT_LANTTERN, SLOT_BAG, SLOT_PET, SLOT_END };
-
 private:
-	explicit CUIItemSlot(LPDIRECT3DDEVICE9 pGraphicDev);
-	virtual ~CUIItemSlot();
+	explicit CUITrashCan(LPDIRECT3DDEVICE9 pGraphicDev);
+	virtual ~CUITrashCan();
 
 public:
-	virtual			HRESULT			Ready_GameObject(_vec2 vPos, _vec2 vSize, SLOTTYPE _eType);
+	virtual			HRESULT			Ready_GameObject(_vec2 vPos, _vec2 vSize);
 	virtual			_int			Update_GameObject(const _float& fTimeDelta);
 	virtual			void			LateUpdate_GameObject();
 	virtual			void			Render_GameObject();
@@ -47,7 +43,6 @@ private:
 
 private:
 	_int m_iIndex;
-	ITEMNUM eSlotItemType;
 
 	_vec2 m_vPos;
 
@@ -57,21 +52,19 @@ private:
 	_bool m_bCollapse;
 	_bool m_bFirst;
 
-	SLOTTYPE m_eSlotType;
-	
-	CItem* m_pItem;
-
 private:
-	Engine::CAnimTex* m_pSlotBufferCom;
+	//Engine::CAnimTex* m_pSlotBufferCom;
 	Engine::CRcTex* m_pBufferCom;
+	Engine::CTexture* m_pCanTextureCom;
 	Engine::CTransform* m_pTransformCom;
-	Engine::CTexture* m_pTextureCom;
-	Engine::CTexture* m_pColTextureCom;
-	Engine::CTexture* m_pSlotTextureCom;
-	Engine::CAnimator* m_pAnimatorCom;
+	Engine::CInventory* m_pInventory;
+//	Engine::CTexture* m_pTextureCom;
+//	Engine::CTexture* m_pColTextureCom;
+//	Engine::CTexture* m_pSlotTextureCom;
+//	Engine::CAnimator* m_pAnimatorCom;
 
 public:
-	static CUIItemSlot* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec2 vPos, _vec2 vSize, SLOTTYPE _eType);
+	static CUITrashCan* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec2 vPos, _vec2 vSize);
 
 private:
 	virtual void		Free();

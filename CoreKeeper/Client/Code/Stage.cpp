@@ -223,6 +223,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar* pLayerTag)
 	pGameObject = CLeg::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Leg", pGameObject), E_FAIL);
+
 	// 아이템이 하나 인벤토리에 안들어감. 이유모름.
 
 	//pGameObject = CItem::Create(m_pGraphicDev);
@@ -392,6 +393,20 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
 	pGameObject = CUIInvPlate::Create(m_pGraphicDev, vPos, vSize);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Plate", pGameObject), E_FAIL);
+
+	vPos = { 300.f, 508.f };
+	vSize = { 35.f, 68.f };
+
+	pGameObject = CUITrashCan::Create(m_pGraphicDev, vPos, vSize);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_TrashCan", pGameObject), E_FAIL);
+
+	vPos = { 300.f, 476.f };
+	vSize = { 30.f, 30.f };
+
+	pGameObject = CUITrashSlot::Create(m_pGraphicDev, vPos, vSize);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_TrashSlot", pGameObject), E_FAIL);
 
 	m_mapLayer.insert({ pLayerTag , pLayer });
 

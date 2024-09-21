@@ -41,14 +41,17 @@ HRESULT CUIItemSlot::Ready_GameObject(_vec2 vPos, _vec2 vSize, SLOTTYPE _eType)
 	{
 	case SLOT_HELM:
 		m_iIndex = 0;
+		eSlotItemType = ITEM_HELMET;
 		break;
 
 	case SLOT_CHEST:
 		m_iIndex = 1;
+		eSlotItemType = ITEM_CHEST;
 		break;
 
 	case SLOT_LEGGINGS:
 		m_iIndex = 5;
+		eSlotItemType = ITEM_LEG;
 		break;
 
 	case SLOT_WEAPON:
@@ -101,52 +104,31 @@ _int CUIItemSlot::Update_GameObject(const _float& fTimeDelta)
 		{
 			m_bCollapse = true;
 
-			if (Engine::Get_DIMouseState(DIM_LB))
+			if (Engine::Button_Down(DIM_LB))
 			{
-				switch (m_eSlotType)
+				CInventory* pCursorInv = dynamic_cast<CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_UI", L"UI_Cursor", L"Com_Inventory"));
+				CInventory* pPlayerInv = dynamic_cast<Engine::CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_EquipInventory"));
+
+				CItem* pItem = pCursorInv->Get_Item(0);
+	
+				ITEMNUM eNum = ITEM_ETC;
+
+				if(pItem)
+					eNum = pItem->Get_ItemNum();
+
+				if (eSlotItemType == eNum)
 				{
-				case SLOT_HELM:
+					vector<CItem*>* pCvecItem = pCursorInv->Get_VecItemP();
+					vector<CItem*>* pPvecItem = pPlayerInv->Get_VecItemP();
 
-					break;
+					pPlayerInv->Swap_Item(&(*pCvecItem)[0], &(*pPvecItem)[m_eSlotType]);
+				}
+				else if (pCursorInv->Check_Empty(0) && !pPlayerInv->Check_Empty(m_eSlotType))
+				{
+					vector<CItem*>* pCvecItem = pCursorInv->Get_VecItemP();
+					vector<CItem*>* pPvecItem = pPlayerInv->Get_VecItemP();
 
-				case SLOT_CHEST:
-
-					break;
-
-				case SLOT_LEGGINGS:
-
-					break;
-
-				case SLOT_WEAPON:
-
-					break;
-
-				case SLOT_NECKLACE:
-
-					break;
-
-				case SLOT_RING1:
-
-					break;
-
-				case SLOT_RING2:
-
-					break;
-
-				case SLOT_BAG:
-
-					break;
-
-				case SLOT_LANTTERN:
-
-					break;
-
-				case SLOT_PET:
-
-					break;
-
-				default:
-					break;
+					pPlayerInv->Swap_Item(&(*pCvecItem)[0], &(*pPvecItem)[m_eSlotType]);
 				}
 			}
 
@@ -188,31 +170,40 @@ void CUIItemSlot::Render_GameObject()
 	CInventory* pPlayerInv = dynamic_cast<Engine::CInventory*>
 		(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_EquipInventory"));
 
-	vector<CItem*> vecItem = pPlayerInv->Get_VecItem();
+	m_pItem = pPlayerInv->Get_Item(m_eSlotType);
 
 	if (!pPlayerInv->Check_Empty(m_eSlotType))
 	{
-		_int iCount = vecItem[m_iIndex - 1]->Get_Count();
+		m_pItem->Get_Texture()->Set_Texture();
 
-		vecItem[m_iIndex - 1]->Get_Texture()->Set_Texture();
-
-		Engine::ITEMNUM eNum = vecItem[m_iIndex - 1]->Get_ItemNum();
+		Engine::ITEMNUM eNum = m_pItem->Get_ItemNum();
 
 		switch (eNum)
 		{
 		case ITEM_HELMET:
+			matWorld._11 = 30.f;
+			matWorld._22 = 30.f;
+
+			matWorld._42 -= 13.f;
 			break;
 
 		case ITEM_CHEST:
+			matWorld._11 = 30.f;
+			matWorld._22 = 30.f;
 			break;
 
-		dafault:
+		case ITEM_LEG:
+			matWorld._11 = 40.f;
+			matWorld._22 = 40.f;
+
+			matWorld._42 += 15.f;
 			break;
+
 		}
 
 		m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
 
-		vecItem[m_iIndex - 1]->Get_Buffer()->Render_Buffer();
+		m_pItem->Get_Buffer()->Render_Buffer();
 	}
 	else
 	{
