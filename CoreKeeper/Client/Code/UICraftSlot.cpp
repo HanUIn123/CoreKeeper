@@ -225,9 +225,22 @@ void CUICraftSlot::Render_GameObject()
 	}
 	else if (m_bEnough)
 	{
+		m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
+
 		m_pItemTextureCom->Set_Texture(m_iIndex);
 
 		m_pBufferCom->Render_Buffer();
+	}
+
+	if (m_eSlotType == UCITEM_TORCH)
+	{
+		wstring sFont = std::to_wstring(3);
+
+		const _tchar* tFont = sFont.c_str();
+
+		_vec2 pos(m_BRect.right - 1.f, m_BRect.top + 12.f);
+
+		Engine::Render_Font(L"Font_Item", tFont, &pos, D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
 	}
 }
 

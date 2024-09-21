@@ -97,9 +97,9 @@ _int CUIScreenIcon::Update_GameObject(const _float& fTimeDelta)
 				pPlayer->Set_Inventory();
 				pPlayer->Set_Craft();
 
-				pPlayer->Set_InvWindow();
-				pPlayer->Set_CraftWindow();
-				pPlayer->Set_MapWindow();
+				//pPlayer->Set_InvWindow();
+				//pPlayer->Set_CraftWindow();
+				//pPlayer->Set_MapWindow();
 
 				m_bExit = false;
 			}

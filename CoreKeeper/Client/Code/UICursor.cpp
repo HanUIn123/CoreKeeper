@@ -101,11 +101,63 @@ void CUICursor::Render_GameObject()
 
 		switch (eNum)
 		{
+		case ITEM_SEED:
+			matWorld._11 = 10.f;
+			matWorld._22 = 10.f;
+			break;
+
 		case ITEM_SWORD:
 			matWorld._11 = 40.f;
 			matWorld._22 = 40.f;
+
+			matWorld._42 -= 8.f;
 			break;
-		}
+
+		case ITEM_WOOD:
+			matWorld._11 = 12.f;
+			matWorld._22 = 12.f;
+			break;
+
+		case ITEM_BOW:
+			matWorld._11 = 45.f;
+			matWorld._22 = 45.f;
+
+			matWorld._42 += 2.f;
+			break;
+
+		case ITEM_HOE:
+			matWorld._11 = 50.f;
+			matWorld._22 = 50.f;
+
+			matWorld._42 -= 8.f;
+			break;
+
+		case ITEM_PICKAXE:
+			matWorld._11 = 50.f;
+			matWorld._22 = 50.f;
+
+			matWorld._42 -= 8.f;
+			break;
+
+		case ITEM_SHOVEL:
+			matWorld._11 = 60.f;
+			matWorld._22 = 60.f;
+
+			matWorld._42 -= 8.f;
+			break;
+
+		case ITEM_STAFF:
+			matWorld._11 = 40.f;
+			matWorld._22 = 40.f;
+
+			matWorld._42 -= 8.f;
+			break;
+
+		dafault:
+			matWorld._11 = 20.f;
+			matWorld._22 = 20.f;
+			break;
+		};
 
 		matWorld._41 -= 25.f;
 		matWorld._42 += 10.f;
