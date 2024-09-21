@@ -209,6 +209,17 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar* pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Wood3", pGameObject), E_FAIL);
 
+	pGameObject = CHelmet::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Helmet", pGameObject), E_FAIL);
+
+	pGameObject = CChest::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Chest", pGameObject), E_FAIL);
+
+	pGameObject = CLeg::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Leg", pGameObject), E_FAIL);
 	// 아이템이 하나 인벤토리에 안들어감. 이유모름.
 
 	//pGameObject = CItem::Create(m_pGraphicDev);

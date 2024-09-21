@@ -200,7 +200,7 @@ void CUIItemSlot::Render_GameObject()
 
 		switch (eNum)
 		{
-		case ITEM_HELM:
+		case ITEM_HELMET:
 			break;
 
 		case ITEM_CHEST:

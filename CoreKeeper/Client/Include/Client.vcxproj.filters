@@ -166,14 +166,8 @@
     <Filter Include="02. GameObject\06. Item\02. Equip">
       <UniqueIdentifier>{c34b66fc-113e-45f3-9b7d-14911a753029}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\06. Item\02. Equip\00. Helm">
-      <UniqueIdentifier>{c591db59-5a76-4df9-a003-1c9ba1f2f832}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\06. Item\02. Equip\01. Chest">
       <UniqueIdentifier>{3c89f695-4fbc-4796-843f-e0d8b3fcc7a0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\06. Item\02. Equip\02. Pants">
-      <UniqueIdentifier>{a97a3e34-dcfa-441e-9489-2cf89f898f40}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameObject\06. Item\00. Tool">
       <UniqueIdentifier>{f8b76894-f636-48b5-b440-a5625101ec3e}</UniqueIdentifier>
@@ -198,6 +192,12 @@
     </Filter>
     <Filter Include="02. GameObject\06. Item\00. Tool\02. Shovel">
       <UniqueIdentifier>{5d0b6536-a6bf-4f9a-b28e-102c0b3cbb9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\02. Equip\00. Helmet">
+      <UniqueIdentifier>{c591db59-5a76-4df9-a003-1c9ba1f2f832}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\02. Equip\02. Leg">
+      <UniqueIdentifier>{a97a3e34-dcfa-441e-9489-2cf89f898f40}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -372,6 +372,15 @@
     <ClInclude Include="..\Header\Include.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\Leg.h">
+      <Filter>02. GameObject\06. Item\02. Equip\02. Leg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\Chest.h">
+      <Filter>02. GameObject\06. Item\02. Equip\01. Chest</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\Helmet.h">
+      <Filter>02. GameObject\06. Item\02. Equip\00. Helmet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -526,6 +535,15 @@
     </ClCompile>
     <ClCompile Include="..\Code\Shovel.cpp">
       <Filter>02. GameObject\06. Item\00. Tool\02. Shovel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Helmet.cpp">
+      <Filter>02. GameObject\06. Item\02. Equip\00. Helmet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Leg.cpp">
+      <Filter>02. GameObject\06. Item\02. Equip\02. Leg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Chest.cpp">
+      <Filter>02. GameObject\06. Item\02. Equip\01. Chest</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
