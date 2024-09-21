@@ -22,7 +22,7 @@ HRESULT CTorch::Ready_GameObject()
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_pTransformCom->m_vScale = { 0.2f, 0.2f, 0.2f };
+	m_pTransformCom->m_vScale = { 1.0f, 1.0f, 1.0f };
 	m_pShadowTransformCom->m_vScale = { 0.2f, 0.2f, 0.2f };
 
 	m_pTransformCom->Set_Pos(m_pTransformCom->m_vInfo->x, m_pTransformCom->m_vInfo->y + 0.7f, m_pTransformCom->m_vInfo->z);
@@ -32,11 +32,15 @@ HRESULT CTorch::Ready_GameObject()
 
 	//m_pAnimatorCom->Set_CurState(IDLE, 0, 0, 3);
 
+	m_pAnimatorCom->Set_CurState(IDLE, 0, 5, 3);
+
 	return S_OK;
 }
 
 _int CTorch::Update_GameObject(const _float& fTimeDelta)
 {
+	SetUp_Light(); // 조명 설정
+
 	m_pAnimatorCom->Update_Animation();
 
 	_vec3 vPos;
@@ -45,11 +49,9 @@ _int CTorch::Update_GameObject(const _float& fTimeDelta)
 
 	if (m_bUse)
 	{
-		Swing(0, 3, 10);
-
 		m_bActive = true;
 		m_bDrop = false;
-		m_pTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
+		m_pTransformCom->Set_Scale(1.5f, 1.5f, 1.5f);
 	}
 
 	if (m_bDrop)
@@ -87,6 +89,8 @@ void CTorch::LateUpdate_GameObject()
 
 void CTorch::Render_GameObject()
 {
+	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
+
 	// 카메라를 바라보게 하면서 스케일 유지
 	//CItem::Apply_Billboard();  
 
@@ -97,7 +101,7 @@ void CTorch::Render_GameObject()
 
 	m_pTextureCom->Set_Texture(m_iTextureNumber);
 
-	m_pBufferCom->Set_Index(0);
+	m_pBufferCom->Set_Index(m_pAnimatorCom->Get_MotionIndex());
 
 	if (m_bActive)
 	{
@@ -119,6 +123,8 @@ void CTorch::Render_GameObject()
 		m_pShadowBufferCom->Render_Buffer();
 	}
 
+	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
+
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
@@ -126,7 +132,7 @@ HRESULT CTorch::Add_Component()
 {
 	CComponent* pComponent = NULL;
 
-	pComponent = m_pBufferCom = dynamic_cast<CAnimTex*>(Engine::Clone_Proto(L"Proto_NormalAnimTex"));
+	pComponent = m_pBufferCom = dynamic_cast<CAnimTex*>(Engine::Clone_Proto(L"Proto_TorchAnimTex"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Buffer", pComponent });
 
@@ -159,6 +165,34 @@ HRESULT CTorch::Add_Component()
 	m_mapComponent[ID_DYNAMIC].insert({ L"Com_ShadowTransform", pComponent });
 
 	return S_OK;
+}
+
+void CTorch::SetUp_Light()
+{
+	D3DLIGHT9 light;
+	ZeroMemory(&light, sizeof(D3DLIGHT9));
+
+	light.Type = D3DLIGHT_POINT; // 포인트 조명
+	light.Diffuse = { 1.f, 1.f, 1.f, 1.f }; // 확산 색상
+	light.Specular = { 1.f, 1.f, 1.f, 1.f }; // 반사 색상
+	light.Ambient = { 1.f, 1.f, 1.f, 1.f }; // 주변광
+	light.Position = m_pTransformCom->m_vInfo[INFO_POS]; // 횃불의 위치
+	light.Range = 3.0f; // 조명의 범위
+	light.Falloff = 1.0f; // 감쇠
+	light.Attenuation0 = 1.0f; // 감쇠 계수
+	light.Attenuation1 = 0.0f;
+	light.Attenuation2 = 0.0f;
+
+	m_pGraphicDev->SetLight(0, &light); // 조명 설정
+
+	if (m_bUse)
+	{
+		m_pGraphicDev->LightEnable(0, TRUE); // 조명 활성화
+	}
+	else
+	{
+		m_pGraphicDev->LightEnable(0, FALSE); // 조명 비활성화
+	}
 }
 
 CTorch* CTorch::Create(LPDIRECT3DDEVICE9 pGraphicDev)

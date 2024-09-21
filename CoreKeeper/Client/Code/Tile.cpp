@@ -51,6 +51,8 @@ void CTile::LateUpdate_GameObject()
 
 void CTile::Render_GameObject()
 {
+    m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
+
     _matrix matWorld;
     m_pTransformCom->Get_WorldMatrix(&matWorld);
 
@@ -59,13 +61,15 @@ void CTile::Render_GameObject()
     matWorld._43 = m_vTilePosition.z;
     m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
     
-    //m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
-
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+
+    FAILED_CHECK_RETURN(Setup_Material(), );
 
     m_pTextureCom->Set_Texture(m_iTileImageNum);
 
     m_pTileTexCom->Render_Buffer();
+
+    m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
@@ -91,6 +95,23 @@ HRESULT CTile::Add_Component()
     NULL_CHECK_RETURN(pComponent, E_FAIL);
     //m_mapComponent[ID_DYNAMIC].insert({ L"Com_Calculator", pComponent });
     m_mapComponent[ID_STATIC].insert({ L"Com_Calculator", pComponent });
+
+    return S_OK;
+}
+
+HRESULT CTile::Setup_Material()
+{
+    D3DMATERIAL9		tMtrl;
+    ZeroMemory(&tMtrl, sizeof(D3DMATERIAL9));
+
+    tMtrl.Diffuse = { 1.f, 1.f, 1.f, 1.f };
+    tMtrl.Specular = { 1.f, 1.f, 1.f, 1.f };
+    tMtrl.Ambient = { 0.7f, 0.7f, 0.7f, 1.f };
+
+    tMtrl.Emissive = { 0.2f, 0.2f, 0.2f, 0.2f };
+    tMtrl.Power = 0.f;
+
+    m_pGraphicDev->SetMaterial(&tMtrl);
 
     return S_OK;
 }

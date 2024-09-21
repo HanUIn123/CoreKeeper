@@ -25,6 +25,7 @@ public:
 
 private:
 	HRESULT			Add_Component();
+	void			SetUp_Light();
 
 public:
 	static CTorch* Create(LPDIRECT3DDEVICE9 pGraphicDev);

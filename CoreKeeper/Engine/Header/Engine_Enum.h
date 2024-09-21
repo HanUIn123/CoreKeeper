@@ -44,6 +44,7 @@ namespace Engine
 		ITEM_ETC = 50,
 		ITEM_SEED, 
 		ITEM_WOOD,
+		ITEM_TORCH,
 		ITEM_END
 	};
 

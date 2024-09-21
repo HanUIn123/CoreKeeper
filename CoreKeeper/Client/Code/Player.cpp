@@ -27,7 +27,7 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	m_fTimeAcc = 0.f;
 	m_fWalkYSpeed = 1.8f;
 
-	m_iHandNum = 1;
+	m_iHandNum = 0;
 
 	m_bMap = false;
 	m_bInventory = false;
@@ -582,11 +582,11 @@ void CPlayer::Set_UI()
 
 		if (m_iHandNum > 10)
 		{
-			m_iHandNum = 1;
+			m_iHandNum = 0;
 		}
 		else if (m_iHandNum <= 0)
 		{
-			m_iHandNum = 10;
+			m_iHandNum = 9;
 		}
 	}
 
