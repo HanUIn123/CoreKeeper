@@ -46,17 +46,7 @@ void CDynamicCamera::LateUpdate_GameObject()
 		Key_Input();
 		if (g_bIsTopCamera)
 		{
-			_matrix		matPlayerWorld;
-			memcpy(&matPlayerWorld, pPlayerTransform->Get_WorldMatrix(), sizeof(_matrix));
-
-			_matrix		matWorld;
-			D3DXMatrixIdentity(&matWorld);
-
-			for (_int i = 0; i < INFO_POS; ++i)
-			{
-				memcpy(&matPlayerWorld.m[i][0], &matWorld.m[i][0], sizeof(_vec3));
-			}
-			pPlayerTransform->Set_WorldMatrix(&matPlayerWorld);
+			pPlayerTransform->Set_Angle(0, 0, 0);
 
 			_vec3 vPlayerPos;
 			pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);

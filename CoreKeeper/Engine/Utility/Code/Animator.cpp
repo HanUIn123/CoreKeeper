@@ -24,6 +24,7 @@ void CAnimator::Update_Animation()
 
 	if (m_tAnim.iCurCount >= m_tAnim.iCount)
 	{
+		m_bMotionEnd = false;
 		m_tAnim.iMotion++;
 		m_tAnim.iCurCount = 0;
 	}

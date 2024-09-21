@@ -12,14 +12,14 @@ CCollider::~CCollider()
 HRESULT CCollider::Ready_Collider(float fRadius)
 {
     m_fRadius = fRadius;
-
+    m_vOffset = { 0, 0, 0 };
     return S_OK;
 }
 
 void CCollider::Update_Collider(const _matrix* pWorldMatrix)
 {
     m_matWorld = *pWorldMatrix;
-    m_vCenterPos = _vec3(m_matWorld._41, m_matWorld._42, m_matWorld._43);
+    m_vCenterPos = _vec3(m_matWorld._41, m_matWorld._42, m_matWorld._43) + m_vOffset;
 }
 
 bool CCollider::Check_Collision(CCollider* pTarget)

@@ -31,11 +31,13 @@ private:
 
 public:
 	_vec3	Get_CenterPos() { return m_vCenterPos; }
+	void	Set_Offset(const _vec3 vOffset) { m_vOffset = vOffset; }
 	float	Get_Radius() { return m_fRadius; }
 
 private:
 	float m_fRadius;            // 충돌 반지름
 	_vec3 m_vCenterPos;			// 콜라이더 중심 좌표
+	_vec3 m_vOffset;			// 콜라이더 오프셋
 	_matrix m_matWorld;			
 };
 
