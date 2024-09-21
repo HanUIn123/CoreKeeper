@@ -231,10 +231,10 @@ void CUIScreenInv::Render_GameObject()
 			break;
 
 		case ITEM_SWORD:
-			matWorld._11 = 30.f;
-			matWorld._22 = 30.f;
+			matWorld._11 = 40.f;
+			matWorld._22 = 40.f;
 
-			matWorld._42 -= 5.f;
+			matWorld._42 -= 8.f;
 			break;
 
 		dafault:

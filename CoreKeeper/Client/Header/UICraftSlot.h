@@ -17,7 +17,7 @@ END
 class CUICraftSlot : public Engine::CGameObject
 {
 public:
-	enum CSLOTTYPE { SLOT_HELM, SLOT_NECKLACE, SLOT_RING1, SLOT_CHEST, SLOT_RING2, SLOT_LEGGINGS, SLOT_WEAPON, SLOT_LANTTERN, SLOT_BAG, SLOT_PET, SLOT_END };
+	enum UICRAFTITEM { UCITEM_TORCH, UCITEM_WOODENPICK, UCITEM_WOODENSHOVEL, UCITEM_WORKBENCH, UCITEM_CHEST, UCITEM_END };
 
 private:
 	explicit CUICraftSlot(LPDIRECT3DDEVICE9 pGraphicDev);
@@ -55,7 +55,10 @@ private:
 	_bool m_bCollapse;
 	_bool m_bFirst;
 
-	CSLOTTYPE m_eSlotType;
+	_bool m_bEnough;
+
+	UICRAFTITEM m_eSlotType;
+	ITEMNUM     m_eItemType[3];
 
 private:
 	Engine::CAnimTex* m_pSlotBufferCom;

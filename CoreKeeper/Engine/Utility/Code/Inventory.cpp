@@ -100,6 +100,9 @@ bool CInventory::Enough_Item(ITEMNUM _eItemNum, int _iCount)
 {
 	for (auto pItem : m_vecItems)
 	{
+		if (!pItem)
+			continue;
+
 		if (pItem->Get_ItemNum() == _eItemNum && pItem->Get_Count() >= _iCount)
 		{
 			return true;

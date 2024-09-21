@@ -36,7 +36,7 @@ public:
 		return false;
 	}
 
-	_bool   Key_Up(_ubyte byKeyID)
+	_bool   Key_Up(_ubyte byKeyID)	
 	{
 		if ((m_byOldKeyState[byKeyID] == true) && (!(m_byKeyState[byKeyID] & 0x80)))
 		{
@@ -49,7 +49,7 @@ public:
 
 	_bool   Button_Down(MOUSEKEYSTATE eMouseState)
 	{
-		if ((m_bOldMouseState[eMouseState] == false) && ((m_tMouseState.rgbButtons[eMouseState] & 0x80)))
+		if (!(m_bOldMouseState[eMouseState]) && (m_tMouseState.rgbButtons[eMouseState] & 0x80))
 		{
 			m_bOldMouseState[eMouseState] = true;
 			return true;

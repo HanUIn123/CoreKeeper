@@ -4,7 +4,7 @@
 #include "Export_Utility.h"
 
 CUICraftSlot::CUICraftSlot(LPDIRECT3DDEVICE9 pGraphicDev)
-	: Engine::CGameObject(pGraphicDev), m_bCollapse(false), m_bFirst(false), m_bWindow(false), m_iIndex(0)
+	: Engine::CGameObject(pGraphicDev), m_bCollapse(false), m_bFirst(false), m_bWindow(false), m_iIndex(0), m_bEnough(false)
 
 {
 }
@@ -38,11 +38,27 @@ HRESULT CUICraftSlot::Ready_GameObject(_vec2 vPos, _vec2 vSize, _int _iIndex)
 	switch (_iIndex)
 	{
 	case 0:
-		m_eSlotType = SLOT_HELM;
+		m_eSlotType = UCITEM_TORCH;
+		break;
+
+	case 1:
+		m_eSlotType = UCITEM_WOODENPICK;
+		break;
+
+	case 2:
+		m_eSlotType = UCITEM_WOODENSHOVEL;
+		break;
+
+	case 3:
+		m_eSlotType = UCITEM_WORKBENCH;
+		break;
+
+	case 4:
+		m_eSlotType = UCITEM_CHEST;
 		break;
 
 	default:
-		m_eSlotType = SLOT_HELM;
+		m_eSlotType = UCITEM_TORCH;
 		break;
 	}
 
@@ -61,6 +77,50 @@ _int CUICraftSlot::Update_GameObject(const _float& fTimeDelta)
 		GetCursorPos(&pt);
 		ScreenToClient(g_hWnd, &pt);
 
+		CInventory* pPlayerInv = dynamic_cast<Engine::CInventory*>
+			(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
+
+		switch (m_eSlotType)
+		{
+		case UCITEM_TORCH:
+			if (pPlayerInv->Enough_Item(ITEM_WOOD, 1))
+			{
+				m_bEnough = true;
+			}
+			break;
+
+		case UCITEM_WOODENPICK:
+			if (pPlayerInv->Enough_Item(ITEM_WOOD, 4))
+			{
+				m_bEnough = true;
+			}
+			break;
+
+		case UCITEM_WOODENSHOVEL:
+			if (pPlayerInv->Enough_Item(ITEM_WOOD, 4))
+			{
+				m_bEnough = true;
+			}
+			break;
+
+		case UCITEM_WORKBENCH:
+			if (pPlayerInv->Enough_Item(ITEM_WOOD, 8))
+			{
+				m_bEnough = true;
+			}
+			break;
+
+		case UCITEM_CHEST:
+			if (pPlayerInv->Enough_Item(ITEM_WOOD, 5))
+			{
+				m_bEnough = true;
+			}
+			break;
+
+		default:
+			m_bEnough = false;
+			break;
+		}
 		if (Map_Picked(pt))
 		{
 			m_bCollapse = true;
@@ -138,27 +198,37 @@ void CUICraftSlot::Render_GameObject()
 		break;
 
 	}
-	m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
+	
+	if (!m_bEnough)
+	{
+		m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
 
-	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
-	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+		m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+		m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
 
-	m_pGraphicDev->SetRenderState(D3DRS_TEXTUREFACTOR, D3DCOLOR_ARGB(100, 255, 255, 255));
-	m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
-	m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
-	m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_TFACTOR);
-	m_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
-	m_pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+		m_pGraphicDev->SetRenderState(D3DRS_TEXTUREFACTOR, D3DCOLOR_ARGB(100, 255, 255, 255));
+		m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
+		m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
+		m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_TFACTOR);
+		m_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+		m_pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 
-	m_pItemTextureCom->Set_Texture(m_iIndex);
+		m_pItemTextureCom->Set_Texture(m_iIndex);
 
-	m_pBufferCom->Render_Buffer();
+		m_pBufferCom->Render_Buffer();
 
-	m_pGraphicDev->SetRenderState(D3DRS_TEXTUREFACTOR, 0xffffffff);
+		m_pGraphicDev->SetRenderState(D3DRS_TEXTUREFACTOR, 0xffffffff);
 
-	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
+		m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 
-	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
+		m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
+	}
+	else if (m_bEnough)
+	{
+		m_pItemTextureCom->Set_Texture(m_iIndex);
+
+		m_pBufferCom->Render_Buffer();
+	}
 }
 
 HRESULT CUICraftSlot::Add_Component()

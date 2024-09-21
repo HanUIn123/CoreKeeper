@@ -135,8 +135,10 @@ void CUIInventory::Render_GameObject()
 			break;
 
 		case ITEM_SWORD:
-			matWorld._11 = 30.f;
-			matWorld._22 = 30.f;
+			matWorld._11 = 40.f;
+			matWorld._22 = 40.f;
+
+			matWorld._42 -= 8.f;
 			break;
 
 		dafault:
@@ -144,7 +146,6 @@ void CUIInventory::Render_GameObject()
 			matWorld._22 = 20.f;
 			break;
 		}
-
 
 		if (iCount != 1)
 		{
