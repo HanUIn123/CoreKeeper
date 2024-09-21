@@ -61,6 +61,20 @@ HRESULT CStage::Create_Inventory(const _tchar* pLayerTag, const _tchar* pGameObj
 	return S_OK;
 }
 
+HRESULT CStage::Create_Item(const _tchar* pLayerTag, CItem* pItem, const _tchar* pItemTag)
+{
+	auto	iter = find_if(m_mapLayer.begin(), m_mapLayer.end(), CTag_Finder(pLayerTag));
+
+	if (iter == m_mapLayer.end())
+		return E_FAIL;
+
+	FAILED_CHECK_RETURN(iter->second->Add_GameObject(pItemTag, pItem), E_FAIL);
+
+	m_mapLayer.insert({ pLayerTag, iter->second });
+
+	return S_OK;
+}
+
 HRESULT CStage::Ready_LightInfo()
 {
 

@@ -46,6 +46,9 @@ private:
 
 private:
 	_int m_iIndex;
+	
+	wstring Craftstring[500];
+	_int m_iCraftCount;
 
 	_vec2 m_vPos;
 

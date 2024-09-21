@@ -2,9 +2,11 @@
 #include "..\Header\UICraftSlot.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
+#include "..\Header\Torch.h"
+#include "..\Header\Stage.h"
 
 CUICraftSlot::CUICraftSlot(LPDIRECT3DDEVICE9 pGraphicDev)
-	: Engine::CGameObject(pGraphicDev), m_bCollapse(false), m_bFirst(false), m_bWindow(false), m_iIndex(0), m_bEnough(false)
+	: Engine::CGameObject(pGraphicDev), m_bCollapse(false), m_bFirst(false), m_bWindow(false), m_iIndex(0), m_bEnough(false), m_iCraftCount(0)
 
 {
 }
@@ -87,6 +89,8 @@ _int CUICraftSlot::Update_GameObject(const _float& fTimeDelta)
 			{
 				m_bEnough = true;
 			}
+			else
+				m_bEnough = false;
 			break;
 
 		case UCITEM_WOODENPICK:
@@ -94,6 +98,8 @@ _int CUICraftSlot::Update_GameObject(const _float& fTimeDelta)
 			{
 				m_bEnough = true;
 			}
+			else
+				m_bEnough = false;
 			break;
 
 		case UCITEM_WOODENSHOVEL:
@@ -101,6 +107,8 @@ _int CUICraftSlot::Update_GameObject(const _float& fTimeDelta)
 			{
 				m_bEnough = true;
 			}
+			else
+				m_bEnough = false;
 			break;
 
 		case UCITEM_WORKBENCH:
@@ -108,6 +116,8 @@ _int CUICraftSlot::Update_GameObject(const _float& fTimeDelta)
 			{
 				m_bEnough = true;
 			}
+			else
+				m_bEnough = false;
 			break;
 
 		case UCITEM_CHEST:
@@ -115,6 +125,8 @@ _int CUICraftSlot::Update_GameObject(const _float& fTimeDelta)
 			{
 				m_bEnough = true;
 			}
+			else
+				m_bEnough = false;
 			break;
 
 		default:
@@ -125,18 +137,34 @@ _int CUICraftSlot::Update_GameObject(const _float& fTimeDelta)
 		{
 			m_bCollapse = true;
 
-			if (Engine::Get_DIMouseState(DIM_LB))
+			if (Engine::Button_Down(DIM_LB))
 			{
-				CInventory* pCursorInv = dynamic_cast<CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_UI", L"UI_Cursor", L"Com_Inventory"));
-				CInventory* pPlayerInv = dynamic_cast<Engine::CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
-
-				switch (m_eSlotType)
+				if (m_bEnough)
 				{
-				case UCITEM_TORCH:
-					//pCursorInv->Add_Item();
-					break;
-				default:
-					break;
+					CInventory* pCursorInv = dynamic_cast<CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_UI", L"UI_Cursor", L"Com_Inventory"));
+					CInventory* pPlayerInv = dynamic_cast<Engine::CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
+
+					
+					switch (m_eSlotType)
+					{
+					case UCITEM_TORCH:
+						pPlayerInv->Minus_Item(ITEM_WOOD, 1);
+
+						CItem* pItem = CTorch::Create(m_pGraphicDev);
+
+						pItem->Add_Count(2);
+
+						pCursorInv->Add_Item(pItem);
+
+						Craftstring[m_iCraftCount] = L"Torch" + to_wstring(m_iCraftCount);
+
+						CStage* pStage = dynamic_cast<CStage*>(Engine::Get_Scene());
+						pStage->Create_Item(L"Layer_UI", pItem, Craftstring[m_iCraftCount].c_str());
+
+						m_iCraftCount++;
+						break;
+				
+					}
 				}
 			}
 

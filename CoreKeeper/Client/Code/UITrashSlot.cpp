@@ -64,7 +64,16 @@ _int CUITrashSlot::Update_GameObject(const _float& fTimeDelta)
 				vector<CItem*>* pCvecItem = pCursorInv->Get_VecItemP();
 				vector<CItem*>* pTvecItem = pTrashInv->Get_VecItemP();
 
-				pTrashInv->Swap_Item(&(*pCvecItem)[0], &(*pTvecItem)[0]);
+				if (!pTrashInv->Check_Empty(0) && !pCursorInv->Check_Empty(0))
+				{
+					if ((*pTvecItem)[0]->Get_ItemNum() > ITEM_ETC && (*pTvecItem)[0]->Get_ItemNum() == (*pCvecItem)[0]->Get_ItemNum())
+					{
+						(*pTvecItem)[0]->Add_Count((*pCvecItem)[0]->Get_Count());
+						pCursorInv->Remove_Item(0);
+					}
+				}
+				else
+				    pTrashInv->Swap_Item(&(*pCvecItem)[0], &(*pTvecItem)[0]);
 			}
 
 		}
