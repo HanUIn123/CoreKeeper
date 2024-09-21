@@ -20,6 +20,7 @@ public:
 
 public:
 	HRESULT							Create_Inventory(const _tchar* pLayerTag, const _tchar* pGameObjectTag);
+	HRESULT                         Create_Item(const _tchar* pLayerTag, CItem* pItem, const _tchar* pItemTag);
 
 private:
 	HRESULT							Ready_LightInfo();

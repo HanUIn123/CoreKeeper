@@ -141,12 +141,23 @@ _int CUIScreenInv::Update_GameObject(const _float& fTimeDelta)
 			if (iIndex == -1)
 				iIndex = 9;
 
-
-			pPlayerInv->Swap_Item(&(*pCvecItem)[0], &(*pPvecItem)[iIndex]);
+			if (!pPlayerInv->Check_Empty(iIndex) && !pCursorInv->Check_Empty(0))
+			{
+				if ((*pPvecItem)[iIndex]->Get_ItemNum() > ITEM_ETC && (*pPvecItem)[iIndex]->Get_ItemNum() == (*pCvecItem)[0]->Get_ItemNum())
+				{
+					(*pPvecItem)[iIndex]->Add_Count((*pCvecItem)[0]->Get_Count());
+					pCursorInv->Remove_Item(0);
+				}
+			}
+			else
+				pPlayerInv->Swap_Item(&(*pCvecItem)[0], &(*pPvecItem)[iIndex]);
 		}
 		else if (Engine::Button_Down(DIM_LB))
 		{
-			m_iCurInv = m_iIndex;
+			m_iCurInv = m_iIndex - 1;
+
+			if (m_iCurInv == -1)
+				m_iCurInv = 9;
 
 			pPlayer->Set_iHandNum(m_iCurInv);
 		}
