@@ -47,6 +47,7 @@ _int CSword::Update_GameObject(const _float& fTimeDelta)
 
 	if (m_bUse)
 	{
+		m_pColliderCom->Set_Offset(_vec3(0, 0, 0));
 		Swing(0, 5, 2);
 
 		m_bActive = true;

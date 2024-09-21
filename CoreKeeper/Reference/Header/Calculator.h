@@ -17,6 +17,7 @@ private:
 public:
 	HRESULT			Ready_Calculator();
 	_vec3			Picking_OnTerrain(HWND _hWnd, CMapToolTex* _pMapToolBufferCom, CTransform* _pWireTerrainTransform);
+	_bool			Check_Distance2D(_vec3* _vPos1, _vec3* _vPos2, _float _fDist);
 
 public:
 	static CCalculator*		Create(LPDIRECT3DDEVICE9 pGraphicDev);

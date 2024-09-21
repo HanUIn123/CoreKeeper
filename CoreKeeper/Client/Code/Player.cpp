@@ -463,10 +463,11 @@ void CPlayer::Show_Equipment()
 	}
 	if (m_pHandedItem)
 	{
-		_vec3 vPlayerPos;
-		m_pTransformCom->Get_Info(INFO_POS, &vPlayerPos);
 		m_pHandedItem->Set_Use(true);
 		m_pHandedItem->Set_Active(true);
+		m_pHandedTransformCom->Set_Angle(0, 0, 0);
+		_vec3 vPlayerPos;
+		m_pTransformCom->Get_Info(INFO_POS, &vPlayerPos);
 
 		if (g_bIsTopCamera)
 		{

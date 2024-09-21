@@ -84,7 +84,7 @@ void CShirt::Follow_Player()
 		{
 			_vec3 vPlayerLook;
 			playerTransform->Get_Info(INFO_LOOK, &vPlayerLook);
-			m_pTransformCom->Set_Pos(vPlayerPos.x, vPlayerPos.y, vPlayerPos.z - vPlayerLook.z * 0.001f);
+			m_pTransformCom->Set_Pos(vPlayerPos.x - vPlayerLook.x * 0.001f, vPlayerPos.y, vPlayerPos.z - vPlayerLook.z * 0.001f);
 			vPlayerAngle = *(playerTransform->Get_Angle());
 			m_pTransformCom->Set_Angle(vPlayerAngle.x, vPlayerAngle.y, vPlayerAngle.z);
 		}

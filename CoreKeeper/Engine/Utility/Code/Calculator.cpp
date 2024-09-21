@@ -109,6 +109,14 @@ _vec3 CCalculator::Picking_OnTerrain(HWND _hWnd, CMapToolTex* _pMapToolBufferCom
 	return _vec3(0.f, 0.f, 0.f);
 }
 
+_bool CCalculator::Check_Distance2D(_vec3* _vPos1, _vec3* _vPos2, _float _fDist)
+{
+	if (sqrt(pow(2, (_vPos1->x - _vPos2->x)) + pow(2, (_vPos1->z - _vPos2->z))) < _fDist)
+		return true;
+	else
+		return false;
+}
+
 CCalculator* CCalculator::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 {
 	CCalculator* pCalculator = new CCalculator(pGraphicDev);

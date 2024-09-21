@@ -1,17 +1,7 @@
 #pragma once
-#include "GameObject.h"
+#include "Monster.h"
 
-BEGIN(Engine)
-
-class CAnimTex;
-class CTransform;
-class CTexture;
-class CAnimator;
-class CCalculator;
-
-END
-
-class CSlime : public Engine::CGameObject
+class CSlime : public CMonster
 {
 	explicit CSlime(LPDIRECT3DDEVICE9 pGraphicDev);
 	virtual ~CSlime();
@@ -24,13 +14,7 @@ public:
 
 private:
 	HRESULT			Add_Component();
-
-private:
-	Engine::CAnimTex* m_pBufferCom;
-	Engine::CTransform* m_pTransformCom;
-	Engine::CAnimator* m_pAnimatorCom;
-	Engine::CTexture* m_pTextureCom;
-	Engine::CCalculator* m_pCalculatorCom;
+	STATE			State_Change();
 
 public:
 	static CSlime* Create(LPDIRECT3DDEVICE9 pGraphicDev);
