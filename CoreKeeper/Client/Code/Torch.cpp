@@ -177,10 +177,10 @@ void CTorch::SetUp_Light()
 	light.Specular = { 1.f, 1.f, 1.f, 1.f }; // 반사 색상
 	light.Ambient = { 1.f, 1.f, 1.f, 1.f }; // 주변광
 	light.Position = m_pTransformCom->m_vInfo[INFO_POS]; // 횃불의 위치
-	light.Range = 3.0f; // 조명의 범위
-	light.Falloff = 1.0f; // 감쇠
+	light.Range = 4.0f; // 조명의 범위
+	light.Falloff = 1.f; // 감쇠
 	light.Attenuation0 = 1.0f; // 감쇠 계수
-	light.Attenuation1 = 0.0f;
+	light.Attenuation1 = 0.01f;
 	light.Attenuation2 = 0.0f;
 
 	m_pGraphicDev->SetLight(0, &light); // 조명 설정
