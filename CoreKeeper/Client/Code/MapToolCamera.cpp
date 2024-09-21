@@ -45,18 +45,6 @@ void CMapToolCamera::LateUpdate_GameObject()
         Mouse_Move();
     }
 
-    //ImGui::Begin("CameraMove", NULL, ImGuiWindowFlags_MenuBar);
-
-    //ImGui::Checkbox("Move Camera", &m_bCameraMove);
-    //if (ImGui::Button("Start Move"))
-    //    m_bCameraMove = true;
-    //if (ImGui::Button("Stop Move"))
-    //    m_bCameraMove = false;
-
-    //ImGui::End();
-
-
-
     CCamera::LateUpdate_GameObject();
 }
 
