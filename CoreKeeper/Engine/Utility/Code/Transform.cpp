@@ -90,10 +90,13 @@ void CTransform::LateUpdate_Component()
 void CTransform::Chase_Target(const _vec3 * pTargetPos, const _float & fSpeed)
 {
 	_vec3		vDir = *pTargetPos - m_vInfo[INFO_POS];
+	D3DXVec3Normalize(&vDir, &vDir);
+	m_vInfo[INFO_POS].x += vDir.x * fSpeed;
+	m_vInfo[INFO_POS].z += vDir.z * fSpeed;
 
-	m_vInfo[INFO_POS] += *D3DXVec3Normalize(&vDir, &vDir) * fSpeed;
-
-	_matrix			matRot = *Compute_LookAtTarget(pTargetPos);
+	_matrix			matRot;
+	D3DXMatrixIdentity(&matRot);
+		//*Compute_LookAtTarget(pTargetPos);
 
 	_matrix			matScale, matTrans;
 

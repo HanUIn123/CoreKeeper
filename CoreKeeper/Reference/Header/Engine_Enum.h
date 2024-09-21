@@ -47,6 +47,7 @@ namespace Engine
 		ITEM_TORCH,
 		ITEM_END
 	};
+	enum MONSTERTYPE { MON_SLIME, MON_END };
 
 }
 #endif // Engine_Enum_h__	

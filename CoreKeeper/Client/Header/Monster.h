@@ -3,14 +3,19 @@
 
 BEGIN(Engine)
 
-class CTriCol;
+class CAnimTex;
 class CTransform;
+class CState;
+class CTexture;
+class CAnimator;
+class CCalculator;
+class CCollider;
 
 END
 
 class CMonster : public Engine::CGameObject
 {
-private:
+protected:
 	explicit CMonster(LPDIRECT3DDEVICE9 pGraphicDev);
 	virtual ~CMonster();
 
@@ -20,12 +25,41 @@ public:
 	virtual			void			LateUpdate_GameObject();
 	virtual			void			Render_GameObject();
 
-private:
-	HRESULT			Add_Component();
+protected:
+	void			Apply_Billboard();
+	void			Pattern_Idle(const _float& fTimeDelta);
+	void			Pattern_Chase(const _float& fTimeDelta);
+	void			Pattern_Attack(const _float& fTimeDelta);
+	void			Pattern_Dead();
+	void			Jump(const _float& fTimeDelta);
+	void			KnockBack(_float fDist);
+	void			Set_Speed(_float fSpeed) { m_fSpeed = fSpeed; m_fDiagSpeed = sqrt(pow(m_fSpeed, 2) / 2); }
 
-private:
-	Engine::CTriCol*		m_pBufferCom;
-	Engine::CTransform*		m_pTransformCom;
+protected:
+	Engine::CAnimTex* m_pBufferCom;
+	Engine::CState* m_pStateCom;
+	Engine::CTransform* m_pTransformCom;
+	Engine::CAnimator* m_pAnimatorCom;
+	Engine::CTexture* m_pTextureCom;
+	Engine::CCalculator* m_pCalculatorCom;
+	Engine::CCollider* m_pColliderCom;
+
+	Engine::MONSTERTYPE m_eType;
+	Engine::STATE m_eState;
+
+	_float			m_fIdleY;
+	_bool			m_bIdling;
+
+	_float			m_fJumpY;
+	_bool			m_bJumping;
+	_float			m_fJumpHeight;
+	_float			m_fJumpSpeed;
+	_float			m_fJumpTime;
+	_float			m_fJumpFrame;
+
+	_int			m_iDir;
+	_float			m_fSpeed;
+	_float			m_fDiagSpeed;
 
 public:
 	static CMonster*			Create(LPDIRECT3DDEVICE9 pGraphicDev);
