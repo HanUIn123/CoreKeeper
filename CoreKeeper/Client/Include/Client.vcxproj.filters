@@ -199,6 +199,9 @@
     <Filter Include="02. GameObject\06. Item\02. Equip\02. Leg">
       <UniqueIdentifier>{a97a3e34-dcfa-441e-9489-2cf89f898f40}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\06. Item\99. Etc\02. Torch">
+      <UniqueIdentifier>{867559b7-504c-497a-a34b-19f180acd018}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -381,6 +384,9 @@
     <ClInclude Include="..\Header\Helmet.h">
       <Filter>02. GameObject\06. Item\02. Equip\00. Helmet</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\Torch.h">
+      <Filter>02. GameObject\06. Item\99. Etc\02. Torch</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -544,6 +550,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\Chest.cpp">
       <Filter>02. GameObject\06. Item\02. Equip\01. Chest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Torch.cpp">
+      <Filter>02. GameObject\06. Item\99. Etc\02. Torch</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
