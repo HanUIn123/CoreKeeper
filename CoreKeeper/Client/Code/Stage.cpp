@@ -244,6 +244,11 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar* pLayerTag)
 	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Item", pGameObject), E_FAIL);
 
+
+	//pGameObject = CCore::Create(m_pGraphicDev);
+	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Core", pGameObject), E_FAIL);
+
 	m_mapLayer.insert({ pLayerTag , pLayer });
 
 	return S_OK;
@@ -509,6 +514,49 @@ HRESULT CStage::Load_MapFile()
 		FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsWallNameString[vTempIndex].c_str(), pWall), E_FAIL);
 
 		m_vecWall[vTempIndex] = pWall;
+	}
+
+	for (int i = 0; i < VTXCNTZ; i++)
+	{
+		for (int j = 0; j < VTXCNTX; j++)
+		{
+			int iIndex = i * VTXCNTX + j;
+
+			if (!m_vecWall[iIndex])
+				continue;
+			
+			// 하단 좌측
+			if (i > 0 && j > 0)
+				m_vecWall[iIndex]->Add_WallArray(0, m_vecWall[iIndex - VTXCNTX - 1]);
+
+			// 하단
+			if (i > 0)
+				m_vecWall[iIndex]->Add_WallArray(1, m_vecWall[iIndex - VTXCNTX]);
+
+			// 하단 우측
+			if (i > 0 && j < VTXCNTX - 1)
+				m_vecWall[iIndex]->Add_WallArray(2, m_vecWall[iIndex - VTXCNTX + 1]);
+
+			// 좌측
+			if (j > 0)
+				m_vecWall[iIndex]->Add_WallArray(3, m_vecWall[iIndex - 1]);
+
+			// 우측
+			if (j < VTXCNTX - 1)
+				m_vecWall[iIndex]->Add_WallArray(4, m_vecWall[iIndex + 1]);
+
+			// 상단 좌측
+			if (i < VTXCNTZ - 1 && j > 0 )
+				m_vecWall[iIndex]->Add_WallArray(5, m_vecWall[iIndex + VTXCNTX - 1]);
+
+			// 상단
+			if (i < VTXCNTZ - 1)
+				m_vecWall[iIndex]->Add_WallArray(6, m_vecWall[iIndex + VTXCNTX]);
+
+			// 상단 우측
+			if (i < VTXCNTZ - 1 && j < VTXCNTX - 1)
+				m_vecWall[iIndex]->Add_WallArray(7, m_vecWall[iIndex + VTXCNTX + 1]);
+		}
 	}
 
 	CloseHandle(m_hFile);

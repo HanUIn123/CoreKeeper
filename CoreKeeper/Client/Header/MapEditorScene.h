@@ -5,8 +5,9 @@
 #include "Engine_Define.h"
 
 #include "MapToolTerrain.h"
-#include "Tile.h"
-#include "Wall.h"
+
+#include "Include.h"
+
 
 BEGIN(Engine)
 
@@ -50,33 +51,42 @@ public:
 	void									Setting_WallList();
 	HRESULT									Piking_Wall();
 
-	// 인접 타일 검사하는 함수
-	void									Check_NextWall(CCalculator* _pPickPos, CMapToolTex* _pMapToolTex, CTransform* _pMapToolTrnasform, _int _iIndex);
-
+	void									Setting_ObjectList();
+	HRESULT									Piking_Object();
 
 	HRESULT									Delete_Object(const _tchar* pLayerTag, const _tchar* pGameObjectTag);
 
 	// ImGui에 Tile 미리보기 이미지 등록.
-	HRESULT									Resister_TileImage_ImGui(LPDIRECT3DDEVICE9 _pGraphicDeivce, const _tchar* _ImageFilePath, TEXTUREID _eTextureId, const int& _iImageNumber);
+	HRESULT									Resister_ImguiImage_ImGui(LPDIRECT3DDEVICE9 _pGraphicDeivce, const _tchar* _ImageFilePath, TEXTUREID _eTextureId, const int& _iImageNumber);
+private:
+	_int									m_iStandardIndex;
+	_int									m_iUpIndex;
+	_int									m_iDownIndex;
+	_int									m_iRightIndex;
+	_int									m_iLeftIndex;
 
 private:
 	vector<IDirect3DBaseTexture9*>			m_vecTileTexture;
 	vector<IDirect3DBaseTexture9*>			m_vecWallTexture;
+	vector<IDirect3DBaseTexture9*>			m_vecObjectTexture;
 
 	LPDIRECT3DTEXTURE9						m_TileTextureInfo = NULL;
-
 	D3DXIMAGE_INFO							m_tImageInfo;
 
 
 	// ImGui 창 위 마우스 존재 판단 bool변수
 	bool									m_bGuiHovered;
 	bool									m_bSwitch;
+	wstring									m_iImGuiTileListNum;
 
 	// n번 째 타일인지 담는 변수.
 	_int									m_iImageNumber;
 
 	// n번 째 벽인지 담는 변수.
 	_int									m_iWallImgNumber;
+
+	// n번 째 건설물인지 담는 변수.
+	_int									m_iBuildingNumber;
 public:
 	void									MapFile_Save();
 	HRESULT									MapFile_Load();
@@ -84,33 +94,39 @@ private:
 	Engine::CGameObject*					m_pMTGameObjectCom;
 	Engine::CGameObject*					m_pTileCom;
 	Engine::CGameObject*					m_pWallCom;
+	Engine::CGameObject*					m_pObjectCom;
 
 	int										m_iTileCreateCount;
 	int										m_iWallCreateCount;
 	bool									m_bPushed;
 	bool									m_bWallClickPushed;
+	bool									m_bBuildingClick;
 	bool									m_bSelectTile;
 	bool									m_bSelectWall;
+	bool									m_bSelectBuilding;
 	bool									m_bCanInstall;
+	bool									m_bAlreadyInstalled;
 
 	// Picking 가능한 타일 키 값 개수. 현재는 VTXCNTX * VTXCNTZ개
 	wstring									m_wsTileNameString[VTXCNTX * VTXCNTZ];
 	wstring									m_wsWallNameString[VTXCNTX * VTXCNTZ];
+	wstring									m_wsObjectNameString[VTXCNTX * VTXCNTZ];
 
 	HANDLE									m_hFile;
 	HANDLE									m_hWallFile;
 
 	vector<CTile*>							m_vecTileObject;
 	vector<CWall*>							m_vecWallObject;
+	vector<CBuilding*>						m_vecBuildingObject;
+
+	list<CCore*>							m_listBuildingObject;
 
 	_vec3									m_vCheckPos;
 	_vec3                                   m_vPickPos;
 
 	_int									m_iLoadTileCount;
 	_int									m_iLoadWallCount;
-
 	_int									m_iPikingIndex;
-
 
 };
 

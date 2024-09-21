@@ -159,6 +159,7 @@ call CopyUtility.bat</Command>
     <ClCompile Include="..\Code\LightMgr.cpp" />
     <ClCompile Include="..\Code\Management.cpp" />
     <ClCompile Include="..\Code\MapToolTex.cpp" />
+    <ClCompile Include="..\Code\ObjectTex.cpp" />
     <ClCompile Include="..\Code\RangeTex.cpp" />
     <ClCompile Include="..\Code\RcCol.cpp" />
     <ClCompile Include="..\Code\RcTex.cpp" />
@@ -193,6 +194,7 @@ call CopyUtility.bat</Command>
     <ClInclude Include="..\..\Header\LightMgr.h" />
     <ClInclude Include="..\..\Header\Management.h" />
     <ClInclude Include="..\..\Header\MapToolTex.h" />
+    <ClInclude Include="..\..\Header\ObjectTex.h" />
     <ClInclude Include="..\..\Header\RangeTex.h" />
     <ClInclude Include="..\..\Header\RcCol.h" />
     <ClInclude Include="..\..\Header\RcTex.h" />

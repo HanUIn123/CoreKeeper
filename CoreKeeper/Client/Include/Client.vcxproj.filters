@@ -204,9 +204,18 @@
     </Filter>
     <Filter Include="02. GameObject\07. UI\07.UITrashCan\00. UITrashSlot">
       <UniqueIdentifier>{dcff4464-914f-4bab-a688-9543044946ab}</UniqueIdentifier>
-	</Filter>
+    </Filter>
     <Filter Include="02. GameObject\06. Item\99. Etc\02. Torch">
       <UniqueIdentifier>{867559b7-504c-497a-a34b-19f180acd018}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\10.Building">
+      <UniqueIdentifier>{95d62827-3421-4e6a-81b8-50370ab85a05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\10.Building\00.Core">
+      <UniqueIdentifier>{270f73f8-6ed9-4d63-a46b-8882ed003524}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\10.Building\01.Box">
+      <UniqueIdentifier>{faf24c15-7031-46eb-b2a1-c3c4319d1311}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -395,9 +404,15 @@
     </ClInclude>
     <ClInclude Include="..\Header\UITrashSlot.h">
       <Filter>02. GameObject\07. UI\07.UITrashCan\00. UITrashSlot</Filter>
-	</ClInclude>
+    </ClInclude>
     <ClInclude Include="..\Header\Torch.h">
       <Filter>02. GameObject\06. Item\99. Etc\02. Torch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\Core.h">
+      <Filter>02. GameObject\10.Building\00.Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\Building.h">
+      <Filter>02. GameObject\10.Building</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -568,9 +583,15 @@
     </ClCompile>
     <ClCompile Include="..\Code\UITrashSlot.cpp">
       <Filter>02. GameObject\07. UI\07.UITrashCan\00. UITrashSlot</Filter>
-	</ClCompile>
+    </ClCompile>
     <ClCompile Include="..\Code\Torch.cpp">
       <Filter>02. GameObject\06. Item\99. Etc\02. Torch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Core.cpp">
+      <Filter>02. GameObject\10.Building\00.Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Building.cpp">
+      <Filter>02. GameObject\10.Building</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

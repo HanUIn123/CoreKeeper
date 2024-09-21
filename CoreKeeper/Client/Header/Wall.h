@@ -41,9 +41,14 @@ public:
 
     _bool                                                   Get_IsUpWall() { return m_bIsUpWall; }
     void                                                    Set_IsUpWall(_bool _bIsUpWall) { m_bIsUpWall = _bIsUpWall; }
+
+    void                                                    Add_WallArray(int _iIndex, CWall* _pWall) { m_vecAroundWall[_iIndex] = _pWall; }
+    vector<CWall*>                                          Get_Around() { return m_vecAroundWall; }
 private:
     HRESULT													Add_Component();
+    HRESULT                                                 Setup_Material();
 
+    void                                                    Update_Texture();
 private:
     Engine::CTransform*                                     m_pTransformCom;
     Engine::CTexture*                                       m_pTextureCom;
@@ -64,7 +69,7 @@ private:
 
     _bool                                                   m_bIsUpWall;
 
-
+    vector<CWall*>                                          m_vecAroundWall;
 private:
     bool    m_bActive;
 };
