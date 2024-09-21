@@ -59,14 +59,8 @@ HRESULT CPlayer::Ready_GameObject()
 
 _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 {
-	m_pAnimatorCom->Update_Animation();
-
-	Flip();
-
 	if (!m_bNoMove && !m_bInventory && !m_bCraft && !m_bMap) // m_bNoMove -> UICursor에서 적용
-	{
 		Mouse_Click();
-	}
 	else
 		m_bSwing = false;
 
@@ -98,17 +92,19 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 			ShoulderView_Swing();
 	}
 
-	Set_UI();
-
+	Flip();
+	m_pAnimatorCom->Update_Animation();
 	m_pColliderCom->Update_Collider(m_pTransformCom->Get_WorldMatrix());
-	
 	Add_RenderGroup(RENDER_ALPHA, this);
+
+	Set_UI();
 
 	return Engine::CGameObject::Update_GameObject(fTimeDelta);
 }
 
 void CPlayer::LateUpdate_GameObject()
 {
+	
 	Engine::CGameObject::LateUpdate_GameObject();
 }
 
@@ -171,59 +167,59 @@ HRESULT CPlayer::Add_Component()
 void CPlayer::Key_Position(const _float& fTimeDelta)
 {
 	_vec3	vLook, vRight;
-
 	m_pTransformCom->Get_Info(INFO_LOOK, &vLook);
 	m_pTransformCom->Get_Info(INFO_RIGHT, &vRight);
 
+	m_eState = WALK;
+	_float fLookSpeed(0.f), fRightSpeed(0.f);
 	// TOP (RIGHT, LEFT)
 	if (Engine::Get_DIKeyState(DIK_W))
 	{
-		m_eState = WALK;
 		if (Engine::Get_DIKeyState(DIK_D))
 		{
-			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, m_fDiagSpeed);
-			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, m_fDiagSpeed);
+			fLookSpeed = m_fDiagSpeed;
+			fRightSpeed = m_fDiagSpeed;
 		}
 		else if (Engine::Get_DIKeyState(DIK_A))
 		{
-			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, m_fDiagSpeed);
-			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, -m_fDiagSpeed);
+			fLookSpeed = m_fDiagSpeed;
+			fRightSpeed = -m_fDiagSpeed;
 		}
 		else
-			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, m_fSpeed);
+			fLookSpeed = m_fSpeed;
 	}
 	// BOTTOM (RIGHT, LEFT)
 	else if (Engine::Get_DIKeyState(DIK_S))
 	{
-		m_eState = WALK;
 		if (Engine::Get_DIKeyState(DIK_D))
 		{
-			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, -m_fDiagSpeed);
-			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, m_fDiagSpeed);
+			fLookSpeed = -m_fDiagSpeed;
+			fRightSpeed = m_fDiagSpeed;
 		}
 		else if (Engine::Get_DIKeyState(DIK_A))
 		{
-			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, -m_fDiagSpeed);
-			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, -m_fDiagSpeed);
+			fLookSpeed = -m_fDiagSpeed;
+			fRightSpeed = -m_fDiagSpeed;
 		}
 		else
-			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, -m_fSpeed);
+			fLookSpeed = -m_fSpeed;
 	}
 	// L
 	else if (Engine::Get_DIKeyState(DIK_A))
-	{
-		m_eState = WALK;
-		m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, -m_fSpeed);
-	}
+		fRightSpeed = -m_fSpeed;
 	// R
 	else if (Engine::Get_DIKeyState(DIK_D))
-	{
-		m_eState = WALK;
-		m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, m_fSpeed);
-	}
+		fRightSpeed = m_fSpeed;
 	else
-	{
 		m_eState = IDLE;
+	
+	if (m_eState == WALK)
+	{
+		_int iWeight = 1;
+		if (m_eDir == LEFT)
+			iWeight = -1;
+		m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, fLookSpeed);
+		m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, fRightSpeed * iWeight);
 	}
 }
 
@@ -322,21 +318,17 @@ void CPlayer::Animation_SetUp(STATE st, DIRECTION dir)
 	case IDLE:
 		if (m_eDir == FRONT)
 			m_pAnimatorCom->Set_CurState(st, 0, 0, 20);
-		else if (m_eDir == RIGHT)
-			m_pAnimatorCom->Set_CurState(st, 1, 1, 20);
 		else if (m_eDir == BACK)
 			m_pAnimatorCom->Set_CurState(st, 2, 2, 20);
-		else if (m_eDir == LEFT)
+		else
 			m_pAnimatorCom->Set_CurState(st, 1, 1, 20);
 		break;
 	case WALK:
 		if (m_eDir == FRONT)
 			m_pAnimatorCom->Set_CurState(st, 9, 14, 6);
-		else if (m_eDir == RIGHT)
-			m_pAnimatorCom->Set_CurState(st, 18, 23, 6);
 		else if (m_eDir == BACK)
 			m_pAnimatorCom->Set_CurState(st, 27, 32, 6);
-		else if (m_eDir == LEFT)
+		else
 			m_pAnimatorCom->Set_CurState(st, 18, 23, 6);
 		break;
 	case SWING:
@@ -344,11 +336,9 @@ void CPlayer::Animation_SetUp(STATE st, DIRECTION dir)
 		{
 			if (m_eDir == FRONT)
 				m_pAnimatorCom->Set_CurState(st, 36, 36, 10);
-			else if (m_eDir == RIGHT)
-				m_pAnimatorCom->Set_CurState(st, 37, 39, 3);
 			else if (m_eDir == BACK)
 				m_pAnimatorCom->Set_CurState(st, 40, 41, 5);
-			else if (m_eDir == LEFT)
+			else
 				m_pAnimatorCom->Set_CurState(st, 37, 39, 3);
 		}
 		break;
@@ -358,76 +348,64 @@ void CPlayer::Animation_SetUp(STATE st, DIRECTION dir)
 void CPlayer::ShoulderView_Control(const _float& fTimeDelta)
 {
 	_vec3	vLook, vRight;
-
 	m_pTransformCom->Get_Info(INFO_LOOK, &vLook);
 	m_pTransformCom->Get_Info(INFO_RIGHT, &vRight);
 
+	m_eState = WALK;
+	_float fLookSpeed(0), fRightSpeed(0);
 	// TOP (RIGHT, LEFT)
 	if (Engine::Get_DIKeyState(DIK_W))
 	{
-		m_eState = WALK;
 		if (Engine::Get_DIKeyState(DIK_D))
 		{
 			m_eDir = RIGHT;
-			m_pAnimatorCom->Set_CurState(WALK, 18, 23, 6);
-			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, m_fDiagSpeed);
-			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, m_fDiagSpeed);
-
+			fLookSpeed = m_fDiagSpeed;
+			fRightSpeed = m_fDiagSpeed;
 		}
 		else if (Engine::Get_DIKeyState(DIK_A))
 		{
 			m_eDir = LEFT;
-			m_pAnimatorCom->Set_CurState(WALK, 18, 23, 6);
-			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, m_fDiagSpeed);
-			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, m_fDiagSpeed);
+			fLookSpeed = m_fDiagSpeed;
+			fRightSpeed = m_fDiagSpeed;
 		}
 		else
 		{
 			m_eDir = BACK;
-			m_pAnimatorCom->Set_CurState(WALK, 27, 32, 6);
-			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, m_fSpeed);
+			fLookSpeed = m_fSpeed;
 		}
 	}
 	// BOTTOM (RIGHT, LEFT)
 	else if (Engine::Get_DIKeyState(DIK_S))
 	{
-		m_eState = WALK;
 		if (Engine::Get_DIKeyState(DIK_D))
 		{
 			m_eDir = RIGHT;
-			m_pAnimatorCom->Set_CurState(WALK, 18, 23, 6);
-			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, -m_fDiagSpeed);
-			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, m_fDiagSpeed);
+			fLookSpeed = -m_fDiagSpeed;
+			fRightSpeed = m_fDiagSpeed;
 		}
 		else if (Engine::Get_DIKeyState(DIK_A))
 		{
 			m_eDir = LEFT;
-			m_pAnimatorCom->Set_CurState(WALK, 18, 23, 6);
-			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, -m_fDiagSpeed);
-			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, m_fDiagSpeed);
+			fLookSpeed = -m_fDiagSpeed;
+			fRightSpeed = m_fDiagSpeed;
 		}
 		else
 		{
 			m_eDir = FRONT;
-			m_pAnimatorCom->Set_CurState(WALK, 9, 14, 6);
-			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, -m_fSpeed);
+			fLookSpeed = -m_fSpeed;
 		}
 	}
 	// L
 	else if (Engine::Get_DIKeyState(DIK_A))
 	{
-		m_eState = WALK;
 		m_eDir = LEFT;
-		m_pAnimatorCom->Set_CurState(WALK, 18, 23, 6);
-		m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, m_fSpeed);
+		fRightSpeed = m_fSpeed;
 	}
 	// R
 	else if (Engine::Get_DIKeyState(DIK_D))
 	{
-		m_eState = WALK;
 		m_eDir = RIGHT;
-		m_pAnimatorCom->Set_CurState(WALK, 18, 23, 6);
-		m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, m_fSpeed);
+		fRightSpeed = m_fSpeed;
 	}
 	else
 	{
@@ -435,6 +413,25 @@ void CPlayer::ShoulderView_Control(const _float& fTimeDelta)
 		m_eDir = FRONT;
 		m_pAnimatorCom->Set_CurState(IDLE, 0, 0, 20);
 	}
+	if (m_eState == WALK)
+	{
+		switch (m_eDir)
+		{
+		case RIGHT:
+		case LEFT:
+			m_pAnimatorCom->Set_CurState(WALK, 18, 23, 6);
+			break;
+		case FRONT:
+			m_pAnimatorCom->Set_CurState(WALK, 9, 14, 6);
+			break;
+		case BACK:
+			m_pAnimatorCom->Set_CurState(WALK, 27, 32, 6);
+			break;
+		}
+		m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, fLookSpeed);
+		m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, fRightSpeed);
+	}
+
 }
 
 void CPlayer::ShoulderView_Swing()
