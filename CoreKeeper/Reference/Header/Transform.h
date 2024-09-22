@@ -54,7 +54,7 @@ public:
 	{
 		m_vInfo[INFO_POS] = { _fX, _fY, _fZ };
 
-		//Update_Matrix();
+		Update_Matrix();
 	}
 
 	void				Chase_Target(const _vec3* pTargetPos, const _float& fSpeed);

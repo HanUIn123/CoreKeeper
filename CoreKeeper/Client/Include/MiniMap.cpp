@@ -16,23 +16,14 @@ HRESULT CMiniMap::Ready_GameObject(_vec2 vPos, _vec2 vSize)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	_D3DVIEWPORT9 MMapViewport;
-
-	MMapViewport.X = WINCX - 200.f;
-	MMapViewport.Y = WINCY - 200.f;
-	MMapViewport.Width = 400.f;
-	MMapViewport.Height = 200.f;
-	MMapViewport.MinZ = 0.0f;
-	MMapViewport.MaxZ = 1.0f;
-
-	m_pGraphicDev->SetViewport(&MMapViewport);
-
 	return S_OK;
 }
 
 _int CMiniMap::Update_GameObject(const _float& fTimeDelta)
 {
 	_int iExit = Engine::CGameObject::Update_GameObject(fTimeDelta);
+
+	Engine::Add_RenderGroup(RENDER_WINDOW, this);
 
 	return iExit;
 }
