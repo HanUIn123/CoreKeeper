@@ -220,6 +220,9 @@
     <Filter Include="02. GameObject\07. UI\08. MiniMap">
       <UniqueIdentifier>{525c51d0-a9b0-43aa-b8d8-6b3d0649bc15}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\07. UI\09. UISort">
+      <UniqueIdentifier>{764cda61-387f-4090-8d86-f0682c31a4d6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -420,6 +423,9 @@
     <ClInclude Include="..\Header\MiniMap.h">
       <Filter>02. GameObject\07. UI\08. MiniMap</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\UISort.h">
+      <Filter>02. GameObject\07. UI\09. UISort</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -601,6 +607,9 @@
     </ClCompile>
     <ClCompile Include="MiniMap.cpp">
       <Filter>02. GameObject\07. UI\08. MiniMap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\UISort.cpp">
+      <Filter>02. GameObject\07. UI\09. UISort</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

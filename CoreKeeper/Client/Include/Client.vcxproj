@@ -195,6 +195,7 @@ call Copy.bat</Command>
     <ClInclude Include="..\Header\UIItemSlot.h" />
     <ClInclude Include="..\Header\UIPlayerCraft.h" />
     <ClInclude Include="..\Header\UIPlayerStats.h" />
+    <ClInclude Include="..\Header\UISort.h" />
     <ClInclude Include="..\Header\UIStatusBar.h" />
     <ClInclude Include="..\Header\UIScreenIcon.h" />
     <ClInclude Include="..\Header\UIScreenInv.h" />
@@ -260,6 +261,7 @@ call Copy.bat</Command>
     <ClCompile Include="..\Code\UIItemSlot.cpp" />
     <ClCompile Include="..\Code\UIPlayerCraft.cpp" />
     <ClCompile Include="..\Code\UIPlayerStats.cpp" />
+    <ClCompile Include="..\Code\UISort.cpp" />
     <ClCompile Include="..\Code\UIStatusBar.cpp" />
     <ClCompile Include="..\Code\UIScreenIcon.cpp" />
     <ClCompile Include="..\Code\UIScreenInv.cpp" />

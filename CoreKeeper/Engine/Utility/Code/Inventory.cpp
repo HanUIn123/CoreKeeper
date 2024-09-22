@@ -24,7 +24,18 @@ void CInventory::Sort_Item()
 	// 10번째 인덱스부터 끝까지 정렬
 	std::sort(m_vecItems.begin() + 10, m_vecItems.end(),
 		[](CItem* a, CItem* b) {
-			return a->Get_ItemNum() < b->Get_ItemNum();
+
+			if (a == nullptr) return false;
+			if (b == nullptr) return true;
+			if (a != nullptr && b != nullptr)
+			{
+				return a->Get_ItemNum() < b->Get_ItemNum();
+			}
+			/*
+			else if (a == nullptr && b != nullptr)
+				return true;
+			else if (a != nullptr && b == nullptr)
+				return false;*/
 		});
 }
 

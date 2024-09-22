@@ -54,3 +54,4 @@
 #include "UICraftSlot.h"
 #include "UITrashCan.h"
 #include "UITrashSlot.h"
+#include "UISort.h"
