@@ -27,6 +27,7 @@ private:
 public:
 	HRESULT				Ready_Inventory(int _iSlotCount);
 
+	void				Sort_Item();
 	bool				Add_Item(CItem* _pItem);
 	bool				Minus_Item(ITEMNUM _eItemNum, int _iCount);
 

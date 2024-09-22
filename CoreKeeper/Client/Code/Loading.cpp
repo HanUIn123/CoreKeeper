@@ -112,7 +112,7 @@ _uint CLoading::Loading_Stage()
 
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SwordTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/sword_legendary.png", TEX_NORMAL)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_BowTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/bow_legendary.png", TEX_NORMAL)), E_FAIL);
-    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_StaffTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Fireball_staff.png", TEX_NORMAL)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_StaffTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Suncaller_staff.png", TEX_NORMAL)), E_FAIL);
 
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_HelmetTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/godsent_helm.png", TEX_NORMAL)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ChestTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/godsent_chest.png", TEX_NORMAL)), E_FAIL);
