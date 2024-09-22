@@ -24,30 +24,46 @@ HRESULT CSlime::Ready_GameObject()
     _vec3 vPos;
     m_pTransformCom->Get_Info(INFO_POS, &vPos);
     m_pTransformCom->Set_Pos(vPos.x, m_fIdleY, vPos.z);
-
+    m_pStateCom->Set_Stat(100, 0, 10, 0);
     Set_Speed(0.6f);
-
     return S_OK;
 }
 
 _int CSlime::Update_GameObject(const _float& fTimeDelta)
 {
-    m_pAnimatorCom->Update_Animation();
-    m_eState = State_Change();
-    switch (m_eState)
+    if (!m_bDropSettings)
     {
-    case IDLE:
-        Pattern_Idle(fTimeDelta);
-        break;
-    case WALK:
-        Pattern_Chase(fTimeDelta);
-        break;
-    case SWING:
-        Pattern_Attack(fTimeDelta);
-        break;
-    case DEAD:
-        break;
+        m_bDropSettings = true;
+        m_pDropItem = dynamic_cast<CItem*>(Get_GameObject(L"Layer_GameLogic", L"Seed_Slime"));
+        m_pDropItem->Set_Active(false);
     }
+    if (m_bStopDraw)
+        return 0;
+    m_pAnimatorCom->Update_Animation();
+    Check_Hitted();
+    if (m_bKnockBackEnd)
+    {
+        if(m_eState != DEAD)
+            m_eState = State_Change();
+        switch (m_eState)
+        {
+        case IDLE:
+            Pattern_Idle(fTimeDelta);
+            break;
+        case WALK:
+            Pattern_Chase(fTimeDelta);
+            break;
+        case SWING:
+            Pattern_Attack(fTimeDelta);
+            break;
+        case DEAD:
+            Pattern_Dead();
+            break;
+        }
+    }
+    else
+        KnockBack(fTimeDelta, 1.8f);
+    
 
     //Apply_Billboard();
 

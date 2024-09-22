@@ -51,6 +51,7 @@ private:
 	void			Swing_Equipment();
 
 	void            Set_UI();
+
 public:
 	CItem*			Get_HandedItem()		{ return m_pHandedItem; }
 	STATE			Get_CurState()			{ return m_eState; }

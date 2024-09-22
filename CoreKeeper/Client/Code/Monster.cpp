@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "..\Header\Monster.h"
 #include "Export_Utility.h"
+#include "..\Header\Player.h"
 
 CMonster::CMonster(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CGameObject(pGraphicDev)
@@ -16,9 +17,23 @@ CMonster::CMonster(LPDIRECT3DDEVICE9 pGraphicDev)
 	m_fJumpSpeed = 0.f;
 	m_fJumpFrame = 0.f;
 
+	m_vStartPoint = { 0, 0, 0 };
+	m_vAttackPoint = { 0, 0, 0 };
+	m_bAttackSuccess = false;
+	
+	m_bFallStart = false;
+	m_vFallDir = { 0, 0, 0 };
+
 	m_iDir = 0;
 	m_fSpeed = 0.f;
-	m_fDiagSpeed = 0.f;
+	m_fDiagSpeed = 0.f; 
+	m_fSpeedWeight = 0.f;
+
+	m_bKnockBackStart = false;
+	m_bKnockBackEnd = true;
+
+	m_bStopDraw = false;
+	m_bDropSettings = false;
 }
 
 CMonster::~CMonster()

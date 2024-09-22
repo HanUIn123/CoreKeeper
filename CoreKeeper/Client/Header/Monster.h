@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "Item.h"
 
 BEGIN(Engine)
 
@@ -27,14 +28,18 @@ public:
 
 protected:
 	void			Apply_Billboard();
+	void			Set_Speed(_float fSpeed) { m_fSpeed = fSpeed; m_fDiagSpeed = sqrt(pow(m_fSpeed, 2) / 2); }
+	void			Set_DropItem(CItem* item) { m_pDropItem = item; }
+
 	void			Pattern_Idle(const _float& fTimeDelta);
 	void			Pattern_Chase(const _float& fTimeDelta);
 	void			Pattern_Attack(const _float& fTimeDelta);
 	void			Pattern_Dead();
-	void			Jump(const _float& fTimeDelta);
-	void			KnockBack(_float fDist);
-	void			Set_Speed(_float fSpeed) { m_fSpeed = fSpeed; m_fDiagSpeed = sqrt(pow(m_fSpeed, 2) / 2); }
 
+	void			JumpY(const _float& fTimeDelta);
+	void			FallDir(const _float& fTimeDelta);
+	void			KnockBack(const _float& fTimeDelta, const _float& fDist);
+	void			Check_Hitted();
 protected:
 	Engine::CAnimTex* m_pBufferCom;
 	Engine::CState* m_pStateCom;
