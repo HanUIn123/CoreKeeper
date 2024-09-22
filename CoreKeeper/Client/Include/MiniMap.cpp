@@ -18,8 +18,14 @@ HRESULT CMiniMap::Ready_GameObject(_vec2 vPos, _vec2 vSize)
 
 	_D3DVIEWPORT9 MMapViewport;
 
-	MMapViewport.Height = 300.f;
-   // MMapViewport.MaxZ = 
+	MMapViewport.X = WINCX - 200.f;
+	MMapViewport.Y = WINCY - 200.f;
+	MMapViewport.Width = 400.f;
+	MMapViewport.Height = 200.f;
+	MMapViewport.MinZ = 0.0f;
+	MMapViewport.MaxZ = 1.0f;
+
+	m_pGraphicDev->SetViewport(&MMapViewport);
 
 	return S_OK;
 }
