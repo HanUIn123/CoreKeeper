@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "..\Header\Monster.h"
 #include "Export_Utility.h"
-#include "..\Header\Player.h"
 
 CMonster::CMonster(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CGameObject(pGraphicDev)
@@ -17,23 +16,9 @@ CMonster::CMonster(LPDIRECT3DDEVICE9 pGraphicDev)
 	m_fJumpSpeed = 0.f;
 	m_fJumpFrame = 0.f;
 
-	m_vStartPoint = { 0, 0, 0 };
-	m_vAttackPoint = { 0, 0, 0 };
-	m_bAttackSuccess = false;
-	
-	m_bFallStart = false;
-	m_vFallDir = { 0, 0, 0 };
-
 	m_iDir = 0;
 	m_fSpeed = 0.f;
-	m_fDiagSpeed = 0.f; 
-	m_fSpeedWeight = 0.f;
-
-	m_bKnockBackStart = false;
-	m_bKnockBackEnd = true;
-
-	m_bStopDraw = false;
-	m_bDropSettings = false;
+	m_fDiagSpeed = 0.f;
 }
 
 CMonster::~CMonster()
@@ -198,25 +183,19 @@ void CMonster::Pattern_Chase(const _float& fTimeDelta)
 
 void CMonster::Pattern_Attack(const _float& fTimeDelta)
 {
+	_float		fSpeedWeight;
 	_vec3		vPos, vPlayerPos;
 	m_pTransformCom->Get_Info(INFO_POS, &vPos);
 	Engine::CTransform* pPlayerTransform = dynamic_cast<Engine::CTransform*>
 		(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Transform"));
 	NULL_CHECK(pPlayerTransform);
-	Engine::CCollider* pPlayerCollider = dynamic_cast<Engine::CCollider*>
-		(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Collider"));
 	switch (m_eType)
 	{
 	case MON_SLIME:
 		m_pAnimatorCom->Set_CurState(SWING, 24, 35, 8);
 		pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
-		m_fSpeedWeight = 0.f;
 		if (m_pAnimatorCom->Get_MotionIndex() <= 29 || m_pAnimatorCom->Get_MotionIndex() >= 34)
 		{
-			m_bAttackSuccess = false;
-			m_bFallStart = false;
-			m_vStartPoint = vPos;
-			m_vAttackPoint = vPlayerPos;
 			if (m_pAnimatorCom->Get_MotionIndex() == 25 || m_pAnimatorCom->Get_MotionIndex() == 34)
 				m_pTransformCom->Set_Pos(vPos.x, m_fIdleY - 0.1f, vPos.z);
 			else if (m_pAnimatorCom->Get_MotionIndex() == 35)
@@ -228,22 +207,14 @@ void CMonster::Pattern_Attack(const _float& fTimeDelta)
 				else
 					m_eState = WALK;
 			}
+			fSpeedWeight = 0.f;
 		}
 		else
 		{
-			JumpY(fTimeDelta);
-			m_fSpeedWeight = 6.f;
-			if (vPos.y > m_fIdleY)
-			{
-				// 공격 성공
-				if (m_pColliderCom->Check_Collision(pPlayerCollider))
-					m_bAttackSuccess = true;
-			}
-			if(m_bAttackSuccess)
-				FallDir(fTimeDelta);
-			else
-				m_pTransformCom->Chase_Target(&m_vAttackPoint, fTimeDelta * m_fSpeedWeight);
+			fSpeedWeight = 6.f;
+			Jump(fTimeDelta);
 		}
+		m_pTransformCom->Chase_Target(&vPlayerPos, fTimeDelta * fSpeedWeight);
 		break;
 	default:
 		break;
@@ -252,6 +223,9 @@ void CMonster::Pattern_Attack(const _float& fTimeDelta)
 
 void CMonster::Pattern_Dead()
 {
+	if (!m_pStateCom->Get_Dead())
+		m_pStateCom->Set_Dead();
+
 	switch (m_eType)
 	{
 	case MON_SLIME:
@@ -260,19 +234,9 @@ void CMonster::Pattern_Dead()
 	default:
 		break;
 	}
-	if (m_pAnimatorCom->Get_MotionEnd())
-	{
-		m_bStopDraw = true;
-		// 아이템 드랍
-		_vec3 vPos;
-		m_pTransformCom->Get_Info(INFO_POS, &vPos);
-		m_pDropItem->Set_Active(true);
-		m_pDropItem->Drop(vPos);
-
-	}
 }
 
-void CMonster::JumpY(const _float& fTimeDelta)
+void CMonster::Jump(const _float& fTimeDelta)
 {
 	_vec3 vPos, vUp;
 	m_pTransformCom->Get_Info(INFO_POS, &vPos);
@@ -282,7 +246,6 @@ void CMonster::JumpY(const _float& fTimeDelta)
 		m_bJumping = true;
 		m_fJumpTime = 0;
 		m_fJumpHeight = m_fJumpY - m_fIdleY;
-		// 각 몬스터마다 점프 프레임 계산
 		switch (m_eType)
 		{
 		case MON_SLIME:
@@ -292,6 +255,7 @@ void CMonster::JumpY(const _float& fTimeDelta)
 			break;
 		}
 	}
+
 	m_fJumpTime += fTimeDelta;
 	_float fProgress = (m_fJumpTime / m_fJumpFrame);
 	_float fWeight = 0.7f;
@@ -308,90 +272,14 @@ void CMonster::JumpY(const _float& fTimeDelta)
 		m_pTransformCom->Set_Pos(vPos.x, m_fIdleY, vPos.z);
 }
 
-void CMonster::FallDir(const _float& fTimeDelta)
-{
-	if (!m_bFallStart)
-	{
-		_vec3 vPos;
-		m_pTransformCom->Get_Info(INFO_POS, &vPos);
-		m_bFallStart = true;
-		m_vFallDir = m_vStartPoint - vPos;
-		D3DXVec3Normalize(&m_vFallDir, &m_vFallDir);
-		m_vFallDir.y = 0;
-	}
-	m_pTransformCom->Move_Pos(&m_vFallDir, fTimeDelta, m_fSpeedWeight);
-}
-
-void CMonster::KnockBack(const _float& fTimeDelta, const _float& fDist)
+void CMonster::KnockBack(_float fDist)
 {
 	// 모든 행동보다 우선 시 할 것
 	m_bJumping = false;
 	m_bIdling = false;
-	m_bAttackSuccess = false;
-	m_bFallStart = false;
-
-	_vec3 vPos, vUp;
-	m_pTransformCom->Get_Info(INFO_POS, &vPos);
-	m_pTransformCom->Get_Info(INFO_UP, &vUp);
-	// 검 <> 몬스터 방향 구해서 반대 방향으로 쭉 보내면 될듯
-
-
 	// m_fIdleY보다 클 경우 Y값도 내려주기
-	m_fJumpHeight = vPos.y - m_fIdleY;
-	if (m_fJumpHeight > fTimeDelta * m_fSpeedWeight)
-	{
-		m_fJumpFrame = m_fSpeedWeight / m_fJumpHeight;
-		m_pTransformCom->Move_Pos(&vUp, fTimeDelta, -m_fJumpFrame);
-	}
-	else
-		m_pTransformCom->Set_Pos(vPos.x, m_fIdleY, vPos.z);
-
-	// 지정한 거리 이상으로 물러나면 다시 패턴 시작할 수 있도록
-	// 각 몬스터 클래스에서 m_bKnockBackEnd 참고할 것
-	_vec3 vLength = m_vStartPoint - vPos;
-	if (D3DXVec3Length(&vLength) >= fDist)
-	{
-		m_bKnockBackStart = false;
-		m_bKnockBackEnd = true;
-		if(m_eState != DEAD)
-			m_eState = WALK;
-		m_pTransformCom->Set_Pos(vPos.x, m_fIdleY, vPos.z);
-		return;
-	}
-	m_pTransformCom->Move_Pos(&m_vFallDir, fTimeDelta, m_fSpeedWeight);
-}
-
-void CMonster::Check_Hitted()
-{
-	_vec3 vPos, vUp, vHandedItemColliderPos;
-	m_pTransformCom->Get_Info(INFO_POS, &vPos);
-	CPlayer* pPlayer = dynamic_cast<CPlayer*>(Get_GameObject(L"Layer_GameLogic", L"Player"));
-	CItem* pPlayerHandedItem = pPlayer->Get_HandedItem();
 	
-	if (pPlayer->Get_CurState() == SWING)
-	{
-		CCollider* pHandedItemCollider = dynamic_cast<CCollider*>(pPlayerHandedItem->Get_Component(ID_DYNAMIC, L"Com_Collider"));
-		vHandedItemColliderPos = pHandedItemCollider->Get_CenterPos();
 
-		if (m_pColliderCom->Check_Collision(pHandedItemCollider))
-		{
-			if (!m_bKnockBackStart)
-			{
-				m_bKnockBackStart = true;
-				m_bKnockBackEnd = false;
-				m_fSpeedWeight = 8.f;
-				m_fJumpHeight = vPos.y - m_fIdleY;
-				m_vStartPoint = vPos;
-				m_vFallDir = vPos - vHandedItemColliderPos;
-				D3DXVec3Normalize(&m_vFallDir, &m_vFallDir);
-				m_vFallDir.y = 0;
-				CState* pPlayerState = dynamic_cast<CState*>(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_State"));
-				m_pStateCom->Set_Damaged(pPlayerState->Get_Stat()->iAttack);
-				if (m_pStateCom->Get_Dead())
-					m_eState = DEAD;
-			}
-		}
-	}
 }
 
 CMonster* CMonster::Create(LPDIRECT3DDEVICE9 pGraphicDev)
