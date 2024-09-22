@@ -64,6 +64,7 @@ _int CUITrashCan::Update_GameObject(const _float& fTimeDelta)
 
 		Engine::Add_RenderGroup(RENDER_UI, this);
 	}
+
 	return iExit;
 }
 

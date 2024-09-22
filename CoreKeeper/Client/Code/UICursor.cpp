@@ -172,6 +172,11 @@ void CUICursor::Render_GameObject()
 			matWorld._42 += 15.f;
 			break;
 
+		case ITEM_TORCH:
+			matWorld._11 = 40.f;
+			matWorld._22 = 40.f;
+			break;
+
 		dafault:
 			matWorld._11 = 20.f;
 			matWorld._22 = 20.f;
@@ -186,7 +191,7 @@ void CUICursor::Render_GameObject()
 
 		m_pItem->Get_Texture()->Set_Texture();
 
-		m_pItem->Get_Buffer()->Render_Buffer();
+		m_pItem->Get_Buffer()->Render_First();
 
 		if (iCount != 1)
 		{

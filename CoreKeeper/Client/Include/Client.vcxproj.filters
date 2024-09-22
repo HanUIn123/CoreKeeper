@@ -217,6 +217,9 @@
     <Filter Include="02. GameObject\10.Building\01.Box">
       <UniqueIdentifier>{faf24c15-7031-46eb-b2a1-c3c4319d1311}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\07. UI\08. MiniMap">
+      <UniqueIdentifier>{525c51d0-a9b0-43aa-b8d8-6b3d0649bc15}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -414,6 +417,9 @@
     <ClInclude Include="..\Header\Building.h">
       <Filter>02. GameObject\10.Building</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\MiniMap.h">
+      <Filter>02. GameObject\07. UI\08. MiniMap</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -592,6 +598,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\Building.cpp">
       <Filter>02. GameObject\10.Building</Filter>
+    </ClCompile>
+    <ClCompile Include="MiniMap.cpp">
+      <Filter>02. GameObject\07. UI\08. MiniMap</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

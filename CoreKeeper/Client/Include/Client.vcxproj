@@ -171,6 +171,7 @@ call Copy.bat</Command>
     <ClInclude Include="..\Header\MapEditorScene.h" />
     <ClInclude Include="..\Header\MapToolCamera.h" />
     <ClInclude Include="..\Header\MapToolTerrain.h" />
+    <ClInclude Include="..\Header\MiniMap.h" />
     <ClInclude Include="..\Header\Monster.h" />
     <ClInclude Include="..\Header\Pants.h" />
     <ClInclude Include="..\Header\Player.h" />
@@ -289,6 +290,7 @@ call Copy.bat</Command>
     <ClCompile Include="imgui_widgets.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="MiniMap.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

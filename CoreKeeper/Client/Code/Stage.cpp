@@ -484,6 +484,7 @@ HRESULT CStage::Load_MapFile()
 
 	DWORD dwByte2 = 0;
 
+
 	while (true)
 	{
 		ReadFile(m_hFile, &vTempTilePos, sizeof(_vec3), &dwByte, nullptr);
