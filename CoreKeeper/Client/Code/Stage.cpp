@@ -169,7 +169,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar* pLayerTag)
 	pGameObject = CPickaxe::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Pickaxe", pGameObject), E_FAIL);
-	dynamic_cast<CItem*>(pGameObject)->Drop();
+	dynamic_cast<CItem*>(pGameObject)->Drop({10.f, 0.f, 10.f});
 
 	pGameObject = CHoe::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);

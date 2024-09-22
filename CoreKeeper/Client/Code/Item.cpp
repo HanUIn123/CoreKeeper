@@ -261,6 +261,8 @@ void CItem::Drop(_vec3 _vPos)
 	m_fFirstY = _vPos.y + 0.7f;
 
 	m_bDrop = true;
+
+	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
 }
 
 CItem* CItem::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
