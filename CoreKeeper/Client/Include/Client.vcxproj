@@ -172,6 +172,7 @@ call Copy.bat</Command>
     <ClInclude Include="..\Header\MapToolCamera.h" />
     <ClInclude Include="..\Header\MapToolTerrain.h" />
     <ClInclude Include="..\Header\Monster.h" />
+    <ClInclude Include="..\Header\Mucus.h" />
     <ClInclude Include="..\Header\Pants.h" />
     <ClInclude Include="..\Header\Player.h" />
     <ClInclude Include="..\Header\Seed.h" />
@@ -238,6 +239,7 @@ call Copy.bat</Command>
     <ClCompile Include="..\Code\MapToolCamera.cpp" />
     <ClCompile Include="..\Code\MapToolTerrain.cpp" />
     <ClCompile Include="..\Code\Monster.cpp" />
+    <ClCompile Include="..\Code\Mucus.cpp" />
     <ClCompile Include="..\Code\Pants.cpp" />
     <ClCompile Include="..\Code\Pickaxe.cpp" />
     <ClCompile Include="..\Code\Player.cpp" />

@@ -121,6 +121,7 @@ _uint CLoading::Loading_Stage()
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SeedTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/seed_%d.png", TEX_NORMAL, 3)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_WoodTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/wood.png", TEX_NORMAL)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TorchTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Torch.png", TEX_NORMAL)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MucusTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Mucus.png", TEX_NORMAL)), E_FAIL);
 
     // SHADOW TEXTURE
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ShadowTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Shadow/shadow%d.png", TEX_NORMAL, 3)), E_FAIL);
