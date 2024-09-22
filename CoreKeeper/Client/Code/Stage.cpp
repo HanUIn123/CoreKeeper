@@ -3,6 +3,7 @@
 #include "Export_Utility.h"
 #include "..\Header\DynamicCamera.h"
 
+
 CStage::CStage(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CScene(pGraphicDev)
 	, m_bInvCheck(false)
@@ -27,6 +28,9 @@ HRESULT CStage::Ready_Scene()
 
 	FAILED_CHECK_RETURN(Ready_Layer_UI(L"Layer_UI"), E_FAIL);
 
+	// 이거랑 Render_Scene() 주석 풀면 일단 stage를 위에서 꽂아서 보게됨.
+	//FAILED_CHECK_RETURN(Ready_Layer_MiniMap(L"Layer_MiniMap"), E_FAIL);
+	
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 
 	return S_OK;
@@ -46,7 +50,14 @@ void CStage::LateUpdate_Scene()
 
 void CStage::Render_Scene()
 {
+	///// 미니맵 뷰포트.. 창 나누기.. 아직 구현중...
+	// 시작 위치 x / 시작 위치 y / 너비 / 높이 / 최소 깊이 / 최대 깊이
+	// 이 위치에 현재 stage의 모습을 그대로 보여주고있음.
+
+	//D3DVIEWPORT9 miniMapViewport = { 1280 - 220, 20, 200, 150, 0.0f, 1.0f };  // 우측 상단
+	//m_pGraphicDev->SetViewport(&miniMapViewport);
 }
+
 
 HRESULT CStage::Create_Inventory(const _tchar* pLayerTag, const _tchar* pGameObjectTag) 
 {
@@ -428,6 +439,25 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_TrashSlot", pGameObject), E_FAIL);
 
 	m_mapLayer.insert({ pLayerTag , pLayer });
+
+	return S_OK;
+}
+
+HRESULT CStage::Ready_Layer_MiniMap(const _tchar* pLayerTag)
+{
+	Engine::CLayer* pLayer = CLayer::Create();
+	NULL_CHECK_RETURN(pLayer, E_FAIL);
+
+	_vec3 miniMapEye = { 0.f, 20.f, 0.f };  
+	_vec3 miniMapAt = { 0.f, 0.f, 0.f };     
+	_vec3 miniMapUp = { 0.f, 0.f, 1.f };     
+
+	m_pMiniMapCamera = CMiniMapCamera::Create(m_pGraphicDev, &miniMapEye, &miniMapAt, &miniMapUp);
+	NULL_CHECK_RETURN(m_pMiniMapCamera, E_FAIL);
+
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"MiniMapCamera", m_pMiniMapCamera), E_FAIL);
+
+	m_mapLayer.insert({ pLayerTag, pLayer });
 
 	return S_OK;
 }
