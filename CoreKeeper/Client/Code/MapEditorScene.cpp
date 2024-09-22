@@ -11,6 +11,7 @@ CMapEditorScene::CMapEditorScene(LPDIRECT3DDEVICE9 _pGraphicDevice)
     , m_pMTGameObjectCom(nullptr)
     , m_iTileCreateCount(0)
     , m_iWallCreateCount(0)
+    , m_iBuildCreateCount(0)
     , m_pTileCom(nullptr)
     , m_pWallCom(nullptr)
     , m_pObjectCom(nullptr)
@@ -23,13 +24,13 @@ CMapEditorScene::CMapEditorScene(LPDIRECT3DDEVICE9 _pGraphicDevice)
     , m_bSelectBuilding(false)
     , m_bCanInstall(false)
     , m_bAlreadyInstalled(false)
+    , m_bReposed(false)
     , m_iLoadTileCount(0)
     , m_iLoadWallCount(0)
     , m_iPikingIndex(0)
     , m_iImageNumber(0)
     , m_iWallImgNumber(0)
     , m_iBuildingNumber(0)
-
     , m_iStandardIndex(0)
     , m_iUpIndex(0)
     , m_iDownIndex(0)
@@ -78,6 +79,8 @@ HRESULT CMapEditorScene::Ready_Scene()
     FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Layer_Environment"), E_FAIL);
     FAILED_CHECK_RETURN(Ready_Layer_GameLogic(L"Layer_GameLogic"), E_FAIL);
     FAILED_CHECK_RETURN(Ready_Layer_UI(L"Layer_UI"), E_FAIL);
+    //FAILED_CHECK_RETURN(Ready_Layer_Tile(L"Layer_Tile"), E_FAIL);
+    //FAILED_CHECK_RETURN(Ready_Layer_Tile2(L"Layer_Tile2"), E_FAIL);
 
     m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 
@@ -439,7 +442,7 @@ void CMapEditorScene::Setting_ObjectList()
     const char* items[] = { "Core","Box","Object2", "Object3"};
 
     static int	nCurrentItem = 0;
-    ImGui::Combo("##3", &nCurrentItem, items, IM_ARRAYSIZE(items));
+    ImGui::Combo("##4", &nCurrentItem, items, IM_ARRAYSIZE(items));
 
     for (_int i = 0; i < m_vecObjectTexture.size(); ++i)
     {
@@ -467,10 +470,13 @@ HRESULT CMapEditorScene::Piking_Object()
 
     if (!m_bGuiHovered)
     {
-        if (Engine::Get_DIMouseState(DIM_LB) & 0x80 && m_bSelectBuilding)
+        if (Engine::Get_DIMouseState(DIM_LB) & 0x80)
         {
             m_bBuildingClick = true;
-
+        }
+        if (!(Engine::Get_DIMouseState(DIM_LB) & 0x80) && m_bSelectBuilding && m_bBuildingClick)
+        {
+            m_bBuildingClick = false;
 
             CMapToolTerrain* pTerrain = dynamic_cast<CMapToolTerrain*>(Engine::Get_GameObject(L"Layer_GameLogic", L"MapToolTerrain"));
             CCalculator* pPickPos = dynamic_cast<CCalculator*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"MapToolTerrain", L"Com_Calculator"));
@@ -479,19 +485,35 @@ HRESULT CMapEditorScene::Piking_Object()
 
             m_vPickPos = pPickPos->Picking_OnTerrain(g_hWnd, pMapToolBufferCom, pMapToolTransformCom);
 
-            _int i = _int(m_vPickPos.z * VTXCNTX + m_vPickPos.x);
+            m_bAlreadyInstalled = false;
 
+            if (m_vecBuildingObject[unsigned __int64(m_vPickPos.z * VTXCNTX + m_vPickPos.x)])
+                m_bAlreadyInstalled = true;
 
-            // ÇÏ´Ù ¸¾.
-            m_wsObjectNameString[i] = L"Object_" + std::to_wstring(i);
-            m_pObjectCom = CCore::Create(m_pGraphicDev);
-            NULL_CHECK_RETURN(m_pObjectCom, E_FAIL);
-            FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsObjectNameString[i].c_str(), m_pObjectCom), E_FAIL);
+            if (m_bAlreadyInstalled)
+                m_bCanInstall = false;
+            else if (m_vCheckPos == m_vPickPos)
+                m_bCanInstall = false;
+            else
+                m_bCanInstall = true;
 
+            if (m_bCanInstall)
+            {
+                _int i = _int(m_vPickPos.z * VTXCNTX + m_vPickPos.x);
 
+                m_wsObjectNameString[i] = L"Object_" + std::to_wstring(i);
+                m_pObjectCom = CCore::Create(m_pGraphicDev, m_vPickPos.x, m_vPickPos.z, m_bReposed, m_iBuildingNumber, m_wsObjectNameString[i].c_str());
+                m_vecBuildingObject[i] = dynamic_cast<CCore*>(m_pObjectCom);
+
+                NULL_CHECK_RETURN(m_pObjectCom, E_FAIL);
+                FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsObjectNameString[i].c_str(), m_pObjectCom), E_FAIL);
+
+                dynamic_cast<CCore*>(m_vecBuildingObject[i])->Set_BuildImgNum(m_iBuildingNumber);
+
+                m_iBuildCreateCount++;
+                m_vCheckPos = m_vPickPos;
+            }
         }
-        if (!(Engine::Get_DIMouseState(DIM_LB) & 0x80))
-            m_bBuildingClick = false;
 
         if (Engine::Get_DIMouseState(DIM_RB) & 0x80)
         {
@@ -502,6 +524,19 @@ HRESULT CMapEditorScene::Piking_Object()
 
             m_vPickPos = pPickPos->Picking_OnTerrain(g_hWnd, pMapToolBufferCom, pMapToolTransformCom);
 
+            _float fXMin = m_vPickPos.x - 5.0f;
+            _float fXMax = m_vPickPos.x + 5.0f;
+            _float fZMin = m_vPickPos.z - 5.0f;
+            _float fZMax = m_vPickPos.z + 5.0f;
+
+            if (m_vecBuildingObject[unsigned __int64(m_vPickPos.z * VTXCNTX + m_vPickPos.x)])
+            {
+                if ((fXMin < m_vPickPos.x && fXMax > m_vPickPos.x) || (fZMin < m_vPickPos.z && fZMax > m_vPickPos.z))
+                {
+                    Delete_Object(L"Layer_Environment", dynamic_cast<CCore*>(m_vecBuildingObject[unsigned __int64(m_vPickPos.z * VTXCNTX + m_vPickPos.x)])->Get_PickedBuildingName().c_str());
+                    m_vecBuildingObject[unsigned __int64(m_vPickPos.z * VTXCNTX + m_vPickPos.x)] = nullptr;
+                }
+            }
         }
     }
 
@@ -519,8 +554,6 @@ HRESULT CMapEditorScene::Delete_Object(const _tchar* pLayerTag, const _tchar* pG
 
     return S_OK;
 }
-
-
 
 HRESULT CMapEditorScene::Resister_ImguiImage_ImGui(LPDIRECT3DDEVICE9 _pGraphicDeivce, const _tchar* _ImageFilePath, TEXTUREID _eTextureId, const int& _iImageNumber)
 {

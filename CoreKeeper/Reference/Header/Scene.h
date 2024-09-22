@@ -19,6 +19,7 @@ public:
 	virtual			void			LateUpdate_Scene();
 	virtual			void			Render_Scene();
 
+	HRESULT							Create_GameObject(const _tchar* pLayerTag, CGameObject* pGameObject, const _tchar* pObjectTag);
 protected:
 	map<const _tchar*, CLayer*>		m_mapLayer;
 	LPDIRECT3DDEVICE9				m_pGraphicDev;

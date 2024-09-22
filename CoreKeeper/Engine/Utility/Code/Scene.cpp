@@ -67,6 +67,19 @@ void CScene::Render_Scene()
 	}
 }
 
+HRESULT CScene::Create_GameObject(const _tchar* pLayerTag, CGameObject* pGameObject, const _tchar* pObjectTag)
+{
+	auto iter = m_mapLayer.find(pLayerTag);
+	if (iter == m_mapLayer.end())
+		return E_FAIL;
+
+	Engine::CLayer* pLayer = iter->second;
+	if (pLayer == nullptr)
+		return E_FAIL;
+
+	return pLayer->Add_GameObject(pObjectTag, pGameObject);
+}
+
 void CScene::Free()
 {
 	for_each(m_mapLayer.begin(), m_mapLayer.end(), CDeleteMap());

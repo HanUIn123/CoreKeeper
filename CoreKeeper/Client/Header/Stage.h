@@ -4,7 +4,7 @@
 // 게임오브젝트 개수가 많아지면서 인클루드가 너무 길어져서
 // 인클루드 헤더를 따로 만들었습니다.
 #include "Include.h"
-
+#include "../Header/MiniMapCamera.h"
 
 class CStage : public Engine::CScene
 {
@@ -27,6 +27,9 @@ private:
 	HRESULT							Ready_Layer_Environment(const _tchar* pLayerTag);
 	HRESULT							Ready_Layer_GameLogic(const _tchar* pLayerTag);
 	HRESULT							Ready_Layer_UI(const _tchar* pLayerTag);
+
+	// 미니맵 띄워서 그 안에 출력해서 보여주려고 아예 레이어 따로 만들어 둠.
+	HRESULT							Ready_Layer_MiniMap(const _tchar* pLayerTag);
 
 public:
 	static	CStage*					Create(LPDIRECT3DDEVICE9 pGraphicDev);
@@ -53,5 +56,8 @@ private:
 	_int							m_iLoadWallCount;
 
 	vector<CWall*>					m_vecWall;
+
+	// 혹시 몰라, 일단 멤버로 빼서 만들어 둠.
+	CMiniMapCamera*					m_pMiniMapCamera;
 };
 

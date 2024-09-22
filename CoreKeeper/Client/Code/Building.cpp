@@ -6,6 +6,7 @@ CBuilding::CBuilding(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CGameObject(pGraphicDev)
 	, m_pTransformCom(nullptr)
 	, m_pBufferCom(nullptr)
+	, m_iBuildingImgNum(0)
 {
 }
 

@@ -223,6 +223,9 @@
     <Filter Include="02. GameObject\07. UI\09. UISort">
       <UniqueIdentifier>{764cda61-387f-4090-8d86-f0682c31a4d6}</UniqueIdentifier>
 	</Filter>
+    <Filter Include="02. GameObject\92.MiniMapCamera">
+      <UniqueIdentifier>{b137fb71-0352-4b18-b3cb-446f5e560261}</UniqueIdentifier>
+    </Filter>
     <Filter Include="02. GameObject\06. Item\99. Etc\03. Mucus">
       <UniqueIdentifier>{d7e2e7bf-da00-4517-acf2-d8521f0ede56}</UniqueIdentifier>
     </Filter>
@@ -429,6 +432,9 @@
     <ClInclude Include="..\Header\UISort.h">
       <Filter>02. GameObject\07. UI\09. UISort</Filter>
 	</ClInclude>
+    <ClInclude Include="..\Header\MiniMapCamera.h">
+      <Filter>02. GameObject\92.MiniMapCamera</Filter>
+    </ClInclude>
     <ClInclude Include="..\Header\Mucus.h">
       <Filter>02. GameObject\06. Item\99. Etc\03. Mucus</Filter>
     </ClInclude>
@@ -617,6 +623,9 @@
     <ClCompile Include="..\Code\UISort.cpp">
       <Filter>02. GameObject\07. UI\09. UISort</Filter>
 	</ClCompile>
+    <ClCompile Include="..\Code\MiniMapCamera.cpp">
+      <Filter>02. GameObject\92.MiniMapCamera</Filter>
+    </ClCompile>
     <ClCompile Include="..\Code\Mucus.cpp">
       <Filter>02. GameObject\06. Item\99. Etc\03. Mucus</Filter>
     </ClCompile>

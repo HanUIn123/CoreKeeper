@@ -130,45 +130,6 @@ const _matrix * CTransform::Compute_LookAtTarget(const _vec3 * pTargetPos)
 												 D3DXVec3Normalize(&vDir, &vDir))));
 }
 
-void CTransform::Update_Matrix()
-{
-	D3DXMatrixIdentity(&m_matWorld);
-
-	for (_int i = 0; i < INFO_POS; ++i)
-	{
-		memcpy(&m_vInfo[i], &m_matWorld.m[i][0], sizeof(_vec3));
-	}
-
-	// 크기
-
-	for (_int i = 0; i < INFO_POS; ++i)
-	{
-		D3DXVec3Normalize(&m_vInfo[i], &m_vInfo[i]);
-		m_vInfo[i] *= *(((_float*)&m_vScale) + i);
-	}
-
-	// 회전
-
-	_matrix		matRot[ROT_END];
-
-	D3DXMatrixRotationX(&matRot[ROT_X], m_vAngle.x);
-	D3DXMatrixRotationY(&matRot[ROT_Y], m_vAngle.y);
-	D3DXMatrixRotationZ(&matRot[ROT_Z], m_vAngle.z);
-
-	for (_int i = 0; i < INFO_POS; ++i)
-	{
-		for (_int j = 0; j < ROT_END; ++j)
-		{
-			D3DXVec3TransformNormal(&m_vInfo[i], &m_vInfo[i], &matRot[j]);
-		}
-	}
-
-	for (_int i = 0; i < INFO_END; ++i)
-	{
-		memcpy(&m_matWorld.m[i][0], &m_vInfo[i], sizeof(_vec3));
-	}
-}
-
 CTransform * CTransform::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 {
 	CTransform *		pTransform = new CTransform(pGraphicDev);
