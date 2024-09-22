@@ -29,7 +29,7 @@ public:
 	void				Set_Dead() { m_bDead = true; }
 
 	const STAT*			Get_Stat() { return &m_tStat; }
-	const bool			Get_Dead() { if (m_tStat.iHp <= 0) m_bDead = true; return m_bDead; }
+	const bool			Get_Dead() { return m_bDead; }
 
 public:
 	static	CState*		Create(LPDIRECT3DDEVICE9 pGraphicDev);

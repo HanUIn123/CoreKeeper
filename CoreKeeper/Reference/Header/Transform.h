@@ -60,6 +60,7 @@ public:
 	void				Chase_Target(const _vec3* pTargetPos, const _float& fSpeed);
 	const _matrix*		Compute_LookAtTarget(const _vec3* pTargetPos);
 
+	void				Update_Matrix();
 
 public:
 	_vec3		m_vInfo[INFO_END];
