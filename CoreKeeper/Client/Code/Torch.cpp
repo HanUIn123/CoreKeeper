@@ -9,9 +9,6 @@ CTorch::CTorch(LPDIRECT3DDEVICE9 pGraphicDev)
 	ZeroMemory(&m_tStat, sizeof(STAT));
 
 	m_eItemNum = ITEM_TORCH;
-
-	// 아직 몬스터 없으니까 테스트용
-	m_bDrop = true;
 }
 
 CTorch::~CTorch()
@@ -25,10 +22,10 @@ HRESULT CTorch::Ready_GameObject()
 	m_pTransformCom->m_vScale = { 1.0f, 1.0f, 1.0f };
 	m_pShadowTransformCom->m_vScale = { 0.2f, 0.2f, 0.2f };
 
-	m_pTransformCom->Set_Pos(m_pTransformCom->m_vInfo->x, m_pTransformCom->m_vInfo->y + 0.7f, m_pTransformCom->m_vInfo->z);
-	m_pShadowTransformCom->Set_Pos(m_pTransformCom->m_vInfo->x, 0.1f, m_pTransformCom->m_vInfo->z);
-	// 원래의 Y 위치 저장
-	m_fFirstY = m_pTransformCom->m_vInfo->y + 0.7f;
+	//m_pTransformCom->m_vInfo[INFO_POS] = vPos;
+	//m_pShadowTransformCom->m_vInfo[INFO_POS] = vPos;
+	//// 원래의 Y 위치 저장
+	//m_fFirstY = m_pTransformCom->m_vInfo->y + 0.7f;
 
 	//m_pAnimatorCom->Set_CurState(IDLE, 0, 0, 3);
 

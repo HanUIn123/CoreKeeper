@@ -15,18 +15,18 @@ CItem::~CItem()
 {
 }
 
-HRESULT CItem::Ready_GameObject()
+HRESULT CItem::Ready_GameObject(_vec3 vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
 	m_pTransformCom->m_vScale = { 0.2f, 0.2f, 0.2f };
 	m_pShadowTransformCom->m_vScale = { 0.2f, 0.2f, 0.2f };
 
-	m_pTransformCom->Set_Pos(m_pTransformCom->m_vInfo->x, m_pTransformCom->m_vInfo->y + 0.7f, m_pTransformCom->m_vInfo->z);
-	m_pShadowTransformCom->Set_Pos(m_pTransformCom->m_vInfo->x, 0.1f, m_pTransformCom->m_vInfo->z);
+	//m_pTransformCom->m_vInfo[INFO_POS] = vPos;
+	//m_pShadowTransformCom->m_vInfo[INFO_POS] = vPos;
 
-	// 원래의 Y 위치 저장
-	m_fFirstY = m_pTransformCom->m_vInfo->y + 0.7f;
+	//// 원래의 Y 위치 저장
+	//m_fFirstY = m_pTransformCom->m_vInfo->y + 0.7f;
 
 	return S_OK;
 }
@@ -252,11 +252,26 @@ void CItem::Walk_Equipped(const _float& fTimeDelta)
 	m_pTransformCom->Move_Pos(&vUp, fTimeDelta, m_fWalkYSpeed);
 }
 
-CItem* CItem::Create(LPDIRECT3DDEVICE9 pGraphicDev)
+void CItem::Drop(_vec3 _vPos)
+{
+	m_pTransformCom->Set_Pos(_vPos.x, _vPos.y + 0.7f, _vPos.z);
+	m_pShadowTransformCom->Set_Pos(_vPos.x, _vPos.y + 0.1f, _vPos.z);
+
+	// 원래의 Y 위치 저장
+	m_fFirstY = _vPos.y + 0.7f;
+
+	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
+
+	m_bDrop = true;
+
+	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
+}
+
+CItem* CItem::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 {
 	CItem* pItem = new CItem(pGraphicDev);
 
-	if (FAILED(pItem->Ready_GameObject()))
+	if (FAILED(pItem->Ready_GameObject(vPos)))
 	{
 		Safe_Release(pItem);
 		MSG_BOX("pItem Create Failed");

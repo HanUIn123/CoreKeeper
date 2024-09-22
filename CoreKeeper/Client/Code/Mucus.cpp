@@ -1,23 +1,23 @@
 #include "pch.h"
-#include "..\Header\Pickaxe.h"
+#include "..\Header\Mucus.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
 
-CPickaxe::CPickaxe(LPDIRECT3DDEVICE9 pGraphicDev)
+CMucus::CMucus(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CItem(pGraphicDev)
 {
 	ZeroMemory(&m_tStat, sizeof(STAT));
 
 	m_tStat.iAttack = 10;
 
-	m_eItemNum = ITEM_PICKAXE;
+	m_eItemNum = ITEM_MUCUS;
 }
 
-CPickaxe::~CPickaxe()
+CMucus::~CMucus()
 {
 }
 
-HRESULT CPickaxe::Ready_GameObject()
+HRESULT CMucus::Ready_GameObject()
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
@@ -34,7 +34,7 @@ HRESULT CPickaxe::Ready_GameObject()
 	return S_OK;
 }
 
-_int CPickaxe::Update_GameObject(const _float& fTimeDelta)
+_int CMucus::Update_GameObject(const _float& fTimeDelta)
 {
 	m_pAnimatorCom->Update_Animation();
 
@@ -79,12 +79,12 @@ _int CPickaxe::Update_GameObject(const _float& fTimeDelta)
 	return Engine::CGameObject::Update_GameObject(fTimeDelta);
 }
 
-void CPickaxe::LateUpdate_GameObject()
+void CMucus::LateUpdate_GameObject()
 {
 	Engine::CGameObject::LateUpdate_GameObject();
 }
 
-void CPickaxe::Render_GameObject()
+void CMucus::Render_GameObject()
 {
 	// 카메라를 바라보게 하면서 스케일 유지
 	//CItem::Apply_Billboard();  
@@ -121,15 +121,15 @@ void CPickaxe::Render_GameObject()
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
-HRESULT CPickaxe::Add_Component()
+HRESULT CMucus::Add_Component()
 {
 	CComponent* pComponent = NULL;
 
-	pComponent = m_pBufferCom = dynamic_cast<CAnimTex*>(Engine::Clone_Proto(L"Proto_ToolAnimTex"));
+	pComponent = m_pBufferCom = dynamic_cast<CAnimTex*>(Engine::Clone_Proto(L"Proto_NormalAnimTex"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Buffer", pComponent });
 
-	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_PickaxeTex"));
+	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_MucusTex"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Texture", pComponent });
 
@@ -160,9 +160,9 @@ HRESULT CPickaxe::Add_Component()
 	return S_OK;
 }
 
-CPickaxe* CPickaxe::Create(LPDIRECT3DDEVICE9 pGraphicDev)
+CMucus* CMucus::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 {
-	CPickaxe* pSword = new CPickaxe(pGraphicDev);
+	CMucus* pSword = new CMucus(pGraphicDev);
 
 	if (FAILED(pSword->Ready_GameObject()))
 	{
@@ -174,7 +174,7 @@ CPickaxe* CPickaxe::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 	return pSword;
 }
 
-void CPickaxe::Free()
+void CMucus::Free()
 {
 	Engine::CGameObject::Free();
 }

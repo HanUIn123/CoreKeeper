@@ -124,7 +124,7 @@ HRESULT CWall::Setup_Material()
 
     tMtrl.Diffuse = { 1.f, 1.f, 1.f, 1.f };
     tMtrl.Specular = { 1.f, 1.f, 1.f, 1.f };
-    tMtrl.Ambient = { 0.7f, 0.7f, 0.7f, 1.f };
+    tMtrl.Ambient = { 0.7f, 0.7f, 0.7f, 0.7f };
 
     tMtrl.Emissive = { 0.2f, 0.2f, 0.2f, 0.2f };
     tMtrl.Power = 0.f;

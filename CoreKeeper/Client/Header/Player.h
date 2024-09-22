@@ -51,6 +51,7 @@ private:
 	void			Swing_Equipment();
 
 	void            Set_UI();
+
 public:
 	CItem*			Get_HandedItem()		{ return m_pHandedItem; }
 	STATE			Get_CurState()			{ return m_eState; }
@@ -66,12 +67,8 @@ public:
 	void            Set_Inventory();
 	void            Set_Map();
 
-	void            Set_DisMove() { 
-		m_bNoMove = true; 
-	}
+	void            Set_DisMove() { m_bNoMove = true; }
 	void            Set_EnaMove() { m_bNoMove = false; }
-
-	// Hp 가져오는 함수
 
 private:
 	Engine::CAnimTex*		m_pBufferCom;

@@ -25,7 +25,7 @@ HRESULT CLogo::Ready_Scene()
 	FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Layer_Environment"), E_FAIL);
 
 	Engine::PlayBGM(L"Main_Menu.wav", 0.1f);
-
+	
 	return S_OK;
 }
 
