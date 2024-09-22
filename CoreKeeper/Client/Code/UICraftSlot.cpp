@@ -165,7 +165,7 @@ _int CUICraftSlot::Update_GameObject(const _float& fTimeDelta)
 						break;
 				
 					}
-				}
+				}	
 			}
 
 		}

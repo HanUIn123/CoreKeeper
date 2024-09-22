@@ -11,9 +11,6 @@ CSword::CSword(LPDIRECT3DDEVICE9 pGraphicDev)
 	m_tStat.iAttack = 10;
 
 	m_eItemNum = ITEM_SWORD;
-
-	// 아직 몬스터 없으니까 테스트용
-	m_bDrop = true;
 }
 
 CSword::~CSword()

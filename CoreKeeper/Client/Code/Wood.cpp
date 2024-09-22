@@ -9,9 +9,6 @@ CWood::CWood(LPDIRECT3DDEVICE9 pGraphicDev)
 	ZeroMemory(&m_tStat, sizeof(STAT));
 
 	m_eItemNum = ITEM_WOOD;
-
-	// 아직 몬스터 없으니까 테스트용
-	m_bDrop = true;
 }
 
 CWood::~CWood()

@@ -20,7 +20,7 @@ protected:
 	virtual ~CItem();
 
 public:
-	virtual			HRESULT			Ready_GameObject();
+	virtual			HRESULT			Ready_GameObject(_vec3 vPos = { 0.f, 0.f, 0.f });
 	virtual			_int			Update_GameObject(const _float& fTimeDelta);
 	virtual			void			LateUpdate_GameObject();
 	virtual			void			Render_GameObject();
@@ -36,6 +36,7 @@ protected:
 
 public:
 	void			Walk_Equipped(const _float& fTimeDelta);
+	void			Drop(_vec3 _vPos = {0.f, 0.f, 0.f});
 
 protected:
 	Engine::CAnimTex* m_pBufferCom;
@@ -49,7 +50,7 @@ protected:
 	Engine::CTexture* m_pShadowTextureCom;
 
 public:
-	static CItem* Create(LPDIRECT3DDEVICE9 pGraphicDev);
+	static CItem* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos = {0.f, 0.f, 0.f});
 
 protected:
 	virtual void		Free();
@@ -61,7 +62,6 @@ public:
 
 	void				Add_Count(int _iAddCount) {m_iCount += _iAddCount; }
 	void				Minus_Count(int _iMinusCount) { m_iCount -= _iMinusCount; }
-
 	// юс╫ц
 	void				Set_Active(bool bActive) { m_bActive = bActive; }
 	void				Set_Drop(bool bDrop) { m_bDrop = bDrop; }

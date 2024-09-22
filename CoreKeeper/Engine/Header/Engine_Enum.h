@@ -45,6 +45,7 @@ namespace Engine
         ITEM_SEED,
         ITEM_WOOD,
         ITEM_TORCH,
+        ITEM_MUCUS,
         ITEM_END
     };
     enum MONSTERTYPE { MON_SLIME, MON_END };
