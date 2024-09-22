@@ -232,7 +232,7 @@ void CUIInventory::Render_GameObject()
 
 		m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
 
-		pItem->Get_Buffer()->Render_Buffer();
+		pItem->Get_Buffer()->Render_First();
 	}
 }
 
