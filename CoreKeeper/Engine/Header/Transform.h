@@ -13,7 +13,7 @@ private:
 
 public:
 	HRESULT				Ready_Transform();
-	virtual _int		Update_Component(const _float& fTimeDelta);
+	virtual _int		Update_Component(const _float& fTimeDelta = 0.f);
 	virtual void		LateUpdate_Component();
 
 public:
@@ -53,6 +53,8 @@ public:
 	void	Set_Pos(_float _fX, _float _fY, _float _fZ)
 	{
 		m_vInfo[INFO_POS] = { _fX, _fY, _fZ };
+
+		Update_Component();
 	}
 
 	void				Chase_Target(const _vec3* pTargetPos, const _float& fSpeed);
