@@ -271,6 +271,10 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar* pLayerTag)
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Leg", pGameObject), E_FAIL);
 	dynamic_cast<CItem*>(pGameObject)->Drop();
 
+	pGameObject = CSeed::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Seed_Slime", pGameObject), E_FAIL);
+
 	// 아이템이 하나 인벤토리에 안들어감. 이유모름.
 
 	//pGameObject = CItem::Create(m_pGraphicDev);
