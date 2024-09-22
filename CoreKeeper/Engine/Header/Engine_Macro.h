@@ -8,6 +8,9 @@ namespace Engine
 
 	#define	VTXCNTX		129
 	#define VTXCNTZ		129
+
+	//#define	VTXCNTX		257
+	//#define VTXCNTZ		257
 	#define VTXITV		1
 
 	#ifndef			MSG_BOX

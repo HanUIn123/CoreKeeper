@@ -98,6 +98,7 @@ private:
 
 	int										m_iTileCreateCount;
 	int										m_iWallCreateCount;
+	int										m_iBuildCreateCount;
 	bool									m_bPushed;
 	bool									m_bWallClickPushed;
 	bool									m_bBuildingClick;
@@ -106,6 +107,7 @@ private:
 	bool									m_bSelectBuilding;
 	bool									m_bCanInstall;
 	bool									m_bAlreadyInstalled;
+	bool									m_bReposed;
 
 	// Picking 가능한 타일 키 값 개수. 현재는 VTXCNTX * VTXCNTZ개
 	wstring									m_wsTileNameString[VTXCNTX * VTXCNTZ];
