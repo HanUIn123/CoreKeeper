@@ -163,7 +163,15 @@ _int CUIScreenInv::Update_GameObject(const _float& fTimeDelta)
 					pPlayerInv->Swap_Item(&(*pCvecItem)[0], &(*pPvecItem)[iIndex]);
 			}
 			else
+			{
+				if ((*pPvecItem)[iIndex])
+				{
+					(*pPvecItem)[iIndex]->Set_Use(false);
+					(*pPvecItem)[iIndex]->Set_Active(false);
+				}
 				pPlayerInv->Swap_Item(&(*pCvecItem)[0], &(*pPvecItem)[iIndex]);
+			}
+				
 		}
 		else if (Engine::Button_Down(DIM_LB))
 		{
