@@ -58,7 +58,6 @@ bool CCollider::Check_Cube_Collision(CColliderCube* pCube)
 
 void CCollider::Render_Collider()
 {
-#ifdef _DEBUG
     m_pGraphicDev->SetTransform(D3DTS_WORLD, &m_matWorld);
 
     LPD3DXMESH pSphereMesh = nullptr;
@@ -69,7 +68,6 @@ void CCollider::Render_Collider()
     m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
 
     Safe_Release(pSphereMesh);
-#endif
 }
 
 CCollider* CCollider::Create(LPDIRECT3DDEVICE9 pGraphicDev, float fRadius)

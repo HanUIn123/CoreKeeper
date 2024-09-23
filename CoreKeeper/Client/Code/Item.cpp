@@ -19,15 +19,6 @@ HRESULT CItem::Ready_GameObject(_vec3 vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_pTransformCom->m_vScale = { 0.2f, 0.2f, 0.2f };
-	m_pShadowTransformCom->m_vScale = { 0.2f, 0.2f, 0.2f };
-
-	//m_pTransformCom->m_vInfo[INFO_POS] = vPos;
-	//m_pShadowTransformCom->m_vInfo[INFO_POS] = vPos;
-
-	//// 원래의 Y 위치 저장
-	//m_fFirstY = m_pTransformCom->m_vInfo->y + 0.7f;
-
 	return S_OK;
 }
 
@@ -147,7 +138,7 @@ void CItem::Apply_Billboard()
 	D3DXMatrixInverse(&matBill, 0, &matBill);
 
 	// 스케일 행렬을 따로 계산
-	D3DXMatrixScaling(&matScale, m_pTransformCom->m_vScale.x, m_pTransformCom->m_vScale.y, m_pTransformCom->m_vScale.z);
+	D3DXMatrixScaling(&matScale, m_pTransformCom->Get_Scale()->x, m_pTransformCom->Get_Scale()->y, m_pTransformCom->Get_Scale()->z);
 	
 	D3DXMATRIX matInverseScale;
 	D3DXMatrixInverse(&matInverseScale, 0, &matScale);
