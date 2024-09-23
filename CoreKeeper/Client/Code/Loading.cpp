@@ -53,7 +53,7 @@ _uint CLoading::Loading_Stage()
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_WallTex", Engine::CWallTex::Create(m_pGraphicDev)), E_FAIL);
 
     // Tile전용, TileTex 한 칸 씩만 출력.
-    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TileTex", Engine::CTileTex::Create(m_pGraphicDev, 2, 2, VTXITV)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TileTex", Engine::CTileTex::Create(m_pGraphicDev)), E_FAIL);
 
 
     //이미지 개수 넣으면 됩니다 ex) Miner.png보면 가로 15개 세로 2개

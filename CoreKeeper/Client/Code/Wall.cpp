@@ -27,10 +27,10 @@ HRESULT CWall::Ready_GameObject(_float _fWallX, _float _fWallZ, _int iWallImageN
     m_iWallImageNum = iWallImageNum;
 
     m_vWallPosition.x = _fWallX;
-    m_vWallPosition.y = 0.0f;
+    m_vWallPosition.y = 1.0f;
     m_vWallPosition.z = _fWallZ;
 
-    m_pTransformCom->Set_Pos(_fWallX, 0.0f, _fWallZ);
+    m_pTransformCom->Set_Pos(_fWallX, 1.0f, _fWallZ);
 
     m_pTransformCom->Set_Scale(1.0f, 2.0f, 1.0f);
 

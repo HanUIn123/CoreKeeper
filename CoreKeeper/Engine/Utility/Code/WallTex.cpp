@@ -36,30 +36,30 @@ HRESULT CWallTex::Ready_Buffer()
 
 	//_vec3	vMinusRatio = { -1.0f,-1.0f,-1.0f };
 	// 전면
-	pVertex[0].vPosition = { 0.f, 1.f, 0.f };
-	pVertex[0].vTexUV = { -1.0f,1.0f,-1.0f };
+	pVertex[0].vPosition = { -0.5f, 0.5f, -0.5f };
+	pVertex[0].vTexUV = { -1.f, 1.f, -1.f };
 
-	pVertex[1].vPosition = { 1.f, 1.f, 0.f };
-	pVertex[1].vTexUV = { 1.0f,1.0f,-1.0f };
+	pVertex[1].vPosition = { 0.5f, 0.5f, -0.5f };
+	pVertex[1].vTexUV = { 1.f, 1.f, -1.f };
 
-	pVertex[2].vPosition = { 1.f, 0.f, 0.f };
-	pVertex[2].vTexUV = { 1.0f,-1.0f,-1.0f };
+	pVertex[2].vPosition = { 0.5f, -0.5f, -0.5f };
+	pVertex[2].vTexUV = { 1.f, -1.f, -1.f };
 
-	pVertex[3].vPosition = { 0.f, 0.f, 0.f };
-	pVertex[3].vTexUV = { -1.0f,-1.0f,-1.0f };
+	pVertex[3].vPosition = { -0.5f, -0.5f, -0.5f };
+	pVertex[3].vTexUV = { -1.f, -1.f, -1.f };
 
 	// 후면
-	pVertex[4].vPosition = { 0.f, 1.f, 1.f };
-	pVertex[4].vTexUV = { -1.0f,1.0f,1.0f };
+	pVertex[4].vPosition = { -0.5f, 0.5f, 0.5f };
+	pVertex[4].vTexUV = { -1.f, 1.f, 1.f };
 
-	pVertex[5].vPosition = { 1.f, 1.f, 1.f };
-	pVertex[5].vTexUV = { 1.0f,1.0f,1.0f };
+	pVertex[5].vPosition = { 0.5f, 0.5f, 0.5f };
+	pVertex[5].vTexUV = { 1.f, 1.f, 1.f };
 
-	pVertex[6].vPosition = { 1.f, 0.f, 1.f };
-	pVertex[6].vTexUV = { 1.0f,-1.0f,1.0f };
+	pVertex[6].vPosition = { 0.5f, -0.5f, 0.5f };
+	pVertex[6].vTexUV = { 1.f, -1.f, 1.f };
 
-	pVertex[7].vPosition = { 0.f, 0.f, 1.f };
-	pVertex[7].vTexUV = { -1.0f,-1.0f,1.0f };
+	pVertex[7].vPosition = { -0.5f, -0.5f, 0.5f };
+	pVertex[7].vTexUV = { -1.f, -1.f, 1.f };
 
 	m_pVB->Unlock();
 

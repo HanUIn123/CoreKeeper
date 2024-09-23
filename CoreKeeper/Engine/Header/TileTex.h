@@ -13,11 +13,11 @@ private:
 public:
 	const _vec3* Get_VtxPos() const { return m_pPos; }
 public:
-	virtual		HRESULT							Ready_Buffer(const _ulong& dwCntX, const _ulong& dwCntZ, const _ulong& dwVtxItv);
+	virtual		HRESULT							Ready_Buffer();
 	virtual void								Render_Buffer();
 
 public:
-	static		CTileTex* Create(LPDIRECT3DDEVICE9 pGraphicDev, const _ulong& dwCntX = VTXCNTX, const _ulong& dwCntZ = VTXCNTZ, const _ulong& dwVtxItv = VTXITV);
+	static		CTileTex* Create(LPDIRECT3DDEVICE9 pGraphicDev);
 	virtual		CComponent* Clone();
 
 private:

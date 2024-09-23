@@ -106,7 +106,7 @@ _vec3 CCalculator::Picking_OnTerrain(HWND _hWnd, CMapToolTex* _pMapToolBufferCom
 		}
 	}
 
-	return _vec3(0.f, 0.f, 0.f);
+	return _vec3(0.f, -1.f, 0.f);
 }
 
 _bool CCalculator::Check_Distance2D(_vec3* _vPos1, _vec3* _vPos2, _float _fDist)

@@ -318,7 +318,7 @@ void CMapEditorScene::Piking_Tile()
 
             m_vPickPos = pPickPos->Picking_OnTerrain(g_hWnd, pMapToolBufferCom, pMapToolTransformCom);
 
-            m_vecTileObject[unsigned __int64(m_vPickPos.z * VTXCNTX + m_vPickPos.x)]->Set_TileNumber(m_iImageNumber);
+            m_vecTileObject[unsigned __int64(m_vPickPos.z + 0.5f * VTXITV) * VTXCNTX + m_vPickPos.x + 0.5f * VTXITV]->Set_TileNumber(m_iImageNumber);
         }
         if (!(Engine::Get_DIMouseState(DIM_LB) & 0x80))
             m_bPushed = false;
@@ -374,11 +374,15 @@ HRESULT CMapEditorScene::Piking_Wall()
 
             m_vPickPos = pPickPos->Picking_OnTerrain(g_hWnd, pMapToolBufferCom, pMapToolTransformCom);
 
+            // 터레인 아닌 곳 피킹
+            if (m_vPickPos.y < 0)
+                return S_OK;
+
             // 이미 설치되어 있으면, 벽 옵젝 벡터 검사해서, 찍는 위치랑 같으면, 
             // 이미 설치되어있다는 불 값 true
             m_bAlreadyInstalled = false;
 
-            if (m_vecWallObject[unsigned __int64(m_vPickPos.z * VTXCNTX + m_vPickPos.x)])
+            if (m_vecWallObject[unsigned __int64(m_vPickPos.z + 0.5f * VTXITV) * VTXCNTX + m_vPickPos.x + 0.5f *  VTXITV])
                 m_bAlreadyInstalled = true;
 
             // 이미 설치되어있따면, 설치할 수 있다는 값을 false로,
@@ -394,10 +398,10 @@ HRESULT CMapEditorScene::Piking_Wall()
 
             if (m_bCanInstall)
             {
-                _int i = _int(m_vPickPos.z * VTXCNTX + m_vPickPos.x);
+                _int i = _int((m_vPickPos.z + 0.5f * VTXITV) * VTXCNTX  + m_vPickPos.x + 0.5f * VTXITV);
 
                 m_wsWallNameString[i] = L"Wall_" + std::to_wstring(i);
-                m_pWallCom = CWall::Create(m_pGraphicDev, m_vPickPos.x, m_vPickPos.z, 0, m_wsWallNameString[i].c_str());
+                m_pWallCom = CWall::Create(m_pGraphicDev, m_vPickPos.x + 0.5f * VTXITV, m_vPickPos.z + 0.5f * VTXITV, 0, m_wsWallNameString[i].c_str());
                 m_vecWallObject[i] = dynamic_cast<CWall*>(m_pWallCom);
         
                 NULL_CHECK_RETURN(m_pWallCom, E_FAIL);
@@ -421,10 +425,10 @@ HRESULT CMapEditorScene::Piking_Wall()
 
             m_vPickPos = pPickPos->Picking_OnTerrain(g_hWnd, pMapToolBufferCom, pMapToolTransformCom);
 
-            if (m_vecWallObject[unsigned __int64(m_vPickPos.z * VTXCNTX + m_vPickPos.x)])
+            if (m_vecWallObject[unsigned __int64(m_vPickPos.z + 0.5f * VTXITV) * VTXCNTX + m_vPickPos.x + 0.5f *  VTXITV])
             {
-                Delete_Object(L"Layer_Environment", m_vecWallObject[unsigned __int64(m_vPickPos.z * VTXCNTX + m_vPickPos.x)]->Get_PickedWallName().c_str());
-                m_vecWallObject[unsigned __int64(m_vPickPos.z * VTXCNTX + m_vPickPos.x)] = nullptr;
+                Delete_Object(L"Layer_Environment", m_vecWallObject[unsigned __int64(m_vPickPos.z + 0.5f * VTXITV) * VTXCNTX + m_vPickPos.x + 0.5f *  VTXITV]->Get_PickedWallName().c_str());
+                m_vecWallObject[unsigned __int64(m_vPickPos.z + 0.5f * VTXITV) * VTXCNTX + m_vPickPos.x + 0.5f *  VTXITV] = nullptr;
             }
         }
     }
@@ -485,9 +489,12 @@ HRESULT CMapEditorScene::Piking_Object()
 
             m_vPickPos = pPickPos->Picking_OnTerrain(g_hWnd, pMapToolBufferCom, pMapToolTransformCom);
 
+            if (m_vPickPos.y < 0)
+                return S_OK;
+
             m_bAlreadyInstalled = false;
 
-            if (m_vecBuildingObject[unsigned __int64(m_vPickPos.z * VTXCNTX + m_vPickPos.x)])
+            if (m_vecBuildingObject[unsigned __int64(m_vPickPos.z + 0.5f * VTXITV) * VTXCNTX + m_vPickPos.x + 0.5f *  VTXITV])
                 m_bAlreadyInstalled = true;
 
             if (m_bAlreadyInstalled)
@@ -499,7 +506,7 @@ HRESULT CMapEditorScene::Piking_Object()
 
             if (m_bCanInstall)
             {
-                _int i = _int(m_vPickPos.z * VTXCNTX + m_vPickPos.x);
+                _int i = _int(m_vPickPos.z + 0.5f * VTXITV) * VTXCNTX + m_vPickPos.x + 0.5f * VTXITV;
 
                 m_wsObjectNameString[i] = L"Object_" + std::to_wstring(i);
                 m_pObjectCom = CCore::Create(m_pGraphicDev, m_vPickPos.x, m_vPickPos.z, m_bReposed, m_iBuildingNumber, m_wsObjectNameString[i].c_str());
@@ -529,12 +536,12 @@ HRESULT CMapEditorScene::Piking_Object()
             _float fZMin = m_vPickPos.z - 5.0f;
             _float fZMax = m_vPickPos.z + 5.0f;
 
-            if (m_vecBuildingObject[unsigned __int64(m_vPickPos.z * VTXCNTX + m_vPickPos.x)])
+            if (m_vecBuildingObject[unsigned __int64((m_vPickPos.z + 0.5f * VTXITV)* VTXCNTX  + m_vPickPos.x + 0.5f * VTXITV)])
             {
                 if ((fXMin < m_vPickPos.x && fXMax > m_vPickPos.x) || (fZMin < m_vPickPos.z && fZMax > m_vPickPos.z))
                 {
-                    Delete_Object(L"Layer_Environment", dynamic_cast<CCore*>(m_vecBuildingObject[unsigned __int64(m_vPickPos.z * VTXCNTX + m_vPickPos.x)])->Get_PickedBuildingName().c_str());
-                    m_vecBuildingObject[unsigned __int64(m_vPickPos.z * VTXCNTX + m_vPickPos.x)] = nullptr;
+                    Delete_Object(L"Layer_Environment", dynamic_cast<CCore*>(m_vecBuildingObject[unsigned __int64(m_vPickPos.z + 0.5f * VTXITV) * VTXCNTX + m_vPickPos.x + 0.5f *  VTXITV])->Get_PickedBuildingName().c_str());
+                    m_vecBuildingObject[unsigned __int64((m_vPickPos.z + 0.5f * VTXITV) * VTXCNTX + m_vPickPos.x + 0.5f * VTXITV)] = nullptr;
                 }
             }
         }

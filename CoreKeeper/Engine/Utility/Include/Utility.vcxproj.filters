@@ -106,9 +106,6 @@
     <Filter Include="04. Component\00. VIBuffer\98.WallTex">
       <UniqueIdentifier>{ad27f67b-b568-46c1-9335-ac165822c865}</UniqueIdentifier>
     </Filter>
-    <Filter Include="04. Component\98. ColliderMgr">
-      <UniqueIdentifier>{c093ca2e-8ef1-4ea6-a033-c5ca66cf890c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="04. Component\00. VIBuffer\09.ObjectTex">
       <UniqueIdentifier>{181cb0d9-b59e-496e-bc18-354ab2e39bef}</UniqueIdentifier>
     </Filter>
