@@ -450,6 +450,9 @@
     <ClInclude Include="..\Header\UIItemFrame.h">
       <Filter>02. GameObject\07. UI\04. Cursor\00. UIItem</Filter>
     </ClInclude>
+    <ClInclude Include="DropItem.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">

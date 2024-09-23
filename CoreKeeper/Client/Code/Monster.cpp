@@ -2,6 +2,7 @@
 #include "..\Header\Monster.h"
 #include "Export_Utility.h"
 #include "..\Header\Player.h"
+#include "DropItem.h"
 
 int	CMonster::m_iTagNumber = 0;
 
@@ -35,7 +36,8 @@ CMonster::CMonster(LPDIRECT3DDEVICE9 pGraphicDev)
 	m_bKnockBackEnd = true;
 
 	m_bStopDraw = false;
-	m_bDropSettings = false;
+
+	m_vecDropItem.reserve(3);
 }
 
 CMonster::~CMonster()
@@ -272,20 +274,7 @@ void CMonster::Pattern_Dead()
 	if (m_pAnimatorCom->Get_MotionEnd())
 	{
 		m_bStopDraw = true;
-		// 아이템 드랍
-		_vec3 vPos;
-		m_pTransformCom->Get_Info(INFO_POS, &vPos);
-
-		// 몬스터마다 다른 아이템을 만들어야함
-		// 랜덤도 있으면 좋을듯 ㅎㅎ
-		CScene* pScene = Engine::Get_Scene();
-		CItem* pGameObject = CMucus::Create(m_pGraphicDev, vPos);
-		NULL_CHECK_RETURN(pGameObject, );
-		pGameObject->Set_Active(true);
-		dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
-
-		wstring tagName = L"Mucus" + std::to_wstring(m_iTagNumber++);
-		FAILED_CHECK_RETURN(pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, tagName.c_str()), );
+		Drop_Item();
 	}
 }
 
@@ -408,6 +397,100 @@ void CMonster::Check_Hitted()
 					m_eState = DEAD;
 			}
 		}
+	}
+}
+
+void CMonster::Drop_Item()
+{
+	_vec3 vPos;
+	m_pTransformCom->Get_Info(INFO_POS, &vPos);
+
+	// 몬스터마다 다른 아이템을 만들어야함
+	// 랜덤도 있으면 좋을듯 ㅎㅎ
+	CScene* pScene = Engine::Get_Scene();
+	CItem* pGameObject = nullptr;
+	_int iSize = m_vecDropItem.size();
+	if (0 == iSize)
+		return;
+	_int iRand = rand() % iSize;
+
+	ITEMNUM eItem = m_vecDropItem[iRand];
+	wstring tagName;
+
+	switch (eItem)
+	{
+	case ITEM_PICKAXE:
+		pGameObject = CPickaxe::Create(m_pGraphicDev, vPos);
+		NULL_CHECK_RETURN(pGameObject, );
+		tagName = L"Pickaxe" + std::to_wstring(m_iTagNumber++);
+		break;
+	case ITEM_HOE:
+		pGameObject = CHoe::Create(m_pGraphicDev, vPos);
+		NULL_CHECK_RETURN(pGameObject, );
+		tagName = L"Hoe" + std::to_wstring(m_iTagNumber++);
+		break;
+	case ITEM_SHOVEL:
+		pGameObject = CShovel::Create(m_pGraphicDev, vPos);
+		NULL_CHECK_RETURN(pGameObject, );
+		tagName = L"Shovel" + std::to_wstring(m_iTagNumber++);
+		break;
+
+	case ITEM_SWORD:
+		pGameObject = CSword::Create(m_pGraphicDev, vPos);
+		NULL_CHECK_RETURN(pGameObject, );
+		tagName = L"Sword" + std::to_wstring(m_iTagNumber++);
+		break;
+	case ITEM_BOW:
+		pGameObject = CBow::Create(m_pGraphicDev, vPos);
+		NULL_CHECK_RETURN(pGameObject, );
+		tagName = L"Bow" + std::to_wstring(m_iTagNumber++);
+		break;
+	case ITEM_STAFF:
+		pGameObject = CStaff::Create(m_pGraphicDev, vPos);
+		NULL_CHECK_RETURN(pGameObject, );
+		tagName = L"Staff" + std::to_wstring(m_iTagNumber++);
+		break;
+
+	case ITEM_NECKLACE:
+		break;
+	case ITEM_RING:
+		break;
+	case ITEM_BAG:
+		break;
+	case ITEM_LANTERN:
+		break;
+
+	case ITEM_SEED:
+		pGameObject = CSeed::Create(m_pGraphicDev, vPos);
+		NULL_CHECK_RETURN(pGameObject, );
+		tagName = L"Seed" + std::to_wstring(m_iTagNumber++);
+		break;
+	case ITEM_WOOD:
+		pGameObject = CWood::Create(m_pGraphicDev, vPos);
+		NULL_CHECK_RETURN(pGameObject, );
+		tagName = L"Wood" + std::to_wstring(m_iTagNumber++);
+		break;
+	case ITEM_TORCH:
+		pGameObject = CTorch::Create(m_pGraphicDev, vPos);
+		NULL_CHECK_RETURN(pGameObject, );
+		tagName = L"Torch" + std::to_wstring(m_iTagNumber++);
+		break;
+	case ITEM_MUCUS:
+		pGameObject = CMucus::Create(m_pGraphicDev, vPos);
+		NULL_CHECK_RETURN(pGameObject, );
+		tagName = L"Mucus" + std::to_wstring(m_iTagNumber++);
+		break;
+	case ITEM_END:
+		break;
+	default:
+		break;
+	}
+
+	if (pGameObject)
+	{
+		pGameObject->Set_Active(true);
+		dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
+		FAILED_CHECK_RETURN(pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, tagName.c_str()), );
 	}
 }
 

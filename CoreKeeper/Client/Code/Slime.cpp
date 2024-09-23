@@ -25,6 +25,9 @@ HRESULT CSlime::Ready_GameObject()
     m_pTransformCom->Get_Info(INFO_POS, &vPos);
     m_pTransformCom->Set_Pos(vPos.x, m_fIdleY, vPos.z);
     m_pStateCom->Set_Stat(100, 0, 10, 0);
+    m_vecDropItem.push_back(ITEM_MUCUS);
+    m_vecDropItem.push_back(ITEM_SEED);
+    m_vecDropItem.push_back(ITEM_WOOD);
     Set_Speed(0.6f);
     return S_OK;
 }
@@ -33,12 +36,7 @@ _int CSlime::Update_GameObject(const _float& fTimeDelta)
 {
     if (m_bStopDraw)
         return 0;
-    if (!m_bDropSettings)
-    {
-        m_bDropSettings = true;
-        m_pDropItem = dynamic_cast<CItem*>(Get_GameObject(L"Layer_GameLogic", L"Seed_Slime"));
-        m_pDropItem->Set_Active(false);
-    }
+
     if(m_eState != DEAD)
         Check_Hitted();
     m_pAnimatorCom->Update_Animation();
