@@ -19,20 +19,52 @@ HRESULT CItem::Ready_GameObject(_vec3 vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
+	m_pTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
+	m_pShadowTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
+
+	m_pTransformCom->Set_Pos(vPos.x, vPos.y, vPos.z);
+	m_pShadowTransformCom->Set_Pos(vPos.x, 0.1f, vPos.z);
+
+	// 원래의 Y 위치 저장
+	m_fFirstY = vPos.y;
+
 	return S_OK;
 }
 
 _int CItem::Update_GameObject(const _float& fTimeDelta)
 {
+	m_pAnimatorCom->Update_Animation();
+
+	if (m_bUse)
+	{
+		Swing(0, 5, 2);
+
+		m_bActive = true;
+		m_bDrop = false;
+		m_pTransformCom->Set_Scale(1.5f, 1.5f, 1.5f);
+	}
+
 	if (m_bDrop)
 	{
-		Wave(fTimeDelta);
+		// 아이템 움직임
+		CItem::Wave(fTimeDelta);
 
 		Engine::CCollider* pPlayerCollider = dynamic_cast<Engine::CCollider*>
 			(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Collider"));
 
-		// 충돌하면 FALSE, 충돌안하면 TRUE
-		m_bActive = !(m_pColliderCom->Check_Collision(pPlayerCollider));
+		// 플레이어와 충돌
+		if (m_pColliderCom->Check_Collision(pPlayerCollider))
+		{
+			Engine::CInventory* pPlayerInventory = dynamic_cast<Engine::CInventory*>
+				(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
+
+			// 인벤토리에 들어갔다
+			if (pPlayerInventory->Add_Item(this))
+			{
+				m_bActive = false;
+				m_bDrop = false;
+			}
+		}
 	}
 	
 	Add_RenderGroup(RENDER_ALPHA, this);
@@ -241,21 +273,6 @@ void CItem::Walk_Equipped(const _float& fTimeDelta)
 	_vec3 vUp;
 	m_pTransformCom->Get_Info(INFO_UP, &vUp);
 	m_pTransformCom->Move_Pos(&vUp, fTimeDelta, m_fWalkYSpeed);
-}
-
-void CItem::Drop(_vec3 _vPos)
-{
-	m_pTransformCom->Set_Pos(_vPos.x, _vPos.y + 0.7f, _vPos.z);
-	m_pShadowTransformCom->Set_Pos(_vPos.x, _vPos.y + 0.1f, _vPos.z);
-
-	// 원래의 Y 위치 저장
-	m_fFirstY = _vPos.y + 0.7f;
-
-	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
-
-	m_bDrop = true;
-
-	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
 }
 
 CItem* CItem::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)

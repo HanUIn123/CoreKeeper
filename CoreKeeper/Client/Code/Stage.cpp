@@ -179,118 +179,112 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar* pLayerTag)
 
 	pGameObject = CPickaxe::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Pickaxe", pGameObject), E_FAIL);
-	dynamic_cast<CItem*>(pGameObject)->Drop({10.f, 0.f, 10.f});
 
 	pGameObject = CHoe::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Hoe", pGameObject), E_FAIL);
-	dynamic_cast<CItem*>(pGameObject)->Drop();
+	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
 
 	pGameObject = CShovel::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Shovel", pGameObject), E_FAIL);
-	dynamic_cast<CItem*>(pGameObject)->Drop();
+	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
 
 	pGameObject = CSword::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Sword", pGameObject), E_FAIL);
-	dynamic_cast<CItem*>(pGameObject)->Drop();
+	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
 
 	pGameObject = CSword::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Sword2", pGameObject), E_FAIL);
-	dynamic_cast<CItem*>(pGameObject)->Drop();
+	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
 
 	pGameObject = CBow::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Bow1", pGameObject), E_FAIL);
-	dynamic_cast<CItem*>(pGameObject)->Drop();
+	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
 
 	pGameObject = CStaff::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Staff1", pGameObject), E_FAIL);
-	dynamic_cast<CItem*>(pGameObject)->Drop();
+	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
 
 	pGameObject = CSeed::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Seed", pGameObject), E_FAIL);
-	dynamic_cast<CItem*>(pGameObject)->Drop();
+	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
 
 	pGameObject = CSeed::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Seed1", pGameObject), E_FAIL);
-	dynamic_cast<CItem*>(pGameObject)->Drop();
+	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
 
 	pGameObject = CSeed::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Seed2", pGameObject), E_FAIL);
-	dynamic_cast<CItem*>(pGameObject)->Drop();
+	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
 
 	pGameObject = CSeed::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Seed3", pGameObject), E_FAIL);
-	dynamic_cast<CItem*>(pGameObject)->Drop();
+	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
 
 	pGameObject = CSeed::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Seed4", pGameObject), E_FAIL);
-	dynamic_cast<CItem*>(pGameObject)->Drop();
+	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
 
 	pGameObject = CWood::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Wood1", pGameObject), E_FAIL);
-	dynamic_cast<CItem*>(pGameObject)->Drop();
+	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
 
 	pGameObject = CWood::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Wood2", pGameObject), E_FAIL);
-	dynamic_cast<CItem*>(pGameObject)->Drop();
+	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
 
 	pGameObject = CWood::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Wood3", pGameObject), E_FAIL);
-	dynamic_cast<CItem*>(pGameObject)->Drop();
+	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
 
 	pGameObject = CWood::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Wood4", pGameObject), E_FAIL);
-	dynamic_cast<CItem*>(pGameObject)->Drop();
+	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
 
 	pGameObject = CWood::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Wood5", pGameObject), E_FAIL);
-	dynamic_cast<CItem*>(pGameObject)->Drop();
+	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
 
 	pGameObject = CWood::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Wood6", pGameObject), E_FAIL);
-	dynamic_cast<CItem*>(pGameObject)->Drop();
+	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
 
 	pGameObject = CHelmet::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Helmet", pGameObject), E_FAIL);
-	dynamic_cast<CItem*>(pGameObject)->Drop();
+	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
 
 	pGameObject = CChest::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Chest", pGameObject), E_FAIL);
-	dynamic_cast<CItem*>(pGameObject)->Drop();
+	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
 
 	pGameObject = CLeg::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Leg", pGameObject), E_FAIL);
-	dynamic_cast<CItem*>(pGameObject)->Drop();
+	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
 
 	pGameObject = CSeed::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Seed_Slime", pGameObject), E_FAIL);
-
-	// 아이템이 하나 인벤토리에 안들어감. 이유모름.
-
-	//pGameObject = CItem::Create(m_pGraphicDev);
-	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Item", pGameObject), E_FAIL);
 
 
 	//pGameObject = CCore::Create(m_pGraphicDev);

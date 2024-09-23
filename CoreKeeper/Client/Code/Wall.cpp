@@ -89,6 +89,8 @@ void CWall::Render_GameObject()
         m_pBufferCom->Render_Buffer();
     }
 
+    m_pColliderCom->Render_Collider();
+
     m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);

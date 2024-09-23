@@ -17,20 +17,18 @@ CHoe::~CHoe()
 {
 }
 
-HRESULT CHoe::Ready_GameObject()
+HRESULT CHoe::Ready_GameObject(_vec3 vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
 	m_pTransformCom->Set_Scale(1.2f, 1.2f, 1.2f);
 	m_pShadowTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
 
-	m_pTransformCom->Set_Pos(0.f, 0.7f, 0.f);
-
-	_vec3 vPos;
-	m_pTransformCom->Get_Info(INFO_POS, &vPos);
+	m_pTransformCom->Set_Pos(vPos.x, vPos.y, vPos.z);
 	m_pShadowTransformCom->Set_Pos(vPos.x, 0.1f, vPos.z);
+
 	// 원래의 Y 위치 저장
-	m_fFirstY = 0.7f;
+	m_fFirstY = vPos.y;
 
 	m_pAnimatorCom->Set_CurState(IDLE, 0, 0, 3);
 
@@ -163,11 +161,11 @@ HRESULT CHoe::Add_Component()
 	return S_OK;
 }
 
-CHoe* CHoe::Create(LPDIRECT3DDEVICE9 pGraphicDev)
+CHoe* CHoe::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 {
 	CHoe* pSword = new CHoe(pGraphicDev);
 
-	if (FAILED(pSword->Ready_GameObject()))
+	if (FAILED(pSword->Ready_GameObject(vPos)))
 	{
 		Safe_Release(pSword);
 		MSG_BOX("pSword Create Failed");

@@ -39,6 +39,9 @@ private:
     _vec3 m_vMax;       // 큐브의 최대 좌표
     _matrix m_matWorld; 
     _vec3 m_vCenterPos;
+
+    static bool	m_bShow;
+    LPD3DXMESH	m_pCube;
 };
 
 END

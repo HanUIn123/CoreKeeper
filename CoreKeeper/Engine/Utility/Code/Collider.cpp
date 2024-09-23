@@ -1,7 +1,10 @@
 #include "Export_Utility.h"
+#include "Export_System.h"
+
+bool CCollider::m_bShow = false;
 
 CCollider::CCollider(LPDIRECT3DDEVICE9 pGraphicDev)
-    : CComponent(pGraphicDev), m_fRadius(1.f), m_vCenterPos(0.f, 0.f, 0.f)
+    : CComponent(pGraphicDev), m_fRadius(1.f), m_vCenterPos(0.f, 0.f, 0.f), m_pSphere(nullptr)
 {
 }
 
@@ -13,13 +16,45 @@ HRESULT CCollider::Ready_Collider(float fRadius)
 {
     m_fRadius = fRadius;
     m_vOffset = { 0, 0, 0 };
+
+    FAILED_CHECK_RETURN(D3DXCreateSphere(m_pGraphicDev, m_fRadius, 10, 10, &m_pSphere, NULL), E_FAIL);
+
     return S_OK;
 }
 
 void CCollider::Update_Collider(const _matrix* pWorldMatrix)
 {
+    if (Key_Down(DIK_V))
+    {
+        m_bShow = !m_bShow;
+    }
+
     m_matWorld = *pWorldMatrix;
     m_vCenterPos = _vec3(m_matWorld._41, m_matWorld._42, m_matWorld._43) + m_vOffset;
+}
+
+void CCollider::Render_Collider()
+{
+    if (!m_bShow)
+        return;
+
+    //FAILED_CHECK_RETURN(Setup_Material(), );
+
+    m_pGraphicDev->SetTransform(D3DTS_WORLD, &m_matWorld);
+
+    DWORD preRenderState, preTextureStageState;
+
+    m_pGraphicDev->GetRenderState(D3DRS_FILLMODE, &preRenderState);
+    m_pGraphicDev->GetTextureStageState(0, D3DTSS_ALPHAOP, &preTextureStageState);
+
+    m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
+    m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_SELECTARG2);
+
+    m_pSphere->DrawSubset(0);
+
+    // 돌려놓음
+    m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAOP, preTextureStageState);
+    m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, preRenderState);
 }
 
 bool CCollider::Check_Collision(CCollider* pTarget)
@@ -56,18 +91,21 @@ bool CCollider::Check_Cube_Collision(CColliderCube* pCube)
     return fDistance <= m_fRadius;
 }
 
-void CCollider::Render_Collider()
+HRESULT CCollider::Setup_Material()
 {
-    m_pGraphicDev->SetTransform(D3DTS_WORLD, &m_matWorld);
+    D3DMATERIAL9		tMtrl;
+    ZeroMemory(&tMtrl, sizeof(D3DMATERIAL9));
 
-    LPD3DXMESH pSphereMesh = nullptr;
-    D3DXCreateSphere(m_pGraphicDev, m_fRadius, 20, 20, &pSphereMesh, NULL);
+    tMtrl.Diffuse = { 1.f, 1.f, 1.f, 1.f };
+    tMtrl.Specular = { 1.f, 1.f, 1.f, 1.f };
+    tMtrl.Ambient = { 0.2f, 0.2f, 0.2f, 1.f };
 
-    m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
-    pSphereMesh->DrawSubset(0);
-    m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
+    tMtrl.Emissive = { 0.f, 1.f, 0.f, 1.f };
+    tMtrl.Power = 0.f;
 
-    Safe_Release(pSphereMesh);
+    m_pGraphicDev->SetMaterial(&tMtrl);
+
+    return S_OK;
 }
 
 CCollider* CCollider::Create(LPDIRECT3DDEVICE9 pGraphicDev, float fRadius)

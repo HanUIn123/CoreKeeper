@@ -31,16 +31,17 @@ HRESULT CSlime::Ready_GameObject()
 
 _int CSlime::Update_GameObject(const _float& fTimeDelta)
 {
+    if (m_bStopDraw)
+        return 0;
     if (!m_bDropSettings)
     {
         m_bDropSettings = true;
         m_pDropItem = dynamic_cast<CItem*>(Get_GameObject(L"Layer_GameLogic", L"Seed_Slime"));
         m_pDropItem->Set_Active(false);
     }
-    if (m_bStopDraw)
-        return 0;
+    if(m_eState != DEAD)
+        Check_Hitted();
     m_pAnimatorCom->Update_Animation();
-    Check_Hitted();
     if (m_bKnockBackEnd)
     {
         if(m_eState != DEAD)
@@ -89,6 +90,7 @@ void CSlime::Render_GameObject()
 
     m_pBufferCom->Set_Index(m_pAnimatorCom->Get_MotionIndex());
     m_pBufferCom->Render_Buffer();
+    m_pColliderCom->Render_Collider();
 
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }

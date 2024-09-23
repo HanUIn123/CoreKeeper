@@ -36,7 +36,6 @@ protected:
 
 public:
 	void			Walk_Equipped(const _float& fTimeDelta);
-	void			Drop(_vec3 _vPos = {0.f, 0.f, 0.f});
 
 protected:
 	Engine::CAnimTex* m_pBufferCom;
@@ -69,12 +68,10 @@ public:
 	void				Set_Swing(DIRECTION eDir, bool bSwing) { m_eDir = eDir; m_bSwing = bSwing; }
 
 public: // UI에서 가져갈 Component들
- 	CAnimTex*          Get_Buffer() { return m_pBufferCom; }
-	CTexture*          Get_Texture() { return m_pTextureCom; }
-	CTransform*        Get_Transform() { return m_pTransformCom; }
-
-
-	CAnimator* Get_Animator() { return m_pAnimatorCom; }
+ 	CAnimTex*			Get_Buffer() { return m_pBufferCom; }
+	CTexture*			Get_Texture() { return m_pTextureCom; }
+	CTransform*			Get_Transform() { return m_pTransformCom; }
+	CAnimator*			Get_Animator() { return m_pAnimatorCom; }
 
 protected:
 	int			m_iTextureNumber;
@@ -95,6 +92,6 @@ protected:
 	bool		m_bHasRotated;	//Swing에서 회전했는지 안했는지 체크용
 
 	STAT		m_tStat;
-	Engine::ITEMNUM		m_eItemNum;
+	ITEMNUM		m_eItemNum;
 	DIRECTION	m_eDir;
 };
