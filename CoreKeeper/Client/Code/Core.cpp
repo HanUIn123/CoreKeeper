@@ -37,7 +37,7 @@ HRESULT CCore::Ready_GameObject(_float fX, _float fY, _bool bReposed, _int iBuil
 	m_vBuildPosition.y = 0.1f;
 	m_vBuildPosition.z = fY;
 
-	m_pTransformCom->m_vScale = { 1.0f, 1.0f, 1.0f };
+	m_pTransformCom->Set_Scale(1.0f, 1.0f, 1.0f);
 
 	return S_OK;
 }

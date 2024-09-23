@@ -32,7 +32,7 @@ HRESULT CWall::Ready_GameObject(_float _fWallX, _float _fWallZ, _int iWallImageN
 
     m_pTransformCom->Set_Pos(_fWallX, 0.0f, _fWallZ);
 
-    m_pTransformCom->m_vScale = { 1.0f, 2.0f, 1.0f };
+    m_pTransformCom->Set_Scale(1.0f, 2.0f, 1.0f);
 
     return S_OK;
 }
