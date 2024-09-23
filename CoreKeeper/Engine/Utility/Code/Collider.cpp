@@ -48,7 +48,7 @@ void CCollider::Render_Collider()
     m_pGraphicDev->GetTextureStageState(0, D3DTSS_ALPHAOP, &preTextureStageState);
 
     m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
-    m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_SELECTARG2);
+    m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_ADD);
 
     m_pSphere->DrawSubset(0);
 
