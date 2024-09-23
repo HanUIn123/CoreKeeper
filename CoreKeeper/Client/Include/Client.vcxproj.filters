@@ -235,6 +235,12 @@
     <Filter Include="02. GameObject\07. UI\04. Cursor\00. UIItem">
       <UniqueIdentifier>{c39437de-c5b8-4f6c-9304-5c1ab3e78304}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\07. UI\10. UIBuff">
+      <UniqueIdentifier>{55f89c54-c51d-4d02-b059-e778d1d26b41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\07. UI\NewFilter1">
+      <UniqueIdentifier>{869e7488-aa1b-48b3-91da-5bb524490f55}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
