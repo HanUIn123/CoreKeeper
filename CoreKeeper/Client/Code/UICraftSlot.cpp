@@ -28,7 +28,7 @@ HRESULT CUICraftSlot::Ready_GameObject(_vec2 vPos, _vec2 vSize, _int _iIndex)
 	float x = vPos.x - width / 2;
 	float y = height / 2 - vPos.y;
 
-	m_pTransformCom->m_vScale = { vSize.x, vSize.y , 1.f };
+	m_pTransformCom->Set_Scale(vSize.x, vSize.y , 1.f);
 	m_pTransformCom->Set_Pos(x, y, 0);
 
 
