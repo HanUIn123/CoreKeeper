@@ -28,7 +28,7 @@ HRESULT CUIInvPlate::Ready_GameObject(_vec2 vPos, _vec2 vSize)
 
 	m_pTransformCom->Set_Pos(x, y, 0);
 
-	m_pTransformCom->m_vScale = { vSize.x, vSize.y, 1.f };
+	m_pTransformCom->Set_Scale(vSize.x, vSize.y, 1.f);
 
 	return S_OK;
 }

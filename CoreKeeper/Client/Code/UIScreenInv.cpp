@@ -34,7 +34,7 @@ HRESULT CUIScreenInv::Ready_GameObject(_vec2 vPos, _int _iIndex)
 
 	_vec2 vSize = { 30.f, 30.f };
 
-	m_pTransformCom->m_vScale = { vSize.x, vSize.y, 1.f };
+	m_pTransformCom->Set_Scale(vSize.x, vSize.y, 1.f);
 
 	m_BRect.left = vPos.x - vSize.x / 2;
 	m_BRect.right = vPos.x + vSize.x / 2;
@@ -243,7 +243,7 @@ void CUIScreenInv::Render_GameObject()
 
 		m_pItem->Get_Texture()->Set_Texture();
 
-		_vec3 vScale = m_pItem->Get_Transform()->m_vScale;
+		//_vec3 vScale = m_pItem->Get_Transform()->m_vScale;
 		
 		Engine::ITEMNUM eNum = m_pItem->Get_ItemNum();
 
@@ -381,7 +381,7 @@ void CUIScreenInv::Move_Pos()
 	m_pTransformCom->Get_Info(INFO_POS, &vPos);
 
 
-	vSize = { m_pTransformCom->m_vScale.x, m_pTransformCom->m_vScale.y, m_pTransformCom->m_vScale.z };
+	vSize = { m_pTransformCom->Get_Scale()->x, m_pTransformCom->Get_Scale()->y, m_pTransformCom->Get_Scale()->z };
 
 	m_BRect.top = y - vSize.y / 2;
 	m_BRect.bottom = y + vSize.y / 2;
