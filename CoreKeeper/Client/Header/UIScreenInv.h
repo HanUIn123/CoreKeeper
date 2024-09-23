@@ -53,6 +53,8 @@ private:
 	_bool m_bFirst;
 
 	_bool m_bMove;
+
+	_bool m_bStay;
 private:
 	Engine::CAnimTex* m_pBufferCom;
 	Engine::CTransform* m_pTransformCom;

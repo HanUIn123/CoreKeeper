@@ -56,3 +56,5 @@
 #include "UITrashSlot.h"
 #include "UISort.h"
 #include "MiniMap.h"
+#include "UIStatusFrame.h"
+#include "UIItemFrame.h"

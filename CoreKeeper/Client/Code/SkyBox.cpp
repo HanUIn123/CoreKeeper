@@ -15,7 +15,7 @@ HRESULT CSkyBox::Ready_GameObject()
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_pTransformCom->m_vScale = { 40.f, 40.f, 40.f };
+	m_pTransformCom->Set_Scale(40.f, 40.f, 40.f);
 
 	return S_OK;
 }

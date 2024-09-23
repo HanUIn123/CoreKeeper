@@ -27,7 +27,7 @@ HRESULT CUITrashSlot::Ready_GameObject(_vec2 vPos, _vec2 vSize)
 	float x = vPos.x - width / 2;
 	float y = height / 2 - vPos.y;
 
-	m_pTransformCom->m_vScale = { vSize.x, vSize.y , 1.f };
+	m_pTransformCom->Set_Scale(vSize.x, vSize.y , 1.f);
 	m_pTransformCom->Set_Pos(x, y, 0);
 
 	m_BRect.left = vPos.x - vSize.x / 2;
@@ -202,11 +202,6 @@ void CUITrashSlot::Render_GameObject()
 			matWorld._22 = 40.f;
 
 			matWorld._42 += 15.f;
-			break;
-
-		dafault:
-			matWorld._11 = 20.f;
-			matWorld._22 = 20.f;
 			break;
 		}
 

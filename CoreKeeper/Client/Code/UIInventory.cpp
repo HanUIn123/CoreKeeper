@@ -33,7 +33,7 @@ HRESULT CUIInventory::Ready_GameObject(_vec2 vPos, _int _iIndex)
 
 	_vec2 vSize = { 30.f, 30.f };
 
-	m_pTransformCom->m_vScale = { vSize.x, vSize.y, 1.f };
+	m_pTransformCom->Set_Scale(vSize.x, vSize.y, 1.f);
 
 	m_BRect.left = vPos.x - vSize.x / 2;
 	m_BRect.right = vPos.x + vSize.x / 2;
@@ -102,7 +102,7 @@ void CUIInventory::LateUpdate_GameObject()
 
 void CUIInventory::Render_GameObject()
 {
-
+	
 	_matrix matWorld;
 	m_pTransformCom->Get_WorldMatrix(&matWorld);
 

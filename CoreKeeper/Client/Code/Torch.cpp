@@ -19,15 +19,16 @@ HRESULT CTorch::Ready_GameObject()
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_pTransformCom->m_vScale = { 1.0f, 1.0f, 1.0f };
-	m_pShadowTransformCom->m_vScale = { 0.2f, 0.2f, 0.2f };
+	m_pTransformCom->Set_Scale(1.0f, 1.0f, 1.0f);
+	m_pShadowTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
 
-	//m_pTransformCom->m_vInfo[INFO_POS] = vPos;
-	//m_pShadowTransformCom->m_vInfo[INFO_POS] = vPos;
-	//// 원래의 Y 위치 저장
-	//m_fFirstY = m_pTransformCom->m_vInfo->y + 0.7f;
+	m_pTransformCom->Set_Pos(0.f, 0.7f, 0.f);
 
-	//m_pAnimatorCom->Set_CurState(IDLE, 0, 0, 3);
+	_vec3 vPos;
+	m_pTransformCom->Get_Info(INFO_POS, &vPos);
+	m_pShadowTransformCom->Set_Pos(vPos.x, 0.1f, vPos.z);
+	// 원래의 Y 위치 저장
+	m_fFirstY = 0.7f;
 
 	m_pAnimatorCom->Set_CurState(IDLE, 0, 5, 3);
 
@@ -173,7 +174,11 @@ void CTorch::SetUp_Light()
 	light.Diffuse = { 1.f, 1.f, 1.f, 1.f }; // 확산 색상
 	light.Specular = { 1.f, 1.f, 1.f, 1.f }; // 반사 색상
 	light.Ambient = { 1.f, 1.f, 1.f, 1.f }; // 주변광
-	light.Position = m_pTransformCom->m_vInfo[INFO_POS]; // 횃불의 위치
+
+	_vec3 vPos;
+	m_pTransformCom->Get_Info(INFO_POS, &vPos);
+
+	light.Position = vPos; // 횃불의 위치
 	light.Range = 4.0f; // 조명의 범위
 	light.Falloff = 1.f; // 감쇠
 	light.Attenuation0 = 1.0f; // 감쇠 계수

@@ -6,9 +6,10 @@
 #include "..\Header\Item.h"
 #include "..\Header\Player.h"
 #include "..\Header\UICursor.h"
+#include "..\Header\UIItemFrame.h"
 
 CUIScreenInv::CUIScreenInv(LPDIRECT3DDEVICE9 pGraphicDev)
-	: Engine::CGameObject(pGraphicDev), m_iCurInv(0), m_bFirst(true), m_bCollapse(false), m_bMove(false)
+	: Engine::CGameObject(pGraphicDev), m_iCurInv(0), m_bFirst(true), m_bCollapse(false), m_bMove(false), m_bStay(false)
 
 {
 }
@@ -34,13 +35,20 @@ HRESULT CUIScreenInv::Ready_GameObject(_vec2 vPos, _int _iIndex)
 
 	_vec2 vSize = { 30.f, 30.f };
 
-	m_pTransformCom->m_vScale = { vSize.x, vSize.y, 1.f };
+	m_pTransformCom->Set_Scale(vSize.x, vSize.y, 1.f);
 
+	/*
+	m_BRect.left = vPos.x - vSize.x;
+	m_BRect.right = vPos.x + vSize.x;
+	m_BRect.top = vPos.y - vSize.y;
+	m_BRect.bottom = vPos.y + vSize.y;
+	*/
+	
 	m_BRect.left = vPos.x - vSize.x / 2;
 	m_BRect.right = vPos.x + vSize.x / 2;
 	m_BRect.top = vPos.y - vSize.y / 2;
 	m_BRect.bottom = vPos.y + vSize.y / 2;
-
+	
 	m_iIndex = _iIndex;
 	m_fPosX = x;
 
@@ -126,12 +134,15 @@ _int CUIScreenInv::Update_GameObject(const _float& fTimeDelta)
 		break;
 
 	}
+
+
 	if(Map_Picked(pt))
 	{
+		CInventory* pPlayerInv = dynamic_cast<Engine::CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
+
 		if (pPlayer->Get_InvWindow() && Engine::Button_Down(DIM_LB))
 		{
 			CInventory* pCursorInv = dynamic_cast<CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_UI", L"UI_Cursor", L"Com_Inventory"));
-			CInventory* pPlayerInv = dynamic_cast<Engine::CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
 
 			vector<CItem*>* pCvecItem = pCursorInv->Get_VecItemP();
 			vector<CItem*>* pPvecItem = pPlayerInv->Get_VecItemP();
@@ -164,10 +175,29 @@ _int CUIScreenInv::Update_GameObject(const _float& fTimeDelta)
 			pPlayer->Set_iHandNum(m_iCurInv);
 		}
 
+		if (!pPlayerInv->Check_Empty(iIndex) && !m_bStay)
+		{
+			m_pItem = pPlayerInv->Get_Item(iIndex);
+
+			CUIItemFrame* pItemF = dynamic_cast<CUIItemFrame*>(Engine::Get_GameObject(L"Layer_UI", L"UI_ItemFrame"));
+
+			pItemF->Set_Window(m_pItem);
+
+			m_bStay = true;
+		}
+
 		m_bCollapse = true;
 	}
 	else if (!Map_Picked(pt))
 	{
+		if (m_bCollapse)
+		{
+			CUIItemFrame* pItemF = dynamic_cast<CUIItemFrame*>(Engine::Get_GameObject(L"Layer_UI", L"UI_ItemFrame"));
+
+			pItemF->Set_Window(m_pItem);
+
+			m_bStay = false;
+		}
 		m_bCollapse = false;
 	}
 
@@ -243,7 +273,7 @@ void CUIScreenInv::Render_GameObject()
 
 		m_pItem->Get_Texture()->Set_Texture();
 
-		_vec3 vScale = m_pItem->Get_Transform()->m_vScale;
+		//_vec3 vScale = m_pItem->Get_Transform()->m_vScale;
 		
 		Engine::ITEMNUM eNum = m_pItem->Get_ItemNum();
 
@@ -381,7 +411,7 @@ void CUIScreenInv::Move_Pos()
 	m_pTransformCom->Get_Info(INFO_POS, &vPos);
 
 
-	vSize = { m_pTransformCom->m_vScale.x, m_pTransformCom->m_vScale.y, m_pTransformCom->m_vScale.z };
+	vSize = { m_pTransformCom->Get_Scale()->x, m_pTransformCom->Get_Scale()->y, m_pTransformCom->Get_Scale()->z };
 
 	m_BRect.top = y - vSize.y / 2;
 	m_BRect.bottom = y + vSize.y / 2;

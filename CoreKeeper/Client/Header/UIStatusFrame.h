@@ -12,11 +12,11 @@ class CTexture;
 
 END
 
-class CUIPlayerStatus : public Engine::CGameObject
+class CUIStatusFrame : public Engine::CGameObject
 {
 private:
-	explicit CUIPlayerStatus(LPDIRECT3DDEVICE9 pGraphicDev);
-	virtual ~CUIPlayerStatus();
+	explicit CUIStatusFrame(LPDIRECT3DDEVICE9 pGraphicDev);
+	virtual ~CUIStatusFrame();
 
 public:
 	virtual			HRESULT			Ready_GameObject(_vec2 vPos, _vec2 vSize);
@@ -32,21 +32,29 @@ public:
 			m_bWindow = true;
 	}
 
+	_bool           Map_Picked(POINT _screenPos) {
+		return  ::PtInRect(&m_BRect, _screenPos);
+	}
+
 private:
 	HRESULT			Add_Component();
 
 private:
 	_vec2 m_vPos;
-	_bool m_bWindow;
 
-	RECT m_bRect;
+	_bool m_bWindow;
+	_bool m_bCollapse;
+
+	RECT m_BRect;
+
 private:
 	Engine::CRcTex* m_pBufferCom;
 	Engine::CTransform* m_pTransformCom;
 	Engine::CTexture* m_pTextureCom;
+	Engine::CTexture* m_pSelTextureCom;
 
 public:
-	static CUIPlayerStatus* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec2 vPos, _vec2 vSize);
+	static CUIStatusFrame* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec2 vPos, _vec2 vSize);
 
 private:
 	virtual void		Free();

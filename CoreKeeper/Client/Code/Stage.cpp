@@ -482,10 +482,25 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Sort", pGameObject), E_FAIL);
 
+	vPos = { 1130.f, 190.f };
+	vSize = { 130.f, 150.f };
+
+	pGameObject = CUIStatusFrame::Create(m_pGraphicDev, vPos, vSize);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_StatusFrame", pGameObject), E_FAIL);
+
+	vPos = { WINCX / 2.f, WINCY / 2.f };
+	vSize = { 130.f, 150.f };
+
+	pGameObject = CUIItemFrame::Create(m_pGraphicDev, vPos, vSize);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_ItemFrame", pGameObject), E_FAIL);
+
+	/*
 	pGameObject = CMiniMap::Create(m_pGraphicDev, vPos, vSize);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_MiniMap", pGameObject), E_FAIL);
-	
+	*/
 
 	m_mapLayer.insert({ pLayerTag , pLayer });
 

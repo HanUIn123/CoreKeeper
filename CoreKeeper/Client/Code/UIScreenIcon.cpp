@@ -38,7 +38,7 @@ HRESULT CUIScreenIcon::Ready_GameObject(_vec2 vPos, _vec2 vSize, const _uint iIn
 	float x = vPos.x - width / 2;
 	float y = height / 2 - vPos.y;
 
-	m_pTransformCom->m_vScale = { vSize.x, vSize.y , 1.f };
+	m_pTransformCom->Set_Scale(vSize.x, vSize.y , 1.f);
 	m_pTransformCom->Set_Pos(x, y, 0);
 
 	m_BRect.left = vPos.x - vSize.x / 2;
