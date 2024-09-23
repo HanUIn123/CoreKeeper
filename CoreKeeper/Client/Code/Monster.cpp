@@ -78,7 +78,7 @@ void CMonster::Apply_Billboard()
 	D3DXMatrixInverse(&matBill, 0, &matBill);
 
 	// 스케일 행렬을 따로 계산
-	D3DXMatrixScaling(&matScale, m_pTransformCom->m_vScale.x, m_pTransformCom->m_vScale.y, m_pTransformCom->m_vScale.z);
+	D3DXMatrixScaling(&matScale, m_pTransformCom->Get_Scale()->x, m_pTransformCom->Get_Scale()->y, m_pTransformCom->Get_Scale()->z);
 
 	D3DXMATRIX matInverseScale;
 	D3DXMatrixInverse(&matInverseScale, 0, &matScale);
