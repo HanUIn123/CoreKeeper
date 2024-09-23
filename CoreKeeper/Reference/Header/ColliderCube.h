@@ -33,12 +33,14 @@ public:
     _vec3	Get_Min() { return m_vMin; }
     _vec3	Get_Max() { return m_vMax; }
     _vec3	Get_CenterPos() { return m_vCenterPos; }
+    void	Set_Offset(const _vec3 vOffset) { m_vOffset = vOffset; }
 
 private:
     _vec3 m_vMin;       // 큐브의 최소 좌표
     _vec3 m_vMax;       // 큐브의 최대 좌표
     _matrix m_matWorld; 
     _vec3 m_vCenterPos;
+    _vec3 m_vOffset;			// 콜라이더 오프셋
 
     static bool	m_bShow;
     LPD3DXMESH	m_pCube;
