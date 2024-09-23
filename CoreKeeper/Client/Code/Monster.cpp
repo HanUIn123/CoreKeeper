@@ -239,7 +239,14 @@ void CMonster::Pattern_Attack(const _float& fTimeDelta)
 			{
 				// 공격 성공
 				if (m_pColliderCom->Check_Collision(pPlayerCollider))
-					m_bAttackSuccess = true;
+				{
+					if (!m_bAttackSuccess)
+					{
+						m_bAttackSuccess = true;
+						dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"))
+							->Set_KnockBack(vPos, m_pStateCom->Get_Stat()->iAttack, (1 - (m_fJumpTime / m_fJumpFrame)) * 3.f + 1.f);
+					}
+				}
 			}
 			if(m_bAttackSuccess)
 				FallDir(fTimeDelta);
@@ -373,7 +380,7 @@ void CMonster::KnockBack(const _float& fTimeDelta, const _float& fDist)
 
 void CMonster::Check_Hitted()
 {
-	_vec3 vPos, vUp, vHandedItemColliderPos;
+	_vec3 vPos, vPlayerPos;
 	m_pTransformCom->Get_Info(INFO_POS, &vPos);
 	CPlayer* pPlayer = dynamic_cast<CPlayer*>(Get_GameObject(L"Layer_GameLogic", L"Player"));
 	CItem* pPlayerHandedItem = pPlayer->Get_HandedItem();
@@ -381,8 +388,8 @@ void CMonster::Check_Hitted()
 	if (pPlayer->Get_CurState() == SWING)
 	{
 		CCollider* pHandedItemCollider = dynamic_cast<CCollider*>(pPlayerHandedItem->Get_Component(ID_DYNAMIC, L"Com_Collider"));
-		vHandedItemColliderPos = pHandedItemCollider->Get_CenterPos();
-
+		CTransform* pPlayerTransform = dynamic_cast<CTransform*>(pPlayer->Get_Component(ID_DYNAMIC, L"Com_Transform"));
+		pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
 		if (m_pColliderCom->Check_Collision(pHandedItemCollider))
 		{
 			if (!m_bKnockBackStart)
@@ -392,7 +399,7 @@ void CMonster::Check_Hitted()
 				m_fSpeedWeight = 8.f;
 				m_fJumpHeight = vPos.y - m_fIdleY;
 				m_vStartPoint = vPos;
-				m_vFallDir = vPos - vHandedItemColliderPos;
+				m_vFallDir = vPos - vPlayerPos;
 				D3DXVec3Normalize(&m_vFallDir, &m_vFallDir);
 				m_vFallDir.y = 0;
 				CState* pPlayerState = dynamic_cast<CState*>(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_State"));
