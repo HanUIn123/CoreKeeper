@@ -1,7 +1,10 @@
 #include "Export_Utility.h"
+#include "Export_System.h"
+
+bool CColliderCube::m_bShow = false;
 
 CColliderCube::CColliderCube(LPDIRECT3DDEVICE9 pGraphicDev)
-    : CComponent(pGraphicDev), m_vMin(-0.5f, -0.5f, -0.5f), m_vMax(0.5f, 0.5f, 0.5f)
+    : CComponent(pGraphicDev), m_vMin(-0.5f, -0.5f, -0.5f), m_vMax(0.5f, 0.5f, 0.5f), m_pCube(nullptr)
 {
 }
 
@@ -13,11 +16,19 @@ HRESULT CColliderCube::Ready_Collider(const _vec3& vMin, const _vec3& vMax)
 {
     m_vMin = vMin;
     m_vMax = vMax;
+
+    FAILED_CHECK_RETURN(D3DXCreateBox(m_pGraphicDev, vMax.x - vMin.x, vMax.y - vMin.y, vMax.z - vMin.z, &m_pCube, NULL), E_FAIL);
+
     return S_OK;
 }
 
 void CColliderCube::Update_Collider(const _matrix* pWorldMatrix)
 {
+    if (Key_Down(DIK_B))
+    {
+        m_bShow = !m_bShow;
+    }
+
     m_matWorld = *pWorldMatrix;
     m_vCenterPos = _vec3(m_matWorld._41, m_matWorld._42, m_matWorld._43);
 }
@@ -72,18 +83,26 @@ bool CColliderCube::Check_Sphere_Collision(CCollider* pSphere)
 
 void CColliderCube::Render_Collider()
 {
-//#ifdef _DEBUG
-//    m_pGraphicDev->SetTransform(D3DTS_WORLD, &m_matWorld);
-//
-//    LPD3DXMESH pSphereMesh = nullptr;
-//    D3DXCreateSphere(m_pGraphicDev, m_fRadius, 20, 20, &pSphereMesh, NULL);
-//
-//    m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
-//    pSphereMesh->DrawSubset(0);
-//    m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
-//
-//    Safe_Release(pSphereMesh);
-//#endif
+    if (!m_bShow)
+        return;
+
+    //FAILED_CHECK_RETURN(Setup_Material(), );
+
+    m_pGraphicDev->SetTransform(D3DTS_WORLD, &m_matWorld);
+
+    DWORD preRenderState, preTextureStageState;
+
+    m_pGraphicDev->GetRenderState(D3DRS_FILLMODE, &preRenderState);
+    m_pGraphicDev->GetTextureStageState(0, D3DTSS_ALPHAOP, &preTextureStageState);
+
+    m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
+    m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_SELECTARG2);
+
+    m_pCube->DrawSubset(0);
+
+    // 돌려놓음
+    m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAOP, preTextureStageState);
+    m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, preRenderState);
 }
 
 CColliderCube* CColliderCube::Create(LPDIRECT3DDEVICE9 pGraphicDev, const _vec3& vMin, const _vec3& vMax)

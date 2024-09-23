@@ -130,7 +130,7 @@ void CPlayer::Render_GameObject()
 
 	m_pBufferCom->Set_Index(m_pAnimatorCom->Get_MotionIndex());
 	m_pBufferCom->Render_Buffer();
-
+	m_pColliderCom->Render_Collider();
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 

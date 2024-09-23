@@ -18,8 +18,6 @@ private:
 public:
 	HRESULT		Ready_Collider(float fRadius);
 	void		Update_Collider(const _matrix* pWorldMatrix);
-	bool		Check_Collision(CCollider* pTarget);	
-	bool		Check_Cube_Collision(CColliderCube* pCube);
 	void		Render_Collider();
 
 public:
@@ -28,6 +26,13 @@ public:
 
 private:
 	virtual void Free();
+
+public:
+	bool		Check_Collision(CCollider* pTarget);
+	bool		Check_Cube_Collision(CColliderCube* pCube);
+
+private:
+	HRESULT		Setup_Material();
 
 public:
 	_vec3	Get_CenterPos() { return m_vCenterPos; }
@@ -39,6 +44,9 @@ private:
 	_vec3 m_vCenterPos;			// 콜라이더 중심 좌표
 	_vec3 m_vOffset;			// 콜라이더 오프셋
 	_matrix m_matWorld;			
+
+	static bool	m_bShow;
+	LPD3DXMESH	m_pSphere;
 };
 
 END
