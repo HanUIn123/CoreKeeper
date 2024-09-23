@@ -70,6 +70,11 @@ public:
 	void            Set_DisMove() { m_bNoMove = true; }
 	void            Set_EnaMove() { m_bNoMove = false; }
 
+	void			Set_KnockBack(_vec3 vEnemyPos, _int iDamage, _float fDist = 3.f);
+
+private:
+	void			KnockBack(const _float& fTimeDelta);
+
 private:
 	Engine::CAnimTex*		m_pBufferCom;
 	Engine::CTransform*		m_pTransformCom;
@@ -103,6 +108,12 @@ private:
 	_bool                   m_bMap;       // Map 창 확인용
 
 	_bool                   m_bNoMove;    // UI건드릴때 캐릭터 움직이지 않게하는 용도
+
+	_vec3					m_vStartPoint;
+	_vec3					m_vKnockBackDir;
+	_bool					m_bKnockBackStart;
+	_bool					m_bKnockBackEnd;
+	_float					m_fKnockBackDist;
 
 public:
 	static CPlayer* Create(LPDIRECT3DDEVICE9 pGraphicDev);

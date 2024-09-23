@@ -37,6 +37,12 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	m_bCraft = false;
 	m_bFlip = false;
 	m_bNoMove = false;
+
+	m_vStartPoint = { 0, 0, 0 };
+	m_vKnockBackDir = { 0, 0, 0 };
+	m_bKnockBackStart = false;
+	m_bKnockBackEnd = true;
+	m_fKnockBackDist = 0.f;
 }
 
 CPlayer::~CPlayer()
@@ -60,37 +66,43 @@ HRESULT CPlayer::Ready_GameObject()
 
 _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 {
+	KnockBack(fTimeDelta);
+
+	Set_Equipment();
+	if (m_eState != SWING)
+		Show_Equipment();
+
 	if (!m_bNoMove && !m_bInventory && !m_bCraft && !m_bMap) // m_bNoMove -> UICursor에서 적용
 		Mouse_Click();
 	else
 		m_bSwing = false;
 
-	Set_Equipment();
-	if (m_eState != SWING)
-		Show_Equipment();
-	if (m_eState == WALK)
-		Walk_Y(fTimeDelta);
-	else
+	if (m_bKnockBackEnd)
 	{
-		_vec3 vPos;
-		m_pTransformCom->Get_Info(INFO_POS, &vPos);
-		m_pTransformCom->Set_Pos(vPos.x, m_fFirstY, vPos.z);
-	}
-	if (g_bIsTopCamera)
-	{
-		if (!m_bSwing)
-		{
-			Key_Position(fTimeDelta);
-			Mouse_Direction();
-		}
-		Animation_SetUp(m_eState, m_eDir);
-	}
-	else
-	{
-		if (!m_bSwing)
-			ShoulderView_Control(fTimeDelta);
+		if (m_eState == WALK)
+			Walk_Y(fTimeDelta);
 		else
-			ShoulderView_Swing();
+		{
+			_vec3 vPos;
+			m_pTransformCom->Get_Info(INFO_POS, &vPos);
+			m_pTransformCom->Set_Pos(vPos.x, m_fFirstY, vPos.z);
+		}
+		if (g_bIsTopCamera)
+		{
+			if (!m_bSwing)
+			{
+				Key_Position(fTimeDelta);
+				Mouse_Direction();
+			}
+			Animation_SetUp(m_eState, m_eDir);
+		}
+		else
+		{
+			if (!m_bSwing)
+				ShoulderView_Control(fTimeDelta);
+			else
+				ShoulderView_Swing();
+		}
 	}
 
 	Flip();
@@ -745,6 +757,42 @@ void CPlayer::Set_Map()
 		m_bMap = true;
 
 	m_bMap = true;
+}
+
+void CPlayer::Set_KnockBack(_vec3 vEnemyPos, _int iDamage, _float fDist)
+{
+	_vec3 vPos;
+	m_pTransformCom->Get_Info(INFO_POS, &vPos);
+	m_bKnockBackStart = true;
+	m_bKnockBackEnd = false;
+	m_vKnockBackDir = vPos - vEnemyPos;
+	m_vKnockBackDir.y = 0;
+	D3DXVec3Normalize(&m_vKnockBackDir, &m_vKnockBackDir);
+	m_vStartPoint = vEnemyPos;
+	m_fKnockBackDist = fDist;
+
+	m_pStateCom->Set_Damaged(iDamage);
+}
+
+void CPlayer::KnockBack(const _float& fTimeDelta)
+{
+	if (m_bKnockBackStart)
+	{
+		_vec3 vPos;
+		m_pTransformCom->Get_Info(INFO_POS, &vPos);
+
+		_vec3 vLength = m_vStartPoint - vPos;
+		_float fLength = D3DXVec3Length(&vLength);
+		if (fLength >= m_fKnockBackDist)
+		{
+			m_bKnockBackStart = false;
+			m_bKnockBackEnd = true;
+			if (m_eState != DEAD)
+				m_eState = IDLE;
+			return;
+		}
+		m_pTransformCom->Move_Pos(&m_vKnockBackDir, fTimeDelta, m_fSpeed * (m_fKnockBackDist / fLength));
+	}
 }
 
 CPlayer* CPlayer::Create(LPDIRECT3DDEVICE9 pGraphicDev)
