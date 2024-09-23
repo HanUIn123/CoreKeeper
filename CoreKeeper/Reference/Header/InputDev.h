@@ -57,7 +57,16 @@ public:
 
 		return false;
 	}
+	_bool   Button_Up(MOUSEKEYSTATE eMouseState)
+	{
+		if ((m_bOldMouseState[eMouseState]) && !(m_tMouseState.rgbButtons[eMouseState] & 0x80))
+		{
+			m_bOldMouseState[eMouseState] = false;
+			return true;
+		}
 
+		return false;
+	}
 	// 현재 마우스의 특정 축 좌표를 반환
 	_long	Get_DIMouseMove(MOUSEMOVESTATE eMouseState)		
 	{	

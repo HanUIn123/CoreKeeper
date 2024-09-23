@@ -71,6 +71,10 @@ _bool    Button_Down(MOUSEKEYSTATE eMouse)
 {
 	return CInputDev::GetInstance()->Button_Down(eMouse);
 }
+_bool    Button_Up(MOUSEKEYSTATE eMouseState)
+{
+	return CInputDev::GetInstance()->Button_Up(eMouseState);
+}
 HRESULT Ready_InputDev(HINSTANCE hInst, HWND hWnd)
 {
 	return CInputDev::GetInstance()->Ready_InputDev(hInst, hWnd);

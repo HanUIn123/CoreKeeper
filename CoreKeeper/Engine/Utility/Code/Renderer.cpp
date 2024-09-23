@@ -5,6 +5,12 @@ IMPLEMENT_SINGLETON(CRenderer)
 
 CRenderer::CRenderer()
 {
+	m_MainViewport.X = 0;
+	m_MainViewport.Y = 0;
+	m_MainViewport.Width = WINCX;
+	m_MainViewport.Height = WINCY;
+	m_MainViewport.MinZ = 0.0f;
+	m_MainViewport.MaxZ = 1.0f;
 }
 
 CRenderer::~CRenderer()
@@ -39,6 +45,7 @@ void CRenderer::Render_GameObject(LPDIRECT3DDEVICE9 & pGraphicDev)
 		pCamera->Set_Render(TYPE_ORTHOGRAPHIC);
 	}
 	Render_UI(pGraphicDev);
+	Render_Window(pGraphicDev);
 	//Render_UIALPHA(pGraphicDev);
 
 	Clear_RenderGroup();
@@ -127,6 +134,26 @@ void CRenderer::Render_UIALPHA(LPDIRECT3DDEVICE9& pGraphicDev)
 	//pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
 	//pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_ADD);
 	//pGraphicDev->SetRenderState(D3DRS_TEXTUREFACTOR, D3DCOLOR_ARGB(255, 255, 255, 255));
+}
+
+void CRenderer::Render_Window(LPDIRECT3DDEVICE9& pGraphicDev)
+{
+	_D3DVIEWPORT9 MapViewport;
+
+	MapViewport.X = WINCX - 300.f;
+	MapViewport.Y = WINCY - 300.f;
+	MapViewport.Width = 200.f;
+	MapViewport.Height = 100.f;
+	MapViewport.MinZ = 0.0f;
+	MapViewport.MaxZ = 1.0f;
+
+	pGraphicDev->SetViewport(&MapViewport);
+
+	for (auto& pGameObject : m_RenderGroup[RENDER_WINDOW])
+		pGameObject->Render_GameObject();
+
+	pGraphicDev->SetViewport(&m_MainViewport);
+
 }
 
 void CRenderer::Render_UI(LPDIRECT3DDEVICE9 & pGraphicDev)

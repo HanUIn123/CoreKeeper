@@ -171,7 +171,6 @@ _int CUICraftSlot::Update_GameObject(const _float& fTimeDelta)
 		}
 		else
 			m_bCollapse = false;
-
 	}
 	return iExit;
 }
@@ -180,7 +179,7 @@ void CUICraftSlot::LateUpdate_GameObject()
 {
 	if (m_bWindow)
 	{
-		Engine::Add_RenderGroup(RENDER_UI, this);
+	    Engine::Add_RenderGroup(RENDER_UI, this);
 	}
 	Engine::CGameObject::LateUpdate_GameObject();
 }

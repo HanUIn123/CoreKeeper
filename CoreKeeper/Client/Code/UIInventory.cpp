@@ -74,6 +74,8 @@ _int CUIInventory::Update_GameObject(const _float& fTimeDelta)
 						(*pPvecItem)[iIndex]->Add_Count((*pCvecItem)[0]->Get_Count());
 						pCursorInv->Remove_Item(0);
 					}
+					else if ((*pPvecItem)[iIndex]->Get_ItemNum() != (*pCvecItem)[0]->Get_ItemNum())
+						pPlayerInv->Swap_Item(&(*pCvecItem)[0], &(*pPvecItem)[iIndex]);
 				}
 				else
 					pPlayerInv->Swap_Item(&(*pCvecItem)[0], &(*pPvecItem)[iIndex]);

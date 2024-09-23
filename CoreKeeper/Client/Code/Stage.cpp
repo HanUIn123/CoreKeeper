@@ -475,6 +475,18 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_TrashSlot", pGameObject), E_FAIL);
 
+	vPos = { 1040.f, 476.f };
+	vSize = { 30.f, 30.f };
+
+	pGameObject = CUISort::Create(m_pGraphicDev, vPos, vSize);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Sort", pGameObject), E_FAIL);
+
+	pGameObject = CMiniMap::Create(m_pGraphicDev, vPos, vSize);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_MiniMap", pGameObject), E_FAIL);
+	
+
 	m_mapLayer.insert({ pLayerTag , pLayer });
 
 	return S_OK;
@@ -550,6 +562,7 @@ HRESULT CStage::Load_MapFile()
 	_int vTempIndex(0);
 
 	DWORD dwByte2 = 0;
+
 
 	while (true)
 	{

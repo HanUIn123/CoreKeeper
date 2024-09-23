@@ -171,6 +171,7 @@ call Copy.bat</Command>
     <ClInclude Include="..\Header\MapEditorScene.h" />
     <ClInclude Include="..\Header\MapToolCamera.h" />
     <ClInclude Include="..\Header\MapToolTerrain.h" />
+    <ClInclude Include="..\Header\MiniMap.h" />
     <ClInclude Include="..\Header\MiniMapCamera.h" />
     <ClInclude Include="..\Header\Monster.h" />
     <ClInclude Include="..\Header\Mucus.h" />
@@ -196,6 +197,7 @@ call Copy.bat</Command>
     <ClInclude Include="..\Header\UIItemSlot.h" />
     <ClInclude Include="..\Header\UIPlayerCraft.h" />
     <ClInclude Include="..\Header\UIPlayerStats.h" />
+    <ClInclude Include="..\Header\UISort.h" />
     <ClInclude Include="..\Header\UIStatusBar.h" />
     <ClInclude Include="..\Header\UIScreenIcon.h" />
     <ClInclude Include="..\Header\UIScreenInv.h" />
@@ -263,6 +265,7 @@ call Copy.bat</Command>
     <ClCompile Include="..\Code\UIItemSlot.cpp" />
     <ClCompile Include="..\Code\UIPlayerCraft.cpp" />
     <ClCompile Include="..\Code\UIPlayerStats.cpp" />
+    <ClCompile Include="..\Code\UISort.cpp" />
     <ClCompile Include="..\Code\UIStatusBar.cpp" />
     <ClCompile Include="..\Code\UIScreenIcon.cpp" />
     <ClCompile Include="..\Code\UIScreenInv.cpp" />
@@ -293,6 +296,7 @@ call Copy.bat</Command>
     <ClCompile Include="imgui_widgets.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="MiniMap.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
