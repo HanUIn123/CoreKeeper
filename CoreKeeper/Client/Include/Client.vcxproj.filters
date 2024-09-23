@@ -217,6 +217,12 @@
     <Filter Include="02. GameObject\10.Building\01.Box">
       <UniqueIdentifier>{faf24c15-7031-46eb-b2a1-c3c4319d1311}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\07. UI\08. MiniMap">
+      <UniqueIdentifier>{525c51d0-a9b0-43aa-b8d8-6b3d0649bc15}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\07. UI\09. UISort">
+      <UniqueIdentifier>{764cda61-387f-4090-8d86-f0682c31a4d6}</UniqueIdentifier>
+	</Filter>
     <Filter Include="02. GameObject\92.MiniMapCamera">
       <UniqueIdentifier>{b137fb71-0352-4b18-b3cb-446f5e560261}</UniqueIdentifier>
     </Filter>
@@ -420,6 +426,12 @@
     <ClInclude Include="..\Header\Building.h">
       <Filter>02. GameObject\10.Building</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\MiniMap.h">
+      <Filter>02. GameObject\07. UI\08. MiniMap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\UISort.h">
+      <Filter>02. GameObject\07. UI\09. UISort</Filter>
+	</ClInclude>
     <ClInclude Include="..\Header\MiniMapCamera.h">
       <Filter>02. GameObject\92.MiniMapCamera</Filter>
     </ClInclude>
@@ -605,6 +617,12 @@
     <ClCompile Include="..\Code\Building.cpp">
       <Filter>02. GameObject\10.Building</Filter>
     </ClCompile>
+    <ClCompile Include="MiniMap.cpp">
+      <Filter>02. GameObject\07. UI\08. MiniMap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\UISort.cpp">
+      <Filter>02. GameObject\07. UI\09. UISort</Filter>
+	</ClCompile>
     <ClCompile Include="..\Code\MiniMapCamera.cpp">
       <Filter>02. GameObject\92.MiniMapCamera</Filter>
     </ClCompile>

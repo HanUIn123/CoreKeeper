@@ -226,7 +226,7 @@ void CUITrashSlot::Render_GameObject()
 
 		m_pItem->Get_Texture()->Set_Texture();
 
-		m_pItem->Get_Buffer()->Render_Buffer();
+		m_pItem->Get_Buffer()->Render_First();
 	}
 
 }

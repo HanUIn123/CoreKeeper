@@ -16,6 +16,7 @@
 #include "..\Header\UICraftSlot.h"
 #include "..\Header\UITrashCan.h"
 #include "..\Header\UITrashSlot.h"
+#include "..\Header\UISort.h"
 
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CGameObject(pGraphicDev)
@@ -725,6 +726,9 @@ void CPlayer::Set_Inventory()
 
 	CUITrashSlot* pCanSlot = dynamic_cast<CUITrashSlot*>(Engine::Get_GameObject(L"Layer_UI", L"UI_TrashSlot"));
 	pCanSlot->Set_Window();
+
+	CUISort* pSort = dynamic_cast<CUISort*>(Engine::Get_GameObject(L"Layer_UI", L"UI_Sort"));
+	pSort->Set_Window();
 	
 	if (m_bInventory)
 		m_bInventory = false;
