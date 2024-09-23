@@ -8,6 +8,7 @@ class CAnimTex;
 class CTransform;
 class CTexture;
 class CCollider;
+class CColliderCube;
 class CAnimator;
 class CShadowTex;
 
@@ -42,6 +43,7 @@ protected:
 	Engine::CTransform* m_pTransformCom;
 	Engine::CTexture* m_pTextureCom;
 	Engine::CCollider* m_pColliderCom;
+	Engine::CColliderCube* m_pColliderCubeCom;
 	Engine::CAnimator* m_pAnimatorCom;
 
 	Engine::CShadowTex* m_pShadowBufferCom;

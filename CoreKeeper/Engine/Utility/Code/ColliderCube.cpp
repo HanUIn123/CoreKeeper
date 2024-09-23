@@ -6,6 +6,7 @@ bool CColliderCube::m_bShow = false;
 CColliderCube::CColliderCube(LPDIRECT3DDEVICE9 pGraphicDev)
     : CComponent(pGraphicDev), m_vMin(-0.5f, -0.5f, -0.5f), m_vMax(0.5f, 0.5f, 0.5f), m_pCube(nullptr)
 {
+    m_vOffset = { 0, 0, 0 };
 }
 
 CColliderCube::~CColliderCube()
@@ -30,7 +31,7 @@ void CColliderCube::Update_Collider(const _matrix* pWorldMatrix)
     }
 
     m_matWorld = *pWorldMatrix;
-    m_vCenterPos = _vec3(m_matWorld._41, m_matWorld._42, m_matWorld._43);
+    m_vCenterPos = _vec3(m_matWorld._41, m_matWorld._42, m_matWorld._43) + m_vOffset;
 }
 
 bool CColliderCube::Check_Collision(CColliderCube* pTarget)

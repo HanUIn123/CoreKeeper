@@ -45,7 +45,7 @@ _int CSword::Update_GameObject(const _float& fTimeDelta)
 
 	if (m_bUse)
 	{
-		m_pColliderCom->Set_Offset(_vec3(0, 0, 0));
+		m_pColliderCubeCom->Set_Offset(_vec3(0, 0, 0));
 		Swing(0, 5, 2);
 
 		m_bActive = true;
@@ -95,6 +95,7 @@ void CSword::Render_GameObject()
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
 	m_pColliderCom->Update_Collider(m_pTransformCom->Get_WorldMatrix());
+	m_pColliderCubeCom->Update_Collider(m_pTransformCom->Get_WorldMatrix());
 
 	m_pTextureCom->Set_Texture(m_iTextureNumber);
 
@@ -109,6 +110,7 @@ void CSword::Render_GameObject()
 	if (m_bActive)
 	{
 		m_pColliderCom->Render_Collider();
+		m_pColliderCubeCom->Render_Collider();
 	}
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pShadowTransformCom->Get_WorldMatrix());
@@ -139,9 +141,13 @@ HRESULT CSword::Add_Component()
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_DYNAMIC].insert({ L"Com_Transform", pComponent });
 
-	pComponent = m_pColliderCom = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Proto_ItemCollider"));
+	pComponent = m_pColliderCom = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Proto_SwordCollider"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_DYNAMIC].insert({ L"Com_Collider", pComponent });
+	
+	pComponent = m_pColliderCubeCom = dynamic_cast<CColliderCube*>(Engine::Clone_Proto(L"Proto_SwordCubeCollider"));
+	NULL_CHECK_RETURN(pComponent, E_FAIL);
+	m_mapComponent[ID_DYNAMIC].insert({ L"Com_ColliderCube", pComponent });
 
 	pComponent = m_pAnimatorCom = dynamic_cast<CAnimator*>(Engine::Clone_Proto(L"Proto_Animator"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);

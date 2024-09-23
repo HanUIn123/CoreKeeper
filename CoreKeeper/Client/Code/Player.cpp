@@ -555,6 +555,7 @@ void CPlayer::Swing_Equipment()
 			m_pTransformCom->Get_Info(INFO_RIGHT, &vPlayerRight);
 			m_pTransformCom->Get_Info(INFO_UP, &vPlayerUp);
 
+
 			//_vec3 vPlayerAngle = *(m_pTransformCom->Get_Angle());
 
 			//_matrix matRotation;

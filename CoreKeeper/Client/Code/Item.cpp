@@ -208,22 +208,22 @@ void CItem::Swing(int start, int end, int Count)
 				case FRONT:
 					m_fAngle = -90.f;
 					m_fAngleY = 90.f;
-					m_pColliderCom->Set_Offset(_vec3(0, 0, -1.f));
+					m_pColliderCubeCom->Set_Offset(_vec3(0, 0, -1.f));
 					break;
 				case LEFT:
 					m_fAngle = 180.f;
 					m_fAngleX = 90.f;
-					m_pColliderCom->Set_Offset(_vec3(-0.5f, 0, 0));
+					m_pColliderCubeCom->Set_Offset(_vec3(-1.f, 0, 0));
 					break;
 				case BACK:
 					m_fAngle = 90.f;
 					m_fAngleY = -90.f;
-					m_pColliderCom->Set_Offset(_vec3(0, 0, 0.5f));
+					m_pColliderCubeCom->Set_Offset(_vec3(0, 0, 1.f));
 					break;
 				default:
 					m_fAngle = 0.0f;
 					m_fAngleX = 90.f;
-					m_pColliderCom->Set_Offset(_vec3(0.5f, 0, 0));
+					m_pColliderCubeCom->Set_Offset(_vec3(1.f, 0, 0));
 					break;
 				}
 				m_pTransformCom->Rotation(ROT_X, D3DXToRadian(m_fAngleX));

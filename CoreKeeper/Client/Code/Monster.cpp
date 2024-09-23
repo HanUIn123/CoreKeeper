@@ -376,10 +376,11 @@ void CMonster::Check_Hitted()
 	
 	if (pPlayer->Get_CurState() == SWING)
 	{
-		CCollider* pHandedItemCollider = dynamic_cast<CCollider*>(pPlayerHandedItem->Get_Component(ID_DYNAMIC, L"Com_Collider"));
+		CColliderCube* pHandedItemCollider = dynamic_cast<CColliderCube*>(pPlayerHandedItem->Get_Component(ID_DYNAMIC, L"Com_ColliderCube"));
+	
 		CTransform* pPlayerTransform = dynamic_cast<CTransform*>(pPlayer->Get_Component(ID_DYNAMIC, L"Com_Transform"));
 		pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
-		if (m_pColliderCom->Check_Collision(pHandedItemCollider))
+		if (m_pColliderCom->Check_Cube_Collision(pHandedItemCollider))
 		{
 			if (!m_bKnockBackStart)
 			{
@@ -405,8 +406,6 @@ void CMonster::Drop_Item()
 	_vec3 vPos;
 	m_pTransformCom->Get_Info(INFO_POS, &vPos);
 
-	// 몬스터마다 다른 아이템을 만들어야함
-	// 랜덤도 있으면 좋을듯 ㅎㅎ
 	CScene* pScene = Engine::Get_Scene();
 	CItem* pGameObject = nullptr;
 	_int iSize = m_vecDropItem.size();
