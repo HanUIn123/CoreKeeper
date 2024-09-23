@@ -18,7 +18,7 @@ private:
 	virtual ~CTorch();
 
 public:
-	virtual			HRESULT			Ready_GameObject();
+	virtual			HRESULT			Ready_GameObject(_vec3 vPos);
 	virtual			_int			Update_GameObject(const _float& fTimeDelta);
 	virtual			void			LateUpdate_GameObject();
 	virtual			void			Render_GameObject();
@@ -28,7 +28,7 @@ private:
 	void			SetUp_Light();
 
 public:
-	static CTorch* Create(LPDIRECT3DDEVICE9 pGraphicDev);
+	static CTorch* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos = { 0.f, 0.f, 0.f });
 
 private:
 	virtual void		Free();

@@ -8,8 +8,6 @@ CMucus::CMucus(LPDIRECT3DDEVICE9 pGraphicDev)
 {
 	ZeroMemory(&m_tStat, sizeof(STAT));
 
-	m_tStat.iAttack = 10;
-
 	m_eItemNum = ITEM_MUCUS;
 }
 
@@ -17,20 +15,18 @@ CMucus::~CMucus()
 {
 }
 
-HRESULT CMucus::Ready_GameObject()
+HRESULT CMucus::Ready_GameObject(_vec3 vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_pTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
+	m_pTransformCom->Set_Scale(0.3f, 0.3f, 0.3f);
 	m_pShadowTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
 
-	m_pTransformCom->Set_Pos(0.f, 0.7f, 0.f);
-
-	_vec3 vPos;
-	m_pTransformCom->Get_Info(INFO_POS, &vPos);
+	m_pTransformCom->Set_Pos(vPos.x, vPos.y, vPos.z);
 	m_pShadowTransformCom->Set_Pos(vPos.x, 0.1f, vPos.z);
+
 	// 원래의 Y 위치 저장
-	m_fFirstY = 0.7f;
+	m_fFirstY = vPos.y;
 
 	return S_OK;
 }
@@ -45,8 +41,6 @@ _int CMucus::Update_GameObject(const _float& fTimeDelta)
 
 	if (m_bUse)
 	{
-		Swing(0, 5, 2);
-
 		m_bActive = true;
 		m_bDrop = false;
 		m_pTransformCom->Set_Scale(1.5f, 1.5f, 1.5f);
@@ -97,7 +91,7 @@ void CMucus::Render_GameObject()
 
 	m_pTextureCom->Set_Texture(m_iTextureNumber);
 
-	m_pBufferCom->Set_Index(m_pAnimatorCom->Get_MotionIndex());
+	m_pBufferCom->Set_Index(0);
 
 	if (m_bActive)
 	{
@@ -161,11 +155,11 @@ HRESULT CMucus::Add_Component()
 	return S_OK;
 }
 
-CMucus* CMucus::Create(LPDIRECT3DDEVICE9 pGraphicDev)
+CMucus* CMucus::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 {
 	CMucus* pSword = new CMucus(pGraphicDev);
 
-	if (FAILED(pSword->Ready_GameObject()))
+	if (FAILED(pSword->Ready_GameObject(vPos)))
 	{
 		Safe_Release(pSword);
 		MSG_BOX("pSword Create Failed");

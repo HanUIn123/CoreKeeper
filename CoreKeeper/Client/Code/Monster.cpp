@@ -3,6 +3,8 @@
 #include "Export_Utility.h"
 #include "..\Header\Player.h"
 
+int	CMonster::m_iTagNumber = 0;
+
 CMonster::CMonster(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CGameObject(pGraphicDev)
 {
@@ -266,9 +268,17 @@ void CMonster::Pattern_Dead()
 		// 아이템 드랍
 		_vec3 vPos;
 		m_pTransformCom->Get_Info(INFO_POS, &vPos);
-		m_pDropItem->Set_Active(true);
-		m_pDropItem->Drop(vPos);
 
+		// 몬스터마다 다른 아이템을 만들어야함
+		// 랜덤도 있으면 좋을듯 ㅎㅎ
+		CScene* pScene = Engine::Get_Scene();
+		CItem* pGameObject = CMucus::Create(m_pGraphicDev, vPos);
+		NULL_CHECK_RETURN(pGameObject, );
+		pGameObject->Set_Active(true);
+		dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
+
+		wstring tagName = L"Mucus" + std::to_wstring(m_iTagNumber++);
+		FAILED_CHECK_RETURN(pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, tagName.c_str()), );
 	}
 }
 

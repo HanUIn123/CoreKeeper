@@ -1,6 +1,7 @@
 #pragma once
 #include "GameObject.h"
 #include "Item.h"
+#include "Mucus.h"
 
 BEGIN(Engine)
 
@@ -82,6 +83,8 @@ protected:
 
 	_bool			m_bDropSettings;
 	CItem*			m_pDropItem;
+
+	static int		m_iTagNumber;
 
 public:
 	static CMonster*			Create(LPDIRECT3DDEVICE9 pGraphicDev);
