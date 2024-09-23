@@ -29,6 +29,11 @@ HRESULT CUIPlayerStatus::Ready_GameObject(_vec2 vPos, _vec2 vSize)
 	m_pTransformCom->Set_Scale(vSize.x, vSize.y , 1.f);
 	m_pTransformCom->Set_Pos(x, y, 0);
 
+	m_bRect.left = vPos.x - vSize.x / 2;
+	m_bRect.right = vPos.x + vSize.x / 2;
+	m_bRect.top = vPos.y - vSize.y / 2;
+	m_bRect.bottom = vPos.y + vSize.y / 2;
+
 	return S_OK;
 }
 
@@ -51,11 +56,20 @@ void CUIPlayerStatus::LateUpdate_GameObject()
 
 void CUIPlayerStatus::Render_GameObject()
 {
+
+//	m_pGraphicDev->SetScissorRect(&m_bRect); // 출력할 사각형 크기 정함
+//
+	//m_pGraphicDev->SetRenderState(D3DRS_SCISSORTESTENABLE, TRUE); // scissortest 시작
+
+	
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
 
 	m_pTextureCom->Set_Texture();
 
 	m_pBufferCom->Render_Buffer();
+
+	//m_pGraphicDev->SetRenderState(D3DRS_SCISSORTESTENABLE, FALSE); // scissortest 끝
+
 
 }
 

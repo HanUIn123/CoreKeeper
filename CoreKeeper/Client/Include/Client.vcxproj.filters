@@ -91,9 +91,6 @@
     <Filter Include="02. GameObject\07. UI\02. UIStatus">
       <UniqueIdentifier>{5f789f66-086f-4154-b4fe-59e0c4ace950}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\93.Tile">
-      <UniqueIdentifier>{8d077375-37b3-4c59-a14c-a58958b5d20c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\07. UI\05. UIInventory">
       <UniqueIdentifier>{6209e4eb-d697-45e9-ac69-1570c246f771}</UniqueIdentifier>
     </Filter>
@@ -222,12 +219,21 @@
     </Filter>
     <Filter Include="02. GameObject\07. UI\09. UISort">
       <UniqueIdentifier>{764cda61-387f-4090-8d86-f0682c31a4d6}</UniqueIdentifier>
-	</Filter>
+    </Filter>
     <Filter Include="02. GameObject\92.MiniMapCamera">
       <UniqueIdentifier>{b137fb71-0352-4b18-b3cb-446f5e560261}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameObject\06. Item\99. Etc\03. Mucus">
       <UniqueIdentifier>{d7e2e7bf-da00-4517-acf2-d8521f0ede56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\94.Wall\93.Tile">
+      <UniqueIdentifier>{8d077375-37b3-4c59-a14c-a58958b5d20c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\07. UI\00. UIPlayerStatus\01. PlayerStat\00. UIStatFrame">
+      <UniqueIdentifier>{f0eac6bd-6403-4714-b0f0-684cdd8ce70e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\07. UI\04. Cursor\00. UIItem">
+      <UniqueIdentifier>{c39437de-c5b8-4f6c-9304-5c1ab3e78304}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -337,7 +343,7 @@
       <Filter>02. GameObject\07. UI\04. Cursor</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\Tile.h">
-      <Filter>02. GameObject\93.Tile</Filter>
+      <Filter>02. GameObject\94.Wall\93.Tile</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\UIInventory.h">
       <Filter>02. GameObject\07. UI\05. UIInventory\00. UIInventory</Filter>
@@ -431,12 +437,18 @@
     </ClInclude>
     <ClInclude Include="..\Header\UISort.h">
       <Filter>02. GameObject\07. UI\09. UISort</Filter>
-	</ClInclude>
+    </ClInclude>
     <ClInclude Include="..\Header\MiniMapCamera.h">
       <Filter>02. GameObject\92.MiniMapCamera</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\Mucus.h">
       <Filter>02. GameObject\06. Item\99. Etc\03. Mucus</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\UIStatusFrame.h">
+      <Filter>02. GameObject\07. UI\00. UIPlayerStatus\01. PlayerStat\00. UIStatFrame</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\UIItemFrame.h">
+      <Filter>02. GameObject\07. UI\04. Cursor\00. UIItem</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -531,7 +543,7 @@
       <Filter>02. GameObject\07. UI\04. Cursor</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\Tile.cpp">
-      <Filter>02. GameObject\93.Tile</Filter>
+      <Filter>02. GameObject\94.Wall\93.Tile</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\UIInventory.cpp">
       <Filter>02. GameObject\07. UI\05. UIInventory\00. UIInventory</Filter>
@@ -622,12 +634,18 @@
     </ClCompile>
     <ClCompile Include="..\Code\UISort.cpp">
       <Filter>02. GameObject\07. UI\09. UISort</Filter>
-	</ClCompile>
+    </ClCompile>
     <ClCompile Include="..\Code\MiniMapCamera.cpp">
       <Filter>02. GameObject\92.MiniMapCamera</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\Mucus.cpp">
       <Filter>02. GameObject\06. Item\99. Etc\03. Mucus</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\UIStatusFrame.cpp">
+      <Filter>02. GameObject\07. UI\00. UIPlayerStatus\01. PlayerStat\00. UIStatFrame</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\UIItemFrame.cpp">
+      <Filter>02. GameObject\07. UI\04. Cursor\00. UIItem</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

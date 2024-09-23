@@ -102,7 +102,7 @@ void CUIInventory::LateUpdate_GameObject()
 
 void CUIInventory::Render_GameObject()
 {
-
+	
 	_matrix matWorld;
 	m_pTransformCom->Get_WorldMatrix(&matWorld);
 

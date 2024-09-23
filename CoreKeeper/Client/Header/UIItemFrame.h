@@ -1,6 +1,8 @@
 #pragma once
 #include "GameObject.h"
 #include "Define.h"
+#include "Item.h"
+#include "UICursor.h"
 
 BEGIN(Engine)
 
@@ -12,11 +14,11 @@ class CTexture;
 
 END
 
-class CUIPlayerStatus : public Engine::CGameObject
+class CUIItemFrame : public Engine::CGameObject
 {
 private:
-	explicit CUIPlayerStatus(LPDIRECT3DDEVICE9 pGraphicDev);
-	virtual ~CUIPlayerStatus();
+	explicit CUIItemFrame(LPDIRECT3DDEVICE9 pGraphicDev);
+	virtual ~CUIItemFrame();
 
 public:
 	virtual			HRESULT			Ready_GameObject(_vec2 vPos, _vec2 vSize);
@@ -25,28 +27,34 @@ public:
 	virtual			void			Render_GameObject();
 
 public:
-	void            Set_Window() {
-		if (m_bWindow)
-			m_bWindow = false;
-		else
-			m_bWindow = true;
+	void            Set_Window(CItem* _pItem);
+
+	_bool           Map_Picked(POINT _screenPos) {
+		return  ::PtInRect(&m_BRect, _screenPos);
 	}
+
 
 private:
 	HRESULT			Add_Component();
 
 private:
 	_vec2 m_vPos;
-	_bool m_bWindow;
 
-	RECT m_bRect;
+	_bool m_bWindow;
+	_bool m_bCollapse;
+
+	RECT m_BRect;
+
+	CItem* m_pItem;
+
 private:
 	Engine::CRcTex* m_pBufferCom;
 	Engine::CTransform* m_pTransformCom;
 	Engine::CTexture* m_pTextureCom;
+	Engine::CTexture* m_pSelTextureCom;
 
 public:
-	static CUIPlayerStatus* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec2 vPos, _vec2 vSize);
+	static CUIItemFrame* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec2 vPos, _vec2 vSize);
 
 private:
 	virtual void		Free();

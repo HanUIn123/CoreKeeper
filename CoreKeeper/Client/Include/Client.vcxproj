@@ -194,6 +194,7 @@ call Copy.bat</Command>
     <ClInclude Include="..\Header\UIInventory.h" />
     <ClInclude Include="..\Header\Tile.h" />
     <ClInclude Include="..\Header\UIInvPlate.h" />
+    <ClInclude Include="..\Header\UIItemFrame.h" />
     <ClInclude Include="..\Header\UIItemSlot.h" />
     <ClInclude Include="..\Header\UIPlayerCraft.h" />
     <ClInclude Include="..\Header\UIPlayerStats.h" />
@@ -202,6 +203,7 @@ call Copy.bat</Command>
     <ClInclude Include="..\Header\UIScreenIcon.h" />
     <ClInclude Include="..\Header\UIScreenInv.h" />
     <ClInclude Include="..\Header\UIPlayerStatus.h" />
+    <ClInclude Include="..\Header\UIStatusFrame.h" />
     <ClInclude Include="..\Header\UITrashCan.h" />
     <ClInclude Include="..\Header\UITrashSlot.h" />
     <ClInclude Include="..\Header\Wall.h" />
@@ -262,6 +264,7 @@ call Copy.bat</Command>
     <ClCompile Include="..\Code\UICursor.cpp" />
     <ClCompile Include="..\Code\UIInventory.cpp" />
     <ClCompile Include="..\Code\UIInvPlate.cpp" />
+    <ClCompile Include="..\Code\UIItemFrame.cpp" />
     <ClCompile Include="..\Code\UIItemSlot.cpp" />
     <ClCompile Include="..\Code\UIPlayerCraft.cpp" />
     <ClCompile Include="..\Code\UIPlayerStats.cpp" />
@@ -270,6 +273,7 @@ call Copy.bat</Command>
     <ClCompile Include="..\Code\UIScreenIcon.cpp" />
     <ClCompile Include="..\Code\UIScreenInv.cpp" />
     <ClCompile Include="..\Code\UIPlayerStatus.cpp" />
+    <ClCompile Include="..\Code\UIStatusFrame.cpp" />
     <ClCompile Include="..\Code\UITrashCan.cpp" />
     <ClCompile Include="..\Code\UITrashSlot.cpp" />
     <ClCompile Include="..\Code\Wall.cpp" />

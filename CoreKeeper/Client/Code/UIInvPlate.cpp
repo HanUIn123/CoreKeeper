@@ -51,11 +51,13 @@ void CUIInvPlate::LateUpdate_GameObject()
 
 void CUIInvPlate::Render_GameObject()
 {
+
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
 
 	m_pTextureCom->Set_Texture();
 
 	m_pBufferCom->Render_Buffer();
+
 }
 
 HRESULT CUIInvPlate::Add_Component()

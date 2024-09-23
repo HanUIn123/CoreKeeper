@@ -1,10 +1,11 @@
 #include "pch.h"
 #include "..\Header\UIPlayerStats.h"
+#include "..\Header\UIStatusFrame.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
 
 CUIPlayerStats::CUIPlayerStats(LPDIRECT3DDEVICE9 pGraphicDev)
-	: Engine::CGameObject(pGraphicDev), m_bWindow(false), m_bCollapse(false)
+	: Engine::CGameObject(pGraphicDev), m_bWindow(false), m_bCollapse(false), m_bPushed(false)
 
 {
 }
@@ -50,9 +51,19 @@ _int CUIPlayerStats::Update_GameObject(const _float& fTimeDelta)
 		if (Map_Picked(pt))
 		{
 			m_bCollapse = true;
+
+			if (Button_Down(DIM_LB))
+			{
+				
+				CUIStatusFrame* pFrame = dynamic_cast<CUIStatusFrame*>(Engine::Get_GameObject(L"Layer_UI", L"UI_StatusFrame"));
+
+				pFrame->Set_Window();
+			}
 		}
 		else
+		{
 			m_bCollapse = false;
+		}
 
 		Add_RenderGroup(RENDER_UI, this);
 	}

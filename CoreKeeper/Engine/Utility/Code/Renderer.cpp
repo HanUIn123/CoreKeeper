@@ -45,7 +45,7 @@ void CRenderer::Render_GameObject(LPDIRECT3DDEVICE9 & pGraphicDev)
 		pCamera->Set_Render(TYPE_ORTHOGRAPHIC);
 	}
 	Render_UI(pGraphicDev);
-	Render_Window(pGraphicDev);
+	//Render_Window(pGraphicDev);
 	//Render_UIALPHA(pGraphicDev);
 
 	Clear_RenderGroup();

@@ -45,6 +45,8 @@ private:
 	_bool m_bWindow;
 	_bool m_bCollapse;
 
+	_bool m_bPushed;
+
 	RECT m_BRect;
 
 private:
