@@ -108,7 +108,7 @@ void CMucus::Render_GameObject()
 
 	m_pShadowTextureCom->Set_Texture(1);
 
-	if (m_bActive && !m_bUse)
+	if (m_bDrop)
 	{
 		m_pShadowBufferCom->Render_Buffer();
 	}
