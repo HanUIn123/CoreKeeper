@@ -408,6 +408,13 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Mp", pGameObject), E_FAIL);
 
+	vPos = { 460.f, 92.f };
+	vSize = { 420.f, 7.f };
+
+	pGameObject = CUIStatusBar::Create(m_pGraphicDev, vPos, vSize, 7);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Hunger", pGameObject), E_FAIL);
+
 	for (int i = 0; i < 10; i++)
 	{
 		if (i == 0)
@@ -490,6 +497,19 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_MiniMap", pGameObject), E_FAIL);
 	*/
+	vPos = { 60.f, 130.f };
+	vSize = { 20.f, 20.f };
+
+	pGameObject = CUIBuff::Create(m_pGraphicDev, vPos, vSize);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Buff0", pGameObject), E_FAIL);
+
+	vPos = { 110.f, 130.f };
+	vSize = { 20.f, 20.f };
+
+	pGameObject = CUIBuff::Create(m_pGraphicDev, vPos, vSize);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_DeBuff0", pGameObject), E_FAIL);
 
 	m_mapLayer.insert({ pLayerTag , pLayer });
 

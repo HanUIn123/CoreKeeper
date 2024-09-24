@@ -17,6 +17,7 @@
 #include "..\Header\UITrashCan.h"
 #include "..\Header\UITrashSlot.h"
 #include "..\Header\UISort.h"
+#include "..\Header\UIBuff.h"
 
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CGameObject(pGraphicDev)
@@ -682,7 +683,13 @@ void CPlayer::Set_UI()
 
 	pMp->Set_InfoH(m_pStateCom->Get_Stat()->iMp, m_pStateCom->Get_Stat()->iMaxMp); // (마나 , 최대마나)
 
-	if (Engine::Get_DIMouseMove(DIMS_Z))
+	CUIStatusBar* pHunger = dynamic_cast<CUIStatusBar*>
+		(Engine::Get_GameObject(L"Layer_UI", L"UI_Hunger"));
+	NULL_CHECK_RETURN(pMp);
+
+	pHunger->Set_InfoH(m_pStateCom->Get_Stat()->iMp, m_pStateCom->Get_Stat()->iMaxMp); // (배고픔 , 최대배고픔)
+
+	if (Engine::Get_DIMouseMove(DIMS_Z) && !m_bInventory)
 	{
 		if (Engine::Get_DIMouseMove(DIMS_Z) < 0)
 			m_iHandNum++;
@@ -708,6 +715,7 @@ void CPlayer::Set_UI()
 	{
 		Set_Inventory();
 		Set_Craft();
+		Set_Status();
 	}
 	
 	if (Engine::Key_Down(DIK_E))
@@ -720,6 +728,8 @@ void CPlayer::Set_UI()
 		}
 		if (m_bInventory)
 		{
+			Set_Status();
+
 			Set_Inventory();
 
 			m_bInventory = false;
@@ -730,6 +740,17 @@ void CPlayer::Set_UI()
 
 			m_bMap = false;
 		}
+	}
+
+	if (Engine::Key_Down(DIK_O))
+	{
+		CUIBuff* pBuff = dynamic_cast<CUIBuff*>(Engine::Get_GameObject(L"Layer_UI", L"UI_Buff0"));
+
+		pBuff->Set_Window(CUIBuff::BUFF_HEAL, CUIBuff::BUFF, 200.f);
+
+		CUIBuff* pDeBuff = dynamic_cast<CUIBuff*>(Engine::Get_GameObject(L"Layer_UI", L"UI_DeBuff0"));
+
+		pDeBuff->Set_Window(CUIBuff::DEBUFF_BURN, CUIBuff::DEBUFF, 100.f);
 	}
 
 }
@@ -813,12 +834,6 @@ void CPlayer::Set_Inventory()
 		pSlot->Set_Window();
 	}
 
- 	CUIPlayerStatus* pStatus = dynamic_cast<CUIPlayerStatus*>(Engine::Get_GameObject(L"Layer_UI", L"UIPlayerStatus"));
-	pStatus->Set_Window();
-
-	CUIPlayerStats* pStats = dynamic_cast<CUIPlayerStats*>(Engine::Get_GameObject(L"Layer_UI", L"UIPlayerStats"));
-	pStats->Set_Window();
-
 	for (int i = 0; i < 5; i++)
 	{
 		wstring string;
@@ -854,6 +869,17 @@ void CPlayer::Set_Map()
 		m_bMap = true;
 
 	m_bMap = true;
+}
+
+void CPlayer::Set_Status()
+{
+
+	CUIPlayerStatus* pStatus = dynamic_cast<CUIPlayerStatus*>(Engine::Get_GameObject(L"Layer_UI", L"UIPlayerStatus"));
+	pStatus->Set_Window();
+
+	CUIPlayerStats* pStats = dynamic_cast<CUIPlayerStats*>(Engine::Get_GameObject(L"Layer_UI", L"UIPlayerStats"));
+	pStats->Set_Window();
+
 }
 
 void CPlayer::Set_KnockBack(_vec3 vEnemyPos, _int iDamage, _float fDist)

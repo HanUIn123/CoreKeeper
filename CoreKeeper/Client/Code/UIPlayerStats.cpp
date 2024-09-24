@@ -54,7 +54,6 @@ _int CUIPlayerStats::Update_GameObject(const _float& fTimeDelta)
 
 			if (Button_Down(DIM_LB))
 			{
-				
 				CUIStatusFrame* pFrame = dynamic_cast<CUIStatusFrame*>(Engine::Get_GameObject(L"Layer_UI", L"UI_StatusFrame"));
 
 				pFrame->Set_Window();
@@ -66,6 +65,12 @@ _int CUIPlayerStats::Update_GameObject(const _float& fTimeDelta)
 		}
 
 		Add_RenderGroup(RENDER_UI, this);
+	}
+	if (!m_bWindow)
+	{
+		CUIStatusFrame* pFrame = dynamic_cast<CUIStatusFrame*>(Engine::Get_GameObject(L"Layer_UI", L"UI_StatusFrame"));
+
+		pFrame->Set_WindowDis();
 	}
 	return iExit;
 }

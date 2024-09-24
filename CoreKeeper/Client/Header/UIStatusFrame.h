@@ -32,6 +32,10 @@ public:
 			m_bWindow = true;
 	}
 
+	void           Set_WindowDis() {
+		m_bWindow = false;
+	}
+
 	_bool           Map_Picked(POINT _screenPos) {
 		return  ::PtInRect(&m_BRect, _screenPos);
 	}

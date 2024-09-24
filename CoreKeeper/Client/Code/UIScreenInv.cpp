@@ -183,7 +183,7 @@ _int CUIScreenInv::Update_GameObject(const _float& fTimeDelta)
 			pPlayer->Set_iHandNum(m_iCurInv);
 		}
 
-		if (!pPlayerInv->Check_Empty(iIndex) && !m_bStay)
+		if (!pPlayerInv->Check_Empty(iIndex) && !m_bStay && pPlayer->Get_InvWindow())
 		{
 			m_pItem = pPlayerInv->Get_Item(iIndex);
 
@@ -202,7 +202,7 @@ _int CUIScreenInv::Update_GameObject(const _float& fTimeDelta)
 		{
 			CUIItemFrame* pItemF = dynamic_cast<CUIItemFrame*>(Engine::Get_GameObject(L"Layer_UI", L"UI_ItemFrame"));
 
-			pItemF->Set_Window(m_pItem);
+			pItemF->Set_WindowDis();
 
 			m_bStay = false;
 		}

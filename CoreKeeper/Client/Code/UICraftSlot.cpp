@@ -144,13 +144,16 @@ _int CUICraftSlot::Update_GameObject(const _float& fTimeDelta)
 					CInventory* pCursorInv = dynamic_cast<CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_UI", L"UI_Cursor", L"Com_Inventory"));
 					CInventory* pPlayerInv = dynamic_cast<Engine::CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
 
-					
+					CStage* pStage = dynamic_cast<CStage*>(Engine::Get_Scene());
+
+					CItem* pItem = nullptr;
+
 					switch (m_eSlotType)
 					{
 					case UCITEM_TORCH:
 						pPlayerInv->Minus_Item(ITEM_WOOD, 1);
 
-						CItem* pItem = CTorch::Create(m_pGraphicDev);
+						pItem = CTorch::Create(m_pGraphicDev);
 
 						pItem->Add_Count(2);
 
@@ -158,12 +161,42 @@ _int CUICraftSlot::Update_GameObject(const _float& fTimeDelta)
 
 						Craftstring[m_iCraftCount] = L"Torch" + to_wstring(m_iCraftCount);
 
-						CStage* pStage = dynamic_cast<CStage*>(Engine::Get_Scene());
 						pStage->Create_Item(L"Layer_UI", pItem, Craftstring[m_iCraftCount].c_str());
 
 						m_iCraftCount++;
 						break;
 				
+					case UCITEM_WOODENPICK:
+						pPlayerInv->Minus_Item(ITEM_WOOD, 4);
+
+						pItem = CPickaxe::Create(m_pGraphicDev);
+
+						//pItem->Add_Count(2);
+
+						pCursorInv->Add_Item(pItem);
+
+						Craftstring[m_iCraftCount] = L"PickAxe" + to_wstring(m_iCraftCount);
+
+						pStage->Create_Item(L"Layer_UI", pItem, Craftstring[m_iCraftCount].c_str());
+
+						m_iCraftCount++;
+						break;
+
+					case UCITEM_WOODENSHOVEL:
+						pPlayerInv->Minus_Item(ITEM_WOOD, 4);
+
+						pItem = CShovel::Create(m_pGraphicDev);
+
+						//pItem->Add_Count(2);
+
+						pCursorInv->Add_Item(pItem);
+
+						Craftstring[m_iCraftCount] = L"Shovel" + to_wstring(m_iCraftCount);
+
+						pStage->Create_Item(L"Layer_UI", pItem, Craftstring[m_iCraftCount].c_str());
+
+						m_iCraftCount++;
+						break;
 					}
 				}	
 			}
