@@ -3,7 +3,7 @@
 
 #include "Export_Utility.h"
 
-CHair::CHair(LPDIRECT3DDEVICE9 pGraphicDev) : Engine::CGameObject(pGraphicDev)
+CHair::CHair(LPDIRECT3DDEVICE9 pGraphicDev) : CItem(pGraphicDev)
 {
 }
 
@@ -22,7 +22,8 @@ _int CHair::Update_GameObject(const _float& fTimeDelta)
 {
 	Follow_Player();
 	m_pAnimatorCom->Update_Animation();
-	Add_RenderGroup(RENDER_ALPHA, this);
+	if(m_bActive)
+		Add_RenderGroup(RENDER_ALPHA, this);
 	return Engine::CGameObject::Update_GameObject(fTimeDelta);
 }
 

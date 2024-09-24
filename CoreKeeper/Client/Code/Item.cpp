@@ -80,7 +80,7 @@ void CItem::LateUpdate_GameObject()
 void CItem::Render_GameObject()
 {
 	// 카메라를 바라보게 하면서 스케일 유지
-	//Apply_Billboard();  
+	Apply_Billboard();  
 
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
@@ -226,9 +226,21 @@ void CItem::Swing(int start, int end, int Count)
 					m_pColliderCubeCom->Set_Offset(_vec3(1.f, 0, 0));
 					break;
 				}
+				m_pTransformCom->Rotation(ROT_Y, D3DXToRadian(m_fAngleY));
 				m_pTransformCom->Rotation(ROT_X, D3DXToRadian(m_fAngleX));
 				m_pTransformCom->Rotation(ROT_Z, D3DXToRadian(m_fAngle));
-				m_pTransformCom->Rotation(ROT_Y, D3DXToRadian(m_fAngleY));
+			}
+			else
+			{
+				_vec3 vUp, vPlayerLook;
+				CTransform* pPlayerTransformCom = dynamic_cast<Engine::CTransform*>
+					(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Transform"));
+
+				m_pTransformCom->Get_Info(INFO_UP, &vUp);
+				m_pTransformCom->Set_RotArbit(&vUp, -45);
+
+				pPlayerTransformCom->Get_Info(INFO_LOOK, &vPlayerLook);
+				m_pColliderCubeCom->Set_Offset(vPlayerLook * 3.f);
 			}
 			m_bHasRotated = true;
 		}
@@ -273,6 +285,37 @@ void CItem::Walk_Equipped(const _float& fTimeDelta)
 	_vec3 vUp;
 	m_pTransformCom->Get_Info(INFO_UP, &vUp);
 	m_pTransformCom->Move_Pos(&vUp, fTimeDelta, m_fWalkYSpeed);
+}
+
+void CItem::Follow_Player()
+{
+	CTransform* playerTransform = dynamic_cast<CTransform*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Transform"));
+	if (playerTransform)
+	{
+		_vec3 vPlayerPos, vPlayerAngle, vPlayerScale;
+		playerTransform->Get_Info(INFO_POS, &vPlayerPos);
+
+		if (g_bIsTopCamera)
+		{
+			m_pTransformCom->Set_Angle(0, 0, 0);
+			m_pTransformCom->Set_Pos(vPlayerPos.x, vPlayerPos.y - 0.04f, vPlayerPos.z - 0.001f);
+		}
+		else
+		{
+			_vec3 vPlayerLook;
+			playerTransform->Get_Info(INFO_LOOK, &vPlayerLook);
+			m_pTransformCom->Set_Pos(vPlayerPos.x - vPlayerLook.x * 0.02f, vPlayerPos.y - 0.04f, vPlayerPos.z - vPlayerLook.z * 0.02f);
+			vPlayerAngle = *(playerTransform->Get_Angle());
+			m_pTransformCom->Set_Angle(vPlayerAngle.x, vPlayerAngle.y, vPlayerAngle.z);
+		}
+
+		vPlayerScale = *(playerTransform->Get_Scale());
+		m_pTransformCom->Set_Scale(vPlayerScale.x, vPlayerScale.y, vPlayerScale.z);
+
+		CAnimator* playerAnimator = dynamic_cast<CAnimator*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Animator"));
+		int iCurIndex = playerAnimator->Get_MotionIndex();
+		m_pAnimatorCom->Set_CurState(STATE_END, iCurIndex, iCurIndex, 1);
+	}
 }
 
 CItem* CItem::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
