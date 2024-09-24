@@ -51,6 +51,7 @@ private:
 	void			Swing_Equipment();
 
 	void			Set_EquippedStatus();
+	void			Set_Clothes();
 
 	void            Set_UI();
 
@@ -98,6 +99,7 @@ private:
 
 	bool					m_bFlip;
 
+	CItem*					m_pClothes[5];
 	CItem*					m_pHandedItem;
 	Engine::CTransform*		m_pHandedTransformCom;
 	_int                    m_iHandNum; // 선택된 아이템 번호
@@ -121,6 +123,8 @@ private:
 	_float					m_fKnockBackDist;
 
 	_bool					m_bNude;
+
+	_vec3					m_vRespawnPoint;
 
 public:
 	static CPlayer* Create(LPDIRECT3DDEVICE9 pGraphicDev);
