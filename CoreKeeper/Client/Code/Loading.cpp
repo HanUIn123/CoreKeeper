@@ -40,6 +40,7 @@ _uint CLoading::Loading_Stage()
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_EquipInventory", Engine::CInventory::Create(m_pGraphicDev, 10)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MouseInventory", Engine::CInventory::Create(m_pGraphicDev, 1)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TrashInventory", Engine::CInventory::Create(m_pGraphicDev, 1)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ChestInventory", Engine::CInventory::Create(m_pGraphicDev, 18)), E_FAIL);
 
     lstrcpy(m_szLoading, L"Buffer Loading...");
 
@@ -68,9 +69,10 @@ _uint CLoading::Loading_Stage()
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SlimeAnimTex", Engine::CAnimTex::Create(m_pGraphicDev, 12, 4)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UIScreenIconTex", Engine::CAnimTex::Create(m_pGraphicDev, 11, 1)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UISilhouettes", Engine::CAnimTex::Create(m_pGraphicDev, 5, 2)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_BuffIcons", Engine::CAnimTex::Create(m_pGraphicDev, 14, 4)), E_FAIL);
 
 
-    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UIHealthTexRc", Engine::CRangeTex::Create(m_pGraphicDev)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_RangeTex", Engine::CRangeTex::Create(m_pGraphicDev)), E_FAIL);
 
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ShadowTex", Engine::CShadowTex::Create(m_pGraphicDev)), E_FAIL);
 
@@ -150,6 +152,7 @@ _uint CLoading::Loading_Stage()
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UIStatusFrame", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/UI_StatusFrame_%d.png", TEX_NORMAL, 2)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UIItemFrame", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/128x128_itemui_border_0.png", TEX_NORMAL)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UIBuffSlot", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/Buff_Slot_%d.png", TEX_NORMAL, 2)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Buff", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/buff_debuff_icons.png", TEX_NORMAL)), E_FAIL);
    
 
     lstrcpy(m_szLoading, L"Collider Loading...");

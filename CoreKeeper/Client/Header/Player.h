@@ -66,6 +66,7 @@ public:
 	void            Set_Craft();
 	void            Set_Inventory();
 	void            Set_Map();
+	void            Set_Status();
 
 	void            Set_DisMove() { m_bNoMove = true; }
 	void            Set_EnaMove() { m_bNoMove = false; }

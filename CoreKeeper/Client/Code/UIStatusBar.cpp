@@ -5,7 +5,7 @@
 #include "..\Header\Stage.h"
 
 CUIStatusBar::CUIStatusBar(LPDIRECT3DDEVICE9 pGraphicDev)
-	: Engine::CGameObject(pGraphicDev), m_bCollapse(false), m_bExit(false), m_iHp(100), m_iMaxHp(100), m_iCurHp(0), m_iPreHp(0)
+	: Engine::CGameObject(pGraphicDev), m_bCollapse(false), m_bExit(false), m_iHp(80), m_iMaxHp(100), m_iCurHp(0), m_iPreHp(0)
 
 {
 }
@@ -40,6 +40,9 @@ HRESULT CUIStatusBar::Ready_GameObject(_vec2 vPos, _vec2 vSize, const _uint iInd
 	m_iIndex = iIndex;
 
 	m_fLength = _float(m_BRect.right - m_BRect.left);
+
+	m_pBarBufferCom->Set_Height(100);
+	m_pBufferCom->Set_Height(100);
 
 	return S_OK;
 }
@@ -88,6 +91,14 @@ void CUIStatusBar::Render_GameObject()
 	matWorld._11 -= 7.f;
 	matWorld._22 -= 3.8f;
 
+	if (m_iIndex == 7)
+	{
+		matWorld._11 -= 1.5f;
+		matWorld._22 += 2.f;
+		matWorld._41 -= 0.2f;
+		matWorld._42 += 0.5f;
+	}
+
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
 
 	m_pBarBufferCom->Set_Width(((_float)m_iHp / (_float)m_iMaxHp) * 100.f);
@@ -123,9 +134,19 @@ void CUIStatusBar::Render_GameObject()
 
 	iCount = m_iHp / 25.f;
 
+	if (m_iIndex == 7)
+	{
+		matWorld._22 *= 0.6f;
+	}
+
 	for (int i = 0; i < iCount; ++i)
 	{
-		matWorld._41 += _fCurLength - 1.5f;
+		if (m_iIndex == 7)
+		{
+			matWorld._41 += _fCurLength - 3.f;
+		}
+		else
+			matWorld._41 += _fCurLength - 1.5f;
 		//matWorld->_42 = 0.f;
 
 		m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
@@ -179,11 +200,11 @@ HRESULT CUIStatusBar::Add_Component()
 		
 		m_mapComponent[ID_STATIC].insert({ string[i].c_str(), pComponent});
 	}
-	pComponent = m_pBufferCom = dynamic_cast<CRangeTex*>(Engine::Clone_Proto(L"Proto_UIHealthTexRc"));
+	pComponent = m_pBufferCom = dynamic_cast<CRangeTex*>(Engine::Clone_Proto(L"Proto_RangeTex"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Buffer", pComponent });
 
-	pComponent = m_pBarBufferCom = dynamic_cast<CRangeTex*>(Engine::Clone_Proto(L"Proto_UIHealthTexRc"));
+	pComponent = m_pBarBufferCom = dynamic_cast<CRangeTex*>(Engine::Clone_Proto(L"Proto_RangeTex"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_BarBuffer", pComponent });
 

@@ -87,6 +87,7 @@ _int CUIScreenIcon::Update_GameObject(const _float& fTimeDelta)
 			{
 				pPlayer->Set_Inventory();
 				pPlayer->Set_Craft();
+				pPlayer->Set_Status();
 			}
 			else if(m_iIndex == ICON_MAP || m_iIndex == ICON_MAP_COL)
 			{

@@ -2,6 +2,7 @@
 #include "../Header/Tile.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
+#include "..\Header\Stage.h"
 
 
 CTile::CTile(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -41,6 +42,8 @@ _int CTile::Update_GameObject(const _float& fTimeDelta)
     //m_pTransformCom->Set_Pos(m_pTransformCom->m_vInfo->x, m_pTransformCom->m_vInfo->y, m_pTransformCom->m_vInfo->z);
     Add_RenderGroup(RENDER_NONALPHA, this);
 
+    CStage* pStage = dynamic_cast<CStage*>(Engine::Get_Scene());
+    //pStage->Ready_Layer_Minimap(L"Layer_UI", m_vTilePosition.x, m_vTilePosition.z, imageNum, string);
     return Engine::CGameObject::Update_GameObject(fTimeDelta);
 }
 
@@ -81,7 +84,7 @@ HRESULT CTile::Add_Component()
     pComponent = m_pTransformCom = dynamic_cast<CTransform*>(Engine::Clone_Proto(L"Proto_Transform"));
     NULL_CHECK_RETURN(pComponent, E_FAIL);
     //m_mapComponent[ID_DYNAMIC].insert({ L"Com_Transform", pComponent });
-    m_mapComponent[ID_STATIC].insert({ L"Com_Transform", pComponent });
+    m_mapComponent[ID_DYNAMIC].insert({ L"Com_Transform", pComponent });
 
     pComponent = m_pTileTexCom = dynamic_cast<CTileTex*>(Engine::Clone_Proto(L"Proto_TileTex"));
     NULL_CHECK_RETURN(pComponent, E_FAIL);

@@ -44,12 +44,12 @@ _int CUIStatusFrame::Update_GameObject(const _float& fTimeDelta)
 {
 	_int iExit = Engine::CGameObject::Update_GameObject(fTimeDelta);
 
-	POINT pt;
-	GetCursorPos(&pt);
-	ScreenToClient(g_hWnd, &pt);
-
 	if (m_bWindow)
 	{
+		POINT pt;
+		GetCursorPos(&pt);
+		ScreenToClient(g_hWnd, &pt);
+
 		if (Map_Picked(pt))
 		{
 			if (Engine::Get_DIMouseMove(DIMS_Z) < 0)

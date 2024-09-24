@@ -7,7 +7,7 @@ CRangeTex::CRangeTex()
 
 CRangeTex::CRangeTex(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CVIBuffer(pGraphicDev),
-      m_iCurIndex(0), m_iCurWidth(100)
+      m_iCurIndex(0), m_iCurWidth(100), m_iCurHeight(100)
 {
 }
 
@@ -76,14 +76,14 @@ void CRangeTex::Render_Buffer()
 
 	m_pVB->Lock(0, 0, (void**)&pVertex, 0);
 	
-	pVertex[0].vPosition = { -1.f, 1.f, 0.f };
+	pVertex[0].vPosition = { -1.f, 1.f , 0.f };
 	pVertex[0].vTexUV = { 0.f, 0.f };
-	pVertex[1].vPosition = { ((_float)m_iCurWidth / 200.f * 2.f) - 1.f,  1.f, 0.f}; // ÅØ½ºÃÄ ³ÐÀÌ ¹éºÐÀ²·Î ³ª´²ÁÜ
+	pVertex[1].vPosition = { ((_float)m_iCurWidth / 200.f * 2.f) - 1.f, 1.f, 0.f}; // ÅØ½ºÃÄ ³ÐÀÌ ¹éºÐÀ²·Î ³ª´²ÁÜ
 	pVertex[1].vTexUV = { (_float)m_iCurWidth / 100.f, 0.f };
-	pVertex[2].vPosition = { ((_float)m_iCurWidth / 200.f * 2.f) - 1.f, -1.f, 0.f};
-	pVertex[2].vTexUV = { (_float)m_iCurWidth / 100.f, 1.f };
-	pVertex[3].vPosition = { -1.f, -1.f, 0.f };
-	pVertex[3].vTexUV = { 0.f, 1.f };
+	pVertex[2].vPosition = { ((_float)m_iCurWidth / 200.f * 2.f) - 1.f,  -(((_float)m_iCurHeight / 100.f * 2.f) - 1.f), 0.f};
+	pVertex[2].vTexUV = { (_float)m_iCurWidth / 100.f,(_float)m_iCurHeight / 100.f };
+	pVertex[3].vPosition = { -1.f,  -(((_float)m_iCurHeight / 100.f * 2.f) - 1.f), 0.f };
+	pVertex[3].vTexUV = { 0.f,(_float)m_iCurHeight / 100.f };
 
 	m_pVB->Unlock();
 	

@@ -58,3 +58,4 @@
 #include "MiniMap.h"
 #include "UIStatusFrame.h"
 #include "UIItemFrame.h"
+#include "UIBuff.h"

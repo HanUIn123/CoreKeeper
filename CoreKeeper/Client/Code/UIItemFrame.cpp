@@ -98,16 +98,16 @@ void CUIItemFrame::Render_GameObject()
 
 void CUIItemFrame::Set_Window(CItem* _pItem)
 {
-	if (m_bWindow)
-	{
-		m_bWindow = false;
+	//if (m_bWindow)
+	//{
+	//	m_bWindow = false;
 
-		m_pItem = nullptr;
-	}
-	else
-	{
-		m_bWindow = true;
-	}
+	//	m_pItem = nullptr;
+	//}
+	//else
+	//{
+	m_bWindow = true;
+	//}
 	m_pItem = _pItem;
 
 	CTransform* pCursor = dynamic_cast<CTransform*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_UI", L"UI_Cursor", L"Com_UITransform"));
@@ -115,14 +115,14 @@ void CUIItemFrame::Set_Window(CItem* _pItem)
 	_vec3 vPos;
 	pCursor->Get_Info(INFO_POS, &vPos);
 
-	m_pTransformCom->Set_Pos(vPos.x + 10.f, vPos.y - 50.f, 0.f);
+	m_pTransformCom->Set_Pos(vPos.x + 120.f, vPos.y - 80.f, 0.f);
 
-	m_vPos = { vPos.x + WINCX / 2.f - 80.f, WINCY / 2.f - vPos.y - 80.f};
+	m_vPos = { vPos.x + WINCX / 2.f - 0.f, WINCY / 2.f - vPos.y - 60.f};
 
 	m_BRect.left = 0;
 	m_BRect.right = WINCX;
-	m_BRect.top = (WINCY / 2.f - vPos.y + 59.f) - (m_pTransformCom->Get_Scale()->y);
-	m_BRect.bottom = (WINCY / 2.f - vPos.y + 42.5f) + (m_pTransformCom->Get_Scale()->y);
+	m_BRect.top = (WINCY / 2.f - vPos.y + 83.f) - (m_pTransformCom->Get_Scale()->y);
+	m_BRect.bottom = (WINCY / 2.f - vPos.y + 77.5f) + (m_pTransformCom->Get_Scale()->y);
 }
 
 HRESULT CUIItemFrame::Add_Component()
