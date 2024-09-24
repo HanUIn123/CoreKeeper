@@ -9,6 +9,7 @@ CChest::CChest(LPDIRECT3DDEVICE9 pGraphicDev)
 	ZeroMemory(&m_tStat, sizeof(STAT));
 
 	m_tStat.iDefense = 10;
+	m_tStat.iMaxHp = 20;
 
 	m_eItemNum = ITEM_CHEST;
 }
@@ -73,7 +74,9 @@ _int CChest::Update_GameObject(const _float& fTimeDelta)
 				m_bDrop = false;
 			}
 		}
-	}
+	}	
+	if (m_bFollow)
+		Follow_Player();
 	
 	Add_RenderGroup(RENDER_ALPHA, this);
 

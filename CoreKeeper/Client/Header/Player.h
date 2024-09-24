@@ -50,6 +50,8 @@ private:
 	void			Show_Equipment();
 	void			Swing_Equipment();
 
+	void			Set_EquippedStatus();
+
 	void            Set_UI();
 
 public:
@@ -98,6 +100,8 @@ private:
 	CItem*					m_pHandedItem;
 	Engine::CTransform*		m_pHandedTransformCom;
 	_int                    m_iHandNum; // 선택된 아이템 번호
+	STAT					m_tBasicStat;
+	STAT					m_tEquipmentStat;
 
 	float					m_fFirstY;
 	float					m_fTimeAcc;
@@ -114,6 +118,8 @@ private:
 	_bool					m_bKnockBackStart;
 	_bool					m_bKnockBackEnd;
 	_float					m_fKnockBackDist;
+
+	_bool					m_bNude;
 
 public:
 	static CPlayer* Create(LPDIRECT3DDEVICE9 pGraphicDev);

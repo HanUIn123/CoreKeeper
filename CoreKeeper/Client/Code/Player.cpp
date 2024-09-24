@@ -30,7 +30,11 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	m_fTimeAcc = 0.f;
 	m_fWalkYSpeed = 1.8f;
 
+	m_pHandedItem = nullptr;
+	m_pHandedTransformCom = nullptr;
 	m_iHandNum = 0;
+	ZeroMemory(&m_tBasicStat, sizeof(STAT));
+	ZeroMemory(&m_tEquipmentStat, sizeof(STAT));
 
 	m_bMap = false;
 	m_bInventory = false;
@@ -43,6 +47,7 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	m_bKnockBackStart = false;
 	m_bKnockBackEnd = true;
 	m_fKnockBackDist = 0.f;
+	m_bNude = true;
 }
 
 CPlayer::~CPlayer()
@@ -56,9 +61,8 @@ HRESULT CPlayer::Ready_GameObject()
 	_vec3 vPos;
 	m_pTransformCom->Get_Info(INFO_POS, &vPos);
 	m_pTransformCom->Set_Pos(vPos.x, m_fFirstY, vPos.z);
-	m_pStateCom->Set_Stat(400, 100, 20, 0);
-	m_pStateCom->Set_Damaged(250);
-	m_pStateCom->Set_UseMP(60);
+	m_tBasicStat = STAT( 400, 100, 20, 0 );
+	m_pStateCom->Set_Stat(m_tBasicStat.iMaxHp, m_tBasicStat.iMaxMp, m_tBasicStat.iAttack, m_tBasicStat.iDefense);
 	m_pEquipInventoryCom->Set_SlotCount(10);
 
 	return S_OK;
@@ -67,10 +71,11 @@ HRESULT CPlayer::Ready_GameObject()
 _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 {
 	KnockBack(fTimeDelta);
-
+	
 	Set_Equipment();
 	if (m_eState != SWING)
 		Show_Equipment();
+	Set_EquippedStatus();
 
 	if (!m_bNoMove && !m_bInventory && !m_bCraft && !m_bMap) // m_bNoMove -> UICursor에서 적용
 		Mouse_Click();
@@ -252,11 +257,19 @@ void CPlayer::Mouse_Click()
 				switch (m_pHandedItem->Get_ItemNum())
 				{
 				case ITEM_SWORD:
+				case ITEM_PICKAXE:
+				case ITEM_HOE:
+				case ITEM_SHOVEL:
 					m_eState = SWING;
 					m_bSwing = true;
 					Swing_Equipment();
 					break;
+				case ITEM_BOW:
+				case ITEM_STAFF:
+					// 투사체 발사
+					break;
 				case ITEM_SEED:
+					// 농사
 					break;
 				default:
 					break;
@@ -471,8 +484,10 @@ void CPlayer::Show_Equipment()
 			(*iter)->Set_Active(false);
 		}
 	}
+	// 무기(손)
 	if (m_pHandedItem)
 	{
+		m_tEquipmentStat.iAttack = m_pHandedItem->Get_Stat()->iAttack;
 		m_pHandedItem->Set_Use(true);
 		m_pHandedItem->Set_Active(true);
 		m_pHandedTransformCom->Set_Angle(0, 0, 0);
@@ -499,6 +514,7 @@ void CPlayer::Show_Equipment()
 		}
 		else
 		{
+			m_pHandedTransformCom->Set_ResetArbit();
 			_vec3 vPlayerAngle = *(m_pTransformCom->Get_Angle());
 			m_pHandedTransformCom->Set_Angle(vPlayerAngle.x, vPlayerAngle.y, vPlayerAngle.z);
 			_vec3 vPlayerLook, vPlayerRight;
@@ -519,6 +535,93 @@ void CPlayer::Show_Equipment()
 				m_pHandedTransformCom->Set_Pos(vPlayerPos.x - vPlayerLook.x * 0.4f - vPlayerRight.x * 0.2f, 1.f, vPlayerPos.z - vPlayerLook.z * 0.4f - vPlayerRight.z * 0.2f);
 				break;
 			}
+		}
+	}
+
+	// 방어구
+	CItem* pArmor;
+	ZeroMemory(&m_tEquipmentStat, sizeof(STAT));
+	for (_int i = 0; i < CUIItemSlot::SLOT_END; i++)
+	{
+		wstring	strObjectTag = L"UIItemSlot_";
+		switch (i)
+		{
+		case CUIItemSlot::SLOT_HELM:
+			strObjectTag += std::to_wstring(i);
+			pArmor = dynamic_cast<CUIItemSlot*>(Engine::Get_GameObject(L"Layer_UI", strObjectTag.c_str()))->Get_Item();
+			if (pArmor)
+			{
+				m_tEquipmentStat.iMaxHp += pArmor->Get_Stat()->iMaxHp;
+				m_tEquipmentStat.iDefense += pArmor->Get_Stat()->iDefense;
+				if (!pArmor->Get_Active())
+				{
+					pArmor->Set_Active(true);
+					m_bNude = false;
+					dynamic_cast<CItem*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player_Eye"))->Set_Active(false);
+					dynamic_cast<CItem*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player_Hair"))->Set_Active(false);
+					dynamic_cast<CItem*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player_HairShade"))->Set_Active(false);
+				}
+				pArmor->Set_Follow();
+			}
+			else
+			{
+				if (!m_bNude)
+				{
+					m_bNude = true;
+					dynamic_cast<CItem*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player_Eye"))->Set_Active(true);
+					dynamic_cast<CItem*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player_Hair"))->Set_Active(true);
+					dynamic_cast<CItem*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player_HairShade"))->Set_Active(true);
+				}
+			}
+			break;
+		case CUIItemSlot::SLOT_CHEST:
+			strObjectTag += std::to_wstring(i);
+			pArmor = dynamic_cast<CUIItemSlot*>(Engine::Get_GameObject(L"Layer_UI", strObjectTag.c_str()))->Get_Item();
+			if (pArmor)
+			{
+				m_tEquipmentStat.iMaxHp += pArmor->Get_Stat()->iMaxHp;
+				m_tEquipmentStat.iDefense += pArmor->Get_Stat()->iDefense;
+				if (!pArmor->Get_Active())
+				{
+					pArmor->Set_Active(true);
+					m_bNude = false;
+					dynamic_cast<CItem*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player_Shirt"))->Set_Active(false);
+				}
+				pArmor->Set_Follow();
+			}
+			else
+			{
+				if (!m_bNude)
+				{
+					m_bNude = true;
+					dynamic_cast<CItem*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player_Shirt"))->Set_Active(true);
+				}
+			}
+			break;
+		case CUIItemSlot::SLOT_LEGGINGS:
+			strObjectTag += std::to_wstring(i);
+			pArmor = dynamic_cast<CUIItemSlot*>(Engine::Get_GameObject(L"Layer_UI", strObjectTag.c_str()))->Get_Item();
+			if (pArmor)
+			{
+				m_tEquipmentStat.iMaxHp += pArmor->Get_Stat()->iMaxHp;
+				m_tEquipmentStat.iDefense += pArmor->Get_Stat()->iDefense;
+				if (!pArmor->Get_Active())
+				{
+					pArmor->Set_Active(true);
+					m_bNude = false;
+					dynamic_cast<CItem*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player_Pants"))->Set_Active(false);
+				}
+				pArmor->Set_Follow();
+			}
+			else
+			{
+				if (!m_bNude)
+				{
+					m_bNude = true;
+					dynamic_cast<CItem*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player_Pants"))->Set_Active(true);
+				}
+			}
+			break;
 		}
 	}
 }
@@ -550,30 +653,23 @@ void CPlayer::Swing_Equipment()
 		else
 		{
 			m_eDir = BACK;
-			_vec3 vPlayerLook, vPlayerRight, vPlayerUp;
+			_vec3 vPlayerLook, vPlayerRight;
 			m_pTransformCom->Get_Info(INFO_LOOK, &vPlayerLook);
 			m_pTransformCom->Get_Info(INFO_RIGHT, &vPlayerRight);
-			m_pTransformCom->Get_Info(INFO_UP, &vPlayerUp);
-
-
-			//_vec3 vPlayerAngle = *(m_pTransformCom->Get_Angle());
-
-			//_matrix matRotation;
-			//D3DXMatrixRotationAxis(&matRotation, &vPlayerRight, D3DXToRadian(90.f));
-
-
-			//_vec3 vHandedLook;
-			//m_pHandedTransformCom->Get_Info(INFO_LOOK, &vHandedLook);
-			//D3DXVec3TransformNormal(&vHandedLook, &vHandedLook, &matRotation);
-			m_pHandedTransformCom->Set_Pos(vPlayerPos.x + vPlayerLook.x * 0.2f + vPlayerRight.x * 0.5f, 1.f, vPlayerPos.z + vPlayerLook.z * 0.2f + vPlayerRight.z * 0.5f);
+			m_pHandedTransformCom->Set_Pos(vPlayerPos.x + vPlayerLook.x * 0.2f + vPlayerRight.x * 0.3f, 1.f, vPlayerPos.z + vPlayerLook.z * 0.2f + vPlayerRight.z * 0.3f);
 		}
 		m_pHandedItem->Set_Swing(m_eDir, true);
 	}
 }
 
+void CPlayer::Set_EquippedStatus()
+{
+	m_pStateCom->Set_BasicStat(&m_tBasicStat);
+	m_pStateCom->Set_EquippedStat(&m_tEquipmentStat);
+}
+
 void CPlayer::Set_UI()
 {
-
 	CUIStatusBar* pHp = dynamic_cast<CUIStatusBar*>
 		(Engine::Get_GameObject(L"Layer_UI", L"UI_Health"));
 	NULL_CHECK_RETURN(pHp);

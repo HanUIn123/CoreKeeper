@@ -79,6 +79,21 @@ namespace Engine
 		int iAttack;
 		int iDefense;
 
+		tagStat()
+		{
+			ZeroMemory(this, sizeof(tagStat));
+		}
+
+		tagStat(int _iMaxHP, int _iMaxMP, int _iAttack, int _iDefense)
+		{
+			iHp = _iMaxHP;
+			iMaxHp = _iMaxHP;
+			iMp = _iMaxMP;
+			iMaxMp = _iMaxMP;
+			iAttack = _iAttack;
+			iDefense = _iDefense;
+		}
+
 	}STAT;
 }
 

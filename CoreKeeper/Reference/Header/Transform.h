@@ -55,6 +55,9 @@ public:
 		m_vInfo[INFO_POS] = { _fX, _fY, _fZ };
 	}
 
+	void	Set_RotArbit(_vec3* _vAxis, _float _fAngle) { m_bRotAxis = true; m_vRotAxis = *_vAxis; m_fRotAngle = _fAngle; }
+	void	Set_ResetArbit() { m_bRotAxis = false; m_vRotAxis = { 0.f, 0.f, 0.f }; m_fRotAngle = 0.f; }
+
 	void				Chase_Target(const _vec3* pTargetPos, const _float& fSpeed);
 	const _matrix*		Compute_LookAtTarget(const _vec3* pTargetPos);
 
@@ -63,6 +66,9 @@ private:
 	_vec3		m_vScale;
 	_vec3		m_vAngle;
 	_matrix		m_matWorld;
+	_vec3		m_vRotAxis;
+	_bool		m_bRotAxis;
+	_float		m_fRotAngle;
 
 public:
 	static CTransform*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
