@@ -4,7 +4,7 @@
 #include "Export_Utility.h"
 
 CUIItemSlot::CUIItemSlot(LPDIRECT3DDEVICE9 pGraphicDev)
-	: Engine::CGameObject(pGraphicDev), m_bCollapse(false), m_bFirst(false), m_bWindow(false), m_iIndex(0)
+	: Engine::CGameObject(pGraphicDev), m_bCollapse(false), m_bFirst(false), m_bWindow(false), m_iIndex(0), m_pItem(nullptr)
 
 {
 }

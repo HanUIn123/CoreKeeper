@@ -8,7 +8,8 @@ CLeg::CLeg(LPDIRECT3DDEVICE9 pGraphicDev)
 {
 	ZeroMemory(&m_tStat, sizeof(STAT));
 
-	m_tStat.iAttack = 10;
+	m_tStat.iDefense = 10;
+	m_tStat.iMaxHp = 20;
 
 	m_eItemNum = ITEM_LEG;
 }
@@ -74,7 +75,8 @@ _int CLeg::Update_GameObject(const _float& fTimeDelta)
 			}
 		}
 	}
-	
+	if (m_bFollow)
+		Follow_Player();
 	Add_RenderGroup(RENDER_ALPHA, this);
 
 	return Engine::CGameObject::Update_GameObject(fTimeDelta);
@@ -114,7 +116,7 @@ void CLeg::Render_GameObject()
 
 	m_pShadowTextureCom->Set_Texture(1);
 
-	if (m_bActive && !m_bUse)
+	if (m_bDrop)
 	{
 		m_pShadowBufferCom->Render_Buffer();
 	}

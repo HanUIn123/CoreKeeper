@@ -34,6 +34,7 @@ protected:
 	void			Apply_Billboard();
 	void			Wave(const _float& fTimeDelta);
 	void			Swing(int start, int end, int Count);
+	void			Follow_Player();
 
 public:
 	void			Walk_Equipped(const _float& fTimeDelta);
@@ -60,6 +61,7 @@ public:
 	bool				Get_Active() { return m_bActive; }
 	Engine::ITEMNUM		Get_ItemNum() { return m_eItemNum; }
 	int					Get_Count() { return m_iCount; }
+	STAT*				Get_Stat() { return &m_tStat; }
 
 	void				Add_Count(int _iAddCount) {m_iCount += _iAddCount; }
 	void				Minus_Count(int _iMinusCount) { m_iCount -= _iMinusCount; }
@@ -68,6 +70,7 @@ public:
 	void				Set_Drop(bool bDrop) { m_bDrop = bDrop; }
 	void				Set_Use(bool bUse) { m_bUse = bUse; }
 	void				Set_Swing(DIRECTION eDir, bool bSwing) { m_eDir = eDir; m_bSwing = bSwing; }
+	void				Set_Follow(bool bFollow = true) { m_bFollow = bFollow; }
 
 public: // UI에서 가져갈 Component들
  	CAnimTex*			Get_Buffer() { return m_pBufferCom; }
@@ -92,6 +95,8 @@ protected:
 	bool		m_bUse;			// 플레이어가 사용중
 	bool		m_bSwing;
 	bool		m_bHasRotated;	//Swing에서 회전했는지 안했는지 체크용
+
+	bool		m_bFollow;
 
 	STAT		m_tStat;
 	ITEMNUM		m_eItemNum;

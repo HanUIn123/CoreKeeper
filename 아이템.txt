@@ -26,6 +26,8 @@
 작업대
 모루
 용광로 -> Inventory?
+포션 제작대
+요리솥
 
 묘비 -> Inventory
 

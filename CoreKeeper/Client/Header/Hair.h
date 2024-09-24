@@ -1,5 +1,5 @@
 #pragma once
-#include "GameObject.h"
+#include "Item.h"
 #include "Define.h"
 #include "Export_System.h"
 
@@ -12,7 +12,7 @@ class CAnimator;
 
 END
 
-class CHair : public CGameObject
+class CHair : public CItem
 {
 private:
 	explicit CHair(LPDIRECT3DDEVICE9 pGraphicDev);

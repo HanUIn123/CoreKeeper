@@ -41,7 +41,7 @@ public:
 		else
 			m_bWindow = true;
 	}
-
+	CItem* Get_Item() { return m_pItem; }
 private:
 	HRESULT			Add_Component();
 

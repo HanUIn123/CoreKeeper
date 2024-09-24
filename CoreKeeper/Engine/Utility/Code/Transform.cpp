@@ -2,21 +2,21 @@
 
 
 
-CTransform::CTransform() :m_vScale(1.f, 1.f, 1.f), m_vAngle(0.f, 0.f, 0.f)
+CTransform::CTransform() :m_vScale(1.f, 1.f, 1.f), m_vAngle(0.f, 0.f, 0.f), m_vRotAxis(0.f, 0.f, 0.f), m_bRotAxis(false), m_fRotAngle(0.f)
 {
 	ZeroMemory(m_vInfo, sizeof(m_vInfo));
 	D3DXMatrixIdentity(&m_matWorld);
 }
 
 CTransform::CTransform(LPDIRECT3DDEVICE9 pGraphicDev)
-	: CComponent(pGraphicDev), m_vScale(1.f, 1.f, 1.f), m_vAngle(0.f, 0.f, 0.f)
+	: CComponent(pGraphicDev), m_vScale(1.f, 1.f, 1.f), m_vAngle(0.f, 0.f, 0.f), m_vRotAxis(0.f, 0.f, 0.f), m_bRotAxis(false), m_fRotAngle(0.f)
 {
 	ZeroMemory(m_vInfo, sizeof(m_vInfo));
 	D3DXMatrixIdentity(&m_matWorld);
 }
 
 CTransform::CTransform(const CTransform & rhs)
-	: CComponent(rhs), m_vScale(rhs.m_vScale), m_vAngle(rhs.m_vAngle)
+	: CComponent(rhs), m_vScale(rhs.m_vScale), m_vAngle(rhs.m_vAngle), m_vRotAxis(rhs.m_vRotAxis), m_bRotAxis(rhs.m_bRotAxis), m_fRotAngle(rhs.m_fRotAngle)
 {
 	for (size_t i = 0; i < INFO_END; ++i)
 		m_vInfo[i] = rhs.m_vInfo[i];
@@ -61,11 +61,19 @@ _int CTransform::Update_Component(const _float & fTimeDelta)
 	// È¸Àü
 
 	_matrix		matRot[ROT_END];
-
-	D3DXMatrixRotationX(&matRot[ROT_X], m_vAngle.x);
-	D3DXMatrixRotationY(&matRot[ROT_Y], m_vAngle.y);
-	D3DXMatrixRotationZ(&matRot[ROT_Z], m_vAngle.z);
-
+	if (m_bRotAxis)
+	{
+		D3DXMatrixRotationX(&matRot[ROT_X], m_vAngle.x);
+		D3DXMatrixRotationY(&matRot[ROT_Y], m_vAngle.y);
+		D3DXMatrixRotationZ(&matRot[ROT_Z], m_vAngle.z);
+		D3DXMatrixRotationAxis(matRot, &m_vRotAxis, m_fRotAngle);
+	}
+	else
+	{
+		D3DXMatrixRotationX(&matRot[ROT_X], m_vAngle.x);
+		D3DXMatrixRotationY(&matRot[ROT_Y], m_vAngle.y);
+		D3DXMatrixRotationZ(&matRot[ROT_Z], m_vAngle.z);
+	}
 	for (_int i = 0; i < INFO_POS; ++i)
 	{
 		for (_int j = 0; j < ROT_END; ++j)

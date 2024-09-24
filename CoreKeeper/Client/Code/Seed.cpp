@@ -83,8 +83,8 @@ void CSeed::LateUpdate_GameObject()
 
 void CSeed::Render_GameObject()
 {
-	// 카메라를 바라보게 하면서 스케일 유지
-	//CItem::Apply_Billboard();  
+	if (g_bIsTopCamera && m_bDrop)
+		CItem::Apply_Billboard();
 
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
@@ -110,7 +110,7 @@ void CSeed::Render_GameObject()
 
 	m_pShadowTextureCom->Set_Texture(1);
 
-	if (m_bActive && !m_bUse)
+	if (m_bDrop)
 	{
 		m_pShadowBufferCom->Render_Buffer();
 	}

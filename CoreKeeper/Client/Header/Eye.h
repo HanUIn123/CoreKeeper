@@ -1,5 +1,5 @@
 #pragma once
-#include "GameObject.h"
+#include "Item.h"
 #include "Define.h"
 #include "Export_System.h"
 
@@ -12,7 +12,7 @@ class CAnimator;
 
 END
 
-class CEye : public Engine::CGameObject
+class CEye : public CItem
 {
 private:
 	explicit CEye(LPDIRECT3DDEVICE9 pGraphicDev);

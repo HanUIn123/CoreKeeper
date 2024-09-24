@@ -8,7 +8,7 @@ CSword::CSword(LPDIRECT3DDEVICE9 pGraphicDev)
 {
 	ZeroMemory(&m_tStat, sizeof(STAT));
 
-	m_tStat.iAttack = 10;
+	m_tStat.iAttack = 50;
 
 	m_eItemNum = ITEM_SWORD;
 }
@@ -89,7 +89,8 @@ void CSword::LateUpdate_GameObject()
 void CSword::Render_GameObject()
 {
 	// 카메라를 바라보게 하면서 스케일 유지
-	//CItem::Apply_Billboard();  
+	if(g_bIsTopCamera && m_bDrop)
+		CItem::Apply_Billboard();
 
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
@@ -117,7 +118,7 @@ void CSword::Render_GameObject()
 
 	m_pShadowTextureCom->Set_Texture(1);
 
-	if (m_bActive && !m_bUse)
+	if (m_bDrop)
 	{
 		m_pShadowBufferCom->Render_Buffer();
 	}
@@ -145,7 +146,7 @@ HRESULT CSword::Add_Component()
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_DYNAMIC].insert({ L"Com_Collider", pComponent });
 	
-	pComponent = m_pColliderCubeCom = dynamic_cast<CColliderCube*>(Engine::Clone_Proto(L"Proto_SwordCubeCollider"));
+	pComponent = m_pColliderCubeCom = dynamic_cast<CColliderCube*>(Engine::Clone_Proto(L"Proto_SwingCubeCollider"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_DYNAMIC].insert({ L"Com_ColliderCube", pComponent });
 

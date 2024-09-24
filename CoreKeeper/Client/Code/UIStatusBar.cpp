@@ -190,8 +190,8 @@ HRESULT CUIStatusBar::Add_Component()
 	CComponent* pComponent = NULL;
 
 
-	wstring string[20];
-	for (_int i = 0; i < 10; i++)
+	wstring string[50];
+	for (_int i = 0; i < 50; i++)
 	{
 		pComponent = m_pDividerBufferCom[i] = dynamic_cast<CRcTex*>(Engine::Clone_Proto(L"Proto_RcTex"));
         NULL_CHECK_RETURN(pComponent, E_FAIL);

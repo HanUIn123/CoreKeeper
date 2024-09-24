@@ -124,7 +124,7 @@ void CDynamicCamera::Mouse_Move()
 	m_vAt.z = vPlayerPos.z + vLook.z * 2;
 
 	m_vEye.x = vPlayerPos.x - vLook.x * 3;
-	m_vEye.y = vPlayerPos.y + 1.5f;
+	m_vEye.y = vPlayerPos.y + 2.5f;
 	m_vEye.z = vPlayerPos.z - vLook.z * 3;
 }
 
