@@ -127,11 +127,10 @@ _int CUIItemSlot::Update_GameObject(const _float& fTimeDelta)
 				{
 					vector<CItem*>* pCvecItem = pCursorInv->Get_VecItemP();
 					vector<CItem*>* pPvecItem = pPlayerInv->Get_VecItemP();
-
+					(*pPvecItem)[m_eSlotType]->Set_Follow(false);
 					pPlayerInv->Swap_Item(&(*pCvecItem)[0], &(*pPvecItem)[m_eSlotType]);
 				}
 			}
-
 		}
 		else
 			m_bCollapse = false;
