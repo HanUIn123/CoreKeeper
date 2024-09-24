@@ -138,58 +138,197 @@ HRESULT CWall::Setup_Material()
 
 void CWall::Update_Texture()
 {
+    int wallMask = 0; 
 
-    //int wallMask = 0; // 벽 존재 여부를 나타내는 비트 마스크
+    //각 방향에 대해 벽 포인터를 확인
+    for (int dir = 0; dir < 8; dir++)
+    {
+        // 각 방향의 벽 포인터 검사
+        if (m_vecAroundWall[dir] != nullptr)
+        {
+            wallMask |= (1 << dir); // 비트 마스킹
+        }
+    }
 
-    // 각 방향에 대해 벽 포인터를 확인
-    //for (int dir = 0; dir < 8; dir++)
-    //{
-    //    if (m_vecAroundWall[dir] != nullptr) // 각 방향의 벽 포인터 검사
-    //    {
-    //        wallMask |= (1 << dir); // 비트 마스킹
-    //    }
-    //}
+    switch (0b01010101 & wallMask)
+    {
+    // 상하좌우에 모두 벽이 없음
+    case 0b00000000: 
+        m_iWallImageNum = 0;
+        break;
 
-    //    // 텍스처 결정
-    //    switch (wallMask)
-    //    {
-    //    // 벽 없음, 동그라미
-    //    case 0b00000000: 
-    //        break;
+    // 좌 상 우 하
+    case 0b00000001:
+        m_iWallImageNum = 1;
+        //회전!
+        break;
+    case 0b00000100:
+        m_iWallImageNum = 1;
+        break;
+    case 0b00010000:
+        m_iWallImageNum = 1;
+        break;
+    case 0b01000000:
+        m_iWallImageNum = 1;
+        break;
 
-    //    // 하단과 연결
-    //    case 0b00000010:
-    //        break;
-    //    //좌
-    //    case 0b00001000:
-    //        break; 
-    //    // 우
-    //    case 0b00010000:
-    //        break;
-    //    // 상
-    //    case 0b01000000:
-    //        break;
+    // 상하
+    case 0b00010001:
+        m_iWallImageNum = 2;
+        break;
+    // 좌우
+    case 0b01000100:
+        m_iWallImageNum = 2;
+        break;
+    // 우 하
+    case 0b00000101:
+        if ((wallMask & 0b00000111) == 0b00000111)
+        {
+            // 사이에 대각선 있다
+        }
+        else
+        {
+            // 대각선 없다
+        }
+        break;
+    // 상 우
+    case 0b00010100:
+        if ((wallMask & 0b00011100) == 0b00011100)
+        {
+            // 사이에 대각선 있다
+        }
+        else
+        {
+            // 대각선 없다
+        }
+        break;
+    // 좌 상
+    case 0b01010000:
+        if ((wallMask & 0b01110000) == 0b01110000)
+        {
+            // 사이에 대각선 있다
+        }
+        else
+        {
+            // 대각선 없다
+        }
+        break;
+    // 좌 하
+    case 0b01000001:
+        if ((wallMask & 0b11000001) == 0b11000001)
+        {
+            // 사이에 대각선 있다
+        }
+        else
+        {
+            // 대각선 없다
+        }
+        break;
+    // 상 우 하
+    case 0b00010101:
+        if ((wallMask & 0b00011111) == 0b00011111)
+        {
+            // 사이에 대각선이 두개 다 있다
+        }
+        else if((wallMask & 0b00010111) == 0b00010111)
+        {
+            // 사이에 대각선이 하나
+        }
+        else if ((wallMask & 0b00011101) == 0b00011101)
+        {
+            
+        }
+        else
+        {
+            // 대각선 없다
+        }
+        break;
+    //좌 상 우
+    case 0b01010100:
+        if ((wallMask & 0b01111100) == 0b01111100)
+        {
+            // 사이에 대각선이 두개 다 있다
+        }
+        else if ((wallMask & 0b01110100) == 0b01110100)
+        {
+            // 사이에 대각선이 하나
+        }
+        else if ((wallMask & 0b01011100) == 0b01011100)
+        {
 
-    //    //좌 하
-    //    case 0b00001010:
-    //    //우 하
-    //    case 0b00010010:
-    //    //좌 상
-    //    case 0b01001000:
-    //    //우 상
-    //    case 0b01010000:
+        }
+        else
+        {
+            // 대각선 없다
+        }
+        break;
+    // 좌 상 하
+    case 0b01010001:
+        if ((wallMask & 0b11110001) == 0b11110001)
+        {
+            // 사이에 대각선이 두개 다 있다
+        }
+        else if ((wallMask & 0b11010001) == 0b11010001)
+        {
+            // 사이에 대각선이 하나
+        }
+        else if ((wallMask & 0b01110001) == 0b01110001)
+        {
 
-    //        // 상 하
-    //    case 0b01000010:
-    //        //좌 우
-    //    case 0b00011000:	
-    //        break;
+        }
+        else
+        {
+            // 대각선 없다
+        }
+        break;
+    // 좌 우 하
+    case 0b01000101:
+        if ((wallMask & 0b11000111) == 0b11000111)
+        {
+            // 사이에 대각선이 두개 다 있다
+        }
+        else if ((wallMask & 0b01000111) == 0b01000111)
+        {
+            // 사이에 대각선이 하나
+        }
+        else if ((wallMask & 0b11000101) == 0b11000101)
+        {
 
-    //    default:
-    //        // 아예 까만거
-    //        break;
-    //    }
-    //}
+        }
+        else
+        {
+            // 대각선 없다
+        }
+        break;
+
+    // 상 하 좌 우가 다 있음!
+    case 0b01010101:
+        if (wallMask == 0b01010101)
+        {
+            // 상하좌우만 있음
+        }
+        else if (wallMask == 0b01010101)
+        {
+            // 대각선 1개
+        }
+        else if (wallMask == 0b01010101)
+        {
+            // 대각선 2개
+        }
+        else if (wallMask == 0b01010101)
+        {
+            // 대각선 3개
+        }
+        else if (wallMask == 0b11111111)
+        {
+            //전부!
+            //m_iWallImageNum = 8;
+        }
+        break;
+    default:
+        m_iWallImageNum = 0;
+        break;
+    }
 }
 
 CWall* CWall::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _fWallX, _float _fWallZ, _int iWallImageNum,  wstring _pickedWallName)

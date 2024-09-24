@@ -165,7 +165,8 @@ _uint CLoading::Loading_Stage()
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_PlayerCubeCollider", Engine::CColliderCube::Create(m_pGraphicDev, _vec3(-0.5f, -0.5f, -0.5f), _vec3(0.5f, 0.5f, 0.5f))), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SwordCubeCollider", Engine::CColliderCube::Create(m_pGraphicDev, _vec3(-0.5f, -0.5f, -0.5f), _vec3(0.5f, 1.0f, 0.5f))), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ItemCubeCollider", Engine::CColliderCube::Create(m_pGraphicDev, _vec3(-0.2f, -0.2f, -0.2f), _vec3(0.2f, 0.2f, 0.2f))), E_FAIL);
-    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_WallCollider", Engine::CColliderCube::Create(m_pGraphicDev, _vec3(-0.5f, -2.5f, -0.5f), _vec3(0.5f, 2.5f, 0.5f))), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_WallCollider", Engine::CColliderCube::Create(m_pGraphicDev, _vec3(-0.5f, -0.5f, -0.5f), _vec3(0.5f, 0.5f, 0.5f))), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TileCollider", Engine::CColliderCube::Create(m_pGraphicDev, _vec3(-0.5f, -0.1f, -0.5f), _vec3(0.5f, 0.1f, 0.5f))), E_FAIL);
 
     lstrcpy(m_szLoading, L"PRESS ENTER");
 
