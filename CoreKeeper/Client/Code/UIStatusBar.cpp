@@ -114,21 +114,35 @@ void CUIStatusBar::Render_GameObject()
 	matWorld._11 = 2.f;
 	matWorld._22 = 8.f;
 
-	_int _iCurHp = m_iCurHp;
+	_int _iCurHp = m_iHp;
 	_int _iMaxHp = m_iMaxHp;
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
 
 	_int iCount;
 
-	if (_iCurHp % 25 == 0)
+	_float _fCurLength;
+
+	if (m_iMaxHp % 25 == 0)
 	{
-		iCount = _iMaxHp / 25 - 1;
+		_fCurLength = m_fLength / (_float)(_iMaxHp / 25);
 	}
 	else
-		iCount = _iMaxHp / 25;
+	{
+		_float fPercentage = ((_float)(_iMaxHp / 25) * 25.f) / (_float)_iMaxHp;
 
-	_float _fCurLength = m_fLength / (iCount + 1);
+		_fCurLength = (m_fLength * fPercentage) / (_iMaxHp / 25);
+	}
+
+	//if (_iCurHp % 25 == 0)
+	//{
+	//	iCount = _iMaxHp / 25 - 1;
+//	}
+//	else
+	//iCount = _iMaxHp / 25;
+		
+	
+	//_float _fCurLength = fPercentage / 
 
 	matWorld._41 -= m_fLength - 5.f;
 
@@ -145,8 +159,14 @@ void CUIStatusBar::Render_GameObject()
 		{
 			matWorld._41 += _fCurLength - 3.f;
 		}
-		else
+		else if (m_iIndex == 4)
+		{
+			matWorld._41 += _fCurLength - 2.5f;
+		}
+		else 
+		{
 			matWorld._41 += _fCurLength - 1.5f;
+		}
 		//matWorld->_42 = 0.f;
 
 		m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
@@ -165,7 +185,7 @@ void CUIStatusBar::Render_GameObject()
 
 		const _tchar* tTotal = sTotal.c_str();
 
-		_vec2 pos(m_BRect.left - 130.f, m_BRect.top);
+		_vec2 pos(m_BRect.left - 160.f, m_BRect.top);
 
 		Engine::Render_Font(L"Font_HP", tTotal, &pos, D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
 	}
@@ -179,7 +199,7 @@ void CUIStatusBar::Render_GameObject()
 
 		const _tchar* tTotal = sTotal.c_str();
 
-		_vec2 pos(m_BRect.left - 130.f, m_BRect.top);
+		_vec2 pos(m_BRect.left - 160.f, m_BRect.top);
 
 		Engine::Render_Font(L"Font_HP", tTotal, &pos, D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
 	}

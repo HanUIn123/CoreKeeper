@@ -203,7 +203,7 @@ void CUIItemSlot::Render_GameObject()
 
 		m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
 
-		m_pItem->Get_Buffer()->Render_Buffer();
+		m_pItem->Get_Buffer()->Render_First();
 	}
 	else
 	{

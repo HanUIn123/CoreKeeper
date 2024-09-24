@@ -744,15 +744,14 @@ void CPlayer::Set_UI()
 
 	if (Engine::Key_Down(DIK_O))
 	{
-		CUIBuff* pBuff = dynamic_cast<CUIBuff*>(Engine::Get_GameObject(L"Layer_UI", L"UI_Buff0"));
+		CUIBuff* pBuff = dynamic_cast<CUIBuff*>(Engine::Get_GameObject(L"Layer_UI", L"UI_Buff0")); 
 
-		pBuff->Set_Window(CUIBuff::BUFF_HEAL, CUIBuff::BUFF, 200.f);
+		pBuff->Set_Window(CUIBuff::BUFF_HEAL, CUIBuff::BUFF, 200.f); // (버프 종류, 버프창인지 디버프창인지 결정, 시간)
 
 		CUIBuff* pDeBuff = dynamic_cast<CUIBuff*>(Engine::Get_GameObject(L"Layer_UI", L"UI_DeBuff0"));
 
 		pDeBuff->Set_Window(CUIBuff::DEBUFF_BURN, CUIBuff::DEBUFF, 100.f);
 	}
-
 }
 
 void CPlayer::Set_InvWindow()
