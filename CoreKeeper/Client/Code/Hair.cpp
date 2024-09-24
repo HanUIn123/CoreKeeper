@@ -22,7 +22,7 @@ _int CHair::Update_GameObject(const _float& fTimeDelta)
 {
 	Follow_Player();
 	m_pAnimatorCom->Update_Animation();
-	if(m_bActive)
+	if (m_bActive)
 		Add_RenderGroup(RENDER_ALPHA, this);
 	return Engine::CGameObject::Update_GameObject(fTimeDelta);
 }
@@ -85,7 +85,7 @@ void CHair::Follow_Player()
 		{
 			_vec3 vPlayerLook;
 			playerTransform->Get_Info(INFO_LOOK, &vPlayerLook);
-			m_pTransformCom->Set_Pos(vPlayerPos.x - vPlayerLook.x * 0.02f, vPlayerPos.y - 0.04f, vPlayerPos.z - vPlayerLook.z * 0.02f);
+			m_pTransformCom->Set_Pos(vPlayerPos.x - vPlayerLook.x * 0.002f, vPlayerPos.y - 0.04f, vPlayerPos.z - vPlayerLook.z * 0.002f);
 			vPlayerAngle = *(playerTransform->Get_Angle());
 			m_pTransformCom->Set_Angle(vPlayerAngle.x, vPlayerAngle.y, vPlayerAngle.z);
 		}
