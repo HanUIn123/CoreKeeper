@@ -575,10 +575,12 @@ void CMapEditorScene::MapFile_Save()
 {
     const _tchar* strFileName = L"../../Data/TileData.txt";
     const _tchar* strWallFileName = L"../../Data/WallData.txt";
+    const _tchar* strObjectFileName = L"../../Data/ObjectData.txt";
 
 
     m_hFile = CreateFile(strFileName, GENERIC_WRITE, 0, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
     m_hWallFile = CreateFile(strWallFileName, GENERIC_WRITE, 0, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
+    m_hObjectFile = CreateFile(strObjectFileName, GENERIC_WRITE, 0, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
 
     if (INVALID_HANDLE_VALUE == m_hFile)
     {
@@ -591,6 +593,14 @@ void CMapEditorScene::MapFile_Save()
         MSG_BOX("Failed Wall Create File");
         return;
     }
+
+    if (INVALID_HANDLE_VALUE == m_hObjectFile)
+    {
+        MSG_BOX("Failed Object Create File");
+        return;
+    }
+
+    // ========================================================
 
     CMapToolTerrain* pTerrain = dynamic_cast<CMapToolTerrain*>(Engine::Get_GameObject(L"Layer_GameLogic", L"MapToolTerrain"));
 
@@ -605,6 +615,7 @@ void CMapEditorScene::MapFile_Save()
         WriteFile(m_hFile, &vec[i], sizeof(_int), &dwByte, nullptr);
     }
    
+    // ========================================================
 
     _vec3 vTempWallPos(0.0f, 0.0f, 0.0f);
     _int  vTempWallImgNum(0);
@@ -631,8 +642,36 @@ void CMapEditorScene::MapFile_Save()
         vTempIndex++;
     }
 
+    // ========================================================
+
+    _vec3 vTempObjectPos(0.0f, 0.0f, 0.0f);
+    _int  vTempObjectImgNum(0);
+    _int  vTempObjectIndex(0);
+
+    DWORD	dwByte3(0);
+
+    for (auto& iter : m_vecBuildingObject)
+    {
+        if (iter == nullptr)
+        {
+            vTempObjectIndex++;
+            continue;
+        }
+
+        vTempObjectPos = (*iter).Get_ObjectPos();
+        vTempObjectImgNum = (*iter).Get_BuildImgNum();
+
+        // 오브젝트 저장.
+        WriteFile(m_hObjectFile, &vTempObjectPos, sizeof(_vec3), &dwByte3, nullptr);
+        WriteFile(m_hObjectFile, &vTempObjectImgNum, sizeof(_int), &dwByte3, nullptr);
+        WriteFile(m_hObjectFile, &vTempObjectIndex, sizeof(_int), &dwByte3, nullptr);
+
+        vTempObjectIndex++;
+    }
+
     CloseHandle(m_hFile);
     CloseHandle(m_hWallFile);
+    CloseHandle(m_hObjectFile);
 }
 
 HRESULT CMapEditorScene::MapFile_Load()
