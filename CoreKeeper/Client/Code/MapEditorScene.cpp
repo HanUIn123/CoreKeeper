@@ -496,6 +496,7 @@ HRESULT CMapEditorScene::Piking_Object()
                 switch (m_iBuildingNumber)
                 {
                 case 0:
+                    //m_pObjectCom = nullptr;
                     m_wsObjectNameString[iIndex] = L"Object_" + std::to_wstring(iIndex);
                     m_pObjectCom = CCore::Create(m_pGraphicDev, m_vObPickPos.x, m_vObPickPos.z, m_bReposed, m_iBuildingNumber, m_wsObjectNameString[iIndex].c_str());
                     m_vecBuildingObject[iIndex] = dynamic_cast<CCore*>(m_pObjectCom);
@@ -507,6 +508,7 @@ HRESULT CMapEditorScene::Piking_Object()
                     m_vCheckPos = m_vObPickPos;
                     break;
                 case 1:
+                    //m_pObjectCom = nullptr;
                     m_wsObjectNameString[iIndex] = L"Object_" + std::to_wstring(iIndex);
                     m_pObjectCom = CCoreBase::Create(m_pGraphicDev, m_vObPickPos.x, m_vObPickPos.z, m_bReposed, m_iBuildingNumber, m_wsObjectNameString[iIndex].c_str());
                     m_vecBuildingObject[iIndex] = dynamic_cast<CCoreBase*>(m_pObjectCom);
@@ -518,6 +520,7 @@ HRESULT CMapEditorScene::Piking_Object()
                     m_vCheckPos = m_vObPickPos;
                     break;
                 case 2:
+                    //m_pObjectCom = nullptr;
                     m_wsObjectNameString[iIndex] = L"Object_" + std::to_wstring(iIndex);
                     m_pObjectCom = CSpawnPoint::Create(m_pGraphicDev, m_vObPickPos.x, m_vObPickPos.z, m_bReposed, m_iBuildingNumber, m_wsObjectNameString[iIndex].c_str());
                     m_vecBuildingObject[iIndex] = dynamic_cast<CSpawnPoint*>(m_pObjectCom);

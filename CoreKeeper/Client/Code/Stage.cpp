@@ -702,7 +702,7 @@ HRESULT CStage::Load_MapFile()
 
 		CGameObject* pGameObject = dynamic_cast<CCore*>(pCore);
 		NULL_CHECK_RETURN(pGameObject, E_FAIL);
-		FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsBuildingNameString[vTempIndex].c_str(), pGameObject), E_FAIL);
+		FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsBuildingNameString[vTempBuildingIndex].c_str(), pGameObject), E_FAIL);
 
 		m_vecCore[vTempBuildingIndex] = dynamic_cast<CCore*>(pCore);
 		m_vecUnreachable[vTempBuildingIndex] = true;
