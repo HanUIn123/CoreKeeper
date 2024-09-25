@@ -69,7 +69,7 @@ HRESULT CPlayer::Ready_GameObject()
 	m_pStateCom->Set_Stat(m_tBasicStat.iMaxHp, m_tBasicStat.iMaxMp, m_tBasicStat.iAttack, m_tBasicStat.iDefense);
 	m_pEquipInventoryCom->Set_SlotCount(10);
 
-	m_pFireParticleCom->init(L"../Bin/Resource/Texture/Particle/flare.bmp");
+	m_pFireParticleCom->init(L"../Bin/Resource/Texture/Particle/flare.bmp"); // 파티클 시작
 
 	return S_OK;
 }
@@ -122,9 +122,9 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 	Flip();
 	m_pAnimatorCom->Update_Animation();
 	m_pColliderCom->Update_Collider(m_pTransformCom->Get_WorldMatrix());
-	m_pFireParticleCom->update(fTimeDelta);
+	m_pFireParticleCom->update(fTimeDelta); // 파티클 업데이트
 
-	if (m_pFireParticleCom->isDead())
+	if (m_pFireParticleCom->isDead()) // 파티클 죽음
 		m_pFireParticleCom->reset();
 
 	Add_RenderGroup(RENDER_ALPHA, this);
@@ -151,9 +151,7 @@ void CPlayer::Render_GameObject()
 	m_pBufferCom->Render_Buffer();
 	m_pColliderCom->Render_Collider();
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
-	m_pFireParticleCom->render();
-
-	//m_pFireParticleCom->postRender();
+	m_pFireParticleCom->render(); // 파티클 렌더
 }
 
 HRESULT CPlayer::Add_Component()

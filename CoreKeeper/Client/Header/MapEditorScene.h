@@ -115,6 +115,7 @@ private:
 
 	HANDLE									m_hFile;
 	HANDLE									m_hWallFile;
+	HANDLE									m_hObjectFile;
 
 	vector<CWall*>							m_vecWallObject;
 	vector<CBuilding*>						m_vecBuildingObject;
@@ -123,6 +124,8 @@ private:
 
 	_vec3									m_vCheckPos;
 	_vec3                                   m_vPickPos;
+
+	_vec3									m_vObPickPos;
 
 	_int									m_iLoadTileCount;
 	_int									m_iLoadWallCount;

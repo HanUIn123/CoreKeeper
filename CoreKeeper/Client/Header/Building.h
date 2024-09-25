@@ -24,13 +24,16 @@ public:
 
 private:
 	HRESULT							Add_Component();
-protected:
+public:
 	HRESULT							Setup_Material();
 	virtual			_int			Get_BuildImgNum() { return m_iBuildingImgNum; }
 	virtual			void			Set_BuildImgNum(_int _iBuildingNum) { m_iBuildingImgNum = _iBuildingNum; }
 
 	// Delete_GameObject 함수를 사용하려면, 키값이 필요한데, 그 키값(이름)을 받아올 함수
 	wstring							Get_PickedBuildingName() { return m_strPickedBuildingName; }
+public:
+	virtual			_vec3			Get_ObjectPos() { return m_vBuildPosition; }
+	virtual			void			Set_ObjectPos(_vec3 _iBuildingPos) { m_vBuildPosition = _iBuildingPos; }
 
 protected:
 	Engine::CObjectTex* m_pBufferCom;

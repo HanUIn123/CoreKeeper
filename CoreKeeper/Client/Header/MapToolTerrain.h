@@ -25,11 +25,18 @@ public:
 	virtual			void								Render_GameObject();
 
 	_vec3												Get_PikingPos() { return Picking_OnTerrain(); }
+
 	_int												Get_TerrainNumber() { return m_iTerrainImageNum; }
 	void												Set_TerrainNumber(_int _iTerrainNum) { m_iTerrainImageNum = _iTerrainNum; }
 
 	void												Set_TextureNumber(int _iIndex, int _iNum) { m_vecTextureNumber[_iIndex] = _iNum; }
 	vector<int>											Get_TextureNumber() { return m_vecTextureNumber; }
+
+	void												Set_Unreachable(int _iIndex, bool _bUnreachable) { m_vecUnreachable[_iIndex] = _bUnreachable; }
+	vector<bool>										Get_Unreachable() { return m_vecUnreachable; }
+
+	//void												Set_TerrainPos(int _iIndex, int _iNum) { m_vecTerrainPos[_iIndex] = _iNum; }
+	_vec3												Get_TerrainPos() { return m_vecTerrainPos; }
 private:
 	HRESULT												Add_Component();
 	HRESULT												Setup_Material();
@@ -50,5 +57,8 @@ private:
 	_vec3												vPickPos;
 	_int												m_iTerrainImageNum;
 	vector<int>											m_vecTextureNumber;
+	_vec3												m_vecTerrainPos;
+
+	vector<bool>										m_vecUnreachable;
 };
 

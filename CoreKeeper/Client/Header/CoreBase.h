@@ -11,11 +11,11 @@ class CCalculator;
 END
 
 
-class CCore : public CBuilding
+class CCoreBase : public CBuilding
 {
 private:
-	explicit						CCore(LPDIRECT3DDEVICE9 pGraphicDev);
-	virtual							~CCore();
+	explicit						CCoreBase(LPDIRECT3DDEVICE9 pGraphicDev);
+	virtual							~CCoreBase();
 public:
 	virtual			HRESULT			Ready_GameObject(_float fX, _float fY, _bool bReposed, _int iBuildImgNum, const wstring _pickedBuildName);
 	virtual			_int			Update_GameObject(const _float& fTimeDelta);

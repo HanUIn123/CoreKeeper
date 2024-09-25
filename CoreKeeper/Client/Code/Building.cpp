@@ -35,15 +35,7 @@ void CBuilding::LateUpdate_GameObject()
 
 void CBuilding::Render_GameObject()
 {
-	//m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
-	//m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
-
-	////m_pTextureCom->Set_Texture();
-
-	//m_pBufferCom->Render_Buffer();
-
-	//m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
 HRESULT CBuilding::Add_Component()
@@ -76,9 +68,9 @@ HRESULT CBuilding::Setup_Material()
 
 	tMtrl.Diffuse = { 1.f, 1.f, 1.f, 1.f };
 	tMtrl.Specular = { 1.f, 1.f, 1.f, 1.f };
-	tMtrl.Ambient = { 0.2f, 0.2f, 0.2f, 1.f };
+	tMtrl.Ambient = { 0.7f, 0.7f, 0.7f, 0.7f };
 
-	tMtrl.Emissive = { 0.f, 0.f, 0.f, 0.f };
+	tMtrl.Emissive = { 0.2f, 0.2f, 0.2f, 0.2f };
 	tMtrl.Power = 0.f;
 
 	m_pGraphicDev->SetMaterial(&tMtrl);

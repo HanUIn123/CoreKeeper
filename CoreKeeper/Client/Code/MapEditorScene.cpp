@@ -42,7 +42,9 @@ CMapEditorScene::CMapEditorScene(LPDIRECT3DDEVICE9 _pGraphicDevice)
     {
         Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/Tile/BasicTile/BasicTile_%d.png", TEX_NORMAL, 11);
         Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/Wall/Wall_%d.dds", TEX_CUBE, 6);
-        Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/BaseCamp/Spawn.png", TEX_OBJECT, 1);
+        Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/BaseCamp/Core.png", TEX_OBJECT, 1);
+        Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/BaseCamp/CoreBase.png", TEX_OBJECT, 1);
+        Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/BaseCamp/SpawnPoint.png", TEX_OBJECT, 1);
     }
 
     m_vecWallObject.resize((VTXCNTX - 1) * (VTXCNTZ - 1));
@@ -77,8 +79,6 @@ HRESULT CMapEditorScene::Ready_Scene()
     FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Layer_Environment"), E_FAIL);
     FAILED_CHECK_RETURN(Ready_Layer_GameLogic(L"Layer_GameLogic"), E_FAIL);
     FAILED_CHECK_RETURN(Ready_Layer_UI(L"Layer_UI"), E_FAIL);
-    //FAILED_CHECK_RETURN(Ready_Layer_Tile(L"Layer_Tile"), E_FAIL);
-    //FAILED_CHECK_RETURN(Ready_Layer_Tile2(L"Layer_Tile2"), E_FAIL);
 
     m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 
@@ -298,9 +298,7 @@ void CMapEditorScene::Piking_Tile()
 
             int iIndex = (m_vPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vPickPos.x + 0.5f * VTXITV;
 
-            auto vec = pTerrain->Get_TextureNumber();
             pTerrain->Set_TextureNumber(iIndex, m_iImageNumber);
-            vec[iIndex] =  m_iImageNumber;
         }
         if (!(Engine::Get_DIMouseState(DIM_LB) & 0x80))
             m_bPushed = false;
@@ -380,16 +378,17 @@ HRESULT CMapEditorScene::Piking_Wall()
 
             if (m_bCanInstall)
             {
-                _int i = _int((m_vPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vPickPos.x + 0.5f * VTXITV);
+                _int iIndex = _int(m_vPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vPickPos.x + 0.5f * VTXITV;
 
-                m_wsWallNameString[i] = L"Wall_" + std::to_wstring(i);
-                m_pWallCom = CWall::Create(m_pGraphicDev, m_vPickPos.x + 0.5f * VTXITV, m_vPickPos.z + 0.5f * VTXITV, 0, m_wsWallNameString[i].c_str());
-                m_vecWallObject[i] = dynamic_cast<CWall*>(m_pWallCom);
+                m_wsWallNameString[iIndex] = L"Wall_" + std::to_wstring(iIndex);
+                m_pWallCom = CWall::Create(m_pGraphicDev, m_vPickPos.x + 0.5f * VTXITV, m_vPickPos.z + 0.5f * VTXITV, 0, m_wsWallNameString[iIndex].c_str());
+                m_vecWallObject[iIndex] = dynamic_cast<CWall*>(m_pWallCom);
         
                 NULL_CHECK_RETURN(m_pWallCom, E_FAIL);
-                FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsWallNameString[i].c_str(), m_pWallCom), E_FAIL);
+                FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsWallNameString[iIndex].c_str(), m_pWallCom), E_FAIL);
 
-                m_vecWallObject[i]->Set_WallNumber(m_iWallImgNumber);
+                m_vecWallObject[iIndex]->Set_WallNumber(m_iWallImgNumber);
+                pTerrain->Set_Unreachable(iIndex, true);
 
                 m_iWallCreateCount++;
                 m_vCheckPos = m_vPickPos;
@@ -407,10 +406,14 @@ HRESULT CMapEditorScene::Piking_Wall()
 
             m_vPickPos = pPickPos->Picking_OnTerrain(g_hWnd, pMapToolBufferCom, pMapToolTransformCom);
 
-            if (m_vecWallObject[unsigned __int64(m_vPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vPickPos.x + 0.5f *  VTXITV])
+            _int iIndex = _int(m_vPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vPickPos.x + 0.5f * VTXITV;
+
+            if (m_vecWallObject[iIndex])
             {
-                Delete_Object(L"Layer_Environment", m_vecWallObject[unsigned __int64(m_vPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vPickPos.x + 0.5f *  VTXITV]->Get_PickedWallName().c_str());
-                m_vecWallObject[unsigned __int64(m_vPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vPickPos.x + 0.5f *  VTXITV] = nullptr;
+                Delete_Object(L"Layer_Environment", m_vecWallObject[iIndex]->Get_PickedWallName().c_str());
+                m_vecWallObject[iIndex] = nullptr;
+                pTerrain->Set_Unreachable(iIndex, false);
+
             }
         }
     }
@@ -425,7 +428,7 @@ void CMapEditorScene::Setting_ObjectList()
 
     CComponent* pComponent = NULL;
 
-    const char* items[] = { "Core","Box","Object2", "Object3"};
+    const char* items[] = { "Core","CoreBase", "SpawnPoint", "Box","Object2", "Object3"};
 
     static int	nCurrentItem = 0;
     ImGui::Combo("##4", &nCurrentItem, items, IM_ARRAYSIZE(items));
@@ -469,38 +472,63 @@ HRESULT CMapEditorScene::Piking_Object()
             CMapToolTex* pMapToolBufferCom = dynamic_cast<CMapToolTex*>(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"MapToolTerrain", L"Com_Buffer"));
             CTransform* pMapToolTransformCom = dynamic_cast<CTransform*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"MapToolTerrain", L"Com_Transform"));
 
-            m_vPickPos = pPickPos->Picking_OnTerrain(g_hWnd, pMapToolBufferCom, pMapToolTransformCom);
+            m_vObPickPos = pPickPos->Picking_OnTerrain(g_hWnd, pMapToolBufferCom, pMapToolTransformCom);
 
-            if (m_vPickPos.y < 0)
+            if (m_vObPickPos.y < 0)
                 return S_OK;
 
             m_bAlreadyInstalled = false;
 
-            if (m_vecBuildingObject[unsigned __int64(m_vPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vPickPos.x + 0.5f *  VTXITV])
+            if (m_vecBuildingObject[unsigned __int64(m_vObPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vObPickPos.x + 0.5f *  VTXITV])
                 m_bAlreadyInstalled = true;
 
             if (m_bAlreadyInstalled)
                 m_bCanInstall = false;
-            else if (m_vCheckPos == m_vPickPos)
+            else if (m_vCheckPos == m_vObPickPos)
                 m_bCanInstall = false;
             else
                 m_bCanInstall = true;
 
             if (m_bCanInstall)
             {
-                _int i = _int(m_vPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vPickPos.x + 0.5f * VTXITV;
+                _int iIndex = _int(m_vObPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vObPickPos.x + 0.5f * VTXITV;
 
-                m_wsObjectNameString[i] = L"Object_" + std::to_wstring(i);
-                m_pObjectCom = CCore::Create(m_pGraphicDev, m_vPickPos.x, m_vPickPos.z, m_bReposed, m_iBuildingNumber, m_wsObjectNameString[i].c_str());
-                m_vecBuildingObject[i] = dynamic_cast<CCore*>(m_pObjectCom);
+                switch (m_iBuildingNumber)
+                {
+                case 0:
+                    m_wsObjectNameString[iIndex] = L"Object_" + std::to_wstring(iIndex);
+                    m_pObjectCom = CCore::Create(m_pGraphicDev, m_vObPickPos.x, m_vObPickPos.z, m_bReposed, m_iBuildingNumber, m_wsObjectNameString[iIndex].c_str());
+                    m_vecBuildingObject[iIndex] = dynamic_cast<CCore*>(m_pObjectCom);
 
-                NULL_CHECK_RETURN(m_pObjectCom, E_FAIL);
-                FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsObjectNameString[i].c_str(), m_pObjectCom), E_FAIL);
+                    NULL_CHECK_RETURN(m_pObjectCom, E_FAIL);
+                    FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsObjectNameString[iIndex].c_str(), m_pObjectCom), E_FAIL);
 
-                dynamic_cast<CCore*>(m_vecBuildingObject[i])->Set_BuildImgNum(m_iBuildingNumber);
+                    dynamic_cast<CCore*>(m_vecBuildingObject[iIndex])->Set_BuildImgNum(0);
+                    m_vCheckPos = m_vObPickPos;
+                    break;
+                case 1:
+                    m_wsObjectNameString[iIndex] = L"Object_" + std::to_wstring(iIndex);
+                    m_pObjectCom = CCoreBase::Create(m_pGraphicDev, m_vObPickPos.x, m_vObPickPos.z, m_bReposed, m_iBuildingNumber, m_wsObjectNameString[iIndex].c_str());
+                    m_vecBuildingObject[iIndex] = dynamic_cast<CCoreBase*>(m_pObjectCom);
 
-                m_iBuildCreateCount++;
-                m_vCheckPos = m_vPickPos;
+                    NULL_CHECK_RETURN(m_pObjectCom, E_FAIL);
+                    FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsObjectNameString[iIndex].c_str(), m_pObjectCom), E_FAIL);
+
+                    dynamic_cast<CCoreBase*>(m_vecBuildingObject[iIndex])->Set_BuildImgNum(0);
+                    m_vCheckPos = m_vObPickPos;
+                    break;
+                case 2:
+                    m_wsObjectNameString[iIndex] = L"Object_" + std::to_wstring(iIndex);
+                    m_pObjectCom = CSpawnPoint::Create(m_pGraphicDev, m_vObPickPos.x, m_vObPickPos.z, m_bReposed, m_iBuildingNumber, m_wsObjectNameString[iIndex].c_str());
+                    m_vecBuildingObject[iIndex] = dynamic_cast<CSpawnPoint*>(m_pObjectCom);
+
+                    NULL_CHECK_RETURN(m_pObjectCom, E_FAIL);
+                    FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsObjectNameString[iIndex].c_str(), m_pObjectCom), E_FAIL);
+
+                    dynamic_cast<CSpawnPoint*>(m_vecBuildingObject[iIndex])->Set_BuildImgNum(0);
+                    m_vCheckPos = m_vObPickPos;
+                    break;
+                }
             }
         }
 
@@ -511,19 +539,20 @@ HRESULT CMapEditorScene::Piking_Object()
             CMapToolTex* pMapToolBufferCom = dynamic_cast<CMapToolTex*>(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"MapToolTerrain", L"Com_Buffer"));
             CTransform* pMapToolTransformCom = dynamic_cast<CTransform*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"MapToolTerrain", L"Com_Transform"));
 
-            m_vPickPos = pPickPos->Picking_OnTerrain(g_hWnd, pMapToolBufferCom, pMapToolTransformCom);
+            m_vObPickPos = pPickPos->Picking_OnTerrain(g_hWnd, pMapToolBufferCom, pMapToolTransformCom);
 
-            _float fXMin = m_vPickPos.x - 5.0f;
-            _float fXMax = m_vPickPos.x + 5.0f;
-            _float fZMin = m_vPickPos.z - 5.0f;
-            _float fZMax = m_vPickPos.z + 5.0f;
+            _float fXMin = m_vObPickPos.x - 5.0f;
+            _float fXMax = m_vObPickPos.x + 5.0f;
+            _float fZMin = m_vObPickPos.z - 5.0f;
+            _float fZMax = m_vObPickPos.z + 5.0f;
 
-            if (m_vecBuildingObject[unsigned __int64((m_vPickPos.z + 0.5f * VTXITV)* (VTXCNTX - 1) + m_vPickPos.x + 0.5f * VTXITV)])
+            if (m_vecBuildingObject[unsigned __int64((m_vObPickPos.z + 0.5f * VTXITV)* (VTXCNTX - 1) + m_vObPickPos.x + 0.5f * VTXITV)])
             {
-                if ((fXMin < m_vPickPos.x && fXMax > m_vPickPos.x) || (fZMin < m_vPickPos.z && fZMax > m_vPickPos.z))
+                if ((fXMin < m_vObPickPos.x && fXMax > m_vObPickPos.x) || (fZMin < m_vObPickPos.z && fZMax > m_vObPickPos.z))
                 {
-                    Delete_Object(L"Layer_Environment", dynamic_cast<CCore*>(m_vecBuildingObject[unsigned __int64(m_vPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vPickPos.x + 0.5f *  VTXITV])->Get_PickedBuildingName().c_str());
-                    m_vecBuildingObject[unsigned __int64((m_vPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vPickPos.x + 0.5f * VTXITV)] = nullptr;
+                    //Delete_Object(L"Layer_Environment", dynamic_cast<CCore*>(m_vecBuildingObject[unsigned __int64(m_vObPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vObPickPos.x + 0.5f *  VTXITV])->Get_PickedBuildingName().c_str());
+                    Delete_Object(L"Layer_Environment", (m_vecBuildingObject[unsigned __int64(m_vObPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vObPickPos.x + 0.5f *  VTXITV])->Get_PickedBuildingName().c_str());
+                    m_vecBuildingObject[unsigned __int64((m_vObPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vObPickPos.x + 0.5f * VTXITV)] = nullptr;
                 }
             }
         }
@@ -577,9 +606,12 @@ void CMapEditorScene::MapFile_Save()
 {
     const _tchar* strFileName = L"../../Data/TileData.txt";
     const _tchar* strWallFileName = L"../../Data/WallData.txt";
+    const _tchar* strObjectFileName = L"../../Data/ObjectData.txt";
+
 
     m_hFile = CreateFile(strFileName, GENERIC_WRITE, 0, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
     m_hWallFile = CreateFile(strWallFileName, GENERIC_WRITE, 0, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
+    m_hObjectFile = CreateFile(strObjectFileName, GENERIC_WRITE, 0, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
 
     if (INVALID_HANDLE_VALUE == m_hFile)
     {
@@ -593,24 +625,28 @@ void CMapEditorScene::MapFile_Save()
         return;
     }
 
-    //if (m_vecTileObject.empty())
-    //    return;
+    if (INVALID_HANDLE_VALUE == m_hObjectFile)
+    {
+        MSG_BOX("Failed Object Create File");
+        return;
+    }
 
-    //_vec3  vTempTilePos(0.0f, 0.0f, 0.0f);
-    //_int   vTempTileImgNum(0);
+    // ========================================================
+
+    CMapToolTerrain* pTerrain = dynamic_cast<CMapToolTerrain*>(Engine::Get_GameObject(L"Layer_GameLogic", L"MapToolTerrain"));
+
+    auto vec = pTerrain->Get_TextureNumber();
+
+    vector<int> vecTextureNum = vec;
+
+    DWORD	dwByte(0);
+
+    for (_int i = 0; i < vec.size(); ++i)
+    {
+        WriteFile(m_hFile, &vec[i], sizeof(_int), &dwByte, nullptr);
+    }
    
-
-    //DWORD	dwByte(0);
-
-    //for (auto& iter : m_vecTileObject)
-    //{
-    //    vTempTilePos = (*iter).Get_TilePos();
-    //    vTempTileImgNum = (*iter).Get_TileNumber();
-
-    //    // 타일 저장.
-    //    WriteFile(m_hFile, &vTempTilePos, sizeof(_vec3), &dwByte, nullptr);
-    //    WriteFile(m_hFile, &vTempTileImgNum, sizeof(_int), &dwByte, nullptr);
-    //}
+    // ========================================================
 
     _vec3 vTempWallPos(0.0f, 0.0f, 0.0f);
     _int  vTempWallImgNum(0);
@@ -637,8 +673,36 @@ void CMapEditorScene::MapFile_Save()
         vTempIndex++;
     }
 
+    // ========================================================
+
+    _vec3 vTempObjectPos(0.0f, 0.0f, 0.0f);
+    _int  vTempObjectImgNum(0);
+    _int  vTempObjectIndex(0);
+
+    DWORD	dwByte3(0);
+
+    for (auto& iter : m_vecBuildingObject)
+    {
+        if (iter == nullptr)
+        {
+            vTempObjectIndex++;
+            continue;
+        }
+
+        vTempObjectPos = (*iter).Get_ObjectPos();
+        vTempObjectImgNum = (*iter).Get_BuildImgNum();
+
+        // 오브젝트 저장.
+        WriteFile(m_hObjectFile, &vTempObjectPos, sizeof(_vec3), &dwByte3, nullptr);
+        WriteFile(m_hObjectFile, &vTempObjectImgNum, sizeof(_int), &dwByte3, nullptr);
+        WriteFile(m_hObjectFile, &vTempObjectIndex, sizeof(_int), &dwByte3, nullptr);
+
+        vTempObjectIndex++;
+    }
+
     CloseHandle(m_hFile);
     CloseHandle(m_hWallFile);
+    CloseHandle(m_hObjectFile);
 }
 
 HRESULT CMapEditorScene::MapFile_Load()

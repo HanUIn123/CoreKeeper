@@ -11,6 +11,7 @@ CStage::CStage(LPDIRECT3DDEVICE9 pGraphicDev)
 	, m_iLoadWallCount(0)
 {
 	m_vecWall.resize((VTXCNTX - 1) * (VTXCNTZ - 1));
+	m_vecCore.resize((VTXCNTX - 1) * (VTXCNTZ - 1));
 	m_vecUnreachable.resize((VTXCNTX - 1) * (VTXCNTZ - 1));
 }
 
@@ -23,11 +24,12 @@ HRESULT CStage::Ready_Scene()
 {
 	//FAILED_CHECK_RETURN(Ready_LightInfo(), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Layer_Environment"), E_FAIL);
+
 	FAILED_CHECK_RETURN(Ready_Layer_GameLogic(L"Layer_GameLogic"), E_FAIL);
 
-	Load_MapFile();
 
 	FAILED_CHECK_RETURN(Ready_Layer_UI(L"Layer_UI"), E_FAIL);
+	Load_MapFile();
 
 	// 이거랑 Render_Scene() 주석 풀면 일단 stage를 위에서 꽂아서 보게됨.
 	//FAILED_CHECK_RETURN(Ready_Layer_MiniMap(L"Layer_MiniMap"), E_FAIL);
@@ -129,6 +131,10 @@ HRESULT CStage::Ready_Layer_Environment(const _tchar* pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"SkyBox", pGameObject), E_FAIL);
 
+	m_pTerrainObject = CTerrain::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(m_pTerrainObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Terrain", m_pTerrainObject), E_FAIL);
+
 
 	m_mapLayer.insert({ pLayerTag , pLayer });
 
@@ -142,9 +148,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar* pLayerTag)
 
 	Engine::CGameObject* pGameObject = nullptr;
 
-	pGameObject = CTerrain::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Terrain", pGameObject), E_FAIL);
+
 
 	pGameObject = CPlayer::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
@@ -565,13 +569,15 @@ HRESULT CStage::Load_MapFile()
 
 	const _tchar* strFileName = L"../../Data/TileData.txt";
 	const _tchar* strWallFileName = L"../../Data/WallData.txt";
+	const _tchar* strObjectFileName = L"../../Data/ObjectData.txt";
 
 	m_hFile = CreateFile(strFileName, GENERIC_READ, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
 	m_hWallFile = CreateFile(strWallFileName, GENERIC_READ, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+	m_hObjectFile = CreateFile(strObjectFileName, GENERIC_READ, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
 
 	if (INVALID_HANDLE_VALUE == m_hFile)
 	{
-		MSG_BOX("Fail Open file");
+		MSG_BOX("Fail Open Terrain file");
 		return E_FAIL;
 	}
 
@@ -581,32 +587,37 @@ HRESULT CStage::Load_MapFile()
 		return E_FAIL;
 	}
 
-	_vec3 vTempTilePos(0.0f, 0.0f, 0.0f);
-	_int vTempTileImgNum(0);
+	if (INVALID_HANDLE_VALUE == m_hObjectFile)
+	{
+		MSG_BOX("Fail Open Object file");
+		return E_FAIL;
+	}
+
+	// ========================================================
 
 	DWORD dwByte = 0;
+	CTerrain* pTerrain = dynamic_cast<CTerrain*>(this->Get_GameObject(L"Layer_Environment", L"Terrain"));
 
+	if (!pTerrain)
+	{
+		MSG_BOX("Fail Open Terrain");
+		CloseHandle(m_hFile);
+		return E_FAIL;
+	}
+
+	auto vec = pTerrain->Get_TextureNumber();
+	for (_int i = 0; i < vec.size(); ++i)
+	{
+		ReadFile(m_hFile, &vec[i], sizeof(_int), &dwByte, nullptr);
+	}
+	pTerrain->Set_TextureNumber(vec);
+
+	// ========================================================
+
+	DWORD dwByte2 = 0;
 	_vec3 vTempWallPos(0.0f, 0.0f, 0.0f);
 	_int vTempWallImgNum(0);
 	_int vTempIndex(0);
-
-	DWORD dwByte2 = 0;
-
-
-	//while (true)
-	//{
-	//	ReadFile(m_hFile, &vTempTilePos, sizeof(_vec3), &dwByte, nullptr);
-	//	ReadFile(m_hFile, &vTempTileImgNum, sizeof(_int), &dwByte, nullptr);
-
-	//	if (dwByte == 0)  
-	//		break;
-
-	//	CTile* pTile = CTile::Create(m_pGraphicDev, vTempTilePos.x, vTempTilePos.z, vTempTileImgNum);
-	//	NULL_CHECK_RETURN(pTile, E_FAIL);
-	//	m_wsTileNameString[m_iLoadTileCount] = L"Tile_" + std::to_wstring(m_iLoadTileCount);
-	//	FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsTileNameString[m_iLoadTileCount].c_str(), pTile), E_FAIL);
-	//	m_iLoadTileCount++;		
-	//}
 
 	while (true)
 	{
@@ -670,8 +681,36 @@ HRESULT CStage::Load_MapFile()
 		}
 	}
 
+	// ========================================================
+
+	DWORD dwByte3 = 0;
+	_vec3 vTempBuildingPos(0.0f, 0.0f, 0.0f);
+	_int vTempBuildingImgNum(0);
+	_int vTempBuildingIndex(0);
+
+	while (true)
+	{
+		ReadFile(m_hObjectFile, &vTempBuildingPos, sizeof(_vec3), &dwByte3, nullptr);
+		ReadFile(m_hObjectFile, &vTempBuildingImgNum, sizeof(_int), &dwByte3, nullptr);
+		ReadFile(m_hObjectFile, &vTempBuildingIndex, sizeof(_int), &dwByte3, nullptr);
+
+		if (dwByte3 == 0)
+			break;
+
+		m_wsBuildingNameString[vTempBuildingIndex] = L"Building_" + std::to_wstring(vTempBuildingIndex);
+		CBuilding* pCore = CCore::Create(m_pGraphicDev, vTempBuildingPos.x, vTempBuildingPos.z, vTempBuildingImgNum, false, m_wsBuildingNameString[vTempBuildingIndex].c_str());
+
+		CGameObject* pGameObject = dynamic_cast<CCore*>(pCore);
+		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsBuildingNameString[vTempIndex].c_str(), pGameObject), E_FAIL);
+
+		m_vecCore[vTempBuildingIndex] = dynamic_cast<CCore*>(pCore);
+		m_vecUnreachable[vTempBuildingIndex] = true;
+	}
+
 	CloseHandle(m_hFile);
 	CloseHandle(m_hWallFile);
+	CloseHandle(m_hObjectFile);
 	MSG_BOX("Success Load File");
 
 	return S_OK;

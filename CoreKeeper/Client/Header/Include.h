@@ -38,7 +38,11 @@
 
 #include "Tile.h"
 #include "Wall.h"
+
+// Object
 #include "Core.h"
+#include "CoreBase.h"
+#include "SpawnPoint.h"
 
 
 // UI
