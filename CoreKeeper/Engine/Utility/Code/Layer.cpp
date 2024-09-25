@@ -77,7 +77,8 @@ void CLayer::Delete_GameMap(const _tchar* tObjTag)
 	if (iter == m_mapObject.end())
 		return;
 
-	CRenderer::GetInstance()->Delete_Renderer(RENDER_PRIORITY, iter->second);
+	//CRenderer::GetInstance()->Delete_Renderer(RENDER_PRIORITY, iter->second);
+	CRenderer::GetInstance()->Delete_Renderer(RENDER_ALPHA, iter->second);
 	
 	iter->second->Free_Component();
 	Safe_Delete(iter->second);

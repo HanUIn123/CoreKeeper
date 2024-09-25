@@ -22,19 +22,8 @@ HRESULT CCore::Ready_GameObject(_float fX, _float fY, _bool bReposed, _int iBuil
 
 	m_vBuildPosition.x = fX;
 
-	//if (!bReposed)
-	//{
-	//	m_vBuildPosition.y = fY;
-	//	m_vBuildPosition.z = 0;
-	//}
-	//else
-	//{
-	//	m_vBuildPosition.y = 0;
-	//	m_vBuildPosition.z = fY;
-	//}
-
 	m_vBuildPosition.x = fX;
-	m_vBuildPosition.y = 0.1f;
+	m_vBuildPosition.y = 3.f;
 	m_vBuildPosition.z = fY;
 
 	m_pTransformCom->Set_Scale(1.0f, 1.0f, 1.0f);
@@ -44,7 +33,7 @@ HRESULT CCore::Ready_GameObject(_float fX, _float fY, _bool bReposed, _int iBuil
 
 _int CCore::Update_GameObject(const _float& fTimeDelta)
 {
-	Add_RenderGroup(RENDER_PRIORITY, this);
+	Add_RenderGroup(RENDER_ALPHA, this);
 
 	return Engine::CGameObject::Update_GameObject(fTimeDelta);
 }

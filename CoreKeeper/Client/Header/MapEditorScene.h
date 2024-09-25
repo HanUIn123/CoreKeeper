@@ -125,6 +125,8 @@ private:
 	_vec3									m_vCheckPos;
 	_vec3                                   m_vPickPos;
 
+	_vec3									m_vObPickPos;
+
 	_int									m_iLoadTileCount;
 	_int									m_iLoadWallCount;
 	_int									m_iPikingIndex;
