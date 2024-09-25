@@ -21,8 +21,12 @@ CMonster::CMonster(LPDIRECT3DDEVICE9 pGraphicDev)
 	m_fJumpFrame = 0.f;
 
 	m_vStartPoint = { 0, 0, 0 };
+
+	m_fAttackDistance = 0.f;
+	m_fAttackTime = 0.f;
 	m_vAttackPoint = { 0, 0, 0 };
 	m_bAttackSuccess = false;
+	m_bAttackFailed = false;
 	
 	m_bFallStart = false;
 	m_vFallDir = { 0, 0, 0 };
@@ -44,7 +48,7 @@ CMonster::~CMonster()
 {
 }
 
-HRESULT CMonster::Ready_GameObject()
+HRESULT CMonster::Ready_GameObject(_vec3 vPos)
 {
 	return S_OK;
 }
@@ -96,16 +100,8 @@ void CMonster::Apply_Billboard()
 void CMonster::Pattern_Idle(const _float& fTimeDelta)
 {
 	// 벽 확인 추가할 것
-	//_float	fSpeedWeight = 1.f;
-	switch (m_eType)
-	{
-	case MON_SLIME:
-		m_pAnimatorCom->Set_CurState(IDLE, 0, 8, 12);
-		break;
-	default:
-		break;
-	}
 	
+
 	// 일정 시간마다 타일 한칸 이동 or 정지
 	if (m_pAnimatorCom->Get_MotionEnd())
 		m_bIdling = false;
@@ -132,56 +128,69 @@ void CMonster::Pattern_Idle(const _float& fTimeDelta)
 			break;
 		case 1:
 			// 상
+			m_eDir = BACK;
 			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, m_fSpeed);
 			break;
 		case 2:
 			// 우상
+			m_eDir = RIGHT;
 			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, m_fDiagSpeed);
 			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, m_fDiagSpeed);
 			break;
 		case 3:
 			// 우
+			m_eDir = RIGHT;
 			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, m_fSpeed);
 			break;
 		case 4:
 			// 우하
+			m_eDir = RIGHT;
 			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, -m_fDiagSpeed);
 			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, m_fDiagSpeed);
 			break;
 		case 5:
 			// 하
+			m_eDir = FRONT;
 			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, -m_fSpeed);
 			break;
 		case 6:
 			// 좌하
+			m_eDir = LEFT;
 			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, -m_fDiagSpeed);
 			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, -m_fDiagSpeed);
 			break;
 		case 7:
 			// 좌
+			m_eDir = LEFT;
 			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, -m_fSpeed);
 			break;
 		case 8:
 			// 좌상
+			m_eDir = LEFT;
 			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, m_fDiagSpeed);
 			m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, -m_fDiagSpeed);
 			break;
 		}
 	}
-}
 
-void CMonster::Pattern_Chase(const _float& fTimeDelta)
-{
-	// 플레이어 방향으로 이동, 추후 A스타 알고리즘으로 변경
 	switch (m_eType)
 	{
 	case MON_SLIME:
-		m_pAnimatorCom->Set_CurState(WALK, 12, 21, 8);
+		m_pAnimatorCom->Set_CurState(IDLE, 0, 8, 12);
+		break;
+	case MON_MUSHROOM:
+		if(!m_iDir)
+			m_pAnimatorCom->Set_CurState(IDLE, 0, 5, 12);
+		else
+			m_pAnimatorCom->Set_CurState(IDLE, 9, 17, 12);
 		break;
 	default:
 		break;
 	}
-	
+}
+
+void CMonster::Pattern_Chase(const _float& fTimeDelta)
+{
 	Engine::CTransform* pPlayerTransform = dynamic_cast<Engine::CTransform*>
 		(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Transform"));
 	NULL_CHECK(pPlayerTransform);
@@ -190,14 +199,34 @@ void CMonster::Pattern_Chase(const _float& fTimeDelta)
 	pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
 	m_pTransformCom->Get_Info(INFO_POS, &vPos);
 
-	m_pTransformCom->Chase_Target(&vPlayerPos, fTimeDelta);
-
-	
-	if (m_pCalculatorCom->Check_Distance2D(&vPlayerPos, &vPos, 5.f))
-		m_eState = SWING;
-	else
-		m_eState = WALK;
-
+	// 플레이어 방향으로 이동, 추후 A스타 알고리즘으로 변경
+	switch (m_eType)
+	{
+	case MON_SLIME:
+		m_pAnimatorCom->Set_CurState(WALK, 12, 21, 8);
+		m_pTransformCom->Chase_Target(&vPlayerPos, fTimeDelta);
+		if (m_pCalculatorCom->Check_Distance2D(&vPlayerPos, &vPos, 5.f))
+			m_eState = SWING;
+		else
+			m_eState = WALK;
+		break;
+	case MON_MUSHROOM:
+		m_pAnimatorCom->Set_CurState(WALK, 27, 33, 8);
+		if (m_pAnimatorCom->Get_MotionEnd())
+		{
+			m_fAttackDistance = 0.f;
+			m_bAttackFailed = false;
+			m_bAttackSuccess = false;
+			m_fAttackTime = 0.f;
+			m_vAttackPoint = vPlayerPos - vPos;
+			D3DXVec3Normalize(&m_vAttackPoint, &m_vAttackPoint);
+			m_vAttackPoint.y = 0.f;
+			m_eState = SWING;
+		}
+		break;
+	default:
+		break;
+	}
 }
 
 void CMonster::Pattern_Attack(const _float& fTimeDelta)
@@ -256,6 +285,71 @@ void CMonster::Pattern_Attack(const _float& fTimeDelta)
 				m_pTransformCom->Chase_Target(&m_vAttackPoint, fTimeDelta * m_fSpeedWeight);
 		}
 		break;
+	case MON_MUSHROOM:
+		// 일정 스피드 이상일 때 충돌 처리
+		if (m_fAttackTime > 0.2f)
+		{
+			// 플레이어 충돌 시 공격 성공
+			if (m_pColliderCom->Check_Collision(pPlayerCollider))
+			{
+				m_bAttackSuccess = true;
+				dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"))
+					->Set_KnockBack(vPos, m_pStateCom->Get_Stat()->iAttack);
+			}			
+			// 벽 충돌 추가하기
+		}
+		// 공격 중 : 돌진
+		if (!m_bAttackSuccess)
+		{
+			// 가속
+			if (m_fAttackDistance < 6.f)
+			{
+				m_fAttackTime += fTimeDelta * 1.5f;
+				m_pAnimatorCom->Set_CurState(SWING, 9, 17, 3);
+				m_pTransformCom->Move_Pos(&m_vAttackPoint, m_fAttackTime * 0.08f, m_fSpeed);
+				m_fAttackDistance += m_fSpeed * m_fAttackTime * 0.08f;
+			}
+			// 감속
+			else
+			{
+				if (m_fAttackDistance < 8.f)
+					m_fAttackTime -= fTimeDelta * 2;
+				m_pAnimatorCom->Set_CurState(SWING, 9, 17, 3);
+				m_pTransformCom->Move_Pos(&m_vAttackPoint, m_fAttackTime * 0.1f, m_fSpeed);
+				m_fAttackDistance += m_fSpeed * m_fAttackTime * 0.1f;
+			}
+			// 정지
+			if(m_fAttackDistance > 12.f)
+				m_bAttackFailed = true;
+		}
+		// 공격 성공 : 엉덩방아
+		else
+		{
+			m_pAnimatorCom->Set_CurState(SWING, 36, 44, 6);
+			if (m_pAnimatorCom->Get_MotionEnd())
+			{
+				if (m_pCalculatorCom->Check_Distance2D(&vPlayerPos, &vPos, 12.f))
+					m_eState = WALK;
+				else
+				{
+					m_eState = IDLE;
+					m_iDir = 1;
+				}
+			}
+		}
+		
+		if (m_bAttackFailed)
+		{
+			if (m_pCalculatorCom->Check_Distance2D(&vPlayerPos, &vPos, 12.f))
+				m_eState = WALK;
+			else
+			{
+				m_eState = IDLE;
+				m_iDir = 1;
+			}
+		}
+
+		break;
 	default:
 		break;
 	}
@@ -267,6 +361,9 @@ void CMonster::Pattern_Dead()
 	{
 	case MON_SLIME:
 		m_pAnimatorCom->Set_CurState(DEAD, 36, 41, 8);
+		break;
+	case MON_MUSHROOM:
+		m_pAnimatorCom->Set_CurState(DEAD, 40, 44, 4);
 		break;
 	default:
 		break;
@@ -493,11 +590,11 @@ void CMonster::Drop_Item()
 	}
 }
 
-CMonster* CMonster::Create(LPDIRECT3DDEVICE9 pGraphicDev)
+CMonster* CMonster::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 {
 	CMonster* pMonster = new CMonster(pGraphicDev);
 
-	if (FAILED(pMonster->Ready_GameObject()))
+	if (FAILED(pMonster->Ready_GameObject(vPos)))
 	{
 		Safe_Release(pMonster);
 		MSG_BOX("pMonster Create Failed");

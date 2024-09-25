@@ -2,36 +2,75 @@
 #include "../Header/Mushroom.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
+#include "../Header/Player.h"
 
 CMushroom::CMushroom(LPDIRECT3DDEVICE9 pGraphicDev)
     : CMonster(pGraphicDev)
 {
     m_eType = Engine::MON_MUSHROOM;
-    m_fIdleY = 0.8f;
+    m_fIdleY = 1.2f;
     m_eState = IDLE;
+    m_bFlip = false;
+    m_fAggroDistance = 14.f;
 }
 
 CMushroom::~CMushroom()
 {
 }
 
-HRESULT CMushroom::Ready_GameObject()
+HRESULT CMushroom::Ready_GameObject(_vec3 vPos)
 {
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-    _vec3 vPos;
-    m_pTransformCom->Get_Info(INFO_POS, &vPos);
     m_pTransformCom->Set_Pos(vPos.x, m_fIdleY, vPos.z);
+    m_pTransformCom->Set_Scale(0.6f, 0.6f, 0.6f);
     m_pStateCom->Set_Stat(100, 0, 10, 0);
-    m_vecDropItem.push_back(ITEM_MUCUS);
+    m_vecDropItem.push_back(ITEM_LEG);
     m_vecDropItem.push_back(ITEM_SEED);
     m_vecDropItem.push_back(ITEM_WOOD);
-    Set_Speed(0.6f);
+    Set_Speed(0.8f);
     return S_OK;
 }
 
 _int CMushroom::Update_GameObject(const _float& fTimeDelta)
 {
+    if (m_bStopDraw)
+        return 0;
+
+    if (g_bIsTopCamera)
+        if(m_vAttackPoint.x < 0)
+            m_eDir = LEFT;
+        else
+            m_eDir = RIGHT;
+    if (m_eState != DEAD)
+        Check_Hitted();
+
+    if (m_bKnockBackEnd)
+    {
+        if (m_eState != DEAD)
+            m_eState = State_Change();
+        switch (m_eState)
+        {
+        case IDLE:
+            Pattern_Idle(fTimeDelta);
+            break;
+        case WALK:
+            Pattern_Chase(fTimeDelta);
+            break;
+        case SWING:
+            Pattern_Attack(fTimeDelta);
+            break;
+        case DEAD:
+            Pattern_Dead();
+            break;
+        }
+    }
+    else
+        KnockBack(fTimeDelta, 1.8f);
+
+    Flip();
+    m_pAnimatorCom->Update_Animation();
+
     Add_RenderGroup(RENDER_ALPHA, this);
     return Engine::CGameObject::Update_GameObject(fTimeDelta);
 }
@@ -78,11 +117,11 @@ HRESULT CMushroom::Add_Component()
     NULL_CHECK_RETURN(pComponent, E_FAIL);
     m_mapComponent[ID_STATIC].insert({ L"Com_Animator", pComponent });
 
-    pComponent = m_pBufferCom = dynamic_cast<CAnimTex*>(Engine::Clone_Proto(L"Proto_SlimeAnimTex"));
+    pComponent = m_pBufferCom = dynamic_cast<CAnimTex*>(Engine::Clone_Proto(L"Proto_MushroomAnimTex"));
     NULL_CHECK_RETURN(pComponent, E_FAIL);
     m_mapComponent[ID_STATIC].insert({ L"Com_Buffer", pComponent });
 
-    pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_SlimeTex"));
+    pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_MushroomTex"));
     NULL_CHECK_RETURN(pComponent, E_FAIL);
     m_mapComponent[ID_STATIC].insert({ L"Com_Texture", pComponent });
 
@@ -95,14 +134,66 @@ HRESULT CMushroom::Add_Component()
 
 STATE CMushroom::State_Change()
 {
-    return STATE();
+    CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
+    if (m_eState == IDLE)
+    {
+        CGameObject* pWeapon = pPlayer->Get_HandedItem();
+        _vec3 vPlayerPos, vPos;
+        dynamic_cast<CTransform*>(pPlayer->Get_Component(ID_DYNAMIC, L"Com_Transform"))->Get_Info(INFO_POS, &vPlayerPos);
+        m_pTransformCom->Get_Info(INFO_POS, &vPos);
+        // 플레이어가 무기를 들고 공격하는 상태면 충돌 체크
+        if (pPlayer->Get_CurState() == SWING)
+        {
+            CCollider* pWeaponCollider = dynamic_cast<Engine::CCollider*>(pWeapon->Get_Component(ID_DYNAMIC, L"Com_Collider"));
+            if (m_pColliderCom->Check_Collision(pWeaponCollider))
+            {
+                // 무기와 충돌 했는데 공격 범위 이내인 경우
+                if (m_pCalculatorCom->Check_Distance2D(&vPlayerPos, &vPos, 5.f))
+                    return SWING;
+                // 공격 범위 밖인 경우
+                else
+                    return WALK;
+            }
+        }
+        // 플레이어가 일정 범위 내에 들어올 경우(선공)
+        if (m_pCalculatorCom->Check_Distance2D(&vPlayerPos, &vPos, m_fAggroDistance))
+            return WALK;
+    }
+    return m_eState;
 }
 
-CMushroom* CMushroom::Create(LPDIRECT3DDEVICE9 pGraphicDev)
+void CMushroom::Flip()
 {
-    return nullptr;
+    if (m_eDir == LEFT && !m_bFlip)
+    {
+        m_bFlip = true;
+        _vec3 vSize;
+        vSize = *(m_pTransformCom->Get_Scale());
+        m_pTransformCom->Set_Scale(-vSize.x, vSize.y, vSize.z);
+    }
+    if (m_eDir != LEFT && m_bFlip)
+    {
+        m_bFlip = false;
+        _vec3 vSize;
+        vSize = *(m_pTransformCom->Get_Scale());
+        m_pTransformCom->Set_Scale(-vSize.x, vSize.y, vSize.z);
+    }
+}
+
+CMushroom* CMushroom::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
+{
+    CMushroom* pMushroom = new CMushroom(pGraphicDev);
+
+    if (FAILED(pMushroom->Ready_GameObject(vPos)))
+    {
+        Safe_Release(pMushroom);
+        MSG_BOX("Mushroom Create Failed");
+        return nullptr;
+    }
+    return pMushroom;
 }
 
 void CMushroom::Free()
 {
+    Engine::CGameObject::Free();
 }
