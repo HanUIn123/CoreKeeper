@@ -142,9 +142,9 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar* pLayerTag)
 
 	Engine::CGameObject* pGameObject = nullptr;
 
-	//pGameObject = CTerrain::Create(m_pGraphicDev);
-	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Terrain", pGameObject), E_FAIL);
+	pGameObject = CTerrain::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Terrain", pGameObject), E_FAIL);
 
 	pGameObject = CPlayer::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
@@ -589,20 +589,20 @@ HRESULT CStage::Load_MapFile()
 	DWORD dwByte2 = 0;
 
 
-	while (true)
-	{
-		ReadFile(m_hFile, &vTempTilePos, sizeof(_vec3), &dwByte, nullptr);
-		ReadFile(m_hFile, &vTempTileImgNum, sizeof(_int), &dwByte, nullptr);
+	//while (true)
+	//{
+	//	ReadFile(m_hFile, &vTempTilePos, sizeof(_vec3), &dwByte, nullptr);
+	//	ReadFile(m_hFile, &vTempTileImgNum, sizeof(_int), &dwByte, nullptr);
 
-		if (dwByte == 0)  
-			break;
+	//	if (dwByte == 0)  
+	//		break;
 
-		CTile* pTile = CTile::Create(m_pGraphicDev, vTempTilePos.x, vTempTilePos.z, vTempTileImgNum);
-		NULL_CHECK_RETURN(pTile, E_FAIL);
-		m_wsTileNameString[m_iLoadTileCount] = L"Tile_" + std::to_wstring(m_iLoadTileCount);
-		FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsTileNameString[m_iLoadTileCount].c_str(), pTile), E_FAIL);
-		m_iLoadTileCount++;		
-	}
+	//	CTile* pTile = CTile::Create(m_pGraphicDev, vTempTilePos.x, vTempTilePos.z, vTempTileImgNum);
+	//	NULL_CHECK_RETURN(pTile, E_FAIL);
+	//	m_wsTileNameString[m_iLoadTileCount] = L"Tile_" + std::to_wstring(m_iLoadTileCount);
+	//	FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsTileNameString[m_iLoadTileCount].c_str(), pTile), E_FAIL);
+	//	m_iLoadTileCount++;		
+	//}
 
 	while (true)
 	{

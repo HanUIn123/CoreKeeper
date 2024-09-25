@@ -8,6 +8,7 @@ CMapToolTerrain::CMapToolTerrain(LPDIRECT3DDEVICE9 pGraphicDev)
     , m_pCalculatorCom(nullptr)
     , vPickPos(0, 0, 0)
 {
+    m_vecTextureNumber.resize(VTXCNTX * VTXCNTZ);
 }
 
 CMapToolTerrain::~CMapToolTerrain()
@@ -35,36 +36,23 @@ void CMapToolTerrain::LateUpdate_GameObject()
 
 void CMapToolTerrain::Render_GameObject()
 {
-    // 일단 기본 조명 세팅 끔 -> 이러니, 밝게 잘 나오긴함;
-    //m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
-
-    //_matrix matWorld;
-    //m_pTransformCom->Get_WorldMatrix(&matWorld);
-
-    //matWorld._41 -= 0.5f;
-    //matWorld._42 = 0.0f;
-    //matWorld._43 -= 0.5f;
-    //m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
-
     m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
-    //m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
 
-    // 와이어 프레임으로 출력도 걍 꺼둠
-    //m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
+    for (int i = 0; i < VTXCNTX - 1; ++i)
+    {
+        for (int j = 0; j < VTXCNTZ - 1; ++j)
+        {
+            int idx = i * (VTXCNTZ - 1) + j;
 
-    //FAILED_CHECK_RETURN(Setup_Material(), );
 
-    //m_pTextureCom->Set_Texture(m_iTerrainImageNum);
-
-    m_pBufferCom->Render_Buffer();
-
-    //m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
-
-    //m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
+            auto texture = m_pTextureCom->Get_Texture(m_vecTextureNumber[idx]);
+            m_pGraphicDev->SetTexture(0, texture);
+            m_pBufferCom->Render_Texture(idx * 6);
+        }
+    }
 
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
-    //m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
 }
 
 HRESULT CMapToolTerrain::Add_Component()
@@ -82,6 +70,10 @@ HRESULT CMapToolTerrain::Add_Component()
     pComponent = m_pCalculatorCom = dynamic_cast<CCalculator*>(Engine::Clone_Proto(L"Proto_Calculator"));
     NULL_CHECK_RETURN(pComponent, E_FAIL);
     m_mapComponent[ID_DYNAMIC].insert({ L"Com_Calculator", pComponent });
+
+    pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_MapToolTerrainTexture"));
+    NULL_CHECK_RETURN(pComponent, E_FAIL);
+    m_mapComponent[ID_DYNAMIC].insert({ L"Com_Texture", pComponent });
 
     return S_OK;
 }

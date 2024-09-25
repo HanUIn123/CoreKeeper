@@ -195,7 +195,6 @@ call Copy.bat</Command>
     <ClInclude Include="..\Header\UICraftSlot.h" />
     <ClInclude Include="..\Header\UICursor.h" />
     <ClInclude Include="..\Header\UIInventory.h" />
-    <ClInclude Include="..\Header\Tile.h" />
     <ClInclude Include="..\Header\UIInvPlate.h" />
     <ClInclude Include="..\Header\UIItemFrame.h" />
     <ClInclude Include="..\Header\UIItemSlot.h" />
@@ -263,7 +262,6 @@ call Copy.bat</Command>
     <ClCompile Include="..\Code\Stage.cpp" />
     <ClCompile Include="..\Code\Sword.cpp" />
     <ClCompile Include="..\Code\Terrain.cpp" />
-    <ClCompile Include="..\Code\Tile.cpp" />
     <ClCompile Include="..\Code\Torch.cpp" />
     <ClCompile Include="..\Code\UIBuff.cpp" />
     <ClCompile Include="..\Code\UIChestInv.cpp" />

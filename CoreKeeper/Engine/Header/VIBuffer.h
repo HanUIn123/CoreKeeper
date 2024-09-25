@@ -14,6 +14,8 @@ protected:
 public:
 	virtual		HRESULT			Ready_Buffer();
 	virtual		void			Render_Buffer();
+
+	void						Render_Texture(int _iStartIndex);
 	
 protected:
 	LPDIRECT3DVERTEXBUFFER9		m_pVB;

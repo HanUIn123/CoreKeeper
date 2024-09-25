@@ -68,6 +68,17 @@ void CVIBuffer::Render_Buffer()
 	m_pGraphicDev->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, m_dwVtxCnt, 0, m_dwTriCnt);
 }
 
+void CVIBuffer::Render_Texture(int _iStartIndex)
+{
+	m_pGraphicDev->SetStreamSource(0, m_pVB, 0, m_dwVtxSize);
+
+	m_pGraphicDev->SetFVF(m_dwFVF);
+
+	m_pGraphicDev->SetIndices(m_pIB);
+
+	m_pGraphicDev->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, 4, _iStartIndex, 2);
+}
+
 void CVIBuffer::Free()
 {
 	Safe_Release(m_pIB);
