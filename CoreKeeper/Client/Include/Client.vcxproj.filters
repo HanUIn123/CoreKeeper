@@ -64,9 +64,6 @@
     <Filter Include="02. GameObject\02. Monster\00. Slime">
       <UniqueIdentifier>{51933e60-7d91-4ce4-a7ed-3da061167b5b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\02. Monster\01. Shrooman">
-      <UniqueIdentifier>{f681d299-afbd-454f-918e-090adb75f899}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\02. Monster\02. Shaman">
       <UniqueIdentifier>{d3b29687-be3f-49ac-b924-2eb65a269e00}</UniqueIdentifier>
     </Filter>
@@ -240,6 +237,9 @@
     </Filter>
     <Filter Include="02. GameObject\07. UI\07. UITrashCan\00. UITrashSlot">
       <UniqueIdentifier>{dcff4464-914f-4bab-a688-9543044946ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\02. Monster\01. Mushroom">
+      <UniqueIdentifier>{f681d299-afbd-454f-918e-090adb75f899}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -465,6 +465,9 @@
     <ClInclude Include="..\Header\UIBuff.h">
       <Filter>02. GameObject\07. UI\10. UIBuff</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\Mushroom.h">
+      <Filter>02. GameObject\02. Monster\01. Mushroom</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -667,6 +670,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\UIBuff.cpp">
       <Filter>02. GameObject\07. UI\10. UIBuff</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Mushroom.cpp">
+      <Filter>02. GameObject\02. Monster\01. Mushroom</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

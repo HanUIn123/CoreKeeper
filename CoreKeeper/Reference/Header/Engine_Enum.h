@@ -48,7 +48,7 @@ namespace Engine
         ITEM_MUCUS,
         ITEM_END
     };
-    enum MONSTERTYPE { MON_SLIME, MON_END };
+    enum MONSTERTYPE { MON_SLIME, MON_MUSHROOM, MON_END };
 
 }
 #endif // Engine_Enum_h__   

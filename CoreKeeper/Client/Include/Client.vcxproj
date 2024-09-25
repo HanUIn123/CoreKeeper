@@ -175,6 +175,7 @@ call Copy.bat</Command>
     <ClInclude Include="..\Header\MiniMapCamera.h" />
     <ClInclude Include="..\Header\Monster.h" />
     <ClInclude Include="..\Header\Mucus.h" />
+    <ClInclude Include="..\Header\Mushroom.h" />
     <ClInclude Include="..\Header\Pants.h" />
     <ClInclude Include="..\Header\Player.h" />
     <ClInclude Include="..\Header\Seed.h" />
@@ -249,6 +250,7 @@ call Copy.bat</Command>
     <ClCompile Include="..\Code\MiniMapCamera.cpp" />
     <ClCompile Include="..\Code\Monster.cpp" />
     <ClCompile Include="..\Code\Mucus.cpp" />
+    <ClCompile Include="..\Code\Mushroom.cpp" />
     <ClCompile Include="..\Code\Pants.cpp" />
     <ClCompile Include="..\Code\Pickaxe.cpp" />
     <ClCompile Include="..\Code\Player.cpp" />
