@@ -18,6 +18,7 @@
 #include "ObjectTex.h"
 //#include "MinimapTex.h"
 
+#include "Firework.h"
 
 #include "Texture.h"
 #include "ShadowTex.h"

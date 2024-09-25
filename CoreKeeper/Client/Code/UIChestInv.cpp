@@ -60,10 +60,8 @@ _int CUIChestInv::Update_GameObject(const _float& fTimeDelta)
 			if (Engine::Button_Down(DIM_LB))
 			{
 				CInventory* pCursorInv = dynamic_cast<CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_UI", L"UI_Cursor", L"Com_Inventory"));
-				//CInventory* pPlayerInv = dynamic_cast<Engine::CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
 
 				vector<CItem*>* pCvecItem = pCursorInv->Get_VecItemP();
-				//vector<CItem*>* pPvecItem = pPlayerInv->Get_VecItemP();
 				vector<CItem*>* pPvecItem = m_pInventoryCom->Get_VecItemP();
 				_int iIndex = m_iIndex - 1;
 
@@ -123,7 +121,7 @@ void CUIChestInv::Render_GameObject()
 
 	//if (iIndex >= pPlayerInv->Get_SlotCount())
 	//{
-		iIndex--;
+		//iIndex--;
 	//}
 
 	if (!m_pInventoryCom->Check_Empty(iIndex))

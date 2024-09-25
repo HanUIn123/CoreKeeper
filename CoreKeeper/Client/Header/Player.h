@@ -14,6 +14,7 @@ class CAnimator;
 class CCollider;
 class CState;
 class CInventory;
+class CFirework;
 
 END
 
@@ -123,6 +124,8 @@ private:
 	_float					m_fKnockBackDist;
 
 	_bool					m_bNude;
+
+	Engine::CFirework* m_pFireParticleCom;
 
 	_vec3					m_vRespawnPoint;
 

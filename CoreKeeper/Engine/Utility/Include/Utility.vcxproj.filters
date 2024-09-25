@@ -109,6 +109,12 @@
     <Filter Include="04. Component\00. VIBuffer\09.ObjectTex">
       <UniqueIdentifier>{181cb0d9-b59e-496e-bc18-354ab2e39bef}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04. Component\08. Particles">
+      <UniqueIdentifier>{4e2f57fd-7c70-4fa9-b52a-4dc65014eb2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Component\08. Particles\00. Firework">
+      <UniqueIdentifier>{40f109a9-df3c-4343-9f38-18774ff71fda}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Code\Scene.cpp">
@@ -206,6 +212,15 @@
     </ClCompile>
     <ClCompile Include="..\Code\ObjectTex.cpp">
       <Filter>04. Component\00. VIBuffer\09.ObjectTex</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Firework.cpp">
+      <Filter>04. Component\08. Particles\00. Firework</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\d3dUtility.cpp">
+      <Filter>04. Component\08. Particles</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\PSystem.cpp">
+      <Filter>04. Component\08. Particles</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -307,6 +322,15 @@
     </ClInclude>
     <ClInclude Include="..\..\Header\ObjectTex.h">
       <Filter>04. Component\00. VIBuffer\09.ObjectTex</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Header\Firework.h">
+      <Filter>04. Component\08. Particles\00. Firework</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Header\d3dUtility.h">
+      <Filter>04. Component\08. Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Header\PSystem.h">
+      <Filter>04. Component\08. Particles</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
