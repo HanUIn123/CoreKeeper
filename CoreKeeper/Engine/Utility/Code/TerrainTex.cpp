@@ -47,12 +47,9 @@ HRESULT CTerrainTex::Ready_Buffer(const _ulong& dwCntX, const _ulong& dwCntZ, co
 		{
 			dwIndex = i * dwCntX + j;
 
-			pVertex[dwIndex].vPosition = _vec3(_float(j) * dwVtxItv, 0.f, _float(i) * dwVtxItv);
+			pVertex[dwIndex].vPosition = _vec3((_float(j) - 0.5f) * dwVtxItv, 0.f, (_float(i) - 0.5f) * dwVtxItv);
 
-			pVertex[dwIndex].vNormal = { 0.f, 0.f, 0.f };
-
-			pVertex[dwIndex].vTexUV = _vec2((_float(j) / (dwCntX - 1)) * 20.f,
-				(_float(i) / (dwCntZ - 1)) * 20.f);
+			pVertex[dwIndex].vTexUV = _vec2(_float(j), _float(i));
 
 			m_pPos[dwIndex] = pVertex[dwIndex].vPosition;
 		}
@@ -75,36 +72,15 @@ HRESULT CTerrainTex::Ready_Buffer(const _ulong& dwCntX, const _ulong& dwCntZ, co
 			pIndex[dwTriCnt]._0 = dwIndex + dwCntX;
 			pIndex[dwTriCnt]._1 = dwIndex + dwCntX + 1;
 			pIndex[dwTriCnt]._2 = dwIndex + 1;
-
-			vDst = pVertex[pIndex[dwTriCnt]._1].vPosition - pVertex[pIndex[dwTriCnt]._0].vPosition;
-			vSrc = pVertex[pIndex[dwTriCnt]._2].vPosition - pVertex[pIndex[dwTriCnt]._1].vPosition;
-			D3DXVec3Cross(&vNormal, &vDst, &vSrc);
-
-			pVertex[pIndex[dwTriCnt]._0].vNormal += vNormal;
-			pVertex[pIndex[dwTriCnt]._1].vNormal += vNormal;
-			pVertex[pIndex[dwTriCnt]._2].vNormal += vNormal;
-
 			dwTriCnt++;
 
 			// ¿ÞÂÊ ¾Æ·¡
 			pIndex[dwTriCnt]._0 = dwIndex + dwCntX;
 			pIndex[dwTriCnt]._1 = dwIndex + 1;
 			pIndex[dwTriCnt]._2 = dwIndex;
-
-			vDst = pVertex[pIndex[dwTriCnt]._1].vPosition - pVertex[pIndex[dwTriCnt]._0].vPosition;
-			vSrc = pVertex[pIndex[dwTriCnt]._2].vPosition - pVertex[pIndex[dwTriCnt]._1].vPosition;
-			D3DXVec3Cross(&vNormal, &vDst, &vSrc);
-
-			pVertex[pIndex[dwTriCnt]._0].vNormal += vNormal;
-			pVertex[pIndex[dwTriCnt]._1].vNormal += vNormal;
-			pVertex[pIndex[dwTriCnt]._2].vNormal += vNormal;
-
 			dwTriCnt++;
 		}
 	}
-
-	for (_ulong i = 0; i < m_dwVtxCnt; ++i)
-		D3DXVec3Normalize(&pVertex[i].vNormal, &pVertex[i].vNormal);
 
 	m_pVB->Unlock();
 	m_pIB->Unlock();
