@@ -472,39 +472,63 @@ HRESULT CMapEditorScene::Piking_Object()
             CMapToolTex* pMapToolBufferCom = dynamic_cast<CMapToolTex*>(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"MapToolTerrain", L"Com_Buffer"));
             CTransform* pMapToolTransformCom = dynamic_cast<CTransform*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"MapToolTerrain", L"Com_Transform"));
 
-            m_vPickPos = pPickPos->Picking_OnTerrain(g_hWnd, pMapToolBufferCom, pMapToolTransformCom);
+            m_vObPickPos = pPickPos->Picking_OnTerrain(g_hWnd, pMapToolBufferCom, pMapToolTransformCom);
 
-            if (m_vPickPos.y < 0)
+            if (m_vObPickPos.y < 0)
                 return S_OK;
 
             m_bAlreadyInstalled = false;
 
-            if (m_vecBuildingObject[unsigned __int64(m_vPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vPickPos.x + 0.5f *  VTXITV])
+            if (m_vecBuildingObject[unsigned __int64(m_vObPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vObPickPos.x + 0.5f *  VTXITV])
                 m_bAlreadyInstalled = true;
 
             if (m_bAlreadyInstalled)
                 m_bCanInstall = false;
-            else if (m_vCheckPos == m_vPickPos)
+            else if (m_vCheckPos == m_vObPickPos)
                 m_bCanInstall = false;
             else
                 m_bCanInstall = true;
 
             if (m_bCanInstall)
             {
-                _int iIndex = _int(m_vPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vPickPos.x + 0.5f * VTXITV;
+                _int iIndex = _int(m_vObPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vObPickPos.x + 0.5f * VTXITV;
 
+                switch (m_iBuildingNumber)
+                {
+                case 0:
+                    m_wsObjectNameString[iIndex] = L"Object_" + std::to_wstring(iIndex);
+                    m_pObjectCom = CCore::Create(m_pGraphicDev, m_vObPickPos.x, m_vObPickPos.z, m_bReposed, m_iBuildingNumber, m_wsObjectNameString[iIndex].c_str());
+                    m_vecBuildingObject[iIndex] = dynamic_cast<CCore*>(m_pObjectCom);
 
-                m_wsObjectNameString[iIndex] = L"Object_" + std::to_wstring(iIndex);
-                m_pObjectCom = CCore::Create(m_pGraphicDev, m_vPickPos.x, m_vPickPos.z, m_bReposed, m_iBuildingNumber, m_wsObjectNameString[iIndex].c_str());
-                m_vecBuildingObject[iIndex] = dynamic_cast<CCore*>(m_pObjectCom);
+                    NULL_CHECK_RETURN(m_pObjectCom, E_FAIL);
+                    FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsObjectNameString[iIndex].c_str(), m_pObjectCom), E_FAIL);
 
-                NULL_CHECK_RETURN(m_pObjectCom, E_FAIL);
-                FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsObjectNameString[iIndex].c_str(), m_pObjectCom), E_FAIL);
+                    dynamic_cast<CCore*>(m_vecBuildingObject[iIndex])->Set_BuildImgNum(0);
+                    m_vCheckPos = m_vObPickPos;
+                    break;
+                case 1:
+                    m_wsObjectNameString[iIndex] = L"Object_" + std::to_wstring(iIndex);
+                    m_pObjectCom = CCoreBase::Create(m_pGraphicDev, m_vObPickPos.x, m_vObPickPos.z, m_bReposed, m_iBuildingNumber, m_wsObjectNameString[iIndex].c_str());
+                    m_vecBuildingObject[iIndex] = dynamic_cast<CCoreBase*>(m_pObjectCom);
 
-                dynamic_cast<CCore*>(m_vecBuildingObject[iIndex])->Set_BuildImgNum(m_iBuildingNumber);
+                    NULL_CHECK_RETURN(m_pObjectCom, E_FAIL);
+                    FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsObjectNameString[iIndex].c_str(), m_pObjectCom), E_FAIL);
 
-                m_iBuildCreateCount++;
-                m_vCheckPos = m_vPickPos;
+                    dynamic_cast<CCoreBase*>(m_vecBuildingObject[iIndex])->Set_BuildImgNum(0);
+                    m_vCheckPos = m_vObPickPos;
+                    break;
+                case 2:
+                    m_wsObjectNameString[iIndex] = L"Object_" + std::to_wstring(iIndex);
+                    m_pObjectCom = CSpawnPoint::Create(m_pGraphicDev, m_vObPickPos.x, m_vObPickPos.z, m_bReposed, m_iBuildingNumber, m_wsObjectNameString[iIndex].c_str());
+                    m_vecBuildingObject[iIndex] = dynamic_cast<CSpawnPoint*>(m_pObjectCom);
+
+                    NULL_CHECK_RETURN(m_pObjectCom, E_FAIL);
+                    FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsObjectNameString[iIndex].c_str(), m_pObjectCom), E_FAIL);
+
+                    dynamic_cast<CSpawnPoint*>(m_vecBuildingObject[iIndex])->Set_BuildImgNum(0);
+                    m_vCheckPos = m_vObPickPos;
+                    break;
+                }
             }
         }
 
@@ -515,19 +539,20 @@ HRESULT CMapEditorScene::Piking_Object()
             CMapToolTex* pMapToolBufferCom = dynamic_cast<CMapToolTex*>(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"MapToolTerrain", L"Com_Buffer"));
             CTransform* pMapToolTransformCom = dynamic_cast<CTransform*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"MapToolTerrain", L"Com_Transform"));
 
-            m_vPickPos = pPickPos->Picking_OnTerrain(g_hWnd, pMapToolBufferCom, pMapToolTransformCom);
+            m_vObPickPos = pPickPos->Picking_OnTerrain(g_hWnd, pMapToolBufferCom, pMapToolTransformCom);
 
-            _float fXMin = m_vPickPos.x - 5.0f;
-            _float fXMax = m_vPickPos.x + 5.0f;
-            _float fZMin = m_vPickPos.z - 5.0f;
-            _float fZMax = m_vPickPos.z + 5.0f;
+            _float fXMin = m_vObPickPos.x - 5.0f;
+            _float fXMax = m_vObPickPos.x + 5.0f;
+            _float fZMin = m_vObPickPos.z - 5.0f;
+            _float fZMax = m_vObPickPos.z + 5.0f;
 
-            if (m_vecBuildingObject[unsigned __int64((m_vPickPos.z + 0.5f * VTXITV)* (VTXCNTX - 1) + m_vPickPos.x + 0.5f * VTXITV)])
+            if (m_vecBuildingObject[unsigned __int64((m_vObPickPos.z + 0.5f * VTXITV)* (VTXCNTX - 1) + m_vObPickPos.x + 0.5f * VTXITV)])
             {
-                if ((fXMin < m_vPickPos.x && fXMax > m_vPickPos.x) || (fZMin < m_vPickPos.z && fZMax > m_vPickPos.z))
+                if ((fXMin < m_vObPickPos.x && fXMax > m_vObPickPos.x) || (fZMin < m_vObPickPos.z && fZMax > m_vObPickPos.z))
                 {
-                    Delete_Object(L"Layer_Environment", dynamic_cast<CCore*>(m_vecBuildingObject[unsigned __int64(m_vPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vPickPos.x + 0.5f *  VTXITV])->Get_PickedBuildingName().c_str());
-                    m_vecBuildingObject[unsigned __int64((m_vPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vPickPos.x + 0.5f * VTXITV)] = nullptr;
+                    //Delete_Object(L"Layer_Environment", dynamic_cast<CCore*>(m_vecBuildingObject[unsigned __int64(m_vObPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vObPickPos.x + 0.5f *  VTXITV])->Get_PickedBuildingName().c_str());
+                    Delete_Object(L"Layer_Environment", (m_vecBuildingObject[unsigned __int64(m_vObPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vObPickPos.x + 0.5f *  VTXITV])->Get_PickedBuildingName().c_str());
+                    m_vecBuildingObject[unsigned __int64((m_vObPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vObPickPos.x + 0.5f * VTXITV)] = nullptr;
                 }
             }
         }

@@ -44,7 +44,7 @@ HRESULT CSpawnPoint::Ready_GameObject(_float fX, _float fY, _bool bReposed, _int
 
 _int CSpawnPoint::Update_GameObject(const _float& fTimeDelta)
 {
-	Add_RenderGroup(RENDER_PRIORITY, this);
+	Add_RenderGroup(RENDER_ALPHA, this);
 
 	return Engine::CGameObject::Update_GameObject(fTimeDelta);
 }
