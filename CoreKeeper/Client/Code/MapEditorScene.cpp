@@ -77,8 +77,6 @@ HRESULT CMapEditorScene::Ready_Scene()
     FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Layer_Environment"), E_FAIL);
     FAILED_CHECK_RETURN(Ready_Layer_GameLogic(L"Layer_GameLogic"), E_FAIL);
     FAILED_CHECK_RETURN(Ready_Layer_UI(L"Layer_UI"), E_FAIL);
-    //FAILED_CHECK_RETURN(Ready_Layer_Tile(L"Layer_Tile"), E_FAIL);
-    //FAILED_CHECK_RETURN(Ready_Layer_Tile2(L"Layer_Tile2"), E_FAIL);
 
     m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 
@@ -578,6 +576,7 @@ void CMapEditorScene::MapFile_Save()
     const _tchar* strFileName = L"../../Data/TileData.txt";
     const _tchar* strWallFileName = L"../../Data/WallData.txt";
 
+
     m_hFile = CreateFile(strFileName, GENERIC_WRITE, 0, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
     m_hWallFile = CreateFile(strWallFileName, GENERIC_WRITE, 0, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
 
@@ -593,24 +592,19 @@ void CMapEditorScene::MapFile_Save()
         return;
     }
 
-    //if (m_vecTileObject.empty())
-    //    return;
+    CMapToolTerrain* pTerrain = dynamic_cast<CMapToolTerrain*>(Engine::Get_GameObject(L"Layer_GameLogic", L"MapToolTerrain"));
 
-    //_vec3  vTempTilePos(0.0f, 0.0f, 0.0f);
-    //_int   vTempTileImgNum(0);
+    auto vec = pTerrain->Get_TextureNumber();
+
+    vector<int> vecTextureNum = vec;
+
+    DWORD	dwByte(0);
+
+    for (_int i = 0; i < vec.size(); ++i)
+    {
+        WriteFile(m_hFile, &vec[i], sizeof(_int), &dwByte, nullptr);
+    }
    
-
-    //DWORD	dwByte(0);
-
-    //for (auto& iter : m_vecTileObject)
-    //{
-    //    vTempTilePos = (*iter).Get_TilePos();
-    //    vTempTileImgNum = (*iter).Get_TileNumber();
-
-    //    // 타일 저장.
-    //    WriteFile(m_hFile, &vTempTilePos, sizeof(_vec3), &dwByte, nullptr);
-    //    WriteFile(m_hFile, &vTempTileImgNum, sizeof(_int), &dwByte, nullptr);
-    //}
 
     _vec3 vTempWallPos(0.0f, 0.0f, 0.0f);
     _int  vTempWallImgNum(0);
