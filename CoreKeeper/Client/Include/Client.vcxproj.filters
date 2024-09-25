@@ -241,6 +241,12 @@
     <Filter Include="02. GameObject\06. Item\99. Etc\04. Mushroom">
       <UniqueIdentifier>{e5027ad1-71b3-4a15-8c8e-9e97ea0dfda5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\10.Building\01. CoreBase">
+      <UniqueIdentifier>{64c04727-f390-42fd-9e1c-b57ff9577161}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\10.Building\02. SpawnPoint">
+      <UniqueIdentifier>{9e885e6b-783d-4dc8-ba45-ce4f8cac38aa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -465,6 +471,12 @@
     <ClInclude Include="..\Header\Mushroom.h">
       <Filter>02. GameObject\02. Monster\01. Mushroom</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\CoreBase.h">
+      <Filter>02. GameObject\10.Building\01. CoreBase</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\SpawnPoint.h">
+      <Filter>02. GameObject\10.Building\02. SpawnPoint</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -667,6 +679,12 @@
     </ClCompile>
     <ClCompile Include="..\Code\Mushroom.cpp">
       <Filter>02. GameObject\02. Monster\01. Mushroom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\CoreBase.cpp">
+      <Filter>02. GameObject\10.Building\01. CoreBase</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\SpawnPoint.cpp">
+      <Filter>02. GameObject\10.Building\02. SpawnPoint</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

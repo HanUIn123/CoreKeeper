@@ -1,18 +1,18 @@
 #include "pch.h"
-#include "../Header/Core.h"
+#include "../Header/SpawnPoint.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
 
-CCore::CCore(LPDIRECT3DDEVICE9 pGraphicDev)
+CSpawnPoint::CSpawnPoint(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CBuilding(pGraphicDev)
 {
 }
 
-CCore::~CCore()
+CSpawnPoint::~CSpawnPoint()
 {
 }
 
-HRESULT CCore::Ready_GameObject(_float fX, _float fY, _bool bReposed, _int iBuildImgNum, const wstring _pickedBuildName)
+HRESULT CSpawnPoint::Ready_GameObject(_float fX, _float fY, _bool bReposed, _int iBuildImgNum, const wstring _pickedBuildName)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
@@ -42,19 +42,19 @@ HRESULT CCore::Ready_GameObject(_float fX, _float fY, _bool bReposed, _int iBuil
 	return S_OK;
 }
 
-_int CCore::Update_GameObject(const _float& fTimeDelta)
+_int CSpawnPoint::Update_GameObject(const _float& fTimeDelta)
 {
 	Add_RenderGroup(RENDER_PRIORITY, this);
 
 	return Engine::CGameObject::Update_GameObject(fTimeDelta);
 }
 
-void CCore::LateUpdate_GameObject()
+void CSpawnPoint::LateUpdate_GameObject()
 {
 	Engine::CGameObject::LateUpdate_GameObject();
 }
 
-void CCore::Render_GameObject()
+void CSpawnPoint::Render_GameObject()
 {
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
 
@@ -79,15 +79,15 @@ void CCore::Render_GameObject()
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
-HRESULT CCore::Add_Component()
+HRESULT CSpawnPoint::Add_Component()
 {
 	CComponent* pComponent = NULL;
 
-	pComponent = m_pBufferCom = dynamic_cast<CObjectTex*>(Engine::Clone_Proto(L"Proto_CoreTex"));
+	pComponent = m_pBufferCom = dynamic_cast<CObjectTex*>(Engine::Clone_Proto(L"Proto_SpawnPointTex"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Buffer", pComponent });
 
-	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_CoreTexture"));
+	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_SpawnPointTexture"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Texture", pComponent });
 
@@ -102,9 +102,9 @@ HRESULT CCore::Add_Component()
 	return S_OK;
 }
 
-CBuilding* CCore::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float fX, _float fY, _bool bReposed, _int iBuildImgNum, const wstring _pickedBuildName)
+CBuilding* CSpawnPoint::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float fX, _float fY, _bool bReposed, _int iBuildImgNum, const wstring _pickedBuildName)
 {
-	CCore* pCore = new CCore(pGraphicDev);
+	CSpawnPoint* pCore = new CSpawnPoint(pGraphicDev);
 
 	if (FAILED(pCore->Ready_GameObject(fX ,fY ,bReposed, iBuildImgNum, _pickedBuildName)))
 	{
@@ -116,7 +116,7 @@ CBuilding* CCore::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float fX, _float fY, _b
 	return pCore;
 }
 
-void CCore::Free()
+void CSpawnPoint::Free()
 {
 	Engine::CGameObject::Free();
 }

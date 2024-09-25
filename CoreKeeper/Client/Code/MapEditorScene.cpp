@@ -42,7 +42,9 @@ CMapEditorScene::CMapEditorScene(LPDIRECT3DDEVICE9 _pGraphicDevice)
     {
         Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/Tile/BasicTile/BasicTile_%d.png", TEX_NORMAL, 11);
         Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/Wall/Wall_%d.dds", TEX_CUBE, 6);
-        Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/BaseCamp/Spawn.png", TEX_OBJECT, 1);
+        Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/BaseCamp/Core.png", TEX_OBJECT, 1);
+        Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/BaseCamp/CoreBase.png", TEX_OBJECT, 1);
+        Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/BaseCamp/SpawnPoint.png", TEX_OBJECT, 1);
     }
 
     m_vecWallObject.resize((VTXCNTX - 1) * (VTXCNTZ - 1));
@@ -426,7 +428,7 @@ void CMapEditorScene::Setting_ObjectList()
 
     CComponent* pComponent = NULL;
 
-    const char* items[] = { "Core","Box","Object2", "Object3"};
+    const char* items[] = { "Core","CoreBase", "SpawnPoint", "Box","Object2", "Object3"};
 
     static int	nCurrentItem = 0;
     ImGui::Combo("##4", &nCurrentItem, items, IM_ARRAYSIZE(items));
@@ -490,6 +492,7 @@ HRESULT CMapEditorScene::Piking_Object()
             if (m_bCanInstall)
             {
                 _int iIndex = _int(m_vPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vPickPos.x + 0.5f * VTXITV;
+
 
                 m_wsObjectNameString[iIndex] = L"Object_" + std::to_wstring(iIndex);
                 m_pObjectCom = CCore::Create(m_pGraphicDev, m_vPickPos.x, m_vPickPos.z, m_bReposed, m_iBuildingNumber, m_wsObjectNameString[iIndex].c_str());
