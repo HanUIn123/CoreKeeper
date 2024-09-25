@@ -11,6 +11,7 @@ CStage::CStage(LPDIRECT3DDEVICE9 pGraphicDev)
 	, m_iLoadWallCount(0)
 {
 	m_vecWall.resize(VTXCNTX * VTXCNTZ);
+	m_vecUnReachable.resize(VTXCNTX * VTXCNTZ);
 }
 
 
@@ -618,6 +619,8 @@ HRESULT CStage::Load_MapFile()
 		FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsWallNameString[vTempIndex].c_str(), pWall), E_FAIL);
 
 		m_vecWall[vTempIndex] = pWall;
+		m_vecUnReachable[vTempIndex] = true;
+
 	}
 
 	for (int i = 0; i < VTXCNTZ; i++)

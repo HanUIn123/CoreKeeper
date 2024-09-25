@@ -17,10 +17,15 @@ public:
 public:
 	void            Set_Render(RENDERTYPE _eType); // 렌더 타입 결정
 
+	_matrix			Get_ViewMat() { return m_curView; }
+	_matrix			Get_ProjMat() { return m_curProj; }
+
 protected:
 	_vec3			m_vEye, m_vAt, m_vUp;
 	_float			m_fFov, m_fAspect, m_fNear, m_fFar;
 	_matrix			m_matView, m_matProj;
+
+	_matrix			m_curView, m_curProj;
 
 protected:
 	virtual			void		Free();
