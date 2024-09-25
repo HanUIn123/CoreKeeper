@@ -37,6 +37,9 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	ZeroMemory(&m_tBasicStat, sizeof(STAT));
 	ZeroMemory(&m_tEquipmentStat, sizeof(STAT));
 
+	for (int i = 0; i < 5; i++)
+		m_pClothes[i] = nullptr;
+
 	m_bMap = false;
 	m_bInventory = false;
 	m_bCraft = false;
@@ -49,6 +52,8 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	m_bKnockBackEnd = true;
 	m_fKnockBackDist = 0.f;
 	m_bNude = true;
+
+	m_vRespawnPoint = { 0, 0, 0 };
 }
 
 CPlayer::~CPlayer()
@@ -59,9 +64,7 @@ HRESULT CPlayer::Ready_GameObject()
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	_vec3 vPos;
-	m_pTransformCom->Get_Info(INFO_POS, &vPos);
-	m_pTransformCom->Set_Pos(vPos.x, m_fFirstY, vPos.z);
+	m_pTransformCom->Set_Pos(m_vRespawnPoint.x, m_fFirstY, m_vRespawnPoint.z);
 	m_tBasicStat = STAT( 400, 100, 20, 0 );
 	m_pStateCom->Set_Stat(m_tBasicStat.iMaxHp, m_tBasicStat.iMaxMp, m_tBasicStat.iAttack, m_tBasicStat.iDefense);
 	m_pEquipInventoryCom->Set_SlotCount(10);
@@ -73,6 +76,9 @@ HRESULT CPlayer::Ready_GameObject()
 
 _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 {
+	if (m_bNude)
+		Set_Clothes();
+
 	KnockBack(fTimeDelta);
 	
 	Set_Equipment();
@@ -568,25 +574,17 @@ void CPlayer::Show_Equipment()
 			{
 				m_tEquipmentStat.iMaxHp += pArmor->Get_Stat()->iMaxHp;
 				m_tEquipmentStat.iDefense += pArmor->Get_Stat()->iDefense;
-				if (!pArmor->Get_Active())
-				{
-					pArmor->Set_Active(true);
-					m_bNude = false;
-					dynamic_cast<CItem*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player_Eye"))->Set_Active(false);
-					dynamic_cast<CItem*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player_Hair"))->Set_Active(false);
-					dynamic_cast<CItem*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player_HairShade"))->Set_Active(false);
-				}
+				pArmor->Set_Active(true);
+				m_pClothes[0]->Set_Active(false);
+				m_pClothes[1]->Set_Active(false);
+				m_pClothes[2]->Set_Active(false);
 				pArmor->Set_Follow();
 			}
 			else
 			{
-				if (!m_bNude)
-				{
-					m_bNude = true;
-					dynamic_cast<CItem*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player_Eye"))->Set_Active(true);
-					dynamic_cast<CItem*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player_Hair"))->Set_Active(true);
-					dynamic_cast<CItem*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player_HairShade"))->Set_Active(true);
-				}
+				m_pClothes[0]->Set_Active(true);
+				m_pClothes[1]->Set_Active(true);
+				m_pClothes[2]->Set_Active(true);
 			}
 			break;
 		case CUIItemSlot::SLOT_CHEST:
@@ -596,22 +594,12 @@ void CPlayer::Show_Equipment()
 			{
 				m_tEquipmentStat.iMaxHp += pArmor->Get_Stat()->iMaxHp;
 				m_tEquipmentStat.iDefense += pArmor->Get_Stat()->iDefense;
-				if (!pArmor->Get_Active())
-				{
-					pArmor->Set_Active(true);
-					m_bNude = false;
-					dynamic_cast<CItem*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player_Shirt"))->Set_Active(false);
-				}
+				pArmor->Set_Active(true);
+				m_pClothes[3]->Set_Active(false);
 				pArmor->Set_Follow();
 			}
 			else
-			{
-				if (!m_bNude)
-				{
-					m_bNude = true;
-					dynamic_cast<CItem*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player_Shirt"))->Set_Active(true);
-				}
-			}
+				m_pClothes[3]->Set_Active(true);
 			break;
 		case CUIItemSlot::SLOT_LEGGINGS:
 			strObjectTag += std::to_wstring(i);
@@ -620,22 +608,12 @@ void CPlayer::Show_Equipment()
 			{
 				m_tEquipmentStat.iMaxHp += pArmor->Get_Stat()->iMaxHp;
 				m_tEquipmentStat.iDefense += pArmor->Get_Stat()->iDefense;
-				if (!pArmor->Get_Active())
-				{
-					pArmor->Set_Active(true);
-					m_bNude = false;
-					dynamic_cast<CItem*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player_Pants"))->Set_Active(false);
-				}
+				pArmor->Set_Active(true);
+				m_pClothes[4]->Set_Active(false);
 				pArmor->Set_Follow();
 			}
 			else
-			{
-				if (!m_bNude)
-				{
-					m_bNude = true;
-					dynamic_cast<CItem*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player_Pants"))->Set_Active(true);
-				}
-			}
+				m_pClothes[4]->Set_Active(true);
 			break;
 		}
 	}
@@ -681,6 +659,16 @@ void CPlayer::Set_EquippedStatus()
 {
 	m_pStateCom->Set_BasicStat(&m_tBasicStat);
 	m_pStateCom->Set_EquippedStat(&m_tEquipmentStat);
+}
+
+void CPlayer::Set_Clothes()
+{
+	m_bNude = false;
+	m_pClothes[0] = dynamic_cast<CItem*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player_Eye"));
+	m_pClothes[1] = dynamic_cast<CItem*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player_Hair"));
+	m_pClothes[2] = dynamic_cast<CItem*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player_HairShade"));
+	m_pClothes[3] = dynamic_cast<CItem*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player_Shirt"));
+	m_pClothes[4] = dynamic_cast<CItem*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player_Pants"));
 }
 
 void CPlayer::Set_UI()

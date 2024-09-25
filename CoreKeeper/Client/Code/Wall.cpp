@@ -65,6 +65,9 @@ void CWall::LateUpdate_GameObject()
 
 void CWall::Render_GameObject()
 {
+    if (!m_pCalculatorCom->In_Frustum(m_pTransformCom))
+        return;
+
     m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
 
     _matrix matWorld;
@@ -108,13 +111,17 @@ HRESULT CWall::Add_Component()
     NULL_CHECK_RETURN(pComponent, E_FAIL);
     m_mapComponent[ID_STATIC].insert({ L"Com_Texture", pComponent });
 
+    pComponent = m_pCalculatorCom = dynamic_cast<CCalculator*>(Engine::Clone_Proto(L"Proto_Calculator"));
+    NULL_CHECK_RETURN(pComponent, E_FAIL);
+    m_mapComponent[ID_STATIC].insert({ L"Com_Calculator", pComponent });
+
     pComponent = m_pTransformCom = dynamic_cast<CTransform*>(Engine::Clone_Proto(L"Proto_Transform"));
     NULL_CHECK_RETURN(pComponent, E_FAIL);
     m_mapComponent[ID_DYNAMIC].insert({ L"Com_Transform", pComponent });
 
     pComponent = m_pColliderCom = dynamic_cast<CColliderCube*>(Engine::Clone_Proto(L"Proto_WallCollider"));
     NULL_CHECK_RETURN(pComponent, E_FAIL);
-    m_mapComponent[ID_STATIC].insert({ L"Com_Transform", pComponent });
+    m_mapComponent[ID_STATIC].insert({ L"Com_Collider", pComponent });
 
     return S_OK;
 }

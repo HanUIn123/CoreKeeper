@@ -39,6 +39,7 @@ _int CTile::Update_GameObject(const _float& fTimeDelta)
     // 이 Set_Pos를 통해서, 최초 피킹 시, 해당 타일의 그 위치에, Set_Pos가 안된다 -> Render에서 
     // 직접적으로 행렬 원소에 피킹 좌표 주고 있음.
     //m_pTransformCom->Set_Pos(m_pTransformCom->m_vInfo->x, m_pTransformCom->m_vInfo->y, m_pTransformCom->m_vInfo->z);
+
     Add_RenderGroup(RENDER_NONALPHA, this);
 
     return Engine::CGameObject::Update_GameObject(fTimeDelta);
@@ -51,6 +52,9 @@ void CTile::LateUpdate_GameObject()
 
 void CTile::Render_GameObject()
 {
+    if (!m_pCalculatorCom->In_Frustum(m_pTransformCom))
+        return;
+
     m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
 
     _matrix matWorld;

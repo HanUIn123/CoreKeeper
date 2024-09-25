@@ -56,6 +56,7 @@ private:
 	_int							m_iLoadWallCount;
 
 	vector<CWall*>					m_vecWall;
+	vector<bool>					m_vecUnreachable;
 
 	// È¤½Ã ¸ô¶ó, ÀÏ´Ü ¸â¹ö·Î »©¼­ ¸¸µé¾î µÒ.
 	CMiniMapCamera*					m_pMiniMapCamera;
