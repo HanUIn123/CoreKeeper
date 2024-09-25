@@ -153,6 +153,7 @@ call Copy.bat</Command>
     <ClInclude Include="..\Header\BackGround.h" />
     <ClInclude Include="..\Header\Building.h" />
     <ClInclude Include="..\Header\CoreBase.h" />
+    <ClInclude Include="..\Header\ShroomMan.h" />
     <ClInclude Include="..\Header\SpawnPoint.h" />
     <ClInclude Include="..\Header\Core.h" />
     <ClInclude Include="..\Header\Helmet.h" />
@@ -177,7 +178,6 @@ call Copy.bat</Command>
     <ClInclude Include="..\Header\MiniMapCamera.h" />
     <ClInclude Include="..\Header\Monster.h" />
     <ClInclude Include="..\Header\Mucus.h" />
-    <ClInclude Include="..\Header\Mushroom.h" />
     <ClInclude Include="..\Header\Pants.h" />
     <ClInclude Include="..\Header\Player.h" />
     <ClInclude Include="..\Header\Seed.h" />
@@ -232,6 +232,7 @@ call Copy.bat</Command>
     <ClCompile Include="..\Code\Bow.cpp" />
     <ClCompile Include="..\Code\Building.cpp" />
     <ClCompile Include="..\Code\CoreBase.cpp" />
+    <ClCompile Include="..\Code\ShroomMan.cpp" />
     <ClCompile Include="..\Code\SpawnPoint.cpp" />
     <ClCompile Include="..\Code\Core.cpp" />
     <ClCompile Include="..\Code\DynamicCamera.cpp" />
@@ -253,7 +254,6 @@ call Copy.bat</Command>
     <ClCompile Include="..\Code\MiniMapCamera.cpp" />
     <ClCompile Include="..\Code\Monster.cpp" />
     <ClCompile Include="..\Code\Mucus.cpp" />
-    <ClCompile Include="..\Code\Mushroom.cpp" />
     <ClCompile Include="..\Code\Pants.cpp" />
     <ClCompile Include="..\Code\Pickaxe.cpp" />
     <ClCompile Include="..\Code\Player.cpp" />

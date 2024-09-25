@@ -1,10 +1,10 @@
 #include "pch.h"
-#include "../Header/Mushroom.h"
+#include "../Header/ShroomMan.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
 #include "../Header/Player.h"
 
-CMushroom::CMushroom(LPDIRECT3DDEVICE9 pGraphicDev)
+CShroomMan::CShroomMan(LPDIRECT3DDEVICE9 pGraphicDev)
     : CMonster(pGraphicDev)
 {
     m_eType = Engine::MON_MUSHROOM;
@@ -14,25 +14,25 @@ CMushroom::CMushroom(LPDIRECT3DDEVICE9 pGraphicDev)
     m_fAggroDistance = 14.f;
 }
 
-CMushroom::~CMushroom()
+CShroomMan::~CShroomMan()
 {
 }
 
-HRESULT CMushroom::Ready_GameObject(_vec3 vPos)
+HRESULT CShroomMan::Ready_GameObject(_vec3 vPos)
 {
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
     m_pTransformCom->Set_Pos(vPos.x, m_fIdleY, vPos.z);
     m_pTransformCom->Set_Scale(0.6f, 0.6f, 0.6f);
     m_pStateCom->Set_Stat(100, 0, 10, 0);
-    m_vecDropItem.push_back(ITEM_LEG);
+    m_vecDropItem.push_back(ITEM_BOW);
     m_vecDropItem.push_back(ITEM_SEED);
     m_vecDropItem.push_back(ITEM_WOOD);
     Set_Speed(0.8f);
     return S_OK;
 }
 
-_int CMushroom::Update_GameObject(const _float& fTimeDelta)
+_int CShroomMan::Update_GameObject(const _float& fTimeDelta)
 {
     if (m_bStopDraw)
         return 0;
@@ -75,12 +75,12 @@ _int CMushroom::Update_GameObject(const _float& fTimeDelta)
     return Engine::CGameObject::Update_GameObject(fTimeDelta);
 }
 
-void CMushroom::LateUpdate_GameObject()
+void CShroomMan::LateUpdate_GameObject()
 {
     Engine::CGameObject::LateUpdate_GameObject();
 }
 
-void CMushroom::Render_GameObject()
+void CShroomMan::Render_GameObject()
 {
     if (m_bStopDraw)
         return;
@@ -97,7 +97,7 @@ void CMushroom::Render_GameObject()
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
-HRESULT CMushroom::Add_Component()
+HRESULT CShroomMan::Add_Component()
 {
     CComponent* pComponent = NULL;
 
@@ -117,11 +117,11 @@ HRESULT CMushroom::Add_Component()
     NULL_CHECK_RETURN(pComponent, E_FAIL);
     m_mapComponent[ID_STATIC].insert({ L"Com_Animator", pComponent });
 
-    pComponent = m_pBufferCom = dynamic_cast<CAnimTex*>(Engine::Clone_Proto(L"Proto_MushroomAnimTex"));
+    pComponent = m_pBufferCom = dynamic_cast<CAnimTex*>(Engine::Clone_Proto(L"Proto_ShroomManAnimTex"));
     NULL_CHECK_RETURN(pComponent, E_FAIL);
     m_mapComponent[ID_STATIC].insert({ L"Com_Buffer", pComponent });
 
-    pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_MushroomTex"));
+    pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_ShroomManTex"));
     NULL_CHECK_RETURN(pComponent, E_FAIL);
     m_mapComponent[ID_STATIC].insert({ L"Com_Texture", pComponent });
 
@@ -132,7 +132,7 @@ HRESULT CMushroom::Add_Component()
     return S_OK;
 }
 
-STATE CMushroom::State_Change()
+STATE CShroomMan::State_Change()
 {
     CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
     if (m_eState == IDLE)
@@ -162,7 +162,7 @@ STATE CMushroom::State_Change()
     return m_eState;
 }
 
-void CMushroom::Flip()
+void CShroomMan::Flip()
 {
     if (m_eDir == LEFT && !m_bFlip)
     {
@@ -180,9 +180,9 @@ void CMushroom::Flip()
     }
 }
 
-CMushroom* CMushroom::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
+CShroomMan* CShroomMan::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 {
-    CMushroom* pMushroom = new CMushroom(pGraphicDev);
+    CShroomMan* pMushroom = new CShroomMan(pGraphicDev);
 
     if (FAILED(pMushroom->Ready_GameObject(vPos)))
     {
@@ -193,7 +193,7 @@ CMushroom* CMushroom::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
     return pMushroom;
 }
 
-void CMushroom::Free()
+void CShroomMan::Free()
 {
     Engine::CGameObject::Free();
 }

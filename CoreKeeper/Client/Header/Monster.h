@@ -38,11 +38,11 @@ protected:
 
 	void			Check_Hitted();
 	void			KnockBack(const _float& fTimeDelta, const _float& fDist);
+	void			Drop_Item();
 
 private:
 	void			JumpY(const _float& fTimeDelta);
 	void			FallDir(const _float& fTimeDelta);
-	void			Drop_Item();
 
 protected:
 	Engine::CAnimTex* m_pBufferCom;
