@@ -238,6 +238,9 @@
     <Filter Include="02. GameObject\02. Monster\01. Mushroom">
       <UniqueIdentifier>{f681d299-afbd-454f-918e-090adb75f899}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\06. Item\99. Etc\04. Mushroom">
+      <UniqueIdentifier>{e5027ad1-71b3-4a15-8c8e-9e97ea0dfda5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">

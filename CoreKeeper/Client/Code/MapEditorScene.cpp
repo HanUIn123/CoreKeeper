@@ -296,9 +296,7 @@ void CMapEditorScene::Piking_Tile()
 
             int iIndex = (m_vPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vPickPos.x + 0.5f * VTXITV;
 
-            auto vec = pTerrain->Get_TextureNumber();
             pTerrain->Set_TextureNumber(iIndex, m_iImageNumber);
-            vec[iIndex] =  m_iImageNumber;
         }
         if (!(Engine::Get_DIMouseState(DIM_LB) & 0x80))
             m_bPushed = false;
@@ -378,16 +376,17 @@ HRESULT CMapEditorScene::Piking_Wall()
 
             if (m_bCanInstall)
             {
-                _int i = _int((m_vPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vPickPos.x + 0.5f * VTXITV);
+                _int iIndex = _int(m_vPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vPickPos.x + 0.5f * VTXITV;
 
-                m_wsWallNameString[i] = L"Wall_" + std::to_wstring(i);
-                m_pWallCom = CWall::Create(m_pGraphicDev, m_vPickPos.x + 0.5f * VTXITV, m_vPickPos.z + 0.5f * VTXITV, 0, m_wsWallNameString[i].c_str());
-                m_vecWallObject[i] = dynamic_cast<CWall*>(m_pWallCom);
+                m_wsWallNameString[iIndex] = L"Wall_" + std::to_wstring(iIndex);
+                m_pWallCom = CWall::Create(m_pGraphicDev, m_vPickPos.x + 0.5f * VTXITV, m_vPickPos.z + 0.5f * VTXITV, 0, m_wsWallNameString[iIndex].c_str());
+                m_vecWallObject[iIndex] = dynamic_cast<CWall*>(m_pWallCom);
         
                 NULL_CHECK_RETURN(m_pWallCom, E_FAIL);
-                FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsWallNameString[i].c_str(), m_pWallCom), E_FAIL);
+                FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsWallNameString[iIndex].c_str(), m_pWallCom), E_FAIL);
 
-                m_vecWallObject[i]->Set_WallNumber(m_iWallImgNumber);
+                m_vecWallObject[iIndex]->Set_WallNumber(m_iWallImgNumber);
+                pTerrain->Set_Unreachable(iIndex, true);
 
                 m_iWallCreateCount++;
                 m_vCheckPos = m_vPickPos;
@@ -405,10 +404,14 @@ HRESULT CMapEditorScene::Piking_Wall()
 
             m_vPickPos = pPickPos->Picking_OnTerrain(g_hWnd, pMapToolBufferCom, pMapToolTransformCom);
 
-            if (m_vecWallObject[unsigned __int64(m_vPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vPickPos.x + 0.5f *  VTXITV])
+            _int iIndex = _int(m_vPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vPickPos.x + 0.5f * VTXITV;
+
+            if (m_vecWallObject[iIndex])
             {
-                Delete_Object(L"Layer_Environment", m_vecWallObject[unsigned __int64(m_vPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vPickPos.x + 0.5f *  VTXITV]->Get_PickedWallName().c_str());
-                m_vecWallObject[unsigned __int64(m_vPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vPickPos.x + 0.5f *  VTXITV] = nullptr;
+                Delete_Object(L"Layer_Environment", m_vecWallObject[iIndex]->Get_PickedWallName().c_str());
+                m_vecWallObject[iIndex] = nullptr;
+                pTerrain->Set_Unreachable(iIndex, false);
+
             }
         }
     }
@@ -486,16 +489,16 @@ HRESULT CMapEditorScene::Piking_Object()
 
             if (m_bCanInstall)
             {
-                _int i = _int(m_vPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vPickPos.x + 0.5f * VTXITV;
+                _int iIndex = _int(m_vPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vPickPos.x + 0.5f * VTXITV;
 
-                m_wsObjectNameString[i] = L"Object_" + std::to_wstring(i);
-                m_pObjectCom = CCore::Create(m_pGraphicDev, m_vPickPos.x, m_vPickPos.z, m_bReposed, m_iBuildingNumber, m_wsObjectNameString[i].c_str());
-                m_vecBuildingObject[i] = dynamic_cast<CCore*>(m_pObjectCom);
+                m_wsObjectNameString[iIndex] = L"Object_" + std::to_wstring(iIndex);
+                m_pObjectCom = CCore::Create(m_pGraphicDev, m_vPickPos.x, m_vPickPos.z, m_bReposed, m_iBuildingNumber, m_wsObjectNameString[iIndex].c_str());
+                m_vecBuildingObject[iIndex] = dynamic_cast<CCore*>(m_pObjectCom);
 
                 NULL_CHECK_RETURN(m_pObjectCom, E_FAIL);
-                FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsObjectNameString[i].c_str(), m_pObjectCom), E_FAIL);
+                FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsObjectNameString[iIndex].c_str(), m_pObjectCom), E_FAIL);
 
-                dynamic_cast<CCore*>(m_vecBuildingObject[i])->Set_BuildImgNum(m_iBuildingNumber);
+                dynamic_cast<CCore*>(m_vecBuildingObject[iIndex])->Set_BuildImgNum(m_iBuildingNumber);
 
                 m_iBuildCreateCount++;
                 m_vCheckPos = m_vPickPos;
