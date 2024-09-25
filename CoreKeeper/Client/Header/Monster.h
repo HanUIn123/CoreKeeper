@@ -22,7 +22,7 @@ protected:
 	virtual ~CMonster();
 
 public:
-	virtual			HRESULT			Ready_GameObject();
+	virtual			HRESULT			Ready_GameObject(_vec3 vPos);
 	virtual			_int			Update_GameObject(const _float& fTimeDelta);
 	virtual			void			LateUpdate_GameObject();
 	virtual			void			Render_GameObject();
@@ -58,6 +58,7 @@ protected:
 
 	_float				m_fIdleY;
 	_bool				m_bIdling;
+	_int				m_iIdleStack;
 
 	_float				m_fJumpY;
 	_bool				m_bJumping;
@@ -68,8 +69,11 @@ protected:
 
 	_vec3				m_vStartPoint;
 
+	_float				m_fAttackDistance;
+	_float				m_fAttackTime;
 	_vec3				m_vAttackPoint;
 	_bool				m_bAttackSuccess;
+	_bool				m_bAttackFailed;
 
 	_bool				m_bKnockBackStart;
 	_bool				m_bKnockBackEnd;
@@ -78,6 +82,7 @@ protected:
 	_vec3				m_vFallDir;
 
 	_int				m_iDir;
+	Engine::DIRECTION	m_eDir;
 	_float				m_fSpeed;
 	_float				m_fDiagSpeed;
 	_float				m_fSpeedWeight;
@@ -89,7 +94,7 @@ protected:
 	static int			m_iTagNumber;
 
 public:
-	static CMonster*			Create(LPDIRECT3DDEVICE9 pGraphicDev);
+	static CMonster*			Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);
 
 private:
 	virtual void		Free();

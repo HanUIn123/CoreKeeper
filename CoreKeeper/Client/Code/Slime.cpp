@@ -17,12 +17,10 @@ CSlime::~CSlime()
 {
 }
 
-HRESULT CSlime::Ready_GameObject()
+HRESULT CSlime::Ready_GameObject(_vec3 vPos)
 {
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-    _vec3 vPos;
-    m_pTransformCom->Get_Info(INFO_POS, &vPos);
     m_pTransformCom->Set_Pos(vPos.x, m_fIdleY, vPos.z);
     m_pStateCom->Set_Stat(100, 0, 10, 0);
     m_vecDropItem.push_back(ITEM_MUCUS);
@@ -157,14 +155,14 @@ STATE CSlime::State_Change()
     return m_eState;
 }
 
-CSlime* CSlime::Create(LPDIRECT3DDEVICE9 pGraphicDev)
+CSlime* CSlime::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 {
     CSlime* pSlime = new CSlime(pGraphicDev);
 
-    if (FAILED(pSlime->Ready_GameObject()))
+    if (FAILED(pSlime->Ready_GameObject(vPos)))
     {
         Safe_Release(pSlime);
-        MSG_BOX("슬라임 소환 실패");
+        MSG_BOX("Mushroom Create Failed");
         return nullptr;
     }
     return pSlime;
