@@ -1,9 +1,9 @@
 #pragma once
 #include "Monster.h"
-class CMushroom : public CMonster
+class CShroomMan : public CMonster
 {
-	explicit CMushroom(LPDIRECT3DDEVICE9 pGraphicDev);
-	virtual ~CMushroom();
+	explicit CShroomMan(LPDIRECT3DDEVICE9 pGraphicDev);
+	virtual ~CShroomMan();
 
 public:
 	virtual			HRESULT			Ready_GameObject(_vec3 vPos);
@@ -21,7 +21,7 @@ private:
 	_float			m_fAggroDistance;
 
 public:
-	static CMushroom* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);
+	static CShroomMan* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);
 
 private:
 	virtual void		Free();

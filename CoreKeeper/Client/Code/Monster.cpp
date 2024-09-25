@@ -4,7 +4,7 @@
 #include "..\Header\Player.h"
 #include "DropItem.h"
 
-int	CMonster::m_iTagNumber = 0;
+int	CMonster::m_iTagNumber = 10;
 
 CMonster::CMonster(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CGameObject(pGraphicDev)
@@ -101,7 +101,6 @@ void CMonster::Pattern_Idle(const _float& fTimeDelta)
 {
 	// 벽 확인 추가할 것
 	
-
 	// 일정 시간마다 타일 한칸 이동 or 정지
 	if (m_pAnimatorCom->Get_MotionEnd())
 		m_bIdling = false;
@@ -517,34 +516,34 @@ void CMonster::Drop_Item()
 	{
 	case ITEM_PICKAXE:
 		pGameObject = CPickaxe::Create(m_pGraphicDev, vPos);
-		NULL_CHECK_RETURN(pGameObject, );
-		tagName = L"Pickaxe" + std::to_wstring(m_iTagNumber++);
+		NULL_CHECK(pGameObject);
+		tagName = L"Monster_Created_Pickaxe" + std::to_wstring(m_iTagNumber++);
 		break;
 	case ITEM_HOE:
 		pGameObject = CHoe::Create(m_pGraphicDev, vPos);
-		NULL_CHECK_RETURN(pGameObject, );
-		tagName = L"Hoe" + std::to_wstring(m_iTagNumber++);
+		NULL_CHECK(pGameObject);
+		tagName = L"Monster_Created_Hoe" + std::to_wstring(m_iTagNumber++);
 		break;
 	case ITEM_SHOVEL:
 		pGameObject = CShovel::Create(m_pGraphicDev, vPos);
-		NULL_CHECK_RETURN(pGameObject, );
-		tagName = L"Shovel" + std::to_wstring(m_iTagNumber++);
+		NULL_CHECK(pGameObject);
+		tagName = L"Monster_Created_Shovel" + std::to_wstring(m_iTagNumber++);
 		break;
 
 	case ITEM_SWORD:
 		pGameObject = CSword::Create(m_pGraphicDev, vPos);
-		NULL_CHECK_RETURN(pGameObject, );
-		tagName = L"Sword" + std::to_wstring(m_iTagNumber++);
+		NULL_CHECK(pGameObject);
+		tagName = L"Monster_Created_Sword" + std::to_wstring(m_iTagNumber++);
 		break;
 	case ITEM_BOW:
 		pGameObject = CBow::Create(m_pGraphicDev, vPos);
-		NULL_CHECK_RETURN(pGameObject, );
-		tagName = L"Bow" + std::to_wstring(m_iTagNumber++);
+		NULL_CHECK(pGameObject);
+		tagName = L"Monster_Created_Bow" + std::to_wstring(m_iTagNumber++);
 		break;
 	case ITEM_STAFF:
 		pGameObject = CStaff::Create(m_pGraphicDev, vPos);
-		NULL_CHECK_RETURN(pGameObject, );
-		tagName = L"Staff" + std::to_wstring(m_iTagNumber++);
+		NULL_CHECK(pGameObject);
+		tagName = L"Monster_Created_Staff" + std::to_wstring(m_iTagNumber++);
 		break;
 
 	case ITEM_NECKLACE:
@@ -558,23 +557,23 @@ void CMonster::Drop_Item()
 
 	case ITEM_SEED:
 		pGameObject = CSeed::Create(m_pGraphicDev, vPos);
-		NULL_CHECK_RETURN(pGameObject, );
-		tagName = L"Seed" + std::to_wstring(m_iTagNumber++);
+		NULL_CHECK(pGameObject);
+		tagName = L"Monster_Created_Seed" + std::to_wstring(m_iTagNumber++);
 		break;
 	case ITEM_WOOD:
 		pGameObject = CWood::Create(m_pGraphicDev, vPos);
-		NULL_CHECK_RETURN(pGameObject, );
-		tagName = L"Wood" + std::to_wstring(m_iTagNumber++);
+		NULL_CHECK(pGameObject);
+		tagName = L"Monster_Created_Wood" + std::to_wstring(m_iTagNumber++);
 		break;
 	case ITEM_TORCH:
 		pGameObject = CTorch::Create(m_pGraphicDev, vPos);
-		NULL_CHECK_RETURN(pGameObject, );
-		tagName = L"Torch" + std::to_wstring(m_iTagNumber++);
+		NULL_CHECK(pGameObject);
+		tagName = L"Monster_Created_Torch" + std::to_wstring(m_iTagNumber++);
 		break;
 	case ITEM_MUCUS:
 		pGameObject = CMucus::Create(m_pGraphicDev, vPos);
-		NULL_CHECK_RETURN(pGameObject, );
-		tagName = L"Mucus" + std::to_wstring(m_iTagNumber++);
+		NULL_CHECK(pGameObject);
+		tagName = L"Monster_Created_Mucus" + std::to_wstring(m_iTagNumber++);
 		break;
 	case ITEM_END:
 		break;
@@ -584,9 +583,9 @@ void CMonster::Drop_Item()
 
 	if (pGameObject)
 	{
-		pGameObject->Set_Active(true);
-		dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
 		FAILED_CHECK_RETURN(pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, tagName.c_str()), );
+		pGameObject->Set_Active(true);
+		pGameObject->Set_Drop(true);
 	}
 }
 
