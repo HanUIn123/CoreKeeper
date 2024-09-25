@@ -56,9 +56,7 @@ void CCore::LateUpdate_GameObject()
 
 void CCore::Render_GameObject()
 {
-	CBuilding::Setup_Material();
-
-	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
 
 	_matrix matWorld;
 	m_pTransformCom->Get_WorldMatrix(&matWorld);
@@ -66,13 +64,17 @@ void CCore::Render_GameObject()
 	matWorld._41 = m_vBuildPosition.x;
 	matWorld._42 = m_vBuildPosition.y;
 	matWorld._43 = m_vBuildPosition.z;
-
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
-	//m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
+
+	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+
+	CBuilding::Setup_Material();
 
 	m_pTextureCom->Set_Texture();
 
 	m_pBufferCom->Render_Buffer();
+
+	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }

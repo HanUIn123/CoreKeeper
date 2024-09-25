@@ -26,6 +26,9 @@ public:
 	virtual			void			Set_BuildImgNum(_int _iBuildingNum) { m_iBuildingImgNum = _iBuildingNum; }
 	wstring							Get_PickedBuildingName() { return m_strPickedBuildingName; }
 
+	virtual			_vec3			Get_ObjectPos() { return m_vBuildPosition; }
+	virtual			void			Set_ObjectPos(_vec3 _iBuildingPos) { m_vBuildPosition = _iBuildingPos; }
+
 private:
 	HRESULT							Add_Component();
 

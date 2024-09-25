@@ -115,6 +115,7 @@ private:
 
 	HANDLE									m_hFile;
 	HANDLE									m_hWallFile;
+	HANDLE									m_hObjectFile;
 
 	vector<CWall*>							m_vecWallObject;
 	vector<CBuilding*>						m_vecBuildingObject;

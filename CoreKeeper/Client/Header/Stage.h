@@ -49,15 +49,19 @@ private:
 	wstring							m_ItemSlot[10];
 	wstring                         m_CraftSlot[10];
 	_bool							m_bInvCheck;
+
 	HANDLE							m_hFile;
 	HANDLE							m_hWallFile;
+	HANDLE							m_hObjectFile;
 
 	wstring							m_wsTileNameString[VTXCNTX * VTXCNTZ];
 	wstring							m_wsWallNameString[VTXCNTX * VTXCNTZ];
+	wstring							m_wsBuildingNameString[VTXCNTX * VTXCNTZ];
 	_int							m_iLoadTileCount;
 	_int							m_iLoadWallCount;
 
 	vector<CWall*>					m_vecWall;
+	vector<CCore*>					m_vecCore;
 	vector<bool>					m_vecUnreachable;
 
 	// È¤½Ã ¸ô¶ó, ÀÏ´Ü ¸â¹ö·Î »©¼­ ¸¸µé¾î µÒ.

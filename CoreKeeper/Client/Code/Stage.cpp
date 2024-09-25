@@ -11,6 +11,7 @@ CStage::CStage(LPDIRECT3DDEVICE9 pGraphicDev)
 	, m_iLoadWallCount(0)
 {
 	m_vecWall.resize((VTXCNTX - 1) * (VTXCNTZ - 1));
+	m_vecCore.resize((VTXCNTX - 1) * (VTXCNTZ - 1));
 	m_vecUnreachable.resize((VTXCNTX - 1) * (VTXCNTZ - 1));
 }
 
@@ -568,9 +569,11 @@ HRESULT CStage::Load_MapFile()
 
 	const _tchar* strFileName = L"../../Data/TileData.txt";
 	const _tchar* strWallFileName = L"../../Data/WallData.txt";
+	const _tchar* strObjectFileName = L"../../Data/ObjectData.txt";
 
 	m_hFile = CreateFile(strFileName, GENERIC_READ, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
 	m_hWallFile = CreateFile(strWallFileName, GENERIC_READ, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+	m_hObjectFile = CreateFile(strObjectFileName, GENERIC_READ, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
 
 	if (INVALID_HANDLE_VALUE == m_hFile)
 	{
@@ -584,18 +587,15 @@ HRESULT CStage::Load_MapFile()
 		return E_FAIL;
 	}
 
-	//_vec3 vTempTilePos(0.0f, 0.0f, 0.0f);
-	//_int vTempTileImgNum(0);
+	if (INVALID_HANDLE_VALUE == m_hObjectFile)
+	{
+		MSG_BOX("Fail Open Object file");
+		return E_FAIL;
+	}
 
-	DWORD dwByte2 = 0;
-
-	_vec3 vTempWallPos(0.0f, 0.0f, 0.0f);
-	_int vTempWallImgNum(0);
-	_int vTempIndex(0);
-
+	// ========================================================
 
 	DWORD dwByte = 0;
-
 	CTerrain* pTerrain = dynamic_cast<CTerrain*>(this->Get_GameObject(L"Layer_Environment", L"Terrain"));
 
 	if (!pTerrain)
@@ -611,6 +611,13 @@ HRESULT CStage::Load_MapFile()
 		ReadFile(m_hFile, &vec[i], sizeof(_int), &dwByte, nullptr);
 	}
 	pTerrain->Set_TextureNumber(vec);
+
+	// ========================================================
+
+	DWORD dwByte2 = 0;
+	_vec3 vTempWallPos(0.0f, 0.0f, 0.0f);
+	_int vTempWallImgNum(0);
+	_int vTempIndex(0);
 
 	while (true)
 	{
@@ -674,8 +681,36 @@ HRESULT CStage::Load_MapFile()
 		}
 	}
 
+	// ========================================================
+
+	DWORD dwByte3 = 0;
+	_vec3 vTempBuildingPos(0.0f, 0.0f, 0.0f);
+	_int vTempBuildingImgNum(0);
+	_int vTempBuildingIndex(0);
+
+	while (true)
+	{
+		ReadFile(m_hObjectFile, &vTempBuildingPos, sizeof(_vec3), &dwByte3, nullptr);
+		ReadFile(m_hObjectFile, &vTempBuildingImgNum, sizeof(_int), &dwByte3, nullptr);
+		ReadFile(m_hObjectFile, &vTempBuildingIndex, sizeof(_int), &dwByte3, nullptr);
+
+		if (dwByte3 == 0)
+			break;
+
+		m_wsBuildingNameString[vTempBuildingIndex] = L"Building_" + std::to_wstring(vTempBuildingIndex);
+		CBuilding* pCore = CCore::Create(m_pGraphicDev, vTempBuildingPos.x, vTempBuildingPos.z, vTempBuildingImgNum, false, m_wsBuildingNameString[vTempBuildingIndex].c_str());
+
+		CGameObject* pGameObject = dynamic_cast<CCore*>(pCore);
+		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsBuildingNameString[vTempIndex].c_str(), pGameObject), E_FAIL);
+
+		m_vecCore[vTempBuildingIndex] = dynamic_cast<CCore*>(pCore);
+		m_vecUnreachable[vTempBuildingIndex] = true;
+	}
+
 	CloseHandle(m_hFile);
 	CloseHandle(m_hWallFile);
+	CloseHandle(m_hObjectFile);
 	MSG_BOX("Success Load File");
 
 	return S_OK;
