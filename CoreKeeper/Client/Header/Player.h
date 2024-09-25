@@ -14,6 +14,7 @@ class CAnimator;
 class CCollider;
 class CState;
 class CInventory;
+class CFirework;
 
 END
 
@@ -121,6 +122,8 @@ private:
 	_float					m_fKnockBackDist;
 
 	_bool					m_bNude;
+
+	Engine::CFirework* m_pFireParticleCom;
 
 public:
 	static CPlayer* Create(LPDIRECT3DDEVICE9 pGraphicDev);

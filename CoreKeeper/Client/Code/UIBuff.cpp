@@ -117,9 +117,6 @@ void CUIBuff::Render_GameObject()
 	m_pBufferCom->Render_Buffer();
 
 	m_pGraphicDev->SetRenderState(D3DRS_SCISSORTESTENABLE, FALSE);
-	//m_pRangeBufferCom->Set_Height(_int(m_fCurTime));
-
-	//m_pRangeBufferCom->Render_Buffer();
 
 	m_pAnimBufferCom->Set_Index(m_eBuffType);
 	 

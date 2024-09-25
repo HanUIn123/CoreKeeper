@@ -95,6 +95,30 @@ namespace Engine
 		}
 
 	}STAT;
+
+	typedef struct Particle // 파티클
+	{
+		D3DXVECTOR3 _position;
+		D3DCOLOR _color;
+		_float _size;
+	}PARTICLE;
+
+	const _ulong	FVF_PARTICLE = D3DFVF_XYZ | D3DFVF_DIFFUSE;
+	const _ulong	FVF_PARTICLESIZE = D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_PSIZE;
+
+	struct Attribute //파티클 속성
+	{
+		D3DXVECTOR3 _position;
+		D3DXVECTOR3 _velocity;
+		D3DXVECTOR3 _acceleration;
+		_float _lifeTime;
+		_float _age;
+		D3DXCOLOR _color;
+		D3DXCOLOR _colorFade;
+		bool _isAlive;
+	};
+
+	
 }
 
 
