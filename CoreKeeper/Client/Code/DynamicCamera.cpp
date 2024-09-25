@@ -120,11 +120,11 @@ void CDynamicCamera::Mouse_Move()
 	memcpy(&vLook, &matPlayerWorld.m[INFO_LOOK][0], sizeof(_vec3));
 
 	m_vAt.x = vPlayerPos.x + vLook.x * 2;
-	m_vAt.y = vPlayerPos.y + 0.2f;
+	m_vAt.y = 0.8f;
 	m_vAt.z = vPlayerPos.z + vLook.z * 2;
 
 	m_vEye.x = vPlayerPos.x - vLook.x * 3;
-	m_vEye.y = vPlayerPos.y + 2.5f;
+	m_vEye.y = 3.f;
 	m_vEye.z = vPlayerPos.z - vLook.z * 3;
 }
 

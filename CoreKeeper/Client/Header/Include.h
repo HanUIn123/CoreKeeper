@@ -13,6 +13,7 @@
 // Monster
 #include "Monster.h"
 #include "Slime.h"
+#include "Mushroom.h"
 
 // Item
 #include "Pickaxe.h"

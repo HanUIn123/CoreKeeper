@@ -7,7 +7,7 @@ class CSlime : public CMonster
 	virtual ~CSlime();
 
 public:
-	virtual			HRESULT			Ready_GameObject();
+	virtual			HRESULT			Ready_GameObject(_vec3 vPos);
 	virtual			_int			Update_GameObject(const _float& fTimeDelta);
 	virtual			void			LateUpdate_GameObject();
 	virtual			void			Render_GameObject();
@@ -17,7 +17,7 @@ private:
 	STATE			State_Change();
 
 public:
-	static CSlime* Create(LPDIRECT3DDEVICE9 pGraphicDev);
+	static CSlime* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);
 
 private:
 	virtual void		Free();
