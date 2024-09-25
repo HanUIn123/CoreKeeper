@@ -10,8 +10,8 @@ CStage::CStage(LPDIRECT3DDEVICE9 pGraphicDev)
 	, m_iLoadTileCount(0)
 	, m_iLoadWallCount(0)
 {
-	m_vecWall.resize(VTXCNTX * VTXCNTZ);
-	m_vecUnreachable.resize(VTXCNTX * VTXCNTZ);
+	m_vecWall.resize((VTXCNTX - 1) * (VTXCNTZ - 1));
+	m_vecUnreachable.resize((VTXCNTX - 1) * (VTXCNTZ - 1));
 }
 
 
@@ -142,9 +142,9 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar* pLayerTag)
 
 	Engine::CGameObject* pGameObject = nullptr;
 
-	//pGameObject = CTerrain::Create(m_pGraphicDev);
-	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Terrain", pGameObject), E_FAIL);
+	pGameObject = CTerrain::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Terrain", pGameObject), E_FAIL);
 
 	pGameObject = CPlayer::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
@@ -589,20 +589,20 @@ HRESULT CStage::Load_MapFile()
 	DWORD dwByte2 = 0;
 
 
-	while (true)
-	{
-		ReadFile(m_hFile, &vTempTilePos, sizeof(_vec3), &dwByte, nullptr);
-		ReadFile(m_hFile, &vTempTileImgNum, sizeof(_int), &dwByte, nullptr);
+	//while (true)
+	//{
+	//	ReadFile(m_hFile, &vTempTilePos, sizeof(_vec3), &dwByte, nullptr);
+	//	ReadFile(m_hFile, &vTempTileImgNum, sizeof(_int), &dwByte, nullptr);
 
-		if (dwByte == 0)  
-			break;
+	//	if (dwByte == 0)  
+	//		break;
 
-		CTile* pTile = CTile::Create(m_pGraphicDev, vTempTilePos.x, vTempTilePos.z, vTempTileImgNum);
-		NULL_CHECK_RETURN(pTile, E_FAIL);
-		m_wsTileNameString[m_iLoadTileCount] = L"Tile_" + std::to_wstring(m_iLoadTileCount);
-		FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsTileNameString[m_iLoadTileCount].c_str(), pTile), E_FAIL);
-		m_iLoadTileCount++;		
-	}
+	//	CTile* pTile = CTile::Create(m_pGraphicDev, vTempTilePos.x, vTempTilePos.z, vTempTileImgNum);
+	//	NULL_CHECK_RETURN(pTile, E_FAIL);
+	//	m_wsTileNameString[m_iLoadTileCount] = L"Tile_" + std::to_wstring(m_iLoadTileCount);
+	//	FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsTileNameString[m_iLoadTileCount].c_str(), pTile), E_FAIL);
+	//	m_iLoadTileCount++;		
+	//}
 
 	while (true)
 	{
@@ -623,38 +623,38 @@ HRESULT CStage::Load_MapFile()
 
 	}
 
-	for (int i = 0; i < VTXCNTZ; i++)
+	for (int i = 0; i < VTXCNTZ - 1; i++)
 	{
-		for (int j = 0; j < VTXCNTX; j++)
+		for (int j = 0; j < VTXCNTX - 1; j++)
 		{
-			int iIndex = i * VTXCNTX + j;
+			int iIndex = i * (VTXCNTX - 1) + j;
 
 			if (!m_vecWall[iIndex])
 				continue;
 			
 			// 하단
 			if (i > 0)
-				m_vecWall[iIndex]->Add_WallArray(0, m_vecWall[iIndex - VTXCNTX]);
+				m_vecWall[iIndex]->Add_WallArray(0, m_vecWall[iIndex - VTXCNTX - 1]);
 
 			// 하단 우측
-			if (i > 0 && j < VTXCNTX - 1)
-				m_vecWall[iIndex]->Add_WallArray(1, m_vecWall[iIndex - VTXCNTX + 1]);
+			if (i > 0 && j < VTXCNTX - 1 - 1)
+				m_vecWall[iIndex]->Add_WallArray(1, m_vecWall[iIndex - VTXCNTX - 1 + 1]);
 
 			// 우측
-			if (j < VTXCNTX - 1)
+			if (j < VTXCNTX - 1 - 1)
 				m_vecWall[iIndex]->Add_WallArray(2, m_vecWall[iIndex + 1]);
 
 			// 상단 우측
-			if (i < VTXCNTZ - 1 && j < VTXCNTX - 1)
-				m_vecWall[iIndex]->Add_WallArray(3, m_vecWall[iIndex + VTXCNTX + 1]);
+			if (i < VTXCNTZ - 1 - 1 && j < VTXCNTX - 1 - 1)
+				m_vecWall[iIndex]->Add_WallArray(3, m_vecWall[iIndex + VTXCNTX - 1 + 1]);
 
 			// 상단
-			if (i < VTXCNTZ - 1)
-				m_vecWall[iIndex]->Add_WallArray(4, m_vecWall[iIndex + VTXCNTX]);
+			if (i < VTXCNTZ - 1 - 1)
+				m_vecWall[iIndex]->Add_WallArray(4, m_vecWall[iIndex + VTXCNTX - 1]);
 
 			// 상단 좌측
-			if (i < VTXCNTZ - 1 && j > 0)
-				m_vecWall[iIndex]->Add_WallArray(5, m_vecWall[iIndex + VTXCNTX - 1]);
+			if (i < VTXCNTZ - 1 - 1 && j > 0)
+				m_vecWall[iIndex]->Add_WallArray(5, m_vecWall[iIndex + VTXCNTX - 1 - 1]);
 
 			// 좌측
 			if (j > 0)
@@ -662,7 +662,7 @@ HRESULT CStage::Load_MapFile()
 
 			// 하단 좌측
 			if (i > 0 && j > 0)
-				m_vecWall[iIndex]->Add_WallArray(7, m_vecWall[iIndex - VTXCNTX - 1]);
+				m_vecWall[iIndex]->Add_WallArray(7, m_vecWall[iIndex - VTXCNTX - 1 - 1]);
 		}
 	}
 

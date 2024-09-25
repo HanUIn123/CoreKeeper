@@ -25,6 +25,10 @@ private:
 	HRESULT			Add_Component();
 	HRESULT			Setup_Material();
 
+public:
+	void												Set_TextureNumber(int _iIndex, int _iNum) { m_vecTextureNumber[_iIndex] = _iNum; }
+	vector<int>											Get_TextureNumber() { return m_vecTextureNumber; }
+
 private:
 	Engine::CTerrainTex* m_pBufferCom;
 	Engine::CTransform* m_pTransformCom;
@@ -35,4 +39,7 @@ public:
 
 private:
 	virtual void		Free();
+
+private:
+	vector<int>											m_vecTextureNumber;
 };

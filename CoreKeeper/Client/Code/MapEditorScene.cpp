@@ -4,7 +4,6 @@
 #include "Export_System.h"
 #include "../Header/MapToolCamera.h"
 
-
 CMapEditorScene::CMapEditorScene(LPDIRECT3DDEVICE9 _pGraphicDevice)
     : Engine::CScene(_pGraphicDevice)
     , m_bGuiHovered(false)
@@ -12,7 +11,6 @@ CMapEditorScene::CMapEditorScene(LPDIRECT3DDEVICE9 _pGraphicDevice)
     , m_iTileCreateCount(0)
     , m_iWallCreateCount(0)
     , m_iBuildCreateCount(0)
-    , m_pTileCom(nullptr)
     , m_pWallCom(nullptr)
     , m_pObjectCom(nullptr)
     , m_bPushed(false)
@@ -47,8 +45,8 @@ CMapEditorScene::CMapEditorScene(LPDIRECT3DDEVICE9 _pGraphicDevice)
         Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/BaseCamp/Spawn.png", TEX_OBJECT, 1);
     }
 
-    m_vecWallObject.resize(VTXCNTX * VTXCNTZ);
-    m_vecBuildingObject.resize(VTXCNTX * VTXCNTZ);
+    m_vecWallObject.resize((VTXCNTX - 1) * (VTXCNTZ - 1));
+    m_vecBuildingObject.resize((VTXCNTX - 1) * (VTXCNTZ - 1));
 }
 
 CMapEditorScene::~CMapEditorScene()
@@ -155,28 +153,6 @@ HRESULT CMapEditorScene::Ready_Layer_Environment(const _tchar* pLayerTag)
 
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"MapToolCamera", pGameObject), E_FAIL);
-
-
-    for (_ulong i = 0; i < VTXCNTX; ++i)
-    {
-        for (_ulong j = 0; j < VTXCNTZ; ++j)
-        {
-            _float fX = (VTXITV >> 1) + _float(VTXITV * j);
-            _float fZ = (VTXITV >> 1) + _float(VTXITV * i);
-
-            m_pTileCom = CTile::Create(m_pGraphicDev, fX, fZ, 0);
-
-            m_vecTileObject.push_back(dynamic_cast<CTile*>(m_pTileCom));
-
-            NULL_CHECK_RETURN(m_pTileCom, E_FAIL);
-
-            m_wsTileNameString[m_iTileCreateCount] = L"Tile_" + std::to_wstring(m_iTileCreateCount);
-            FAILED_CHECK_RETURN(pLayer->Add_GameObject(m_wsTileNameString[m_iTileCreateCount].c_str(), m_pTileCom), E_FAIL);
-            m_iTileCreateCount++;
-        }
-    }
-    m_iTileCreateCount = 0;
-
 
     m_mapLayer.insert({ pLayerTag , pLayer });
 
@@ -291,13 +267,11 @@ void CMapEditorScene::Setting_TileList()
         {
             if (ImGui::ImageButton("Tile", m_vecTileTexture[i], ImVec2(50.0f, 50.0f)))
             {
-                if (m_pTileCom != nullptr)       //-> 이거 안하면 터짐.
-                {
-                    m_iImageNumber = nCurrentItem;
-                    m_bSelectWall = false;
-                    m_bSelectTile = true;
-                    m_bSelectBuilding = false;
-                }
+                m_iImageNumber = nCurrentItem;
+                m_bSelectWall = false;
+                m_bSelectTile = true;
+                m_bSelectBuilding = false;
+                
             }
         }
     }
@@ -318,7 +292,15 @@ void CMapEditorScene::Piking_Tile()
 
             m_vPickPos = pPickPos->Picking_OnTerrain(g_hWnd, pMapToolBufferCom, pMapToolTransformCom);
 
-            m_vecTileObject[unsigned __int64(m_vPickPos.z + 0.5f * VTXITV) * VTXCNTX + m_vPickPos.x + 0.5f * VTXITV]->Set_TileNumber(m_iImageNumber);
+            // 터레인 아닌 곳 피킹
+            if (m_vPickPos.y < 0)
+                return;
+
+            int iIndex = (m_vPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vPickPos.x + 0.5f * VTXITV;
+
+            auto vec = pTerrain->Get_TextureNumber();
+            pTerrain->Set_TextureNumber(iIndex, m_iImageNumber);
+            vec[iIndex] =  m_iImageNumber;
         }
         if (!(Engine::Get_DIMouseState(DIM_LB) & 0x80))
             m_bPushed = false;
@@ -382,7 +364,7 @@ HRESULT CMapEditorScene::Piking_Wall()
             // 이미 설치되어있다는 불 값 true
             m_bAlreadyInstalled = false;
 
-            if (m_vecWallObject[unsigned __int64(m_vPickPos.z + 0.5f * VTXITV) * VTXCNTX + m_vPickPos.x + 0.5f *  VTXITV])
+            if (m_vecWallObject[unsigned __int64(m_vPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vPickPos.x + 0.5f *  VTXITV])
                 m_bAlreadyInstalled = true;
 
             // 이미 설치되어있따면, 설치할 수 있다는 값을 false로,
@@ -398,7 +380,7 @@ HRESULT CMapEditorScene::Piking_Wall()
 
             if (m_bCanInstall)
             {
-                _int i = _int((m_vPickPos.z + 0.5f * VTXITV) * VTXCNTX  + m_vPickPos.x + 0.5f * VTXITV);
+                _int i = _int((m_vPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vPickPos.x + 0.5f * VTXITV);
 
                 m_wsWallNameString[i] = L"Wall_" + std::to_wstring(i);
                 m_pWallCom = CWall::Create(m_pGraphicDev, m_vPickPos.x + 0.5f * VTXITV, m_vPickPos.z + 0.5f * VTXITV, 0, m_wsWallNameString[i].c_str());
@@ -425,10 +407,10 @@ HRESULT CMapEditorScene::Piking_Wall()
 
             m_vPickPos = pPickPos->Picking_OnTerrain(g_hWnd, pMapToolBufferCom, pMapToolTransformCom);
 
-            if (m_vecWallObject[unsigned __int64(m_vPickPos.z + 0.5f * VTXITV) * VTXCNTX + m_vPickPos.x + 0.5f *  VTXITV])
+            if (m_vecWallObject[unsigned __int64(m_vPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vPickPos.x + 0.5f *  VTXITV])
             {
-                Delete_Object(L"Layer_Environment", m_vecWallObject[unsigned __int64(m_vPickPos.z + 0.5f * VTXITV) * VTXCNTX + m_vPickPos.x + 0.5f *  VTXITV]->Get_PickedWallName().c_str());
-                m_vecWallObject[unsigned __int64(m_vPickPos.z + 0.5f * VTXITV) * VTXCNTX + m_vPickPos.x + 0.5f *  VTXITV] = nullptr;
+                Delete_Object(L"Layer_Environment", m_vecWallObject[unsigned __int64(m_vPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vPickPos.x + 0.5f *  VTXITV]->Get_PickedWallName().c_str());
+                m_vecWallObject[unsigned __int64(m_vPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vPickPos.x + 0.5f *  VTXITV] = nullptr;
             }
         }
     }
@@ -494,7 +476,7 @@ HRESULT CMapEditorScene::Piking_Object()
 
             m_bAlreadyInstalled = false;
 
-            if (m_vecBuildingObject[unsigned __int64(m_vPickPos.z + 0.5f * VTXITV) * VTXCNTX + m_vPickPos.x + 0.5f *  VTXITV])
+            if (m_vecBuildingObject[unsigned __int64(m_vPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vPickPos.x + 0.5f *  VTXITV])
                 m_bAlreadyInstalled = true;
 
             if (m_bAlreadyInstalled)
@@ -506,7 +488,7 @@ HRESULT CMapEditorScene::Piking_Object()
 
             if (m_bCanInstall)
             {
-                _int i = _int(m_vPickPos.z + 0.5f * VTXITV) * VTXCNTX + m_vPickPos.x + 0.5f * VTXITV;
+                _int i = _int(m_vPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vPickPos.x + 0.5f * VTXITV;
 
                 m_wsObjectNameString[i] = L"Object_" + std::to_wstring(i);
                 m_pObjectCom = CCore::Create(m_pGraphicDev, m_vPickPos.x, m_vPickPos.z, m_bReposed, m_iBuildingNumber, m_wsObjectNameString[i].c_str());
@@ -536,12 +518,12 @@ HRESULT CMapEditorScene::Piking_Object()
             _float fZMin = m_vPickPos.z - 5.0f;
             _float fZMax = m_vPickPos.z + 5.0f;
 
-            if (m_vecBuildingObject[unsigned __int64((m_vPickPos.z + 0.5f * VTXITV)* VTXCNTX  + m_vPickPos.x + 0.5f * VTXITV)])
+            if (m_vecBuildingObject[unsigned __int64((m_vPickPos.z + 0.5f * VTXITV)* (VTXCNTX - 1) + m_vPickPos.x + 0.5f * VTXITV)])
             {
                 if ((fXMin < m_vPickPos.x && fXMax > m_vPickPos.x) || (fZMin < m_vPickPos.z && fZMax > m_vPickPos.z))
                 {
-                    Delete_Object(L"Layer_Environment", dynamic_cast<CCore*>(m_vecBuildingObject[unsigned __int64(m_vPickPos.z + 0.5f * VTXITV) * VTXCNTX + m_vPickPos.x + 0.5f *  VTXITV])->Get_PickedBuildingName().c_str());
-                    m_vecBuildingObject[unsigned __int64((m_vPickPos.z + 0.5f * VTXITV) * VTXCNTX + m_vPickPos.x + 0.5f * VTXITV)] = nullptr;
+                    Delete_Object(L"Layer_Environment", dynamic_cast<CCore*>(m_vecBuildingObject[unsigned __int64(m_vPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vPickPos.x + 0.5f *  VTXITV])->Get_PickedBuildingName().c_str());
+                    m_vecBuildingObject[unsigned __int64((m_vPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vPickPos.x + 0.5f * VTXITV)] = nullptr;
                 }
             }
         }
@@ -611,24 +593,24 @@ void CMapEditorScene::MapFile_Save()
         return;
     }
 
-    if (m_vecTileObject.empty())
-        return;
+    //if (m_vecTileObject.empty())
+    //    return;
 
-    _vec3  vTempTilePos(0.0f, 0.0f, 0.0f);
-    _int   vTempTileImgNum(0);
+    //_vec3  vTempTilePos(0.0f, 0.0f, 0.0f);
+    //_int   vTempTileImgNum(0);
    
 
-    DWORD	dwByte(0);
+    //DWORD	dwByte(0);
 
-    for (auto& iter : m_vecTileObject)
-    {
-        vTempTilePos = (*iter).Get_TilePos();
-        vTempTileImgNum = (*iter).Get_TileNumber();
+    //for (auto& iter : m_vecTileObject)
+    //{
+    //    vTempTilePos = (*iter).Get_TilePos();
+    //    vTempTileImgNum = (*iter).Get_TileNumber();
 
-        // 타일 저장.
-        WriteFile(m_hFile, &vTempTilePos, sizeof(_vec3), &dwByte, nullptr);
-        WriteFile(m_hFile, &vTempTileImgNum, sizeof(_int), &dwByte, nullptr);
-    }
+    //    // 타일 저장.
+    //    WriteFile(m_hFile, &vTempTilePos, sizeof(_vec3), &dwByte, nullptr);
+    //    WriteFile(m_hFile, &vTempTileImgNum, sizeof(_int), &dwByte, nullptr);
+    //}
 
     _vec3 vTempWallPos(0.0f, 0.0f, 0.0f);
     _int  vTempWallImgNum(0);

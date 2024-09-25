@@ -8,6 +8,7 @@ BEGIN(Engine)
 class CMapToolTex;
 class CTransform;
 class CCalculator;
+class CTexture;
 
 END
 
@@ -27,7 +28,8 @@ public:
 	_int												Get_TerrainNumber() { return m_iTerrainImageNum; }
 	void												Set_TerrainNumber(_int _iTerrainNum) { m_iTerrainImageNum = _iTerrainNum; }
 
-
+	void												Set_TextureNumber(int _iIndex, int _iNum) { m_vecTextureNumber[_iIndex] = _iNum; }
+	vector<int>											Get_TextureNumber() { return m_vecTextureNumber; }
 private:
 	HRESULT												Add_Component();
 	HRESULT												Setup_Material();
@@ -37,6 +39,7 @@ private:
 	Engine::CMapToolTex* m_pBufferCom;
 	Engine::CTransform* m_pTransformCom;
 	Engine::CCalculator* m_pCalculatorCom;
+	Engine::CTexture* m_pTextureCom;
 
 public:
 	static CMapToolTerrain* Create(LPDIRECT3DDEVICE9 pGraphicDev);
@@ -46,5 +49,6 @@ private:
 
 	_vec3												vPickPos;
 	_int												m_iTerrainImageNum;
+	vector<int>											m_vecTextureNumber;
 };
 

@@ -92,7 +92,6 @@ public:
 	HRESULT									MapFile_Load();
 private:
 	Engine::CGameObject*					m_pMTGameObjectCom;
-	Engine::CGameObject*					m_pTileCom;
 	Engine::CGameObject*					m_pWallCom;
 	Engine::CGameObject*					m_pObjectCom;
 
@@ -117,7 +116,6 @@ private:
 	HANDLE									m_hFile;
 	HANDLE									m_hWallFile;
 
-	vector<CTile*>							m_vecTileObject;
 	vector<CWall*>							m_vecWallObject;
 	vector<CBuilding*>						m_vecBuildingObject;
 

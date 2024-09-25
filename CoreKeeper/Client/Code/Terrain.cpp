@@ -5,6 +5,7 @@
 CTerrain::CTerrain(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CGameObject(pGraphicDev)
 {
+	m_vecTextureNumber.resize((VTXCNTX - 1) * (VTXCNTZ - 1));
 }
 
 CTerrain::~CTerrain()
@@ -38,9 +39,17 @@ void CTerrain::Render_GameObject()
 
 	FAILED_CHECK_RETURN(Setup_Material(), );
 
-	m_pTextureCom->Set_Texture(0);
+	for (int i = 0; i < VTXCNTZ - 1; ++i)
+	{
+		for (int j = 0; j < VTXCNTX - 1; ++j)
+		{
+			int idx = i * (VTXCNTX - 1) + j;
 
-	m_pBufferCom->Render_Buffer();
+			auto texture = m_pTextureCom->Get_Texture(m_vecTextureNumber[idx]);
+			m_pGraphicDev->SetTexture(0, texture);
+			m_pBufferCom->Render_Texture(idx * 6);
+		}
+	}
 
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
@@ -72,17 +81,15 @@ HRESULT CTerrain::Setup_Material()
 
 	tMtrl.Diffuse = { 1.f, 1.f, 1.f, 1.f };
 	tMtrl.Specular = { 1.f, 1.f, 1.f, 1.f };
-	tMtrl.Ambient = { 0.2f, 0.2f, 0.2f, 1.f };
+	tMtrl.Ambient = { 0.7f, 0.7f, 0.7f, 0.7f };
 
-	tMtrl.Emissive = { 0.f, 0.f, 0.f, 0.f };
+	tMtrl.Emissive = { 0.2f, 0.2f, 0.2f, 0.2f };
 	tMtrl.Power = 0.f;
 
 	m_pGraphicDev->SetMaterial(&tMtrl);
 
 	return S_OK;
 }
-
-
 
 CTerrain* CTerrain::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 {
