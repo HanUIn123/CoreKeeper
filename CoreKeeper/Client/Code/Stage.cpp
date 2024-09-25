@@ -23,11 +23,12 @@ HRESULT CStage::Ready_Scene()
 {
 	//FAILED_CHECK_RETURN(Ready_LightInfo(), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Layer_Environment"), E_FAIL);
+
 	FAILED_CHECK_RETURN(Ready_Layer_GameLogic(L"Layer_GameLogic"), E_FAIL);
 
-	Load_MapFile();
 
 	FAILED_CHECK_RETURN(Ready_Layer_UI(L"Layer_UI"), E_FAIL);
+	Load_MapFile();
 
 	// 이거랑 Render_Scene() 주석 풀면 일단 stage를 위에서 꽂아서 보게됨.
 	//FAILED_CHECK_RETURN(Ready_Layer_MiniMap(L"Layer_MiniMap"), E_FAIL);
@@ -129,6 +130,10 @@ HRESULT CStage::Ready_Layer_Environment(const _tchar* pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"SkyBox", pGameObject), E_FAIL);
 
+	m_pTerrainObject = CTerrain::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(m_pTerrainObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Terrain", m_pTerrainObject), E_FAIL);
+
 
 	m_mapLayer.insert({ pLayerTag , pLayer });
 
@@ -142,9 +147,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar* pLayerTag)
 
 	Engine::CGameObject* pGameObject = nullptr;
 
-	pGameObject = CTerrain::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Terrain", pGameObject), E_FAIL);
+
 
 	pGameObject = CPlayer::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
@@ -571,7 +574,7 @@ HRESULT CStage::Load_MapFile()
 
 	if (INVALID_HANDLE_VALUE == m_hFile)
 	{
-		MSG_BOX("Fail Open file");
+		MSG_BOX("Fail Open Terrain file");
 		return E_FAIL;
 	}
 
@@ -581,32 +584,33 @@ HRESULT CStage::Load_MapFile()
 		return E_FAIL;
 	}
 
-	_vec3 vTempTilePos(0.0f, 0.0f, 0.0f);
-	_int vTempTileImgNum(0);
+	//_vec3 vTempTilePos(0.0f, 0.0f, 0.0f);
+	//_int vTempTileImgNum(0);
 
-	DWORD dwByte = 0;
+	DWORD dwByte2 = 0;
 
 	_vec3 vTempWallPos(0.0f, 0.0f, 0.0f);
 	_int vTempWallImgNum(0);
 	_int vTempIndex(0);
 
-	DWORD dwByte2 = 0;
 
+	DWORD dwByte = 0;
 
-	//while (true)
-	//{
-	//	ReadFile(m_hFile, &vTempTilePos, sizeof(_vec3), &dwByte, nullptr);
-	//	ReadFile(m_hFile, &vTempTileImgNum, sizeof(_int), &dwByte, nullptr);
+	CTerrain* pTerrain = dynamic_cast<CTerrain*>(this->Get_GameObject(L"Layer_Environment", L"Terrain"));
 
-	//	if (dwByte == 0)  
-	//		break;
+	if (!pTerrain)
+	{
+		MSG_BOX("Fail Open Terrain");
+		CloseHandle(m_hFile);
+		return E_FAIL;
+	}
 
-	//	CTile* pTile = CTile::Create(m_pGraphicDev, vTempTilePos.x, vTempTilePos.z, vTempTileImgNum);
-	//	NULL_CHECK_RETURN(pTile, E_FAIL);
-	//	m_wsTileNameString[m_iLoadTileCount] = L"Tile_" + std::to_wstring(m_iLoadTileCount);
-	//	FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsTileNameString[m_iLoadTileCount].c_str(), pTile), E_FAIL);
-	//	m_iLoadTileCount++;		
-	//}
+	auto vec = pTerrain->Get_TextureNumber();
+	for (_int i = 0; i < vec.size(); ++i)
+	{
+		ReadFile(m_hFile, &vec[i], sizeof(_int), &dwByte, nullptr);
+	}
+	pTerrain->Set_TextureNumber(vec);
 
 	while (true)
 	{
