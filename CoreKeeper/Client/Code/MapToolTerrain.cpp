@@ -8,7 +8,7 @@ CMapToolTerrain::CMapToolTerrain(LPDIRECT3DDEVICE9 pGraphicDev)
     , m_pCalculatorCom(nullptr)
     , vPickPos(0, 0, 0)
 {
-    m_vecTextureNumber.resize(VTXCNTX * VTXCNTZ);
+    m_vecTextureNumber.resize((VTXCNTX-1) * (VTXCNTZ-1));
 }
 
 CMapToolTerrain::~CMapToolTerrain()
@@ -39,12 +39,11 @@ void CMapToolTerrain::Render_GameObject()
     m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
-    for (int i = 0; i < VTXCNTX - 1; ++i)
+    for (int i = 0; i < VTXCNTZ-1; ++i)
     {
-        for (int j = 0; j < VTXCNTZ - 1; ++j)
+        for (int j = 0; j < VTXCNTX-1; ++j)
         {
-            int idx = i * (VTXCNTZ - 1) + j;
-
+            int idx = i * (VTXCNTX-1) + j;
 
             auto texture = m_pTextureCom->Get_Texture(m_vecTextureNumber[idx]);
             m_pGraphicDev->SetTexture(0, texture);
