@@ -9,6 +9,7 @@ CTorch::CTorch(LPDIRECT3DDEVICE9 pGraphicDev)
 	ZeroMemory(&m_tStat, sizeof(STAT));
 
 	m_eItemNum = ITEM_TORCH;
+	m_iLightNum = g_iLightNum++;
 }
 
 CTorch::~CTorch()
@@ -183,15 +184,15 @@ void CTorch::SetUp_Light()
 	light.Attenuation1 = 0.01f;
 	light.Attenuation2 = 0.0f;
 
-	m_pGraphicDev->SetLight(0, &light); // 조명 설정
+	m_pGraphicDev->SetLight(m_iLightNum, &light); // 조명 설정
 
 	if (m_bUse)
 	{
-		m_pGraphicDev->LightEnable(0, TRUE); // 조명 활성화
+		m_pGraphicDev->LightEnable(m_iLightNum, TRUE); // 조명 활성화
 	}
 	else
 	{
-		m_pGraphicDev->LightEnable(0, FALSE); // 조명 비활성화
+		m_pGraphicDev->LightEnable(m_iLightNum, FALSE); // 조명 비활성화
 	}
 }
 

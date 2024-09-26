@@ -62,8 +62,12 @@ _uint CLoading::Loading_Stage()
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_StaffAnimTex", Engine::CAnimTex::Create(m_pGraphicDev, 5, 4)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TorchAnimTex", Engine::CAnimTex::Create(m_pGraphicDev, 6, 1)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SeedAnimTex", Engine::CAnimTex::Create(m_pGraphicDev, 2, 1)), E_FAIL);
+    
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SlimeAnimTex", Engine::CAnimTex::Create(m_pGraphicDev, 12, 4)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ShroomManAnimTex", Engine::CAnimTex::Create(m_pGraphicDev, 9, 5)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ShamanAnimTex", Engine::CAnimTex::Create(m_pGraphicDev, 8, 9)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ShamProjectileAnimTex", Engine::CAnimTex::Create(m_pGraphicDev, 6, 1)), E_FAIL);
+
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UIScreenIconTex", Engine::CAnimTex::Create(m_pGraphicDev, 11, 1)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UISilhouettes", Engine::CAnimTex::Create(m_pGraphicDev, 5, 2)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_BuffIcons", Engine::CAnimTex::Create(m_pGraphicDev, 14, 4)), E_FAIL);
@@ -97,6 +101,8 @@ _uint CLoading::Loading_Stage()
 
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SlimeTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Monster/Slime.png", TEX_NORMAL)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ShroomManTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Monster/Mushroom.png", TEX_NORMAL)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ShamanTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Monster/Shaman.png", TEX_NORMAL)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ShamProjectileTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Monster/fireballChargedProjectile_idle.png", TEX_NORMAL)), E_FAIL);
 
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TerrainTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/MapTerrain/Terrain_%d.png", TEX_NORMAL, 9)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SkyBox", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/SkyBox/burger%d.dds", TEX_CUBE, 4)), E_FAIL);
@@ -165,13 +171,18 @@ _uint CLoading::Loading_Stage()
 
     //COLLIDER
     //반지름 넣으면 됩니다. 콜라이더 RENDER 기능 아직 안됨 ㅠ
-    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_PlayerCollider", Engine::CCollider::Create(m_pGraphicDev, 0.5f)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_PlayerCollider", Engine::CCollider::Create(m_pGraphicDev, 0.6f)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ItemCollider", Engine::CCollider::Create(m_pGraphicDev, 0.4f)), E_FAIL);
-    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SlimeCollider", Engine::CCollider::Create(m_pGraphicDev, 0.4f)), E_FAIL);
+    
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SlimeCollider", Engine::CCollider::Create(m_pGraphicDev, 0.5f)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ShroomManCollider", Engine::CCollider::Create(m_pGraphicDev, 0.7f)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ShamanCollider", Engine::CCollider::Create(m_pGraphicDev, 0.6f)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ShamProjectileCollider", Engine::CCollider::Create(m_pGraphicDev, 0.7f)), E_FAIL);
+
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SwordCollider", Engine::CCollider::Create(m_pGraphicDev, 0.4f)), E_FAIL);
 
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_PlayerCubeCollider", Engine::CColliderCube::Create(m_pGraphicDev, _vec3(-0.5f, -0.5f, -0.5f), _vec3(0.5f, 0.5f, 0.5f))), E_FAIL);
-    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SwingCubeCollider", Engine::CColliderCube::Create(m_pGraphicDev, _vec3(-0.5f, -0.5f, -0.5f), _vec3(0.5f, 1.0f, 0.5f))), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SwingCubeCollider", Engine::CColliderCube::Create(m_pGraphicDev, _vec3(-0.5f, -0.5f, -0.5f), _vec3(0.5f, 0.8f, 0.5f))), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ItemCubeCollider", Engine::CColliderCube::Create(m_pGraphicDev, _vec3(-0.2f, -0.2f, -0.2f), _vec3(0.2f, 0.2f, 0.2f))), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_WallCollider", Engine::CColliderCube::Create(m_pGraphicDev, _vec3(-0.5f, -0.5f, -0.5f), _vec3(0.5f, 0.5f, 0.5f))), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TileCollider", Engine::CColliderCube::Create(m_pGraphicDev, _vec3(-0.5f, -0.5f, -0.5f), _vec3(0.5f, 0.5f, 0.5f))), E_FAIL);

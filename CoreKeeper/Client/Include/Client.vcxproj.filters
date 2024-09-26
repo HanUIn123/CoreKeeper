@@ -244,6 +244,9 @@
     <Filter Include="02. GameObject\10. Object\01. Statue">
       <UniqueIdentifier>{47546ecb-a0f7-481d-9042-430a725dbde5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\02. Monster\02. Shaman\Projectile">
+      <UniqueIdentifier>{e159823a-7335-4750-bb60-cbfa9421932b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -477,6 +480,9 @@
     <ClInclude Include="..\Header\Object.h">
       <Filter>02. GameObject\10. Object</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\Projectile.h">
+      <Filter>02. GameObject\02. Monster\02. Shaman\Projectile</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -688,6 +694,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\Object.cpp">
       <Filter>02. GameObject\10. Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Projectile.cpp">
+      <Filter>02. GameObject\02. Monster\02. Shaman\Projectile</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
