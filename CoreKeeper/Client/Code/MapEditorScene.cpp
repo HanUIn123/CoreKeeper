@@ -165,6 +165,26 @@ HRESULT CMapEditorScene::Ready_Layer_Environment(const _tchar* pLayerTag)
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"MapToolCamera", pGameObject), E_FAIL);
 
+    pGameObject = CCore::Create(m_pGraphicDev, { 128.5f, 3.0f, 132.f + 3.f });
+    NULL_CHECK_RETURN(pGameObject, E_FAIL);
+    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Core", pGameObject), E_FAIL);
+
+    pGameObject = CStatue::Create(m_pGraphicDev, { 128.5f, 2.0f, 144.f + 2.f }, 0);
+    NULL_CHECK_RETURN(pGameObject, E_FAIL);
+    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"SlimeStatue", pGameObject), E_FAIL);
+
+    pGameObject = CStatue::Create(m_pGraphicDev, { 112.5f, 2.0f, 137.f + 2.f }, 1);
+    NULL_CHECK_RETURN(pGameObject, E_FAIL);
+    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"LarvaStatue", pGameObject), E_FAIL);
+
+    pGameObject = CStatue::Create(m_pGraphicDev, { 144.5f, 2.0f, 137.f + 2.5f }, 2);
+    NULL_CHECK_RETURN(pGameObject, E_FAIL);
+    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"MalugazStatue", pGameObject), E_FAIL);
+
+    pGameObject = CCoreBase::Create(m_pGraphicDev, { 128.5f, 0.1f, 137.f });
+    NULL_CHECK_RETURN(pGameObject, E_FAIL);
+    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"CoreBase", pGameObject), E_FAIL);
+
     m_mapLayer.insert({ pLayerTag , pLayer });
 
     return S_OK;

@@ -72,5 +72,6 @@ private:
     vector<CWall*>                                          m_vecAroundWall;
 private:
     bool    m_bActive;
+    int     m_iCurImgNum;
 };
 

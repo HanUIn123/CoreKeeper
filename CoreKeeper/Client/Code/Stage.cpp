@@ -676,38 +676,62 @@ HRESULT CStage::Load_MapFile()
 
 			if (!m_vecWall[iIndex])
 				continue;
-			
+
 			// 하단
 			if (i > 0)
-				m_vecWall[iIndex]->Add_WallArray(0, m_vecWall[iIndex - VTXCNTX - 1]);
+			{
+				m_vecWall[iIndex]->Add_WallArray(0, m_vecWall[iIndex - (VTXCNTX-1)]);
+			}
+
 
 			// 하단 우측
 			if (i > 0 && j < VTXCNTX - 1 - 1)
-				m_vecWall[iIndex]->Add_WallArray(1, m_vecWall[iIndex - VTXCNTX - 1 + 1]);
+			{
+				m_vecWall[iIndex]->Add_WallArray(1, m_vecWall[iIndex - (VTXCNTX - 1) + 1]);
+			}
+
 
 			// 우측
 			if (j < VTXCNTX - 1 - 1)
+			{
 				m_vecWall[iIndex]->Add_WallArray(2, m_vecWall[iIndex + 1]);
+			}
+
 
 			// 상단 우측
 			if (i < VTXCNTZ - 1 - 1 && j < VTXCNTX - 1 - 1)
-				m_vecWall[iIndex]->Add_WallArray(3, m_vecWall[iIndex + VTXCNTX - 1 + 1]);
+			{
+				m_vecWall[iIndex]->Add_WallArray(3, m_vecWall[iIndex + (VTXCNTX - 1) + 1]);
+			}
+
 
 			// 상단
 			if (i < VTXCNTZ - 1 - 1)
-				m_vecWall[iIndex]->Add_WallArray(4, m_vecWall[iIndex + VTXCNTX - 1]);
+			{
+				m_vecWall[iIndex]->Add_WallArray(4, m_vecWall[iIndex + (VTXCNTX - 1)]);
+			}
+
 
 			// 상단 좌측
 			if (i < VTXCNTZ - 1 - 1 && j > 0)
-				m_vecWall[iIndex]->Add_WallArray(5, m_vecWall[iIndex + VTXCNTX - 1 - 1]);
+			{
+				m_vecWall[iIndex]->Add_WallArray(5, m_vecWall[iIndex + (VTXCNTX - 1) - 1]);
+			}
+
 
 			// 좌측
 			if (j > 0)
+			{
 				m_vecWall[iIndex]->Add_WallArray(6, m_vecWall[iIndex - 1]);
+			}
+
 
 			// 하단 좌측
 			if (i > 0 && j > 0)
-				m_vecWall[iIndex]->Add_WallArray(7, m_vecWall[iIndex - VTXCNTX - 1 - 1]);
+			{
+				m_vecWall[iIndex]->Add_WallArray(7, m_vecWall[iIndex - (VTXCNTX - 1) - 1]);
+			}
+
 		}
 	}
 

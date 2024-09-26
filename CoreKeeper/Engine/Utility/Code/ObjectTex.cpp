@@ -72,7 +72,7 @@ void CObjectTex::Render_Buffer()
     CVIBuffer::Render_Buffer();
 }
 
-CObjectTex* CObjectTex::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _fRadiusX, float _fRadiusY, _float _fRadiusZ)
+CObjectTex* CObjectTex::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _fRadiusX, _float _fRadiusY, _float _fRadiusZ)
 {
     CObjectTex* pInstance = new CObjectTex(pGraphicDev);
 
