@@ -196,12 +196,6 @@
     <Filter Include="02. GameObject\06. Item\99. Etc\02. Torch">
       <UniqueIdentifier>{867559b7-504c-497a-a34b-19f180acd018}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\10.Building">
-      <UniqueIdentifier>{95d62827-3421-4e6a-81b8-50370ab85a05}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\10.Building\00.Core">
-      <UniqueIdentifier>{270f73f8-6ed9-4d63-a46b-8882ed003524}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\07. UI\08. MiniMap">
       <UniqueIdentifier>{525c51d0-a9b0-43aa-b8d8-6b3d0649bc15}</UniqueIdentifier>
     </Filter>
@@ -235,17 +229,23 @@
     <Filter Include="02. GameObject\06. Item\99. Etc\04. Mushroom">
       <UniqueIdentifier>{e5027ad1-71b3-4a15-8c8e-9e97ea0dfda5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\10.Building\01. CoreBase">
-      <UniqueIdentifier>{64c04727-f390-42fd-9e1c-b57ff9577161}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\10.Building\02. SpawnPoint">
-      <UniqueIdentifier>{9e885e6b-783d-4dc8-ba45-ce4f8cac38aa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\10.Building\01.Box">
-      <UniqueIdentifier>{faf24c15-7031-46eb-b2a1-c3c4319d1311}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\02. Monster\01. ShroomMan">
       <UniqueIdentifier>{f681d299-afbd-454f-918e-090adb75f899}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\10. Object">
+      <UniqueIdentifier>{ca829a02-3daf-4705-8f9a-1d189d8aa428}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\10. Object\02. CoreBase">
+      <UniqueIdentifier>{64c04727-f390-42fd-9e1c-b57ff9577161}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\10. Object\00. Core">
+      <UniqueIdentifier>{270f73f8-6ed9-4d63-a46b-8882ed003524}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\10. Object\01. Statue">
+      <UniqueIdentifier>{47546ecb-a0f7-481d-9042-430a725dbde5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\02. Monster\02. Shaman\Projectile">
+      <UniqueIdentifier>{e159823a-7335-4750-bb60-cbfa9421932b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -436,10 +436,7 @@
       <Filter>02. GameObject\06. Item\99. Etc\02. Torch</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\Core.h">
-      <Filter>02. GameObject\10.Building\00.Core</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Header\Building.h">
-      <Filter>02. GameObject\10.Building</Filter>
+      <Filter>02. GameObject\10. Object\00. Core</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\MiniMap.h">
       <Filter>02. GameObject\07. UI\08. MiniMap</Filter>
@@ -469,16 +466,22 @@
       <Filter>02. GameObject\07. UI\10. UIBuff</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\CoreBase.h">
-      <Filter>02. GameObject\10.Building\01. CoreBase</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Header\SpawnPoint.h">
-      <Filter>02. GameObject\10.Building\02. SpawnPoint</Filter>
+      <Filter>02. GameObject\10. Object\02. CoreBase</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\ShroomMan.h">
       <Filter>02. GameObject\02. Monster\01. ShroomMan</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\Shaman.h">
       <Filter>02. GameObject\02. Monster\02. Shaman</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\Statue.h">
+      <Filter>02. GameObject\10. Object\01. Statue</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\Object.h">
+      <Filter>02. GameObject\10. Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\Projectile.h">
+      <Filter>02. GameObject\02. Monster\02. Shaman\Projectile</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -651,10 +654,7 @@
       <Filter>02. GameObject\06. Item\99. Etc\02. Torch</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\Core.cpp">
-      <Filter>02. GameObject\10.Building\00.Core</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Code\Building.cpp">
-      <Filter>02. GameObject\10.Building</Filter>
+      <Filter>02. GameObject\10. Object\00. Core</Filter>
     </ClCompile>
     <ClCompile Include="MiniMap.cpp">
       <Filter>02. GameObject\07. UI\08. MiniMap</Filter>
@@ -681,16 +681,22 @@
       <Filter>02. GameObject\07. UI\10. UIBuff</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\CoreBase.cpp">
-      <Filter>02. GameObject\10.Building\01. CoreBase</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Code\SpawnPoint.cpp">
-      <Filter>02. GameObject\10.Building\02. SpawnPoint</Filter>
+      <Filter>02. GameObject\10. Object\02. CoreBase</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\ShroomMan.cpp">
       <Filter>02. GameObject\02. Monster\01. ShroomMan</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\Shaman.cpp">
       <Filter>02. GameObject\02. Monster\02. Shaman</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Statue.cpp">
+      <Filter>02. GameObject\10. Object\01. Statue</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Object.cpp">
+      <Filter>02. GameObject\10. Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Projectile.cpp">
+      <Filter>02. GameObject\02. Monster\02. Shaman\Projectile</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

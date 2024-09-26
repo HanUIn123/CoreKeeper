@@ -1,7 +1,6 @@
 #include "../../Header/ObjectTex.h"
 
-CObjectTex::CObjectTex() :
-    m_bReposed(false)
+CObjectTex::CObjectTex()
 {
 }
 
@@ -19,7 +18,7 @@ CObjectTex::~CObjectTex()
 {
 }
 
-HRESULT CObjectTex::Ready_Buffer(_float _fX, _float _fY, _float _fZ, _bool _bReposed)
+HRESULT CObjectTex::Ready_Buffer(_float _fRadiusX, _float _fRadiusY, _float _fRadiusZ)
 {
     m_dwTriCnt = 2;
     m_dwVtxCnt = 4;
@@ -35,35 +34,17 @@ HRESULT CObjectTex::Ready_Buffer(_float _fX, _float _fY, _float _fZ, _bool _bRep
 
     m_pVB->Lock(0, 0, (void**)&pVertex, 0);
 
-    if (!_bReposed)
-    {
-        pVertex[0].vPosition = { -_fX, _fY, 0.f };
-        pVertex[0].vTexUV = { 0.f, 0.f };
+    pVertex[0].vPosition = { -_fRadiusX, _fRadiusY, _fRadiusZ };
+    pVertex[0].vTexUV = { 0.f, 0.f };
 
-        pVertex[1].vPosition = { _fX, _fY, 0.f };
-        pVertex[1].vTexUV = { 1.f, 0.f };
+    pVertex[1].vPosition = { _fRadiusX, _fRadiusY, _fRadiusZ };
+    pVertex[1].vTexUV = { 1.f, 0.f };
 
-        pVertex[2].vPosition = { _fX, -_fY, 0.f };
-        pVertex[2].vTexUV = { 1.f, 1.f };
+    pVertex[2].vPosition = { _fRadiusX, -_fRadiusY, -_fRadiusZ };
+    pVertex[2].vTexUV = { 1.f, 1.f };
 
-        pVertex[3].vPosition = { -_fX, -_fY, 0.f };
-        pVertex[3].vTexUV = { 0.f, 1.f };
-    }
-    else
-    {
-        pVertex[0].vPosition = { -_fX, 0.0f, _fZ };
-        pVertex[0].vTexUV = { 0.f, 0.f };
-
-        pVertex[1].vPosition = { _fX, 0.0f, _fZ };
-        pVertex[1].vTexUV = { 1.f, 0.f };
-
-        pVertex[2].vPosition = { _fX, 0.0f, -_fZ };
-        pVertex[2].vTexUV = { 1.f, 1.f };
-
-        pVertex[3].vPosition = { -_fX, 0.0f, -_fZ };
-        pVertex[3].vTexUV = { 0.f, 1.f };
-    }
-
+    pVertex[3].vPosition = { -_fRadiusX, -_fRadiusY, -_fRadiusZ };
+    pVertex[3].vTexUV = { 0.f, 1.f };
 
     m_pVB->Unlock();
 
@@ -91,11 +72,11 @@ void CObjectTex::Render_Buffer()
     CVIBuffer::Render_Buffer();
 }
 
-CObjectTex* CObjectTex::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _fX, _float _fY, _float _fZ, _bool _bReposed)
+CObjectTex* CObjectTex::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _fRadiusX, _float _fRadiusY, _float _fRadiusZ)
 {
     CObjectTex* pInstance = new CObjectTex(pGraphicDev);
 
-    if (FAILED(pInstance->Ready_Buffer(_fX, _fY, _fZ, _bReposed)))
+    if (FAILED(pInstance->Ready_Buffer(_fRadiusX, _fRadiusY, _fRadiusZ)))
     {
         Safe_Release(pInstance);
         MSG_BOX("ObjectTex Create Failed");

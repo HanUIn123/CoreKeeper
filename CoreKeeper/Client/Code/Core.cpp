@@ -4,7 +4,7 @@
 #include "Export_Utility.h"
 
 CCore::CCore(LPDIRECT3DDEVICE9 pGraphicDev)
-	: CBuilding(pGraphicDev)
+	: CObject(pGraphicDev)
 {
 }
 
@@ -12,21 +12,11 @@ CCore::~CCore()
 {
 }
 
-HRESULT CCore::Ready_GameObject(_float fX, _float fY, _bool bReposed, _int iBuildImgNum, const wstring _pickedBuildName)
+HRESULT CCore::Ready_GameObject(_vec3 vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_strPickedBuildingName = _pickedBuildName;
-
-	m_iBuildingImgNum = iBuildImgNum;
-
-	m_vBuildPosition.x = fX;
-
-	m_vBuildPosition.x = fX;
-	m_vBuildPosition.y = 3.f;
-	m_vBuildPosition.z = fY;
-
-	m_pTransformCom->Set_Scale(1.0f, 1.0f, 1.0f);
+	m_pTransformCom->Set_Pos(vPos.x, vPos.y, vPos.z);
 
 	return S_OK;
 }
@@ -45,25 +35,17 @@ void CCore::LateUpdate_GameObject()
 
 void CCore::Render_GameObject()
 {
-	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
+	//m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
 
-	_matrix matWorld;
-	m_pTransformCom->Get_WorldMatrix(&matWorld);
-
-	matWorld._41 = m_vBuildPosition.x;
-	matWorld._42 = m_vBuildPosition.y;
-	matWorld._43 = m_vBuildPosition.z;
-	m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
+	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
 
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
-
-	CBuilding::Setup_Material();
 
 	m_pTextureCom->Set_Texture();
 
 	m_pBufferCom->Render_Buffer();
 
-	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
+	//m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
@@ -91,11 +73,11 @@ HRESULT CCore::Add_Component()
 	return S_OK;
 }
 
-CBuilding* CCore::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float fX, _float fY, _bool bReposed, _int iBuildImgNum, const wstring _pickedBuildName)
+CCore* CCore::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 {
 	CCore* pCore = new CCore(pGraphicDev);
 
-	if (FAILED(pCore->Ready_GameObject(fX ,fY ,bReposed, iBuildImgNum, _pickedBuildName)))
+	if (FAILED(pCore->Ready_GameObject(vPos)))
 	{
 		Safe_Release(pCore);
 		MSG_BOX("pCore Create Failed");

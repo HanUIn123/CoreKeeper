@@ -4,7 +4,7 @@
 #include "Export_Utility.h"
 
 CCoreBase::CCoreBase(LPDIRECT3DDEVICE9 pGraphicDev)
-	: CBuilding(pGraphicDev)
+	: CObject(pGraphicDev)
 {
 }
 
@@ -12,32 +12,11 @@ CCoreBase::~CCoreBase()
 {
 }
 
-HRESULT CCoreBase::Ready_GameObject(_float fX, _float fY, _bool bReposed, _int iBuildImgNum, const wstring _pickedBuildName)
+HRESULT CCoreBase::Ready_GameObject(_vec3 vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_strPickedBuildingName = _pickedBuildName;
-
-	m_iBuildingImgNum = iBuildImgNum;
-
-	m_vBuildPosition.x = fX;
-
-	//if (!bReposed)
-	//{
-	//	m_vBuildPosition.y = fY;
-	//	m_vBuildPosition.z = 0;
-	//}
-	//else
-	//{
-	//	m_vBuildPosition.y = 0;
-	//	m_vBuildPosition.z = fY;
-	//}
-
-	m_vBuildPosition.x = fX;
-	m_vBuildPosition.y = 0.1f;
-	m_vBuildPosition.z = fY;
-
-	m_pTransformCom->Set_Scale(1.0f, 1.0f, 1.0f);
+	m_pTransformCom->Set_Pos(vPos.x, vPos.y, vPos.z);
 
 	return S_OK;
 }
@@ -56,25 +35,17 @@ void CCoreBase::LateUpdate_GameObject()
 
 void CCoreBase::Render_GameObject()
 {
-	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
+	//m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
 
-	_matrix matWorld;
-	m_pTransformCom->Get_WorldMatrix(&matWorld);
-
-	matWorld._41 = m_vBuildPosition.x;
-	matWorld._42 = m_vBuildPosition.y;
-	matWorld._43 = m_vBuildPosition.z;
-	m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
+	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
 
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
-	CBuilding::Setup_Material();
-
-	m_pTextureCom->Set_Texture(m_iBuildingImgNum);
+	m_pTextureCom->Set_Texture();
 
 	m_pBufferCom->Render_Buffer();
 
-	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
+	//m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
@@ -102,11 +73,11 @@ HRESULT CCoreBase::Add_Component()
 	return S_OK;
 }
 
-CBuilding* CCoreBase::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float fX, _float fY, _bool bReposed, _int iBuildImgNum, const wstring _pickedBuildName)
+CCoreBase* CCoreBase::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 {
 	CCoreBase* pCore = new CCoreBase(pGraphicDev);
 
-	if (FAILED(pCore->Ready_GameObject(fX ,fY ,bReposed, iBuildImgNum, _pickedBuildName)))
+	if (FAILED(pCore->Ready_GameObject(vPos)))
 	{
 		Safe_Release(pCore);
 		MSG_BOX("pCore Create Failed");

@@ -135,6 +135,25 @@ HRESULT CStage::Ready_Layer_Environment(const _tchar* pLayerTag)
 	NULL_CHECK_RETURN(m_pTerrainObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Terrain", m_pTerrainObject), E_FAIL);
 
+	pGameObject = CCore::Create(m_pGraphicDev, { 128.5f, 3.0f, 132.f + 3.f });
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Core", pGameObject), E_FAIL);
+
+	pGameObject = CStatue::Create(m_pGraphicDev, { 128.5f, 2.0f, 144.f + 2.f }, 0);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"SlimeStatue", pGameObject), E_FAIL);
+
+	pGameObject = CStatue::Create(m_pGraphicDev, { 112.5f, 2.0f, 137.f + 2.f }, 1);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"LarvaStatue", pGameObject), E_FAIL);
+
+	pGameObject = CStatue::Create(m_pGraphicDev, { 144.5f, 2.0f, 137.f + 2.5f }, 2);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"MalugazStatue", pGameObject), E_FAIL);
+
+	pGameObject = CCoreBase::Create(m_pGraphicDev, { 128.5f, 0.1f, 137.f });
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"CoreBase", pGameObject), E_FAIL);
 
 	m_mapLayer.insert({ pLayerTag , pLayer });
 
@@ -178,13 +197,17 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar* pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Slime", pGameObject), E_FAIL);
 
-	pGameObject = CShroomMan::Create(m_pGraphicDev, _vec3(10, 10, 10));
+	pGameObject = CShroomMan::Create(m_pGraphicDev, _vec3(VTXCNTX * 0.5f + 5.f, 10, VTXCNTZ * 0.5f + 5.f));
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"ShroomMan", pGameObject), E_FAIL);
 
-	//pGameObject = CTorch::Create(m_pGraphicDev);
-	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Torch", pGameObject), E_FAIL);
+	pGameObject = CShaman::Create(m_pGraphicDev, _vec3(VTXCNTX * 0.5f - 5.f, 10, VTXCNTZ * 0.5f - 5.f));
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Shaman", pGameObject), E_FAIL);
+
+	pGameObject = CTorch::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Torch", pGameObject), E_FAIL);
 
 	pGameObject = CPickaxe::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
@@ -653,38 +676,62 @@ HRESULT CStage::Load_MapFile()
 
 			if (!m_vecWall[iIndex])
 				continue;
-			
+
 			// 하단
 			if (i > 0)
-				m_vecWall[iIndex]->Add_WallArray(0, m_vecWall[iIndex - VTXCNTX - 1]);
+			{
+				m_vecWall[iIndex]->Add_WallArray(0, m_vecWall[iIndex - (VTXCNTX-1)]);
+			}
+
 
 			// 하단 우측
 			if (i > 0 && j < VTXCNTX - 1 - 1)
-				m_vecWall[iIndex]->Add_WallArray(1, m_vecWall[iIndex - VTXCNTX - 1 + 1]);
+			{
+				m_vecWall[iIndex]->Add_WallArray(1, m_vecWall[iIndex - (VTXCNTX - 1) + 1]);
+			}
+
 
 			// 우측
 			if (j < VTXCNTX - 1 - 1)
+			{
 				m_vecWall[iIndex]->Add_WallArray(2, m_vecWall[iIndex + 1]);
+			}
+
 
 			// 상단 우측
 			if (i < VTXCNTZ - 1 - 1 && j < VTXCNTX - 1 - 1)
-				m_vecWall[iIndex]->Add_WallArray(3, m_vecWall[iIndex + VTXCNTX - 1 + 1]);
+			{
+				m_vecWall[iIndex]->Add_WallArray(3, m_vecWall[iIndex + (VTXCNTX - 1) + 1]);
+			}
+
 
 			// 상단
 			if (i < VTXCNTZ - 1 - 1)
-				m_vecWall[iIndex]->Add_WallArray(4, m_vecWall[iIndex + VTXCNTX - 1]);
+			{
+				m_vecWall[iIndex]->Add_WallArray(4, m_vecWall[iIndex + (VTXCNTX - 1)]);
+			}
+
 
 			// 상단 좌측
 			if (i < VTXCNTZ - 1 - 1 && j > 0)
-				m_vecWall[iIndex]->Add_WallArray(5, m_vecWall[iIndex + VTXCNTX - 1 - 1]);
+			{
+				m_vecWall[iIndex]->Add_WallArray(5, m_vecWall[iIndex + (VTXCNTX - 1) - 1]);
+			}
+
 
 			// 좌측
 			if (j > 0)
+			{
 				m_vecWall[iIndex]->Add_WallArray(6, m_vecWall[iIndex - 1]);
+			}
+
 
 			// 하단 좌측
 			if (i > 0 && j > 0)
-				m_vecWall[iIndex]->Add_WallArray(7, m_vecWall[iIndex - VTXCNTX - 1 - 1]);
+			{
+				m_vecWall[iIndex]->Add_WallArray(7, m_vecWall[iIndex - (VTXCNTX - 1) - 1]);
+			}
+
 		}
 	}
 
@@ -705,14 +752,19 @@ HRESULT CStage::Load_MapFile()
 			break;
 
 		m_wsBuildingNameString[vTempBuildingIndex] = L"Building_" + std::to_wstring(vTempBuildingIndex);
-		CBuilding* pCore = CCore::Create(m_pGraphicDev, vTempBuildingPos.x, vTempBuildingPos.z, vTempBuildingImgNum, false, m_wsBuildingNameString[vTempBuildingIndex].c_str());
 
-		CGameObject* pGameObject = dynamic_cast<CCore*>(pCore);
+		switch (vTempBuildingImgNum)
+		{
+		case 0:
+			pGameObject = CCore::Create(m_pGraphicDev, { vTempBuildingPos.x, 3.0f, vTempBuildingPos.z });
+			break;
+		case 1:
+			break;
+		case 2:
+			break;
+		}
 		NULL_CHECK_RETURN(pGameObject, E_FAIL);
 		FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsBuildingNameString[vTempBuildingIndex].c_str(), pGameObject), E_FAIL);
-
-		m_vecCore[vTempBuildingIndex] = dynamic_cast<CCore*>(pCore);
-		m_vecUnreachable[vTempBuildingIndex] = true;
 	}
 
 	CloseHandle(m_hFile);

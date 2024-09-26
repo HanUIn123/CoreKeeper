@@ -27,6 +27,8 @@ private:
 	HRESULT			Add_Component();
 	void			SetUp_Light();
 
+private:
+	_int			m_iLightNum;
 public:
 	static CTorch* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos = { 0.f, 0.f, 0.f });
 

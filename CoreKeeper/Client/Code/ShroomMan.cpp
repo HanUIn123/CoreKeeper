@@ -7,11 +7,11 @@
 CShroomMan::CShroomMan(LPDIRECT3DDEVICE9 pGraphicDev)
     : CMonster(pGraphicDev)
 {
-    m_eType = Engine::MON_MUSHROOM;
+    m_eType = Engine::MON_SHROOMMAN;
     m_fIdleY = 1.2f;
     m_eState = IDLE;
     m_bFlip = false;
-    m_fAggroDistance = 14.f;
+    m_fAggroDistance = 6.f;
 }
 
 CShroomMan::~CShroomMan()
@@ -28,7 +28,7 @@ HRESULT CShroomMan::Ready_GameObject(_vec3 vPos)
     m_vecDropItem.push_back(ITEM_BOW);
     m_vecDropItem.push_back(ITEM_SEED);
     m_vecDropItem.push_back(ITEM_WOOD);
-    Set_Speed(0.8f);
+    Set_Speed(1.0f);
     return S_OK;
 }
 
@@ -38,10 +38,13 @@ _int CShroomMan::Update_GameObject(const _float& fTimeDelta)
         return 0;
 
     if (g_bIsTopCamera)
+    {
         if(m_vAttackPoint.x < 0)
             m_eDir = LEFT;
         else
             m_eDir = RIGHT;
+    }
+    
     if (m_eState != DEAD)
         Check_Hitted();
 
@@ -125,11 +128,210 @@ HRESULT CShroomMan::Add_Component()
     NULL_CHECK_RETURN(pComponent, E_FAIL);
     m_mapComponent[ID_STATIC].insert({ L"Com_Texture", pComponent });
 
-    pComponent = m_pColliderCom = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Proto_SlimeCollider"));
+    pComponent = m_pColliderCom = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Proto_ShroomManCollider"));
     NULL_CHECK_RETURN(pComponent, E_FAIL);
     m_mapComponent[ID_DYNAMIC].insert({ L"Com_Collider", pComponent });
 
     return S_OK;
+}
+
+// 일정 시간마다 타일 한칸 이동 or 정지
+void CShroomMan::Pattern_Idle(const _float& fTimeDelta)
+{
+    // 벽 확인 추가할 것
+    if (!m_bIdling)
+    {
+        m_bIdling = true;
+        if (m_iDir)
+        {
+            m_fIdleTimeLimit = rand() % 3 + 1; // 1 ~ 3초
+            m_iDir = 0;
+        }
+        else
+        {
+            m_fIdleTimeLimit = rand() % 4 + 2; // 1 ~ 5초
+            m_iDir = rand() % 8 + 1;
+        }
+    }
+    if (m_fIdleTime <= m_fIdleTimeLimit)
+    {
+        m_fIdleTime += fTimeDelta;
+        _vec3	vLook, vRight;
+        m_pTransformCom->Get_Info(INFO_LOOK, &vLook);
+        m_pTransformCom->Get_Info(INFO_RIGHT, &vRight);
+
+        switch (m_iDir)
+        {
+        case 0:
+            // 정지
+            break;
+        case 1:
+            // 상
+            m_eDir = BACK;
+            m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, m_fSpeed);
+            break;
+        case 2:
+            // 우상
+            m_eDir = RIGHT;
+            m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, m_fDiagSpeed);
+            m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, m_fDiagSpeed);
+            break;
+        case 3:
+            // 우
+            m_eDir = RIGHT;
+            m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, m_fSpeed);
+            break;
+        case 4:
+            // 우하
+            m_eDir = RIGHT;
+            m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, -m_fDiagSpeed);
+            m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, m_fDiagSpeed);
+            break;
+        case 5:
+            // 하
+            m_eDir = FRONT;
+            m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, -m_fSpeed);
+            break;
+        case 6:
+            // 좌하
+            m_eDir = LEFT;
+            m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, -m_fDiagSpeed);
+            m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, -m_fDiagSpeed);
+            break;
+        case 7:
+            // 좌
+            m_eDir = LEFT;
+            m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, -m_fSpeed);
+            break;
+        case 8:
+            // 좌상
+            m_eDir = LEFT;
+            m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, m_fDiagSpeed);
+            m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, -m_fDiagSpeed);
+            break;
+        }
+    }
+    else
+    {
+        m_bIdling = false;
+        m_fIdleTime = 0.f;
+    }
+
+    if (!m_iDir || !g_bIsTopCamera)
+        m_pAnimatorCom->Set_CurState(IDLE, 0, 5, 12);
+    else
+        m_pAnimatorCom->Set_CurState(IDLE, 9, 17, 12);
+}
+
+// 플레이어 방향으로 돌진 설정 및 돌진 준비 애니메이션 재생
+void CShroomMan::Pattern_Chase(const _float& fTimeDelta)
+{
+    Engine::CTransform* pPlayerTransform = dynamic_cast<Engine::CTransform*>
+        (Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Transform"));
+    NULL_CHECK(pPlayerTransform);
+
+    _vec3		vPlayerPos, vPos;
+    pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
+    m_pTransformCom->Get_Info(INFO_POS, &vPos);
+
+    m_pAnimatorCom->Set_CurState(WALK, 27, 33, 8);
+    if (m_pAnimatorCom->Get_MotionEnd())
+    {
+        m_fAttackDistance = 0.f;
+        m_bAttackFailed = false;
+        m_bAttackSuccess = false;
+        m_fAttackTime = 0.f;
+        m_vAttackPoint = vPlayerPos - vPos;
+        D3DXVec3Normalize(&m_vAttackPoint, &m_vAttackPoint);
+        m_vAttackPoint.y = 0.f;
+        m_eState = SWING;
+    }
+}
+
+// 돌진 및 돌진(걷기) 애니메이션 재생
+void CShroomMan::Pattern_Attack(const _float& fTimeDelta)
+{
+    _vec3		vPos, vPlayerPos;
+    m_pTransformCom->Get_Info(INFO_POS, &vPos);
+    Engine::CTransform* pPlayerTransform = dynamic_cast<Engine::CTransform*>
+        (Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Transform"));
+    NULL_CHECK(pPlayerTransform);
+    pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
+
+    // 일정 스피드 이상일 때 충돌 처리
+    if (m_fAttackTime > 0.2f)
+    {
+        Engine::CCollider* pPlayerCollider = dynamic_cast<Engine::CCollider*>
+            (Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Collider"));
+        // 플레이어 충돌 시 공격 성공
+        if (m_pColliderCom->Check_Collision(pPlayerCollider))
+        {
+            m_bAttackSuccess = true;
+            dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"))
+                ->Set_KnockBack(vPos, m_pStateCom->Get_Stat()->iAttack);
+        }
+        // 벽 충돌 추가하기
+    }
+    // 공격 중 : 돌진
+    if (!m_bAttackSuccess)
+    {
+        // 가속
+        if (m_fAttackDistance < 6.f)
+        {
+            m_fAttackTime += fTimeDelta * 1.5f;
+            m_pAnimatorCom->Set_CurState(SWING, 9, 17, 3);
+            m_pTransformCom->Move_Pos(&m_vAttackPoint, m_fAttackTime * 0.08f, m_fSpeed);
+            m_fAttackDistance += m_fSpeed * m_fAttackTime * 0.08f;
+        }
+        // 감속
+        else
+        {
+            if (m_fAttackDistance < 8.f)
+                m_fAttackTime -= fTimeDelta * 2;
+            m_pAnimatorCom->Set_CurState(SWING, 9, 17, 3);
+            m_pTransformCom->Move_Pos(&m_vAttackPoint, m_fAttackTime * 0.1f, m_fSpeed);
+            m_fAttackDistance += m_fSpeed * m_fAttackTime * 0.1f;
+        }
+        // 정지
+        if (m_fAttackDistance > 12.f)
+            m_bAttackFailed = true;
+    }
+    // 공격 성공 : 엉덩방아
+    else
+    {
+        m_pAnimatorCom->Set_CurState(SWING, 36, 44, 6);
+        if (m_pAnimatorCom->Get_MotionEnd())
+        {
+            if (m_pCalculatorCom->Check_Distance2D(&vPlayerPos, &vPos, 12.f))
+                m_eState = WALK;
+            else
+            {
+                m_eState = IDLE;
+                m_iDir = 1;
+            }
+        }
+    }
+
+    if (m_bAttackFailed)
+    {
+        if (m_pCalculatorCom->Check_Distance2D(&vPlayerPos, &vPos, 12.f))
+            m_eState = WALK;
+        else
+        {
+            m_eState = IDLE;
+            m_iDir = 1;
+        }
+    }
+}
+
+void CShroomMan::Pattern_Dead()
+{
+    m_pAnimatorCom->Set_CurState(DEAD, 40, 44, 4);
+    if (m_pAnimatorCom->Get_MotionEnd())
+    {
+        m_bStopDraw = true;
+        Drop_Item();
+    }
 }
 
 STATE CShroomMan::State_Change()
@@ -141,6 +343,7 @@ STATE CShroomMan::State_Change()
         _vec3 vPlayerPos, vPos;
         dynamic_cast<CTransform*>(pPlayer->Get_Component(ID_DYNAMIC, L"Com_Transform"))->Get_Info(INFO_POS, &vPlayerPos);
         m_pTransformCom->Get_Info(INFO_POS, &vPos);
+
         // 플레이어가 무기를 들고 공격하는 상태면 충돌 체크
         if (pPlayer->Get_CurState() == SWING)
         {
@@ -148,36 +351,18 @@ STATE CShroomMan::State_Change()
             if (m_pColliderCom->Check_Collision(pWeaponCollider))
             {
                 // 무기와 충돌 했는데 공격 범위 이내인 경우
-                if (m_pCalculatorCom->Check_Distance2D(&vPlayerPos, &vPos, 5.f))
+                if (m_pCalculatorCom->Check_Distance2D(&vPlayerPos, &vPos, m_fAggroDistance))
                     return SWING;
                 // 공격 범위 밖인 경우
                 else
                     return WALK;
             }
         }
-        // 플레이어가 일정 범위 내에 들어올 경우(선공)
+        // 플레이어가 어그로 범위 내에 들어올 경우(선공)
         if (m_pCalculatorCom->Check_Distance2D(&vPlayerPos, &vPos, m_fAggroDistance))
             return WALK;
     }
     return m_eState;
-}
-
-void CShroomMan::Flip()
-{
-    if (m_eDir == LEFT && !m_bFlip)
-    {
-        m_bFlip = true;
-        _vec3 vSize;
-        vSize = *(m_pTransformCom->Get_Scale());
-        m_pTransformCom->Set_Scale(-vSize.x, vSize.y, vSize.z);
-    }
-    if (m_eDir != LEFT && m_bFlip)
-    {
-        m_bFlip = false;
-        _vec3 vSize;
-        vSize = *(m_pTransformCom->Get_Scale());
-        m_pTransformCom->Set_Scale(-vSize.x, vSize.y, vSize.z);
-    }
 }
 
 CShroomMan* CShroomMan::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)

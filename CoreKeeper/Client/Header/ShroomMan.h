@@ -13,12 +13,12 @@ public:
 
 private:
 	HRESULT			Add_Component();
-	STATE			State_Change();
-	void			Flip();
 
-private:
-	_bool			m_bFlip;
-	_float			m_fAggroDistance;
+	void			Pattern_Idle(const _float& fTimeDelta) override;
+	void			Pattern_Chase(const _float& fTimeDelta) override;
+	void			Pattern_Attack(const _float& fTimeDelta) override;
+	void			Pattern_Dead() override;
+	STATE			State_Change() override;
 
 public:
 	static CShroomMan* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);

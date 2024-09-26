@@ -14,12 +14,17 @@ public:
 
 private:
 	HRESULT			Add_Component();
-	STATE			State_Change();
+
+	void			Pattern_Idle(const _float& fTimeDelta) override;
+	void			Pattern_Chase(const _float& fTimeDelta) override;
+	void			Pattern_Attack(const _float& fTimeDelta) override;
+	void			Pattern_Dead() override;
+	STATE			State_Change() override;
 
 public:
-	static CSlime* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);
+	static	CSlime*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);
 
 private:
-	virtual void		Free();
+	virtual void	Free();
 };
 

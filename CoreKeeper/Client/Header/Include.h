@@ -36,14 +36,12 @@
 // Etc
 #include "Terrain.h"
 #include "SkyBox.h"
-
-#include "Tile.h"
 #include "Wall.h"
 
 // Object
 #include "Core.h"
+#include "Statue.h"
 #include "CoreBase.h"
-#include "SpawnPoint.h"
 
 
 // UI

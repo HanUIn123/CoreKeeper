@@ -10,6 +10,7 @@ CWall::CWall(LPDIRECT3DDEVICE9 pGraphicDev)
     , m_pBufferCom(nullptr)
     , m_bIsUpWall(false)
     , m_bActive(true)
+    , m_iCurImgNum(0)
 {
     m_vecAroundWall.resize(8);
 }
@@ -85,7 +86,8 @@ void CWall::Render_GameObject()
 
     FAILED_CHECK_RETURN(Setup_Material(), );
 
-    m_pTextureCom->Set_Texture(m_iWallImageNum);
+    m_pTextureCom->Set_Texture(m_iCurImgNum);
+    //m_pTextureCom->Set_Texture(2);
 
     if (m_bActive)
     {
@@ -107,7 +109,7 @@ HRESULT CWall::Add_Component()
     NULL_CHECK_RETURN(pComponent, E_FAIL);
     m_mapComponent[ID_STATIC].insert({ L"Com_Buffer", pComponent });
 
-    pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_WallCube"));
+    pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_DarkWallCube"));
     NULL_CHECK_RETURN(pComponent, E_FAIL);
     m_mapComponent[ID_STATIC].insert({ L"Com_Texture", pComponent });
 
@@ -145,7 +147,7 @@ HRESULT CWall::Setup_Material()
 
 void CWall::Update_Texture()
 {
-    int wallMask = 0; 
+    int wallMask = 0;
 
     //각 방향에 대해 벽 포인터를 확인
     for (int dir = 0; dir < 8; dir++)
@@ -159,177 +161,255 @@ void CWall::Update_Texture()
 
     switch (0b01010101 & wallMask)
     {
-    // 상하좌우에 모두 벽이 없음
-    case 0b00000000: 
-        m_iWallImageNum = 0;
+        // 상하좌우에 모두 벽이 없음
+    case 0b00000000:
+        m_iCurImgNum = m_iWallImageNum;
         break;
 
-    // 좌 상 우 하
+        // 좌 상 우 하
     case 0b00000001:
-        m_iWallImageNum = 1;
-        //회전!
+        m_iCurImgNum = m_iWallImageNum + 1;
+        m_pTransformCom->Set_Angle(0.f, D3DXToRadian(90.f), 0.f);
         break;
     case 0b00000100:
-        m_iWallImageNum = 1;
+        m_iCurImgNum = m_iWallImageNum + 1;
         break;
     case 0b00010000:
-        m_iWallImageNum = 1;
+        m_iCurImgNum = m_iWallImageNum + 1;
+        m_pTransformCom->Set_Angle(0.f, D3DXToRadian(-90.f), 0.f);
         break;
     case 0b01000000:
-        m_iWallImageNum = 1;
+        m_iCurImgNum = m_iWallImageNum + 1;
+        m_pTransformCom->Set_Angle(0.f, D3DXToRadian(180.f), 0.f);
         break;
 
-    // 상하
+        // 상하
     case 0b00010001:
-        m_iWallImageNum = 2;
+        m_iCurImgNum = m_iWallImageNum + 2;
+        m_pTransformCom->Set_Angle(0.f, D3DXToRadian(90.f), 0.f);
         break;
-    // 좌우
+        // 좌우
     case 0b01000100:
-        m_iWallImageNum = 2;
+        m_iCurImgNum = m_iWallImageNum + 2;
         break;
-    // 우 하
+
+        // 우 하
     case 0b00000101:
         if ((wallMask & 0b00000111) == 0b00000111)
         {
-            // 사이에 대각선 있다
+            m_iCurImgNum = m_iWallImageNum + 4;
         }
         else
         {
-            // 대각선 없다
+            m_iCurImgNum = m_iWallImageNum + 3;
         }
         break;
-    // 상 우
+        // 상 우
     case 0b00010100:
         if ((wallMask & 0b00011100) == 0b00011100)
         {
-            // 사이에 대각선 있다
+            m_iCurImgNum = m_iWallImageNum + 4;
+            m_pTransformCom->Set_Angle(0.f, D3DXToRadian(-90.f), 0.f);
         }
         else
         {
-            // 대각선 없다
+            m_iCurImgNum = m_iWallImageNum + 3;
+            m_pTransformCom->Set_Angle(0.f, D3DXToRadian(-90.f), 0.f);
         }
         break;
-    // 좌 상
+        // 좌 상
     case 0b01010000:
         if ((wallMask & 0b01110000) == 0b01110000)
         {
-            // 사이에 대각선 있다
+            m_iCurImgNum = m_iWallImageNum + 4;
         }
         else
         {
-            // 대각선 없다
+            m_iCurImgNum = m_iWallImageNum + 3;
         }
+        m_pTransformCom->Set_Angle(0.f, D3DXToRadian(180.f), 0.f);
         break;
-    // 좌 하
+        // 좌 하
     case 0b01000001:
         if ((wallMask & 0b11000001) == 0b11000001)
         {
-            // 사이에 대각선 있다
+            m_iCurImgNum = m_iWallImageNum + 4;
         }
         else
         {
-            // 대각선 없다
+            m_iCurImgNum = m_iWallImageNum + 3;
         }
+        m_pTransformCom->Set_Angle(0.f, D3DXToRadian(90.f), 0.f);
         break;
-    // 상 우 하
+
+        // 상 우 하
     case 0b00010101:
         if ((wallMask & 0b00011111) == 0b00011111)
         {
-            // 사이에 대각선이 두개 다 있다
+            m_iCurImgNum = m_iWallImageNum + 7;
+            m_pTransformCom->Set_Angle(0.f, D3DXToRadian(180.f), 0.f);
         }
-        else if((wallMask & 0b00010111) == 0b00010111)
+        else if ((wallMask & 0b00010111) == 0b00010111)
         {
-            // 사이에 대각선이 하나
+            m_iCurImgNum = m_iWallImageNum + 8;
         }
         else if ((wallMask & 0b00011101) == 0b00011101)
         {
-            
+            m_iCurImgNum = m_iWallImageNum + 6;
+            m_pTransformCom->Set_Angle(0.f, D3DXToRadian(-90.f), 0.f);
         }
         else
         {
-            // 대각선 없다
+            m_iCurImgNum = m_iWallImageNum + 5;
+            m_pTransformCom->Set_Angle(0.f, D3DXToRadian(-90.f), 0.f);
         }
         break;
-    //좌 상 우
+        //좌 상 우
     case 0b01010100:
         if ((wallMask & 0b01111100) == 0b01111100)
         {
-            // 사이에 대각선이 두개 다 있다
-        }
-        else if ((wallMask & 0b01110100) == 0b01110100)
-        {
-            // 사이에 대각선이 하나
+            m_iCurImgNum = m_iWallImageNum + 7;
+            m_pTransformCom->Set_Angle(0.f, D3DXToRadian(90.f), 0.f);
         }
         else if ((wallMask & 0b01011100) == 0b01011100)
         {
-
+            m_iCurImgNum = m_iWallImageNum + 8;
+            m_pTransformCom->Set_Angle(0.f, D3DXToRadian(90.f), 0.f);
+        }
+        else if ((wallMask & 0b01110100) == 0b01110100)
+        {
+            m_iCurImgNum = m_iWallImageNum + 6;
         }
         else
         {
-            // 대각선 없다
+            m_iCurImgNum = m_iWallImageNum + 5;
         }
         break;
-    // 좌 상 하
+        // 좌 상 하
     case 0b01010001:
         if ((wallMask & 0b11110001) == 0b11110001)
         {
-            // 사이에 대각선이 두개 다 있다
+            m_iCurImgNum = m_iWallImageNum + 7;
         }
         else if ((wallMask & 0b11010001) == 0b11010001)
         {
-            // 사이에 대각선이 하나
+            m_iCurImgNum = m_iWallImageNum + 6;
+            m_pTransformCom->Set_Angle(0.f, D3DXToRadian(90.f), 0.f);
         }
         else if ((wallMask & 0b01110001) == 0b01110001)
         {
-
+            m_iCurImgNum = m_iWallImageNum + 8;
+            m_pTransformCom->Set_Angle(0.f, D3DXToRadian(180.f), 0.f);
         }
         else
         {
-            // 대각선 없다
+            m_iCurImgNum = m_iWallImageNum + 5;
+            m_pTransformCom->Set_Angle(0.f, D3DXToRadian(90.f), 0.f);
         }
         break;
-    // 좌 우 하
+        // 좌 우 하
     case 0b01000101:
         if ((wallMask & 0b11000111) == 0b11000111)
         {
-            // 사이에 대각선이 두개 다 있다
+            m_iCurImgNum = m_iWallImageNum + 7;
+            m_pTransformCom->Set_Angle(0.f, D3DXToRadian(-90.f), 0.f);
         }
         else if ((wallMask & 0b01000111) == 0b01000111)
         {
-            // 사이에 대각선이 하나
+            m_iCurImgNum = m_iWallImageNum + 6;
+            m_pTransformCom->Set_Angle(0.f, D3DXToRadian(-90.f), 0.f);
         }
         else if ((wallMask & 0b11000101) == 0b11000101)
         {
-
+            m_iCurImgNum = m_iWallImageNum + 8;
+            m_pTransformCom->Set_Angle(0.f, D3DXToRadian(180.f), 0.f);
         }
         else
         {
-            // 대각선 없다
+            m_iCurImgNum = m_iWallImageNum + 5;
+            m_pTransformCom->Set_Angle(0.f, D3DXToRadian(90.f), 0.f);
         }
         break;
 
-    // 상 하 좌 우가 다 있음!
+        // 상 하 좌 우가 다 있음!
     case 0b01010101:
         if (wallMask == 0b01010101)
         {
-            // 상하좌우만 있음
+            m_iCurImgNum = m_iWallImageNum + 9;
         }
-        else if (wallMask == 0b01010101)
+        // 대각선 1개
+        else if (wallMask == 0b01010111)
         {
-            // 대각선 1개
+            m_iCurImgNum = m_iWallImageNum + 10;
         }
-        else if (wallMask == 0b01010101)
+        else if (wallMask == 0b01011101)
         {
-            // 대각선 2개
+            m_iCurImgNum = m_iWallImageNum + 10;
+            m_pTransformCom->Set_Angle(0.f, D3DXToRadian(90.f), 0.f);
         }
-        else if (wallMask == 0b01010101)
+        else if (wallMask == 0b01110101)
         {
-            // 대각선 3개
+            m_iCurImgNum = m_iWallImageNum + 10;
+            m_pTransformCom->Set_Angle(0.f, D3DXToRadian(180.f), 0.f);
         }
+        else if (wallMask == 0b11010101)
+        {
+            m_iCurImgNum = m_iWallImageNum + 10;
+            m_pTransformCom->Set_Angle(0.f, D3DXToRadian(-90.f), 0.f);
+        }
+        // 대각선 2개
+        else if (wallMask == 0b01011111)
+        {
+            m_iCurImgNum = m_iWallImageNum + 11;
+            m_pTransformCom->Set_Angle(0.f, D3DXToRadian(90.f), 0.f);
+        }
+        else if (wallMask == 0b01111101)
+        {
+            m_iCurImgNum = m_iWallImageNum + 11;
+            m_pTransformCom->Set_Angle(0.f, D3DXToRadian(180.f), 0.f);
+        }
+        else if (wallMask == 0b11110101)
+        {
+            m_iCurImgNum = m_iWallImageNum + 11;
+            m_pTransformCom->Set_Angle(0.f, D3DXToRadian(-90.f), 0.f);
+        }
+        else if (wallMask == 0b11010111)
+        {
+            m_iCurImgNum = m_iWallImageNum + 11;
+        }
+        else if (wallMask == 0b01110111)
+        {
+            m_iCurImgNum = m_iWallImageNum + 12;
+            m_pTransformCom->Set_Angle(0.f, D3DXToRadian(90.f), 0.f);
+        }
+        else if (wallMask == 0b11011101)
+        {
+            m_iCurImgNum = m_iWallImageNum + 12;
+        }
+        // 대각선 3개
+        else if (wallMask == 0b11111101)
+        {
+            m_iCurImgNum = m_iWallImageNum + 13;
+            m_pTransformCom->Set_Angle(0.f, D3DXToRadian(180.f), 0.f);
+        }
+        else if (wallMask == 0b11110111)
+        {
+            m_iCurImgNum = m_iWallImageNum + 13;
+            m_pTransformCom->Set_Angle(0.f, D3DXToRadian(-90.f), 0.f);
+        }
+        else if (wallMask == 0b11011111)
+        {
+            m_iCurImgNum = m_iWallImageNum + 13;
+        }
+        else if (wallMask == 0b01111111)
+        {
+            m_iCurImgNum = m_iWallImageNum + 13;
+            m_pTransformCom->Set_Angle(0.f, D3DXToRadian(90.f), 0.f);
+        }
+        // 전부!
         else if (wallMask == 0b11111111)
         {
-            //전부!
-            //m_iWallImageNum = 8;
+            m_iCurImgNum = m_iWallImageNum + 14;
         }
         break;
     default:

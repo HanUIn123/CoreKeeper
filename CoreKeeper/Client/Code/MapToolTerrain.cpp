@@ -10,6 +10,7 @@ CMapToolTerrain::CMapToolTerrain(LPDIRECT3DDEVICE9 pGraphicDev)
 {
     m_vecTextureNumber.resize((VTXCNTX-1) * (VTXCNTZ-1));
     m_vecUnreachable.resize((VTXCNTX - 1) * (VTXCNTZ - 1));
+
 }
 
 CMapToolTerrain::~CMapToolTerrain()
