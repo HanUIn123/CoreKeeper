@@ -1,6 +1,9 @@
 #pragma once
 #include "GameObject.h"
 #include "Define.h"
+#include "..\Header\Player.h"
+#include "Export_System.h"
+#include "Export_Utility.h"
 
 BEGIN(Engine)
 
@@ -29,7 +32,13 @@ public:
 		if (m_bWindow)
 			m_bWindow = false;
 		else
+		{
 			m_bWindow = true;
+
+			CState* pPlayerStat = dynamic_cast<CState*>(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_State"));
+			m_pStat = pPlayerStat->Get_Stat();
+
+		}
 	}
 
 	void           Set_WindowDis() {
@@ -50,6 +59,8 @@ private:
 	_bool m_bCollapse;
 
 	RECT m_BRect;
+
+	const STAT* m_pStat;
 
 private:
 	Engine::CRcTex* m_pBufferCom;

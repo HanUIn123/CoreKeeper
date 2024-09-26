@@ -112,6 +112,9 @@
     <Filter Include="04. Component\08. Particles\00. Firework">
       <UniqueIdentifier>{40f109a9-df3c-4343-9f38-18774ff71fda}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04. Component\08. Particles\01. Fall">
+      <UniqueIdentifier>{e8c592f1-9a2d-49ff-b8be-ca3131891efb}</UniqueIdentifier>
+	</Filter>
     <Filter Include="04. Component\00. VIBuffer\09. ObjectTex">
       <UniqueIdentifier>{01ec1065-4ffb-4c20-b46d-c5ede4923528}</UniqueIdentifier>
     </Filter>
@@ -219,6 +222,9 @@
     <ClCompile Include="..\Code\PSystem.cpp">
       <Filter>04. Component\08. Particles</Filter>
     </ClCompile>
+    <ClCompile Include="..\Code\Fall.cpp">
+      <Filter>04. Component\08. Particles\01. Fall</Filter>
+	</ClCompile>
     <ClCompile Include="..\Code\ObjectTex.cpp">
       <Filter>04. Component\00. VIBuffer\09. ObjectTex</Filter>
     </ClCompile>
@@ -329,6 +335,9 @@
     <ClInclude Include="..\..\Header\PSystem.h">
       <Filter>04. Component\08. Particles</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Header\Fall.h">
+      <Filter>04. Component\08. Particles\01. Fall</Filter>
+	</ClInclude>
     <ClInclude Include="..\..\Header\ObjectTex.h">
       <Filter>04. Component\00. VIBuffer\09. ObjectTex</Filter>
     </ClInclude>

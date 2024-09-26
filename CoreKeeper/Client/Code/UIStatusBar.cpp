@@ -34,8 +34,8 @@ HRESULT CUIStatusBar::Ready_GameObject(_vec2 vPos, _vec2 vSize, const _uint iInd
 
 	m_BRect.left = _long(vPos.x - vSize.x / 2);
 	m_BRect.right = _long(vPos.x + vSize.x / 2);
-	m_BRect.top = _long(vPos.y - vSize.y / 2);
-	m_BRect.bottom = _long(vPos.y + vSize.y / 2);
+	m_BRect.top = _long(vPos.y - vSize.y);
+	m_BRect.bottom = _long(vPos.y + vSize.y);
 
 	m_iIndex = iIndex;
 

@@ -29,10 +29,10 @@ HRESULT CUIPlayerStatus::Ready_GameObject(_vec2 vPos, _vec2 vSize)
 	m_pTransformCom->Set_Scale(vSize.x, vSize.y , 1.f);
 	m_pTransformCom->Set_Pos(x, y, 0);
 
-	m_bRect.left = vPos.x - vSize.x / 2;
-	m_bRect.right = vPos.x + vSize.x / 2;
-	m_bRect.top = vPos.y - vSize.y / 2;
-	m_bRect.bottom = vPos.y + vSize.y / 2;
+	m_bRect.left = vPos.x - vSize.x;
+	m_bRect.right = vPos.x + vSize.x;
+	m_bRect.top = vPos.y - vSize.y;
+	m_bRect.bottom = vPos.y + vSize.y;
 
 	return S_OK;
 }

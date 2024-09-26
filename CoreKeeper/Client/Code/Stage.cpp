@@ -517,8 +517,8 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_StatusFrame", pGameObject), E_FAIL);
 
-	vPos = { WINCX / 2.f, WINCY / 2.f };
-	vSize = { 130.f, 150.f };
+	vPos = { 1000.f, 510.f };
+	vSize = { 250.f, 180.f };
 
 	pGameObject = CUIItemFrame::Create(m_pGraphicDev, vPos, vSize);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);

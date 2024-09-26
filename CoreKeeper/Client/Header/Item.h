@@ -72,6 +72,11 @@ public:
 	void				Set_Swing(DIRECTION eDir, bool bSwing) { m_eDir = eDir; m_bSwing = bSwing; }
 	void				Set_Follow(bool bFollow = true) { m_bFollow = bFollow; }
 
+	//아이템 설명창
+	const wstring*      Get_Explain() { return m_wItemExplain; }
+	const wstring       Get_Meterial() { return m_wItemMetrial; }
+	_bool               Get_UseMet() { return m_bMeterial; }
+
 public: // UI에서 가져갈 Component들
  	CAnimTex*			Get_Buffer() { return m_pBufferCom; }
 	CTexture*			Get_Texture() { return m_pTextureCom; }
@@ -101,4 +106,10 @@ protected:
 	STAT		m_tStat;
 	ITEMNUM		m_eItemNum;
 	DIRECTION	m_eDir;
+
+	//아이템 설명
+	wstring m_wItemExplain[30];
+	wstring m_wItemMetrial;
+
+	_bool   m_bMeterial;
 };

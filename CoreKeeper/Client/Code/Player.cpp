@@ -5,7 +5,7 @@
 #include "..\Header\UIStatusBar.h"
 #include "..\Header\Sword.h"
 
-#include "..\Header\UIPlayerCraft.h" // UI Ìó§Îçî Ï∂îÍ∞Ä
+#include "..\Header\UIPlayerCraft.h" // UI «Ï¥ı √ﬂ∞°
 #include "..\Header\UIScreenIcon.h"
 #include "..\Header\UIScreenInv.h"
 #include "..\Header\UIInventory.h"
@@ -56,6 +56,9 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	m_vRespawnPoint = { VTXCNTX * 0.5f, 0, VTXCNTZ * 0.5f };
 
 	m_bRespawned = false;
+
+	m_bBleed = false;
+	m_fBleedTime = 0.f;
 }
 
 CPlayer::~CPlayer()
@@ -70,7 +73,7 @@ HRESULT CPlayer::Ready_GameObject()
 	m_pStateCom->Set_Stat(m_tBasicStat.iMaxHp, m_tBasicStat.iMaxMp, m_tBasicStat.iAttack, m_tBasicStat.iDefense);
 	m_pEquipInventoryCom->Set_SlotCount(10);
 
-	m_pFireParticleCom->init(L"../Bin/Resource/Texture/Particle/flare.bmp"); // ÌååÌã∞ÌÅ¥ ÏãúÏûë
+	m_pFireParticleCom->init(L"../Bin/Resource/Texture/Particle/flare.bmp"); // ∆ƒ∆º≈¨ Ω√¿€
 
 	return S_OK;
 }
@@ -87,7 +90,7 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 		Show_Equipment();
 	Set_EquippedStatus();
 
-	if (!m_bNoMove && !m_bInventory && !m_bCraft && !m_bMap) // m_bNoMove -> UICursorÏóêÏÑú Ï†ÅÏö©
+	if (!m_bNoMove && !m_bInventory && !m_bCraft && !m_bMap) // m_bNoMove -> UICursorø°º≠ ¿˚øÎ
 		Mouse_Click();
 	else
 		m_bSwing = false;
@@ -121,17 +124,17 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 	}
 
 	Flip();
+
 	if (!m_bRespawned)
 	{
 		m_bRespawned = true;
 		m_pTransformCom->Set_Pos(m_vRespawnPoint.x, m_fFirstY, m_vRespawnPoint.z);
 	}
+
 	m_pAnimatorCom->Update_Animation();
 	m_pColliderCom->Update_Collider(m_pTransformCom->Get_WorldMatrix());
-	m_pFireParticleCom->update(fTimeDelta); // ÌååÌã∞ÌÅ¥ ÏóÖÎç∞Ïù¥Ìä∏
 
-	if (m_pFireParticleCom->isDead()) // ÌååÌã∞ÌÅ¥ Ï£ΩÏùå
-		m_pFireParticleCom->reset();
+	Particle_Update(fTimeDelta);
 
 	Add_RenderGroup(RENDER_ALPHA, this);
 
@@ -158,7 +161,9 @@ void CPlayer::Render_GameObject()
 	m_pBufferCom->Render_Buffer();
 	m_pColliderCom->Render_Collider();
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
-	m_pFireParticleCom->render(); // ÌååÌã∞ÌÅ¥ Î†åÎçî
+
+	if(m_bBleed)
+	   m_pFireParticleCom->render(); // ∆ƒ∆º≈¨ ∑ª¥ı
 }
 
 HRESULT CPlayer::Add_Component()
@@ -201,9 +206,9 @@ HRESULT CPlayer::Add_Component()
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_EquipInventory", pComponent });
 
-	pComponent = m_pFireParticleCom = dynamic_cast<CFirework*>(Engine::Clone_Proto(L"Proto_Firework"));
+	pComponent = m_pFireParticleCom = dynamic_cast<CFall*>(Engine::Clone_Proto(L"Proto_Fall"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
-	m_mapComponent[ID_DYNAMIC].insert({ L"Com_Firework", pComponent });
+	m_mapComponent[ID_DYNAMIC].insert({ L"Com_Fall", pComponent });
 	///m_pFireParticleCom
 	return S_OK;
 }
@@ -292,10 +297,10 @@ void CPlayer::Mouse_Click()
 					break;
 				case ITEM_BOW:
 				case ITEM_STAFF:
-					// Ìà¨ÏÇ¨Ï≤¥ Î∞úÏÇ¨
+					// ≈ıªÁ√º πﬂªÁ
 					break;
 				case ITEM_SEED:
-					// ÎÜçÏÇ¨
+					// ≥ÛªÁ
 					break;
 				default:
 					break;
@@ -349,16 +354,16 @@ void CPlayer::Mouse_Direction()
 	float diagLBtoRT = -((float)WINCY / WINCX * ptMouse.x) + WINCY - ptMouse.y;
 	float diagLTtoRB = ((float)WINCY / WINCX * ptMouse.x) - ptMouse.y;
 
-	// Ïö∞Ï∏°
+	// øÏ√¯
 	if (diagLBtoRT < 0 && diagLTtoRB > 0)
 		m_eDir = RIGHT;
-	// ÌïòÎã®
+	// «œ¥‹
 	else if (diagLBtoRT <= 0 && diagLTtoRB <= 0)
 		m_eDir = FRONT;
-	// Ï¢åÏ∏°
+	// ¡¬√¯
 	else if (diagLBtoRT >= 0 && diagLTtoRB <= 0)
 		m_eDir = LEFT;
-	// ÏÉÅÎã®
+	// ªÛ¥‹
 	else if (diagLBtoRT >= 0 && diagLTtoRB >= 0)
 		m_eDir = BACK;
 }
@@ -510,7 +515,7 @@ void CPlayer::Show_Equipment()
 			(*iter)->Set_Active(false);
 		}
 	}
-	// Î¨¥Í∏∞(ÏÜê)
+	// π´±‚(º’)
 	if (m_pHandedItem)
 	{
 		m_tEquipmentStat.iAttack = m_pHandedItem->Get_Stat()->iAttack;
@@ -564,7 +569,7 @@ void CPlayer::Show_Equipment()
 		}
 	}
 
-	// Î∞©Ïñ¥Íµ¨
+	// πÊæÓ±∏
 	CItem* pArmor;
 	ZeroMemory(&m_tEquipmentStat, sizeof(STAT));
 	for (_int i = 0; i < CUIItemSlot::SLOT_END; i++)
@@ -682,19 +687,19 @@ void CPlayer::Set_UI()
 		(Engine::Get_GameObject(L"Layer_UI", L"UI_Health"));
 	NULL_CHECK_RETURN(pHp);
 
-	pHp->Set_InfoH(m_pStateCom->Get_Stat()->iHp, m_pStateCom->Get_Stat()->iMaxHp); // (Ï≤¥Î†• , ÏµúÎåÄÏ≤¥Î†•)
+	pHp->Set_InfoH(m_pStateCom->Get_Stat()->iHp, m_pStateCom->Get_Stat()->iMaxHp); // (Ï≤¥Î†• , ÏµúÎ?Ï≤¥Î†•)
 
 	CUIStatusBar* pMp = dynamic_cast<CUIStatusBar*>
 		(Engine::Get_GameObject(L"Layer_UI", L"UI_Mp"));
 	NULL_CHECK_RETURN(pMp);
 
-	pMp->Set_InfoH(m_pStateCom->Get_Stat()->iMp, m_pStateCom->Get_Stat()->iMaxMp); // (ÎßàÎÇò , ÏµúÎåÄÎßàÎÇò)
+	pMp->Set_InfoH(m_pStateCom->Get_Stat()->iMp, m_pStateCom->Get_Stat()->iMaxMp); // (ÎßàÎÇò , ÏµúÎ?ÎßàÎÇò)
 
 	CUIStatusBar* pHunger = dynamic_cast<CUIStatusBar*>
 		(Engine::Get_GameObject(L"Layer_UI", L"UI_Hunger"));
 	NULL_CHECK_RETURN(pMp);
 
-	pHunger->Set_InfoH(m_pStateCom->Get_Stat()->iMp, m_pStateCom->Get_Stat()->iMaxMp); // (Î∞∞Í≥†Ìîî , ÏµúÎåÄÎ∞∞Í≥†Ìîî)
+	pHunger->Set_InfoH(m_pStateCom->Get_Stat()->iMp, m_pStateCom->Get_Stat()->iMaxMp); // (Î∞∞Í≥†??, ÏµúÎ?Î∞∞Í≥†??
 
 	if (Engine::Get_DIMouseMove(DIMS_Z) && !m_bInventory)
 	{
@@ -753,7 +758,7 @@ void CPlayer::Set_UI()
 	{
 		CUIBuff* pBuff = dynamic_cast<CUIBuff*>(Engine::Get_GameObject(L"Layer_UI", L"UI_Buff0")); 
 
-		pBuff->Set_Window(CUIBuff::BUFF_HEAL, CUIBuff::BUFF, 200.f); // (Î≤ÑÌîÑ Ï¢ÖÎ•ò, Î≤ÑÌîÑÏ∞ΩÏù∏ÏßÄ ÎîîÎ≤ÑÌîÑÏ∞ΩÏù∏ÏßÄ Í≤∞Ï†ï, ÏãúÍ∞Ñ)
+		pBuff->Set_Window(CUIBuff::BUFF_HEAL, CUIBuff::BUFF, 200.f); // (Î≤ÑÌîÑ Ï¢ÖÎ•ò, Î≤ÑÌîÑÏ∞ΩÏù∏ÏßÄ ?îÎ≤Ñ?ÑÏ∞Ω?∏Ï? Í≤∞Ï†ï, ?úÍ∞Ñ)
 
 		CUIBuff* pDeBuff = dynamic_cast<CUIBuff*>(Engine::Get_GameObject(L"Layer_UI", L"UI_DeBuff0"));
 
@@ -888,6 +893,24 @@ void CPlayer::Set_Status()
 
 }
 
+void CPlayer::Particle_Update(_float fTimeDelta)
+{
+	if (m_bBleed)
+	{
+		m_pFireParticleCom->update(fTimeDelta); // ∆ƒ∆º≈¨ æ˜µ•¿Ã∆Æ
+
+		m_fBleedTime += fTimeDelta;
+	}
+
+	if (m_bBleed && m_pFireParticleCom->isDead())
+	{
+		m_fBleedTime = 0.f;
+		m_bBleed = false;
+
+		m_pFireParticleCom->reset();
+	}
+}
+
 void CPlayer::Set_KnockBack(_vec3 vEnemyPos, _int iDamage, _float fDist)
 {
 	_vec3 vPos;
@@ -921,6 +944,15 @@ void CPlayer::KnockBack(const _float& fTimeDelta)
 			return;
 		}
 		m_pTransformCom->Move_Pos(&m_vKnockBackDir, fTimeDelta, m_fSpeed * (m_fKnockBackDist / fLength));
+
+		// ««∞›Ω√ ∆ƒ∆º≈¨ ∏Æº¬??
+
+		if (!m_bBleed)
+		{
+			m_pFireParticleCom->reset();
+
+			m_bBleed = true;
+		}
 	}
 }
 
