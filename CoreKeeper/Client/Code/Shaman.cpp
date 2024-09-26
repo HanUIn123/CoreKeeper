@@ -9,7 +9,7 @@ CShaman::CShaman(LPDIRECT3DDEVICE9 pGraphicDev)
     : CMonster(pGraphicDev)
 {
     m_eType = Engine::MON_SHAMAN;
-    m_fIdleY = 0.6f;
+    m_fIdleY = 0.8f;
     m_eState = IDLE;
 
     m_bFlip = false;
@@ -27,6 +27,9 @@ CShaman::CShaman(LPDIRECT3DDEVICE9 pGraphicDev)
 
     m_bLightEnable = true;
     m_iLightNum = g_iLightNum++;
+
+    m_iCurNumber = 0;
+    m_vecProjectileName.reserve(20);
 }
 
 CShaman::~CShaman()
@@ -241,7 +244,7 @@ void CShaman::Pattern_Idle(const _float& fTimeDelta)
         m_eDir = FRONT;
 
     // 이동 상태 애니메이션
-    if (m_iDir)
+    if (!m_iDir)
     {
         switch (m_eDir)
         {
@@ -356,8 +359,9 @@ void CShaman::Pattern_Attack(const _float& fTimeDelta)
             vPos.y += 2.f;
             CGameObject* pProjectile = CProjectile::Create(m_pGraphicDev, vPos);
             NULL_CHECK(pProjectile);
-            wstring tagName = L"Monster_Shaman_Created_Fireball_Projectile" + std::to_wstring(m_iTagNumber++);
-            FAILED_CHECK_RETURN(pScene->Create_GameObject(L"Layer_GameLogic", pProjectile, tagName.c_str()), );
+
+            m_vecProjectileName.push_back(L"Monster_Created_Fireball" + std::to_wstring(m_iTagNumber++));
+            FAILED_CHECK_RETURN(pScene->Create_GameObject(L"Layer_GameLogic", pProjectile, m_vecProjectileName.back().c_str()), );
         }
         iFrameSpeed = 45;
     }
@@ -430,6 +434,8 @@ STATE CShaman::State_Change()
         // 쫓아가면서 사거리 계산
         if (m_pCalculatorCom->Check_Distance2D(&vPlayerPos, &vPos, m_fRange))
             return SWING;
+        if (!m_pCalculatorCom->Check_Distance2D(&vPlayerPos, &vPos, m_fAggroDistance))
+            return IDLE;
         break;
     case SWING:
         // 공격 모션이 끝났을 때
@@ -442,6 +448,8 @@ STATE CShaman::State_Change()
                 m_iAttackAnimProgress = 0;
                 return WALK;
             }
+            if (!m_pCalculatorCom->Check_Distance2D(&vPlayerPos, &vPos, m_fAggroDistance))
+                return IDLE;
         }
         break;
     }
