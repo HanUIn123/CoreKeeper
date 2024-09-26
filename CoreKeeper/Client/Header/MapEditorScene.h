@@ -132,5 +132,6 @@ private:
 	_int									m_iLoadWallCount;
 	_int									m_iPikingIndex;
 
+
 };
 

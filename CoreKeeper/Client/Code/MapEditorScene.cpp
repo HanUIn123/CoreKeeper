@@ -824,6 +824,40 @@ HRESULT CMapEditorScene::MapFile_Load()
         FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsWallNameString[vTempIndex].c_str(), pWall), E_FAIL);
     }
 
+    const _tchar* strFileName = L"../../Data/TileData.txt";
+    m_hFile = CreateFile(strFileName, GENERIC_READ, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+
+    if (INVALID_HANDLE_VALUE == m_hFile)
+    {
+        MSG_BOX("Fail Open Terrain file");
+        return E_FAIL;
+    }
+
+    DWORD dwByte = 0;
+    CMapToolTerrain* pTerrain = dynamic_cast<CMapToolTerrain*>(Get_GameObject(L"Layer_GameLogic", L"MapToolTerrain"));
+
+    if (!pTerrain)
+    {
+        MSG_BOX("Fail Open Terrain");
+        CloseHandle(m_hFile);
+        return E_FAIL;
+    }
+
+    auto vec = pTerrain->Get_TextureNumber();
+    auto vecReach = pTerrain->Get_Unreachable();
+
+    for (_int i = 0; i < vec.size(); ++i)
+    {
+        ReadFile(m_hFile, &vec[i], sizeof(_int), &dwByte, nullptr);
+
+        bool bReachable = false;
+        ReadFile(m_hFile, &bReachable, sizeof(bool), &dwByte, nullptr);
+        pTerrain->Set_Unreachable(i, bReachable);
+    }
+
+    pTerrain->Set_TextureNumber(vec);
+
+    CloseHandle(m_hFile);
     CloseHandle(m_hWallFile);
     MSG_BOX("Success Load File");
 

@@ -31,7 +31,8 @@ public:
 
 	void												Set_TextureNumber(int _iIndex, int _iNum) { m_vecTextureNumber[_iIndex] = _iNum; }
 	vector<int>											Get_TextureNumber() { return m_vecTextureNumber; }
-
+	void												Set_TextureNumber(vector<int> _vecTextureNumber) { copy(_vecTextureNumber.begin(), _vecTextureNumber.end(), m_vecTextureNumber.begin()); }
+	
 	void												Set_Unreachable(int _iIndex, bool _bUnreachable) { m_vecUnreachable[_iIndex] = _bUnreachable; }
 	vector<bool>										Get_Unreachable() { return m_vecUnreachable; }
 
