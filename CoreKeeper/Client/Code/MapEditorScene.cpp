@@ -17,6 +17,7 @@ CMapEditorScene::CMapEditorScene(LPDIRECT3DDEVICE9 _pGraphicDevice)
     , m_bWallClickPushed(false)
     , m_bBuildingClick(false)
     , m_bSwitch(false)
+    , m_bReachable(false)
     , m_bSelectTile(false)
     , m_bSelectWall(false)
     , m_bSelectBuilding(false)
@@ -125,6 +126,14 @@ void CMapEditorScene::LateUpdate_Scene()
         m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
     else
         m_pGraphicDev->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
+    ImGui::End();
+
+    ImGui::Begin("Piking Reachable", NULL, ImGuiWindowFlags_MenuBar);
+    ImGui::Checkbox("Setting Reachable", &m_bReachable);
+    if (ImGui::Button("Switch!"))
+        m_bReachable = true;
+    if (ImGui::Button("Switch Off"))
+        m_bReachable = false;
     ImGui::End();
 
     Engine::CScene::LateUpdate_Scene();
@@ -271,7 +280,7 @@ void CMapEditorScene::Setting_TileList()
                 m_bSelectWall = false;
                 m_bSelectTile = true;
                 m_bSelectBuilding = false;
-                
+
             }
         }
     }
@@ -299,6 +308,12 @@ void CMapEditorScene::Piking_Tile()
             int iIndex = (m_vPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vPickPos.x + 0.5f * VTXITV;
 
             pTerrain->Set_TextureNumber(iIndex, m_iImageNumber);
+
+            if(m_bReachable)
+                pTerrain->Set_Unreachable(iIndex, true);
+            else
+                pTerrain->Set_Unreachable(iIndex, false);
+
         }
         if (!(Engine::Get_DIMouseState(DIM_LB) & 0x80))
             m_bPushed = false;
@@ -362,7 +377,7 @@ HRESULT CMapEditorScene::Piking_Wall()
             // 이미 설치되어있다는 불 값 true
             m_bAlreadyInstalled = false;
 
-            if (m_vecWallObject[unsigned __int64(m_vPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vPickPos.x + 0.5f *  VTXITV])
+            if (m_vecWallObject[unsigned __int64(m_vPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vPickPos.x + 0.5f * VTXITV])
                 m_bAlreadyInstalled = true;
 
             // 이미 설치되어있따면, 설치할 수 있다는 값을 false로,
@@ -383,16 +398,16 @@ HRESULT CMapEditorScene::Piking_Wall()
                 m_wsWallNameString[iIndex] = L"Wall_" + std::to_wstring(iIndex);
                 m_pWallCom = CWall::Create(m_pGraphicDev, m_vPickPos.x + 0.5f * VTXITV, m_vPickPos.z + 0.5f * VTXITV, 0, m_wsWallNameString[iIndex].c_str());
                 m_vecWallObject[iIndex] = dynamic_cast<CWall*>(m_pWallCom);
-        
+
                 NULL_CHECK_RETURN(m_pWallCom, E_FAIL);
                 FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsWallNameString[iIndex].c_str(), m_pWallCom), E_FAIL);
 
                 m_vecWallObject[iIndex]->Set_WallNumber(m_iWallImgNumber);
-                pTerrain->Set_Unreachable(iIndex, true);
 
                 m_iWallCreateCount++;
                 m_vCheckPos = m_vPickPos;
             }
+
         }
         if (!(Engine::Get_DIMouseState(DIM_LB) & 0x80))
             m_bWallClickPushed = false;
@@ -412,8 +427,6 @@ HRESULT CMapEditorScene::Piking_Wall()
             {
                 Delete_Object(L"Layer_Environment", m_vecWallObject[iIndex]->Get_PickedWallName().c_str());
                 m_vecWallObject[iIndex] = nullptr;
-                pTerrain->Set_Unreachable(iIndex, false);
-
             }
         }
     }
@@ -428,7 +441,7 @@ void CMapEditorScene::Setting_ObjectList()
 
     CComponent* pComponent = NULL;
 
-    const char* items[] = { "Core","CoreBase", "SpawnPoint", "Box","Object2", "Object3"};
+    const char* items[] = { "Core","CoreBase", "SpawnPoint", "Box","Object2", "Object3" };
 
     static int	nCurrentItem = 0;
     ImGui::Combo("##4", &nCurrentItem, items, IM_ARRAYSIZE(items));
@@ -479,7 +492,7 @@ HRESULT CMapEditorScene::Piking_Object()
 
             m_bAlreadyInstalled = false;
 
-            if (m_vecBuildingObject[unsigned __int64(m_vObPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vObPickPos.x + 0.5f *  VTXITV])
+            if (m_vecBuildingObject[unsigned __int64(m_vObPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vObPickPos.x + 0.5f * VTXITV])
                 m_bAlreadyInstalled = true;
 
             if (m_bAlreadyInstalled)
@@ -549,12 +562,12 @@ HRESULT CMapEditorScene::Piking_Object()
             _float fZMin = m_vObPickPos.z - 5.0f;
             _float fZMax = m_vObPickPos.z + 5.0f;
 
-            if (m_vecBuildingObject[unsigned __int64((m_vObPickPos.z + 0.5f * VTXITV)* (VTXCNTX - 1) + m_vObPickPos.x + 0.5f * VTXITV)])
+            if (m_vecBuildingObject[unsigned __int64((m_vObPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vObPickPos.x + 0.5f * VTXITV)])
             {
                 if ((fXMin < m_vObPickPos.x && fXMax > m_vObPickPos.x) || (fZMin < m_vObPickPos.z && fZMax > m_vObPickPos.z))
                 {
                     //Delete_Object(L"Layer_Environment", dynamic_cast<CCore*>(m_vecBuildingObject[unsigned __int64(m_vObPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vObPickPos.x + 0.5f *  VTXITV])->Get_PickedBuildingName().c_str());
-                    Delete_Object(L"Layer_Environment", (m_vecBuildingObject[unsigned __int64(m_vObPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vObPickPos.x + 0.5f *  VTXITV])->Get_PickedBuildingName().c_str());
+                    Delete_Object(L"Layer_Environment", (m_vecBuildingObject[unsigned __int64(m_vObPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vObPickPos.x + 0.5f * VTXITV])->Get_PickedBuildingName().c_str());
                     m_vecBuildingObject[unsigned __int64((m_vObPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vObPickPos.x + 0.5f * VTXITV)] = nullptr;
                 }
             }
@@ -563,6 +576,8 @@ HRESULT CMapEditorScene::Piking_Object()
 
     return S_OK;
 }
+
+
 
 HRESULT CMapEditorScene::Delete_Object(const _tchar* pLayerTag, const _tchar* pGameObjectTag)
 {
@@ -640,15 +655,18 @@ void CMapEditorScene::MapFile_Save()
 
     auto vec = pTerrain->Get_TextureNumber();
 
-    vector<int> vecTextureNum = vec;
+    auto vecBoolReach = pTerrain->Get_Unreachable();
 
     DWORD	dwByte(0);
 
     for (_int i = 0; i < vec.size(); ++i)
     {
         WriteFile(m_hFile, &vec[i], sizeof(_int), &dwByte, nullptr);
+
+        bool bReachable = vecBoolReach[i];
+        WriteFile(m_hFile, &bReachable, sizeof(bool), &dwByte, nullptr);
     }
-   
+
     // ========================================================
 
     _vec3 vTempWallPos(0.0f, 0.0f, 0.0f);

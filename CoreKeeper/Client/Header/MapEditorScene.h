@@ -77,6 +77,7 @@ private:
 	// ImGui 창 위 마우스 존재 판단 bool변수
 	bool									m_bGuiHovered;
 	bool									m_bSwitch;
+	bool									m_bReachable;
 	wstring									m_iImGuiTileListNum;
 
 	// n번 째 타일인지 담는 변수.
