@@ -11,6 +11,7 @@ CSlime::CSlime(LPDIRECT3DDEVICE9 pGraphicDev)
     m_fIdleY = 0.6f;
     m_fJumpY = 8.f;
     m_eState = IDLE;
+    m_fAggroDistance = 4.f;
 }
 
 CSlime::~CSlime()
@@ -26,7 +27,7 @@ HRESULT CSlime::Ready_GameObject(_vec3 vPos)
     m_vecDropItem.push_back(ITEM_MUCUS);
     m_vecDropItem.push_back(ITEM_SEED);
     m_vecDropItem.push_back(ITEM_WOOD);
-    Set_Speed(0.6f);
+    Set_Speed(0.8f);
     return S_OK;
 }
 
@@ -127,6 +128,170 @@ HRESULT CSlime::Add_Component()
 
 }
 
+// 일정 시간마다 타일 한칸 이동 or 정지
+void CSlime::Pattern_Idle(const _float& fTimeDelta)
+{
+    // 벽 확인 추가할 것
+    m_pAnimatorCom->Set_CurState(IDLE, 0, 8, 10);
+    if (!m_bIdling)
+    {
+        m_bIdling = true;
+        if (m_iDir)
+        {
+            m_fIdleTimeLimit = rand() % 3 + 1; // 1 ~ 3초
+            m_iDir = 0;
+        }
+        else
+        {
+            m_fIdleTimeLimit = rand() % 4 + 2; // 1 ~ 5초
+            m_iDir = rand() % 8 + 1;
+        }
+    }
+    if(m_fIdleTime <= m_fIdleTimeLimit)
+    {
+        m_fIdleTime += fTimeDelta;
+        _vec3	vLook, vRight;
+        m_pTransformCom->Get_Info(INFO_LOOK, &vLook);
+        m_pTransformCom->Get_Info(INFO_RIGHT, &vRight);
+
+        switch (m_iDir)
+        {
+        case 0:
+            // 정지
+            break;
+        case 1:
+            // 상
+            m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, m_fSpeed);
+            break;
+        case 2:
+            // 우상
+            m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, m_fDiagSpeed);
+            m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, m_fDiagSpeed);
+            break;
+        case 3:
+            // 우
+            m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, m_fSpeed);
+            break;
+        case 4:
+            // 우하
+            m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, -m_fDiagSpeed);
+            m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, m_fDiagSpeed);
+            break;
+        case 5:
+            // 하
+            m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, -m_fSpeed);
+            break;
+        case 6:
+            // 좌하
+            m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, -m_fDiagSpeed);
+            m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, -m_fDiagSpeed);
+            break;
+        case 7:
+            // 좌
+            m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, -m_fSpeed);
+            break;
+        case 8:
+            // 좌상
+            m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, m_fDiagSpeed);
+            m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, -m_fDiagSpeed);
+            break;
+        }
+    }
+    else
+    {
+        m_bIdling = false;
+        m_fIdleTime = 0.f;
+    }
+}
+
+// 플레이어 방향으로 이동, 추후 A스타 알고리즘으로 변경
+void CSlime::Pattern_Chase(const _float& fTimeDelta)
+{
+    Engine::CTransform* pPlayerTransform = dynamic_cast<Engine::CTransform*>
+        (Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Transform"));
+    NULL_CHECK(pPlayerTransform);
+
+    _vec3		vPlayerPos, vPos;
+    pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
+    m_pTransformCom->Get_Info(INFO_POS, &vPos);
+
+    m_pAnimatorCom->Set_CurState(WALK, 12, 21, 8);
+    m_pTransformCom->Chase_Target(&vPlayerPos, fTimeDelta);
+    if (m_pCalculatorCom->Check_Distance2D(&vPlayerPos, &vPos, m_fAggroDistance))
+        m_eState = SWING;
+    else
+        m_eState = WALK;
+}
+
+// 점프 공격
+void CSlime::Pattern_Attack(const _float& fTimeDelta)
+{
+    _vec3		vPos, vPlayerPos;
+    m_pTransformCom->Get_Info(INFO_POS, &vPos);
+    Engine::CTransform* pPlayerTransform = dynamic_cast<Engine::CTransform*>
+        (Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Transform"));
+    NULL_CHECK(pPlayerTransform);
+    Engine::CCollider* pPlayerCollider = dynamic_cast<Engine::CCollider*>
+        (Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Collider"));
+    m_pAnimatorCom->Set_CurState(SWING, 24, 35, 8);
+    pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
+    m_fSpeedWeight = 0.f;
+    // 점프 중이 아닐 때
+    if (m_pAnimatorCom->Get_MotionIndex() <= 29 || m_pAnimatorCom->Get_MotionIndex() >= 34)
+    {
+        m_bAttackSuccess = false;
+        m_bFallStart = false;
+        m_vStartPoint = vPos;
+        m_vAttackPoint = vPlayerPos - vPos;
+        D3DXVec3Normalize(&m_vAttackPoint, &m_vAttackPoint);
+        if (m_pAnimatorCom->Get_MotionIndex() == 25 || m_pAnimatorCom->Get_MotionIndex() == 34)
+            m_pTransformCom->Set_Pos(vPos.x, m_fIdleY - 0.1f, vPos.z);
+        else if (m_pAnimatorCom->Get_MotionIndex() == 35)
+        {
+            m_pTransformCom->Set_Pos(vPos.x, m_fIdleY, vPos.z);
+            m_bJumping = false;
+            if (m_pCalculatorCom->Check_Distance2D(&vPlayerPos, &vPos, m_fAggroDistance))
+                m_eState = SWING;
+            else
+                m_eState = WALK;
+        }
+    }
+    else
+        // 점프 할 때
+    {
+        JumpY(fTimeDelta);
+        m_fSpeedWeight = 10.f;
+        if (vPos.y > m_fIdleY)
+        {
+            // 공격 성공
+            if (m_pColliderCom->Check_Collision(pPlayerCollider))
+            {
+                if (!m_bAttackSuccess)
+                {
+                    m_bAttackSuccess = true;
+                    dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"))
+                        ->Set_KnockBack(vPos, m_pStateCom->Get_Stat()->iAttack, (1 - (m_fJumpTime / m_fJumpFrame)) * 3.f + 1.f);
+                }
+            }
+        }
+        if (m_bAttackSuccess)
+            FallDir(fTimeDelta);
+        else
+            m_pTransformCom->Move_Pos(&m_vAttackPoint, fTimeDelta, m_fSpeedWeight);
+    }
+}
+
+void CSlime::Pattern_Dead()
+{
+    m_pAnimatorCom->Set_CurState(DEAD, 36, 41, 8);
+
+    if (m_pAnimatorCom->Get_MotionEnd())
+    {
+        m_bStopDraw = true;
+        Drop_Item();
+    }
+}
+
 STATE CSlime::State_Change()
 {
     CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
@@ -144,7 +309,7 @@ STATE CSlime::State_Change()
                 m_pTransformCom->Get_Info(INFO_POS, &vPos);
 
                 // 무기와 충돌 했는데 공격 범위 이내인 경우
-                if (m_pCalculatorCom->Check_Distance2D(&vPlayerPos, &vPos, 5.f))
+                if (m_pCalculatorCom->Check_Distance2D(&vPlayerPos, &vPos, m_fAggroDistance))
                     return SWING;
                 // 공격 범위 밖인 경우
                 else
