@@ -5,7 +5,7 @@
 #include "..\Header\UIStatusBar.h"
 #include "..\Header\Sword.h"
 
-#include "..\Header\UIPlayerCraft.h" // UI Çì´õ Ãß°¡
+#include "..\Header\UIPlayerCraft.h" // UI í—¤ë” ì¶”ê°€
 #include "..\Header\UIScreenIcon.h"
 #include "..\Header\UIScreenInv.h"
 #include "..\Header\UIInventory.h"
@@ -54,7 +54,7 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	m_bNude = true;
 
 	m_vRespawnPoint = { VTXCNTX * 0.5f, 0, VTXCNTZ * 0.5f };
-	//m_vRespawnPoint = { 0, 0, 0 };
+
 	m_bRespawned = false;
 }
 
@@ -70,7 +70,7 @@ HRESULT CPlayer::Ready_GameObject()
 	m_pStateCom->Set_Stat(m_tBasicStat.iMaxHp, m_tBasicStat.iMaxMp, m_tBasicStat.iAttack, m_tBasicStat.iDefense);
 	m_pEquipInventoryCom->Set_SlotCount(10);
 
-	m_pFireParticleCom->init(L"../Bin/Resource/Texture/Particle/flare.bmp"); // ÆÄÆ¼Å¬ ½ÃÀÛ
+	m_pFireParticleCom->init(L"../Bin/Resource/Texture/Particle/flare.bmp"); // íŒŒí‹°í´ ì‹œì‘
 
 	return S_OK;
 }
@@ -87,7 +87,7 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 		Show_Equipment();
 	Set_EquippedStatus();
 
-	if (!m_bNoMove && !m_bInventory && !m_bCraft && !m_bMap) // m_bNoMove -> UICursor¿¡¼­ Àû¿ë
+	if (!m_bNoMove && !m_bInventory && !m_bCraft && !m_bMap) // m_bNoMove -> UICursorì—ì„œ ì ìš©
 		Mouse_Click();
 	else
 		m_bSwing = false;
@@ -128,9 +128,9 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 	}
 	m_pAnimatorCom->Update_Animation();
 	m_pColliderCom->Update_Collider(m_pTransformCom->Get_WorldMatrix());
-	m_pFireParticleCom->update(fTimeDelta); // ÆÄÆ¼Å¬ ¾÷µ¥ÀÌÆ®
+	m_pFireParticleCom->update(fTimeDelta); // íŒŒí‹°í´ ì—…ë°ì´íŠ¸
 
-	if (m_pFireParticleCom->isDead()) // ÆÄÆ¼Å¬ Á×À½
+	if (m_pFireParticleCom->isDead()) // íŒŒí‹°í´ ì£½ìŒ
 		m_pFireParticleCom->reset();
 
 	Add_RenderGroup(RENDER_ALPHA, this);
@@ -158,7 +158,7 @@ void CPlayer::Render_GameObject()
 	m_pBufferCom->Render_Buffer();
 	m_pColliderCom->Render_Collider();
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
-	m_pFireParticleCom->render(); // ÆÄÆ¼Å¬ ·»´õ
+	m_pFireParticleCom->render(); // íŒŒí‹°í´ ë Œë”
 }
 
 HRESULT CPlayer::Add_Component()
@@ -292,10 +292,10 @@ void CPlayer::Mouse_Click()
 					break;
 				case ITEM_BOW:
 				case ITEM_STAFF:
-					// Åõ»çÃ¼ ¹ß»ç
+					// íˆ¬ì‚¬ì²´ ë°œì‚¬
 					break;
 				case ITEM_SEED:
-					// ³ó»ç
+					// ë†ì‚¬
 					break;
 				default:
 					break;
@@ -349,16 +349,16 @@ void CPlayer::Mouse_Direction()
 	float diagLBtoRT = -((float)WINCY / WINCX * ptMouse.x) + WINCY - ptMouse.y;
 	float diagLTtoRB = ((float)WINCY / WINCX * ptMouse.x) - ptMouse.y;
 
-	// ¿ìÃø
+	// ìš°ì¸¡
 	if (diagLBtoRT < 0 && diagLTtoRB > 0)
 		m_eDir = RIGHT;
-	// ÇÏ´Ü
+	// í•˜ë‹¨
 	else if (diagLBtoRT <= 0 && diagLTtoRB <= 0)
 		m_eDir = FRONT;
-	// ÁÂÃø
+	// ì¢Œì¸¡
 	else if (diagLBtoRT >= 0 && diagLTtoRB <= 0)
 		m_eDir = LEFT;
-	// »ó´Ü
+	// ìƒë‹¨
 	else if (diagLBtoRT >= 0 && diagLTtoRB >= 0)
 		m_eDir = BACK;
 }
@@ -510,7 +510,7 @@ void CPlayer::Show_Equipment()
 			(*iter)->Set_Active(false);
 		}
 	}
-	// ¹«±â(¼Õ)
+	// ë¬´ê¸°(ì†)
 	if (m_pHandedItem)
 	{
 		m_tEquipmentStat.iAttack = m_pHandedItem->Get_Stat()->iAttack;
@@ -564,7 +564,7 @@ void CPlayer::Show_Equipment()
 		}
 	}
 
-	// ¹æ¾î±¸
+	// ë°©ì–´êµ¬
 	CItem* pArmor;
 	ZeroMemory(&m_tEquipmentStat, sizeof(STAT));
 	for (_int i = 0; i < CUIItemSlot::SLOT_END; i++)
@@ -682,19 +682,19 @@ void CPlayer::Set_UI()
 		(Engine::Get_GameObject(L"Layer_UI", L"UI_Health"));
 	NULL_CHECK_RETURN(pHp);
 
-	pHp->Set_InfoH(m_pStateCom->Get_Stat()->iHp, m_pStateCom->Get_Stat()->iMaxHp); // (Ã¼·Â , ÃÖ´ëÃ¼·Â)
+	pHp->Set_InfoH(m_pStateCom->Get_Stat()->iHp, m_pStateCom->Get_Stat()->iMaxHp); // (ì²´ë ¥ , ìµœëŒ€ì²´ë ¥)
 
 	CUIStatusBar* pMp = dynamic_cast<CUIStatusBar*>
 		(Engine::Get_GameObject(L"Layer_UI", L"UI_Mp"));
 	NULL_CHECK_RETURN(pMp);
 
-	pMp->Set_InfoH(m_pStateCom->Get_Stat()->iMp, m_pStateCom->Get_Stat()->iMaxMp); // (¸¶³ª , ÃÖ´ë¸¶³ª)
+	pMp->Set_InfoH(m_pStateCom->Get_Stat()->iMp, m_pStateCom->Get_Stat()->iMaxMp); // (ë§ˆë‚˜ , ìµœëŒ€ë§ˆë‚˜)
 
 	CUIStatusBar* pHunger = dynamic_cast<CUIStatusBar*>
 		(Engine::Get_GameObject(L"Layer_UI", L"UI_Hunger"));
 	NULL_CHECK_RETURN(pMp);
 
-	pHunger->Set_InfoH(m_pStateCom->Get_Stat()->iMp, m_pStateCom->Get_Stat()->iMaxMp); // (¹è°íÇÄ , ÃÖ´ë¹è°íÇÄ)
+	pHunger->Set_InfoH(m_pStateCom->Get_Stat()->iMp, m_pStateCom->Get_Stat()->iMaxMp); // (ë°°ê³ í”” , ìµœëŒ€ë°°ê³ í””)
 
 	if (Engine::Get_DIMouseMove(DIMS_Z) && !m_bInventory)
 	{
@@ -753,7 +753,7 @@ void CPlayer::Set_UI()
 	{
 		CUIBuff* pBuff = dynamic_cast<CUIBuff*>(Engine::Get_GameObject(L"Layer_UI", L"UI_Buff0")); 
 
-		pBuff->Set_Window(CUIBuff::BUFF_HEAL, CUIBuff::BUFF, 200.f); // (¹öÇÁ Á¾·ù, ¹öÇÁÃ¢ÀÎÁö µğ¹öÇÁÃ¢ÀÎÁö °áÁ¤, ½Ã°£)
+		pBuff->Set_Window(CUIBuff::BUFF_HEAL, CUIBuff::BUFF, 200.f); // (ë²„í”„ ì¢…ë¥˜, ë²„í”„ì°½ì¸ì§€ ë””ë²„í”„ì°½ì¸ì§€ ê²°ì •, ì‹œê°„)
 
 		CUIBuff* pDeBuff = dynamic_cast<CUIBuff*>(Engine::Get_GameObject(L"Layer_UI", L"UI_DeBuff0"));
 

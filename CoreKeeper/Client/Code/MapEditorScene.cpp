@@ -38,11 +38,13 @@ CMapEditorScene::CMapEditorScene(LPDIRECT3DDEVICE9 _pGraphicDevice)
 {
     ZeroMemory(&m_tImageInfo, sizeof(D3DXIMAGE_INFO));
 
-    // ½ÃÀÛÇÒ ¶§, ImGui¿¡ Tile ÀÌ¹ÌÁö µî·ÏÇÔ.
+    // ì‹œì‘í•  ë•Œ, ImGuiì— Tile ì´ë¯¸ì§€ ë“±ë¡í•¨.
     if (!m_TileTextureInfo)
     {
-        Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/Tile/BasicTile/BasicTile_%d.png", TEX_NORMAL, 11);
+        Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/Tile/GrassTile/Grass_Tile_%d.png", TEX_NORMAL, 9);
+        Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/Tile/DustTile/Dust_Tile_%d.png", TEX_NORMAL, 9);
         Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/Wall/Wall_%d.dds", TEX_CUBE, 6);
+        Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/DarkWall/Brick_Cube_%d.dds", TEX_CUBE, 15);
         Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/BaseCamp/Core.png", TEX_NORMAL, 1);
         Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/BaseCamp/CoreBase.png", TEX_NORMAL, 1);
         Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/BaseCamp/SpawnPoint.png", TEX_NORMAL, 1);
@@ -90,7 +92,7 @@ _int CMapEditorScene::Update_Scene(const _float& fTimeDelta)
 {
     _int	iExit = Engine::CScene::Update_Scene(fTimeDelta);
 
-    // ImGuiÃ¢¿¡ ¸¶¿ì½º ÀÖ³ª ¾ø³ª Ã¼Å©ÇÏ´Â ºÎºĞ. ´õ ¼öÁ¤ÇØ¾ßÇÔ.
+    // ImGuiì°½ì— ë§ˆìš°ìŠ¤ ìˆë‚˜ ì—†ë‚˜ ì²´í¬í•˜ëŠ” ë¶€ë¶„. ë” ìˆ˜ì •í•´ì•¼í•¨.
     if (ImGui::IsWindowHovered(ImGuiHoveredFlags_AnyWindow) || ImGui::IsAnyItemHovered())
         m_bGuiHovered = true;
     else
@@ -107,7 +109,7 @@ _int CMapEditorScene::Update_Scene(const _float& fTimeDelta)
 
 void CMapEditorScene::LateUpdate_Scene()
 {
-    // MapTool ¿¡¼­ »ç¿ëÇÒ Å¸ÀÏ °í¸£´Â ÇÔ¼ö.
+    // MapTool ì—ì„œ ì‚¬ìš©í•  íƒ€ì¼ ê³ ë¥´ëŠ” í•¨ìˆ˜.
 
     ImGui::Begin("Object List", NULL, ImGuiWindowFlags_MenuBar);
     Setting_TileList();
@@ -266,21 +268,36 @@ void CMapEditorScene::Setting_TileList()
 
     CComponent* pComponent = NULL;
 
-    const char* items[] = { "Tile01","Tile02","Tile03", "Tile04","Tile05","Tile06","Tile07","Tile08","Tile09","Tile10" };
-    static int	nCurrentItem = 0;
-    ImGui::Combo("##", &nCurrentItem, items, IM_ARRAYSIZE(items));
-
-    for (_int i = 0; i < m_vecTileTexture.size(); ++i)
+    const char* items[] = 
     {
-        if (nCurrentItem == i)
+        "Green_Tile", "Dust_Tile", "Brick_Tile"
+    };
+
+    static int	nCurrentItem = 0;
+    ImGui::Combo("##3", &nCurrentItem, items, IM_ARRAYSIZE(items));
+
+    int iCount(0);
+
+    for (_int i = 0; i < 9; ++i)
+    {
+        int textureIndex = nCurrentItem * 9 + i;
+
+        if (textureIndex < m_vecTileTexture.size())
         {
-            if (ImGui::ImageButton("Tile", m_vecTileTexture[i], ImVec2(50.0f, 50.0f)))
+            // ì—¬ê¸°ì„œë„ ì¤‘ë³µ ë°©ì§€.
+            if (ImGui::ImageButton(("Tile" + std::to_string(textureIndex)).c_str(), m_vecTileTexture[textureIndex], ImVec2(50.0f, 50.0f)))
             {
-                m_iImageNumber = nCurrentItem;
-                m_bSelectWall = false;
                 m_bSelectTile = true;
+                m_bSelectWall = false;
                 m_bSelectBuilding = false;
 
+                m_iImageNumber = textureIndex;
+            }
+
+            // Imgui ì¤„ 3ê°œ ê°™ì€ ê°€ë¡œì¤„ 
+            if ((i + 1) % 3 != 0)
+            {
+                ImGui::SameLine();
             }
         }
     }
@@ -301,7 +318,7 @@ void CMapEditorScene::Piking_Tile()
 
             m_vPickPos = pPickPos->Picking_OnTerrain(g_hWnd, pMapToolBufferCom, pMapToolTransformCom);
 
-            // ÅÍ·¹ÀÎ ¾Æ´Ñ °÷ ÇÇÅ·
+            // í„°ë ˆì¸ ì•„ë‹Œ ê³³ í”¼í‚¹
             if (m_vPickPos.y < 0)
                 return;
 
@@ -309,7 +326,7 @@ void CMapEditorScene::Piking_Tile()
 
             pTerrain->Set_TextureNumber(iIndex, m_iImageNumber);
 
-            if(m_bReachable)
+            if (m_bReachable)
                 pTerrain->Set_Unreachable(iIndex, true);
             else
                 pTerrain->Set_Unreachable(iIndex, false);
@@ -327,26 +344,39 @@ void CMapEditorScene::Setting_WallList()
 
     CComponent* pComponent = NULL;
 
-    const char* items[] = { "Wall0","Wall1","Wall2", "Wall3","Wall4","Wall5" };
+    const char* items[] =
+    {
+        "Wall_01", "Wall_02", "Wall_03"
+    };
 
     static int	nCurrentItem = 0;
     ImGui::Combo("##3", &nCurrentItem, items, IM_ARRAYSIZE(items));
 
-    for (_int i = 0; i < m_vecWallTexture.size(); ++i)
+    int iCount(0);
+
+    for (_int i = 0; i < 15; ++i)
     {
-        if (nCurrentItem == i)
+        int textureIndex = nCurrentItem * 15 + i;
+
+        if (textureIndex < m_vecWallTexture.size())
         {
-            if (ImGui::ImageButton("Wall", m_vecWallTexture[i], ImVec2(50.0f, 50.0f)))
+            if (ImGui::ImageButton(("Wall" + std::to_string(textureIndex)).c_str(), m_vecWallTexture[textureIndex], ImVec2(50.0f, 50.0f)))
             {
                 m_bSelectTile = false;
                 m_bSelectWall = true;
                 m_bSelectBuilding = false;
 
-                //if (m_pWallCom != nullptr)       //-> ÀÌ°Å ¾ÈÇÏ¸é ÅÍÁü.
-                m_iWallImgNumber = nCurrentItem;
+                m_iWallImgNumber = textureIndex;
+            }
+
+            // Imgui ì¤„ 3ê°œ ê°™ì€ ê°€ë¡œì¤„ 
+            if ((i + 1) % 3 != 0)
+            {
+                ImGui::SameLine();
             }
         }
     }
+
 }
 
 HRESULT CMapEditorScene::Piking_Wall()
@@ -369,21 +399,21 @@ HRESULT CMapEditorScene::Piking_Wall()
 
             m_vPickPos = pPickPos->Picking_OnTerrain(g_hWnd, pMapToolBufferCom, pMapToolTransformCom);
 
-            // ÅÍ·¹ÀÎ ¾Æ´Ñ °÷ ÇÇÅ·
+            // í„°ë ˆì¸ ì•„ë‹Œ ê³³ í”¼í‚¹
             if (m_vPickPos.y < 0)
                 return S_OK;
 
-            // ÀÌ¹Ì ¼³Ä¡µÇ¾î ÀÖÀ¸¸é, º® ¿ÉÁ§ º¤ÅÍ °Ë»çÇØ¼­, Âï´Â À§Ä¡¶û °°À¸¸é, 
-            // ÀÌ¹Ì ¼³Ä¡µÇ¾îÀÖ´Ù´Â ºÒ °ª true
+            // ì´ë¯¸ ì„¤ì¹˜ë˜ì–´ ìˆìœ¼ë©´, ë²½ ì˜µì  ë²¡í„° ê²€ì‚¬í•´ì„œ, ì°ëŠ” ìœ„ì¹˜ë‘ ê°™ìœ¼ë©´, 
+            // ì´ë¯¸ ì„¤ì¹˜ë˜ì–´ìˆë‹¤ëŠ” ë¶ˆ ê°’ true
             m_bAlreadyInstalled = false;
 
             if (m_vecWallObject[unsigned __int64(m_vPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vPickPos.x + 0.5f * VTXITV])
                 m_bAlreadyInstalled = true;
 
-            // ÀÌ¹Ì ¼³Ä¡µÇ¾îÀÖµû¸é, ¼³Ä¡ÇÒ ¼ö ÀÖ´Ù´Â °ªÀ» false·Î,
-            // checkpos¶ó´Â ÇÈÇÏ°í ³ª¼­ µü ¼³Ä¡µÈ ½ÃÁ¡ÀÇ(º® Àü À§Ä¡°ª ´À³¦)
-            // µÑÀÌ °°À¸¸é ¼³Ä¡ ºÒ°¡´É (¼³Ä¡µÈ ÀüÀÇ °ªÇÏ°í ¶Ç ±×ÀÚ¸®¿¡ ÇÇÅ·ÇÒ ¶§ Æ÷Áö¼Ç°ªÀÌ °°À¸¸é ¼³Ä¡ºÒ°¡)
-            // ±× ¿Ü´Â ¼³Ä¡ °¡´É.
+            // ì´ë¯¸ ì„¤ì¹˜ë˜ì–´ìˆë”°ë©´, ì„¤ì¹˜í•  ìˆ˜ ìˆë‹¤ëŠ” ê°’ì„ falseë¡œ,
+            // checkposë¼ëŠ” í”½í•˜ê³  ë‚˜ì„œ ë”± ì„¤ì¹˜ëœ ì‹œì ì˜(ë²½ ì „ ìœ„ì¹˜ê°’ ëŠë‚Œ)
+            // ë‘˜ì´ ê°™ìœ¼ë©´ ì„¤ì¹˜ ë¶ˆê°€ëŠ¥ (ì„¤ì¹˜ëœ ì „ì˜ ê°’í•˜ê³  ë˜ ê·¸ìë¦¬ì— í”¼í‚¹í•  ë•Œ í¬ì§€ì…˜ê°’ì´ ê°™ìœ¼ë©´ ì„¤ì¹˜ë¶ˆê°€)
+            // ê·¸ ì™¸ëŠ” ì„¤ì¹˜ ê°€ëŠ¥.
             if (m_bAlreadyInstalled)
                 m_bCanInstall = false;
             else if (m_vCheckPos == m_vPickPos)
@@ -456,7 +486,7 @@ void CMapEditorScene::Setting_ObjectList()
                 m_bSelectWall = false;
                 m_bSelectBuilding = true;
 
-                //if (m_pWallCom != nullptr)       //-> ÀÌ°Å ¾ÈÇÏ¸é ÅÍÁü.
+                //if (m_pWallCom != nullptr)       //-> ì´ê±° ì•ˆí•˜ë©´ í„°ì§.
                 m_iBuildingNumber = nCurrentItem;
             }
         }
@@ -681,7 +711,7 @@ void CMapEditorScene::MapFile_Save()
         vTempWallPos = (*iter).Get_WallPos();
         vTempWallImgNum = (*iter).Get_WallNumber();
 
-        // º® ÀúÀå.
+        // ë²½ ì €ì¥.
         WriteFile(m_hWallFile, &vTempWallPos, sizeof(_vec3), &dwByte2, nullptr);
         WriteFile(m_hWallFile, &vTempWallImgNum, sizeof(_int), &dwByte2, nullptr);
         WriteFile(m_hWallFile, &vTempIndex, sizeof(_int), &dwByte2, nullptr);
@@ -708,7 +738,7 @@ void CMapEditorScene::MapFile_Save()
     //    vTempObjectPos = (*iter).Get_ObjectPos();
     //    vTempObjectImgNum = (*iter).Get_BuildImgNum();
 
-    //    // ¿ÀºêÁ§Æ® ÀúÀå.
+    //    // ì˜¤ë¸Œì íŠ¸ ì €ì¥.
     //    WriteFile(m_hObjectFile, &vTempObjectPos, sizeof(_vec3), &dwByte3, nullptr);
     //    WriteFile(m_hObjectFile, &vTempObjectImgNum, sizeof(_int), &dwByte3, nullptr);
     //    WriteFile(m_hObjectFile, &vTempObjectIndex, sizeof(_int), &dwByte3, nullptr);
@@ -728,7 +758,7 @@ HRESULT CMapEditorScene::MapFile_Load()
         if (iter == nullptr)
             continue;
 
-        // ·Îµå Àü¿¡ wall ¸ğµÎ Áö¿ì±â.
+        // ë¡œë“œ ì „ì— wall ëª¨ë‘ ì§€ìš°ê¸°.
         Delete_Object(L"Layer_Environment", (*iter).Get_PickedWallName().c_str());
     }
 

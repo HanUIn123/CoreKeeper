@@ -86,6 +86,7 @@ void CWall::Render_GameObject()
     FAILED_CHECK_RETURN(Setup_Material(), );
 
     m_pTextureCom->Set_Texture(m_iWallImageNum);
+    //m_pTextureCom->Set_Texture(2);
 
     if (m_bActive)
     {
@@ -107,7 +108,7 @@ HRESULT CWall::Add_Component()
     NULL_CHECK_RETURN(pComponent, E_FAIL);
     m_mapComponent[ID_STATIC].insert({ L"Com_Buffer", pComponent });
 
-    pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_WallCube"));
+    pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_DarkWallCube"));
     NULL_CHECK_RETURN(pComponent, E_FAIL);
     m_mapComponent[ID_STATIC].insert({ L"Com_Texture", pComponent });
 
