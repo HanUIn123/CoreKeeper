@@ -55,6 +55,9 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 
 	m_vRespawnPoint = { VTXCNTX * 0.5f, 0, VTXCNTZ * 0.5f };
 	m_bRespawned = false;
+
+	m_bBleed = false;
+	m_fBleedTime = 0.f;
 }
 
 CPlayer::~CPlayer()
@@ -69,7 +72,7 @@ HRESULT CPlayer::Ready_GameObject()
 	m_pStateCom->Set_Stat(m_tBasicStat.iMaxHp, m_tBasicStat.iMaxMp, m_tBasicStat.iAttack, m_tBasicStat.iDefense);
 	m_pEquipInventoryCom->Set_SlotCount(10);
 
-	//m_pFireParticleCom->init(L"../Bin/Resource/Texture/Particle/flare.bmp"); // 파티클 시작
+	m_pFireParticleCom->init(L"../Bin/Resource/Texture/Particle/flare.bmp"); // 파티클 시작
 
 	return S_OK;
 }
@@ -120,17 +123,19 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 	}
 
 	Flip();
+	/*
 	if (!m_bRespawned)
 	{
 		m_bRespawned = true;
 		m_pTransformCom->Set_Pos(m_vRespawnPoint.x, m_fFirstY, m_vRespawnPoint.z);
-	}
+	}*/
 	m_pAnimatorCom->Update_Animation();
 	m_pColliderCom->Update_Collider(m_pTransformCom->Get_WorldMatrix());
 	//m_pFireParticleCom->update(fTimeDelta); // 파티클 업데이트
 
 	//if (m_pFireParticleCom->isDead()) // 파티클 죽음
 	//	m_pFireParticleCom->reset();
+	Particle_Update(fTimeDelta);
 
 	Add_RenderGroup(RENDER_ALPHA, this);
 
@@ -157,7 +162,9 @@ void CPlayer::Render_GameObject()
 	m_pBufferCom->Render_Buffer();
 	m_pColliderCom->Render_Collider();
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
-	//m_pFireParticleCom->render(); // 파티클 렌더
+
+	if(m_bBleed)
+	   m_pFireParticleCom->render(); // 파티클 렌더
 }
 
 HRESULT CPlayer::Add_Component()
@@ -200,9 +207,9 @@ HRESULT CPlayer::Add_Component()
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_EquipInventory", pComponent });
 
-	pComponent = m_pFireParticleCom = dynamic_cast<CFirework*>(Engine::Clone_Proto(L"Proto_Firework"));
+	pComponent = m_pFireParticleCom = dynamic_cast<CFall*>(Engine::Clone_Proto(L"Proto_Fall"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
-	m_mapComponent[ID_DYNAMIC].insert({ L"Com_Firework", pComponent });
+	m_mapComponent[ID_DYNAMIC].insert({ L"Com_Fall", pComponent });
 	///m_pFireParticleCom
 	return S_OK;
 }
@@ -887,6 +894,24 @@ void CPlayer::Set_Status()
 
 }
 
+void CPlayer::Particle_Update(_float fTimeDelta)
+{
+	if (m_bBleed)
+	{
+		m_pFireParticleCom->update(fTimeDelta); // 파티클 업데이트
+
+		m_fBleedTime += fTimeDelta;
+	}
+
+	if (m_bBleed && m_pFireParticleCom->isDead())
+	{
+		m_fBleedTime = 0.f;
+		m_bBleed = false;
+
+		m_pFireParticleCom->reset();
+	}
+}
+
 void CPlayer::Set_KnockBack(_vec3 vEnemyPos, _int iDamage, _float fDist)
 {
 	_vec3 vPos;
@@ -920,6 +945,15 @@ void CPlayer::KnockBack(const _float& fTimeDelta)
 			return;
 		}
 		m_pTransformCom->Move_Pos(&m_vKnockBackDir, fTimeDelta, m_fSpeed * (m_fKnockBackDist / fLength));
+
+		// 피격시 파티클 리셋??
+
+		if (!m_bBleed)
+		{
+			m_pFireParticleCom->reset();
+
+			m_bBleed = true;
+		}
 	}
 }
 

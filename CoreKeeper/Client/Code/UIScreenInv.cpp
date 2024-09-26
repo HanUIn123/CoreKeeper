@@ -44,10 +44,10 @@ HRESULT CUIScreenInv::Ready_GameObject(_vec2 vPos, _int _iIndex)
 	m_BRect.bottom = vPos.y + vSize.y;
 	*/
 	
-	m_BRect.left = vPos.x - vSize.x;
-	m_BRect.right = vPos.x + vSize.x;
-	m_BRect.top = vPos.y - vSize.y;
-	m_BRect.bottom = vPos.y + vSize.y;
+	m_BRect.left = vPos.x - (vSize.x - 2.f);
+	m_BRect.right = vPos.x + (vSize.x - 2.f);
+	m_BRect.top = vPos.y - (vSize.y - 2.f);
+	m_BRect.bottom = vPos.y + (vSize.y - 2.f);
 	
 	m_iIndex = _iIndex;
 	m_fPosX = x;
@@ -80,14 +80,14 @@ _int CUIScreenInv::Update_GameObject(const _float& fTimeDelta)
 	GetCursorPos(&pt);
 	ScreenToClient(g_hWnd, &pt);
 
-	_int iIndex = m_iIndex + 1;
+	_int iKIndex = m_iIndex + 1;
 
-	if (iIndex == 10)
-		iIndex = 0;
+	if (iKIndex == 10)
+		iKIndex = 0;
 
 	_byte byKey;
 
-	switch (iIndex)
+	switch (iKIndex)
 	{
 	case 0:
 		byKey = DIK_0;
@@ -140,17 +140,18 @@ _int CUIScreenInv::Update_GameObject(const _float& fTimeDelta)
 	{
 		CInventory* pPlayerInv = dynamic_cast<Engine::CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
 
+		_int iIndex = m_iIndex - 1;
+
+		if (iIndex == -1)
+			iIndex = 9;
+
+
 		if (pPlayer->Get_InvWindow() && Engine::Button_Down(DIM_LB))
 		{
 			CInventory* pCursorInv = dynamic_cast<CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_UI", L"UI_Cursor", L"Com_Inventory"));
 
 			vector<CItem*>* pCvecItem = pCursorInv->Get_VecItemP();
 			vector<CItem*>* pPvecItem = pPlayerInv->Get_VecItemP();
-
-			_int iIndex = m_iIndex - 1;
-
-			if (iIndex == -1)
-				iIndex = 9;
 
 			if (!pPlayerInv->Check_Empty(iIndex) && !pCursorInv->Check_Empty(0))
 			{
@@ -421,8 +422,8 @@ void CUIScreenInv::Move_Pos()
 
 	vSize = { m_pTransformCom->Get_Scale()->x, m_pTransformCom->Get_Scale()->y, m_pTransformCom->Get_Scale()->z };
 
-	m_BRect.top = y - vSize.y / 2;
-	m_BRect.bottom = y + vSize.y / 2;
+	m_BRect.top = y - vSize.y;
+	m_BRect.bottom = y + vSize.y;
 }
 
 HRESULT CUIScreenInv::Add_Component()

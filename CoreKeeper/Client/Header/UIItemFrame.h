@@ -50,6 +50,7 @@ private:
 
 private:
 	Engine::CRcTex* m_pBufferCom;
+	Engine::CRcTex* m_pItemBufferCom;
 	Engine::CTransform* m_pTransformCom;
 	Engine::CTexture* m_pTextureCom;
 	Engine::CTexture* m_pSelTextureCom;

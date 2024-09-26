@@ -14,7 +14,7 @@ class CAnimator;
 class CCollider;
 class CState;
 class CInventory;
-class CFirework;
+class CFall;
 
 END
 
@@ -75,6 +75,8 @@ public:
 	void            Set_DisMove() { m_bNoMove = true; }
 	void            Set_EnaMove() { m_bNoMove = false; }
 
+	void            Particle_Update(_float fTimeDelta);
+
 	void			Set_KnockBack(_vec3 vEnemyPos, _int iDamage, _float fDist = 3.f);
 	void			Set_Respawn() { m_bRespawned = false; }
 
@@ -118,6 +120,9 @@ private:
 
 	_bool                   m_bNoMove;    // UI건드릴때 캐릭터 움직이지 않게하는 용도
 
+	_bool                   m_bBleed;
+	_float                  m_fBleedTime;
+
 	_vec3					m_vStartPoint;
 	_vec3					m_vKnockBackDir;
 	_bool					m_bKnockBackStart;
@@ -126,7 +131,7 @@ private:
 
 	_bool					m_bNude;
 
-	Engine::CFirework* m_pFireParticleCom; // 파티클 컴퍼넌트
+	Engine::CFall* m_pFireParticleCom; // 파티클 컴퍼넌트
 
 	_vec3					m_vRespawnPoint;
 	_bool					m_bRespawned;

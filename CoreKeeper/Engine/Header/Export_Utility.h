@@ -19,6 +19,7 @@
 //#include "MinimapTex.h"
 
 #include "Firework.h"
+#include "Fall.h"
 
 #include "Texture.h"
 #include "ShadowTex.h"

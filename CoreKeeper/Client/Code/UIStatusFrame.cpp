@@ -50,12 +50,12 @@ _int CUIStatusFrame::Update_GameObject(const _float& fTimeDelta)
 
 		if (Map_Picked(pt))
 		{
-			if (Engine::Get_DIMouseMove(DIMS_Z) < 0 )
+			if (Engine::Get_DIMouseMove(DIMS_Z) < 0 && m_vPos.y <= 200.f)
 			{
 				//if(m_vPos.y >= 80.f)
 					m_vPos.y += 8.f;
 			}
-			else if (Engine::Get_DIMouseMove(DIMS_Z) > 0 && m_vPos.y >= 59.f)
+			else if (Engine::Get_DIMouseMove(DIMS_Z) > 0 && m_vPos.y >= 70.f)
 			{
 				//if (m_vPos.y >= 60.f)
 					m_vPos.y -= 8.f;
@@ -100,19 +100,21 @@ void CUIStatusFrame::Render_GameObject()
 	_vec2 vSPos[3] = { m_vPos, m_vPos, m_vPos };
 
 	wstring sHTitleFont = L"체력 ";
-	vSPos[0].y += 10.f;
+	//vTPos[0].y = vTPos[0].y + 40.f;
 	wstring sDTitleFont = L"방어";
-	vSPos[1].y += 10.f;
+	vTPos[1].y = vTPos[1].y + 80.f;
 	wstring sATitleFont = L"공격";
+	vTPos[2].y = vTPos[2].y + 160.f;
 
 
 	wstring sHStatFont = L"최대체력 : " + to_wstring(m_pStat->iMaxHp);
-	vSPos[0].y += 10.f;
-	vTPos[1].y = vSPos[0].y;
+	vSPos[0].y = vSPos[0].y + 40.f;
+
 	wstring sDStatFont = L"방어력 : " + to_wstring(m_pStat->iDefense);
-	vSPos[1].y += vTPos[1].y + 10.f;
-	vTPos[2].y = vSPos[0].y;
+	vSPos[1].y = vSPos[1].y + 120.f;
+
 	wstring sAStatFont = L"공격력 : " + to_wstring(m_pStat->iAttack);
+	vSPos[2].y = vSPos[2].y + 200.f;
 
 	const _tchar* tHTitleFont = sHTitleFont.c_str();
 	const _tchar* tDTitleFont = sDTitleFont.c_str();
@@ -124,7 +126,7 @@ void CUIStatusFrame::Render_GameObject()
 
 	Engine::Render_Font(L"Font_Status", tHTitleFont, &vTPos[0], D3DCOLOR_ARGB(255, 56, 49, 28));
 	Engine::Render_Font(L"Font_Status", tDTitleFont, &vTPos[1], D3DCOLOR_ARGB(255, 56, 49, 28));
-	Engine::Render_Font(L"Font_Status", tDTitleFont, &vTPos[2], D3DCOLOR_ARGB(255, 56, 49, 28));
+	Engine::Render_Font(L"Font_Status", tATitleFont, &vTPos[2], D3DCOLOR_ARGB(255, 56, 49, 28));
 
 	Engine::Render_Font(L"Font_Status", tHStatFont, &vSPos[0], D3DCOLOR_ARGB(255, 256, 256, 256));
 	Engine::Render_Font(L"Font_Status", tDStatFont, &vSPos[1], D3DCOLOR_ARGB(255, 256, 256, 256));

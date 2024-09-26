@@ -115,6 +115,9 @@
     <Filter Include="04. Component\08. Particles\00. Firework">
       <UniqueIdentifier>{40f109a9-df3c-4343-9f38-18774ff71fda}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04. Component\08. Particles\01. Fall">
+      <UniqueIdentifier>{e8c592f1-9a2d-49ff-b8be-ca3131891efb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Code\Scene.cpp">
@@ -221,6 +224,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\PSystem.cpp">
       <Filter>04. Component\08. Particles</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Fall.cpp">
+      <Filter>04. Component\08. Particles\01. Fall</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -331,6 +337,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Header\PSystem.h">
       <Filter>04. Component\08. Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Header\Fall.h">
+      <Filter>04. Component\08. Particles\01. Fall</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
