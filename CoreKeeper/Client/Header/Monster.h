@@ -103,6 +103,7 @@ protected:
 	_float					m_fImmuneTimeLimit;
 
 	vector<ITEMNUM>			m_vecDropItem;
+	vector<wstring>			m_vecItemName;
 
 	static int				m_iTagNumber;
 

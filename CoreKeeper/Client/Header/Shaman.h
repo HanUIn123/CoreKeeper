@@ -33,6 +33,8 @@ private:
 	_float			m_fRange;
 	_int			m_iFrameCount;
 	_int			m_iAttackAnimProgress;
+	vector<wstring>			m_vecProjectileName;
+	_int			m_iCurNumber;
 
 
 public:
