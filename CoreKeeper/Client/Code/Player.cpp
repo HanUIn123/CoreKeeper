@@ -5,7 +5,7 @@
 #include "..\Header\UIStatusBar.h"
 #include "..\Header\Sword.h"
 
-#include "..\Header\UIPlayerCraft.h" // UI ?§Îçî Ï∂îÍ?
+#include "..\Header\UIPlayerCraft.h" // UI «Ï¥ı √ﬂ∞°
 #include "..\Header\UIScreenIcon.h"
 #include "..\Header\UIScreenInv.h"
 #include "..\Header\UIInventory.h"
@@ -73,7 +73,7 @@ HRESULT CPlayer::Ready_GameObject()
 	m_pStateCom->Set_Stat(m_tBasicStat.iMaxHp, m_tBasicStat.iMaxMp, m_tBasicStat.iAttack, m_tBasicStat.iDefense);
 	m_pEquipInventoryCom->Set_SlotCount(10);
 
-	m_pFireParticleCom->init(L"../Bin/Resource/Texture/Particle/flare.bmp"); // ?åÌã∞???úÏûë
+	m_pFireParticleCom->init(L"../Bin/Resource/Texture/Particle/flare.bmp"); // ∆ƒ∆º≈¨ Ω√¿€
 
 	return S_OK;
 }
@@ -90,7 +90,7 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 		Show_Equipment();
 	Set_EquippedStatus();
 
-	if (!m_bNoMove && !m_bInventory && !m_bCraft && !m_bMap) // m_bNoMove -> UICursor?êÏÑú ?ÅÏö©
+	if (!m_bNoMove && !m_bInventory && !m_bCraft && !m_bMap) // m_bNoMove -> UICursorø°º≠ ¿˚øÎ
 		Mouse_Click();
 	else
 		m_bSwing = false;
@@ -297,10 +297,10 @@ void CPlayer::Mouse_Click()
 					break;
 				case ITEM_BOW:
 				case ITEM_STAFF:
-					// ?¨ÏÇ¨Ï≤?Î∞úÏÇ¨
+					// ≈ıªÁ√º πﬂªÁ
 					break;
 				case ITEM_SEED:
-					// ?çÏÇ¨
+					// ≥ÛªÁ
 					break;
 				default:
 					break;
@@ -354,16 +354,16 @@ void CPlayer::Mouse_Direction()
 	float diagLBtoRT = -((float)WINCY / WINCX * ptMouse.x) + WINCY - ptMouse.y;
 	float diagLTtoRB = ((float)WINCY / WINCX * ptMouse.x) - ptMouse.y;
 
-	// ?∞Ï∏°
+	// øÏ√¯
 	if (diagLBtoRT < 0 && diagLTtoRB > 0)
 		m_eDir = RIGHT;
-	// ?òÎã®
+	// «œ¥‹
 	else if (diagLBtoRT <= 0 && diagLTtoRB <= 0)
 		m_eDir = FRONT;
-	// Ï¢åÏ∏°
+	// ¡¬√¯
 	else if (diagLBtoRT >= 0 && diagLTtoRB <= 0)
 		m_eDir = LEFT;
-	// ?ÅÎã®
+	// ªÛ¥‹
 	else if (diagLBtoRT >= 0 && diagLTtoRB >= 0)
 		m_eDir = BACK;
 }
@@ -515,7 +515,7 @@ void CPlayer::Show_Equipment()
 			(*iter)->Set_Active(false);
 		}
 	}
-	// Î¨¥Í∏∞(??
+	// π´±‚(º’)
 	if (m_pHandedItem)
 	{
 		m_tEquipmentStat.iAttack = m_pHandedItem->Get_Stat()->iAttack;
@@ -569,7 +569,7 @@ void CPlayer::Show_Equipment()
 		}
 	}
 
-	// Î∞©Ïñ¥Íµ?
+	// πÊæÓ±∏
 	CItem* pArmor;
 	ZeroMemory(&m_tEquipmentStat, sizeof(STAT));
 	for (_int i = 0; i < CUIItemSlot::SLOT_END; i++)
