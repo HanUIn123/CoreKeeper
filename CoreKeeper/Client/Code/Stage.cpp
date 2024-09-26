@@ -606,10 +606,17 @@ HRESULT CStage::Load_MapFile()
 	}
 
 	auto vec = pTerrain->Get_TextureNumber();
+	auto vecReach = pTerrain->Get_Unreachable();
+
 	for (_int i = 0; i < vec.size(); ++i)
 	{
 		ReadFile(m_hFile, &vec[i], sizeof(_int), &dwByte, nullptr);
+
+		bool bReachable = false;
+		ReadFile(m_hFile, &bReachable, sizeof(bool), &dwByte, nullptr);
+		pTerrain->Set_Unreachable(i, bReachable);
 	}
+
 	pTerrain->Set_TextureNumber(vec);
 
 	// ========================================================

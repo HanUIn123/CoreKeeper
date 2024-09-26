@@ -6,6 +6,7 @@ CTerrain::CTerrain(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CGameObject(pGraphicDev)
 {
 	m_vecTextureNumber.resize((VTXCNTX - 1) * (VTXCNTZ - 1));
+	m_vecUnreachable.resize((VTXCNTX - 1) * (VTXCNTZ - 1));
 }
 
 CTerrain::~CTerrain()
@@ -44,6 +45,10 @@ void CTerrain::Render_GameObject()
 		for (int j = 0; j < VTXCNTX - 1; ++j)
 		{
 			int idx = i * (VTXCNTX - 1) + j;
+
+			// 임시 확인용.
+			//if (m_vecUnreachable[idx])
+			//	continue;
 
 			auto texture = m_pTextureCom->Get_Texture(m_vecTextureNumber[idx]);
 			m_pGraphicDev->SetTexture(0, texture);
