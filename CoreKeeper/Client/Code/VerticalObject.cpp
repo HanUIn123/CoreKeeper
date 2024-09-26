@@ -1,8 +1,8 @@
 #include "pch.h"
-#include "../Header/Building.h"
+#include "../Header/VerticalObject.h"
 #include "Export_Utility.h"
 
-CBuilding::CBuilding(LPDIRECT3DDEVICE9 pGraphicDev)
+CObject::CObject(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CGameObject(pGraphicDev)
 	, m_pTransformCom(nullptr)
 	, m_pBufferCom(nullptr)
@@ -10,35 +10,35 @@ CBuilding::CBuilding(LPDIRECT3DDEVICE9 pGraphicDev)
 {
 }
 
-CBuilding::~CBuilding()
+CObject::~CObject()
 {
 }
 
-HRESULT CBuilding::Ready_GameObject()
+HRESULT CObject::Ready_GameObject()
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
 	return S_OK;
 }
 
-_int CBuilding::Update_GameObject(const _float& fTimeDelta)
+_int CObject::Update_GameObject(const _float& fTimeDelta)
 {
 	_int iExit = Engine::CGameObject::Update_GameObject(fTimeDelta);
 
 	return iExit;
 }
 
-void CBuilding::LateUpdate_GameObject()
+void CObject::LateUpdate_GameObject()
 {
 	Engine::CGameObject::LateUpdate_GameObject();
 }
 
-void CBuilding::Render_GameObject()
+void CObject::Render_GameObject()
 {
 
 }
 
-HRESULT CBuilding::Add_Component()
+HRESULT CObject::Add_Component()
 {
 	CComponent* pComponent = NULL;
 
@@ -61,7 +61,7 @@ HRESULT CBuilding::Add_Component()
 	return S_OK;
 }
 
-HRESULT CBuilding::Setup_Material()
+HRESULT CObject::Setup_Material()
 {
 	D3DMATERIAL9		tMtrl;
 	ZeroMemory(&tMtrl, sizeof(D3DMATERIAL9));
@@ -78,9 +78,9 @@ HRESULT CBuilding::Setup_Material()
 	return S_OK;
 }
 
-CBuilding* CBuilding::Create(LPDIRECT3DDEVICE9 pGraphicDev)
+CObject* CObject::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 {
-	CBuilding* pBuilding = new CBuilding(pGraphicDev);
+	CObject* pBuilding = new CObject(pGraphicDev);
 
 	if (FAILED(pBuilding->Ready_GameObject()))
 	{
@@ -92,7 +92,7 @@ CBuilding* CBuilding::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 	return pBuilding;
 }
 
-void CBuilding::Free()
+void CObject::Free()
 {
 	Engine::CGameObject::Free();
 }
