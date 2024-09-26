@@ -53,7 +53,8 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	m_fKnockBackDist = 0.f;
 	m_bNude = true;
 
-	m_vRespawnPoint = { VTXCNTX * 0.5f, 0, VTXCNTZ * 0.5f };
+	//m_vRespawnPoint = { VTXCNTX * 0.5f, 0, VTXCNTZ * 0.5f };
+	m_vRespawnPoint = {0,0,0 };
 	m_bRespawned = false;
 }
 

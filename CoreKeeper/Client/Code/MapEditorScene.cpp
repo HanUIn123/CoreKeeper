@@ -41,8 +41,10 @@ CMapEditorScene::CMapEditorScene(LPDIRECT3DDEVICE9 _pGraphicDevice)
     // 시작할 때, ImGui에 Tile 이미지 등록함.
     if (!m_TileTextureInfo)
     {
-        Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/Tile/BasicTile/BasicTile_%d.png", TEX_NORMAL, 11);
+        Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/Tile/GrassTile/Grass_Tile_%d.png", TEX_NORMAL, 9);
+        Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/Tile/DustTile/Dust_Tile_%d.png", TEX_NORMAL, 9);
         Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/Wall/Wall_%d.dds", TEX_CUBE, 6);
+        Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/DarkWall/Brick_Cube_%d.dds", TEX_CUBE, 15);
         Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/BaseCamp/Core.png", TEX_OBJECT, 1);
         Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/BaseCamp/CoreBase.png", TEX_OBJECT, 1);
         Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/BaseCamp/SpawnPoint.png", TEX_OBJECT, 1);
@@ -266,21 +268,36 @@ void CMapEditorScene::Setting_TileList()
 
     CComponent* pComponent = NULL;
 
-    const char* items[] = { "Tile01","Tile02","Tile03", "Tile04","Tile05","Tile06","Tile07","Tile08","Tile09","Tile10" };
-    static int	nCurrentItem = 0;
-    ImGui::Combo("##", &nCurrentItem, items, IM_ARRAYSIZE(items));
-
-    for (_int i = 0; i < m_vecTileTexture.size(); ++i)
+    const char* items[] = 
     {
-        if (nCurrentItem == i)
+        "Green_Tile", "Dust_Tile", "Brick_Tile"
+    };
+
+    static int	nCurrentItem = 0;
+    ImGui::Combo("##3", &nCurrentItem, items, IM_ARRAYSIZE(items));
+
+    int iCount(0);
+
+    for (_int i = 0; i < 9; ++i)
+    {
+        int textureIndex = nCurrentItem * 9 + i;
+
+        if (textureIndex < m_vecTileTexture.size())
         {
-            if (ImGui::ImageButton("Tile", m_vecTileTexture[i], ImVec2(50.0f, 50.0f)))
+            // 여기서도 중복 방지.
+            if (ImGui::ImageButton(("Tile" + std::to_string(textureIndex)).c_str(), m_vecTileTexture[textureIndex], ImVec2(50.0f, 50.0f)))
             {
-                m_iImageNumber = nCurrentItem;
-                m_bSelectWall = false;
                 m_bSelectTile = true;
+                m_bSelectWall = false;
                 m_bSelectBuilding = false;
 
+                m_iImageNumber = textureIndex;
+            }
+
+            // Imgui 줄 3개 같은 가로줄 
+            if ((i + 1) % 3 != 0)
+            {
+                ImGui::SameLine();
             }
         }
     }
@@ -309,7 +326,7 @@ void CMapEditorScene::Piking_Tile()
 
             pTerrain->Set_TextureNumber(iIndex, m_iImageNumber);
 
-            if(m_bReachable)
+            if (m_bReachable)
                 pTerrain->Set_Unreachable(iIndex, true);
             else
                 pTerrain->Set_Unreachable(iIndex, false);
@@ -327,26 +344,39 @@ void CMapEditorScene::Setting_WallList()
 
     CComponent* pComponent = NULL;
 
-    const char* items[] = { "Wall0","Wall1","Wall2", "Wall3","Wall4","Wall5" };
+    const char* items[] =
+    {
+        "Wall_01", "Wall_02", "Wall_03"
+    };
 
     static int	nCurrentItem = 0;
     ImGui::Combo("##3", &nCurrentItem, items, IM_ARRAYSIZE(items));
 
-    for (_int i = 0; i < m_vecWallTexture.size(); ++i)
+    int iCount(0);
+
+    for (_int i = 0; i < 15; ++i)
     {
-        if (nCurrentItem == i)
+        int textureIndex = nCurrentItem * 15 + i;
+
+        if (textureIndex < m_vecWallTexture.size())
         {
-            if (ImGui::ImageButton("Wall", m_vecWallTexture[i], ImVec2(50.0f, 50.0f)))
+            if (ImGui::ImageButton(("Wall" + std::to_string(textureIndex)).c_str(), m_vecWallTexture[textureIndex], ImVec2(50.0f, 50.0f)))
             {
                 m_bSelectTile = false;
                 m_bSelectWall = true;
                 m_bSelectBuilding = false;
 
-                //if (m_pWallCom != nullptr)       //-> 이거 안하면 터짐.
-                m_iWallImgNumber = nCurrentItem;
+                m_iWallImgNumber = textureIndex;
+            }
+
+            // Imgui 줄 3개 같은 가로줄 
+            if ((i + 1) % 3 != 0)
+            {
+                ImGui::SameLine();
             }
         }
     }
+
 }
 
 HRESULT CMapEditorScene::Piking_Wall()
