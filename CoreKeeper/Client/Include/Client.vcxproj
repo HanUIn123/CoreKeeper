@@ -151,11 +151,12 @@ call Copy.bat</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\Header\BackGround.h" />
-    <ClInclude Include="..\Header\Building.h" />
+    <ClInclude Include="..\Header\Projectile.h" />
+    <ClInclude Include="..\Header\Statue.h" />
+    <ClInclude Include="..\Header\Object.h" />
     <ClInclude Include="..\Header\CoreBase.h" />
     <ClInclude Include="..\Header\Shaman.h" />
     <ClInclude Include="..\Header\ShroomMan.h" />
-    <ClInclude Include="..\Header\SpawnPoint.h" />
     <ClInclude Include="..\Header\Core.h" />
     <ClInclude Include="..\Header\Helmet.h" />
     <ClInclude Include="..\Header\Chest.h" />
@@ -231,11 +232,12 @@ call Copy.bat</Command>
   <ItemGroup>
     <ClCompile Include="..\Code\BackGround.cpp" />
     <ClCompile Include="..\Code\Bow.cpp" />
-    <ClCompile Include="..\Code\Building.cpp" />
+    <ClCompile Include="..\Code\Projectile.cpp" />
+    <ClCompile Include="..\Code\Statue.cpp" />
+    <ClCompile Include="..\Code\Object.cpp" />
     <ClCompile Include="..\Code\CoreBase.cpp" />
     <ClCompile Include="..\Code\Shaman.cpp" />
     <ClCompile Include="..\Code\ShroomMan.cpp" />
-    <ClCompile Include="..\Code\SpawnPoint.cpp" />
     <ClCompile Include="..\Code\Core.cpp" />
     <ClCompile Include="..\Code\DynamicCamera.cpp" />
     <ClCompile Include="..\Code\Eye.cpp" />

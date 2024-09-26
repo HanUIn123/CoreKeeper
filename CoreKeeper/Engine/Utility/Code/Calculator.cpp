@@ -111,10 +111,8 @@ _vec3 CCalculator::Picking_OnTerrain(HWND _hWnd, CMapToolTex* _pMapToolBufferCom
 
 _bool CCalculator::Check_Distance2D(_vec3* _vPos1, _vec3* _vPos2, _float _fDist)
 {
-	if (sqrt(pow(2, (_vPos1->x - _vPos2->x)) + pow(2, (_vPos1->z - _vPos2->z))) < _fDist)
-		return true;
-	else
-		return false;
+	_vec2 vDistance = { _vPos1->x - _vPos2->x, _vPos1->z - _vPos2->z };
+	return D3DXVec2Length(&vDistance) < _fDist;
 }
 
 

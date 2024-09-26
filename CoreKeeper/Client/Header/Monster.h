@@ -22,79 +22,89 @@ protected:
 	virtual ~CMonster();
 
 public:
-	virtual			HRESULT			Ready_GameObject(_vec3 vPos);
-	virtual			_int			Update_GameObject(const _float& fTimeDelta);
-	virtual			void			LateUpdate_GameObject();
-	virtual			void			Render_GameObject();
+	virtual			HRESULT			Ready_GameObject(_vec3 vPos) PURE;
+	virtual			_int			Update_GameObject(const _float& fTimeDelta) PURE;
+	virtual			void			LateUpdate_GameObject() PURE;
+	virtual			void			Render_GameObject() PURE;
 
 protected:
+	virtual			void			Pattern_Idle(const _float& fTimeDelta) PURE;
+	virtual			void			Pattern_Chase(const _float& fTimeDelta) PURE;
+	virtual			void			Pattern_Attack(const _float& fTimeDelta) PURE;
+	virtual			void			Pattern_Dead() PURE;
+	virtual			STATE			State_Change() PURE;
+
+	void			Set_Speed(_float fSpeed) { m_fSpeed = fSpeed; m_fDiagSpeed = sqrt(pow(m_fSpeed, 2) * 0.5f); }
+	
 	void			Apply_Billboard();
-	void			Set_Speed(_float fSpeed) { m_fSpeed = fSpeed; m_fDiagSpeed = sqrt(pow(m_fSpeed, 2) / 2); }
+	void			Flip();
 
-	void			Pattern_Idle(const _float& fTimeDelta);
-	void			Pattern_Chase(const _float& fTimeDelta);
-	void			Pattern_Attack(const _float& fTimeDelta);
-	void			Pattern_Dead();
-
-	void			Check_Hitted();
-	void			KnockBack(const _float& fTimeDelta, const _float& fDist);
-	void			Drop_Item();
-
-private:
 	void			JumpY(const _float& fTimeDelta);
 	void			FallDir(const _float& fTimeDelta);
 
+	void			Check_Hitted();
+	void			KnockBack(const _float& fTimeDelta, const _float& fDist);
+
+	void			Drop_Item();
+
 protected:
-	Engine::CAnimTex* m_pBufferCom;
-	Engine::CState* m_pStateCom;
-	Engine::CTransform* m_pTransformCom;
-	Engine::CAnimator* m_pAnimatorCom;
-	Engine::CTexture* m_pTextureCom;
-	Engine::CCalculator* m_pCalculatorCom;
-	Engine::CCollider* m_pColliderCom;
+	Engine::CAnimTex*		m_pBufferCom;
+	Engine::CState*			m_pStateCom;
+	Engine::CTransform*		m_pTransformCom;
+	Engine::CAnimator*		m_pAnimatorCom;
+	Engine::CTexture*		m_pTextureCom;
+	Engine::CCalculator*	m_pCalculatorCom;
+	Engine::CCollider*		m_pColliderCom;
 
-	Engine::MONSTERTYPE m_eType;
-	Engine::STATE m_eState;
+	Engine::MONSTERTYPE		m_eType;
+	Engine::STATE			m_eState;
 
-	_float				m_fIdleY;
-	_bool				m_bIdling;
-	_int				m_iIdleStack;
+	_bool					m_bFlip;
 
-	_float				m_fJumpY;
-	_bool				m_bJumping;
-	_float				m_fJumpHeight;
-	_float				m_fJumpSpeed;
-	_float				m_fJumpTime;
-	_float				m_fJumpFrame;
+	_float					m_fIdleY;
+	_bool					m_bIdling;
+	_float					m_fIdleTime;
+	_float					m_fIdleTimeLimit;
 
-	_vec3				m_vStartPoint;
+	_float					m_fJumpY;
+	_bool					m_bJumping;
+	_float					m_fJumpHeight;
+	_float					m_fJumpSpeed;
+	_float					m_fJumpTime;
+	_float					m_fJumpFrame;
 
-	_float				m_fAttackDistance;
-	_float				m_fAttackTime;
-	_vec3				m_vAttackPoint;
-	_bool				m_bAttackSuccess;
-	_bool				m_bAttackFailed;
+	_vec3					m_vStartPoint;
 
-	_bool				m_bKnockBackStart;
-	_bool				m_bKnockBackEnd;
+	_float					m_fAttackDistance;
+	_float					m_fAttackTime;
+	_vec3					m_vAttackPoint;
+	_bool					m_bAttackSuccess;
+	_bool					m_bAttackFailed;
 
-	_bool				m_bFallStart;
-	_vec3				m_vFallDir;
+	_bool					m_bKnockBackStart;
+	_bool					m_bKnockBackEnd;
 
-	_int				m_iDir;
-	Engine::DIRECTION	m_eDir;
-	_float				m_fSpeed;
-	_float				m_fDiagSpeed;
-	_float				m_fSpeedWeight;
+	_bool					m_bFallStart;
+	_vec3					m_vFallDir;
 
-	_bool				m_bStopDraw;
+	// 실제 이동 방향 : 8방향
+	_int					m_iDir;
+	// 텍스쳐 방향 : 4방향
+	Engine::DIRECTION		m_eDir;
+	_float					m_fSpeed;
+	_float					m_fDiagSpeed;
+	_float					m_fSpeedWeight;
 
-	vector<ITEMNUM>		m_vecDropItem;
+	_float					m_fAggroDistance;
 
-	static int			m_iTagNumber;
+	_bool					m_bStopDraw;
 
-public:
-	static CMonster*			Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);
+	_float					m_fImmuneTime;
+	_float					m_fImmuneTimeLimit;
+
+	vector<ITEMNUM>			m_vecDropItem;
+
+	static int				m_iTagNumber;
 
 private:
 	virtual void		Free();

@@ -10,13 +10,13 @@ class CTexture;
 
 END
 
-class CCore : public CObject
+class CStatue : public CObject
 {
 private:
-	explicit						CCore(LPDIRECT3DDEVICE9 pGraphicDev);
-	virtual							~CCore();
+	explicit						CStatue(LPDIRECT3DDEVICE9 pGraphicDev);
+	virtual							~CStatue();
 public:
-	virtual			HRESULT			Ready_GameObject(_vec3 vPos = { 0.f, 0.f, 0.f });
+	virtual			HRESULT			Ready_GameObject(_vec3 vPosm, int iImgNum);
 	virtual			_int			Update_GameObject(const _float& fTimeDelta);
 	virtual			void			LateUpdate_GameObject();
 	virtual			void			Render_GameObject();
@@ -31,9 +31,12 @@ private:
 	HRESULT							Add_Component();
 
 public:
-	static CCore* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos = { 0.f, 0.f, 0.f });
+	static CStatue* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, int iImgNum);
 
 private:
 	virtual void					Free();
+
+private:
+	int								m_iImgNum;
 };
 

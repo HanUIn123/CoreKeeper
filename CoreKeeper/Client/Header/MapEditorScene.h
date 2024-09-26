@@ -119,7 +119,7 @@ private:
 	HANDLE									m_hObjectFile;
 
 	vector<CWall*>							m_vecWallObject;
-	vector<CBuilding*>						m_vecBuildingObject;
+	//vector<CBuilding*>						m_vecBuildingObject;
 
 	list<CCore*>							m_listBuildingObject;
 

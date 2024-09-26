@@ -30,7 +30,10 @@ void CCollider::Update_Collider(const _matrix* pWorldMatrix)
     }
 
     m_matWorld = *pWorldMatrix;
-    m_vCenterPos = _vec3(m_matWorld._41, m_matWorld._42, m_matWorld._43) + m_vOffset;
+    m_matWorld._41 += m_vOffset.x;
+    m_matWorld._42 += m_vOffset.y;
+    m_matWorld._43 += m_vOffset.z;
+    m_vCenterPos = _vec3(m_matWorld._41, m_matWorld._42, m_matWorld._43);
 }
 
 void CCollider::Render_Collider()
@@ -41,6 +44,9 @@ void CCollider::Render_Collider()
     //FAILED_CHECK_RETURN(Setup_Material(), );
 
     m_pGraphicDev->SetTransform(D3DTS_WORLD, &m_matWorld);
+    m_matWorld._41 -= m_vOffset.x;
+    m_matWorld._42 -= m_vOffset.y;
+    m_matWorld._43 -= m_vOffset.z;
 
     DWORD preRenderState, preTextureStageState;
 

@@ -106,14 +106,14 @@
     <Filter Include="04. Component\00. VIBuffer\98.WallTex">
       <UniqueIdentifier>{ad27f67b-b568-46c1-9335-ac165822c865}</UniqueIdentifier>
     </Filter>
-    <Filter Include="04. Component\00. VIBuffer\09.ObjectTex">
-      <UniqueIdentifier>{181cb0d9-b59e-496e-bc18-354ab2e39bef}</UniqueIdentifier>
-    </Filter>
     <Filter Include="04. Component\08. Particles">
       <UniqueIdentifier>{4e2f57fd-7c70-4fa9-b52a-4dc65014eb2a}</UniqueIdentifier>
     </Filter>
     <Filter Include="04. Component\08. Particles\00. Firework">
       <UniqueIdentifier>{40f109a9-df3c-4343-9f38-18774ff71fda}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Component\00. VIBuffer\09. ObjectTex">
+      <UniqueIdentifier>{01ec1065-4ffb-4c20-b46d-c5ede4923528}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -210,9 +210,6 @@
     <ClCompile Include="..\Code\ColliderCube.cpp">
       <Filter>04. Component\05. Collider</Filter>
     </ClCompile>
-    <ClCompile Include="..\Code\ObjectTex.cpp">
-      <Filter>04. Component\00. VIBuffer\09.ObjectTex</Filter>
-    </ClCompile>
     <ClCompile Include="..\Code\Firework.cpp">
       <Filter>04. Component\08. Particles\00. Firework</Filter>
     </ClCompile>
@@ -221,6 +218,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\PSystem.cpp">
       <Filter>04. Component\08. Particles</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\ObjectTex.cpp">
+      <Filter>04. Component\00. VIBuffer\09. ObjectTex</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -320,9 +320,6 @@
     <ClInclude Include="..\..\Header\ColliderCube.h">
       <Filter>04. Component\05. Collider</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Header\ObjectTex.h">
-      <Filter>04. Component\00. VIBuffer\09.ObjectTex</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Header\Firework.h">
       <Filter>04. Component\08. Particles\00. Firework</Filter>
     </ClInclude>
@@ -331,6 +328,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Header\PSystem.h">
       <Filter>04. Component\08. Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Header\ObjectTex.h">
+      <Filter>04. Component\00. VIBuffer\09. ObjectTex</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

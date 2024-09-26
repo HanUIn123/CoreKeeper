@@ -1,24 +1,24 @@
-#include "../../Header/ObjectTex.h"
+#include "../../Header/VerticalObjectTex.h"
 
-CObjectTex::CObjectTex()
+CVerticalObjectTex::CVerticalObjectTex()
 {
 }
 
-CObjectTex::CObjectTex(LPDIRECT3DDEVICE9 pGraphicDev)
+CVerticalObjectTex::CVerticalObjectTex(LPDIRECT3DDEVICE9 pGraphicDev)
     :CVIBuffer(pGraphicDev)
 {
 }
 
-CObjectTex::CObjectTex(const CObjectTex& rhs)
+CVerticalObjectTex::CVerticalObjectTex(const CVerticalObjectTex& rhs)
     :CVIBuffer(rhs)
 {
 }
 
-CObjectTex::~CObjectTex()
+CVerticalObjectTex::~CVerticalObjectTex()
 {
 }
 
-HRESULT CObjectTex::Ready_Buffer(_float _fRadiusX, _float _fRadiusY, _float _fRadiusZ)
+HRESULT CVerticalObjectTex::Ready_Buffer(_float _fRadiusX, _float _fRadiusY, _float _fRadiusZ)
 {
     m_dwTriCnt = 2;
     m_dwVtxCnt = 4;
@@ -67,14 +67,14 @@ HRESULT CObjectTex::Ready_Buffer(_float _fRadiusX, _float _fRadiusY, _float _fRa
     return S_OK;
 }
 
-void CObjectTex::Render_Buffer()
+void CVerticalObjectTex::Render_Buffer()
 {
     CVIBuffer::Render_Buffer();
 }
 
-CObjectTex* CObjectTex::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _fRadiusX, float _fRadiusY, _float _fRadiusZ)
+CVerticalObjectTex* CVerticalObjectTex::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _fRadiusX, _float _fRadiusY, _float _fRadiusZ)
 {
-    CObjectTex* pInstance = new CObjectTex(pGraphicDev);
+    CVerticalObjectTex* pInstance = new CVerticalObjectTex(pGraphicDev);
 
     if (FAILED(pInstance->Ready_Buffer(_fRadiusX, _fRadiusY, _fRadiusZ)))
     {
@@ -86,12 +86,12 @@ CObjectTex* CObjectTex::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _fRadiusX, 
     return pInstance;
 }
 
-CComponent* CObjectTex::Clone()
+CComponent* CVerticalObjectTex::Clone()
 {
-    return new CObjectTex(*this);
+    return new CVerticalObjectTex(*this);
 }
 
-void CObjectTex::Free()
+void CVerticalObjectTex::Free()
 {
     CVIBuffer::Free();
 }
