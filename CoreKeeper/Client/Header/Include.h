@@ -14,6 +14,7 @@
 #include "Monster.h"
 #include "Slime.h"
 #include "ShroomMan.h"
+#include"Shaman.h"
 
 // Item
 #include "Pickaxe.h"

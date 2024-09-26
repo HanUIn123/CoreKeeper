@@ -202,9 +202,6 @@
     <Filter Include="02. GameObject\10.Building\00.Core">
       <UniqueIdentifier>{270f73f8-6ed9-4d63-a46b-8882ed003524}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\10.Building\01.Box">
-      <UniqueIdentifier>{faf24c15-7031-46eb-b2a1-c3c4319d1311}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\07. UI\08. MiniMap">
       <UniqueIdentifier>{525c51d0-a9b0-43aa-b8d8-6b3d0649bc15}</UniqueIdentifier>
     </Filter>
@@ -243,6 +240,9 @@
     </Filter>
     <Filter Include="02. GameObject\10.Building\02. SpawnPoint">
       <UniqueIdentifier>{9e885e6b-783d-4dc8-ba45-ce4f8cac38aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\10.Building\01.Box">
+      <UniqueIdentifier>{faf24c15-7031-46eb-b2a1-c3c4319d1311}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameObject\02. Monster\01. ShroomMan">
       <UniqueIdentifier>{f681d299-afbd-454f-918e-090adb75f899}</UniqueIdentifier>
@@ -477,6 +477,9 @@
     <ClInclude Include="..\Header\ShroomMan.h">
       <Filter>02. GameObject\02. Monster\01. ShroomMan</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\Shaman.h">
+      <Filter>02. GameObject\02. Monster\02. Shaman</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -685,6 +688,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\ShroomMan.cpp">
       <Filter>02. GameObject\02. Monster\01. ShroomMan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Shaman.cpp">
+      <Filter>02. GameObject\02. Monster\02. Shaman</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -53,7 +53,8 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	m_fKnockBackDist = 0.f;
 	m_bNude = true;
 
-	m_vRespawnPoint = { 0, 0, 0 };
+	m_vRespawnPoint = { VTXCNTX * 0.5f, 0, VTXCNTZ * 0.5f };
+	m_bRespawned = false;
 }
 
 CPlayer::~CPlayer()
@@ -64,7 +65,6 @@ HRESULT CPlayer::Ready_GameObject()
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_pTransformCom->Set_Pos(m_vRespawnPoint.x, m_fFirstY, m_vRespawnPoint.z);
 	m_tBasicStat = STAT( 400, 100, 20, 0 );
 	m_pStateCom->Set_Stat(m_tBasicStat.iMaxHp, m_tBasicStat.iMaxMp, m_tBasicStat.iAttack, m_tBasicStat.iDefense);
 	m_pEquipInventoryCom->Set_SlotCount(10);
@@ -120,6 +120,11 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 	}
 
 	Flip();
+	if (!m_bRespawned)
+	{
+		m_bRespawned = true;
+		m_pTransformCom->Set_Pos(m_vRespawnPoint.x, m_fFirstY, m_vRespawnPoint.z);
+	}
 	m_pAnimatorCom->Update_Animation();
 	m_pColliderCom->Update_Collider(m_pTransformCom->Get_WorldMatrix());
 	//m_pFireParticleCom->update(fTimeDelta); // 파티클 업데이트
@@ -130,6 +135,7 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 	Add_RenderGroup(RENDER_ALPHA, this);
 
 	Set_UI();
+
 
 	return Engine::CGameObject::Update_GameObject(fTimeDelta);
 }

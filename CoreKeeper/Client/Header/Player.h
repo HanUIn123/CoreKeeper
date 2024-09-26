@@ -76,6 +76,7 @@ public:
 	void            Set_EnaMove() { m_bNoMove = false; }
 
 	void			Set_KnockBack(_vec3 vEnemyPos, _int iDamage, _float fDist = 3.f);
+	void			Set_Respawn() { m_bRespawned = false; }
 
 private:
 	void			KnockBack(const _float& fTimeDelta);
@@ -128,6 +129,7 @@ private:
 	Engine::CFirework* m_pFireParticleCom; // 파티클 컴퍼넌트
 
 	_vec3					m_vRespawnPoint;
+	_bool					m_bRespawned;
 
 public:
 	static CPlayer* Create(LPDIRECT3DDEVICE9 pGraphicDev);
