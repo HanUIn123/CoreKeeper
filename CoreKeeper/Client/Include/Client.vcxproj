@@ -153,6 +153,7 @@ call Copy.bat</Command>
     <ClInclude Include="..\Header\BackGround.h" />
     <ClInclude Include="..\Header\Building.h" />
     <ClInclude Include="..\Header\CoreBase.h" />
+    <ClInclude Include="..\Header\Shaman.h" />
     <ClInclude Include="..\Header\ShroomMan.h" />
     <ClInclude Include="..\Header\SpawnPoint.h" />
     <ClInclude Include="..\Header\Core.h" />
@@ -232,6 +233,7 @@ call Copy.bat</Command>
     <ClCompile Include="..\Code\Bow.cpp" />
     <ClCompile Include="..\Code\Building.cpp" />
     <ClCompile Include="..\Code\CoreBase.cpp" />
+    <ClCompile Include="..\Code\Shaman.cpp" />
     <ClCompile Include="..\Code\ShroomMan.cpp" />
     <ClCompile Include="..\Code\SpawnPoint.cpp" />
     <ClCompile Include="..\Code\Core.cpp" />
