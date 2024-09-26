@@ -477,6 +477,9 @@
     <ClInclude Include="..\Header\ShroomMan.h">
       <Filter>02. GameObject\02. Monster\01. ShroomMan</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\Shaman.h">
+      <Filter>02. GameObject\02. Monster\02. Shaman</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -685,6 +688,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\ShroomMan.cpp">
       <Filter>02. GameObject\02. Monster\01. ShroomMan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Shaman.cpp">
+      <Filter>02. GameObject\02. Monster\02. Shaman</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
