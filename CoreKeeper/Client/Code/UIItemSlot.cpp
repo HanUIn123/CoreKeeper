@@ -30,10 +30,10 @@ HRESULT CUIItemSlot::Ready_GameObject(_vec2 vPos, _vec2 vSize, SLOTTYPE _eType)
 	m_pTransformCom->Set_Pos(x, y, 0);
 
 
-	m_BRect.left = vPos.x - vSize.x / 2;
-	m_BRect.right = vPos.x + vSize.x / 2;
-	m_BRect.top = vPos.y - vSize.y / 2;
-	m_BRect.bottom = vPos.y + vSize.y / 2;
+	m_BRect.left = vPos.x - vSize.x;
+	m_BRect.right = vPos.x + vSize.x;
+	m_BRect.top = vPos.y - vSize.y;
+	m_BRect.bottom = vPos.y + vSize.y;
 
 	m_eSlotType = _eType;
 

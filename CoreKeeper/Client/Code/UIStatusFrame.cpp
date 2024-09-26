@@ -1,7 +1,5 @@
 #include "pch.h"
 #include "..\Header\UIStatusFrame.h"
-#include "Export_System.h"
-#include "Export_Utility.h"
 
 CUIStatusFrame::CUIStatusFrame(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CGameObject(pGraphicDev), m_bWindow(false), m_bCollapse(false)
@@ -52,12 +50,12 @@ _int CUIStatusFrame::Update_GameObject(const _float& fTimeDelta)
 
 		if (Map_Picked(pt))
 		{
-			if (Engine::Get_DIMouseMove(DIMS_Z) < 0)
+			if (Engine::Get_DIMouseMove(DIMS_Z) < 0 )
 			{
 				//if(m_vPos.y >= 80.f)
 					m_vPos.y += 8.f;
 			}
-			else if (Engine::Get_DIMouseMove(DIMS_Z) > 0)
+			else if (Engine::Get_DIMouseMove(DIMS_Z) > 0 && m_vPos.y >= 59.f)
 			{
 				//if (m_vPos.y >= 60.f)
 					m_vPos.y -= 8.f;
@@ -91,13 +89,46 @@ void CUIStatusFrame::Render_GameObject()
 
 	m_pBufferCom->Render_Buffer();
 
+	matWorld._11 += 20.f;
+	matWorld._22 += 20.f;
+
+	m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
+
 	m_pGraphicDev->SetRenderState(D3DRS_SCISSORTESTENABLE, TRUE);
 
-	wstring sFont = L"총 아이템 레벨 : ";
+	_vec2 vTPos[3] = { m_vPos, m_vPos, m_vPos };
+	_vec2 vSPos[3] = { m_vPos, m_vPos, m_vPos };
 
-	const _tchar* tFont = sFont.c_str();
+	wstring sHTitleFont = L"체력 ";
+	vSPos[0].y += 10.f;
+	wstring sDTitleFont = L"방어";
+	vSPos[1].y += 10.f;
+	wstring sATitleFont = L"공격";
 
-	Engine::Render_Font(L"Font_Status", tFont, &m_vPos, D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
+
+	wstring sHStatFont = L"최대체력 : " + to_wstring(m_pStat->iMaxHp);
+	vSPos[0].y += 10.f;
+	vTPos[1].y = vSPos[0].y;
+	wstring sDStatFont = L"방어력 : " + to_wstring(m_pStat->iDefense);
+	vSPos[1].y += vTPos[1].y + 10.f;
+	vTPos[2].y = vSPos[0].y;
+	wstring sAStatFont = L"공격력 : " + to_wstring(m_pStat->iAttack);
+
+	const _tchar* tHTitleFont = sHTitleFont.c_str();
+	const _tchar* tDTitleFont = sDTitleFont.c_str();
+	const _tchar* tATitleFont = sATitleFont.c_str();
+
+	const _tchar* tHStatFont = sHStatFont.c_str();
+	const _tchar* tDStatFont = sDStatFont.c_str();
+	const _tchar* tAStatFont = sAStatFont.c_str();
+
+	Engine::Render_Font(L"Font_Status", tHTitleFont, &vTPos[0], D3DCOLOR_ARGB(255, 56, 49, 28));
+	Engine::Render_Font(L"Font_Status", tDTitleFont, &vTPos[1], D3DCOLOR_ARGB(255, 56, 49, 28));
+	Engine::Render_Font(L"Font_Status", tDTitleFont, &vTPos[2], D3DCOLOR_ARGB(255, 56, 49, 28));
+
+	Engine::Render_Font(L"Font_Status", tHStatFont, &vSPos[0], D3DCOLOR_ARGB(255, 256, 256, 256));
+	Engine::Render_Font(L"Font_Status", tDStatFont, &vSPos[1], D3DCOLOR_ARGB(255, 256, 256, 256));
+	Engine::Render_Font(L"Font_Status", tAStatFont, &vSPos[2], D3DCOLOR_ARGB(255, 256, 256, 256));
 
 	m_pGraphicDev->SetRenderState(D3DRS_SCISSORTESTENABLE, FALSE);
 }

@@ -83,7 +83,7 @@ HRESULT CMainApp::SetUp_DefaultSetting(LPDIRECT3DDEVICE9* ppGraphicDev)
 	FAILED_CHECK_RETURN(Engine::Ready_Font(*ppGraphicDev, L"Font_HP", L"Unifont", 20, 20, FW_NORMAL), E_FAIL); //HP출력용
 	FAILED_CHECK_RETURN(Engine::Ready_Font(*ppGraphicDev, L"Font_Inv", L"Unifont", 22, 22, FW_ULTRABOLD), E_FAIL);//Item용
 	FAILED_CHECK_RETURN(Engine::Ready_Font(*ppGraphicDev, L"Font_Item", L"Unifont", 18, 18, FW_ULTRABOLD), E_FAIL);//Item용
-	FAILED_CHECK_RETURN(Engine::Ready_Font(*ppGraphicDev, L"Font_Status", L"Unifont", 12, 12, FW_ULTRABOLD), E_FAIL);//Item용
+	FAILED_CHECK_RETURN(Engine::Ready_Font(*ppGraphicDev, L"Font_Status", L"궁서", 18, 18, FW_NORMAL), E_FAIL);//Stat용
 
 	// dinput 추가
 	FAILED_CHECK_RETURN(Engine::Ready_InputDev(g_hInst, g_hWnd), E_FAIL);

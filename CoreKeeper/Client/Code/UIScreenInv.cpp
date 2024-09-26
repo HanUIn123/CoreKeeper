@@ -44,10 +44,10 @@ HRESULT CUIScreenInv::Ready_GameObject(_vec2 vPos, _int _iIndex)
 	m_BRect.bottom = vPos.y + vSize.y;
 	*/
 	
-	m_BRect.left = vPos.x - vSize.x / 2;
-	m_BRect.right = vPos.x + vSize.x / 2;
-	m_BRect.top = vPos.y - vSize.y / 2;
-	m_BRect.bottom = vPos.y + vSize.y / 2;
+	m_BRect.left = vPos.x - vSize.x;
+	m_BRect.right = vPos.x + vSize.x;
+	m_BRect.top = vPos.y - vSize.y;
+	m_BRect.bottom = vPos.y + vSize.y;
 	
 	m_iIndex = _iIndex;
 	m_fPosX = x;
@@ -274,7 +274,7 @@ void CUIScreenInv::Render_GameObject()
 
 			const _tchar* tFont = sFont.c_str();
 
-			_vec2 pos(m_BRect.right - 1.f, m_BRect.top + 12.f);
+			_vec2 pos(m_BRect.right - 15.f, m_BRect.top + 30.f);
 
 			Engine::Render_Font(L"Font_Item", tFont, &pos, D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
 		}
@@ -377,7 +377,7 @@ void CUIScreenInv::Render_GameObject()
 
 		const _tchar* tFont = sFont.c_str();
 
-		_vec2 pos(m_BRect.right - 5.f, m_BRect.top - 8.f);
+		_vec2 pos(m_BRect.right - 19.f, m_BRect.top + 4.f);
 
 		Engine::Render_Font(L"Font_Inv", tFont, &pos, D3DXCOLOR(0.5f, 0.5f, 0.5f, 1.f));
 	}
@@ -387,7 +387,7 @@ void CUIScreenInv::Render_GameObject()
 
 		const _tchar* tFont = sFont.c_str();
 
-		_vec2 pos(m_BRect.right - 5.f, m_BRect.top - 8.f);
+		_vec2 pos(m_BRect.right - 19.f, m_BRect.top + 4.f);
 
 		Engine::Render_Font(L"Font_Inv", tFont, &pos, D3DXCOLOR(0.5f, 0.5f, 0.5f, 1.f));
 	}

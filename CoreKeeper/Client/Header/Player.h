@@ -125,7 +125,7 @@ private:
 
 	_bool					m_bNude;
 
-	Engine::CFirework* m_pFireParticleCom;
+	Engine::CFirework* m_pFireParticleCom; // 파티클 컴퍼넌트
 
 	_vec3					m_vRespawnPoint;
 

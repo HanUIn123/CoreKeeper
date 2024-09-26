@@ -32,10 +32,10 @@ HRESULT CUICraftSlot::Ready_GameObject(_vec2 vPos, _vec2 vSize, _int _iIndex)
 	m_pTransformCom->Set_Pos(x, y, 0);
 
 
-	m_BRect.left = vPos.x - vSize.x / 2;
-	m_BRect.right = vPos.x + vSize.x / 2;
-	m_BRect.top = vPos.y - vSize.y / 2;
-	m_BRect.bottom = vPos.y + vSize.y / 2;
+	m_BRect.left = vPos.x - vSize.x;
+	m_BRect.right = vPos.x + vSize.x;
+	m_BRect.top = vPos.y - vSize.y;
+	m_BRect.bottom = vPos.y + vSize.y;
 
 	switch (_iIndex)
 	{
@@ -171,8 +171,6 @@ _int CUICraftSlot::Update_GameObject(const _float& fTimeDelta)
 
 						pItem = CPickaxe::Create(m_pGraphicDev);
 
-						//pItem->Add_Count(2);
-
 						pCursorInv->Add_Item(pItem);
 
 						Craftstring[m_iCraftCount] = L"PickAxe" + to_wstring(m_iCraftCount);
@@ -186,8 +184,6 @@ _int CUICraftSlot::Update_GameObject(const _float& fTimeDelta)
 						pPlayerInv->Minus_Item(ITEM_WOOD, 4);
 
 						pItem = CShovel::Create(m_pGraphicDev);
-
-						//pItem->Add_Count(2);
 
 						pCursorInv->Add_Item(pItem);
 
@@ -303,7 +299,7 @@ void CUICraftSlot::Render_GameObject()
 
 		const _tchar* tFont = sFont.c_str();
 
-		_vec2 pos(m_BRect.right - 1.f, m_BRect.top + 12.f);
+		_vec2 pos(m_BRect.right - 15.f, m_BRect.top + 30.f);
 
 		Engine::Render_Font(L"Font_Item", tFont, &pos, D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
 	}
