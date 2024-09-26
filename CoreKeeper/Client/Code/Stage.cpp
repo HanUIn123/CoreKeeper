@@ -178,9 +178,9 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar* pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Slime", pGameObject), E_FAIL);
 
-	pGameObject = CMushroom::Create(m_pGraphicDev, _vec3(10, 10, 10));
+	pGameObject = CShroomMan::Create(m_pGraphicDev, _vec3(10, 10, 10));
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Mushroom", pGameObject), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"ShroomMan", pGameObject), E_FAIL);
 
 	//pGameObject = CTorch::Create(m_pGraphicDev);
 	//NULL_CHECK_RETURN(pGameObject, E_FAIL);

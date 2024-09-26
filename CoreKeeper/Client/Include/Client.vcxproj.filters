@@ -232,9 +232,6 @@
     <Filter Include="02. GameObject\07. UI\07. UITrashCan\00. UITrashSlot">
       <UniqueIdentifier>{dcff4464-914f-4bab-a688-9543044946ab}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\02. Monster\01. Mushroom">
-      <UniqueIdentifier>{f681d299-afbd-454f-918e-090adb75f899}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\06. Item\99. Etc\04. Mushroom">
       <UniqueIdentifier>{e5027ad1-71b3-4a15-8c8e-9e97ea0dfda5}</UniqueIdentifier>
     </Filter>
@@ -246,6 +243,9 @@
     </Filter>
     <Filter Include="02. GameObject\10.Building\01.Box">
       <UniqueIdentifier>{faf24c15-7031-46eb-b2a1-c3c4319d1311}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\02. Monster\01. ShroomMan">
+      <UniqueIdentifier>{f681d299-afbd-454f-918e-090adb75f899}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -468,14 +468,17 @@
     <ClInclude Include="..\Header\UIBuff.h">
       <Filter>02. GameObject\07. UI\10. UIBuff</Filter>
     </ClInclude>
-    <ClInclude Include="..\Header\Mushroom.h">
-      <Filter>02. GameObject\02. Monster\01. Mushroom</Filter>
-    </ClInclude>
     <ClInclude Include="..\Header\CoreBase.h">
       <Filter>02. GameObject\10.Building\01. CoreBase</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\SpawnPoint.h">
       <Filter>02. GameObject\10.Building\02. SpawnPoint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\ShroomMan.h">
+      <Filter>02. GameObject\02. Monster\01. ShroomMan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\Shaman.h">
+      <Filter>02. GameObject\02. Monster\02. Shaman</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -677,14 +680,17 @@
     <ClCompile Include="..\Code\UIBuff.cpp">
       <Filter>02. GameObject\07. UI\10. UIBuff</Filter>
     </ClCompile>
-    <ClCompile Include="..\Code\Mushroom.cpp">
-      <Filter>02. GameObject\02. Monster\01. Mushroom</Filter>
-    </ClCompile>
     <ClCompile Include="..\Code\CoreBase.cpp">
       <Filter>02. GameObject\10.Building\01. CoreBase</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\SpawnPoint.cpp">
       <Filter>02. GameObject\10.Building\02. SpawnPoint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\ShroomMan.cpp">
+      <Filter>02. GameObject\02. Monster\01. ShroomMan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Shaman.cpp">
+      <Filter>02. GameObject\02. Monster\02. Shaman</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
