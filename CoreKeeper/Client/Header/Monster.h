@@ -1,6 +1,7 @@
 #pragma once
 #include "GameObject.h"
 #include "Item.h"
+#include "Terrain.h"
 
 
 BEGIN(Engine)
@@ -46,6 +47,9 @@ protected:
 	void			KnockBack(const _float& fTimeDelta, const _float& fDist);
 
 	void			Drop_Item();
+
+	void			Set_Stop(_vec3* vDir1, _float fDirSpeed1, _vec3* vDir2 = nullptr, _float fDirSpeed2 = 0.f);
+	void			Set_StuckFree(const _float& fTimeDelta);
 
 protected:
 	Engine::CAnimTex*		m_pBufferCom;
@@ -104,6 +108,8 @@ protected:
 
 	vector<ITEMNUM>			m_vecDropItem;
 	vector<wstring>			m_vecItemName;
+
+	_int					m_iSpeedWeight;
 
 	static int				m_iTagNumber;
 

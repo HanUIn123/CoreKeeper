@@ -14,7 +14,7 @@ CShaman::CShaman(LPDIRECT3DDEVICE9 pGraphicDev)
 
     m_bFlip = false;
 
-    m_fAggroDistance = 12.f;
+    m_fAggroDistance = 14.f;
     m_fRange = 10.f;
 
     m_iAttackAnimProgress = 0;
@@ -45,7 +45,6 @@ HRESULT CShaman::Ready_GameObject(_vec3 vPos)
     m_pColliderCom->Set_Offset(_vec3(-0.25f, 0, 0));
     m_pStateCom->Set_Stat(100, 0, 10, 0);
     m_vecDropItem.push_back(ITEM_STAFF);
-    //m_vecDropItem.push_back(ITEM_SEED);
     m_vecDropItem.push_back(ITEM_WOOD);
     Set_Speed(2.f);
     return S_OK;
@@ -90,6 +89,7 @@ _int CShaman::Update_GameObject(const _float& fTimeDelta)
     }
 
     Flip();
+    Set_StuckFree(fTimeDelta);
     m_pAnimatorCom->Update_Animation();
     Add_RenderGroup(RENDER_ALPHA, this);
     return Engine::CGameObject::Update_GameObject(fTimeDelta);
@@ -106,7 +106,7 @@ void CShaman::Render_GameObject()
         return;
     m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
     m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
-    
+
     m_pColliderCom->Update_Collider(m_pTransformCom->Get_WorldMatrix());
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
@@ -157,9 +157,9 @@ HRESULT CShaman::Add_Component()
 }
 
 void CShaman::Pattern_Idle(const _float& fTimeDelta)
-{    
+{
     // 벽 확인 추가할 것
-    
+
     // 특정 방향으로 가다가 멈추면 해당 방향의 IDLE 적용 : IDLE은 방향 변경 금지
     if (!m_bIdling)
     {
@@ -179,6 +179,7 @@ void CShaman::Pattern_Idle(const _float& fTimeDelta)
     {
         m_fIdleTime += fTimeDelta;
         _vec3	vLook, vRight;
+        _float  fLookSpeed = 0, fRightSpeed = 0;
         m_pTransformCom->Get_Info(INFO_LOOK, &vLook);
         m_pTransformCom->Get_Info(INFO_RIGHT, &vRight);
 
@@ -191,47 +192,60 @@ void CShaman::Pattern_Idle(const _float& fTimeDelta)
         case 1:
             // 상
             m_eDir = BACK;
-            m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, m_fSpeed);
+            fLookSpeed = m_fSpeed;
             break;
         case 2:
             // 우상
             m_eDir = RIGHT;
-            m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, m_fDiagSpeed);
-            m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, m_fDiagSpeed);
+            fLookSpeed = m_fDiagSpeed;
+            fRightSpeed = m_fDiagSpeed;
             break;
         case 3:
             // 우
             m_eDir = RIGHT;
-            m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, m_fSpeed);
+            fRightSpeed = m_fSpeed;
             break;
         case 4:
             // 우하
             m_eDir = RIGHT;
-            m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, -m_fDiagSpeed);
-            m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, m_fDiagSpeed);
+            fLookSpeed = -m_fDiagSpeed;
+            fRightSpeed = m_fDiagSpeed;
             break;
         case 5:
             // 하
             m_eDir = FRONT;
-            m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, -m_fSpeed);
+            fLookSpeed = m_fSpeed;
             break;
         case 6:
             // 좌하
             m_eDir = LEFT;
-            m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, -m_fDiagSpeed);
-            m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, -m_fDiagSpeed);
+            fLookSpeed = -m_fDiagSpeed;
+            fRightSpeed = -m_fDiagSpeed;
             break;
         case 7:
             // 좌
             m_eDir = LEFT;
-            m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, -m_fSpeed);
+            fRightSpeed = -m_fSpeed;
             break;
         case 8:
             // 좌상
             m_eDir = LEFT;
-            m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, m_fDiagSpeed);
-            m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, -m_fDiagSpeed);
+            fLookSpeed = m_fDiagSpeed;
+            fRightSpeed = -m_fDiagSpeed;
             break;
+        }
+
+        Set_Stop(&vLook, fLookSpeed, &vRight, fRightSpeed);
+        if (m_iSpeedWeight == 0)
+        {
+            m_iDir = 0;
+            m_bIdling = false;
+            m_fIdleTime = 0.f;
+        }
+        else if (m_iDir)
+        {
+            m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, fLookSpeed * m_iSpeedWeight);
+            m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, fRightSpeed * m_iSpeedWeight);
         }
     }
     else
@@ -287,8 +301,11 @@ void CShaman::Pattern_Chase(const _float& fTimeDelta)
         (Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Transform"));
     NULL_CHECK(pPlayerTransform);
 
-    _vec3		vPlayerPos;
+    _vec3		vPos, vPlayerPos, vDir;
     pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
+    m_pTransformCom->Get_Info(INFO_POS, &vPos);
+    vDir = vPlayerPos - vPos;
+    D3DXVec3Normalize(&vDir, &vDir);
 
     // 플레이어 위치에 따른 방향(4방향) 계산
     if (g_bIsTopCamera)
@@ -310,7 +327,8 @@ void CShaman::Pattern_Chase(const _float& fTimeDelta)
         m_pAnimatorCom->Set_CurState(WALK, 40, 45, 8);
         break;
     }
-    m_pTransformCom->Chase_Target(&vPlayerPos, fTimeDelta * m_fSpeed * m_fSpeedWeight);
+    Set_Stop(&vDir, m_fSpeed);
+    m_pTransformCom->Move_Pos(&vDir, fTimeDelta, m_fSpeed * m_fSpeedWeight * m_iSpeedWeight);
 }
 
 // 투사체 생성해서 날리기
@@ -345,7 +363,7 @@ void CShaman::Pattern_Attack(const _float& fTimeDelta)
         iFrame = 64 + m_iAttackAnimProgress;
         break;
     }
-    
+
     // 차징 시
     if (iFrame % 8 < 3)
     {
@@ -427,7 +445,7 @@ STATE CShaman::State_Change()
         // 플레이어가 어그로 범위 내에 들어올 경우(선공)
         if (m_pCalculatorCom->Check_Distance2D(&vPlayerPos, &vPos, m_fRange))
             return SWING;
-        else if(m_pCalculatorCom->Check_Distance2D(&vPlayerPos, &vPos, m_fAggroDistance))
+        else if (m_pCalculatorCom->Check_Distance2D(&vPlayerPos, &vPos, m_fAggroDistance))
             return WALK;
         break;
     case WALK:
@@ -502,7 +520,7 @@ void CShaman::Set_Light()
     light.Attenuation2 = 0.0f;
 
     m_pGraphicDev->SetLight(m_iLightNum, &light); // 조명 설정
-    if(m_bLightEnable)
+    if (m_bLightEnable)
         m_pGraphicDev->LightEnable(m_iLightNum, TRUE);
     else
         m_pGraphicDev->LightEnable(m_iLightNum, FALSE);

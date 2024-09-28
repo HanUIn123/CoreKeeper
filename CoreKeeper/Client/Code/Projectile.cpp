@@ -20,6 +20,7 @@ CProjectile::CProjectile(LPDIRECT3DDEVICE9 pGraphicDev)
     m_fAggroDistance = 10.f;
     m_bCharging = true;
     m_bAttackSuccess = false;
+    m_bCollideWithPlayer = false;
 
     m_bLightEnable = true;
     m_iLightNum = g_iLightNum++;
@@ -166,11 +167,14 @@ void CProjectile::Pattern_Attack(const _float& fTimeDelta)
     if (!m_bAttackSuccess)
     {
         m_bAttackSuccess = true;
-        _vec3		vPos;
-        m_pTransformCom->Get_Info(INFO_POS, &vPos);
-        dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"))
-            ->Set_KnockBack(vPos, m_pStateCom->Get_Stat()->iAttack);
-        // 플레이어 화상 상태 이상
+        if (m_bCollideWithPlayer)
+        {
+            _vec3		vPos;
+            m_pTransformCom->Get_Info(INFO_POS, &vPos);
+            dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"))
+                ->Set_KnockBack(vPos, m_pStateCom->Get_Stat()->iAttack);
+            // 플레이어 화상 상태 이상 추가
+        }
     }
 }
 
@@ -185,10 +189,12 @@ void CProjectile::Pattern_Dead()
 STATE CProjectile::State_Change()
 {
     CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
-    _vec3 vPlayerPos, vPos;
+    _vec3 vPlayerPos, vPos, vCheckPos;
     dynamic_cast<CTransform*>(pPlayer->Get_Component(ID_DYNAMIC, L"Com_Transform"))->Get_Info(INFO_POS, &vPlayerPos);
     m_pTransformCom->Get_Info(INFO_POS, &vPos);
     CCollider* pPlayerCollider;
+    CTerrain* pTerrain;
+    _int iIndex;
     switch (m_eState)
     {
     case IDLE:
@@ -199,8 +205,22 @@ STATE CProjectile::State_Change()
     case WALK:
         // 날아가다가 플레이어랑 부딪히면 SWING(폭발)
         pPlayerCollider = dynamic_cast<Engine::CCollider*>(pPlayer->Get_Component(ID_DYNAMIC, L"Com_Collider"));
+        vCheckPos = vPos + m_vAttackPoint * m_fSpeed * m_fAttackTime * 0.1f;
+        iIndex = _int(vCheckPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (vCheckPos.x + 0.5f * VTXITV);
+        pTerrain = dynamic_cast<CTerrain*>(Engine::Get_GameObject(L"Layer_Environment", L"Terrain"));
         if (m_pColliderCom->Check_Collision(pPlayerCollider))
+        {
             m_eState = SWING;
+            m_bCollideWithPlayer = true;
+        }
+        else if (0 <= iIndex && iIndex < VTXCNTX * VTXCNTZ)
+        {
+            if (pTerrain->Get_UnreachableByIndex(iIndex))
+            {
+                m_eState = SWING;
+                m_bCollideWithPlayer = false;
+            }
+        }
         else
         {
             // 날아가다가 사정거리 이상 넘어가거나 지면에 닿으면 DEAD
