@@ -328,6 +328,9 @@
     <Filter Include="02. GameObject\06. Item\99. Etc\07. StatueCore\01. LarvaCore">
       <UniqueIdentifier>{40a2ca2e-3354-44fb-b033-5c984529c69c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\07. UI\12. UIStatue">
+      <UniqueIdentifier>{74c6834d-a81e-448f-b0e3-838ca85c4ec1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">

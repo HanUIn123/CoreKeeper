@@ -46,6 +46,7 @@ private:
 	Engine::CGameObject*			m_pTerrainObject;
 private:
 	wstring							m_Invstring[50];
+	wstring                         m_ChestInvstring[50];
 	wstring							m_ItemSlot[10];
 	wstring                         m_CraftSlot[10];
 	_bool							m_bInvCheck;
