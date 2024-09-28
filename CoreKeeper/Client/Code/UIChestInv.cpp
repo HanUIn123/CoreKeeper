@@ -119,21 +119,20 @@ void CUIChestInv::Render_GameObject()
 
 	_int iIndex = m_iIndex;
 
-	//if (iIndex >= pPlayerInv->Get_SlotCount())
-	//{
-		//iIndex--;
-	//}
-
 	if (!m_pInventoryCom->Check_Empty(iIndex))
 	{
 		pItem = m_pInventoryCom->Get_Item(iIndex);
 
 		_int iCount = pItem->Get_Count();
 
-		pItem->Get_Texture()->Set_Texture();
+		Engine::MATERIAL material = pItem->Get_ItemMaterial();
+
+		if (material != 3)
+			pItem->Get_Texture()->Set_Texture(material);
+		else
+			pItem->Get_Texture()->Set_Texture();
 
 		Engine::ITEMNUM eNum = pItem->Get_ItemNum();
-
 
 		switch (eNum)
 		{

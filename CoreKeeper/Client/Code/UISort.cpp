@@ -14,7 +14,7 @@ CUISort::~CUISort()
 {
 }
 
-HRESULT CUISort::Ready_GameObject(_vec2 vPos, _vec2 vSize)
+HRESULT CUISort::Ready_GameObject(_vec2 vPos, _vec2 vSize, INVENTORY_TYPE eType)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
@@ -34,6 +34,8 @@ HRESULT CUISort::Ready_GameObject(_vec2 vPos, _vec2 vSize)
 	m_BRect.right = vPos.x + vSize.x / 2;
 	m_BRect.top = vPos.y - vSize.y / 2;
 	m_BRect.bottom = vPos.y + vSize.y / 2;
+
+	m_eType = eType;
 
 	return S_OK;
 }
@@ -56,9 +58,21 @@ _int CUISort::Update_GameObject(const _float& fTimeDelta)
 			{
 				m_bPushed = true;
 
-				CInventory* pPlayerInv = dynamic_cast<Engine::CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
+				CInventory* pInv = nullptr;
+
+				switch (m_eType)
+				{
+				case TYPE_PLAYER:
+					pInv = dynamic_cast<Engine::CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
+					break;
+
+				case TYPE_CHEST:
+					pInv = dynamic_cast<Engine::CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
+					break;
+
+				}
 			
-				pPlayerInv->Sort_Item();
+				pInv->Sort_Item();
 			}
 			else if (Button_Up(DIM_LB))
 			{
@@ -129,11 +143,11 @@ HRESULT CUISort::Add_Component()
 	return S_OK;
 }
 
-CUISort* CUISort::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec2 vPos, _vec2 vSize)
+CUISort* CUISort::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec2 vPos, _vec2 vSize, INVENTORY_TYPE eType)
 {
 	CUISort* pUISort = new CUISort(pGraphicDev);
 
-	if (FAILED(pUISort->Ready_GameObject(vPos, vSize)))
+	if (FAILED(pUISort->Ready_GameObject(vPos, vSize, eType)))
 	{
 		Safe_Release(pUISort);
 		MSG_BOX("UIStatus Create Failed");

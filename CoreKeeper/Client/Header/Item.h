@@ -72,6 +72,8 @@ public:
 	void				Set_Swing(DIRECTION eDir, bool bSwing) { m_eDir = eDir; m_bSwing = bSwing; }
 	void				Set_Follow(bool bFollow = true) { m_bFollow = bFollow; }
 
+	Engine::MATERIAL    Get_ItemMaterial() { return m_eMaterial; }
+
 	//아이템 설명창
 	const wstring*      Get_Explain() { return m_wItemExplain; }
 	const wstring       Get_Meterial() { return m_wItemMetrial; }

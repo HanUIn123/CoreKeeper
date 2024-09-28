@@ -18,6 +18,7 @@
 #include "..\Header\UITrashSlot.h"
 #include "..\Header\UISort.h"
 #include "..\Header\UIBuff.h"
+#include "..\Header\UIChestInv.h"
 
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CGameObject(pGraphicDev)
@@ -752,6 +753,10 @@ void CPlayer::Set_UI()
 
 			m_bMap = false;
 		}
+
+		//if() // 상자 상호작용시
+
+		Set_ChestInventory();
 	}
 
 	if (Engine::Key_Down(DIK_O))
@@ -891,6 +896,20 @@ void CPlayer::Set_Status()
 	CUIPlayerStats* pStats = dynamic_cast<CUIPlayerStats*>(Engine::Get_GameObject(L"Layer_UI", L"UIPlayerStats"));
 	pStats->Set_Window();
 
+}
+
+void CPlayer::Set_ChestInventory()
+{
+	for (int i = 0; i < 18; ++i)
+	{
+		wstring string;
+
+		string = L"UI_ChestInventory_" + std::to_wstring(i);
+
+		CUIChestInv* pChestInventory = dynamic_cast<CUIChestInv*>(Engine::Get_GameObject(L"Layer_UI", string.c_str()));
+
+		pChestInventory->Set_Show();
+	}
 }
 
 void CPlayer::Particle_Update(_float fTimeDelta)

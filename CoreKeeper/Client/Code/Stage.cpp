@@ -444,6 +444,21 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
 		FAILED_CHECK_RETURN(pLayer->Add_GameObject(m_Invstring[i].c_str(), pGameObject), E_FAIL);
 	}
 
+	for (int i = 0; i < 18; i++)
+	{
+		if (i % 6 == 0)
+			vPos = { 519.f + (63.f * (_float)(i - (i / 6) * 6)), 180.f + (_float)(i / 6) * 63.f };
+		else
+			vPos = { 519.f + (63.f * (_float)(i - (((i - 1) / 6) * 6))), 180.f + (_float)((i - 1) / 6) * 63.f };
+
+		m_ChestInvstring[i] = L"UI_ChestInventory_" + std::to_wstring(i);
+
+		pGameObject = CUIChestInv::Create(m_pGraphicDev, vPos, i);
+		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		FAILED_CHECK_RETURN(pLayer->Add_GameObject(m_ChestInvstring[i].c_str(), pGameObject), E_FAIL);
+	}
+
+
 	pGameObject = CUICursor::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Cursor", pGameObject), E_FAIL)
@@ -472,7 +487,7 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
 	vPos = { 1040.f, 476.f };
 	vSize = { 30.f, 30.f };
 
-	pGameObject = CUISort::Create(m_pGraphicDev, vPos, vSize);
+	pGameObject = CUISort::Create(m_pGraphicDev, vPos, vSize, CUISort::TYPE_PLAYER);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Sort", pGameObject), E_FAIL);
 

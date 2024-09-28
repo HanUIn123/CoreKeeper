@@ -189,7 +189,12 @@ void CUICursor::Render_GameObject()
 
 		m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
 
-		m_pItem->Get_Texture()->Set_Texture();
+		Engine::MATERIAL material = m_pItem->Get_ItemMaterial();
+
+		if (material != 3)
+			m_pItem->Get_Texture()->Set_Texture(material);
+		else
+			m_pItem->Get_Texture()->Set_Texture();
 
 		m_pItem->Get_Buffer()->Render_First();
 

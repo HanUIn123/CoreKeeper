@@ -48,14 +48,10 @@ HRESULT CUICraftSlot::Ready_GameObject(_vec2 vPos, _vec2 vSize, _int _iIndex)
 		break;
 
 	case 2:
-		m_eSlotType = UCITEM_WOODENSHOVEL;
-		break;
-
-	case 3:
 		m_eSlotType = UCITEM_WORKBENCH;
 		break;
 
-	case 4:
+	case 3:
 		m_eSlotType = UCITEM_CHEST;
 		break;
 
@@ -94,15 +90,6 @@ _int CUICraftSlot::Update_GameObject(const _float& fTimeDelta)
 			break;
 
 		case UCITEM_WOODENPICK:
-			if (pPlayerInv->Enough_Item(ITEM_WOOD, 4))
-			{
-				m_bEnough = true;
-			}
-			else
-				m_bEnough = false;
-			break;
-
-		case UCITEM_WOODENSHOVEL:
 			if (pPlayerInv->Enough_Item(ITEM_WOOD, 4))
 			{
 				m_bEnough = true;
@@ -165,11 +152,11 @@ _int CUICraftSlot::Update_GameObject(const _float& fTimeDelta)
 
 						m_iCraftCount++;
 						break;
-				
+
 					case UCITEM_WOODENPICK:
 						pPlayerInv->Minus_Item(ITEM_WOOD, 4);
 
-						pItem = CPickaxe::Create(m_pGraphicDev);
+						pItem = CPickaxe::Create(m_pGraphicDev, MATERIAL_WOOD);
 
 						pCursorInv->Add_Item(pItem);
 
@@ -178,20 +165,6 @@ _int CUICraftSlot::Update_GameObject(const _float& fTimeDelta)
 						pStage->Create_Item(L"Layer_UI", pItem, Craftstring[m_iCraftCount].c_str());
 
 						m_iCraftCount++;
-						break;
-
-					case UCITEM_WOODENSHOVEL:
-						/*pPlayerInv->Minus_Item(ITEM_WOOD, 4);
-
-						pItem = CShovel::Create(m_pGraphicDev);
-
-						pCursorInv->Add_Item(pItem);
-
-						Craftstring[m_iCraftCount] = L"Shovel" + to_wstring(m_iCraftCount);
-
-						pStage->Create_Item(L"Layer_UI", pItem, Craftstring[m_iCraftCount].c_str());
-
-						m_iCraftCount++;*/
 						break;
 					}
 				}	
@@ -244,16 +217,11 @@ void CUICraftSlot::Render_GameObject()
 		break;
 
 	case 2:
-		matWorld._11 -= 20.f;
-		matWorld._22 -= 10.f;
-		break;
-
-	case 3:
 		matWorld._11 -= 10.f;
 		matWorld._22 -= 10.f;
 		break;
 
-	case 4:
+	case 3:
 		matWorld._11 -= 10.f;
 		matWorld._22 -= 10.f;
 		break;

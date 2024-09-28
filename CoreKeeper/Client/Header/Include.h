@@ -62,3 +62,4 @@
 #include "UIStatusFrame.h"
 #include "UIItemFrame.h"
 #include "UIBuff.h"
+#include "UIChestInv.h"
