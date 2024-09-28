@@ -82,8 +82,6 @@ void CMalSpawner::LateUpdate_GameObject()
 
 void CMalSpawner::Render_GameObject()
 {
-	if (g_bIsTopCamera && m_bDrop)
-		CItem::Apply_Billboard();
 
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 

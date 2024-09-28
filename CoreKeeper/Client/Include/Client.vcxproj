@@ -150,6 +150,7 @@ call Copy.bat</Command>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\Header\Skeleton.h" />
     <ClInclude Include="..\Header\BackGround.h" />
     <ClInclude Include="..\Header\Bag.h" />
     <ClInclude Include="..\Header\AzeosSpawner.h" />
@@ -159,7 +160,14 @@ call Copy.bat</Command>
     <ClInclude Include="..\Header\Sprinkler.h" />
     <ClInclude Include="..\Header\MalCore.h" />
     <ClInclude Include="..\Header\LarvaCore.h" />
-    <ClInclude Include="..\Header\TombStone.h" />
+    <ClInclude Include="..\Header\SprinklerObject.h" />
+    <ClInclude Include="..\Header\GravestoneObject.h" />
+    <ClInclude Include="..\Header\BoxObject.h" />
+    <ClInclude Include="..\Header\CookingPotObject.h" />
+    <ClInclude Include="..\Header\FurnaceObject.h" />
+    <ClInclude Include="..\Header\AnvilObject.h" />
+    <ClInclude Include="..\Header\TableObject.h" />
+    <ClInclude Include="..\Header\Gravestone.h" />
     <ClInclude Include="..\Header\Box.h" />
     <ClInclude Include="..\Header\Necklace.h" />
     <ClInclude Include="..\Header\Assistance.h" />
@@ -257,6 +265,7 @@ call Copy.bat</Command>
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Code\Skeleton.cpp" />
     <ClCompile Include="..\Code\BackGround.cpp" />
     <ClCompile Include="..\Code\Bag.cpp" />
     <ClCompile Include="..\Code\AzeosSpawner.cpp" />
@@ -266,7 +275,14 @@ call Copy.bat</Command>
     <ClCompile Include="..\Code\Sprinkler.cpp" />
     <ClCompile Include="..\Code\MalCore.cpp" />
     <ClCompile Include="..\Code\LarvaCore.cpp" />
-    <ClCompile Include="..\Code\TombStone.cpp" />
+    <ClCompile Include="..\Code\SprinklerObject.cpp" />
+    <ClCompile Include="..\Code\GravestoneObject.cpp" />
+    <ClCompile Include="..\Code\BoxObject.cpp" />
+    <ClCompile Include="..\Code\CookingPotObject.cpp" />
+    <ClCompile Include="..\Code\FurnaceObject.cpp" />
+    <ClCompile Include="..\Code\AnvilObject.cpp" />
+    <ClCompile Include="..\Code\TableObject.cpp" />
+    <ClCompile Include="..\Code\Gravestone.cpp" />
     <ClCompile Include="..\Code\Box.cpp" />
     <ClCompile Include="..\Code\Necklace.cpp" />
     <ClCompile Include="..\Code\Assistance.cpp" />

@@ -138,14 +138,6 @@ void CUICursor::Render_GameObject()
 
 			matWorld._42 -= 8.f;
 			break;
-
-		//case ITEM_SHOVEL:
-		//	matWorld._11 = 60.f;
-		//	matWorld._22 = 60.f;
-
-		//	matWorld._42 -= 8.f;
-		//	break;
-
 		case ITEM_STAFF:
 			matWorld._11 = 35.f;
 			matWorld._22 = 35.f;

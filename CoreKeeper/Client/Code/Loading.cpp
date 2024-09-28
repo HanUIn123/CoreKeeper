@@ -41,6 +41,7 @@ _uint CLoading::Loading_Stage()
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MouseInventory", Engine::CInventory::Create(m_pGraphicDev, 1)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TrashInventory", Engine::CInventory::Create(m_pGraphicDev, 1)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ChestInventory", Engine::CInventory::Create(m_pGraphicDev, 19)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_GravestoneInventory", Engine::CInventory::Create(m_pGraphicDev, 18)), E_FAIL);
 
     lstrcpy(m_szLoading, L"Buffer Loading...");
 
@@ -79,6 +80,7 @@ _uint CLoading::Loading_Stage()
 
 
     // Object Tex
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ObjectTex", Engine::CObjectTex::Create(m_pGraphicDev, 0.5f, 0.5f, 0.0f)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_CoreTex", Engine::CObjectTex::Create(m_pGraphicDev, 3.f, 3.f, 0.0f)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_StatueTex", Engine::CObjectTex::Create(m_pGraphicDev, 2.f, 2.f, 0.0f)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_CoreBaseTex", Engine::CObjectTex::Create(m_pGraphicDev, 19.f, 0.0f, 11.f)), E_FAIL);
@@ -109,11 +111,6 @@ _uint CLoading::Loading_Stage()
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SkyBox", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/SkyBox/burger%d.dds", TEX_CUBE, 4)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_WallCube", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Wall/Wall_%d.dds", TEX_CUBE, 3)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_DarkWallCube", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/DarkWall/Brick_Cube_%d.dds", TEX_CUBE, 15)), E_FAIL);
-    
-    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_CoreTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/BaseCamp/Core.png", TEX_NORMAL)), E_FAIL);
-    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_StatueTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/BaseCamp/Statue_%d.png", TEX_NORMAL, 3)), E_FAIL);
-    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_CoreBaseTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/BaseCamp/BaseCamp.png", TEX_NORMAL)), E_FAIL);
-
 
     //MapTool TEXTURE
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_BasicTileTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Tile/BasicTile/BasicTile_%d.png", TEX_NORMAL, 11)), E_FAIL);
@@ -124,18 +121,23 @@ _uint CLoading::Loading_Stage()
 #pragma region Item TEXTURE
 
     //아이템 종류별로 텍스쳐 저장하게 할건데 일단 임시
+    // 도구
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_PickaxeTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Tool/Pickaxe_%d.png", TEX_NORMAL, 3)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_HoeTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Tool/Hoe_%d.png", TEX_NORMAL, 3)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_WateringCanTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Tool/WateringCan.png", TEX_NORMAL)), E_FAIL);
 
+    // 무기
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SwordTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Weapon/Sword_%d.png", TEX_NORMAL, 3)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_BowTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Weapon/Bow_%d.png", TEX_NORMAL, 3)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_StaffTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Weapon/Suncaller_staff.png", TEX_NORMAL)), E_FAIL);
 
+    // 장비
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_HelmetTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Equip/Helm_%d.png", TEX_NORMAL, 4)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ChestTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Equip/Chest_%d.png", TEX_NORMAL, 4)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_LegTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Equip/Pants_%d.png", TEX_NORMAL, 4)), E_FAIL);
 
+    // 아직 이미지가 없음
+    // 보조장비
     //FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_NecklaceTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Equip/Pants_%d.png", TEX_NORMAL, 4)), E_FAIL);
     //FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_RingTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Equip/Pants_%d.png", TEX_NORMAL, 4)), E_FAIL);
     //FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_AssistanceTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Equip/Pants_%d.png", TEX_NORMAL, 4)), E_FAIL);
@@ -149,13 +151,29 @@ _uint CLoading::Loading_Stage()
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_CookingPotTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/CookingPot/CookingPot_%d.png", TEX_NORMAL)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_WallPieceTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/WallPiece/WallPiece_%d.png", TEX_NORMAL, 4)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TorchTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Torch.png", TEX_NORMAL)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_BoxTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Box.png", TEX_NORMAL)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_GravestoneTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Gravestone.png", TEX_NORMAL)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SprinklerTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Sprinkler.png", TEX_NORMAL)), E_FAIL);
 
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_OreTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Ore/Ore_%d.png", TEX_NORMAL, 3)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_BarTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Bar/Bar_%d.png", TEX_NORMAL, 3)), E_FAIL);
+    //FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_PotionTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Sprinkler.png", TEX_NORMAL)), E_FAIL);
+    //FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_FoodTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Sprinkler.png", TEX_NORMAL)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SeedTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Seed/Seed_%d.png", TEX_NORMAL, 3)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_StatueCoreTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Core/Core_%d.png", TEX_NORMAL, 3)), E_FAIL);
+    //FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SpawnerTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Sprinkler.png", TEX_NORMAL)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_WoodTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Wood.png", TEX_NORMAL)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MucusTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Mucus.png", TEX_NORMAL)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_PieceTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Piece.png", TEX_NORMAL)), E_FAIL);
 
     // SHADOW TEXTURE
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ShadowTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Shadow/shadow%d.png", TEX_NORMAL, 3)), E_FAIL);
+
+    // OBJECT TEXTURE
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_CoreTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/BaseCamp/Core.png", TEX_NORMAL)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_StatueTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/BaseCamp/Statue_%d.png", TEX_NORMAL, 3)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_CoreBaseTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/BaseCamp/BaseCamp.png", TEX_NORMAL)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SkeletonTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/BaseCamp/Skeleton.png", TEX_NORMAL)), E_FAIL);
 
 #pragma endregion
 
@@ -191,6 +209,7 @@ _uint CLoading::Loading_Stage()
 
     lstrcpy(m_szLoading, L"Collider Loading...");
 
+#pragma region Collider
 
     //COLLIDER
     //반지름 넣으면 됩니다. 콜라이더 RENDER 기능 아직 안됨 ㅠ
@@ -208,6 +227,8 @@ _uint CLoading::Loading_Stage()
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SwingCubeCollider", Engine::CColliderCube::Create(m_pGraphicDev, _vec3(-0.5f, -0.5f, -0.5f), _vec3(0.5f, 0.8f, 0.5f))), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ItemCubeCollider", Engine::CColliderCube::Create(m_pGraphicDev, _vec3(-0.2f, -0.2f, -0.2f), _vec3(0.2f, 0.2f, 0.2f))), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_WallCollider", Engine::CColliderCube::Create(m_pGraphicDev, _vec3(-0.5f, -0.5f, -0.5f), _vec3(0.5f, 0.5f, 0.5f))), E_FAIL);
+
+#pragma endregion
 
     lstrcpy(m_szLoading, L"PRESS ENTER");
 

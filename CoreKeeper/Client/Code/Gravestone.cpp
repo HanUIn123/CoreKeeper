@@ -1,19 +1,19 @@
 #include "pch.h"
-#include "..\Header\TombStone.h"
+#include "..\Header\Gravestone.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
 
-CTombStone::CTombStone(LPDIRECT3DDEVICE9 pGraphicDev)
+CGravestone::CGravestone(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CItem(pGraphicDev)
 {
-	m_eItemNum = ITEM_TOMBSTONE;
+	m_eItemNum = ITEM_GRAVESTONE;
 }
 
-CTombStone::~CTombStone()
+CGravestone::~CGravestone()
 {
 }
 
-HRESULT CTombStone::Ready_GameObject(_vec3 vPos)
+HRESULT CGravestone::Ready_GameObject(_vec3 vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
@@ -33,7 +33,7 @@ HRESULT CTombStone::Ready_GameObject(_vec3 vPos)
 	return S_OK;
 }
 
-_int CTombStone::Update_GameObject(const _float& fTimeDelta)
+_int CGravestone::Update_GameObject(const _float& fTimeDelta)
 {
 	m_pAnimatorCom->Update_Animation();
 
@@ -76,16 +76,13 @@ _int CTombStone::Update_GameObject(const _float& fTimeDelta)
 	return Engine::CGameObject::Update_GameObject(fTimeDelta);
 }
 
-void CTombStone::LateUpdate_GameObject()
+void CGravestone::LateUpdate_GameObject()
 {
 	Engine::CGameObject::LateUpdate_GameObject();
 }
 
-void CTombStone::Render_GameObject()
+void CGravestone::Render_GameObject()
 {
-	if (g_bIsTopCamera && m_bDrop)
-		CItem::Apply_Billboard();
-
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
@@ -118,7 +115,7 @@ void CTombStone::Render_GameObject()
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
-HRESULT CTombStone::Add_Component()
+HRESULT CGravestone::Add_Component()
 {
 	CComponent* pComponent = NULL;
 
@@ -157,21 +154,21 @@ HRESULT CTombStone::Add_Component()
 	return S_OK;
 }
 
-CTombStone* CTombStone::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
+CGravestone* CGravestone::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 {
-	CTombStone* pTombStone = new CTombStone(pGraphicDev);
+	CGravestone* pGravestone = new CGravestone(pGraphicDev);
 
-	if (FAILED(pTombStone->Ready_GameObject(vPos)))
+	if (FAILED(pGravestone->Ready_GameObject(vPos)))
 	{
-		Safe_Release(pTombStone);
-		MSG_BOX("pTombStone Create Failed");
+		Safe_Release(pGravestone);
+		MSG_BOX("pGravestone Create Failed");
 		return nullptr;
 	}
 
-	return pTombStone;
+	return pGravestone;
 }
 
-void CTombStone::Free()
+void CGravestone::Free()
 {
 	Engine::CGameObject::Free();
 }

@@ -31,7 +31,6 @@ private:
 	//void			SetUp_Light();
 
 protected:
-	void			Apply_Billboard();
 	void			Wave(const _float& fTimeDelta);
 	void			Swing(int start, int end, int Count);
 	void			Follow_Player();

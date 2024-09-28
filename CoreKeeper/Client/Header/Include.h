@@ -41,7 +41,7 @@
 #include "Core.h"
 #include "Statue.h"
 #include "CoreBase.h"
-
+#include "GravestoneObject.h"
 
 // UI
 #include "UIPlayerStatus.h"

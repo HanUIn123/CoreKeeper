@@ -82,9 +82,6 @@ void CAzeosSpawner::LateUpdate_GameObject()
 
 void CAzeosSpawner::Render_GameObject()
 {
-	if (g_bIsTopCamera && m_bDrop)
-		CItem::Apply_Billboard();
-
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
