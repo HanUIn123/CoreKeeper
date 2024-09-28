@@ -31,6 +31,7 @@ private:
 	_int			m_iLightNum;
 
 	_bool			m_bCharging;
+	_bool			m_bCollideWithPlayer;
 
 	_float			m_fAttackTimeLimit;
 

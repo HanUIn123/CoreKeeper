@@ -31,8 +31,10 @@ public:
 	void                                                Set_TextureNumber(vector<int> _vecTextureNumber) { copy(_vecTextureNumber.begin(), _vecTextureNumber.end(), m_vecTextureNumber.begin());}
 
 	vector<bool>										Get_Unreachable() { return m_vecUnreachable; }
+	bool												Get_UnreachableByIndex(int _iIndex) { return m_vecUnreachable[_iIndex]; }
 	void												Set_Unreachable(int _iIndex, bool _bUnreachable) { m_vecUnreachable[_iIndex] = _bUnreachable; }
 	void                                                Set_Unreachable(vector<bool> _vecUnreachable) { copy(_vecUnreachable.begin(), _vecUnreachable.end(), m_vecUnreachable.begin()); }
+
 private:
 	Engine::CTerrainTex* m_pBufferCom;
 	Engine::CTransform* m_pTransformCom;
