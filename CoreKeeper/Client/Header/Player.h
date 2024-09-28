@@ -47,6 +47,8 @@ private:
 	void			ShoulderView_Control(const _float& fTimeDelta); // 숄더 뷰 시점 플레이어 조작(회전, 스윙 제외)
 	void			ShoulderView_Swing();
 
+	void			Set_Stop(_vec3* vDir1, _float fDirSpeed1, _vec3* vDir2 = nullptr, _float fDirSpeed2 = 0.f);
+
 	void			Set_Equipment();
 	void			Show_Equipment();
 	void			Swing_Equipment();
@@ -99,6 +101,8 @@ private:
 	Engine::STATE			m_eState;
 	float					m_fSpeed;
 	float					m_fDiagSpeed;
+	_int					m_iSpeedWeight;
+
 	bool					m_bSwing;
 
 	bool					m_bFlip;

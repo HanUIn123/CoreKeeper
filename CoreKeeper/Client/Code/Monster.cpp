@@ -4,6 +4,7 @@
 #include "..\Header\Player.h"
 #include "DropItem.h"
 
+
 int	CMonster::m_iTagNumber = 10;
 
 CMonster::CMonster(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -11,7 +12,7 @@ CMonster::CMonster(LPDIRECT3DDEVICE9 pGraphicDev)
 {
 	m_eType = MON_END;
 	m_eState = STATE_END;
-	
+
 	m_bFlip = false;
 
 	m_fIdleY = 0.f;
@@ -33,7 +34,7 @@ CMonster::CMonster(LPDIRECT3DDEVICE9 pGraphicDev)
 	m_vAttackPoint = { 0, 0, 0 };
 	m_bAttackSuccess = false;
 	m_bAttackFailed = false;
-	
+
 	m_bKnockBackStart = false;
 	m_bKnockBackEnd = true;
 
@@ -43,7 +44,7 @@ CMonster::CMonster(LPDIRECT3DDEVICE9 pGraphicDev)
 	m_iDir = 0;
 	m_eDir = DIRECTION_END;
 	m_fSpeed = 0.f;
-	m_fDiagSpeed = 0.f; 
+	m_fDiagSpeed = 0.f;
 	m_fSpeedWeight = 0.f;
 
 	m_fAggroDistance = 0.f;
@@ -52,6 +53,8 @@ CMonster::CMonster(LPDIRECT3DDEVICE9 pGraphicDev)
 
 	m_fImmuneTime = 0.f;
 	m_fImmuneTimeLimit = 0.f;
+
+	m_iSpeedWeight = 1;
 
 	m_vecDropItem.reserve(3);
 }
@@ -133,7 +136,7 @@ void CMonster::JumpY(const _float& fTimeDelta)
 	if (fProgress > 0.25f && fProgress <= 0.75f)
 		fWeight = 0.3f;
 
-	m_fJumpSpeed = m_fJumpHeight * fWeight;
+	m_fJumpSpeed = m_fJumpHeight * fWeight * 1.5f;
 	if (fProgress > 0.5f)
 		m_fJumpSpeed *= -1;
 
@@ -154,11 +157,12 @@ void CMonster::FallDir(const _float& fTimeDelta)
 		D3DXVec3Normalize(&m_vFallDir, &m_vFallDir);
 		m_vFallDir.y = 0;
 	}
-	m_pTransformCom->Move_Pos(&m_vFallDir, fTimeDelta, m_fSpeedWeight);
+	Set_Stop(&m_vFallDir, m_fSpeedWeight);
+	m_pTransformCom->Move_Pos(&m_vFallDir, fTimeDelta, m_fSpeedWeight * m_iSpeedWeight);
 }
 
 void CMonster::KnockBack(const _float& fTimeDelta, const _float& fDist)
-{	
+{
 	if (fDist > 0.f)
 	{
 		// 모든 행동보다 우선 시 할 것
@@ -185,7 +189,7 @@ void CMonster::KnockBack(const _float& fTimeDelta, const _float& fDist)
 		// 지정한 거리 이상으로 물러나면 다시 패턴 시작할 수 있도록
 		// 각 몬스터 클래스에서 m_bKnockBackEnd 참고할 것
 		_vec3 vLength = m_vStartPoint - vPos;
-		if (D3DXVec3Length(&vLength) >= fDist)
+		if (D3DXVec3Length(&vLength) >= fDist || m_iSpeedWeight == 0)
 		{
 			m_bKnockBackStart = false;
 			m_bKnockBackEnd = true;
@@ -195,7 +199,8 @@ void CMonster::KnockBack(const _float& fTimeDelta, const _float& fDist)
 			return;
 		}
 
-		m_pTransformCom->Move_Pos(&m_vFallDir, fTimeDelta, m_fSpeedWeight);
+		Set_Stop(&m_vFallDir, m_fSpeedWeight);
+		m_pTransformCom->Move_Pos(&m_vFallDir, fTimeDelta, m_fSpeedWeight * m_iSpeedWeight);
 	}
 }
 
@@ -205,11 +210,11 @@ void CMonster::Check_Hitted()
 	m_pTransformCom->Get_Info(INFO_POS, &vPos);
 	CPlayer* pPlayer = dynamic_cast<CPlayer*>(Get_GameObject(L"Layer_GameLogic", L"Player"));
 	CItem* pPlayerHandedItem = pPlayer->Get_HandedItem();
-	
+
 	if (pPlayer->Get_CurState() == SWING)
 	{
 		CColliderCube* pHandedItemCollider = dynamic_cast<CColliderCube*>(pPlayerHandedItem->Get_Component(ID_DYNAMIC, L"Com_ColliderCube"));
-	
+
 		CTransform* pPlayerTransform = dynamic_cast<CTransform*>(pPlayer->Get_Component(ID_DYNAMIC, L"Com_Transform"));
 		pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
 		if (m_pColliderCom->Check_Cube_Collision(pHandedItemCollider))
@@ -286,11 +291,6 @@ void CMonster::Drop_Item()
 	case ITEM_LANTERN:
 		break;
 
-	//case ITEM_SEED:
-	//	pGameObject = CSeed::Create(m_pGraphicDev, vPos);
-	//	NULL_CHECK(pGameObject);
-	//	m_vecItemName.push_back(L"Monster_Created_Seed" + std::to_wstring(m_iTagNumber++));
-	//	break;
 	case ITEM_WOOD:
 		pGameObject = CWood::Create(m_pGraphicDev, vPos);
 		NULL_CHECK(pGameObject);
@@ -317,6 +317,46 @@ void CMonster::Drop_Item()
 		FAILED_CHECK_RETURN(pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, m_vecItemName.back().c_str()), );
 		pGameObject->Set_Active(true);
 		pGameObject->Set_Drop(true);
+	}
+}
+
+void CMonster::Set_Stop(_vec3* vDir1, _float fDirSpeed1, _vec3* vDir2, _float fDirSpeed2)
+{
+	m_iSpeedWeight = 1;
+	_vec3 vCheckPos{};
+	m_pTransformCom->Get_Info(INFO_POS, &vCheckPos);
+
+	// 미래의 캐릭터 중점 좌표
+	vCheckPos += *vDir1 * fDirSpeed1 * 0.1f;
+
+	if (vDir2)
+		vCheckPos += *vDir2 * fDirSpeed2 * 0.1f;
+
+	// 미래 중점 좌표 기준 인덱스 값
+	_int iIndex = _int(vCheckPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (vCheckPos.x + 0.5f * VTXITV);
+	CTerrain* pTerrain = dynamic_cast<CTerrain*>(Engine::Get_GameObject(L"Layer_Environment", L"Terrain"));
+	if (0 <= iIndex && iIndex < VTXCNTX * VTXCNTZ)
+		if (pTerrain->Get_UnreachableByIndex(iIndex))
+			m_iSpeedWeight = 0;
+}
+
+void CMonster::Set_StuckFree(const _float& fTimeDelta)
+{
+	CTerrain* pTerrain = dynamic_cast<CTerrain*>(Engine::Get_GameObject(L"Layer_Environment", L"Terrain"));
+	_vec3 vCheckPos, vDir;
+	m_pTransformCom->Get_Info(INFO_POS, &vCheckPos);
+	_int iIndex = _int(vCheckPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (vCheckPos.x + 0.5f * VTXITV);
+
+	if (0 <= iIndex && iIndex < VTXCNTX * VTXCNTZ)
+	{
+		if (pTerrain->Get_UnreachableByIndex(iIndex))
+		{
+			vDir = vCheckPos - _vec3(_int(vCheckPos.x + 0.5f * VTXITV), 0, _int(vCheckPos.z + 0.5f * VTXITV) * (VTXCNTX - 1));
+			D3DXVec3Normalize(&vDir, &vDir);
+			vDir.y = 0;
+			m_iSpeedWeight = 1;
+			m_pTransformCom->Move_Pos(&vDir, fTimeDelta, m_fSpeed * 10);
+		}
 	}
 }
 

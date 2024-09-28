@@ -4,6 +4,7 @@
 #include "Export_Utility.h"
 #include "..\Header\UIStatusBar.h"
 #include "..\Header\Sword.h"
+#include "..\Header\Terrain.h"
 
 #include "..\Header\UIPlayerCraft.h" // UI 헤더 추가
 #include "..\Header\UIScreenIcon.h"
@@ -30,6 +31,7 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	m_fFirstY = 1.f;
 	m_fTimeAcc = 0.f;
 	m_fWalkYSpeed = 1.8f;
+	m_iSpeedWeight = 1;
 
 	m_pHandedItem = nullptr;
 	m_pHandedTransformCom = nullptr;
@@ -53,9 +55,8 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	m_fKnockBackDist = 0.f;
 	m_bNude = true;
 
-	m_vRespawnPoint = { VTXCNTX * 0.5f, 0, VTXCNTZ * 0.5f };
-
 	m_bRespawned = false;
+	m_vRespawnPoint = { VTXCNTX * 0.5f, 0, VTXCNTZ * 0.5f };
 
 	m_bBleed = false;
 	m_fBleedTime = 0.f;
@@ -97,14 +98,6 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 
 	if (m_bKnockBackEnd)
 	{
-		if (m_eState == WALK)
-			Walk_Y(fTimeDelta);
-		else
-		{
-			_vec3 vPos;
-			m_pTransformCom->Get_Info(INFO_POS, &vPos);
-			m_pTransformCom->Set_Pos(vPos.x, m_fFirstY, vPos.z);
-		}
 		if (g_bIsTopCamera)
 		{
 			if (!m_bSwing)
@@ -120,6 +113,14 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 				ShoulderView_Control(fTimeDelta);
 			else
 				ShoulderView_Swing();
+		}
+		if (m_eState == WALK)
+			Walk_Y(fTimeDelta);
+		else
+		{
+			_vec3 vPos;
+			m_pTransformCom->Get_Info(INFO_POS, &vPos);
+			m_pTransformCom->Set_Pos(vPos.x, m_fFirstY, vPos.z);
 		}
 	}
 
@@ -267,8 +268,11 @@ void CPlayer::Key_Position(const _float& fTimeDelta)
 		_int iWeight = 1;
 		if (m_eDir == LEFT)
 			iWeight = -1;
-		m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, fLookSpeed);
-		m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, fRightSpeed * iWeight);
+
+		Set_Stop(&vLook, fLookSpeed, &vRight, fRightSpeed * iWeight);
+
+		m_pTransformCom->Move_Pos(&vLook, fTimeDelta, fLookSpeed * m_iSpeedWeight);
+		m_pTransformCom->Move_Pos(&vRight, fTimeDelta, fRightSpeed * iWeight * m_iSpeedWeight);
 	}
 }
 
@@ -290,7 +294,6 @@ void CPlayer::Mouse_Click()
 				case ITEM_SWORD:
 				case ITEM_PICKAXE:
 				case ITEM_HOE:
-				//case ITEM_SHOVEL:
 					m_eState = SWING;
 					m_bSwing = true;
 					Swing_Equipment();
@@ -322,7 +325,7 @@ void CPlayer::Walk_Y(const _float& fTimeDelta)
 	_vec3 vUp;
 	m_pTransformCom->Get_Info(INFO_UP, &vUp);
 
-	m_pTransformCom->Move_Pos(&vUp, fTimeDelta, m_fWalkYSpeed);
+	m_pTransformCom->Move_Pos(&vUp, fTimeDelta, m_fWalkYSpeed * m_iSpeedWeight);
 	if (m_pHandedItem)
 		m_pHandedItem->Walk_Equipped(fTimeDelta);
 }
@@ -485,8 +488,10 @@ void CPlayer::ShoulderView_Control(const _float& fTimeDelta)
 			m_pAnimatorCom->Set_CurState(WALK, 27, 32, 6);
 			break;
 		}
-		m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, fLookSpeed);
-		m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, fRightSpeed);
+		Set_Stop(&vLook, fLookSpeed, &vRight, fRightSpeed);
+
+		m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, fLookSpeed * m_iSpeedWeight);
+		m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, fRightSpeed * m_iSpeedWeight);
 	}
 
 }
@@ -495,6 +500,25 @@ void CPlayer::ShoulderView_Swing()
 {
 	if (m_pHandedItem)
 		m_pAnimatorCom->Set_CurState(SWING, 40, 41, 5);
+}
+
+void CPlayer::Set_Stop(_vec3* vDir1, _float fDirSpeed1, _vec3* vDir2, _float fDirSpeed2)
+{
+	m_iSpeedWeight = 1;
+	_vec3 vCheckPos{};
+	m_pTransformCom->Get_Info(INFO_POS, &vCheckPos);
+
+	// 미래의 캐릭터 중점 좌표
+	vCheckPos += *vDir1 * fDirSpeed1 * 0.1f;
+	if (vDir2)
+		vCheckPos += *vDir2 * fDirSpeed2 * 0.1f;
+
+	// 미래 중점 좌표 기준 인덱스 값
+	_int iIndex = _int(vCheckPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (vCheckPos.x + 0.5f * VTXITV);
+	CTerrain* pTerrain = dynamic_cast<CTerrain*>(Engine::Get_GameObject(L"Layer_Environment", L"Terrain"));
+	if (0 <= iIndex && iIndex < VTXCNTX * VTXCNTZ)
+		if (pTerrain->Get_UnreachableByIndex(iIndex))
+			m_iSpeedWeight = 0;
 }
 
 void CPlayer::Set_Equipment()
@@ -935,7 +959,7 @@ void CPlayer::KnockBack(const _float& fTimeDelta)
 
 		_vec3 vLength = m_vStartPoint - vPos;
 		_float fLength = D3DXVec3Length(&vLength);
-		if (fLength >= m_fKnockBackDist)
+		if (fLength >= m_fKnockBackDist || 0 == m_iSpeedWeight)
 		{
 			m_bKnockBackStart = false;
 			m_bKnockBackEnd = true;
@@ -943,16 +967,10 @@ void CPlayer::KnockBack(const _float& fTimeDelta)
 				m_eState = IDLE;
 			return;
 		}
-		m_pTransformCom->Move_Pos(&m_vKnockBackDir, fTimeDelta, m_fSpeed * (m_fKnockBackDist / fLength));
 
-		// 피격시 파티클 리셋??
+		Set_Stop(&m_vKnockBackDir, m_fSpeed * (m_fKnockBackDist / fLength));
 
-		if (!m_bBleed)
-		{
-			m_pFireParticleCom->reset();
-
-			m_bBleed = true;
-		}
+		m_pTransformCom->Move_Pos(&m_vKnockBackDir, fTimeDelta, m_fSpeed * (m_fKnockBackDist / fLength) * m_iSpeedWeight);
 	}
 }
 

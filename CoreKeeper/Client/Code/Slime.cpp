@@ -8,10 +8,10 @@ CSlime::CSlime(LPDIRECT3DDEVICE9 pGraphicDev)
     : CMonster(pGraphicDev)
 {
     m_eType = Engine::MON_SLIME;
-    m_fIdleY = 0.6f;
-    m_fJumpY = 8.f;
+    m_fIdleY = 0.4f;
+    m_fJumpY = 6.f;
     m_eState = IDLE;
-    m_fAggroDistance = 4.f;
+    m_fAggroDistance = 8.f;
 }
 
 CSlime::~CSlime()
@@ -25,7 +25,6 @@ HRESULT CSlime::Ready_GameObject(_vec3 vPos)
     m_pTransformCom->Set_Pos(vPos.x, m_fIdleY, vPos.z);
     m_pStateCom->Set_Stat(100, 0, 10, 0);
     m_vecDropItem.push_back(ITEM_MUCUS);
-    //m_vecDropItem.push_back(ITEM_SEED);
     m_vecDropItem.push_back(ITEM_WOOD);
     Set_Speed(0.8f);
     return S_OK;
@@ -36,12 +35,12 @@ _int CSlime::Update_GameObject(const _float& fTimeDelta)
     if (m_bStopDraw)
         return 0;
 
-    if(m_eState != DEAD)
+    if (m_eState != DEAD && m_iSpeedWeight)
         Check_Hitted();
-    m_pAnimatorCom->Update_Animation();
+
     if (m_bKnockBackEnd)
     {
-        if(m_eState != DEAD)
+        if (m_eState != DEAD)
             m_eState = State_Change();
         switch (m_eState)
         {
@@ -61,10 +60,12 @@ _int CSlime::Update_GameObject(const _float& fTimeDelta)
     }
     else
         KnockBack(fTimeDelta, 1.8f);
-    
+
 
     //Apply_Billboard();
 
+    Set_StuckFree(fTimeDelta);
+    m_pAnimatorCom->Update_Animation();
     Add_RenderGroup(RENDER_ALPHA, this);
     return Engine::CGameObject::Update_GameObject(fTimeDelta);
 }
@@ -147,10 +148,11 @@ void CSlime::Pattern_Idle(const _float& fTimeDelta)
             m_iDir = rand() % 8 + 1;
         }
     }
-    if(m_fIdleTime <= m_fIdleTimeLimit)
+    if (m_fIdleTime <= m_fIdleTimeLimit)
     {
         m_fIdleTime += fTimeDelta;
         _vec3	vLook, vRight;
+        _float  fLookSpeed = 0, fRightSpeed = 0;
         m_pTransformCom->Get_Info(INFO_LOOK, &vLook);
         m_pTransformCom->Get_Info(INFO_RIGHT, &vRight);
 
@@ -161,40 +163,48 @@ void CSlime::Pattern_Idle(const _float& fTimeDelta)
             break;
         case 1:
             // 상
-            m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, m_fSpeed);
+            fLookSpeed = m_fSpeed;
             break;
         case 2:
             // 우상
-            m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, m_fDiagSpeed);
-            m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, m_fDiagSpeed);
+            fLookSpeed = m_fDiagSpeed;
+            fRightSpeed = m_fDiagSpeed;
             break;
         case 3:
             // 우
-            m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, m_fSpeed);
+            fRightSpeed = m_fSpeed;
             break;
         case 4:
             // 우하
-            m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, -m_fDiagSpeed);
-            m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, m_fDiagSpeed);
+            fLookSpeed = -m_fDiagSpeed;
+            fRightSpeed = m_fDiagSpeed;
             break;
         case 5:
             // 하
-            m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, -m_fSpeed);
+            fLookSpeed = m_fSpeed;
             break;
         case 6:
             // 좌하
-            m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, -m_fDiagSpeed);
-            m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, -m_fDiagSpeed);
+            fLookSpeed = -m_fDiagSpeed;
+            fRightSpeed = -m_fDiagSpeed;
             break;
         case 7:
             // 좌
-            m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, -m_fSpeed);
+            fRightSpeed = -m_fSpeed;
             break;
         case 8:
             // 좌상
-            m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, m_fDiagSpeed);
-            m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, -m_fDiagSpeed);
+            fLookSpeed = m_fDiagSpeed;
+            fRightSpeed = -m_fDiagSpeed;
             break;
+        }
+
+        Set_Stop(&vLook, fLookSpeed, &vRight, fRightSpeed);
+
+        if (m_iDir)
+        {
+            m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, fLookSpeed * m_iSpeedWeight);
+            m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, fRightSpeed * m_iSpeedWeight);
         }
     }
     else
@@ -211,12 +221,15 @@ void CSlime::Pattern_Chase(const _float& fTimeDelta)
         (Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Transform"));
     NULL_CHECK(pPlayerTransform);
 
-    _vec3		vPlayerPos, vPos;
+    _vec3		vPlayerPos, vPos, vDir;
     pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
     m_pTransformCom->Get_Info(INFO_POS, &vPos);
-
+    vDir = vPlayerPos - vPos;
+    D3DXVec3Normalize(&vDir, &vDir);
     m_pAnimatorCom->Set_CurState(WALK, 12, 21, 8);
-    m_pTransformCom->Chase_Target(&vPlayerPos, fTimeDelta);
+
+    Set_Stop(&vDir, m_fSpeed);
+    m_pTransformCom->Move_Pos(&vDir, fTimeDelta, m_fSpeed * m_iSpeedWeight);
     if (m_pCalculatorCom->Check_Distance2D(&vPlayerPos, &vPos, m_fAggroDistance))
         m_eState = SWING;
     else
@@ -245,7 +258,7 @@ void CSlime::Pattern_Attack(const _float& fTimeDelta)
         m_vAttackPoint = vPlayerPos - vPos;
         D3DXVec3Normalize(&m_vAttackPoint, &m_vAttackPoint);
         if (m_pAnimatorCom->Get_MotionIndex() == 25 || m_pAnimatorCom->Get_MotionIndex() == 34)
-            m_pTransformCom->Set_Pos(vPos.x, m_fIdleY - 0.1f, vPos.z);
+            m_pTransformCom->Set_Pos(vPos.x, m_fIdleY - 0.001f, vPos.z);
         else if (m_pAnimatorCom->Get_MotionIndex() == 35)
         {
             m_pTransformCom->Set_Pos(vPos.x, m_fIdleY, vPos.z);
@@ -260,7 +273,7 @@ void CSlime::Pattern_Attack(const _float& fTimeDelta)
         // 점프 할 때
     {
         JumpY(fTimeDelta);
-        m_fSpeedWeight = 10.f;
+        m_fSpeedWeight = 8.f;
         if (vPos.y > m_fIdleY)
         {
             // 공격 성공
@@ -277,7 +290,10 @@ void CSlime::Pattern_Attack(const _float& fTimeDelta)
         if (m_bAttackSuccess)
             FallDir(fTimeDelta);
         else
-            m_pTransformCom->Move_Pos(&m_vAttackPoint, fTimeDelta, m_fSpeedWeight);
+        {
+            Set_Stop(&m_vAttackPoint, m_fSpeedWeight);
+            m_pTransformCom->Move_Pos(&m_vAttackPoint, fTimeDelta, m_fSpeedWeight * m_iSpeedWeight);
+        }
     }
 }
 
@@ -295,6 +311,8 @@ void CSlime::Pattern_Dead()
 STATE CSlime::State_Change()
 {
     CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
+    _vec3 vPos;
+    m_pTransformCom->Get_Info(INFO_POS, &vPos);
     if (m_eState == IDLE)
     {
         CGameObject* pWeapon = pPlayer->Get_HandedItem();
@@ -304,9 +322,8 @@ STATE CSlime::State_Change()
             CCollider* pWeaponCollider = dynamic_cast<Engine::CCollider*>(pWeapon->Get_Component(ID_DYNAMIC, L"Com_Collider"));
             if (m_pColliderCom->Check_Collision(pWeaponCollider))
             {
-                _vec3 vPlayerPos, vPos;
+                _vec3 vPlayerPos;
                 dynamic_cast<CTransform*>(pPlayer->Get_Component(ID_DYNAMIC, L"Com_Transform"))->Get_Info(INFO_POS, &vPlayerPos);
-                m_pTransformCom->Get_Info(INFO_POS, &vPos);
 
                 // 무기와 충돌 했는데 공격 범위 이내인 경우
                 if (m_pCalculatorCom->Check_Distance2D(&vPlayerPos, &vPos, m_fAggroDistance))
@@ -316,6 +333,14 @@ STATE CSlime::State_Change()
                     return WALK;
             }
         }
+    }
+    if (m_eState == SWING && vPos.y == m_fIdleY)
+    {
+        _vec3 vPlayerPos;
+        dynamic_cast<CTransform*>(pPlayer->Get_Component(ID_DYNAMIC, L"Com_Transform"))->Get_Info(INFO_POS, &vPlayerPos);
+
+        if (!m_pCalculatorCom->Check_Distance2D(&vPlayerPos, &vPos, m_fAggroDistance))
+            return IDLE;
     }
     return m_eState;
 }
