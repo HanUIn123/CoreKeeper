@@ -122,6 +122,10 @@ private:
 	_bool                   m_bInventory; // Inventory 창 확인용
 	_bool                   m_bCraft;     // Craft 창 확인용
 	_bool                   m_bMap;       // Map 창 확인용
+	_bool                   m_bStatus;
+	_bool                   m_bChestInventory;
+	_bool                   m_bTableCraft;
+	_bool                   m_bAnvil;
 
 	_bool                   m_bNoMove;    // UI건드릴때 캐릭터 움직이지 않게하는 용도
 

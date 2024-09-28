@@ -62,10 +62,10 @@ _int CUIChestInv::Update_GameObject(const _float& fTimeDelta)
 				CInventory* pCursorInv = dynamic_cast<CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_UI", L"UI_Cursor", L"Com_Inventory"));
 
 				vector<CItem*>* pCvecItem = pCursorInv->Get_VecItemP();
-				vector<CItem*>* pPvecItem = m_pInventoryCom->Get_VecItemP();
+				vector<CItem*>* pPvecItem = m_pChestInv->Get_VecItemP();
 				_int iIndex = m_iIndex - 1;
 
-				if (!m_pInventoryCom->Check_Empty(iIndex) && !pCursorInv->Check_Empty(0))
+				if (!m_pChestInv->Check_Empty(iIndex) && !pCursorInv->Check_Empty(0))
 				{
 					if ((*pPvecItem)[iIndex]->Get_ItemNum() > ITEM_ETC && (*pPvecItem)[iIndex]->Get_ItemNum() == (*pCvecItem)[0]->Get_ItemNum())
 					{
@@ -73,10 +73,10 @@ _int CUIChestInv::Update_GameObject(const _float& fTimeDelta)
 						pCursorInv->Remove_Item(0);
 					}
 					else if ((*pPvecItem)[iIndex]->Get_ItemNum() != (*pCvecItem)[0]->Get_ItemNum())
-						m_pInventoryCom->Swap_Item(&(*pCvecItem)[0], &(*pPvecItem)[iIndex]);
+						m_pChestInv->Swap_Item(&(*pCvecItem)[0], &(*pPvecItem)[iIndex]);
 				}
 				else
-					m_pInventoryCom->Swap_Item(&(*pCvecItem)[0], &(*pPvecItem)[iIndex]);
+					m_pChestInv->Swap_Item(&(*pCvecItem)[0], &(*pPvecItem)[iIndex]);
 			}
 
 			m_bCollapse = true;
@@ -119,9 +119,9 @@ void CUIChestInv::Render_GameObject()
 
 	_int iIndex = m_iIndex;
 
-	if (!m_pInventoryCom->Check_Empty(iIndex))
+	if (!m_pChestInv->Check_Empty(iIndex))
 	{
-		pItem = m_pInventoryCom->Get_Item(iIndex);
+		pItem = m_pChestInv->Get_Item(iIndex);
 
 		_int iCount = pItem->Get_Count();
 
@@ -231,6 +231,11 @@ void CUIChestInv::Render_GameObject()
 	}
 }
 
+void CUIChestInv::Set_CurChestInv(CInventory* _pInventory)
+{
+	m_pChestInv = _pInventory;
+}
+
 HRESULT CUIChestInv::Add_Component()
 {
 	CComponent* pComponent = NULL;
@@ -250,10 +255,6 @@ HRESULT CUIChestInv::Add_Component()
 	pComponent = m_pTransformCom = dynamic_cast<CTransform*>(Engine::Clone_Proto(L"Proto_Transform"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_DYNAMIC].insert({ L"Com_UITransform", pComponent });
-
-	pComponent = m_pInventoryCom = dynamic_cast<CInventory*>(Engine::Clone_Proto(L"Proto_ChestInventory"));
-	NULL_CHECK_RETURN(pComponent, E_FAIL);
-	m_mapComponent[ID_STATIC].insert({ L"Com_Inventory", pComponent });
 
 	pComponent = m_pAnimatorCom = dynamic_cast<CAnimator*>(Engine::Clone_Proto(L"Proto_Animator"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);

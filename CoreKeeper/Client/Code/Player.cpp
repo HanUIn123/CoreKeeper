@@ -48,6 +48,10 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	m_bCraft = false;
 	m_bFlip = false;
 	m_bNoMove = false;
+	m_bStatus = false;
+	m_bChestInventory = false;
+	m_bTableCraft = false;
+	m_bAnvil = false;
 
 	m_vStartPoint = { 0, 0, 0 };
 	m_vKnockBackDir = { 0, 0, 0 };
@@ -750,9 +754,12 @@ void CPlayer::Set_UI()
 	}
 	if (Engine::Key_Down(DIK_TAB))
 	{
-		Set_Inventory();
-		Set_Craft();
-		Set_Status();
+		if (!m_bMap && !m_bChestInventory)
+		{
+			Set_Inventory();
+			Set_Craft();
+			Set_Status();
+		}
 	}
 	
 	if (Engine::Key_Down(DIK_E))
@@ -763,10 +770,12 @@ void CPlayer::Set_UI()
 
 			m_bCraft = false;
 		}
-		if (m_bInventory)
+		if (m_bStatus)
 		{
 			Set_Status();
-
+		}
+		if (m_bInventory && !m_bChestInventory)
+		{
 			Set_Inventory();
 
 			m_bInventory = false;
@@ -774,20 +783,22 @@ void CPlayer::Set_UI()
 		if (m_bMap)
 		{
 			Set_Map();
-
+			
 			m_bMap = false;
 		}
 
-		//if() // ªÛ¿⁄ ªÛ»£¿€øÎΩ√
-
-		Set_ChestInventory();
+		if (!m_bCraft && !m_bStatus && !m_bMap)
+		{
+			Set_ChestInventory();
+			Set_Inventory();
+		}
 	}
 
 	if (Engine::Key_Down(DIK_O))
 	{
 		CUIBuff* pBuff = dynamic_cast<CUIBuff*>(Engine::Get_GameObject(L"Layer_UI", L"UI_Buff0")); 
 
-		pBuff->Set_Window(CUIBuff::BUFF_HEAL, CUIBuff::BUFF, 200.f); // (Î≤ÑÌîÑ Ï¢ÖÎ•ò, Î≤ÑÌîÑÏ∞ΩÏù∏ÏßÄ ?îÎ≤Ñ?ÑÏ∞Ω?∏Ï? Í≤∞Ï†ï, ?úÍ∞Ñ)
+		pBuff->Set_Window(CUIBuff::BUFF_HEAL, CUIBuff::BUFF, 200.f); 
 
 		CUIBuff* pDeBuff = dynamic_cast<CUIBuff*>(Engine::Get_GameObject(L"Layer_UI", L"UI_DeBuff0"));
 
@@ -823,6 +834,19 @@ void CPlayer::Set_Craft()
 {
 	CUIPlayerCraft* pCraft = dynamic_cast<CUIPlayerCraft*>(Engine::Get_GameObject(L"Layer_UI", L"UIPlayerCraft"));
 	pCraft->Set_Window();
+
+
+	for (int i = 0; i < 4; i++)
+	{
+		wstring string;
+
+		string = L"UICraftSlot_" + std::to_wstring(i);
+
+		CUICraftSlot* pSlot = dynamic_cast<CUICraftSlot*>(Engine::Get_GameObject(L"Layer_UI", string.c_str()));
+
+		pSlot->Set_Window();
+	}
+
 
 	if (m_bCraft)
 		m_bCraft = false;
@@ -863,28 +887,6 @@ void CPlayer::Set_Inventory()
 		pInventory->Set_Show();
 	}
 
-	for (int i = 0; i < 10; i++)
-	{
-		wstring string;
-
-		string = L"UIItemSlot_" + std::to_wstring(i);
-
-		CUIItemSlot* pSlot = dynamic_cast<CUIItemSlot*>(Engine::Get_GameObject(L"Layer_UI", string.c_str()));
-
-		pSlot->Set_Window();
-	}
-
-	for (int i = 0; i < 5; i++)
-	{
-		wstring string;
-
-		string = L"UICraftSlot_" + std::to_wstring(i);
-
-		CUICraftSlot* pSlot = dynamic_cast<CUICraftSlot*>(Engine::Get_GameObject(L"Layer_UI", string.c_str()));
-
-		pSlot->Set_Window();
-	}
-	
 	CUITrashCan* pCan = dynamic_cast<CUITrashCan*>(Engine::Get_GameObject(L"Layer_UI", L"UI_TrashCan"));
 	pCan->Set_Window();
 
@@ -902,13 +904,10 @@ void CPlayer::Set_Inventory()
 
 void CPlayer::Set_Map()
 {
-
 	if (m_bMap)
 		m_bMap = false;
 	else
 		m_bMap = true;
-
-	m_bMap = true;
 }
 
 void CPlayer::Set_Status()
@@ -920,10 +919,27 @@ void CPlayer::Set_Status()
 	CUIPlayerStats* pStats = dynamic_cast<CUIPlayerStats*>(Engine::Get_GameObject(L"Layer_UI", L"UIPlayerStats"));
 	pStats->Set_Window();
 
+	for (int i = 0; i < 10; i++)
+	{
+		wstring string;
+
+		string = L"UIItemSlot_" + std::to_wstring(i);
+
+		CUIItemSlot* pSlot = dynamic_cast<CUIItemSlot*>(Engine::Get_GameObject(L"Layer_UI", string.c_str()));
+
+		pSlot->Set_Window();
+	}
+
+	if (m_bStatus)
+		m_bStatus = false;
+	else
+		m_bStatus = true;
 }
 
 void CPlayer::Set_ChestInventory()
 {
+	CInventory* pInventory = dynamic_cast<CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_Environment", L"AheadGrave", L"Com_Inventory"));
+
 	for (int i = 0; i < 18; ++i)
 	{
 		wstring string;
@@ -933,7 +949,14 @@ void CPlayer::Set_ChestInventory()
 		CUIChestInv* pChestInventory = dynamic_cast<CUIChestInv*>(Engine::Get_GameObject(L"Layer_UI", string.c_str()));
 
 		pChestInventory->Set_Show();
+
+		pChestInventory->Set_CurChestInv(pInventory);
 	}
+
+	if (m_bChestInventory)
+		m_bChestInventory = false;
+	else
+		m_bChestInventory = true;
 }
 
 void CPlayer::Particle_Update(_float fTimeDelta)

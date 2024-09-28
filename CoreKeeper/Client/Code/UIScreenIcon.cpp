@@ -97,6 +97,7 @@ _int CUIScreenIcon::Update_GameObject(const _float& fTimeDelta)
 			{
 				pPlayer->Set_Inventory();
 				pPlayer->Set_Craft();
+				pPlayer->Set_Status();
 
 				//pPlayer->Set_InvWindow();
 				//pPlayer->Set_CraftWindow();
