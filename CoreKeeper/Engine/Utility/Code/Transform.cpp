@@ -138,6 +138,35 @@ const _matrix * CTransform::Compute_LookAtTarget(const _vec3 * pTargetPos)
 												 D3DXVec3Normalize(&vDir, &vDir))));
 }
 
+void CTransform::Apply_BillBoard()
+{
+	D3DXMATRIX matWorld, matView, matBill, matScale;
+
+	Get_WorldMatrix(&matWorld);
+
+	m_pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
+
+	D3DXMatrixIdentity(&matBill);
+
+	matBill._11 = matView._11;
+	matBill._13 = matView._13;
+	matBill._31 = matView._31;
+	matBill._33 = matView._33;
+
+	D3DXMatrixInverse(&matBill, 0, &matBill);
+
+	// 스케일 행렬을 따로 계산
+	D3DXMatrixScaling(&matScale, m_vScale.x, m_vScale.y, m_vScale.z);
+
+	D3DXMATRIX matInverseScale;
+	D3DXMatrixInverse(&matInverseScale, 0, &matScale);
+
+	// 최종 월드 행렬: 스케일 적용 후 빌보드 회전 적용
+	D3DXMATRIX matFinal = matScale * matBill * matInverseScale * matWorld;
+
+	Set_WorldMatrix(&matFinal);
+}
+
 CTransform * CTransform::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 {
 	CTransform *		pTransform = new CTransform(pGraphicDev);
