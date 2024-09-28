@@ -6,7 +6,7 @@
 CTorch::CTorch(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CItem(pGraphicDev)
 {
-	ZeroMemory(&m_tStat, sizeof(STAT));
+	 
 
 	m_eItemNum = ITEM_TORCH;
 	m_iLightNum = g_iLightNum++;
@@ -206,16 +206,16 @@ void CTorch::SetUp_Light()
 
 CTorch* CTorch::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 {
-	CTorch* pSeed = new CTorch(pGraphicDev);
+	CTorch* pTorch = new CTorch(pGraphicDev);
 
-	if (FAILED(pSeed->Ready_GameObject(vPos)))
+	if (FAILED(pTorch->Ready_GameObject(vPos)))
 	{
-		Safe_Release(pSeed);
-		MSG_BOX("pSeed Create Failed");
+		Safe_Release(pTorch);
+		MSG_BOX("pTorch Create Failed");
 		return nullptr;
 	}
 
-	return pSeed;
+	return pTorch;
 }
 
 void CTorch::Free()

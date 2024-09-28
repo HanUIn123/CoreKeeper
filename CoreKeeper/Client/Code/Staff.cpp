@@ -6,9 +6,7 @@
 CStaff::CStaff(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CItem(pGraphicDev)
 {
-	ZeroMemory(&m_tStat, sizeof(STAT));
-
-	m_tStat.iAttack = 10;
+	m_tStat.iAttack = 50;
 
 	m_eItemNum = ITEM_STAFF;
 }
@@ -63,15 +61,7 @@ _int CStaff::Update_GameObject(const _float& fTimeDelta)
 		// 플레이어와 충돌
 		if (m_pColliderCom->Check_Collision(pPlayerCollider))
 		{
-			Engine::CInventory* pPlayerInventory = dynamic_cast<Engine::CInventory*>
-				(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
-
-			// 인벤토리에 들어갔다
-			if (pPlayerInventory->Add_Item(this))
-			{
-				m_bActive = false;
-				m_bDrop = false;
-			}
+			In_Inventory();
 		}
 	}
 	
@@ -163,16 +153,16 @@ HRESULT CStaff::Add_Component()
 
 CStaff* CStaff::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 {
-	CStaff* pSword = new CStaff(pGraphicDev);
+	CStaff* pStaff = new CStaff(pGraphicDev);
 
-	if (FAILED(pSword->Ready_GameObject(vPos)))
+	if (FAILED(pStaff->Ready_GameObject(vPos)))
 	{
-		Safe_Release(pSword);
-		MSG_BOX("pSword Create Failed");
+		Safe_Release(pStaff);
+		MSG_BOX("pStaff Create Failed");
 		return nullptr;
 	}
 
-	return pSword;
+	return pStaff;
 }
 
 void CStaff::Free()

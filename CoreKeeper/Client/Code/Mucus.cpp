@@ -6,7 +6,7 @@
 CMucus::CMucus(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CItem(pGraphicDev)
 {
-	ZeroMemory(&m_tStat, sizeof(STAT));
+	 
 
 	m_eItemNum = ITEM_MUCUS;
 }
@@ -157,16 +157,16 @@ HRESULT CMucus::Add_Component()
 
 CMucus* CMucus::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 {
-	CMucus* pSword = new CMucus(pGraphicDev);
+	CMucus* pMucus = new CMucus(pGraphicDev);
 
-	if (FAILED(pSword->Ready_GameObject(vPos)))
+	if (FAILED(pMucus->Ready_GameObject(vPos)))
 	{
-		Safe_Release(pSword);
-		MSG_BOX("pSword Create Failed");
+		Safe_Release(pMucus);
+		MSG_BOX("pMucus Create Failed");
 		return nullptr;
 	}
 
-	return pSword;
+	return pMucus;
 }
 
 void CMucus::Free()

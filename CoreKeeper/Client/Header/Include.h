@@ -19,7 +19,7 @@
 // Item
 #include "Pickaxe.h"
 #include "Hoe.h"
-#include "Shovel.h"
+#include "WateringCan.h"
 
 #include "Sword.h"
 #include "Bow.h"
@@ -29,7 +29,6 @@
 #include "Chest.h"
 #include "Leg.h"
 
-#include "Seed.h"
 #include "Wood.h"
 #include "Torch.h"
 

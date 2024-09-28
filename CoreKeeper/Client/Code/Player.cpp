@@ -290,7 +290,7 @@ void CPlayer::Mouse_Click()
 				case ITEM_SWORD:
 				case ITEM_PICKAXE:
 				case ITEM_HOE:
-				case ITEM_SHOVEL:
+				//case ITEM_SHOVEL:
 					m_eState = SWING;
 					m_bSwing = true;
 					Swing_Equipment();
@@ -299,9 +299,9 @@ void CPlayer::Mouse_Click()
 				case ITEM_STAFF:
 					// ≈ıªÁ√º πﬂªÁ
 					break;
-				case ITEM_SEED:
-					// ≥ÛªÁ
-					break;
+				//case ITEM_SEED:
+				//	// ≥ÛªÁ
+				//	break;
 				default:
 					break;
 				}

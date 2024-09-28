@@ -18,7 +18,7 @@ private:
 	virtual ~CPickaxe();
 
 public:
-	virtual			HRESULT			Ready_GameObject(_vec3 vPos);
+	virtual			HRESULT			Ready_GameObject(MATERIAL _eMaterial, _vec3 vPos);
 	virtual			_int			Update_GameObject(const _float& fTimeDelta);
 	virtual			void			LateUpdate_GameObject();
 	virtual			void			Render_GameObject();
@@ -27,7 +27,7 @@ private:
 	HRESULT			Add_Component();
 
 public:
-	static CPickaxe* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos = { 0.f, 0.f, 0.f });
+	static CPickaxe* Create(LPDIRECT3DDEVICE9 pGraphicDev, MATERIAL _eMaterial = MATERIAL_END, _vec3 vPos = { 0, 0, 0 });
 
 private:
 	virtual void		Free();

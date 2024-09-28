@@ -21,7 +21,7 @@ protected:
 	virtual ~CItem();
 
 public:
-	virtual			HRESULT			Ready_GameObject(_vec3 vPos = { 0.f, 0.f, 0.f });
+	virtual			HRESULT			Ready_GameObject(_vec3 vPos);
 	virtual			_int			Update_GameObject(const _float& fTimeDelta);
 	virtual			void			LateUpdate_GameObject();
 	virtual			void			Render_GameObject();
@@ -35,7 +35,7 @@ protected:
 	void			Wave(const _float& fTimeDelta);
 	void			Swing(int start, int end, int Count);
 	void			Follow_Player();
-
+	void			In_Inventory();
 public:
 	void			Walk_Equipped(const _float& fTimeDelta);
 
@@ -52,7 +52,7 @@ protected:
 	Engine::CTexture* m_pShadowTextureCom;
 
 public:
-	static CItem* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos = {0.f, 0.f, 0.f});
+	static CItem* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos = {0, 0, 0}, MATERIAL _eMaterial = MATERIAL_END);
 
 protected:
 	virtual void		Free();
@@ -106,6 +106,7 @@ protected:
 	STAT		m_tStat;
 	ITEMNUM		m_eItemNum;
 	DIRECTION	m_eDir;
+	MATERIAL	m_eMaterial;
 
 	//아이템 설명
 	wstring m_wItemExplain[30];

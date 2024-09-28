@@ -288,10 +288,10 @@ void CUIScreenInv::Render_GameObject()
 
 		switch (eNum)
 		{
-		case ITEM_SEED:
-			matWorld._11 = 10.f;
-			matWorld._22 = 10.f;
-			break;
+		//case ITEM_SEED:
+		//	matWorld._11 = 10.f;
+		//	matWorld._22 = 10.f;
+		//	break;
 
 		case ITEM_SWORD:
 			matWorld._11 = 40.f;
@@ -326,12 +326,12 @@ void CUIScreenInv::Render_GameObject()
 			matWorld._42 -= 8.f;
 			break;
 
-		case ITEM_SHOVEL:
-			matWorld._11 = 60.f;
-			matWorld._22 = 60.f;
+		//case ITEM_SHOVEL:
+		//	matWorld._11 = 60.f;
+		//	matWorld._22 = 60.f;
 
-			matWorld._42 -= 8.f;
-			break;
+		//	matWorld._42 -= 8.f;
+		//	break;
 
 		case ITEM_STAFF:
 			matWorld._11 = 35.f;

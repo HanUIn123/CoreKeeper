@@ -181,7 +181,7 @@ _int CUICraftSlot::Update_GameObject(const _float& fTimeDelta)
 						break;
 
 					case UCITEM_WOODENSHOVEL:
-						pPlayerInv->Minus_Item(ITEM_WOOD, 4);
+						/*pPlayerInv->Minus_Item(ITEM_WOOD, 4);
 
 						pItem = CShovel::Create(m_pGraphicDev);
 
@@ -191,7 +191,7 @@ _int CUICraftSlot::Update_GameObject(const _float& fTimeDelta)
 
 						pStage->Create_Item(L"Layer_UI", pItem, Craftstring[m_iCraftCount].c_str());
 
-						m_iCraftCount++;
+						m_iCraftCount++;*/
 						break;
 					}
 				}	

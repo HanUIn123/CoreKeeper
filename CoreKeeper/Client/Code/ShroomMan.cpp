@@ -26,7 +26,7 @@ HRESULT CShroomMan::Ready_GameObject(_vec3 vPos)
     m_pTransformCom->Set_Scale(0.6f, 0.6f, 0.6f);
     m_pStateCom->Set_Stat(100, 0, 10, 0);
     m_vecDropItem.push_back(ITEM_BOW);
-    m_vecDropItem.push_back(ITEM_SEED);
+    //m_vecDropItem.push_back(ITEM_SEED);
     m_vecDropItem.push_back(ITEM_WOOD);
     Set_Speed(1.0f);
     return S_OK;

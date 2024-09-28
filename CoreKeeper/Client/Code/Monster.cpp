@@ -251,28 +251,23 @@ void CMonster::Drop_Item()
 	switch (eItem)
 	{
 	case ITEM_PICKAXE:
-		pGameObject = CPickaxe::Create(m_pGraphicDev, vPos);
+		pGameObject = CPickaxe::Create(m_pGraphicDev, MATERIAL_WOOD, vPos);
 		NULL_CHECK(pGameObject);
 		m_vecItemName.push_back(L"Monster_Created_Pickaxe" + std::to_wstring(m_iTagNumber++));
 		break;
 	case ITEM_HOE:
-		pGameObject = CHoe::Create(m_pGraphicDev, vPos);
+		pGameObject = CHoe::Create(m_pGraphicDev, MATERIAL_WOOD, vPos);
 		NULL_CHECK(pGameObject);
 		m_vecItemName.push_back(L"Monster_Created_Hoe" + std::to_wstring(m_iTagNumber++));
 		break;
-	case ITEM_SHOVEL:
-		pGameObject = CShovel::Create(m_pGraphicDev, vPos);
-		NULL_CHECK(pGameObject);
-		m_vecItemName.push_back(L"Monster_Created_Shovel" + std::to_wstring(m_iTagNumber++));
-		break;
 
 	case ITEM_SWORD:
-		pGameObject = CSword::Create(m_pGraphicDev, vPos);
+		pGameObject = CSword::Create(m_pGraphicDev, MATERIAL_WOOD, vPos);
 		NULL_CHECK(pGameObject);
 		m_vecItemName.push_back(L"Monster_Created_Sword" + std::to_wstring(m_iTagNumber++));
 		break;
 	case ITEM_BOW:
-		pGameObject = CBow::Create(m_pGraphicDev, vPos);
+		pGameObject = CBow::Create(m_pGraphicDev, MATERIAL_WOOD, vPos);
 		NULL_CHECK(pGameObject);
 		m_vecItemName.push_back(L"Monster_Created_Bow" + std::to_wstring(m_iTagNumber++));
 		break;
@@ -291,11 +286,11 @@ void CMonster::Drop_Item()
 	case ITEM_LANTERN:
 		break;
 
-	case ITEM_SEED:
-		pGameObject = CSeed::Create(m_pGraphicDev, vPos);
-		NULL_CHECK(pGameObject);
-		m_vecItemName.push_back(L"Monster_Created_Seed" + std::to_wstring(m_iTagNumber++));
-		break;
+	//case ITEM_SEED:
+	//	pGameObject = CSeed::Create(m_pGraphicDev, vPos);
+	//	NULL_CHECK(pGameObject);
+	//	m_vecItemName.push_back(L"Monster_Created_Seed" + std::to_wstring(m_iTagNumber++));
+	//	break;
 	case ITEM_WOOD:
 		pGameObject = CWood::Create(m_pGraphicDev, vPos);
 		NULL_CHECK(pGameObject);

@@ -6,9 +6,7 @@
 CHoe::CHoe(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CItem(pGraphicDev)
 {
-	ZeroMemory(&m_tStat, sizeof(STAT));
-
-	m_tStat.iAttack = 10;
+	 
 
 	m_eItemNum = ITEM_HOE;
 }
@@ -17,9 +15,12 @@ CHoe::~CHoe()
 {
 }
 
-HRESULT CHoe::Ready_GameObject(_vec3 vPos)
+HRESULT CHoe::Ready_GameObject(MATERIAL _eMaterial, _vec3 vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
+
+	m_eMaterial = _eMaterial;
+	m_iTextureNumber = m_eMaterial;
 
 	m_pTransformCom->Set_Scale(1.2f, 1.2f, 1.2f);
 	m_pShadowTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
@@ -64,15 +65,7 @@ _int CHoe::Update_GameObject(const _float& fTimeDelta)
 		// 플레이어와 충돌
 		if (m_pColliderCom->Check_Collision(pPlayerCollider))
 		{
-			Engine::CInventory* pPlayerInventory = dynamic_cast<Engine::CInventory*>
-				(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
-
-			// 인벤토리에 들어갔다
-			if (pPlayerInventory->Add_Item(this))
-			{
-				m_bActive = false;
-				m_bDrop = false;
-			}
+			In_Inventory();
 		}
 	}
 	
@@ -168,18 +161,18 @@ HRESULT CHoe::Add_Component()
 	return S_OK;
 }
 
-CHoe* CHoe::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
+CHoe* CHoe::Create(LPDIRECT3DDEVICE9 pGraphicDev, MATERIAL _eMaterial, _vec3 vPos)
 {
-	CHoe* pSword = new CHoe(pGraphicDev);
+	CHoe* pHoe = new CHoe(pGraphicDev);
 
-	if (FAILED(pSword->Ready_GameObject(vPos)))
+	if (FAILED(pHoe->Ready_GameObject(_eMaterial, vPos)))
 	{
-		Safe_Release(pSword);
-		MSG_BOX("pSword Create Failed");
+		Safe_Release(pHoe);
+		MSG_BOX("pHoe Create Failed");
 		return nullptr;
 	}
 
-	return pSword;
+	return pHoe;
 }
 
 void CHoe::Free()

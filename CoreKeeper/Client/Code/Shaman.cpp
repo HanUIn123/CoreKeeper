@@ -45,7 +45,7 @@ HRESULT CShaman::Ready_GameObject(_vec3 vPos)
     m_pColliderCom->Set_Offset(_vec3(-0.25f, 0, 0));
     m_pStateCom->Set_Stat(100, 0, 10, 0);
     m_vecDropItem.push_back(ITEM_STAFF);
-    m_vecDropItem.push_back(ITEM_SEED);
+    //m_vecDropItem.push_back(ITEM_SEED);
     m_vecDropItem.push_back(ITEM_WOOD);
     Set_Speed(2.f);
     return S_OK;

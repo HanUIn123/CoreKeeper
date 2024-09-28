@@ -4,8 +4,10 @@
 #include "Export_Utility.h"
 
 CItem::CItem(LPDIRECT3DDEVICE9 pGraphicDev)
-	: Engine::CGameObject(pGraphicDev), m_iTextureNumber(0), m_fFirstY(0.f), m_fTimeAcc(0.f), m_fSpeed(0.5f), m_bActive(true), m_bDrop(false), m_bDropSelf(false), m_bUse(false), m_bSwing(false), m_iCount(1), m_bHasRotated(false), m_fAngle(0.f), m_bFollow(false), m_bMeterial(false)
+	: Engine::CGameObject(pGraphicDev), m_iTextureNumber(0), m_fFirstY(0.f), m_fTimeAcc(0.f), m_fSpeed(0.5f), m_bActive(true), m_bDrop(false), m_bDropSelf(false), m_bUse(false), m_bSwing(false), m_iCount(1), m_bHasRotated(false), m_fAngle(0.f), m_bFollow(false), m_bMeterial(false), m_eMaterial(MATERIAL_END)
 {
+	ZeroMemory(&m_tStat, sizeof(STAT));
+
 	m_fWalkYSpeed = 2.4f;
 	m_fAngleX = 0.f;
 	m_fAngleY = 0.f;
@@ -55,15 +57,7 @@ _int CItem::Update_GameObject(const _float& fTimeDelta)
 		// 플레이어와 충돌
 		if (m_pColliderCom->Check_Collision(pPlayerCollider))
 		{
-			Engine::CInventory* pPlayerInventory = dynamic_cast<Engine::CInventory*>
-				(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
-
-			// 인벤토리에 들어갔다
-			if (pPlayerInventory->Add_Item(this))
-			{
-				m_bActive = false;
-				m_bDrop = false;
-			}
+			In_Inventory();
 		}
 	}
 	
@@ -318,19 +312,32 @@ void CItem::Follow_Player()
 	}
 }
 
-CItem* CItem::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
+void CItem::In_Inventory()
 {
-	CItem* pItem = new CItem(pGraphicDev);
+	Engine::CInventory* pPlayerInventory = dynamic_cast<Engine::CInventory*>
+		(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
 
-	if (FAILED(pItem->Ready_GameObject(vPos)))
+	// 인벤토리에 들어갔다
+	if (pPlayerInventory->Add_Item(this))
 	{
-		Safe_Release(pItem);
-		MSG_BOX("pItem Create Failed");
-		return nullptr;
+		m_bActive = false;
+		m_bDrop = false;
 	}
-
-	return pItem;
 }
+
+//CItem* CItem::Create(LPDIRECT3DDEVICE9 pGraphicDev, MATERIAL _eMaterial, _vec3 vPos)
+//{
+//	CItem* pItem = new CItem(pGraphicDev);
+//
+//	if (FAILED(pItem->Ready_GameObject(_eMaterial, vPos)))
+//	{
+//		Safe_Release(pItem);
+//		MSG_BOX("pItem Create Failed");
+//		return nullptr;
+//	}
+//
+//	return pItem;
+//}
 
 void CItem::Free()
 {

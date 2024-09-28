@@ -6,9 +6,7 @@
 CPickaxe::CPickaxe(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CItem(pGraphicDev)
 {
-	ZeroMemory(&m_tStat, sizeof(STAT));
-
-	m_tStat.iAttack = 10;
+	 
 
 	m_eItemNum = ITEM_PICKAXE;
 }
@@ -17,9 +15,14 @@ CPickaxe::~CPickaxe()
 {
 }
 
-HRESULT CPickaxe::Ready_GameObject(_vec3 vPos)
+HRESULT CPickaxe::Ready_GameObject(MATERIAL _eMaterial, _vec3 vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
+
+	m_eMaterial = _eMaterial;
+	m_iTextureNumber = m_eMaterial;
+
+	m_tStat.iAttack = 5 * (m_eMaterial + 1);
 
 	m_pTransformCom->Set_Scale(1.2f, 1.2f, 1.2f);
 	m_pShadowTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
@@ -64,15 +67,7 @@ _int CPickaxe::Update_GameObject(const _float& fTimeDelta)
 		// 플레이어와 충돌
 		if (m_pColliderCom->Check_Collision(pPlayerCollider))
 		{
-			Engine::CInventory* pPlayerInventory = dynamic_cast<Engine::CInventory*>
-				(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
-
-			// 인벤토리에 들어갔다
-			if (pPlayerInventory->Add_Item(this))
-			{
-				m_bActive = false;
-				m_bDrop = false;
-			}
+			In_Inventory();
 		}
 	}
 	
@@ -168,18 +163,18 @@ HRESULT CPickaxe::Add_Component()
 	return S_OK;
 }
 
-CPickaxe* CPickaxe::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
+CPickaxe* CPickaxe::Create(LPDIRECT3DDEVICE9 pGraphicDev, MATERIAL _eMaterial, _vec3 vPos)
 {
-	CPickaxe* pSword = new CPickaxe(pGraphicDev);
+	CPickaxe* pPickaxe = new CPickaxe(pGraphicDev);
 
-	if (FAILED(pSword->Ready_GameObject(vPos)))
+	if (FAILED(pPickaxe->Ready_GameObject(_eMaterial, vPos)))
 	{
-		Safe_Release(pSword);
-		MSG_BOX("pSword Create Failed");
+		Safe_Release(pPickaxe);
+		MSG_BOX("pPickaxe Create Failed");
 		return nullptr;
 	}
 
-	return pSword;
+	return pPickaxe;
 }
 
 void CPickaxe::Free()

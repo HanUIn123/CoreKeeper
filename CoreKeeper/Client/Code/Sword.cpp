@@ -6,9 +6,7 @@
 CSword::CSword(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CItem(pGraphicDev)
 {
-	ZeroMemory(&m_tStat, sizeof(STAT));
-
-	m_tStat.iAttack = 50;
+	 
 
 	m_eItemNum = ITEM_SWORD;
 }
@@ -17,9 +15,14 @@ CSword::~CSword()
 {
 }
 
-HRESULT CSword::Ready_GameObject(_vec3 vPos)
+HRESULT CSword::Ready_GameObject(MATERIAL _eMaterial, _vec3 vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
+
+	m_eMaterial = _eMaterial;
+	m_iTextureNumber = m_eMaterial;
+
+	m_tStat.iAttack = 25 * (m_eMaterial + 1);
 
 	m_pTransformCom->Set_Scale(1.2f, 1.2f, 1.2f);
 	m_pShadowTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
@@ -64,15 +67,7 @@ _int CSword::Update_GameObject(const _float& fTimeDelta)
 		// 플레이어와 충돌
 		if (m_pColliderCom->Check_Collision(pPlayerCollider))
 		{
-			Engine::CInventory* pPlayerInventory = dynamic_cast<Engine::CInventory*>
-				(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
-
-			// 인벤토리에 들어갔다
-			if (pPlayerInventory->Add_Item(this))
-			{
-				m_bActive = false;
-				m_bDrop = false;
-			}
+			In_Inventory();
 		}
 	}
 	
@@ -169,11 +164,11 @@ HRESULT CSword::Add_Component()
 	return S_OK;
 }
 
-CSword* CSword::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
+CSword* CSword::Create(LPDIRECT3DDEVICE9 pGraphicDev, MATERIAL _eMaterial, _vec3 vPos)
 {
 	CSword* pSword = new CSword(pGraphicDev);
 
-	if (FAILED(pSword->Ready_GameObject(vPos)))
+	if (FAILED(pSword->Ready_GameObject(_eMaterial, vPos)))
 	{
 		Safe_Release(pSword);
 		MSG_BOX("pSword Create Failed");

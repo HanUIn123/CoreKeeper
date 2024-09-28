@@ -6,7 +6,7 @@
 CWood::CWood(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CItem(pGraphicDev)
 {
-	ZeroMemory(&m_tStat, sizeof(STAT));
+	 
 
 	m_eItemNum = ITEM_WOOD;
 }
@@ -160,16 +160,16 @@ HRESULT CWood::Add_Component()
 
 CWood* CWood::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 {
-	CWood* pSeed = new CWood(pGraphicDev);
+	CWood* pWood = new CWood(pGraphicDev);
 
-	if (FAILED(pSeed->Ready_GameObject(vPos)))
+	if (FAILED(pWood->Ready_GameObject(vPos)))
 	{
-		Safe_Release(pSeed);
-		MSG_BOX("pSeed Create Failed");
+		Safe_Release(pWood);
+		MSG_BOX("pWood Create Failed");
 		return nullptr;
 	}
 
-	return pSeed;
+	return pWood;
 }
 
 void CWood::Free()
