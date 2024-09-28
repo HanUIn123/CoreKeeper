@@ -73,9 +73,6 @@ void CItem::LateUpdate_GameObject()
 
 void CItem::Render_GameObject()
 {
-	// 카메라를 바라보게 하면서 스케일 유지
-	Apply_Billboard();  
-
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
@@ -144,35 +141,6 @@ HRESULT CItem::Add_Component()
 	m_mapComponent[ID_DYNAMIC].insert({ L"Com_ShadowTransform", pComponent });
 
 	return S_OK;
-}
-
-void CItem::Apply_Billboard()
-{
-	D3DXMATRIX matWorld, matView, matBill, matScale;
-
-	m_pTransformCom->Get_WorldMatrix(&matWorld);
-
-	m_pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
-
-	D3DXMatrixIdentity(&matBill);
-
-	matBill._11 = matView._11;
-	matBill._13 = matView._13;
-	matBill._31 = matView._31;
-	matBill._33 = matView._33;
-
-	D3DXMatrixInverse(&matBill, 0, &matBill);
-
-	// 스케일 행렬을 따로 계산
-	D3DXMatrixScaling(&matScale, m_pTransformCom->Get_Scale()->x, m_pTransformCom->Get_Scale()->y, m_pTransformCom->Get_Scale()->z);
-	
-	D3DXMATRIX matInverseScale;
-	D3DXMatrixInverse(&matInverseScale, 0, &matScale);
-
-	// 최종 월드 행렬: 스케일 적용 후 빌보드 회전 적용
-	D3DXMATRIX matFinal = matScale * matBill * matInverseScale * matWorld;
-
-	m_pTransformCom->Set_WorldMatrix(&matFinal);
 }
 
 void CItem::Wave(const _float& fTimeDelta)

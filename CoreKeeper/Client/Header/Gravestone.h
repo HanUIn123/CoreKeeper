@@ -11,11 +11,11 @@ class CShadowTex;
 
 END
 
-class CTombStone : public CItem
+class CGravestone : public CItem
 {
 private:
-	explicit CTombStone(LPDIRECT3DDEVICE9 pGraphicDev);
-	virtual ~CTombStone();
+	explicit CGravestone(LPDIRECT3DDEVICE9 pGraphicDev);
+	virtual ~CGravestone();
 
 public:
 	virtual			HRESULT			Ready_GameObject(_vec3 vPos);
@@ -27,7 +27,7 @@ private:
 	HRESULT			Add_Component();
 
 public:
-	static CTombStone* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos = { 0.f, 0.f, 0.f });
+	static CGravestone* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos = { 0.f, 0.f, 0.f });
 
 private:
 	virtual void		Free();
