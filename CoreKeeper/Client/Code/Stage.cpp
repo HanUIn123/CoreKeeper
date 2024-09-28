@@ -159,6 +159,10 @@ HRESULT CStage::Ready_Layer_Environment(const _tchar* pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"AheadGrave", pGameObject), E_FAIL);
 
+	pGameObject = CSkeleton::Create(m_pGraphicDev, { 124.f, 0.5f, 130.5f });
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Skeleton", pGameObject), E_FAIL);
+
 	m_mapLayer.insert({ pLayerTag , pLayer });
 
 	return S_OK;
