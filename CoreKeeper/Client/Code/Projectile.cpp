@@ -234,6 +234,8 @@ STATE CProjectile::State_Change()
             m_eState = DEAD;
         break;
     }
+    if (vPos.y < 0.f)
+        m_eState = DEAD;
     return m_eState;
 }
 
