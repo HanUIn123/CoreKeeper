@@ -7,6 +7,8 @@ class CObjectTex;
 class CTransform;
 class CCalculator;
 class CTexture;
+class CColliderCube;
+class CInventory;
 
 END
 

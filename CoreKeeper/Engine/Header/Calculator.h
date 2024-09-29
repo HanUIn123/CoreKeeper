@@ -22,7 +22,7 @@ public:
 	bool			In_Frustum(CTransform* pTransform);
 public:
 	static CCalculator*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
-	virtual CCalculator*	Clone();
+	virtual CComponent*	Clone();
 
 private:
 	virtual void Free();

@@ -19,7 +19,7 @@ public:
 
 public:
 	static CAnimator*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
-	virtual CAnimator*	Clone();
+	virtual CComponent*	Clone();
 
 private:
 	virtual void Free();

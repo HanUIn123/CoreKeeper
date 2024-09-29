@@ -127,7 +127,7 @@ CCollider* CCollider::Create(LPDIRECT3DDEVICE9 pGraphicDev, float fRadius)
     return pInstance;
 }
 
-CCollider* CCollider::Clone()
+CComponent* CCollider::Clone()
 {
     return new CCollider(*this);
 }

@@ -114,4 +114,5 @@ protected:
 	wstring m_wItemMetrial;
 
 	_bool   m_bMeterial;
+	_bool	m_bCraftable;
 };

@@ -155,6 +155,7 @@ call CopyUtility.bat</Command>
     <ClCompile Include="..\Code\d3dUtility.cpp" />
     <ClCompile Include="..\Code\Fall.cpp" />
     <ClCompile Include="..\Code\GameObject.cpp" />
+    <ClCompile Include="..\Code\Shader.cpp" />
     <ClCompile Include="..\Code\Inventory.cpp" />
     <ClCompile Include="..\Code\Layer.cpp" />
     <ClCompile Include="..\Code\Light.cpp" />
@@ -194,6 +195,7 @@ call CopyUtility.bat</Command>
     <ClInclude Include="..\..\Header\Export_Utility.h" />
     <ClInclude Include="..\..\Header\Fall.h" />
     <ClInclude Include="..\..\Header\GameObject.h" />
+    <ClInclude Include="..\..\Header\Shader.h" />
     <ClInclude Include="..\..\Header\Inventory.h" />
     <ClInclude Include="..\..\Header\Layer.h" />
     <ClInclude Include="..\..\Header\Light.h" />

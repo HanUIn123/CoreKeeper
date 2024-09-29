@@ -243,7 +243,7 @@ CCalculator* CCalculator::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 	return pCalculator;
 }
 
-CCalculator* CCalculator::Clone()
+CComponent* CCalculator::Clone()
 {
 	return new CCalculator(*this);
 }

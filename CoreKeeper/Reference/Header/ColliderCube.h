@@ -24,7 +24,7 @@ public:
 
 public:
     static CColliderCube* Create(LPDIRECT3DDEVICE9 pGraphicDev, const _vec3& vMin, const _vec3& vMax);
-    virtual CColliderCube* Clone();
+    virtual CComponent* Clone();
 
 private:
     virtual void Free();

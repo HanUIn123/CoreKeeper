@@ -119,7 +119,7 @@ CColliderCube* CColliderCube::Create(LPDIRECT3DDEVICE9 pGraphicDev, const _vec3&
     return pInstance;
 }
 
-CColliderCube* CColliderCube::Clone()
+CComponent* CColliderCube::Clone()
 {
     return new CColliderCube(*this);
 }

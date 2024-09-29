@@ -34,6 +34,7 @@
 #include "ColliderCube.h"
 #include "State.h"
 #include "Inventory.h"
+#include "Shader.h"
 
 BEGIN(Engine)
 

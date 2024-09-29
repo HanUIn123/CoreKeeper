@@ -67,7 +67,7 @@ CAnimator* CAnimator::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 	return pAnimator;
 }
 
-CAnimator* CAnimator::Clone()
+CComponent* CAnimator::Clone()
 {
 	return new CAnimator(*this);
 }

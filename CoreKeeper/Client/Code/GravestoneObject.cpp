@@ -23,6 +23,12 @@ HRESULT CGravestoneObject::Ready_GameObject(_vec3 vPos)
 
 _int CGravestoneObject::Update_GameObject(const _float& fTimeDelta)
 {
+	// 플레이어와 충돌했으면 상호작용해라.
+	if (Check_Interaction())
+	{
+		Interaction();
+	}
+
 	Add_RenderGroup(RENDER_ALPHA, this);
 
 	return Engine::CGameObject::Update_GameObject(fTimeDelta);
@@ -39,15 +45,28 @@ void CGravestoneObject::Render_GameObject()
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
 
+	m_pColliderCom->Update_Collider(m_pTransformCom->Get_WorldMatrix());
+
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
 	m_pTextureCom->Set_Texture();
 
 	m_pBufferCom->Render_Buffer();
 
+	m_pColliderCom->Render_Collider();
+
 	//m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
+}
+
+void CGravestoneObject::Interaction()
+{
+	if (Engine::Key_Down(DIK_E))
+	{
+		// UI 열리게 하는 걸 여기에 하면 됨
+		// UI가 열리면서 플레이어한테 bool값을 줘야함(다른 창 열림 방지)
+	}
 }
 
 HRESULT CGravestoneObject::Add_Component()
@@ -69,6 +88,10 @@ HRESULT CGravestoneObject::Add_Component()
 	pComponent = m_pCalculCom = dynamic_cast<CCalculator*>(Engine::Clone_Proto(L"Proto_Calculator"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Calculator", pComponent });
+
+	pComponent = m_pColliderCom = dynamic_cast<CColliderCube*>(Engine::Clone_Proto(L"Proto_NormalCubeCollider"));
+	NULL_CHECK_RETURN(pComponent, E_FAIL);
+	m_mapComponent[ID_STATIC].insert({ L"Com_Collider", pComponent });
 
 	pComponent = m_pInventoryCom = dynamic_cast<CInventory*>(Engine::Clone_Proto(L"Proto_GravestoneInventory"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
