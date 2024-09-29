@@ -10,16 +10,14 @@ class CTransform;
 class CTexture;
 END
 
-class CUISort : public Engine::CGameObject
+class CUIChestSort : public Engine::CGameObject
 {
-public:
-	enum INVENTORY_TYPE { TYPE_PLAYER, TYPE_CHEST };
 private:
-	explicit CUISort(LPDIRECT3DDEVICE9 pGraphicDev);
-	virtual ~CUISort();
+	explicit CUIChestSort(LPDIRECT3DDEVICE9 pGraphicDev);
+	virtual ~CUIChestSort();
 
 public:
-	virtual			HRESULT			Ready_GameObject(_vec2 vPos, _vec2 vSize, INVENTORY_TYPE eType);
+	virtual			HRESULT			Ready_GameObject(_vec2 vPos, _vec2 vSize);
 	virtual			_int			Update_GameObject(const _float& fTimeDelta);
 	virtual			void			LateUpdate_GameObject();
 	virtual			void			Render_GameObject();
@@ -29,14 +27,16 @@ public:
 		return  ::PtInRect(&m_BRect, _screenPos);
 	}
 
-	void            Set_Window() {
+	void            Set_Window(wstring _wCheststring) {
 		if (m_bWindow)
 			m_bWindow = false;
 		else
+		{
 			m_bWindow = true;
-	}
 
-	void            Set_String(wstring _wstring) { m_wstring = _wstring; }
+			m_wstring = _wCheststring;
+		}
+	}
 
 private:
 	HRESULT			Add_Component();
@@ -53,8 +53,6 @@ private:
 	_bool m_bFirst;
 	_bool m_bPushed;
 
-	INVENTORY_TYPE m_eType;
-
 	wstring m_wstring;
 
 private:
@@ -64,7 +62,7 @@ private:
 	Engine::CTransform* m_pTransformCom;
 
 public:
-	static CUISort* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec2 vPos, _vec2 vSize, INVENTORY_TYPE eType);
+	static CUIChestSort* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec2 vPos, _vec2 vSize);
 
 private:
 	virtual void		Free();

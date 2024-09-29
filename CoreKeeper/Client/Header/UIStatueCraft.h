@@ -2,24 +2,28 @@
 #include "GameObject.h"
 #include "Define.h"
 #include "..\Header\Item.h"
+#include "..\Header\UIStatue.h"
+#include "..\Header\UICursor.h"
+#include "Export_System.h"
+#include "Export_Utility.h"
 
 BEGIN(Engine)
 
 class CRcTex;
 class CTransform;
 class CTexture;
+class CInventory;
+
 END
 
-class CUISort : public Engine::CGameObject
+class CUIStatueCraft: public Engine::CGameObject
 {
-public:
-	enum INVENTORY_TYPE { TYPE_PLAYER, TYPE_CHEST };
 private:
-	explicit CUISort(LPDIRECT3DDEVICE9 pGraphicDev);
-	virtual ~CUISort();
+	explicit CUIStatueCraft(LPDIRECT3DDEVICE9 pGraphicDev);
+	virtual ~CUIStatueCraft();
 
 public:
-	virtual			HRESULT			Ready_GameObject(_vec2 vPos, _vec2 vSize, INVENTORY_TYPE eType);
+	virtual			HRESULT			Ready_GameObject(_vec2 vPos, _vec2 vSize);
 	virtual			_int			Update_GameObject(const _float& fTimeDelta);
 	virtual			void			LateUpdate_GameObject();
 	virtual			void			Render_GameObject();
@@ -34,16 +38,16 @@ public:
 			m_bWindow = false;
 		else
 			m_bWindow = true;
-	}
 
-	void            Set_String(wstring _wstring) { m_wstring = _wstring; }
+		CUIStatue* pStatue = dynamic_cast<CUIStatue*>(Engine::Get_GameObject(L"Layer_UI", L"UI_Statue"));
+
+		m_iIndex = pStatue->Get_StatueType();
+	}
 
 private:
 	HRESULT			Add_Component();
 
 private:
-	_int m_iIndex;
-
 	_vec2 m_vPos;
 
 	RECT m_BRect;
@@ -51,20 +55,22 @@ private:
 	_bool m_bWindow;
 	_bool m_bCollapse;
 	_bool m_bFirst;
-	_bool m_bPushed;
 
-	INVENTORY_TYPE m_eType;
+	_bool m_bEnough;
 
-	wstring m_wstring;
+	CItem* m_pItem;
+
+	_int   m_iIndex;
 
 private:
 	Engine::CRcTex* m_pBufferCom;
+	Engine::CTransform* m_pTransformCom;
 	Engine::CTexture* m_pTextureCom;
 	Engine::CTexture* m_pColTextureCom;
-	Engine::CTransform* m_pTransformCom;
+	Engine::CInventory* m_pInventory;
 
 public:
-	static CUISort* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec2 vPos, _vec2 vSize, INVENTORY_TYPE eType);
+	static CUIStatueCraft* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec2 vPos, _vec2 vSize);
 
 private:
 	virtual void		Free();

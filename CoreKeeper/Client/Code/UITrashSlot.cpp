@@ -79,14 +79,14 @@ _int CUITrashSlot::Update_GameObject(const _float& fTimeDelta)
 		}
 		else
 			m_bCollapse = false;
-
-		Engine::Add_RenderGroup(RENDER_UI, this);
 	}
 	return iExit;
 }
 
 void CUITrashSlot::LateUpdate_GameObject()
 {
+	if(m_bWindow)
+		Engine::Add_RenderGroup(RENDER_UI, this);
 	Engine::CGameObject::LateUpdate_GameObject();
 }
 

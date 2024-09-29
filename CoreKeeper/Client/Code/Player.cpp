@@ -20,6 +20,10 @@
 #include "..\Header\UISort.h"
 #include "..\Header\UIBuff.h"
 #include "..\Header\UIChestInv.h"
+#include "..\Header\UIStatue.h"
+#include "..\Header\UIJemSlot.h"
+#include "..\Header\UIStatueCraft.h"
+#include "..\Header\UIChestSort.h"
 
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CGameObject(pGraphicDev)
@@ -52,6 +56,7 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	m_bChestInventory = false;
 	m_bTableCraft = false;
 	m_bAnvil = false;
+	m_bStatue = false;
 
 	m_vStartPoint = { 0, 0, 0 };
 	m_vKnockBackDir = { 0, 0, 0 };
@@ -764,6 +769,18 @@ void CPlayer::Set_UI()
 	
 	if (Engine::Key_Down(DIK_E))
 	{
+		if (!m_bCraft && !m_bStatus && !m_bMap && !m_bStatue)
+		{
+			Set_ChestInventory();
+			Set_Inventory();
+		}
+		if (m_bInventory && !m_bChestInventory && !m_bStatue)
+		{
+			Set_Inventory();
+
+			m_bInventory = false;
+		}
+
 		if (m_bCraft)
 		{
 			Set_Craft();
@@ -774,12 +791,7 @@ void CPlayer::Set_UI()
 		{
 			Set_Status();
 		}
-		if (m_bInventory && !m_bChestInventory)
-		{
-			Set_Inventory();
 
-			m_bInventory = false;
-		}
 		if (m_bMap)
 		{
 			Set_Map();
@@ -787,10 +799,11 @@ void CPlayer::Set_UI()
 			m_bMap = false;
 		}
 
-		if (!m_bCraft && !m_bStatus && !m_bMap)
+		if (m_bStatue)
 		{
-			Set_ChestInventory();
-			Set_Inventory();
+			Set_Statue();
+
+			m_bStatue = false;
 		}
 	}
 
@@ -803,6 +816,8 @@ void CPlayer::Set_UI()
 		CUIBuff* pDeBuff = dynamic_cast<CUIBuff*>(Engine::Get_GameObject(L"Layer_UI", L"UI_DeBuff0"));
 
 		pDeBuff->Set_Window(CUIBuff::DEBUFF_BURN, CUIBuff::DEBUFF, 100.f);
+		
+		Set_Statue();
 	}
 }
 
@@ -953,10 +968,39 @@ void CPlayer::Set_ChestInventory()
 		pChestInventory->Set_CurChestInv(pInventory);
 	}
 
+	CUISort* pSort = dynamic_cast<CUISort*>(Engine::Get_GameObject(L"Layer_UI", L"UI_ChestSort"));
+
+	pSort->Set_Window();
+
+	CUIChestSort* pChestSort = dynamic_cast<CUIChestSort*>(Engine::Get_GameObject(L"Layer_UI", L"UI_ChestAddItem"));
+	pChestSort->Set_Window(L"AheadGrave");
+
 	if (m_bChestInventory)
 		m_bChestInventory = false;
 	else
 		m_bChestInventory = true;
+}
+
+void CPlayer::Set_Statue()
+{
+	CUIStatue* pStatue = dynamic_cast<CUIStatue*>(Engine::Get_GameObject(L"Layer_UI", L"UI_Statue"));
+
+	pStatue->Set_Window(CUIStatue::STATUE_GHORM);
+
+	CUIJemSlot* pSlot = dynamic_cast<CUIJemSlot*>(Engine::Get_GameObject(L"Layer_UI", L"UI_JemSlot"));
+
+	pSlot->Set_Window();
+
+	CUIStatueCraft* pSCraft = dynamic_cast<CUIStatueCraft*>(Engine::Get_GameObject(L"Layer_UI", L"UI_StatueCraft"));
+
+	pSCraft->Set_Window();
+
+	Set_Inventory();
+
+	if (m_bStatue)
+		m_bStatue = false;
+	else
+		m_bStatue = true;
 }
 
 void CPlayer::Particle_Update(_float fTimeDelta)
@@ -1013,6 +1057,8 @@ void CPlayer::KnockBack(const _float& fTimeDelta)
 		Set_Stop(&m_vKnockBackDir, m_fSpeed * (m_fKnockBackDist / fLength));
 
 		m_pTransformCom->Move_Pos(&m_vKnockBackDir, fTimeDelta, m_fSpeed * (m_fKnockBackDist / fLength) * m_iSpeedWeight);
+
+		m_bBleed = true;
 	}
 }
 

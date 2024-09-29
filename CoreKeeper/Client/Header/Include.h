@@ -64,3 +64,7 @@
 #include "UIItemFrame.h"
 #include "UIBuff.h"
 #include "UIChestInv.h"
+#include "UIStatue.h"
+#include "UIJemSlot.h"
+#include "UIStatueCraft.h"
+#include "UIChestSort.h"

@@ -499,6 +499,21 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Sort", pGameObject), E_FAIL);
 
+
+	vPos = { 914.f, 243.f };
+	vSize = { 30.f, 30.f };
+
+	pGameObject = CUISort::Create(m_pGraphicDev, vPos, vSize, CUISort::TYPE_CHEST);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_ChestSort", pGameObject), E_FAIL);
+
+	vPos = { 914.f, 306.f };
+	vSize = { 30.f, 30.f };
+
+	pGameObject = CUIChestSort::Create(m_pGraphicDev, vPos, vSize);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_ChestAddItem", pGameObject), E_FAIL);
+
 	vPos = { 1130.f, 190.f };
 	vSize = { 130.f, 150.f };
 
@@ -531,6 +546,27 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
 	pGameObject = CUIBuff::Create(m_pGraphicDev, vPos, vSize);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_DeBuff0", pGameObject), E_FAIL);
+
+	vPos = { WINCX / 2.f, 200.f };
+	vSize = { 150.f, 130.f };
+
+	pGameObject = CUIStatue::Create(m_pGraphicDev, vPos, vSize);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Statue", pGameObject), E_FAIL);
+
+	vPos = { WINCX / 2.f, 170.f };
+	vSize = { 30.f, 30.f };
+
+	pGameObject = CUIJemSlot::Create(m_pGraphicDev, vPos, vSize);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_JemSlot", pGameObject), E_FAIL);
+
+	vPos = { WINCX / 2.f + 3.f, 273.f };
+	vSize = { 32.f, 32.f };
+
+	pGameObject = CUIStatueCraft::Create(m_pGraphicDev, vPos, vSize);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_StatueCraft", pGameObject), E_FAIL);
 
 	m_mapLayer.insert({ pLayerTag , pLayer });
 

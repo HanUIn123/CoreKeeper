@@ -39,6 +39,9 @@ public:
 		else
 			m_bShow = true;
 	}
+
+	void           Set_Enable() { m_bShow = true; }
+	void           Set_Disable() { m_bShow = false; }
 private:
 	HRESULT			Add_Component();
 

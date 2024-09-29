@@ -1,21 +1,21 @@
 #include "pch.h"
-#include "..\Header\UISort.h"
+#include "..\Header\UIChestSort.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
 #include "..\Header\Player.h"
 
-CUISort::CUISort(LPDIRECT3DDEVICE9 pGraphicDev)
+CUIChestSort::CUIChestSort(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CGameObject(pGraphicDev), m_bCollapse(false), m_bFirst(false), m_bWindow(false), m_iIndex(0), m_bPushed(false)
 
 {
 	m_wstring = L"AheadGrave";
 }
 
-CUISort::~CUISort()
+CUIChestSort::~CUIChestSort()
 {
 }
 
-HRESULT CUISort::Ready_GameObject(_vec2 vPos, _vec2 vSize, INVENTORY_TYPE eType)
+HRESULT CUIChestSort::Ready_GameObject(_vec2 vPos, _vec2 vSize)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
@@ -36,12 +36,10 @@ HRESULT CUISort::Ready_GameObject(_vec2 vPos, _vec2 vSize, INVENTORY_TYPE eType)
 	m_BRect.top = vPos.y - vSize.y / 2;
 	m_BRect.bottom = vPos.y + vSize.y / 2;
 
-	m_eType = eType;
-
 	return S_OK;
 }
 
-_int CUISort::Update_GameObject(const _float& fTimeDelta)
+_int CUIChestSort::Update_GameObject(const _float& fTimeDelta)
 {
 	_int iExit = Engine::CGameObject::Update_GameObject(fTimeDelta);
 
@@ -59,24 +57,9 @@ _int CUISort::Update_GameObject(const _float& fTimeDelta)
 			{
 				m_bPushed = true;
 
-				CInventory* pInv = nullptr;
-
-				switch (m_eType)
-				{
-				case TYPE_PLAYER:
-					pInv = dynamic_cast<Engine::CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
-
-					pInv->Sort_Item();
-					break;
-
-				case TYPE_CHEST:
-					pInv = dynamic_cast<Engine::CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_Environment", m_wstring.c_str(), L"Com_Inventory"));
-
-					pInv->Sort_ChestItem();
-					break;
-
-				}
-
+				CInventory* pInventory = dynamic_cast<CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_Environment", m_wstring.c_str() , L"Com_Inventory"));
+			
+				//pInventory->Sort_Item(); //아이템 추가
 			}
 			else if (Button_Up(DIM_LB))
 			{
@@ -92,12 +75,12 @@ _int CUISort::Update_GameObject(const _float& fTimeDelta)
 	return iExit;
 }
 
-void CUISort::LateUpdate_GameObject()
+void CUIChestSort::LateUpdate_GameObject()
 {
 	Engine::CGameObject::LateUpdate_GameObject();
 }
 
-void CUISort::Render_GameObject()
+void CUIChestSort::Render_GameObject()
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
 
@@ -119,7 +102,7 @@ void CUISort::Render_GameObject()
 
 }
 
-HRESULT CUISort::Add_Component()
+HRESULT CUIChestSort::Add_Component()
 {
 	CComponent* pComponent = NULL;
 
@@ -127,7 +110,7 @@ HRESULT CUISort::Add_Component()
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Buffer", pComponent });
 
-	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_UISort"));
+	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_UIChestSort"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Texture", pComponent });
 
@@ -139,29 +122,24 @@ HRESULT CUISort::Add_Component()
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_ColTexture", pComponent });
 
-	/*
-	pComponent = m_pSlotTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_UISilhouette"));
-	NULL_CHECK_RETURN(pComponent, E_FAIL);
-	m_mapComponent[ID_STATIC].insert({ L"Com_SlotTexture", pComponent });
-	*/
 	return S_OK;
 }
 
-CUISort* CUISort::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec2 vPos, _vec2 vSize, INVENTORY_TYPE eType)
+CUIChestSort* CUIChestSort::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec2 vPos, _vec2 vSize)
 {
-	CUISort* pUISort = new CUISort(pGraphicDev);
+	CUIChestSort* pUIChestSort = new CUIChestSort(pGraphicDev);
 
-	if (FAILED(pUISort->Ready_GameObject(vPos, vSize, eType)))
+	if (FAILED(pUIChestSort->Ready_GameObject(vPos, vSize)))
 	{
-		Safe_Release(pUISort);
+		Safe_Release(pUIChestSort);
 		MSG_BOX("UIStatus Create Failed");
 		return nullptr;
 	}
 
-	return pUISort;
+	return pUIChestSort;
 }
 
-void CUISort::Free()
+void CUIChestSort::Free()
 {
 	Engine::CGameObject::Free();
 }

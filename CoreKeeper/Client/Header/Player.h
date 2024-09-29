@@ -74,6 +74,7 @@ public:
 	void            Set_Map();
 	void            Set_Status();
 	void            Set_ChestInventory();
+	void            Set_Statue();
 
 	void            Set_DisMove() { m_bNoMove = true; }
 	void            Set_EnaMove() { m_bNoMove = false; }
@@ -126,6 +127,7 @@ private:
 	_bool                   m_bChestInventory;
 	_bool                   m_bTableCraft;
 	_bool                   m_bAnvil;
+	_bool                   m_bStatue;
 
 	_bool                   m_bNoMove;    // UI건드릴때 캐릭터 움직이지 않게하는 용도
 

@@ -35,6 +35,22 @@ void CInventory::Sort_Item()
 		});
 }
 
+void CInventory::Sort_ChestItem()
+{
+	// 10번째 인덱스부터 끝까지 정렬
+	std::sort(m_vecItems.begin(), m_vecItems.end(),
+		[](CItem* a, CItem* b) {
+			// 둘 다 nullptr인 경우
+			if (a == nullptr && b == nullptr) return false;
+
+			// a가 nullptr인 경우, b가 nullptr이 아닌 경우 b가 더 작다고 간주
+			if (a == nullptr) return false; // nullptr은 뒤로
+			if (b == nullptr) return true;  // nullptr이 아닌 것은 앞으로
+
+			return a->Get_ItemNum() < b->Get_ItemNum();
+		});
+}
+
 bool CInventory::Add_Item(CItem* _pItem)
 {
 	int iMinSlot(m_iSlotCount);

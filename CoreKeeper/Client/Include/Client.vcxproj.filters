@@ -333,7 +333,7 @@
     </Filter>
     <Filter Include="02. GameObject\07. UI\12. UIStatue">
       <UniqueIdentifier>{74c6834d-a81e-448f-b0e3-838ca85c4ec1}</UniqueIdentifier>
-	</Filter>
+    </Filter>
     <Filter Include="02. GameObject\06. Item\99. Etc\06. Spawner">
       <UniqueIdentifier>{adc2feaf-9928-47cc-abfb-5c1b1176d49e}</UniqueIdentifier>
     </Filter>
@@ -355,7 +355,16 @@
     <Filter Include="02. GameObject\06. Item\99. Etc\09. Piece">
       <UniqueIdentifier>{e04f8601-5724-400a-80a9-2718805579ff}</UniqueIdentifier>
     </Filter>
-	  </ItemGroup>
+    <Filter Include="02. GameObject\07. UI\12. UIStatue\00. UIJemSlot">
+      <UniqueIdentifier>{40da8256-d357-4a9c-a9a1-6b0c0168dc02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\07. UI\12. UIStatue\01. UIStatueCraft">
+      <UniqueIdentifier>{4664de73-6815-41b5-a865-78e3aeee96f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\07. UI\11. UIChestInv\00. UIChestSort">
+      <UniqueIdentifier>{e767b36e-abe6-42eb-a00f-5e7f6e0610da}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
       <Filter>헤더 파일</Filter>
@@ -696,6 +705,18 @@
     <ClInclude Include="..\Header\Skeleton.h">
       <Filter>02. GameObject\10. Object\10. Skeleton</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\UIStatue.h">
+      <Filter>02. GameObject\07. UI\12. UIStatue</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\UIJemSlot.h">
+      <Filter>02. GameObject\07. UI\12. UIStatue\00. UIJemSlot</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\UIStatueCraft.h">
+      <Filter>02. GameObject\07. UI\12. UIStatue\01. UIStatueCraft</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\UIChestSort.h">
+      <Filter>02. GameObject\07. UI\11. UIChestInv\00. UIChestSort</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1015,6 +1036,18 @@
     </ClCompile>
     <ClCompile Include="..\Code\Skeleton.cpp">
       <Filter>02. GameObject\10. Object\10. Skeleton</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\UIStatue.cpp">
+      <Filter>02. GameObject\07. UI\12. UIStatue</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\UIJemSlot.cpp">
+      <Filter>02. GameObject\07. UI\12. UIStatue\00. UIJemSlot</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\UIStatueCraft.cpp">
+      <Filter>02. GameObject\07. UI\12. UIStatue\01. UIStatueCraft</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\UIChestSort.cpp">
+      <Filter>02. GameObject\07. UI\11. UIChestInv\00. UIChestSort</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
