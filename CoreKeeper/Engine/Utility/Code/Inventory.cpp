@@ -160,7 +160,7 @@ CInventory* CInventory::Create(LPDIRECT3DDEVICE9 pGraphicDev, int _iSlotCount)
 	return pInventory;
 }
 
-CInventory* CInventory::Clone()
+CComponent* CInventory::Clone()
 {
 	return new CInventory(*this);
 }

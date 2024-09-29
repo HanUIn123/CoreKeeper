@@ -22,7 +22,7 @@ public:
 
 public:
 	static CCollider*		Create(LPDIRECT3DDEVICE9 pGraphicDev, float fRadius);
-	virtual CCollider*		Clone();
+	virtual CComponent*		Clone();
 
 private:
 	virtual void Free();

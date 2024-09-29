@@ -7,6 +7,8 @@ class CObjectTex;
 class CTransform;
 class CCalculator;
 class CTexture;
+class CColliderCube;
+class CInventory;
 
 END
 
@@ -22,8 +24,15 @@ public:
 	virtual			void			LateUpdate_GameObject();
 	virtual			void			Render_GameObject();
 
+public:
+	virtual			void			Interaction();
+
 private:
 	HRESULT							Add_Component();
+
+public:
+	bool							Check_Interaction();
+
 public:
 	HRESULT							Setup_Material();
 
@@ -38,6 +47,8 @@ protected:
 	Engine::CTransform*				m_pTransformCom;
 	Engine::CCalculator*			m_pCalculCom;
 	Engine::CTexture*				m_pTextureCom;
+	Engine::CColliderCube*			m_pColliderCom;
+	Engine::CInventory*				m_pInventoryCom;
 
 public:
 	static CObject* Create(LPDIRECT3DDEVICE9 pGraphicDev);

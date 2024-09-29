@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "../Header/Object.h"
 #include "Export_Utility.h"
+#include "Export_System.h"
 
 CObject::CObject(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CGameObject(pGraphicDev)
@@ -39,6 +40,28 @@ void CObject::Render_GameObject()
 HRESULT CObject::Add_Component()
 {
 	return S_OK;
+}
+
+bool CObject::Check_Interaction()
+{
+	Engine::CCollider* pPlayerCollider = dynamic_cast<Engine::CCollider*>
+		(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Collider"));
+
+	// 플레이어와 충돌
+	if (m_pColliderCom->Check_Sphere_Collision(pPlayerCollider))
+	{
+		return true;
+	}
+
+	return false;
+}
+
+void CObject::Interaction()
+{
+	if (Engine::Key_Down(DIK_E))
+	{
+		// UI 열리게 하는 걸 여기에 하면 됨
+	}
 }
 
 HRESULT CObject::Setup_Material()

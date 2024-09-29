@@ -8,6 +8,7 @@ class CTransform;
 class CCalculator;
 class CTexture;
 class CInventory;
+class CColliderCube;
 
 END
 
@@ -22,14 +23,14 @@ public:
 	virtual			void			LateUpdate_GameObject();
 	virtual			void			Render_GameObject();
 
+	virtual			void			Interaction();
+
+
 	virtual			_int			Get_BuildImgNum() { return m_iBuildingImgNum; }
 	virtual			void			Set_BuildImgNum(_int _iBuildingNum) { m_iBuildingImgNum = _iBuildingNum; }
 
 	virtual			_vec3			Get_ObjectPos() { return m_vBuildPosition; }
 	virtual			void			Set_ObjectPos(_vec3 _iBuildingPos) { m_vBuildPosition = _iBuildingPos; }
-
-private:
-	Engine::CInventory*				m_pInventoryCom;
 
 private:
 	HRESULT							Add_Component();
