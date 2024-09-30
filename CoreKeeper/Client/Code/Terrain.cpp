@@ -5,6 +5,7 @@
 CTerrain::CTerrain(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CGameObject(pGraphicDev)
 {
+	m_vPickPos = { };
 	m_vecTextureNumber.resize((VTXCNTX - 1) * (VTXCNTZ - 1));
 	m_vecUnreachable.resize((VTXCNTX - 1) * (VTXCNTZ - 1));
 }
@@ -76,6 +77,10 @@ HRESULT CTerrain::Add_Component()
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_DYNAMIC].insert({ L"Com_Transform", pComponent });
 
+	pComponent = m_pCalculatorCom = dynamic_cast<CCalculator*>(Engine::Clone_Proto(L"Proto_Calculator"));
+	NULL_CHECK_RETURN(pComponent, E_FAIL);
+	m_mapComponent[ID_DYNAMIC].insert({ L"Com_Calculator", pComponent });
+
 	return S_OK;
 }
 
@@ -94,6 +99,12 @@ HRESULT CTerrain::Setup_Material()
 	m_pGraphicDev->SetMaterial(&tMtrl);
 
 	return S_OK;
+}
+
+_vec3* CTerrain::Get_PickPos()
+{
+	m_vPickPos = m_pCalculatorCom->Picking_OnTerrain(g_hWnd, m_pBufferCom, m_pTransformCom);
+	return &m_vPickPos;
 }
 
 CTerrain* CTerrain::Create(LPDIRECT3DDEVICE9 pGraphicDev)

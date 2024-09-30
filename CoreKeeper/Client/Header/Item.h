@@ -14,6 +14,7 @@ class CShadowTex;
 
 END
 
+class CTerrain;
 class CItem : public Engine::CGameObject
 {
 protected:
@@ -33,6 +34,7 @@ private:
 protected:
 	void			Wave(const _float& fTimeDelta);
 	void			Swing(int start, int end, int Count);
+	void			Shoot(PROJECTILETYPE _type);
 	void			Follow_Player();
 	void			In_Inventory();
 public:
@@ -68,8 +70,15 @@ public:
 	void				Set_Active(bool bActive) { m_bActive = bActive; }
 	void				Set_Drop(bool bDrop) { m_bDrop = bDrop; }
 	void				Set_Use(bool bUse) { m_bUse = bUse; }
+	void				Set_Direction(DIRECTION eDir) { m_eDir = eDir; }
 	void				Set_Swing(DIRECTION eDir, bool bSwing) { m_eDir = eDir; m_bSwing = bSwing; }
+	void				Set_Shoot(DIRECTION eDir, bool bShoot) { m_eDir = eDir; m_bShoot = bShoot; }
 	void				Set_Follow(bool bFollow = true) { m_bFollow = bFollow; }
+	void				Set_Stop(_vec3* vDir, _float fDirSpeed);
+	void				Set_ProjectileDir(_vec3 vDir) { m_vProjectileDir = vDir; }
+	void				Set_ProjectileAttackSuccess(_bool bSuccess) { m_bProjectileAttackSuccess = bSuccess; }
+	_bool				Get_ProjectileAttackSuccess() { return m_bProjectileAttackSuccess; }
+	void				Set_TextureNumber(MATERIAL eMat) { m_iTextureNumber = eMat; }
 
 	//아이템 설명창
 	const wstring*      Get_Explain() { return m_wItemExplain; }
@@ -97,10 +106,17 @@ protected:
 	bool		m_bDrop;		// 땅에 떨어진 상태일 때
 	bool		m_bDropSelf;	// 플레이어가 떨궜을때
 	bool		m_bUse;			// 플레이어가 사용중
+	bool		m_bFollow;
+	
 	bool		m_bSwing;
 	bool		m_bHasRotated;	//Swing에서 회전했는지 안했는지 체크용
 
-	bool		m_bFollow;
+	bool		m_bShoot;
+	bool		m_bFired;
+
+	_int		m_iAttackAnimProgress;
+	_int		m_iFrameCount;
+	_int		m_iSpeedWeight;
 
 	STAT		m_tStat;
 	ITEMNUM		m_eItemNum;
@@ -110,6 +126,10 @@ protected:
 	//아이템 설명
 	wstring m_wItemExplain[30];
 	wstring m_wItemMetrial;
+
+	_vec3					m_vProjectileDir;
+	_bool					m_bProjectileAttackSuccess;
+	CTerrain*				m_pTerrain;
 
 	_bool   m_bMeterial;
 	_bool	m_bCraftable;

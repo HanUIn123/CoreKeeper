@@ -45,9 +45,8 @@ void CRenderer::Render_GameObject(LPDIRECT3DDEVICE9 & pGraphicDev)
 
 	// 원근 투영
 	if (pCamera)
-	{
 		pCamera->Set_Render(TYPE_PERSPECTIVE);
-	}
+
 	Render_Priority(pGraphicDev);
 	Render_NonAlpha(pGraphicDev);
 	Render_Alpha(pGraphicDev);
@@ -56,19 +55,9 @@ void CRenderer::Render_GameObject(LPDIRECT3DDEVICE9 & pGraphicDev)
 	{
 		if (!dynamic_cast<CDynamicCamera*>(pCamera)->Get_IsWorldMap())
 		{
-		}
-		else
-		{
-			//Render_WorldMap(pGraphicDev);
-		}
-	}
-
-	if (pCamera)
-	{
-		if (!dynamic_cast<CDynamicCamera*>(pCamera)->Get_IsWorldMap())
-		{
 			pGraphicDev->SetViewport(&m_MiniViewport);
 			Render_MiniMap(pGraphicDev);
+			pGraphicDev->SetViewport(&m_MainViewport);
 		}
 	}
 
@@ -76,14 +65,11 @@ void CRenderer::Render_GameObject(LPDIRECT3DDEVICE9 & pGraphicDev)
 	if (pCamera)
 	{
 		pCamera->Set_Render(TYPE_ORTHOGRAPHIC);
-	}
-
-	if (pCamera)
-	{
 		if (!dynamic_cast<CDynamicCamera*>(pCamera)->Get_IsWorldMap())
 			Render_UI(pGraphicDev);
 		else
 			Render_WorldMap(pGraphicDev);
+		pCamera->Set_Render(TYPE_PERSPECTIVE);
 	}
 	Clear_RenderGroup();
 }

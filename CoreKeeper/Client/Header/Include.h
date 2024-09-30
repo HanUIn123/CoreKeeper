@@ -23,6 +23,7 @@
 
 #include "Sword.h"
 #include "Bow.h"
+#include "Arrow.h"
 #include "Staff.h"
 
 #include "Helmet.h"

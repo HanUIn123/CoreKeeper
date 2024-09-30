@@ -211,7 +211,7 @@ void CMonster::Check_Hitted()
 	CPlayer* pPlayer = dynamic_cast<CPlayer*>(Get_GameObject(L"Layer_GameLogic", L"Player"));
 	CItem* pPlayerHandedItem = pPlayer->Get_HandedItem();
 
-	if (pPlayer->Get_CurState() == SWING)
+	if (pPlayer->Get_CurState() == SWING || pPlayer->Get_CurState() == SHOOT)
 	{
 		CColliderCube* pHandedItemCollider = dynamic_cast<CColliderCube*>(pPlayerHandedItem->Get_Component(ID_DYNAMIC, L"Com_ColliderCube"));
 
@@ -221,6 +221,7 @@ void CMonster::Check_Hitted()
 		{
 			if (!m_bKnockBackStart)
 			{
+				pPlayerHandedItem->Set_ProjectileAttackSuccess(true);
 				m_bKnockBackStart = true;
 				m_bKnockBackEnd = false;
 				m_fSpeedWeight = 8.f;
