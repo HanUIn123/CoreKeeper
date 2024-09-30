@@ -59,6 +59,7 @@ private:
 	Engine::CAnimTex* m_pBufferCom;
 	Engine::CTransform* m_pTransformCom;
 	Engine::CTexture* m_pTextureCom;
+	Engine::CTexture* m_pItemTextureCom;
 	Engine::CTexture* m_pNumTextureCom;
 	Engine::CTexture* m_pColTextureCom;
 	Engine::CTexture* m_pItemNumTextureCom;

@@ -173,7 +173,12 @@ void CUIItemSlot::Render_GameObject()
 
 	if (!pPlayerInv->Check_Empty(m_eSlotType))
 	{
-		m_pItem->Get_Texture()->Set_Texture();
+		Engine::MATERIAL material = m_pItem->Get_ItemMaterial();
+
+		if (material != 3)
+			m_pItem->Get_Texture()->Set_Texture(material);
+		else
+			m_pItem->Get_Texture()->Set_Texture();
 
 		Engine::ITEMNUM eNum = m_pItem->Get_ItemNum();
 

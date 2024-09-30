@@ -163,6 +163,14 @@ HRESULT CStage::Ready_Layer_Environment(const _tchar* pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"AheadGrave", pGameObject), E_FAIL);
 
+	pGameObject = CTableObject::Create(m_pGraphicDev, { 110.f, 0.5f, 130.5f }, MATERIAL_WOOD);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"WoodCraftTable", pGameObject), E_FAIL);
+
+	pGameObject = CTableObject::Create(m_pGraphicDev, { 100.f, 0.5f, 130.5f }, MATERIAL_COPPER);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"CopperCraftTable", pGameObject), E_FAIL);
+
 	pGameObject = CSkeleton::Create(m_pGraphicDev, { 124.f, 0.5f, 130.5f });
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Skeleton", pGameObject), E_FAIL);
@@ -354,14 +362,22 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UIPlayerStats", pGameObject), E_FAIL);
 
-	vPos = { 470.f, 225.f };
-	vSize = { 120.f, 120.f };
+	vPos = { 470.f, 255.f };
+	vSize = { 120.f, 90.f };
 
-	pGameObject = CUIPlayerCraft::Create(m_pGraphicDev, vPos, vSize);
+	pGameObject = CUICraft::Create(m_pGraphicDev, vPos, vSize, true);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UIPlayerCraft", pGameObject), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UILeftCraft", pGameObject), E_FAIL);
 
-	for (int i = 0; i < 5; i++)
+
+	vPos = { 470.f, 255.f };
+	vSize = { 120.f, 90.f };
+
+	pGameObject = CUICraft::Create(m_pGraphicDev, vPos, vSize, false);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UIRightCraft", pGameObject), E_FAIL);
+
+	for (int i = 0; i < 6; i++)
 	{
 		if (i < 3)
 		{
@@ -372,11 +388,29 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
 
 		vSize = { 30.f, 30.f };
 
-		m_CraftSlot[i] = L"UICraftSlot_" + std::to_wstring(i);
+		m_CraftLSlot[i] = L"UICraftLSlot_" + std::to_wstring(i);
 
-		pGameObject = CUICraftSlot::Create(m_pGraphicDev, vPos, vSize, i);
+		pGameObject = CUICraftSlot::Create(m_pGraphicDev, vPos, vSize, i, true);
 		NULL_CHECK_RETURN(pGameObject, E_FAIL);
-		FAILED_CHECK_RETURN(pLayer->Add_GameObject(m_CraftSlot[i].c_str(), pGameObject), E_FAIL);
+		FAILED_CHECK_RETURN(pLayer->Add_GameObject(m_CraftLSlot[i].c_str(), pGameObject), E_FAIL);
+	}
+
+	for (int i = 0; i < 6; i++)
+	{
+		if (i < 3)
+		{
+			vPos = { 400.f + i * 70.f , 220.f };
+		}
+		else
+			vPos = { 400.f + (i - 3) * 70.f, 220.f + (i / 3) * 70.f };
+
+		vSize = { 30.f, 30.f };
+
+		m_CraftRSlot[i] = L"UICraftRSlot_" + std::to_wstring(i);
+
+		pGameObject = CUICraftSlot::Create(m_pGraphicDev, vPos, vSize, i, true);
+		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		FAILED_CHECK_RETURN(pLayer->Add_GameObject(m_CraftRSlot[i].c_str(), pGameObject), E_FAIL);
 	}
 
 	vPos = { 1100.f, 540.f };
@@ -460,9 +494,19 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
 		FAILED_CHECK_RETURN(pLayer->Add_GameObject(m_Invstring[i].c_str(), pGameObject), E_FAIL);
 	}
 
-	pGameObject = CUICursor::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Cursor", pGameObject), E_FAIL)
+	for (int i = 0; i < 18; i++)
+	{
+		if (i % 6 == 0)
+			vPos = { 519.f + (63.f * (_float)(i - (i / 6) * 6)), 180.f + (_float)(i / 6) * 63.f };
+		else
+			vPos = { 519.f + (63.f * (_float)(i - (((i - 1) / 6) * 6))), 180.f + (_float)((i - 1) / 6) * 63.f };
+
+		m_ChestInvstring[i] = L"UI_ChestInventory_" + std::to_wstring(i);
+
+		pGameObject = CUIChestInv::Create(m_pGraphicDev, vPos, i);
+		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		FAILED_CHECK_RETURN(pLayer->Add_GameObject(m_ChestInvstring[i].c_str(), pGameObject), E_FAIL);
+	}
 
 	vPos = { 675.f, 398.f };
 	vSize = { 325.f, 40.f };
@@ -488,9 +532,24 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
 	vPos = { 1040.f, 476.f };
 	vSize = { 30.f, 30.f };
 
-	pGameObject = CUISort::Create(m_pGraphicDev, vPos, vSize);
+	pGameObject = CUISort::Create(m_pGraphicDev, vPos, vSize, CUISort::TYPE_PLAYER);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Sort", pGameObject), E_FAIL);
+
+
+	vPos = { 914.f, 243.f };
+	vSize = { 30.f, 30.f };
+
+	pGameObject = CUISort::Create(m_pGraphicDev, vPos, vSize, CUISort::TYPE_CHEST);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_ChestSort", pGameObject), E_FAIL);
+
+	vPos = { 914.f, 306.f };
+	vSize = { 30.f, 30.f };
+
+	pGameObject = CUIChestSort::Create(m_pGraphicDev, vPos, vSize);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_ChestAddItem", pGameObject), E_FAIL);
 
 	vPos = { 1130.f, 190.f };
 	vSize = { 130.f, 150.f };
@@ -536,6 +595,39 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
 	//pGameObject = CMiniObject::Create(m_pGraphicDev);
 	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"MiniPlayer", pGameObject), E_FAIL);
+
+	vPos = { WINCX / 2.f, 200.f };
+	vSize = { 150.f, 130.f };
+
+	pGameObject = CUIStatue::Create(m_pGraphicDev, vPos, vSize);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Statue", pGameObject), E_FAIL);
+
+	vPos = { WINCX / 2.f, 170.f };
+	vSize = { 30.f, 30.f };
+
+	pGameObject = CUIJemSlot::Create(m_pGraphicDev, vPos, vSize);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_JemSlot", pGameObject), E_FAIL);
+
+	vPos = { WINCX / 2.f + 3.f, 273.f };
+	vSize = { 32.f, 32.f };
+
+	pGameObject = CUIStatueCraft::Create(m_pGraphicDev, vPos, vSize);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_StatueCraft", pGameObject), E_FAIL);
+
+	vPos = { 376.f , 260.f };
+	vSize = { 16.f, 16.f };
+
+	pGameObject = CUICraftButton::Create(m_pGraphicDev, vPos, vSize);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_CraftButton", pGameObject), E_FAIL);
+
+
+	pGameObject = CUICursor::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Cursor", pGameObject), E_FAIL)
 
 	m_mapLayer.insert({ pLayerTag , pLayer });
 

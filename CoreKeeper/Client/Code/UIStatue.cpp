@@ -1,19 +1,19 @@
 #include "pch.h"
-#include "..\Header\UIPlayerCraft.h"
+#include "..\Header\UIStatue.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
 
-CUIPlayerCraft::CUIPlayerCraft(LPDIRECT3DDEVICE9 pGraphicDev)
-	: Engine::CGameObject(pGraphicDev), m_bWindow(false)
+CUIStatue::CUIStatue(LPDIRECT3DDEVICE9 pGraphicDev)
+	: Engine::CGameObject(pGraphicDev), m_bWindow(false), m_iType(0)
 
 {
 }
 
-CUIPlayerCraft::~CUIPlayerCraft()
+CUIStatue::~CUIStatue()
 {
 }
 
-HRESULT CUIPlayerCraft::Ready_GameObject(_vec2 vPos, _vec2 vSize)
+HRESULT CUIStatue::Ready_GameObject(_vec2 vPos, _vec2 vSize)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
@@ -29,49 +29,51 @@ HRESULT CUIPlayerCraft::Ready_GameObject(_vec2 vPos, _vec2 vSize)
 	m_pTransformCom->Set_Scale(vSize.x, vSize.y , 1.f);
 	m_pTransformCom->Set_Pos(x, y, 0);
 
+	m_bRect.left = vPos.x - vSize.x;
+	m_bRect.right = vPos.x + vSize.x;
+	m_bRect.top = vPos.y - vSize.y;
+	m_bRect.bottom = vPos.y + vSize.y;
+
 	return S_OK;
 }
 
-_int CUIPlayerCraft::Update_GameObject(const _float& fTimeDelta)
+_int CUIStatue::Update_GameObject(const _float& fTimeDelta)
 {
 	_int iExit = Engine::CGameObject::Update_GameObject(fTimeDelta);
 
 	if (m_bWindow)
 	{
-		Engine::Add_RenderGroup(RENDER_UI, this);
+		Add_RenderGroup(RENDER_UI, this);
 	}
 
 	return iExit;
 }
 
-void CUIPlayerCraft::LateUpdate_GameObject()
+void CUIStatue::LateUpdate_GameObject()
 {
 	Engine::CGameObject::LateUpdate_GameObject();
 }
 
-void CUIPlayerCraft::Render_GameObject()
-{
-	/*
-	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
-
-	m_pGraphicDev->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
-
-	m_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
-	*/
+void CUIStatue::Render_GameObject()
+{	
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
 
-	m_pTextureCom->Set_Texture();
+	m_pTextureCom->Set_Texture(m_iType);
 
 	m_pBufferCom->Render_Buffer();
-
-	/*
-	m_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_INVSRCALPHA);
-
-	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
-	*/
 }
 
-HRESULT CUIPlayerCraft::Add_Component()
+void CUIStatue::Set_Window(_int StatueNum)
+{
+	m_iType = StatueNum;
+
+	if (m_bWindow)
+		m_bWindow = false;
+	else
+		m_bWindow = true;
+}
+
+HRESULT CUIStatue::Add_Component()
 {
 	CComponent* pComponent = NULL;
 
@@ -79,32 +81,36 @@ HRESULT CUIPlayerCraft::Add_Component()
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Buffer", pComponent });
 
-	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_UIPlayerCraft"));
+	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_UIStatue"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Texture", pComponent });
+
+	pComponent = m_pColTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_UIInvSelected"));
+	NULL_CHECK_RETURN(pComponent, E_FAIL);
+	m_mapComponent[ID_STATIC].insert({ L"Com_ColTexture", pComponent });
 
 	pComponent = m_pTransformCom = dynamic_cast<CTransform*>(Engine::Clone_Proto(L"Proto_Transform"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_DYNAMIC].insert({ L"Com_UITransform", pComponent });
-
+	
 	return S_OK;
 }
 
-CUIPlayerCraft* CUIPlayerCraft::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec2 vPos, _vec2 vSize)
+CUIStatue* CUIStatue::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec2 vPos, _vec2 vSize)
 {
-	CUIPlayerCraft* pUIPlayerCraft = new CUIPlayerCraft(pGraphicDev);
+	CUIStatue* pUIStatue = new CUIStatue(pGraphicDev);
 
-	if (FAILED(pUIPlayerCraft->Ready_GameObject(vPos, vSize)))
+	if (FAILED(pUIStatue->Ready_GameObject(vPos, vSize)))
 	{
-		Safe_Release(pUIPlayerCraft);
+		Safe_Release(pUIStatue);
 		MSG_BOX("UIStatus Create Failed");
 		return nullptr;
 	}
 
-	return pUIPlayerCraft;
+	return pUIStatue;
 }
 
-void CUIPlayerCraft::Free()
+void CUIStatue::Free()
 {
 	Engine::CGameObject::Free();
 }

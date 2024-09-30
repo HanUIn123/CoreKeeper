@@ -80,6 +80,8 @@ public:
 	_bool				Get_ProjectileAttackSuccess() { return m_bProjectileAttackSuccess; }
 	void				Set_TextureNumber(MATERIAL eMat) { m_iTextureNumber = eMat; }
 
+	Engine::MATERIAL    Get_ItemMaterial() { return m_eMaterial; }
+
 	//아이템 설명창
 	const wstring*      Get_Explain() { return m_wItemExplain; }
 	const wstring       Get_Meterial() { return m_wItemMetrial; }

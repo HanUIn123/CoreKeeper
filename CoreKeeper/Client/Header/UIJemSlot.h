@@ -1,22 +1,24 @@
 #pragma once
 #include "GameObject.h"
 #include "Define.h"
+#include "..\Header\Item.h"
+#include "..\Header\UIStatue.h"
+#include "..\Header\UICursor.h"
 
 BEGIN(Engine)
 
 class CRcTex;
 class CTransform;
 class CTexture;
-//class CCalculator;
-//class CAnimator;
+class CInventory;
 
 END
 
-class CUIPlayerCraft : public Engine::CGameObject
+class CUIJemSlot : public Engine::CGameObject
 {
 private:
-	explicit CUIPlayerCraft(LPDIRECT3DDEVICE9 pGraphicDev);
-	virtual ~CUIPlayerCraft();
+	explicit CUIJemSlot(LPDIRECT3DDEVICE9 pGraphicDev);
+	virtual ~CUIJemSlot();
 
 public:
 	virtual			HRESULT			Ready_GameObject(_vec2 vPos, _vec2 vSize);
@@ -25,11 +27,17 @@ public:
 	virtual			void			Render_GameObject();
 
 public:
-	void            Set_Window() {
+	_bool           Map_Picked(POINT _screenPos) {
+		return  ::PtInRect(&m_BRect, _screenPos);
+	}
+
+	void            Set_Window(_int _iIndex) {
 		if (m_bWindow)
 			m_bWindow = false;
 		else
 			m_bWindow = true;
+
+		m_iIndex = _iIndex;
 	}
 
 private:
@@ -37,15 +45,25 @@ private:
 
 private:
 	_vec2 m_vPos;
+
+	RECT m_BRect;
+
 	_bool m_bWindow;
+	_bool m_bCollapse;
+	_bool m_bFirst;
+
+	_int m_iIndex;
 
 private:
 	Engine::CRcTex* m_pBufferCom;
 	Engine::CTransform* m_pTransformCom;
 	Engine::CTexture* m_pTextureCom;
+	Engine::CTexture* m_pColTextureCom;
+	Engine::CInventory* m_pInventory;
+	Engine::CTexture* m_pArrowTextureCom;
 
 public:
-	static CUIPlayerCraft* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec2 vPos, _vec2 vSize);
+	static CUIJemSlot* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec2 vPos, _vec2 vSize);
 
 private:
 	virtual void		Free();

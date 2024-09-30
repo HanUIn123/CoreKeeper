@@ -8,16 +8,20 @@ BEGIN(Engine)
 class CRcTex;
 class CTransform;
 class CTexture;
+class CInventory;
+
 END
 
 class CUISort : public Engine::CGameObject
 {
+public:
+	enum INVENTORY_TYPE { TYPE_PLAYER, TYPE_CHEST };
 private:
 	explicit CUISort(LPDIRECT3DDEVICE9 pGraphicDev);
 	virtual ~CUISort();
 
 public:
-	virtual			HRESULT			Ready_GameObject(_vec2 vPos, _vec2 vSize);
+	virtual			HRESULT			Ready_GameObject(_vec2 vPos, _vec2 vSize, INVENTORY_TYPE eType);
 	virtual			_int			Update_GameObject(const _float& fTimeDelta);
 	virtual			void			LateUpdate_GameObject();
 	virtual			void			Render_GameObject();
@@ -34,6 +38,8 @@ public:
 			m_bWindow = true;
 	}
 
+	void            Set_Inventory(CInventory* _pInventory) { pChestInv = _pInventory; }
+
 private:
 	HRESULT			Add_Component();
 
@@ -49,6 +55,10 @@ private:
 	_bool m_bFirst;
 	_bool m_bPushed;
 
+	INVENTORY_TYPE m_eType;
+
+	CInventory* pChestInv;
+
 private:
 	Engine::CRcTex* m_pBufferCom;
 	Engine::CTexture* m_pTextureCom;
@@ -56,7 +66,7 @@ private:
 	Engine::CTransform* m_pTransformCom;
 
 public:
-	static CUISort* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec2 vPos, _vec2 vSize);
+	static CUISort* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec2 vPos, _vec2 vSize, INVENTORY_TYPE eType);
 
 private:
 	virtual void		Free();

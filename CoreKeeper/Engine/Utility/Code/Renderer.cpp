@@ -18,7 +18,7 @@ CRenderer::CRenderer()
 
 	m_MiniViewport.X = 1020;
 	m_MiniViewport.Y = 90;
-	m_MiniViewport.Width = 200;
+	m_MiniViewport.Width = 100;
 	m_MiniViewport.Height = 140;
 	m_MiniViewport.MinZ = 0.0f;
 	m_MiniViewport.MaxZ = 1.0f;
@@ -66,11 +66,17 @@ void CRenderer::Render_GameObject(LPDIRECT3DDEVICE9 & pGraphicDev)
 	{
 		pCamera->Set_Render(TYPE_ORTHOGRAPHIC);
 		if (!dynamic_cast<CDynamicCamera*>(pCamera)->Get_IsWorldMap())
+		{
 			Render_UI(pGraphicDev);
+
+			Render_Subordinate(pGraphicDev);
+		}
 		else
 			Render_WorldMap(pGraphicDev);
 		pCamera->Set_Render(TYPE_PERSPECTIVE);
 	}
+
+
 	Clear_RenderGroup();
 }
 
@@ -214,6 +220,22 @@ void CRenderer::Render_WorldMap(LPDIRECT3DDEVICE9& pGraphicDev)
 	}
 
 	pGraphicDev->SetViewport(&m_MainViewport);
+	pGraphicDev->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_MODULATE);
+	pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+}
+
+//가장 후순위에 렌더할 대상(커서가 겹치는 현상때문에 추가합니다.)
+void CRenderer::Render_Subordinate(LPDIRECT3DDEVICE9& pGraphicDev)
+{
+	pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
+	pGraphicDev->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
+	pGraphicDev->SetRenderState(D3DRS_ALPHAREF, 0xc0);
+
+	for (auto& pGameObject : m_RenderGroup[RENDER_SUBORDINATE])
+	{
+		pGameObject->Render_GameObject();
+	}
+
 	pGraphicDev->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_MODULATE);
 	pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 }

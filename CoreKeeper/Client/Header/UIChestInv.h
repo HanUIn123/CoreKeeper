@@ -33,11 +33,15 @@ public:
 
 	void            Set_CurInv(_int _iCurInv) { m_iCurInv = _iCurInv; }
 
-	void            Set_Show() {
+	void            Set_Show(CInventory* _pInventory) {
 		if (m_bShow)
 			m_bShow = false;
 		else
+		{
 			m_bShow = true;
+
+			m_pChestInv = _pInventory;
+		}
 	}
 private:
 	HRESULT			Add_Component();
@@ -55,6 +59,8 @@ private:
 
 	CItem* pItem;
 
+	CInventory* m_pChestInv;
+
 private:
 	Engine::CAnimTex* m_pBufferCom;
 	Engine::CTransform* m_pTransformCom;
@@ -62,7 +68,6 @@ private:
 	Engine::CTexture* m_pNumTextureCom;
 	Engine::CTexture* m_pColTextureCom;
 	Engine::CTexture* m_pItemNumTextureCom;
-	Engine::CInventory* m_pInventoryCom;
 	Engine::CAnimator* m_pAnimatorCom;
 	Engine::CRcTex* m_pRcTextureCom;
 
