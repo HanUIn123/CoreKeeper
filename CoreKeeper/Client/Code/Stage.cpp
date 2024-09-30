@@ -18,10 +18,13 @@ CStage::CStage(LPDIRECT3DDEVICE9 pGraphicDev)
 
 CStage::~CStage()
 {
+	CCraftMgr::DestroyInstance();
 }
 
 HRESULT CStage::Ready_Scene()
 {
+	CCraftMgr::GetInstance()->Ready_Craft(m_pGraphicDev);
+
 	//FAILED_CHECK_RETURN(Ready_LightInfo(), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Layer_Environment"), E_FAIL);
 

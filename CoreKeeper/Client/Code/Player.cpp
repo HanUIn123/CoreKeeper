@@ -754,7 +754,7 @@ void CPlayer::Set_UI()
 		Set_Status();
 	}
 	
-	if (Engine::Key_Down(DIK_E))
+	if (m_bInventory && Engine::Key_Down(DIK_E))
 	{
 		if (m_bCraft)
 		{

@@ -150,8 +150,12 @@ call Copy.bat</Command>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+<<<<<<< HEAD
     <ClInclude Include="..\Header\MiniMapFrame.h" />
     <ClInclude Include="..\Header\MiniObject.h" />
+=======
+    <ClInclude Include="..\Header\CraftMgr.h" />
+>>>>>>> origin/main
     <ClInclude Include="..\Header\Skeleton.h" />
     <ClInclude Include="..\Header\BackGround.h" />
     <ClInclude Include="..\Header\Bag.h" />
@@ -268,8 +272,12 @@ call Copy.bat</Command>
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+<<<<<<< HEAD
     <ClCompile Include="..\Code\MiniMapFrame.cpp" />
     <ClCompile Include="..\Code\MiniObject.cpp" />
+=======
+    <ClCompile Include="..\Code\CraftMgr.cpp" />
+>>>>>>> origin/main
     <ClCompile Include="..\Code\Skeleton.cpp" />
     <ClCompile Include="..\Code\BackGround.cpp" />
     <ClCompile Include="..\Code\Bag.cpp" />
