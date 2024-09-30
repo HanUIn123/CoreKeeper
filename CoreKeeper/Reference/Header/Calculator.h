@@ -18,6 +18,7 @@ public:
 	HRESULT			Ready_Calculator();
 	_vec3			Picking_OnTerrain(HWND _hWnd, CMapToolTex* _pMapToolBufferCom, CTransform* _pWireTerrainTransform);
 	_bool			Check_Distance2D(_vec3* _vPos1, _vec3* _vPos2, _float _fDist);
+	_vec3			Picking_OnTerrain(HWND hWnd, CTerrainTex* pTerrainBufferCom, CTransform* pTerrainTransCom);
 
 	bool			In_Frustum(CTransform* pTransform);
 public:

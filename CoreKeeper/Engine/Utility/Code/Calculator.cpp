@@ -115,7 +115,87 @@ _bool CCalculator::Check_Distance2D(_vec3* _vPos1, _vec3* _vPos2, _float _fDist)
 	return D3DXVec2Length(&vDistance) < _fDist;
 }
 
+_vec3 CCalculator::Picking_OnTerrain(HWND hWnd, CTerrainTex* pTerrainBufferCom, CTransform* pTerrainTransCom)
+{
+	POINT	ptMouse{};
+	GetCursorPos(&ptMouse);
+	ScreenToClient(hWnd, &ptMouse);
 
+	_vec3			vMousePos;
+
+	D3DVIEWPORT9	ViewPort;
+	ZeroMemory(&ViewPort, sizeof(D3DVIEWPORT9));
+	m_pGraphicDev->GetViewport(&ViewPort);
+
+	vMousePos.x = ptMouse.x / (ViewPort.Width * 0.5f) - 1.f;
+	vMousePos.y = ptMouse.y / -(ViewPort.Height * 0.5f) + 1.f;
+	vMousePos.z = 0.f;
+
+	_matrix matProj;
+	m_pGraphicDev->GetTransform(D3DTS_PROJECTION, &matProj);
+	D3DXMatrixInverse(&matProj, NULL, &matProj);
+	D3DXVec3TransformCoord(&vMousePos, &vMousePos, &matProj);
+
+	_vec3	vRayPos, vRayDir;
+	vRayPos = { 0.0f, 0.0f, 0.0f };
+	vRayDir = vMousePos - vRayPos;
+	D3DXVec3Normalize(&vRayDir, &vRayDir);
+
+	_matrix matView;
+	m_pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
+	D3DXMatrixInverse(&matView, NULL, &matView);
+
+	D3DXVec3TransformCoord(&vRayPos, &vRayPos, &matView);
+	D3DXVec3TransformNormal(&vRayDir, &vRayDir, &matView);
+
+
+	const _vec3* pTerrainTexPos = pTerrainBufferCom->Get_VtxPos();
+
+	_ulong	dwVtxId[3]{};
+	_float	fU, fV, fDist;
+
+	for (_ulong i = 0; i < VTXCNTZ - 1; ++i)
+	{
+		for (_ulong j = 0; j < VTXCNTX - 1; ++j)
+		{
+			_ulong	dwIndex = i * VTXCNTX + j;
+
+			dwVtxId[0] = dwIndex + VTXCNTX;
+			dwVtxId[1] = dwIndex + VTXCNTX + 1;
+			dwVtxId[2] = dwIndex + 1;
+
+			if (D3DXIntersectTri(&pTerrainTexPos[dwVtxId[1]],
+				&pTerrainTexPos[dwVtxId[2]],
+				&pTerrainTexPos[dwVtxId[0]],
+				&vRayPos, &vRayDir, &fU, &fV, &fDist))
+			{
+				_float x1, z1;
+
+				x1 = pTerrainTexPos[dwVtxId[1]].x + fU * (pTerrainTexPos[dwVtxId[2]].x - pTerrainTexPos[dwVtxId[1]].x);
+				z1 = pTerrainTexPos[dwVtxId[1]].z + fV * (pTerrainTexPos[dwVtxId[0]].z - pTerrainTexPos[dwVtxId[1]].z);
+
+				return _vec3(x1 - 1, 0.f, z1 - 1);
+			}
+
+			dwVtxId[0] = dwIndex + VTXCNTX;
+			dwVtxId[1] = dwIndex + 1;
+			dwVtxId[2] = dwIndex;
+
+			if (D3DXIntersectTri(&pTerrainTexPos[dwVtxId[2]],
+				&pTerrainTexPos[dwVtxId[0]],
+				&pTerrainTexPos[dwVtxId[1]],
+				&vRayPos, &vRayDir, &fU, &fV, &fDist))
+			{
+				// V1 + U(V2 - V1) + V(V3 - V1)
+				return _vec3(pTerrainTexPos[dwVtxId[2]].x + fU * (pTerrainTexPos[dwVtxId[0]].x - pTerrainTexPos[dwVtxId[2]].x),
+					0.f,
+					pTerrainTexPos[dwVtxId[2]].z + fV * (pTerrainTexPos[dwVtxId[1]].z - pTerrainTexPos[dwVtxId[2]].z));
+			}
+		}
+	}
+
+	return _vec3(0.f, 0.f, 0.f);
+}
 //bool CCalculator::In_Frustum(CTransform* pTransform)
 //{
 //	_vec3 vWorld[8];

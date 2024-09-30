@@ -18,6 +18,8 @@ class CFall;
 
 END
 
+class CTerrain;
+
 class CPlayer : public Engine::CGameObject
 {
 private:
@@ -34,7 +36,7 @@ private:
 	HRESULT			Add_Component();
 
 	// 뷰 공통
-	void			Mouse_Click();								// 클릭 시 스윙, 스윙 끝 판단
+	void			Mouse_Click(const _float& fTimeDelta);								// 클릭 시 스윙, 스윙 끝 판단
 	void			Walk_Y(const _float& fTimeDelta);
 	void			Flip();
 
@@ -52,9 +54,11 @@ private:
 	void			Set_Equipment();
 	void			Show_Equipment();
 	void			Swing_Equipment();
+	void			Shoot_Equipment();
 
 	void			Set_EquippedStatus();
 	void			Set_Clothes();
+	void			Set_MouseWorldPos();
 
 	void            Set_UI();
 
@@ -96,16 +100,21 @@ private:
 	Engine::CInventory*		m_pInventoryCom;
 
 	Engine::CInventory*     m_pEquipInventoryCom; // 장비 인벤토리
+	Engine::CFall*			m_pFireParticleCom; // 파티클 컴퍼넌트
 
 	Engine::DIRECTION		m_eDir;
 	Engine::STATE			m_eState;
-	float					m_fSpeed;
-	float					m_fDiagSpeed;
+	_float					m_fSpeed;
+	_float					m_fDiagSpeed;
 	_int					m_iSpeedWeight;
 
-	bool					m_bSwing;
+	_bool					m_bSwing;
+	_bool					m_bShoot;
+	_float					m_fClickTime;
+	_bool					m_bShootOnce;
 
-	bool					m_bFlip;
+	_bool					m_bFlip;
+	_bool					m_bNude;
 
 	CItem*					m_pClothes[5];
 	CItem*					m_pHandedItem;
@@ -114,9 +123,9 @@ private:
 	STAT					m_tBasicStat;
 	STAT					m_tEquipmentStat;
 
-	float					m_fFirstY;
-	float					m_fTimeAcc;
-	float					m_fWalkYSpeed;
+	_float					m_fFirstY;
+	_float					m_fTimeAcc;
+	_float					m_fWalkYSpeed;
 
 	_bool                   m_bInventory; // Inventory 창 확인용
 	_bool                   m_bCraft;     // Craft 창 확인용
@@ -133,12 +142,11 @@ private:
 	_bool					m_bKnockBackEnd;
 	_float					m_fKnockBackDist;
 
-	_bool					m_bNude;
-
-	Engine::CFall* m_pFireParticleCom; // 파티클 컴퍼넌트
-
 	_vec3					m_vRespawnPoint;
 	_bool					m_bRespawned;
+
+	CTerrain*				m_pTerrain;
+	_vec3					m_vMouseWorldPos;
 
 public:
 	static CPlayer* Create(LPDIRECT3DDEVICE9 pGraphicDev);

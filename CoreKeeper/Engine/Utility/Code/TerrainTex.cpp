@@ -55,10 +55,10 @@ HRESULT CTerrainTex::Ready_Buffer(const _ulong& dwCntX, const _ulong& dwCntZ, co
 		}
 	}
 
+	m_pVB->Unlock();
+
 	INDEX32* pIndex = nullptr;
 	_ulong		dwTriCnt(0);
-
-	_vec3		vDst, vSrc, vNormal;
 
 	m_pIB->Lock(0, 0, (void**)&pIndex, 0);
 
@@ -82,7 +82,6 @@ HRESULT CTerrainTex::Ready_Buffer(const _ulong& dwCntX, const _ulong& dwCntZ, co
 		}
 	}
 
-	m_pVB->Unlock();
 	m_pIB->Unlock();
 
 	return S_OK;
