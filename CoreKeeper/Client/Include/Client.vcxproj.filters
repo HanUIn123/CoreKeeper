@@ -376,6 +376,12 @@
     <Filter Include="03. Manager\00. CraftMgr">
       <UniqueIdentifier>{51fe876e-9cef-431f-8961-b5abe0eacb68}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\06. Item\01. Weapon\01. Bow\Arrow">
+      <UniqueIdentifier>{15122301-100c-42fa-b901-0c0b078176ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\01. Weapon\02. Staff\Magic">
+      <UniqueIdentifier>{02bdfade-6c0d-40cc-8a17-8926fbfb8c34}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -729,6 +735,9 @@
     <ClInclude Include="..\Header\MiniObject.h">
       <Filter>02. GameObject\91.MiniObject</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\Arrow.h">
+      <Filter>02. GameObject\06. Item\01. Weapon\01. Bow\Arrow</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1060,6 +1069,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\MiniObject.cpp">
       <Filter>02. GameObject\91.MiniObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Arrow.cpp">
+      <Filter>02. GameObject\06. Item\01. Weapon\01. Bow\Arrow</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

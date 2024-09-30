@@ -6,6 +6,7 @@ BEGIN(Engine)
 class CTerrainTex;
 class CTransform;
 class CTexture;
+class CCalculator;
 
 END
 
@@ -34,11 +35,12 @@ public:
 	bool												Get_UnreachableByIndex(int _iIndex) { return m_vecUnreachable[_iIndex]; }
 	void												Set_Unreachable(int _iIndex, bool _bUnreachable) { m_vecUnreachable[_iIndex] = _bUnreachable; }
 	void                                                Set_Unreachable(vector<bool> _vecUnreachable) { copy(_vecUnreachable.begin(), _vecUnreachable.end(), m_vecUnreachable.begin()); }
-
+	_vec3*												Get_PickPos();
 private:
 	Engine::CTerrainTex* m_pBufferCom;
 	Engine::CTransform* m_pTransformCom;
 	Engine::CTexture* m_pTextureCom;
+	Engine::CCalculator* m_pCalculatorCom;
 
 public:
 	static CTerrain* Create(LPDIRECT3DDEVICE9 pGraphicDev);
@@ -48,6 +50,6 @@ private:
 
 private:
 	vector<int>											m_vecTextureNumber;
-
 	vector<bool>										m_vecUnreachable;
+	_vec3												m_vPickPos;
 };

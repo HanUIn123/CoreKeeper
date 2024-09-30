@@ -2,6 +2,9 @@
 #include "..\Header\Item.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
+#include "..\Header\Arrow.h"
+//#include "..\Header\Magic.h"
+#include "..\Header\Terrain.h"
 
 CItem::CItem(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CGameObject(pGraphicDev), m_iTextureNumber(0), m_fFirstY(0.f), m_fTimeAcc(0.f), m_fSpeed(0.5f), m_bActive(true), m_bDrop(false), m_bDropSelf(false), m_bUse(false), m_bSwing(false), m_iCount(1), m_bHasRotated(false), m_fAngle(0.f), m_bFollow(false), m_bMeterial(false), m_eMaterial(MATERIAL_END)
@@ -11,6 +14,13 @@ CItem::CItem(LPDIRECT3DDEVICE9 pGraphicDev)
 	m_fWalkYSpeed = 2.4f;
 	m_fAngleX = 0.f;
 	m_fAngleY = 0.f;
+	m_bShoot = false;
+	m_bFired = false;
+	m_iAttackAnimProgress = 0;
+	m_iFrameCount = 0;
+	m_bProjectileAttackSuccess = false;
+	m_iSpeedWeight = 1;
+	m_pTerrain = nullptr;
 }
 
 CItem::~CItem()
@@ -235,6 +245,73 @@ void CItem::Swing(int start, int end, int Count)
 	}
 }
 
+void CItem::Shoot(PROJECTILETYPE _type)
+{
+	if (m_bShoot)
+	{
+		if (g_bIsTopCamera)
+		{
+			_int iFrame = 0, iFrameSpeed = 0;
+			switch (m_eDir)
+			{
+			case FRONT:
+				iFrame = 5 + m_iAttackAnimProgress; // 8
+				break;
+			case BACK:
+				iFrame = 15 + m_iAttackAnimProgress; // 18
+				break;
+			case LEFT:
+			case RIGHT:
+				iFrame = 10 + m_iAttackAnimProgress; // 13
+				break;
+			}
+
+			if (m_iFrameCount++ > 2)
+			{
+				m_iFrameCount = 0;
+				if (++m_iAttackAnimProgress >= 4)
+				{
+					m_iAttackAnimProgress = 0;
+					m_bShoot = false;
+					m_bFired = false;
+				}
+				m_pAnimatorCom->Set_CurState(SHOOT, iFrame, iFrame, -1);
+			}
+		}
+		else
+			m_pAnimatorCom->Set_CurState(SHOOT, 15, 18, 5);
+		
+
+		if (m_pAnimatorCom->Get_MotionIndex() % 5 == 1)
+		{
+			if (!m_bFired)
+				m_bFired = true;
+		}
+
+	}
+	else
+	{
+		if (g_bIsTopCamera)
+		{
+			switch (m_eDir)
+			{
+			case FRONT:
+			case RIGHT:
+			case BACK:
+				m_pAnimatorCom->Set_CurState(IDLE, 0, 0, 10);
+				break;
+			case LEFT:
+				m_pAnimatorCom->Set_CurState(IDLE, 2, 2, 10);
+				break;
+			}
+		}
+		else
+		{
+			m_pAnimatorCom->Set_CurState(IDLE, 0, 0, 10);
+		}
+	}
+}
+
 void CItem::Walk_Equipped(const _float& fTimeDelta)
 {
 	m_fTimeAcc += fTimeDelta * 11.f;
@@ -310,4 +387,23 @@ void CItem::In_Inventory()
 void CItem::Free()
 {
 	Engine::CGameObject::Free();
+}
+
+void CItem::Set_Stop(_vec3* vDir, _float fDirSpeed)
+{
+	m_iSpeedWeight = 1;
+	_vec3 vCheckPos{};
+	m_pTransformCom->Get_Info(INFO_POS, &vCheckPos);
+
+	// 미래의 캐릭터 중점 좌표
+	vCheckPos += *vDir * fDirSpeed * 0.1f;
+
+	// 미래 중점 좌표 기준 인덱스 값
+	_int iIndex = _int(vCheckPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (vCheckPos.x + 0.5f * VTXITV);
+	if (0 <= iIndex && iIndex < VTXCNTX * VTXCNTZ)
+		if (dynamic_cast<CTerrain*>(m_pTerrain)->Get_UnreachableByIndex(iIndex))
+		{
+			m_iSpeedWeight = 0;
+			m_bProjectileAttackSuccess = true;
+		}
 }

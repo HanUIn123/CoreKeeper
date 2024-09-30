@@ -1,15 +1,7 @@
 #pragma once
 #include "Item.h"
 
-BEGIN(Engine)
-
-class CRcTex;
-class CTransform;
-class CTexture;
-class CCollider;
-class CShadowTex;
-
-END
+class CArrow;
 
 class CBow : public CItem
 {
@@ -25,6 +17,12 @@ public:
 
 private:
 	HRESULT			Add_Component();
+
+private:
+	wstring			m_strArrow;
+	CArrow*			m_pArrow;
+	CTransform*		m_pTransformArrow;
+	_bool			m_bShot;
 
 public:
 	static CBow* Create(LPDIRECT3DDEVICE9 pGraphicDev, MATERIAL _eMaterial = MATERIAL_END, _vec3 vPos = { 0.f, 0.f, 0.f });
