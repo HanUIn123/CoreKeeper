@@ -746,6 +746,8 @@ void CPlayer::Set_UI()
 	if (Engine::Key_Down(DIK_M))
 	{
 		Set_Map();
+
+		//CRenderer::GetInstance()->Expand_MiniMap();
 	}
 	if (Engine::Key_Down(DIK_TAB))
 	{

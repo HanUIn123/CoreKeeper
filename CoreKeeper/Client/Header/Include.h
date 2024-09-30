@@ -66,5 +66,5 @@
 
 // Map 
 #include "MiniMapFrame.h"
-#include "WorldMap.h"
+//#include "WorldMap.h"
 #include "MiniObject.h"
