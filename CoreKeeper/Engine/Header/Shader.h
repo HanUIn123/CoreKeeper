@@ -1,12 +1,5 @@
 #pragma once
 #include "Component.h"
-#include "../Client/Header/Item.h"
-
-BEGIN(Client)
-
-class CItem;
-
-END
 
 BEGIN(Engine)
 

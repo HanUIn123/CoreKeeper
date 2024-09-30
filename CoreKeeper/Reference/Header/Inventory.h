@@ -2,12 +2,6 @@
 #include "Component.h"
 #include "../Client/Header/Item.h"
 
-BEGIN(Client)
-
-class CItem;
-
-END
-
 BEGIN(Engine)
 
 class ENGINE_DLL CInventory : public CComponent

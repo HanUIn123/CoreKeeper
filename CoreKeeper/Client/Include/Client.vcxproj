@@ -150,6 +150,9 @@ call Copy.bat</Command>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\Header\MiniMapFrame.h" />
+    <ClInclude Include="..\Header\MiniObject.h" />
+    <ClInclude Include="..\Header\CraftMgr.h" />
     <ClInclude Include="..\Header\Skeleton.h" />
     <ClInclude Include="..\Header\BackGround.h" />
     <ClInclude Include="..\Header\Bag.h" />
@@ -253,6 +256,7 @@ call Copy.bat</Command>
     <ClInclude Include="..\Header\Wall.h" />
     <ClInclude Include="..\Header\Ore.h" />
     <ClInclude Include="..\Header\Wood.h" />
+    <ClInclude Include="..\Header\WorldMap.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="imconfig.h" />
@@ -269,6 +273,9 @@ call Copy.bat</Command>
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Code\MiniMapFrame.cpp" />
+    <ClCompile Include="..\Code\MiniObject.cpp" />
+    <ClCompile Include="..\Code\CraftMgr.cpp" />
     <ClCompile Include="..\Code\Skeleton.cpp" />
     <ClCompile Include="..\Code\BackGround.cpp" />
     <ClCompile Include="..\Code\Bag.cpp" />
@@ -369,6 +376,7 @@ call Copy.bat</Command>
     <ClCompile Include="..\Code\Wall.cpp" />
     <ClCompile Include="..\Code\Ore.cpp" />
     <ClCompile Include="..\Code\Wood.cpp" />
+    <ClCompile Include="..\Code\WorldMap.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="imgui.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>

@@ -47,8 +47,8 @@ void CTerrain::Render_GameObject()
 			int idx = i * (VTXCNTX - 1) + j;
 
 			// 임시 확인용.
-			if (m_vecUnreachable[idx])
-				continue;
+			//if (m_vecUnreachable[idx])
+			//	continue;
 
 			auto texture = m_pTextureCom->Get_Texture(m_vecTextureNumber[idx]);
 			m_pGraphicDev->SetTexture(0, texture);

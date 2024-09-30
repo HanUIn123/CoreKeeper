@@ -63,6 +63,12 @@
 #include "UIStatusFrame.h"
 #include "UIItemFrame.h"
 #include "UIBuff.h"
+
+// Map 
+#include "MiniMapFrame.h"
+#include "WorldMap.h"
+#include "MiniObject.h"
+#include "UIBuff.h"
 #include "UIChestInv.h"
 #include "UIStatue.h"
 #include "UIJemSlot.h"

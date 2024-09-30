@@ -18,10 +18,13 @@ CStage::CStage(LPDIRECT3DDEVICE9 pGraphicDev)
 
 CStage::~CStage()
 {
+	CCraftMgr::DestroyInstance();
 }
 
 HRESULT CStage::Ready_Scene()
 {
+	CCraftMgr::GetInstance()->Ready_Craft(m_pGraphicDev);
+
 	//FAILED_CHECK_RETURN(Ready_LightInfo(), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Layer_Environment"), E_FAIL);
 
@@ -114,6 +117,10 @@ HRESULT CStage::Ready_Layer_Environment(const _tchar* pLayerTag)
 
 	Engine::CGameObject* pGameObject = nullptr;
 
+	pGameObject = CSkyBox::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"SkyBox", pGameObject), E_FAIL);
+
 	_vec3 eye(0.f, 10.f, -10.f);
 	_vec3 at(0.f, 0.f, 1.f);
 	_vec3 up(0.f, 1.f, 0.f);
@@ -127,9 +134,6 @@ HRESULT CStage::Ready_Layer_Environment(const _tchar* pLayerTag)
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"DynamicCamera", pGameObject), E_FAIL);
 
 
-	pGameObject = CSkyBox::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"SkyBox", pGameObject), E_FAIL);
 
 	m_pTerrainObject = CTerrain::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(m_pTerrainObject, E_FAIL);
@@ -555,6 +559,18 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_DeBuff0", pGameObject), E_FAIL);
 
+	pGameObject = CMiniMapFrame::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"MiniFrame", pGameObject), E_FAIL);
+
+	pGameObject = CWorldMap::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"WorldMap", pGameObject), E_FAIL);
+
+	pGameObject = CMiniObject::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"MiniPlayer", pGameObject), E_FAIL);
+
 	vPos = { WINCX / 2.f, 200.f };
 	vSize = { 150.f, 130.f };
 
@@ -583,19 +599,19 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
 
 HRESULT CStage::Ready_Layer_MiniMap(const _tchar* pLayerTag)
 {
-	Engine::CLayer* pLayer = CLayer::Create();
-	NULL_CHECK_RETURN(pLayer, E_FAIL);
+	//Engine::CLayer* pLayer = CLayer::Create();
+	//NULL_CHECK_RETURN(pLayer, E_FAIL);
 
-	_vec3 miniMapEye = { 0.f, 20.f, 0.f };  
-	_vec3 miniMapAt = { 0.f, 0.f, 0.f };     
-	_vec3 miniMapUp = { 0.f, 0.f, 1.f };     
+	//_vec3 miniMapEye = { 0.f, 20.f, 0.f };  
+	//_vec3 miniMapAt = { 0.f, 0.f, 0.f };     
+	//_vec3 miniMapUp = { 0.f, 0.f, 1.f };     
 
-	m_pMiniMapCamera = CMiniMapCamera::Create(m_pGraphicDev, &miniMapEye, &miniMapAt, &miniMapUp);
-	NULL_CHECK_RETURN(m_pMiniMapCamera, E_FAIL);
+	//m_pMiniMapCamera = CMiniMapCamera::Create(m_pGraphicDev, &miniMapEye, &miniMapAt, &miniMapUp);
+	//NULL_CHECK_RETURN(m_pMiniMapCamera, E_FAIL);
 
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"MiniMapCamera", m_pMiniMapCamera), E_FAIL);
+	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"MiniMapCamera", m_pMiniMapCamera), E_FAIL);
 
-	m_mapLayer.insert({ pLayerTag, pLayer });
+	//m_mapLayer.insert({ pLayerTag, pLayer });
 
 	return S_OK;
 }

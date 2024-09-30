@@ -5,7 +5,7 @@
 #include "..\Header\UICursor.h"
 
 CDynamicCamera::CDynamicCamera(LPDIRECT3DDEVICE9 pGraphicDev)
-	: CCamera(pGraphicDev), m_bFix(false)
+	: CCamera(pGraphicDev), m_bFix(false), m_bIsWorldMap(false)
 {
 }
 
@@ -32,8 +32,8 @@ HRESULT CDynamicCamera::Ready_GameObject(const _vec3* pEye, const _vec3* pAt, co
 
 _int CDynamicCamera::Update_GameObject(const _float& fTimeDelta)
 {
-	
 	_int iExit = CCamera::Update_GameObject(fTimeDelta);
+
 
 	return iExit;
 }
@@ -57,7 +57,43 @@ void CDynamicCamera::LateUpdate_GameObject()
 			m_vEye = vPlayerPos;
 			m_vEye.y = 12.f;
 		}
-		else
+		 if (m_bIsWorldMap)
+		{
+			pPlayerTransform->Set_Angle(0, 0, 0);
+
+			_vec3 vPlayerPos;
+			pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
+
+			m_vAt = { 128.5f, 0, 128.5f };
+			vPlayerPos.z -= 0.01f;
+			m_vEye = { 128.5f, 350.0f, 128.499f };
+
+			_long dwMouseWheel = Engine::Get_DIMouseMove(DIMS_Z);
+
+			if (dwMouseWheel > 0)
+			{
+				Zoom_In();
+			}
+			else if (dwMouseWheel < 0)
+			{
+				Zoom_Out();
+			}
+		}
+		//else if (!m_bIsWorldMap)
+		//{
+		//	pPlayerTransform->Set_Angle(0, 0, 0);
+
+		//	_vec3 vPlayerPos;
+		//	pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
+
+		//	m_vAt = vPlayerPos;
+		//	m_vAt.y = 0.f;
+		//	vPlayerPos.z -= 10.f;
+		//	m_vEye = vPlayerPos;
+		//	m_vEye.y = 12.f;
+		//}
+		
+		if(!g_bIsTopCamera)
 		{
 			Mouse_Fix();
 			Mouse_Move();
@@ -90,15 +126,31 @@ void CDynamicCamera::Free()
 
 void CDynamicCamera::Key_Input()
 {
-	if (Engine::Key_Down(DIK_C)) // 잠시 변경 하겠습니다 (TAB->LALT)
+	if (!m_bIsWorldMap)
 	{
-		g_bIsTopCamera = g_bIsTopCamera ? false : true;
-		m_bFix = !g_bIsTopCamera;
+		if (Engine::Key_Down(DIK_C)) // 잠시 변경 하겠습니다 (TAB->LALT)
+		{
+			g_bIsTopCamera = g_bIsTopCamera ? false : true;
+			m_bFix = !g_bIsTopCamera;
 
-		CUICursor* pCursor = dynamic_cast<CUICursor*>(Engine::Get_GameObject(L"Layer_UI", L"UI_Cursor"));
+			CUICursor* pCursor = dynamic_cast<CUICursor*>(Engine::Get_GameObject(L"Layer_UI", L"UI_Cursor"));
 
-		pCursor->Set_Cursor_Disable();
+			pCursor->Set_Cursor_Disable();
+		}
 	}
+
+	if (g_bIsTopCamera)
+	{
+		if (Engine::Key_Down(DIK_N))
+		{
+			m_bIsWorldMap = m_bIsWorldMap ? false : true;
+
+			m_fFov = D3DXToRadian(60.f);
+
+			//g_bIsTopCamera = g_bIsTopCamera ? false : true;
+		}
+	}
+
 }
 
 void CDynamicCamera::Mouse_Move()
@@ -135,4 +187,27 @@ void CDynamicCamera::Mouse_Fix()
 	ClientToScreen(g_hWnd, &ptMouse);
 	SetCursorPos(ptMouse.x, ptMouse.y);
 
+}
+
+void CDynamicCamera::Zoom_In()
+{
+	if (m_fFov > D3DXToRadian(10.0f))
+	{
+		m_fFov -= D3DXToRadian(5.0f);
+
+		D3DXMatrixPerspectiveFovLH(&m_matProj, m_fFov, m_fAspect, m_fNear, m_fFar);
+		m_pGraphicDev->SetTransform(D3DTS_PROJECTION, &m_matProj);
+	}
+}
+
+void CDynamicCamera::Zoom_Out()
+{
+
+	if (m_fFov < D3DXToRadian(60.0f))
+	{
+		m_fFov += D3DXToRadian(5.0f);
+
+		D3DXMatrixPerspectiveFovLH(&m_matProj, m_fFov, m_fAspect, m_fNear, m_fFar);
+		m_pGraphicDev->SetTransform(D3DTS_PROJECTION, &m_matProj);
+	}
 }

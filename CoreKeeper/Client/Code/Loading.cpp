@@ -111,6 +111,7 @@ _uint CLoading::Loading_Stage()
 
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TerrainTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/MapTerrain/Terrain_%d.png", TEX_NORMAL, 18)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SkyBox", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/SkyBox/burger%d.dds", TEX_CUBE, 4)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_DarkBox", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/SkyBox/DarkSky.dds", TEX_CUBE, 1)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_WallCube", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Wall/Wall_%d.dds", TEX_CUBE, 3)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_DarkWallCube", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/DarkWall/Brick_Cube_%d.dds", TEX_CUBE, 15)), E_FAIL);
 
@@ -209,6 +210,12 @@ _uint CLoading::Loading_Stage()
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UIItemFrame", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/128x128_itemui_border_0.png", TEX_NORMAL)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UIBuffSlot", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/Buff_Slot_%d.png", TEX_NORMAL, 2)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Buff", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/buff_debuff_icons.png", TEX_NORMAL)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MapFrame", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Map/minimapframe.png", TEX_NORMAL)), E_FAIL);
+
+    // Mini Ui Texture
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MiniPlayer", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/MiniUI/MiniPlayer.png", TEX_NORMAL)), E_FAIL);
+
+
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UIStatue", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/UI_Statue_Craft_%d.png", TEX_NORMAL, 4)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UIChestSort", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/Chest_Sort_%d.png", TEX_NORMAL, 2)), E_FAIL);
  
