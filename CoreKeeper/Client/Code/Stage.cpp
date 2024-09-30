@@ -346,12 +346,20 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UIPlayerStats", pGameObject), E_FAIL);
 
-	vPos = { 470.f, 225.f };
-	vSize = { 120.f, 120.f };
+	vPos = { 470.f, 255.f };
+	vSize = { 120.f, 90.f };
 
-	pGameObject = CUIPlayerCraft::Create(m_pGraphicDev, vPos, vSize);
+	pGameObject = CUICraft::Create(m_pGraphicDev, vPos, vSize, true);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UIPlayerCraft", pGameObject), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UILeftCraft", pGameObject), E_FAIL);
+
+
+	vPos = { 470.f, 255.f };
+	vSize = { 120.f, 90.f };
+
+	pGameObject = CUICraft::Create(m_pGraphicDev, vPos, vSize, false);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UIRightCraft", pGameObject), E_FAIL);
 
 	for (int i = 0; i < 4; i++)
 	{

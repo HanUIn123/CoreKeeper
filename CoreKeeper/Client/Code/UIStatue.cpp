@@ -4,7 +4,7 @@
 #include "Export_Utility.h"
 
 CUIStatue::CUIStatue(LPDIRECT3DDEVICE9 pGraphicDev)
-	: Engine::CGameObject(pGraphicDev), m_bWindow(false), m_eType(STATUE_GHORM)
+	: Engine::CGameObject(pGraphicDev), m_bWindow(false), m_iType(0)
 
 {
 }
@@ -58,14 +58,14 @@ void CUIStatue::Render_GameObject()
 {	
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
 
-	m_pTextureCom->Set_Texture(m_eType);
+	m_pTextureCom->Set_Texture(m_iType);
 
 	m_pBufferCom->Render_Buffer();
 }
 
-void CUIStatue::Set_Window(STATUE_TYPE _eType)
+void CUIStatue::Set_Window(_int StatueNum)
 {
-	m_eType = _eType;
+	m_iType = StatueNum;
 
 	if (m_bWindow)
 		m_bWindow = false;

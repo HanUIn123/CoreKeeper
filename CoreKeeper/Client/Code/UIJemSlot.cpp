@@ -63,7 +63,7 @@ _int CUIJemSlot::Update_GameObject(const _float& fTimeDelta)
 				_int i = pStatue->Get_StatueType();
 
 				if (i == 3 && eNum == ITEM_MAL_CORE)
-					pStatue->Set_eType(CUIStatue::STATUE_MALUGAZ);
+					pStatue->Set_eType(2);
 			}
 		}
 		else
@@ -81,11 +81,16 @@ void CUIJemSlot::LateUpdate_GameObject()
 
 void CUIJemSlot::Render_GameObject()
 {
-	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
+	_matrix matWorld;
 
-	//m_pTextureCom->Set_Texture();
+	m_pTransformCom->Get_WorldMatrix(&matWorld);
 
-	//m_pBufferCom->Render_Buffer();
+	if (m_iIndex == 1)
+	{
+		matWorld._42 -= 17.f;
+	}
+
+	m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
 
 	if (m_bCollapse)
 	{
@@ -104,25 +109,13 @@ HRESULT CUIJemSlot::Add_Component()
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Buffer", pComponent });
 
-	/*
-	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_UITrashSlot"));
-	NULL_CHECK_RETURN(pComponent, E_FAIL);
-	m_mapComponent[ID_STATIC].insert({ L"Com_Texture", pComponent });
-	*/
 	pComponent = m_pTransformCom = dynamic_cast<CTransform*>(Engine::Clone_Proto(L"Proto_Transform"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_DYNAMIC].insert({ L"Com_UITransform", pComponent });
 	
-
 	pComponent = m_pColTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_UIInvSelected"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_ColTexture", pComponent });
-
-	/*
-	pComponent = m_pArrowTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_UITrashCan"));
-	NULL_CHECK_RETURN(pComponent, E_FAIL);
-	m_mapComponent[ID_STATIC].insert({ L"Com_ArrowTexture", pComponent });
-	*/
 
 	return S_OK;
 }

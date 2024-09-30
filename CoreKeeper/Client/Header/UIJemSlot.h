@@ -31,11 +31,13 @@ public:
 		return  ::PtInRect(&m_BRect, _screenPos);
 	}
 
-	void            Set_Window() {
+	void            Set_Window(_int _iIndex) {
 		if (m_bWindow)
 			m_bWindow = false;
 		else
 			m_bWindow = true;
+
+		m_iIndex = _iIndex;
 	}
 
 private:
@@ -50,7 +52,7 @@ private:
 	_bool m_bCollapse;
 	_bool m_bFirst;
 
-	CItem* m_pItem;
+	_int m_iIndex;
 
 private:
 	Engine::CRcTex* m_pBufferCom;

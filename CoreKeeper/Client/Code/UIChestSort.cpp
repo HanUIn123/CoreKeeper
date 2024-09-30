@@ -8,7 +8,6 @@ CUIChestSort::CUIChestSort(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CGameObject(pGraphicDev), m_bCollapse(false), m_bFirst(false), m_bWindow(false), m_iIndex(0), m_bPushed(false)
 
 {
-	m_wstring = L"AheadGrave";
 }
 
 CUIChestSort::~CUIChestSort()
@@ -56,10 +55,8 @@ _int CUIChestSort::Update_GameObject(const _float& fTimeDelta)
 			if (Engine::Button_Down(DIM_LB))
 			{
 				m_bPushed = true;
-
-				CInventory* pInventory = dynamic_cast<CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_Environment", m_wstring.c_str() , L"Com_Inventory"));
 			
-				//pInventory->Sort_Item(); //아이템 추가
+				//m_pInventory->Sort_Item(); //아이템 추가
 			}
 			else if (Button_Up(DIM_LB))
 			{

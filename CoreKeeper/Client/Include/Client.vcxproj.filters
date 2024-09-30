@@ -106,9 +106,6 @@
     <Filter Include="02. GameObject\07. UI\00. UIPlayerStatus\01. PlayerStat">
       <UniqueIdentifier>{3ce9803a-08b8-47b4-8cc7-658d01c6f615}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\07. UI\06. PlayerCraft">
-      <UniqueIdentifier>{06a7d7b5-241f-4a7b-b257-c37509900efa}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\01. Player\00. Eyes">
       <UniqueIdentifier>{4a833dcc-9966-4821-99a8-4deb21a37bc8}</UniqueIdentifier>
     </Filter>
@@ -123,9 +120,6 @@
     </Filter>
     <Filter Include="02. GameObject\01. Player\01. Shirt">
       <UniqueIdentifier>{9c4f8f9c-26aa-4930-a6e2-aed8b4b12133}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\07. UI\06. PlayerCraft\00. UICraftSlot">
-      <UniqueIdentifier>{803ba04b-3425-4fed-a62c-359d9a488e36}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameObject\06. Item\04. Bag">
       <UniqueIdentifier>{3c75d086-ee82-45e4-9ea6-447afd10e5b0}</UniqueIdentifier>
@@ -364,6 +358,12 @@
     <Filter Include="02. GameObject\07. UI\11. UIChestInv\00. UIChestSort">
       <UniqueIdentifier>{e767b36e-abe6-42eb-a00f-5e7f6e0610da}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\07. UI\06. UICraft">
+      <UniqueIdentifier>{06a7d7b5-241f-4a7b-b257-c37509900efa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\07. UI\06. UICraft\00. UICraftSlot">
+      <UniqueIdentifier>{803ba04b-3425-4fed-a62c-359d9a488e36}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -483,8 +483,8 @@
     <ClInclude Include="..\Header\UIPlayerStats.h">
       <Filter>02. GameObject\07. UI\00. UIPlayerStatus\01. PlayerStat</Filter>
     </ClInclude>
-    <ClInclude Include="..\Header\UIPlayerCraft.h">
-      <Filter>02. GameObject\07. UI\06. PlayerCraft</Filter>
+    <ClInclude Include="..\Header\UICraft.h">
+      <Filter>02. GameObject\07. UI\06. UICraft</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\Wall.h">
       <Filter>02. GameObject\94.Wall</Filter>
@@ -505,7 +505,7 @@
       <Filter>02. GameObject\01. Player\02. Pants</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\UICraftSlot.h">
-      <Filter>02. GameObject\07. UI\06. PlayerCraft\00. UICraftSlot</Filter>
+      <Filter>02. GameObject\07. UI\06. UICraft\00. UICraftSlot</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\Sword.h">
       <Filter>02. GameObject\06. Item\01. Weapon\00. Sword</Filter>
@@ -821,9 +821,6 @@
     <ClCompile Include="..\Code\UIPlayerStats.cpp">
       <Filter>02. GameObject\07. UI\00. UIPlayerStatus\01. PlayerStat</Filter>
     </ClCompile>
-    <ClCompile Include="..\Code\UIPlayerCraft.cpp">
-      <Filter>02. GameObject\07. UI\06. PlayerCraft</Filter>
-    </ClCompile>
     <ClCompile Include="..\Code\Wall.cpp">
       <Filter>02. GameObject\94.Wall</Filter>
     </ClCompile>
@@ -843,7 +840,7 @@
       <Filter>02. GameObject\01. Player\02. Pants</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\UICraftSlot.cpp">
-      <Filter>02. GameObject\07. UI\06. PlayerCraft\00. UICraftSlot</Filter>
+      <Filter>02. GameObject\07. UI\06. UICraft\00. UICraftSlot</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\Sword.cpp">
       <Filter>02. GameObject\06. Item\01. Weapon\00. Sword</Filter>
@@ -1048,6 +1045,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\UIChestSort.cpp">
       <Filter>02. GameObject\07. UI\11. UIChestInv\00. UIChestSort</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\UICraft.cpp">
+      <Filter>02. GameObject\07. UI\06. UICraft</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -14,9 +14,6 @@ END
 
 class CUIStatue : public Engine::CGameObject
 {
-public:
-	enum STATUE_TYPE {STATUE_GHORM, STATUE_GLURCH, STATUE_MALUGAZ, STATUE_MALUGAZ_EMPTY };
-
 private:
 	explicit CUIStatue(LPDIRECT3DDEVICE9 pGraphicDev);
 	virtual ~CUIStatue();
@@ -28,9 +25,9 @@ public:
 	virtual			void			Render_GameObject();
 
 public:
-	void            Set_Window(STATUE_TYPE eType);
-	STATUE_TYPE     Get_StatueType() { return m_eType; }
-	void            Set_eType(STATUE_TYPE eType) { m_eType == eType; }
+	void            Set_Window(_int StatueNum);
+	_int            Get_StatueType() { return m_iType; }
+	void            Set_eType(_int _iType) { m_iType = _iType; }
 
 private:
 	HRESULT			Add_Component();
@@ -41,7 +38,7 @@ private:
 
 	RECT m_bRect;
 
-	STATUE_TYPE m_eType;
+	_int m_iType;
 private:
 	Engine::CRcTex* m_pBufferCom;
 	Engine::CTransform* m_pTransformCom;

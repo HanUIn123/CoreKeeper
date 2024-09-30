@@ -8,6 +8,8 @@ BEGIN(Engine)
 class CRcTex;
 class CTransform;
 class CTexture;
+class CInventory;
+
 END
 
 class CUIChestSort : public Engine::CGameObject
@@ -27,14 +29,14 @@ public:
 		return  ::PtInRect(&m_BRect, _screenPos);
 	}
 
-	void            Set_Window(wstring _wCheststring) {
+	void            Set_Window(CInventory* pInventory = nullptr) {
 		if (m_bWindow)
 			m_bWindow = false;
 		else
 		{
 			m_bWindow = true;
 
-			m_wstring = _wCheststring;
+			m_pInventory = pInventory;
 		}
 	}
 
@@ -53,7 +55,7 @@ private:
 	_bool m_bFirst;
 	_bool m_bPushed;
 
-	wstring m_wstring;
+	CInventory* m_pInventory;
 
 private:
 	Engine::CRcTex* m_pBufferCom;

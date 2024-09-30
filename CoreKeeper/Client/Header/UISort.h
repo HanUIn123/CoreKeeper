@@ -8,6 +8,8 @@ BEGIN(Engine)
 class CRcTex;
 class CTransform;
 class CTexture;
+class CInventory;
+
 END
 
 class CUISort : public Engine::CGameObject
@@ -36,7 +38,7 @@ public:
 			m_bWindow = true;
 	}
 
-	void            Set_String(wstring _wstring) { m_wstring = _wstring; }
+	void            Set_Inventory(CInventory* _pInventory) { pChestInv = _pInventory; }
 
 private:
 	HRESULT			Add_Component();
@@ -55,7 +57,7 @@ private:
 
 	INVENTORY_TYPE m_eType;
 
-	wstring m_wstring;
+	CInventory* pChestInv;
 
 private:
 	Engine::CRcTex* m_pBufferCom;

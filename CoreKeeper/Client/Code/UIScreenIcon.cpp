@@ -10,7 +10,7 @@
 #include "..\Header\UIItemSlot.h"
 #include "..\Header\UIPlayerStatus.h"
 #include "..\Header\UIPlayerStats.h"
-#include "..\Header\UIPlayerCraft.h"
+#include "..\Header\UICraft.h"
 #include "..\Header\UICursor.h"
 
 CUIScreenIcon::CUIScreenIcon(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -95,13 +95,7 @@ _int CUIScreenIcon::Update_GameObject(const _float& fTimeDelta)
 			}
 			else if (m_iIndex == ICON_HAND && m_bExit)
 			{
-				pPlayer->Set_Inventory();
-				pPlayer->Set_Craft();
-				pPlayer->Set_Status();
-
-				//pPlayer->Set_InvWindow();
-				//pPlayer->Set_CraftWindow();
-				//pPlayer->Set_MapWindow();
+				pPlayer->UI_Disable();
 
 				m_bExit = false;
 			}
@@ -235,7 +229,7 @@ void CUIScreenIcon::Set_Map()
 
 void CUIScreenIcon::Set_Craft()
 {
-	CUIPlayerCraft* pCraft = dynamic_cast<CUIPlayerCraft*>(Engine::Get_GameObject(L"Layer_UI", L"UIPlayerCraft"));
+	CUICraft* pCraft = dynamic_cast<CUICraft*>(Engine::Get_GameObject(L"Layer_UI", L"UIPlayerCraft"));
 	pCraft->Set_Window();
 
 }

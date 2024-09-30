@@ -106,6 +106,11 @@ void CUIStatueCraft::Render_GameObject()
 
 	m_pTransformCom->Get_WorldMatrix(&matWorld);
 
+	if (m_iIndex == 1)
+	{
+		matWorld._42 -= 8.f;
+	}
+
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
 
 	if (m_bCollapse)

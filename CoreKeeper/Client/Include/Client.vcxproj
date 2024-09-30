@@ -240,7 +240,7 @@ call Copy.bat</Command>
     <ClInclude Include="..\Header\UIInvPlate.h" />
     <ClInclude Include="..\Header\UIItemFrame.h" />
     <ClInclude Include="..\Header\UIItemSlot.h" />
-    <ClInclude Include="..\Header\UIPlayerCraft.h" />
+    <ClInclude Include="..\Header\UICraft.h" />
     <ClInclude Include="..\Header\UIPlayerStats.h" />
     <ClInclude Include="..\Header\UISort.h" />
     <ClInclude Include="..\Header\UIStatusBar.h" />
@@ -300,6 +300,7 @@ call Copy.bat</Command>
     <ClCompile Include="..\Code\Table.cpp" />
     <ClCompile Include="..\Code\UIChestSort.cpp" />
     <ClCompile Include="..\Code\UIJemSlot.cpp" />
+    <ClCompile Include="..\Code\UICraft.cpp" />
     <ClCompile Include="..\Code\UIStatue.cpp" />
     <ClCompile Include="..\Code\UIStatueCraft.cpp" />
     <ClCompile Include="..\Code\WallPiece.cpp" />
@@ -356,7 +357,6 @@ call Copy.bat</Command>
     <ClCompile Include="..\Code\UIInvPlate.cpp" />
     <ClCompile Include="..\Code\UIItemFrame.cpp" />
     <ClCompile Include="..\Code\UIItemSlot.cpp" />
-    <ClCompile Include="..\Code\UIPlayerCraft.cpp" />
     <ClCompile Include="..\Code\UIPlayerStats.cpp" />
     <ClCompile Include="..\Code\UISort.cpp" />
     <ClCompile Include="..\Code\UIStatusBar.cpp" />

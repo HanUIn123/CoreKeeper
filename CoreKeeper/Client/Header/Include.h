@@ -54,7 +54,7 @@
 #include "UIInventory.h"
 #include "UIItemSlot.h"
 #include "UIPlayerStats.h"
-#include "UIPlayerCraft.h"
+#include "UICraft.h"
 #include "UICraftSlot.h"
 #include "UITrashCan.h"
 #include "UITrashSlot.h"

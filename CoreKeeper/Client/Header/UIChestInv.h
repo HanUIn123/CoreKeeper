@@ -33,13 +33,15 @@ public:
 
 	void            Set_CurInv(_int _iCurInv) { m_iCurInv = _iCurInv; }
 
-	void            Set_CurChestInv(CInventory* _pInventory);
-
-	void            Set_Show() {
+	void            Set_Show(CInventory* _pInventory) {
 		if (m_bShow)
 			m_bShow = false;
 		else
+		{
 			m_bShow = true;
+
+			m_pChestInv = _pInventory;
+		}
 	}
 private:
 	HRESULT			Add_Component();

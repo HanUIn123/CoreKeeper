@@ -8,7 +8,7 @@ CUISort::CUISort(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CGameObject(pGraphicDev), m_bCollapse(false), m_bFirst(false), m_bWindow(false), m_iIndex(0), m_bPushed(false)
 
 {
-	m_wstring = L"AheadGrave";
+	pChestInv = nullptr;
 }
 
 CUISort::~CUISort()
@@ -60,7 +60,6 @@ _int CUISort::Update_GameObject(const _float& fTimeDelta)
 				m_bPushed = true;
 
 				CInventory* pInv = nullptr;
-
 				switch (m_eType)
 				{
 				case TYPE_PLAYER:
@@ -70,9 +69,8 @@ _int CUISort::Update_GameObject(const _float& fTimeDelta)
 					break;
 
 				case TYPE_CHEST:
-					pInv = dynamic_cast<Engine::CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_Environment", m_wstring.c_str(), L"Com_Inventory"));
-
-					pInv->Sort_ChestItem();
+					if(pChestInv)
+						pChestInv->Sort_ChestItem();
 					break;
 
 				}
@@ -138,12 +136,7 @@ HRESULT CUISort::Add_Component()
 	pComponent = m_pColTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_UIInvSelected"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_ColTexture", pComponent });
-
-	/*
-	pComponent = m_pSlotTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_UISilhouette"));
-	NULL_CHECK_RETURN(pComponent, E_FAIL);
-	m_mapComponent[ID_STATIC].insert({ L"Com_SlotTexture", pComponent });
-	*/
+	
 	return S_OK;
 }
 

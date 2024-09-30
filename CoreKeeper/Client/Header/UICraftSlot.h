@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "Define.h"
 #include "..\Header\Item.h"
+#include "..\Header\UICraft.h"
 
 BEGIN(Engine)
 
@@ -34,11 +35,15 @@ public:
 		return  ::PtInRect(&m_BRect, _screenPos);
 	}
 
-	void            Set_Window() {
+	void            Set_Window(CUICraft::TABLETYPE _eTableType = CUICraft::TABLE_PLAYER) {
 		if (m_bWindow)
 			m_bWindow = false;
 		else
+		{
 			m_bWindow = true;
+
+			m_eTableType = _eTableType;
+		}
 	}
 
 private:
@@ -62,6 +67,8 @@ private:
 
 	UICRAFTITEM m_eSlotType;
 	ITEMNUM     m_eItemType[3];
+
+	CUICraft::TABLETYPE m_eTableType;
 
 private:
 	Engine::CAnimTex* m_pSlotBufferCom;

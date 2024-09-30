@@ -2,6 +2,7 @@
 #include "../Header/TableObject.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
+#include "..\Header\Player.h"
 
 CTableObject::CTableObject(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CObject(pGraphicDev), m_eMaterial(MATERIAL_END), m_iTextureNum(0)
@@ -26,6 +27,11 @@ HRESULT CTableObject::Ready_GameObject(_vec3 vPos, MATERIAL _eMaterial)
 
 _int CTableObject::Update_GameObject(const _float& fTimeDelta)
 {
+	if (Check_Interaction())
+	{
+		Interaction();
+	}
+
 	Add_RenderGroup(RENDER_ALPHA, this);
 
 	return Engine::CGameObject::Update_GameObject(fTimeDelta);
@@ -53,6 +59,16 @@ void CTableObject::Render_GameObject()
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
+void CTableObject::Interaction()
+{
+	if (Engine::Key_Down(DIK_E))
+	{
+		CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
+
+		pPlayer->Set_Craft();
+	}
+}
+
 HRESULT CTableObject::Add_Component()
 {
 	CComponent* pComponent = NULL;
@@ -72,6 +88,10 @@ HRESULT CTableObject::Add_Component()
 	pComponent = m_pCalculCom = dynamic_cast<CCalculator*>(Engine::Clone_Proto(L"Proto_Calculator"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Calculator", pComponent });
+
+	pComponent = m_pColliderCom = dynamic_cast<CColliderCube*>(Engine::Clone_Proto(L"Proto_NormalCubeCollider"));
+	NULL_CHECK_RETURN(pComponent, E_FAIL);
+	m_mapComponent[ID_STATIC].insert({ L"Com_Collider", pComponent });
 
 	return S_OK;
 }

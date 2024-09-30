@@ -231,11 +231,6 @@ void CUIChestInv::Render_GameObject()
 	}
 }
 
-void CUIChestInv::Set_CurChestInv(CInventory* _pInventory)
-{
-	m_pChestInv = _pInventory;
-}
-
 HRESULT CUIChestInv::Add_Component()
 {
 	CComponent* pComponent = NULL;

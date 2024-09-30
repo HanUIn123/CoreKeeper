@@ -6,7 +6,7 @@
 #include "..\Header\Sword.h"
 #include "..\Header\Terrain.h"
 
-#include "..\Header\UIPlayerCraft.h" // UI 헤더 추가
+#include "..\Header\UICraft.h" // UI 헤더 추가
 #include "..\Header\UIScreenIcon.h"
 #include "..\Header\UIScreenInv.h"
 #include "..\Header\UIInventory.h"
@@ -759,7 +759,10 @@ void CPlayer::Set_UI()
 	}
 	if (Engine::Key_Down(DIK_TAB))
 	{
-		if (!m_bMap && !m_bChestInventory)
+		if (m_bMap || m_bChestInventory || m_bCraft || m_bInventory || m_bStatue || m_bStatue)
+			UI_Disable();
+
+		else if (!m_bMap && !m_bChestInventory)
 		{
 			Set_Inventory();
 			Set_Craft();
@@ -767,44 +770,9 @@ void CPlayer::Set_UI()
 		}
 	}
 	
-	if (Engine::Key_Down(DIK_E))
+	if(m_bInventory && (Engine::Key_Down(DIK_E)))
 	{
-		if (!m_bCraft && !m_bStatus && !m_bMap && !m_bStatue)
-		{
-			Set_ChestInventory();
-			Set_Inventory();
-		}
-		if (m_bInventory && !m_bChestInventory && !m_bStatue)
-		{
-			Set_Inventory();
-
-			m_bInventory = false;
-		}
-
-		if (m_bCraft)
-		{
-			Set_Craft();
-
-			m_bCraft = false;
-		}
-		if (m_bStatus)
-		{
-			Set_Status();
-		}
-
-		if (m_bMap)
-		{
-			Set_Map();
-			
-			m_bMap = false;
-		}
-
-		if (m_bStatue)
-		{
-			Set_Statue();
-
-			m_bStatue = false;
-		}
+		UI_Disable();
 	}
 
 	if (Engine::Key_Down(DIK_O))
@@ -817,7 +785,7 @@ void CPlayer::Set_UI()
 
 		pDeBuff->Set_Window(CUIBuff::DEBUFF_BURN, CUIBuff::DEBUFF, 100.f);
 		
-		Set_Statue();
+		//Set_Statue();
 	}
 }
 
@@ -847,7 +815,7 @@ void CPlayer::Set_MapWindow()
 
 void CPlayer::Set_Craft()
 {
-	CUIPlayerCraft* pCraft = dynamic_cast<CUIPlayerCraft*>(Engine::Get_GameObject(L"Layer_UI", L"UIPlayerCraft"));
+	CUICraft* pCraft = dynamic_cast<CUICraft*>(Engine::Get_GameObject(L"Layer_UI", L"UILeftCraft"));
 	pCraft->Set_Window();
 
 
@@ -951,10 +919,9 @@ void CPlayer::Set_Status()
 		m_bStatus = true;
 }
 
-void CPlayer::Set_ChestInventory()
+void CPlayer::Set_ChestInventory(CInventory* pInventory)
 {
-	CInventory* pInventory = dynamic_cast<CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_Environment", L"AheadGrave", L"Com_Inventory"));
-
+	
 	for (int i = 0; i < 18; ++i)
 	{
 		wstring string;
@@ -963,17 +930,18 @@ void CPlayer::Set_ChestInventory()
 
 		CUIChestInv* pChestInventory = dynamic_cast<CUIChestInv*>(Engine::Get_GameObject(L"Layer_UI", string.c_str()));
 
-		pChestInventory->Set_Show();
-
-		pChestInventory->Set_CurChestInv(pInventory);
+		pChestInventory->Set_Show(pInventory);
 	}
 
 	CUISort* pSort = dynamic_cast<CUISort*>(Engine::Get_GameObject(L"Layer_UI", L"UI_ChestSort"));
 
 	pSort->Set_Window();
+	pSort->Set_Inventory(pInventory);
 
 	CUIChestSort* pChestSort = dynamic_cast<CUIChestSort*>(Engine::Get_GameObject(L"Layer_UI", L"UI_ChestAddItem"));
-	pChestSort->Set_Window(L"AheadGrave");
+	pChestSort->Set_Window(pInventory);
+
+	Set_Inventory();
 
 	if (m_bChestInventory)
 		m_bChestInventory = false;
@@ -981,15 +949,15 @@ void CPlayer::Set_ChestInventory()
 		m_bChestInventory = true;
 }
 
-void CPlayer::Set_Statue()
+void CPlayer::Set_Statue(_int _StatueNum)
 {
 	CUIStatue* pStatue = dynamic_cast<CUIStatue*>(Engine::Get_GameObject(L"Layer_UI", L"UI_Statue"));
 
-	pStatue->Set_Window(CUIStatue::STATUE_GHORM);
+	pStatue->Set_Window(_StatueNum);
 
 	CUIJemSlot* pSlot = dynamic_cast<CUIJemSlot*>(Engine::Get_GameObject(L"Layer_UI", L"UI_JemSlot"));
 
-	pSlot->Set_Window();
+	pSlot->Set_Window(_StatueNum);
 
 	CUIStatueCraft* pSCraft = dynamic_cast<CUIStatueCraft*>(Engine::Get_GameObject(L"Layer_UI", L"UI_StatueCraft"));
 
@@ -1001,6 +969,46 @@ void CPlayer::Set_Statue()
 		m_bStatue = false;
 	else
 		m_bStatue = true;
+}
+
+void CPlayer::UI_Disable()
+{
+	if (m_bInventory && !m_bChestInventory && !m_bStatue)
+	{
+		Set_Inventory();
+
+		m_bInventory = false;
+	}
+
+	if (m_bCraft)
+	{
+		Set_Craft();
+
+		m_bCraft = false;
+	}
+	if (m_bStatus)
+	{
+		Set_Status();
+	}
+
+	if (m_bMap)
+	{
+		Set_Map();
+
+		m_bMap = false;
+	}
+
+	if (m_bStatue)
+	{
+		Set_Statue();
+
+		m_bStatue = false;
+	}
+
+	if (m_bChestInventory)
+	{
+		Set_ChestInventory();
+	}
 }
 
 void CPlayer::Particle_Update(_float fTimeDelta)
