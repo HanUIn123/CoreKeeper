@@ -70,7 +70,7 @@ _int CUISort::Update_GameObject(const _float& fTimeDelta)
 
 				case TYPE_CHEST:
 					if(pChestInv)
-						pChestInv->Sort_ChestItem();
+						pChestInv->Sort_Item(0);
 					break;
 
 				}

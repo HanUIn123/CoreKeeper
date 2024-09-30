@@ -244,12 +244,6 @@
     <Filter Include="02. GameObject\06. Item\06. Installation\07. Gravestone">
       <UniqueIdentifier>{6de48782-7493-4f29-bb1b-c08ba1d279a2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\10. Object\10. Skeleton">
-      <UniqueIdentifier>{92ea1f39-6cf1-4c93-8b8c-68dc0a0097cd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\10. Object\08. Gravestone">
-      <UniqueIdentifier>{1450c493-c791-4b23-a8c2-82adb86e2550}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\06. Item\99. Etc\02. Potion">
       <UniqueIdentifier>{cc2ed0f0-938f-44d2-8140-a41033ca8ec7}</UniqueIdentifier>
     </Filter>
@@ -327,8 +321,8 @@
     </Filter>
     <Filter Include="02. GameObject\07. UI\06. UICraft\00. UICraftSlot">
       <UniqueIdentifier>{803ba04b-3425-4fed-a62c-359d9a488e36}</UniqueIdentifier>
-	</Filter>
-	<Filter Include="02. GameObject\97.Map">
+    </Filter>
+    <Filter Include="02. GameObject\97.Map">
       <UniqueIdentifier>{681cea35-2838-437b-a7a7-52a7d680be86}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameObject\97.Map\00.WorldMap">
@@ -444,6 +438,9 @@
     </Filter>
     <Filter Include="03. Manager\00. CraftMgr">
       <UniqueIdentifier>{51fe876e-9cef-431f-8961-b5abe0eacb68}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\07. UI\06. UICraft\01. UICraftButton">
+      <UniqueIdentifier>{f727a696-a3c8-48e4-94d0-34284aeef83a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -810,6 +807,9 @@
     <ClInclude Include="..\Header\UIChestSort.h">
       <Filter>02. GameObject\07. UI\11. UIChestInv\00. UIChestSort</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\UICraftButton.h">
+      <Filter>02. GameObject\07. UI\06. UICraft\01. UICraftButton</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1153,6 +1153,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\UICraft.cpp">
       <Filter>02. GameObject\07. UI\06. UICraft</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\UICraftButton.cpp">
+      <Filter>02. GameObject\07. UI\06. UICraft\01. UICraftButton</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

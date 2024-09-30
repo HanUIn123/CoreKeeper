@@ -13,15 +13,14 @@ private:
 public:
 	HRESULT				Ready_Inventory(int _iSlotCount);
 
-	void				Sort_Item();
-	void                Sort_ChestItem();
+	void				Sort_Item(_int i = 10);
 	bool				Add_Item(CItem* _pItem);
 	bool				Minus_Item(ITEMNUM _eItemNum, int _iCount);
 
 	void				Swap_Item(CItem** _ppItem1, CItem** _ppItem2);
 	void				Remove_Item(int _iIndex);
 	bool				Enough_Item(ITEMNUM _eItemNum, int _iCount);
-
+	void				Put_Same_Item(CInventory* _playerInventory, CInventory* _chestInventory);
 
 	CItem*				Get_HandedItem(_int iHandNum);
 	bool				Check_Empty(_int iIndex);

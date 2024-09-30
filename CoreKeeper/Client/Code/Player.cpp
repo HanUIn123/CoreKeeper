@@ -813,27 +813,44 @@ void CPlayer::Set_MapWindow()
 		m_bMap = true;
 }
 
-void CPlayer::Set_Craft(TABLETYPE eTableType)
+void CPlayer::Set_Craft(TABLETYPE eTableType, MATERIAL _eMaterial)
 {
-	CUICraft* pCraft = dynamic_cast<CUICraft*>(Engine::Get_GameObject(L"Layer_UI", L"UILeftCraft"));
-	pCraft->Set_Window();
-
-	for (int i = 0; i < 6; i++)
-	{
-		wstring string;
-
-		string = L"UICraftLSlot_" + std::to_wstring(i);
-
-		CUICraftSlot* pSlot = dynamic_cast<CUICraftSlot*>(Engine::Get_GameObject(L"Layer_UI", string.c_str()));
-
-		pSlot->Set_Window(eTableType, true);
-	}
-
-
 	if (m_bCraft)
+	{
+		CUICraft* pCraft = dynamic_cast<CUICraft*>(Engine::Get_GameObject(L"Layer_UI", L"UILeftCraft"));
+		pCraft->Set_Window(eTableType, _eMaterial);
+
+		for (int i = 0; i < 6; i++)
+		{
+			wstring string;
+
+			string = L"UICraftLSlot_" + std::to_wstring(i);
+
+			CUICraftSlot* pSlot = dynamic_cast<CUICraftSlot*>(Engine::Get_GameObject(L"Layer_UI", string.c_str()));
+
+			pSlot->Set_DisableWindow();
+		}
+
 		m_bCraft = false;
+	}
 	else
+	{
+		CUICraft* pCraft = dynamic_cast<CUICraft*>(Engine::Get_GameObject(L"Layer_UI", L"UILeftCraft"));
+		pCraft->Set_Window(eTableType, _eMaterial);
+
+		for (int i = 0; i < 6; i++)
+		{
+			wstring string;
+
+			string = L"UICraftLSlot_" + std::to_wstring(i);
+
+			CUICraftSlot* pSlot = dynamic_cast<CUICraftSlot*>(Engine::Get_GameObject(L"Layer_UI", string.c_str()));
+
+			pSlot->Set_Window(eTableType, _eMaterial, true);
+		}
+
 		m_bCraft = true;
+	}
 }
 
 void CPlayer::Set_Inventory()

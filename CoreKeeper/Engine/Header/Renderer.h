@@ -28,6 +28,7 @@ private:
 	void            Render_Window(LPDIRECT3DDEVICE9& pGraphicDev);
 	void			Render_MiniMap(LPDIRECT3DDEVICE9& pGraphicDev);
 	void			Render_WorldMap(LPDIRECT3DDEVICE9& pGraphicDev);
+	void            Render_Subordinate(LPDIRECT3DDEVICE9& pGraphicDev);
 
 private:
 	list<CGameObject*>			m_RenderGroup[RENDER_END];

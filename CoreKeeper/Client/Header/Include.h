@@ -64,6 +64,7 @@
 #include "UIStatusFrame.h"
 #include "UIItemFrame.h"
 #include "UIBuff.h"
+#include "UICraftButton.h"
 
 // Map 
 #include "MiniMapFrame.h"

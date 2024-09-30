@@ -190,6 +190,16 @@ void CUICraftSlot::Render_GameObject()
 
 	m_pTransformCom->Get_WorldMatrix(&matWorld);
 
+	if (m_bDirection == true)
+	{
+		switch (m_eTableType)
+		{
+		case TABLE_CRAFT:
+			matWorld._41 += 48.f;
+			break;
+		}
+	}
+
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
 
 	m_pTextureCom->Set_Texture();
@@ -227,6 +237,9 @@ void CUICraftSlot::Render_GameObject()
 
 	}*/
 	
+	matWorld._11 -= 3.f;
+	matWorld._22 -= 3.f;
+
 	if (!m_bEnough)
 	{
 		m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
@@ -241,7 +254,7 @@ void CUICraftSlot::Render_GameObject()
 		m_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 		m_pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 
-		m_pItemTextureCom->Set_Texture(m_iIndex);
+		m_pItemTextureCom->Set_Texture(m_eItemType.iTextureNum);
 
 		m_pBufferCom->Render_Buffer();
 
@@ -255,7 +268,7 @@ void CUICraftSlot::Render_GameObject()
 	{
 		m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
 
-		m_pItemTextureCom->Set_Texture(m_iIndex);
+		m_pItemTextureCom->Set_Texture(m_eItemType.iTextureNum);
 
 		m_pBufferCom->Render_Buffer();
 	}
@@ -272,15 +285,46 @@ void CUICraftSlot::Render_GameObject()
 	}
 }
 
-void CUICraftSlot::Set_Window(TABLETYPE _eTableType, _bool _bDirection)
+void CUICraftSlot::Set_Window(TABLETYPE _eTableType, MATERIAL _eMaterial, _bool _bDirection)
 {
 	if (m_bWindow)
 		m_bWindow = false;
-	else
+	else if (!m_bWindow)
 	{
 		m_bWindow = true;
 
 		auto iter = mapItemType.find({ _eTableType, _bDirection });
+
+		if (iter != mapItemType.end() && iter->second.eItemMat != _eMaterial)
+		{
+			map<pair<TABLETYPE, _bool>, UIITEM>::iterator seconditer = mapItemType.find({ _eTableType, _bDirection });
+
+			for (; seconditer != mapItemType.end(); seconditer++)
+			{
+				if (seconditer->second.eItemMat == _eMaterial)
+					break;
+			}
+
+			if (seconditer == mapItemType.end())
+			{
+				m_bWindow = false;
+
+				return;
+			}
+
+			m_eItemType = seconditer->second;
+		}
+		else
+		{
+			if (iter == mapItemType.end())
+			{
+				m_bWindow = false;
+
+				return;
+			}
+
+			m_eItemType = iter->second;
+		}
 
 		if (iter == mapItemType.end())
 		{
@@ -289,7 +333,21 @@ void CUICraftSlot::Set_Window(TABLETYPE _eTableType, _bool _bDirection)
 			return;
 		}
 
-		m_eItemType = iter->second;
+		m_eTableType = _eTableType;
+
+		m_eMatrial = _eMaterial;
+
+		if (_bDirection == true)
+		{
+			switch (_eTableType)
+			{
+			case TABLE_CRAFT:
+				m_BRect.left += 48.f;
+				m_BRect.right += 48.f;
+
+				break;
+			}
+		}
 	}
 }
 
@@ -299,38 +357,81 @@ void CUICraftSlot::Ready_Table()
 	{
 	case 0:
 	{
-		UIITEM TORCH = { m_iIndex, ITEM_TORCH };
+		//謝難
+
+		UIITEM TORCH = { m_iIndex, ITEM_TORCH, MATERIAL_WOOD, 0 };
 		mapItemType.insert({ make_pair(TABLE_PLAYER, TRUE), TORCH });
 
-		UIITEM WOODSWORD = { m_iIndex, ITEM_SWORD, MATERIAL_WOOD };
-		mapItemType.insert({ make_pair(TABLE_CRAFT, TRUE), TORCH });
+		UIITEM WOODSWORD = { m_iIndex, ITEM_SWORD, MATERIAL_WOOD, 4 };
+		mapItemType.insert({ make_pair(TABLE_CRAFT, TRUE), WOODSWORD });
 
-		UIITEM COPPERPICKAXE = { m_iIndex, ITEM_PICKAXE, MATERIAL_COPPER };
+		UIITEM COPPERPICKAXE = { m_iIndex, ITEM_PICKAXE, MATERIAL_COPPER, 13 };
+
 		mapItemType.insert({ make_pair(TABLE_CRAFT, TRUE), COPPERPICKAXE });
+
+		// 辦難
+
+		UIITEM FURNACE = { m_iIndex, ITEM_PICKAXE, MATERIAL_WOOD, 10 };
+		mapItemType.insert({ make_pair(TABLE_CRAFT, FALSE), FURNACE });
 
 		break;
 	}
 	case 1:
 	{
-		UIITEM WOODPICKAXE = { m_iIndex, ITEM_PICKAXE, MATERIAL_WOOD };
+		//謝難
+		UIITEM WOODPICKAXE = { m_iIndex, ITEM_PICKAXE, MATERIAL_WOOD, 1 };
 		mapItemType.insert({ make_pair(TABLE_PLAYER, TRUE), WOODPICKAXE });
 
-		UIITEM WOODHOE = { m_iIndex, ITEM_HOE, MATERIAL_WOOD };
-		mapItemType.insert({ make_pair(TABLE_CRAFT, TRUE), WOODPICKAXE });
+		UIITEM WOODHOE = { m_iIndex, ITEM_HOE, MATERIAL_WOOD , 5};
+		mapItemType.insert({ make_pair(TABLE_CRAFT, TRUE), WOODHOE });
+
+		// 辦難
+
+		UIITEM COOKINGPOT = { m_iIndex, ITEM_COOKINGPOT, MATERIAL_WOOD, 11 };
+		mapItemType.insert({ make_pair(TABLE_CRAFT, FALSE), COOKINGPOT });
 
 		break;
 	}
 	case 2:
 	{
-		UIITEM BASICCRAFTTABLE = { m_iIndex, ITEM_TABLE };
+		//謝難
+
+		UIITEM BASICCRAFTTABLE = { m_iIndex, ITEM_TABLE, MATERIAL_WOOD, 2 };
 		mapItemType.insert({ make_pair(TABLE_PLAYER, TRUE), BASICCRAFTTABLE });
+
+		UIITEM WATERINGCAN= { m_iIndex, ITEM_TABLE, MATERIAL_WOOD, 6 };
+		mapItemType.insert({ make_pair(TABLE_CRAFT, TRUE), WATERINGCAN });
+
+		// 辦難
+
+		UIITEM ANIMALTABLE = { m_iIndex, ITME_ANIMAL_TABLE, MATERIAL_WOOD, 12 };
+		mapItemType.insert({ make_pair(TABLE_CRAFT, FALSE), ANIMALTABLE });
 
 		break;
 	}
 	case 3:
 	{
-		UIITEM CHEST = { m_iIndex, ITEM_CHEST };
+		//謝難
+
+		UIITEM CHEST = { m_iIndex, ITEM_CHEST, MATERIAL_WOOD, 3 };
 		mapItemType.insert({ make_pair(TABLE_PLAYER, TRUE), CHEST });
+
+		UIITEM WOODHELMET = { m_iIndex, ITEM_HELMET, MATERIAL_WOOD, 7 };
+		mapItemType.insert({ make_pair(TABLE_CRAFT, TRUE), WOODHELMET });
+
+		break;
+	}
+	case 4:
+	{
+		UIITEM WOODCHEST = { m_iIndex, ITEM_CHEST , MATERIAL_WOOD, 8 };
+		mapItemType.insert({ make_pair(TABLE_CRAFT, TRUE), WOODCHEST });
+
+		break;
+	}
+	case 5:
+	{
+		UIITEM WOODLEG = { m_iIndex, ITEM_LEG, MATERIAL_WOOD, 9 };
+		mapItemType.insert({ make_pair(TABLE_CRAFT, TRUE), WOODLEG });
 
 		break;
 	}

@@ -25,16 +25,7 @@ public:
 	virtual			void			Render_GameObject();
 
 public:
-	void            Set_Window(TABLETYPE _eType = TABLE_PLAYER) {
-		if (m_bWindow)
-			m_bWindow = false;
-		else
-		{
-			m_bWindow = true;
-
-			m_eTableType = _eType;
-		}
-	}
+	void            Set_Window(TABLETYPE _eType = TABLE_PLAYER, MATERIAL _eMaterial = MATERIAL_WOOD);
 
 private:
     _int            Check_Index();

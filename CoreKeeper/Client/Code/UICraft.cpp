@@ -2,6 +2,7 @@
 #include "..\Header\UICraft.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
+#include "..\Header\UICraftButton.h"
 
 CUICraft::CUICraft(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CGameObject(pGraphicDev), m_bWindow(false), m_eTableType(TABLE_PLAYER)
@@ -63,7 +64,7 @@ void CUICraft::Render_GameObject()
 	{
 		m_pTextureCom->Set_Texture(1);
 
-		matWorld._11 += 20.f;
+		matWorld._11 += 30.f;
 	    matWorld._41 += 20.f;
 	}
 	else
@@ -84,6 +85,33 @@ void CUICraft::Render_GameObject()
 	m_pTitleTextureCom->Set_Texture(iIndex);
 
 	m_pTitleBufferCom->Render_Buffer();
+}
+
+void CUICraft::Set_Window(TABLETYPE _eType, MATERIAL _eMaterial)
+{
+	if (m_bWindow)
+	{
+		CUICraftButton* pButton = dynamic_cast<CUICraftButton*>(Engine::Get_GameObject(L"Layer_UI", L"UI_CraftButton"));
+
+		pButton->Set_DisableWindow();
+
+		m_bWindow = false;
+	}
+	else
+	{
+		m_bWindow = true;
+
+		m_eTableType = _eType;
+
+		eTableMaterial = _eMaterial;
+
+		if (_eType == TABLE_CRAFT || _eType == TABLE_ANVIL)
+		{
+			CUICraftButton* pButton = dynamic_cast<CUICraftButton*>(Engine::Get_GameObject(L"Layer_UI", L"UI_CraftButton"));
+
+			pButton->Set_Window(_eType, _eMaterial);
+		}
+	}
 }
 
 _int CUICraft::Check_Index()

@@ -210,8 +210,9 @@ _uint CLoading::Loading_Stage()
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UIBuffSlot", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/Buff_Slot_%d.png", TEX_NORMAL, 2)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Buff", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/buff_debuff_icons.png", TEX_NORMAL)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MapFrame", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Map/minimapframe.png", TEX_NORMAL)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UITable", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/Table/Table_%d.png", TEX_NORMAL, 3)), E_FAIL);
 
-    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UIPlayerCraftItem", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/Craft_Item/Craft_Item_%d.png", TEX_NORMAL, 13)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UIPlayerCraftItem", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/Craft_Item/Craft_Item_%d.png", TEX_NORMAL, 14)), E_FAIL);
 
     // Mini Ui Texture
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MiniPlayer", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/MiniUI/MiniPlayer.png", TEX_NORMAL)), E_FAIL);

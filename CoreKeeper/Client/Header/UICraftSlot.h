@@ -28,7 +28,7 @@ public:
 
 		MATERIAL  eItemMat = MATERIAL_WOOD;
 
-		_int      iTextureNum;
+		_int      iTextureNum = 0;
 	};
 
 private:
@@ -46,8 +46,11 @@ public:
 		return  ::PtInRect(&m_BRect, _screenPos);
 	}
 
-	void            Set_Window(TABLETYPE _eTableType = TABLE_PLAYER, _bool _bDirection = true);
-
+	void            Set_Window(TABLETYPE _eTableType = TABLE_PLAYER, MATERIAL _eMaterial = MATERIAL_WOOD, _bool _bDirection = true);
+	void            Set_DisableWindow()
+	{
+		m_bWindow = false;
+	}
 	void            Ready_Table();
 
 private:
@@ -73,7 +76,9 @@ private:
 
 	_bool       m_bDirection;
 
-	map<pair<TABLETYPE, _bool>, UIITEM> mapItemType;
+	MATERIAL    m_eMatrial;
+
+	multimap<pair<TABLETYPE, _bool>, UIITEM> mapItemType;
 
 private:
 	Engine::CAnimTex* m_pSlotBufferCom;

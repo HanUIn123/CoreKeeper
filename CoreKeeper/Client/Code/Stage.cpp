@@ -167,6 +167,10 @@ HRESULT CStage::Ready_Layer_Environment(const _tchar* pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"WoodCraftTable", pGameObject), E_FAIL);
 
+	pGameObject = CTableObject::Create(m_pGraphicDev, { 100.f, 0.5f, 130.5f }, MATERIAL_COPPER);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"CopperCraftTable", pGameObject), E_FAIL);
+
 	pGameObject = CSkeleton::Create(m_pGraphicDev, { 124.f, 0.5f, 130.5f });
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Skeleton", pGameObject), E_FAIL);
@@ -500,11 +504,6 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
 		FAILED_CHECK_RETURN(pLayer->Add_GameObject(m_ChestInvstring[i].c_str(), pGameObject), E_FAIL);
 	}
 
-
-	pGameObject = CUICursor::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Cursor", pGameObject), E_FAIL)
-
 	vPos = { 675.f, 398.f };
 	vSize = { 325.f, 40.f };
 
@@ -613,6 +612,18 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
 	pGameObject = CUIStatueCraft::Create(m_pGraphicDev, vPos, vSize);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_StatueCraft", pGameObject), E_FAIL);
+
+	vPos = { 376.f , 260.f };
+	vSize = { 16.f, 16.f };
+
+	pGameObject = CUICraftButton::Create(m_pGraphicDev, vPos, vSize);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_CraftButton", pGameObject), E_FAIL);
+
+
+	pGameObject = CUICursor::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Cursor", pGameObject), E_FAIL)
 
 	m_mapLayer.insert({ pLayerTag , pLayer });
 
