@@ -375,7 +375,6 @@
     </Filter>
     <Filter Include="03. Manager\00. CraftMgr">
       <UniqueIdentifier>{51fe876e-9cef-431f-8961-b5abe0eacb68}</UniqueIdentifier>
->>>>>>> origin/main
     </Filter>
   </ItemGroup>
   <ItemGroup>
