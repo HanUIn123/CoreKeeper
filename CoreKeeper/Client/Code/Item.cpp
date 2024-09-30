@@ -279,7 +279,16 @@ void CItem::Shoot(PROJECTILETYPE _type)
 			}
 		}
 		else
-			m_pAnimatorCom->Set_CurState(SHOOT, 15, 18, 5);
+		{
+			m_pAnimatorCom->Set_CurState(SHOOT, 15, 18, 2);
+			if (m_pAnimatorCom->Get_MotionEnd())
+			{
+				m_iFrameCount = 0;
+				m_iAttackAnimProgress = 0;
+				m_bShoot = false;
+				m_bFired = false;
+			}
+		}
 		
 
 		if (m_pAnimatorCom->Get_MotionIndex() % 5 == 1)

@@ -127,7 +127,6 @@ protected:
 	wstring m_wItemExplain[30];
 	wstring m_wItemMetrial;
 
-	vector<wstring>			m_vecProjectileName;
 	_vec3					m_vProjectileDir;
 	_bool					m_bProjectileAttackSuccess;
 	CTerrain*				m_pTerrain;

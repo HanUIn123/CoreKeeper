@@ -243,8 +243,11 @@ void CShaman::Pattern_Idle(const _float& fTimeDelta)
         }
         else if (m_iDir)
         {
+            _int iWeight = 1;
+            if (m_eDir == LEFT)
+                iWeight = -1;
             m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, fLookSpeed * m_iSpeedWeight);
-            m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, fRightSpeed * m_iSpeedWeight);
+            m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, fRightSpeed * iWeight * m_iSpeedWeight);
         }
     }
     else
