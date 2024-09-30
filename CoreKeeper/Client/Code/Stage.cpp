@@ -289,6 +289,17 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar* pLayerTag)
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Wood6", pGameObject), E_FAIL);
 	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
 
+	pGameObject = CWood::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Wood7", pGameObject), E_FAIL);
+	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
+
+	pGameObject = CWood::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Wood8", pGameObject), E_FAIL);
+	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
+
+
 	pGameObject = CHelmet::Create(m_pGraphicDev, MATERIAL_COPPER);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Helmet", pGameObject), E_FAIL);
