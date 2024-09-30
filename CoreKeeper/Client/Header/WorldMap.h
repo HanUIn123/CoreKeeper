@@ -41,6 +41,7 @@ public:
 
 private:
 	_bool							m_bShowMap;
+	_bool							m_bIsKeyPressed;
 private:
 	_float							m_fX, m_fY, m_fSizeX, m_fSizeY;
 	_matrix							m_ViewMatrix, m_ProjMatrix;

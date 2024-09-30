@@ -8,6 +8,7 @@
 CWorldMap::CWorldMap(LPDIRECT3DDEVICE9 pGraphicDev)
     :Engine::CGameObject(pGraphicDev)
     , m_bShowMap(false)
+    , m_bIsKeyPressed(false)
 {
     m_WorldMapMainViewPort.X = 0;
     m_WorldMapMainViewPort.Y = 0;
@@ -51,11 +52,26 @@ _int CWorldMap::Update_GameObject(const _float& fTimeDelta)
             m_bShowMap = false;
         }
     }
+    CTerrain* pTerrain = dynamic_cast<CTerrain*>(Engine::Get_GameObject(L"Layer_Environment", L"Terrain"));
+
+    if (Engine::Get_DIKeyState(DIK_N) & 0x80)
+    {
+        if (!m_bIsKeyPressed)
+        {
+            m_bShowMap = !m_bShowMap;
+            m_bIsKeyPressed = true;
+        }
+    }
+    else
+    {
+        m_bIsKeyPressed = false;
+    }
 
     if (m_bShowMap)
     {
         m_pGraphicDev->SetViewport(&m_WorldMapViewPort);
 
+        CDynamicCamera* pDynamicCamera = dynamic_cast<CDynamicCamera*>(Engine::Get_GameObject(L"Layer_Environment", L"DynamicCamera"));
         if (pDynamicCamera)
         {
             // 카메라 줌비율 가져와서, WorldMapFrame의 비율도 그만큼 줄여버리기(늘리기).
