@@ -4,6 +4,7 @@
 // 게임오브젝트 개수가 많아지면서 인클루드가 너무 길어져서
 // 인클루드 헤더를 따로 만들었습니다.
 #include "Include.h"
+#include "CraftMgr.h"
 
 #include "MapToolTerrain.h"
 #include "../Header/MiniMapCamera.h"
