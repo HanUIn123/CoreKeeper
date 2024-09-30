@@ -60,7 +60,7 @@ void CObject::Interaction()
 {
 	if (Engine::Key_Down(DIK_E))
 	{
-		// UI 열리게 하는 걸 여기에 하면 됨
+
 	}
 }
 
