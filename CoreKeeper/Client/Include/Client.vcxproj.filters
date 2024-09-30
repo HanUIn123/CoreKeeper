@@ -441,6 +441,12 @@
     </Filter>
     <Filter Include="02. GameObject\07. UI\06. UICraft\01. UICraftButton">
       <UniqueIdentifier>{f727a696-a3c8-48e4-94d0-34284aeef83a}</UniqueIdentifier>
+	</Filter>
+    <Filter Include="02. GameObject\06. Item\01. Weapon\01. Bow\Arrow">
+      <UniqueIdentifier>{15122301-100c-42fa-b901-0c0b078176ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\01. Weapon\02. Staff\Magic">
+      <UniqueIdentifier>{02bdfade-6c0d-40cc-8a17-8926fbfb8c34}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -809,6 +815,9 @@
     </ClInclude>
     <ClInclude Include="..\Header\UICraftButton.h">
       <Filter>02. GameObject\07. UI\06. UICraft\01. UICraftButton</Filter>
+	</ClInclude>
+    <ClInclude Include="..\Header\Arrow.h">
+      <Filter>02. GameObject\06. Item\01. Weapon\01. Bow\Arrow</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1156,6 +1165,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\UICraftButton.cpp">
       <Filter>02. GameObject\07. UI\06. UICraft\01. UICraftButton</Filter>
+	</ClCompile>
+    <ClCompile Include="..\Code\Arrow.cpp">
+      <Filter>02. GameObject\06. Item\01. Weapon\01. Bow\Arrow</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

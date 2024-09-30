@@ -18,7 +18,7 @@ public:
 	void			Render_GameObject(LPDIRECT3DDEVICE9& pGraphicDev);
 	void			Clear_RenderGroup();
 	void            Delete_Renderer(RENDERID _eType, CGameObject* pGameObject);
-
+	void			Expand_MiniMap();
 private:
 	void			Render_Priority(LPDIRECT3DDEVICE9& pGraphicDev);
 	void			Render_NonAlpha(LPDIRECT3DDEVICE9& pGraphicDev);

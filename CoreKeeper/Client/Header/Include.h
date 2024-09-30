@@ -23,6 +23,7 @@
 
 #include "Sword.h"
 #include "Bow.h"
+#include "Arrow.h"
 #include "Staff.h"
 
 #include "Helmet.h"
@@ -65,14 +66,16 @@
 #include "UIItemFrame.h"
 #include "UIBuff.h"
 #include "UICraftButton.h"
-
-// Map 
-#include "MiniMapFrame.h"
-#include "WorldMap.h"
-#include "MiniObject.h"
 #include "UIBuff.h"
 #include "UIChestInv.h"
 #include "UIStatue.h"
 #include "UIJemSlot.h"
 #include "UIStatueCraft.h"
 #include "UIChestSort.h"
+
+// Map 
+#include "MiniMapFrame.h"
+//#include "WorldMap.h"
+#include "MiniObject.h"
+#include "WorldMap.h"
+#include "MiniObject.h"

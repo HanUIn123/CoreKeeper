@@ -72,7 +72,7 @@ void CUICursor::LateUpdate_GameObject()
 {
 	if (!m_bDisable)
 	{
-		Add_RenderGroup(RENDER_SUBORDINATE, this);
+		Add_RenderGroup(RENDER_UI, this);
 	}
 
 	Engine::CGameObject::LateUpdate_GameObject();

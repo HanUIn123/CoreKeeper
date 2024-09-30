@@ -2,15 +2,15 @@
 #include "..\Header\Bow.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
+#include "..\Header\Arrow.h"
 
 CBow::CBow(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CItem(pGraphicDev)
 {
-	 
-
 	m_tStat.iAttack = 10;
-
 	m_eItemNum = ITEM_BOW;
+	m_bShot = false;
+	m_pArrow = nullptr;
 }
 
 CBow::~CBow()
@@ -42,6 +42,14 @@ HRESULT CBow::Ready_GameObject(MATERIAL _eMaterial, _vec3 vPos)
 
 _int CBow::Update_GameObject(const _float& fTimeDelta)
 {
+	if (!m_pArrow)
+	{
+		m_pArrow = dynamic_cast<CArrow*>(Get_GameObject(L"Layer_GameLogic", L"Arrow"));
+		m_pTransformArrow = dynamic_cast<CTransform*>(m_pArrow->Get_Component(ID_DYNAMIC, L"Com_Transform"));
+	}
+	else
+		m_pColliderCubeCom->Update_Collider(m_pTransformArrow->Get_WorldMatrix());
+	
 	m_pAnimatorCom->Update_Animation();
 
 	_vec3 vPos;
@@ -50,12 +58,38 @@ _int CBow::Update_GameObject(const _float& fTimeDelta)
 
 	if (m_bUse)
 	{
-		Swing(0, 5, 2);
-
+		// Swing(0, 5, 2);
+		Shoot(ARROW);
 		m_bActive = true;
 		m_bDrop = false;
-		m_pTransformCom->Set_Scale(1.5f, 1.5f, 1.5f);
+		if(m_eDir == LEFT)
+			m_pTransformCom->Set_Scale(-1.5f, 1.5f, 1.5f);
+		else
+			m_pTransformCom->Set_Scale(1.5f, 1.5f, 1.5f);
 	}
+	if (m_bProjectileAttackSuccess || m_pArrow->Get_ProjectileAttackSuccess())
+	{
+		m_pArrow->Set_ProjectileAttackSuccess(false);
+		m_bProjectileAttackSuccess = false;
+		m_bFired = false;
+		m_bShot = false;
+		m_pArrow->Set_Active(false);
+		m_pArrow->Get_Transform()->Set_Pos(vPos.x, -100.f, vPos.z);
+	}
+	if (m_bFired)
+	{
+		if (!m_bShot)
+		{
+			m_bShot = true;
+			m_pArrow->Set_Active(true);
+			m_pArrow->Set_Direction(m_eDir);
+			m_pArrow->Get_Transform()->Set_Pos(vPos.x, 0.5f, vPos.z);
+			m_pArrow->Set_TextureNumber((MATERIAL)(m_eMaterial + 1));
+			dynamic_cast<CArrow*>(m_pArrow)->Set_Dir(m_vProjectileDir);
+		}
+	}
+	
+
 
 	if (m_bDrop)
 	{
@@ -71,7 +105,6 @@ _int CBow::Update_GameObject(const _float& fTimeDelta)
 			In_Inventory();
 		}
 	}
-	
 	Add_RenderGroup(RENDER_ALPHA, this);
 
 	return Engine::CGameObject::Update_GameObject(fTimeDelta);
@@ -86,7 +119,6 @@ void CBow::Render_GameObject()
 {
 	// 카메라를 바라보게 하면서 스케일 유지
 	//CItem::Apply_Billboard();  
-
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
@@ -105,6 +137,7 @@ void CBow::Render_GameObject()
 	if (m_bActive)
 	{
 		m_pColliderCom->Render_Collider();
+		m_pColliderCubeCom->Render_Collider();
 	}
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pShadowTransformCom->Get_WorldMatrix());
@@ -138,6 +171,10 @@ HRESULT CBow::Add_Component()
 	pComponent = m_pColliderCom = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Proto_ItemCollider"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_DYNAMIC].insert({ L"Com_Collider", pComponent });
+
+	pComponent = m_pColliderCubeCom = dynamic_cast<CColliderCube*>(Engine::Clone_Proto(L"Proto_ShootCubeCollider"));
+	NULL_CHECK_RETURN(pComponent, E_FAIL);
+	m_mapComponent[ID_DYNAMIC].insert({ L"Com_ColliderCube", pComponent });
 
 	pComponent = m_pAnimatorCom = dynamic_cast<CAnimator*>(Engine::Clone_Proto(L"Proto_Animator"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);

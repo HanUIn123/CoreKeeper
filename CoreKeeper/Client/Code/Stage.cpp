@@ -250,6 +250,10 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar* pLayerTag)
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Bow1", pGameObject), E_FAIL);
 	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
 
+	pGameObject = CArrow::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Arrow", pGameObject), E_FAIL);
+
 	pGameObject = CStaff::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Staff1", pGameObject), E_FAIL);
@@ -584,13 +588,13 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"MiniFrame", pGameObject), E_FAIL);
 
-	pGameObject = CWorldMap::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"WorldMap", pGameObject), E_FAIL);
+	//pGameObject = CWorldMap::Create(m_pGraphicDev);
+	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"WorldMap", pGameObject), E_FAIL);
 
-	pGameObject = CMiniObject::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"MiniPlayer", pGameObject), E_FAIL);
+	//pGameObject = CMiniObject::Create(m_pGraphicDev);
+	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"MiniPlayer", pGameObject), E_FAIL);
 
 	vPos = { WINCX / 2.f, 200.f };
 	vSize = { 150.f, 130.f };

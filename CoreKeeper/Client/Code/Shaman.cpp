@@ -29,7 +29,6 @@ CShaman::CShaman(LPDIRECT3DDEVICE9 pGraphicDev)
     m_iLightNum = g_iLightNum++;
 
     m_iCurNumber = 0;
-    m_vecProjectileName.reserve(20);
 }
 
 CShaman::~CShaman()
@@ -46,7 +45,7 @@ HRESULT CShaman::Ready_GameObject(_vec3 vPos)
     m_pStateCom->Set_Stat(100, 0, 10, 0);
     m_vecDropItem.push_back(ITEM_STAFF);
     m_vecDropItem.push_back(ITEM_WOOD);
-    Set_Speed(2.f);
+    Set_Speed(1.5f);
     return S_OK;
 }
 
@@ -244,8 +243,11 @@ void CShaman::Pattern_Idle(const _float& fTimeDelta)
         }
         else if (m_iDir)
         {
+            _int iWeight = 1;
+            if (m_eDir == LEFT)
+                iWeight = -1;
             m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, fLookSpeed * m_iSpeedWeight);
-            m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, fRightSpeed * m_iSpeedWeight);
+            m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, fRightSpeed * iWeight * m_iSpeedWeight);
         }
     }
     else
@@ -328,7 +330,7 @@ void CShaman::Pattern_Chase(const _float& fTimeDelta)
         break;
     }
     Set_Stop(&vDir, m_fSpeed);
-    m_pTransformCom->Move_Pos(&vDir, fTimeDelta, m_fSpeed * m_fSpeedWeight * m_iSpeedWeight);
+    m_pTransformCom->Move_Pos(&vDir, fTimeDelta, m_fSpeed * m_iSpeedWeight);
 }
 
 // 투사체 생성해서 날리기

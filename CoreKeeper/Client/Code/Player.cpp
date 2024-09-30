@@ -32,7 +32,11 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	m_eState = STATE_END;
 	m_fSpeed = 5.f;
 	m_fDiagSpeed = sqrt(pow(m_fSpeed, 2) / 2);
+
 	m_bSwing = false;
+	m_bShoot = false;
+	m_fClickTime = 0.f;
+
 	m_fFirstY = 1.f;
 	m_fTimeAcc = 0.f;
 	m_fWalkYSpeed = 1.8f;
@@ -70,6 +74,9 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 
 	m_bBleed = false;
 	m_fBleedTime = 0.f;
+
+	m_bShootOnce = false;
+	m_vMouseWorldPos = { 0, 0, 0 };
 }
 
 CPlayer::~CPlayer()
@@ -93,6 +100,7 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 {
 	if (m_bNude)
 		Set_Clothes();
+	Set_MouseWorldPos();
 
 	KnockBack(fTimeDelta);
 	
@@ -102,15 +110,18 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 	Set_EquippedStatus();
 
 	if (!m_bNoMove && !m_bInventory && !m_bCraft && !m_bMap) // m_bNoMove -> UICursor에서 적용
-		Mouse_Click();
+		Mouse_Click(fTimeDelta);
 	else
+	{
 		m_bSwing = false;
+		m_bShoot = false;
+	}
 
 	if (m_bKnockBackEnd)
 	{
 		if (g_bIsTopCamera)
 		{
-			if (!m_bSwing)
+			if (!m_bSwing && !m_bShoot)
 			{
 				Key_Position(fTimeDelta);
 				Mouse_Direction();
@@ -119,7 +130,7 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 		}
 		else
 		{
-			if (!m_bSwing)
+			if (!m_bSwing && !m_bShoot)
 				ShoulderView_Control(fTimeDelta);
 			else
 				ShoulderView_Swing();
@@ -286,12 +297,22 @@ void CPlayer::Key_Position(const _float& fTimeDelta)
 	}
 }
 
-void CPlayer::Mouse_Click()
+void CPlayer::Mouse_Click(const _float& fTimeDelta)
 {
 	if (m_bSwing)
 	{
 		if (m_pAnimatorCom->Get_MotionEnd())
 			m_bSwing = false;
+	}
+	else if (m_bShoot)
+	{
+		m_fClickTime += fTimeDelta;
+		if (m_fClickTime > 0.5f || m_pAnimatorCom->Get_MotionEnd())
+		{
+			m_bShoot = false;
+			m_bShootOnce = false;
+			m_fClickTime = 0.f;
+		}
 	}
 	else
 	{
@@ -310,16 +331,18 @@ void CPlayer::Mouse_Click()
 					break;
 				case ITEM_BOW:
 				case ITEM_STAFF:
-					// 투사체 발사
+					m_eState = SHOOT;
+					m_bShoot = true;
+					Shoot_Equipment();
 					break;
-				//case ITEM_SEED:
-				//	// 농사
-				//	break;
+					//case ITEM_SEED:
+					//	// 농사
+					//	break;
 				default:
 					break;
 				}
 			}
-			
+
 		}
 	}
 }
@@ -410,6 +433,17 @@ void CPlayer::Animation_SetUp(STATE st, DIRECTION dir)
 				m_pAnimatorCom->Set_CurState(st, 40, 41, 5);
 			else
 				m_pAnimatorCom->Set_CurState(st, 37, 39, 3);
+		}
+		break;
+	case SHOOT:
+		if (m_pHandedItem)
+		{
+			if (m_eDir == FRONT)
+				m_pAnimatorCom->Set_CurState(st, 36, 36, 20);
+			else if (m_eDir == BACK)
+				m_pAnimatorCom->Set_CurState(st, 40, 41, 10);
+			else
+				m_pAnimatorCom->Set_CurState(st, 37, 39, 6);
 		}
 		break;
 	}
@@ -509,7 +543,12 @@ void CPlayer::ShoulderView_Control(const _float& fTimeDelta)
 void CPlayer::ShoulderView_Swing()
 {
 	if (m_pHandedItem)
-		m_pAnimatorCom->Set_CurState(SWING, 40, 41, 5);
+	{
+		if (m_bSwing)
+			m_pAnimatorCom->Set_CurState(SWING, 40, 41, 5);
+		else if (m_bShoot)
+			m_pAnimatorCom->Set_CurState(SWING, 40, 41, 10);
+	}
 }
 
 void CPlayer::Set_Stop(_vec3* vDir1, _float fDirSpeed1, _vec3* vDir2, _float fDirSpeed2)
@@ -549,6 +588,7 @@ void CPlayer::Show_Equipment()
 			(*iter)->Set_Active(false);
 		}
 	}
+	ZeroMemory(&m_tEquipmentStat, sizeof(STAT));
 	// 무기(손)
 	if (m_pHandedItem)
 	{
@@ -561,21 +601,43 @@ void CPlayer::Show_Equipment()
 
 		if (g_bIsTopCamera)
 		{
-			switch (m_eDir)
+			if (m_pHandedItem->Get_ItemNum() == ITEM_BOW)
 			{
-			case FRONT:
-				m_pHandedTransformCom->Set_Pos(vPlayerPos.x - 0.5f, 1.f, vPlayerPos.z - 0.2f);
-				break;
-			case RIGHT:
-				m_pHandedTransformCom->Set_Pos(vPlayerPos.x - 0.4f, 1.f, vPlayerPos.z - 0.2f);
-				break;
-			case BACK:
-				m_pHandedTransformCom->Set_Pos(vPlayerPos.x + 0.5f, 1.f, vPlayerPos.z + 0.2f);
-				break;
-			case LEFT:
-				m_pHandedTransformCom->Set_Pos(vPlayerPos.x + 0.4f, 1.f, vPlayerPos.z - 0.2f);
-				break;
+				switch (m_eDir)
+				{
+				case FRONT:
+					m_pHandedTransformCom->Set_Pos(vPlayerPos.x - 0.3f, 1.2f, vPlayerPos.z - 0.2f);
+					break;
+				case RIGHT:
+					m_pHandedTransformCom->Set_Pos(vPlayerPos.x - 0.2f, 1.2f, vPlayerPos.z - 0.2f);
+					break;
+				case BACK:
+					m_pHandedTransformCom->Set_Pos(vPlayerPos.x + 0.3f, 1.2f, vPlayerPos.z + 0.2f);
+					break;
+				case LEFT:
+					m_pHandedTransformCom->Set_Pos(vPlayerPos.x + 0.2f, 1.2f, vPlayerPos.z - 0.2f);
+					break;
+				}
 			}
+			else
+			{
+				switch (m_eDir)
+				{
+				case FRONT:
+					m_pHandedTransformCom->Set_Pos(vPlayerPos.x - 0.5f, 1.f, vPlayerPos.z - 0.2f);
+					break;
+				case RIGHT:
+					m_pHandedTransformCom->Set_Pos(vPlayerPos.x - 0.4f, 1.f, vPlayerPos.z - 0.2f);
+					break;
+				case BACK:
+					m_pHandedTransformCom->Set_Pos(vPlayerPos.x + 0.5f, 1.f, vPlayerPos.z + 0.2f);
+					break;
+				case LEFT:
+					m_pHandedTransformCom->Set_Pos(vPlayerPos.x + 0.4f, 1.f, vPlayerPos.z - 0.2f);
+					break;
+				}
+			}
+
 		}
 		else
 		{
@@ -605,7 +667,6 @@ void CPlayer::Show_Equipment()
 
 	// 방어구
 	CItem* pArmor;
-	ZeroMemory(&m_tEquipmentStat, sizeof(STAT));
 	for (_int i = 0; i < CUIItemSlot::SLOT_END; i++)
 	{
 		wstring	strObjectTag = L"UIItemSlot_";
@@ -698,6 +759,61 @@ void CPlayer::Swing_Equipment()
 		m_pHandedItem->Set_Swing(m_eDir, true);
 	}
 }
+void CPlayer::Shoot_Equipment()
+{
+	if (m_pHandedItem)
+	{
+		_vec3 vPlayerPos;
+		m_pTransformCom->Get_Info(INFO_POS, &vPlayerPos);
+		if (g_bIsTopCamera)
+		{
+			switch (m_eDir)
+			{
+			case FRONT:
+				m_pHandedTransformCom->Set_Pos(vPlayerPos.x, vPlayerPos.y, vPlayerPos.z - 0.4f);
+				break;
+			case RIGHT:
+				m_pHandedTransformCom->Set_Pos(vPlayerPos.x + 0.4f, vPlayerPos.y, vPlayerPos.z);
+				break;
+			case BACK:
+				m_pHandedTransformCom->Set_Pos(vPlayerPos.x + 0.4f, vPlayerPos.y, vPlayerPos.z + 0.4f);
+				break;
+			case LEFT:
+				m_pHandedTransformCom->Set_Pos(vPlayerPos.x - 0.4f, vPlayerPos.y, vPlayerPos.z);
+				break;
+			}
+		}
+		else
+		{
+			m_eDir = BACK;
+			_vec3 vPlayerLook, vPlayerRight;
+			m_pTransformCom->Get_Info(INFO_LOOK, &vPlayerLook);
+			m_pTransformCom->Get_Info(INFO_RIGHT, &vPlayerRight);
+			m_pHandedTransformCom->Set_Pos(vPlayerPos.x + vPlayerLook.x * 0.2f + vPlayerRight.x * 0.3f, 1.f, vPlayerPos.z + vPlayerLook.z * 0.2f + vPlayerRight.z * 0.3f);
+		}
+		if (!m_bShootOnce)
+		{
+			m_bShootOnce = true;
+			if (g_bIsTopCamera)
+			{
+				_vec3 vDir = m_vMouseWorldPos - vPlayerPos;
+				D3DXVec3Normalize(&vDir, &vDir);
+				vDir.y = 0.f;
+				m_pHandedItem->Set_ProjectileDir(vDir);
+				m_pHandedItem->Set_Shoot(m_eDir, true);
+			}
+			else
+			{
+				_vec3 vLook;
+				m_pTransformCom->Get_Info(INFO_LOOK, &vLook);
+				vLook.y = 0.f;
+				m_pHandedItem->Set_ProjectileDir(vLook);
+				m_pHandedItem->Set_Shoot(m_eDir, true);
+
+			}
+		}
+	}
+}
 
 void CPlayer::Set_EquippedStatus()
 {
@@ -713,6 +829,42 @@ void CPlayer::Set_Clothes()
 	m_pClothes[2] = dynamic_cast<CItem*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player_HairShade"));
 	m_pClothes[3] = dynamic_cast<CItem*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player_Shirt"));
 	m_pClothes[4] = dynamic_cast<CItem*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player_Pants"));
+	m_pTerrain = dynamic_cast<CTerrain*>(Engine::Get_GameObject(L"Layer_Environment", L"Terrain"));
+}
+void CPlayer::Set_MouseWorldPos()
+{
+	//_vec3	vPos;
+	//m_pTransformCom->Get_Info(INFO_POS, &vPos);
+	//_matrix matView;
+	//m_pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
+	//D3DXVec3TransformCoord(&vPos, &vPos, &matView);
+
+	//POINT	ptMouse{};
+	//GetCursorPos(&ptMouse);
+	//ScreenToClient(g_hWnd, &ptMouse);
+
+	//_vec3			vMousePos;
+
+	//D3DVIEWPORT9	ViewPort;
+	//ZeroMemory(&ViewPort, sizeof(D3DVIEWPORT9));
+	//m_pGraphicDev->GetViewport(&ViewPort);
+
+	//// 뷰 포트 -> 투영
+	//vMousePos.x = ptMouse.x / (ViewPort.Width * 0.5f) - 1.f;
+	//vMousePos.y = ptMouse.y / -(ViewPort.Height * 0.5f) + 1.f;
+	//vMousePos.z = 0.f;
+
+	//_matrix matProj;
+	//m_pGraphicDev->GetTransform(D3DTS_PROJECTION, &matProj);
+	//D3DXMatrixInverse(&matProj, NULL, &matProj);
+	//D3DXVec3TransformCoord(&vMousePos, &vMousePos, &matProj);
+
+	//m_vMouseWorldPos = vMousePos - vPos;
+	//D3DXVec3Normalize(&m_vMouseWorldPos, &m_vMouseWorldPos);
+	//m_vMouseWorldPos.z = m_vMouseWorldPos.y;
+	//m_vMouseWorldPos.y = 0;
+
+	m_vMouseWorldPos = *(m_pTerrain->Get_PickPos());
 }
 
 void CPlayer::Set_UI()
@@ -756,6 +908,8 @@ void CPlayer::Set_UI()
 	if (Engine::Key_Down(DIK_M))
 	{
 		Set_Map();
+
+		//CRenderer::GetInstance()->Expand_MiniMap();
 	}
 	if (Engine::Key_Down(DIK_TAB))
 	{

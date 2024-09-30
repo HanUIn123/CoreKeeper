@@ -71,6 +71,11 @@ inline void         Delete_Renderer(RENDERID _eType, CGameObject* pGameObject)
 	CRenderer::GetInstance()->Delete_Renderer(_eType, pGameObject);
 }
 
+inline void			Expand_MiniMap()
+{
+	CRenderer::GetInstance()->Expand_MiniMap();
+}
+
 inline HRESULT			Ready_Light(LPDIRECT3DDEVICE9 pGraphicDev,
 	const D3DLIGHT9* pLightInfo,
 	const _uint& iIndex)
