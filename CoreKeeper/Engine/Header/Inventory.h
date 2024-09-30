@@ -21,7 +21,7 @@ public:
 	void				Swap_Item(CItem** _ppItem1, CItem** _ppItem2);
 	void				Remove_Item(int _iIndex);
 	bool				Enough_Item(ITEMNUM _eItemNum, int _iCount);
-
+	void				Put_Same_Item(CInventory* _playerInventory, CInventory* _chestInventory);
 
 	CItem*				Get_HandedItem(_int iHandNum);
 	bool				Check_Empty(_int iIndex);

@@ -195,7 +195,75 @@ void CCraftMgr::Set_Recipe()
     ironPickAxeRecipe.vecIngredients.push_back({ ITEM_WOOD, 4 });
     m_mapRecipes[make_pair(ITEM_PICKAXE, MATERIAL_WOOD)] = ironPickAxeRecipe;*/
 
+    // ³ª¹« Ä®
+    /*Recipe ironPickAxeRecipe;
+    ironPickAxeRecipe.vecIngredients.push_back({ ITEM_WOOD, 4 });
+    m_mapRecipes[make_pair(ITEM_PICKAXE, MATERIAL_WOOD)] = ironPickAxeRecipe;*/
 
+    // ±¸¸® Ä®
+    /*Recipe ironPickAxeRecipe;
+    ironPickAxeRecipe.vecIngredients.push_back({ ITEM_WOOD, 4 });
+    m_mapRecipes[make_pair(ITEM_PICKAXE, MATERIAL_WOOD)] = ironPickAxeRecipe;*/
+
+    // Ã¶ Ä®
+    /*Recipe ironPickAxeRecipe;
+    ironPickAxeRecipe.vecIngredients.push_back({ ITEM_WOOD, 4 });
+    m_mapRecipes[make_pair(ITEM_PICKAXE, MATERIAL_WOOD)] = ironPickAxeRecipe;*/
+
+    // ³ª¹« È°
+    /*Recipe ironPickAxeRecipe;
+    ironPickAxeRecipe.vecIngredients.push_back({ ITEM_WOOD, 4 });
+    m_mapRecipes[make_pair(ITEM_PICKAXE, MATERIAL_WOOD)] = ironPickAxeRecipe;*/
+
+    // Ã¶ È°
+    /*Recipe ironPickAxeRecipe;
+    ironPickAxeRecipe.vecIngredients.push_back({ ITEM_WOOD, 4 });
+    m_mapRecipes[make_pair(ITEM_PICKAXE, MATERIAL_WOOD)] = ironPickAxeRecipe;*/
+
+    // ³ª¹« Çï¸ä
+    /*Recipe ironPickAxeRecipe;
+    ironPickAxeRecipe.vecIngredients.push_back({ ITEM_WOOD, 4 });
+    m_mapRecipes[make_pair(ITEM_PICKAXE, MATERIAL_WOOD)] = ironPickAxeRecipe;*/
+
+    // ±¸¸® Çï¸ä
+    /*Recipe ironPickAxeRecipe;
+    ironPickAxeRecipe.vecIngredients.push_back({ ITEM_WOOD, 4 });
+    m_mapRecipes[make_pair(ITEM_PICKAXE, MATERIAL_WOOD)] = ironPickAxeRecipe;*/
+
+    // Ã¶ Çï¸ä
+    /*Recipe ironPickAxeRecipe;
+    ironPickAxeRecipe.vecIngredients.push_back({ ITEM_WOOD, 4 });
+    m_mapRecipes[make_pair(ITEM_PICKAXE, MATERIAL_WOOD)] = ironPickAxeRecipe;*/
+
+    // ³ª¹« »óÀÇ
+    /*Recipe ironPickAxeRecipe;
+    ironPickAxeRecipe.vecIngredients.push_back({ ITEM_WOOD, 4 });
+    m_mapRecipes[make_pair(ITEM_PICKAXE, MATERIAL_WOOD)] = ironPickAxeRecipe;*/
+
+    // ±¸¸® »óÀÇ
+    /*Recipe ironPickAxeRecipe;
+    ironPickAxeRecipe.vecIngredients.push_back({ ITEM_WOOD, 4 });
+    m_mapRecipes[make_pair(ITEM_PICKAXE, MATERIAL_WOOD)] = ironPickAxeRecipe;*/
+
+    // Ã¶ »óÀÇ
+    /*Recipe ironPickAxeRecipe;
+    ironPickAxeRecipe.vecIngredients.push_back({ ITEM_WOOD, 4 });
+    m_mapRecipes[make_pair(ITEM_PICKAXE, MATERIAL_WOOD)] = ironPickAxeRecipe;*/
+
+    // ³ª¹« ¹ÙÁö
+    /*Recipe ironPickAxeRecipe;
+    ironPickAxeRecipe.vecIngredients.push_back({ ITEM_WOOD, 4 });
+    m_mapRecipes[make_pair(ITEM_PICKAXE, MATERIAL_WOOD)] = ironPickAxeRecipe;*/
+
+    // ±¸¸® ¹ÙÁö
+    /*Recipe ironPickAxeRecipe;
+    ironPickAxeRecipe.vecIngredients.push_back({ ITEM_WOOD, 4 });
+    m_mapRecipes[make_pair(ITEM_PICKAXE, MATERIAL_WOOD)] = ironPickAxeRecipe;*/
+
+    // Ã¶ ¹ÙÁö
+    /*Recipe ironPickAxeRecipe;
+    ironPickAxeRecipe.vecIngredients.push_back({ ITEM_WOOD, 4 });
+    m_mapRecipes[make_pair(ITEM_PICKAXE, MATERIAL_WOOD)] = ironPickAxeRecipe;*/
 
 
 
@@ -205,11 +273,14 @@ void CCraftMgr::Set_Recipe()
 
     // ³ª¹« Å×ÀÌºí
     Recipe woodTableRecipe;
-    woodTableRecipe.vecIngredients.push_back({ ITEM_WOOD, 4 });
+    woodTableRecipe.vecIngredients.push_back({ ITEM_WOOD, 8 });
     m_mapRecipes[make_pair(ITEM_TABLE, MATERIAL_WOOD)] = woodTableRecipe;
 
 
-
+    // »óÀÚ
+    Recipe boxRecipe;
+    boxRecipe.vecIngredients.push_back({ ITEM_WOOD, 5 });
+    m_mapRecipes[make_pair(ITEM_BOX, MATERIAL_WOOD)] = boxRecipe;
 
 
 

@@ -22,7 +22,7 @@ HRESULT CInventory::Ready_Inventory(int _iSlotCount)
 void CInventory::Sort_Item()
 {
 	// 10번째 인덱스부터 끝까지 정렬
-	std::sort(m_vecItems.begin() + 10, m_vecItems.end(),
+	sort(m_vecItems.begin() + 10, m_vecItems.end(),
 		[](CItem* a, CItem* b) {
 			// 둘 다 nullptr인 경우
 			if (a == nullptr && b == nullptr) return false;
@@ -150,6 +150,33 @@ bool CInventory::Enough_Item(ITEMNUM _eItemNum, int _iCount)
 		}
 	}
 	return false;
+}
+
+void CInventory::Put_Same_Item(CInventory* _playerInventory, CInventory* _chestInventory)
+{
+	// 플레이어 인벤토리의 모든 슬롯을 확인
+	for (int i = 0; i < _playerInventory->m_vecItems.size(); i++)
+	{
+		CItem* pPlayerItem = _playerInventory->m_vecItems[i];
+
+		// 빈 슬롯이면 건너뛰기 (혹시 몰라서 카운트 0인것도 확인)
+		if (pPlayerItem == nullptr || pPlayerItem->Get_Count() == 0)
+			continue;
+
+		// 상자 인벤토리에서 같은 아이템을 찾음
+		for (int j = 0; j < _chestInventory->m_vecItems.size(); j++)
+		{
+			CItem* pChestItem = _chestInventory->m_vecItems[j];
+
+			// 상자에 같은 아이템이 있는 경우, 수량을 더해줌
+			if (pChestItem != nullptr && pChestItem->Get_ItemNum() == pPlayerItem->Get_ItemNum())
+			{
+				pChestItem->Add_Count(pPlayerItem->Get_Count());
+				_playerInventory->Remove_Item(i);  // 플레이어 인벤토리에서 아이템 제거
+				break;
+			}
+		}
+	}
 }
 
 bool CInventory::Check_Empty(_int iIndex)
