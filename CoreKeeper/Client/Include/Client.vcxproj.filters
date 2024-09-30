@@ -352,6 +352,21 @@
     <Filter Include="02. GameObject\06. Item\99. Etc\09. Piece">
       <UniqueIdentifier>{e04f8601-5724-400a-80a9-2718805579ff}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\97.Map">
+      <UniqueIdentifier>{681cea35-2838-437b-a7a7-52a7d680be86}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\97.Map\00.WorldMap">
+      <UniqueIdentifier>{f6c78912-1233-4def-8e9c-fe99e7c66158}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\97.Map\01.MiniMap">
+      <UniqueIdentifier>{3162fd5a-703e-4a6d-a4a8-8c898c94c13b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\97.Map\02.MiniMapFrame">
+      <UniqueIdentifier>{f965b5fa-b464-49c7-bcbb-2a9ebdc97a1d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\91.MiniObject">
+      <UniqueIdentifier>{ddf0311c-4742-44cc-a204-e23b5d231eca}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -693,6 +708,15 @@
     <ClInclude Include="..\Header\Skeleton.h">
       <Filter>02. GameObject\10. Object\10. Skeleton</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\WorldMap.h">
+      <Filter>02. GameObject\97.Map\00.WorldMap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\MiniMapFrame.h">
+      <Filter>02. GameObject\97.Map\02.MiniMapFrame</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\MiniObject.h">
+      <Filter>02. GameObject\91.MiniObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1012,6 +1036,15 @@
     </ClCompile>
     <ClCompile Include="..\Code\Skeleton.cpp">
       <Filter>02. GameObject\10. Object\10. Skeleton</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\WorldMap.cpp">
+      <Filter>02. GameObject\97.Map\00.WorldMap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\MiniMapFrame.cpp">
+      <Filter>02. GameObject\97.Map\02.MiniMapFrame</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\MiniObject.cpp">
+      <Filter>02. GameObject\91.MiniObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
