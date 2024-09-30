@@ -58,6 +58,7 @@ inline void			Add_RenderGroup(RENDERID eType, CGameObject* pGameObject);
 inline void			Render_GameObject(LPDIRECT3DDEVICE9& pGraphicDev);
 inline void			Clear_RenderGroup();
 inline void         Delete_Renderer(RENDERID _eType, CGameObject* pGameObject);
+inline void			Expand_MiniMap();
 // light
 
 inline HRESULT			Ready_Light(LPDIRECT3DDEVICE9 pGraphicDev,

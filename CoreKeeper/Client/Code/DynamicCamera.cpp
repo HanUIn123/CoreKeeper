@@ -57,7 +57,7 @@ void CDynamicCamera::LateUpdate_GameObject()
 			m_vEye = vPlayerPos;
 			m_vEye.y = 12.f;
 		}
-		 if (m_bIsWorldMap)
+	/*	 if (m_bIsWorldMap)
 		{
 			pPlayerTransform->Set_Angle(0, 0, 0);
 
@@ -78,7 +78,7 @@ void CDynamicCamera::LateUpdate_GameObject()
 			{
 				Zoom_Out();
 			}
-		}
+		}*/
 		//else if (!m_bIsWorldMap)
 		//{
 		//	pPlayerTransform->Set_Angle(0, 0, 0);
@@ -139,17 +139,17 @@ void CDynamicCamera::Key_Input()
 		}
 	}
 
-	if (g_bIsTopCamera)
-	{
-		if (Engine::Key_Down(DIK_N))
-		{
-			m_bIsWorldMap = m_bIsWorldMap ? false : true;
+	//if (g_bIsTopCamera)
+	//{
+	//	if (Engine::Key_Down(DIK_N))
+	//	{
+	//		m_bIsWorldMap = m_bIsWorldMap ? false : true;
 
-			m_fFov = D3DXToRadian(60.f);
+	//		m_fFov = D3DXToRadian(60.f);
 
-			//g_bIsTopCamera = g_bIsTopCamera ? false : true;
-		}
-	}
+	//		//g_bIsTopCamera = g_bIsTopCamera ? false : true;
+	//	}
+	//}
 
 }
 

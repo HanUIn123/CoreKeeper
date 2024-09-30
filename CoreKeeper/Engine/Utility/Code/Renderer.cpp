@@ -98,6 +98,11 @@ void CRenderer::Delete_Renderer(RENDERID _eType, CGameObject* pGameObject)
 	}
 }
 
+void CRenderer::Expand_MiniMap()
+{
+
+}
+
 void CRenderer::Render_Priority(LPDIRECT3DDEVICE9 & pGraphicDev)
 {
 	for (auto& pGameObject : m_RenderGroup[RENDER_PRIORITY])
@@ -112,11 +117,6 @@ void CRenderer::Render_NonAlpha(LPDIRECT3DDEVICE9 & pGraphicDev)
 
 void CRenderer::Render_Alpha(LPDIRECT3DDEVICE9 & pGraphicDev)
 {
-	//pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
-
-	//pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
-	//pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
-
 	pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
 
 	pGraphicDev->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
@@ -127,7 +127,6 @@ void CRenderer::Render_Alpha(LPDIRECT3DDEVICE9 & pGraphicDev)
 
 
 	pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
-	//pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 }
 
 
@@ -150,44 +149,42 @@ void CRenderer::Render_UIALPHA(LPDIRECT3DDEVICE9& pGraphicDev)
 	pGraphicDev->SetRenderState(D3DRS_TEXTUREFACTOR, 0xffffffff);
 
 	pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
-	
-	
-	//pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
-	//pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_CURRENT);
-	//pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
-	//pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_ADD);
-	//pGraphicDev->SetRenderState(D3DRS_TEXTUREFACTOR, D3DCOLOR_ARGB(255, 255, 255, 255));
 }
 
 void CRenderer::Render_Window(LPDIRECT3DDEVICE9& pGraphicDev)
 {
-	//_D3DVIEWPORT9 MapViewport;
-
-	//MapViewport.X = WINCX - 300.f;
-	//MapViewport.Y = WINCY - 300.f;
-	//MapViewport.Width = 200.f;
-	//MapViewport.Height = 100.f;
-	//MapViewport.MinZ = 0.0f;
-	//MapViewport.MaxZ = 1.0f;
-
-	//pGraphicDev->SetViewport(&MapViewport);
-
 	for (auto& pGameObject : m_RenderGroup[RENDER_WINDOW])
 		pGameObject->Render_GameObject();
-
-	//pGraphicDev->SetViewport(&m_MainViewport);
-
 }
 
 void CRenderer::Render_MiniMap(LPDIRECT3DDEVICE9& pGraphicDev)
 {
-	//pGraphicDev->SetRenderState(D3DRS_ZENABLE, FALSE);
 	pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
 	pGraphicDev->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 	pGraphicDev->SetRenderState(D3DRS_ALPHAREF, 0xc0);
 
+	CTransform* pPlayerTransform = dynamic_cast<CTransform*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Transform"));
 
-	for (auto& pGameObject : m_RenderGroup[RENDER_NONALPHA]) {
+	if (pPlayerTransform)
+	{
+		_vec3 playerPos;
+		pPlayerTransform->Get_Info(INFO_POS, &playerPos);
+
+		_vec3 vEye = playerPos + _vec3(0.0f, 20.0f, 0.0f);
+		_vec3 vAt = playerPos;
+		_vec3 vUp = _vec3(0.0f, 0.0f, 1.0f);
+
+		D3DXMATRIX matView;
+		D3DXMatrixLookAtLH(&matView, &vEye, &vAt, &vUp);
+		pGraphicDev->SetTransform(D3DTS_VIEW, &matView);
+
+		D3DXMATRIX matOrtho;
+		D3DXMatrixOrthoLH(&matOrtho, 40.0f, 40.0f, 0.1f, 1000.0f);
+		pGraphicDev->SetTransform(D3DTS_PROJECTION, &matOrtho);
+	}
+
+	for (auto& pGameObject : m_RenderGroup[RENDER_NONALPHA])
+	{
 		pGameObject->Render_GameObject();
 	}
 
@@ -196,15 +193,17 @@ void CRenderer::Render_MiniMap(LPDIRECT3DDEVICE9& pGraphicDev)
 		pGameObject->Render_GameObject();
 	}
 
+	D3DXMATRIX matPerspective;
+	D3DXMatrixPerspectiveFovLH(&matPerspective, D3DXToRadian(60), (float)WINCX / (float)WINCY, 0.1f, 1000.0f);
+	pGraphicDev->SetTransform(D3DTS_PROJECTION, &matPerspective);
+
 	pGraphicDev->SetViewport(&m_MainViewport);
 	pGraphicDev->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_MODULATE);
 	pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
-	//pGraphicDev->SetRenderState(D3DRS_ZENABLE, TRUE);
 }
 
 void CRenderer::Render_WorldMap(LPDIRECT3DDEVICE9& pGraphicDev)
 {
-	//pGraphicDev->SetRenderState(D3DRS_ZENABLE, FALSE);
 	pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
 	pGraphicDev->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
 	pGraphicDev->SetRenderState(D3DRS_ALPHAREF, 0xc0);
@@ -217,7 +216,6 @@ void CRenderer::Render_WorldMap(LPDIRECT3DDEVICE9& pGraphicDev)
 	pGraphicDev->SetViewport(&m_MainViewport);
 	pGraphicDev->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_MODULATE);
 	pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
-	//pGraphicDev->SetRenderState(D3DRS_ZENABLE, TRUE);
 }
 
 void CRenderer::Render_UI(LPDIRECT3DDEVICE9 & pGraphicDev)
