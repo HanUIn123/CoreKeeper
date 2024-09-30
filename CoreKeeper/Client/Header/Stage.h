@@ -49,7 +49,8 @@ private:
 	wstring							m_Invstring[50];
 	wstring                         m_ChestInvstring[50];
 	wstring							m_ItemSlot[10];
-	wstring                         m_CraftSlot[10];
+	wstring                         m_CraftLSlot[6];
+	wstring                         m_CraftRSlot[6];
 	_bool							m_bInvCheck;
 
 	HANDLE							m_hFile;

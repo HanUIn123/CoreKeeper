@@ -14,9 +14,6 @@ END
 
 class CUICraft : public Engine::CGameObject
 {
-public:
-
-	enum TABLETYPE {TABLE_PLAYER, TABLE_CRAFT, TABLE_ANVIL, TABLE_ALCHEMY, TABLE_MUSIC, TABLE_END};
 private:
 	explicit CUICraft(LPDIRECT3DDEVICE9 pGraphicDev);
 	virtual ~CUICraft();

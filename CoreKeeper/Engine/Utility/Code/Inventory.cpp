@@ -37,7 +37,6 @@ void CInventory::Sort_Item()
 
 void CInventory::Sort_ChestItem()
 {
-	// 10번째 인덱스부터 끝까지 정렬
 	std::sort(m_vecItems.begin(), m_vecItems.end(),
 		[](CItem* a, CItem* b) {
 			// 둘 다 nullptr인 경우

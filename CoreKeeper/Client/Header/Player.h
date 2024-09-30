@@ -69,7 +69,7 @@ public:
 	void            Set_CraftWindow(); 
 	void            Set_MapWindow();
 
-	void            Set_Craft();
+	void            Set_Craft(TABLETYPE eTableType = TABLE_PLAYER);
 	void            Set_Inventory();
 	void            Set_Map();
 	void            Set_Status();

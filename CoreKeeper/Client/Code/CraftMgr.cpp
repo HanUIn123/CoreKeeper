@@ -219,7 +219,7 @@ void CCraftMgr::Set_Recipe()
     // È¶ºÒ
     Recipe torchRecipe;
     torchRecipe.vecIngredients.push_back({ ITEM_WOOD, 1 });
-    m_mapRecipes[make_pair(ITEM_TABLE, MATERIAL_WOOD)] = torchRecipe;
+    m_mapRecipes[make_pair(ITEM_TORCH, MATERIAL_WOOD)] = torchRecipe;
 }
 
 void CCraftMgr::Free()

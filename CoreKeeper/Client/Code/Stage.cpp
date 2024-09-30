@@ -163,6 +163,10 @@ HRESULT CStage::Ready_Layer_Environment(const _tchar* pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"AheadGrave", pGameObject), E_FAIL);
 
+	pGameObject = CTableObject::Create(m_pGraphicDev, { 110.f, 0.5f, 130.5f }, MATERIAL_WOOD);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"WoodCraftTable", pGameObject), E_FAIL);
+
 	pGameObject = CSkeleton::Create(m_pGraphicDev, { 124.f, 0.5f, 130.5f });
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Skeleton", pGameObject), E_FAIL);
@@ -365,7 +369,7 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UIRightCraft", pGameObject), E_FAIL);
 
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < 6; i++)
 	{
 		if (i < 3)
 		{
@@ -376,11 +380,29 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
 
 		vSize = { 30.f, 30.f };
 
-		m_CraftSlot[i] = L"UICraftSlot_" + std::to_wstring(i);
+		m_CraftLSlot[i] = L"UICraftLSlot_" + std::to_wstring(i);
 
-		pGameObject = CUICraftSlot::Create(m_pGraphicDev, vPos, vSize, i);
+		pGameObject = CUICraftSlot::Create(m_pGraphicDev, vPos, vSize, i, true);
 		NULL_CHECK_RETURN(pGameObject, E_FAIL);
-		FAILED_CHECK_RETURN(pLayer->Add_GameObject(m_CraftSlot[i].c_str(), pGameObject), E_FAIL);
+		FAILED_CHECK_RETURN(pLayer->Add_GameObject(m_CraftLSlot[i].c_str(), pGameObject), E_FAIL);
+	}
+
+	for (int i = 0; i < 6; i++)
+	{
+		if (i < 3)
+		{
+			vPos = { 400.f + i * 70.f , 220.f };
+		}
+		else
+			vPos = { 400.f + (i - 3) * 70.f, 220.f + (i / 3) * 70.f };
+
+		vSize = { 30.f, 30.f };
+
+		m_CraftRSlot[i] = L"UICraftRSlot_" + std::to_wstring(i);
+
+		pGameObject = CUICraftSlot::Create(m_pGraphicDev, vPos, vSize, i, true);
+		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		FAILED_CHECK_RETURN(pLayer->Add_GameObject(m_CraftRSlot[i].c_str(), pGameObject), E_FAIL);
 	}
 
 	vPos = { 1100.f, 540.f };

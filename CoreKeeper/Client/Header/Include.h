@@ -43,6 +43,7 @@
 #include "CoreBase.h"
 #include "GravestoneObject.h"
 #include "Skeleton.h"
+#include "TableObject.h"
 
 // UI
 #include "UIPlayerStatus.h"

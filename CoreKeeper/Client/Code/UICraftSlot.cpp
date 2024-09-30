@@ -4,9 +4,10 @@
 #include "Export_Utility.h"
 #include "..\Header\Torch.h"
 #include "..\Header\Stage.h"
+#include "..\Header\CraftMgr.h"
 
 CUICraftSlot::CUICraftSlot(LPDIRECT3DDEVICE9 pGraphicDev)
-	: Engine::CGameObject(pGraphicDev), m_bCollapse(false), m_bFirst(false), m_bWindow(false), m_iIndex(0), m_bEnough(false), m_iCraftCount(0)
+	: Engine::CGameObject(pGraphicDev), m_bCollapse(false), m_bWindow(false), m_iIndex(0), m_bEnough(false)
 
 {
 }
@@ -15,7 +16,7 @@ CUICraftSlot::~CUICraftSlot()
 {
 }
 
-HRESULT CUICraftSlot::Ready_GameObject(_vec2 vPos, _vec2 vSize, _int _iIndex)
+HRESULT CUICraftSlot::Ready_GameObject(_vec2 vPos, _vec2 vSize, _int _iIndex, _bool bDirection)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
@@ -37,6 +38,7 @@ HRESULT CUICraftSlot::Ready_GameObject(_vec2 vPos, _vec2 vSize, _int _iIndex)
 	m_BRect.top = vPos.y - vSize.y;
 	m_BRect.bottom = vPos.y + vSize.y;
 
+	/*
 	switch (_iIndex)
 	{
 	case 0:
@@ -58,9 +60,13 @@ HRESULT CUICraftSlot::Ready_GameObject(_vec2 vPos, _vec2 vSize, _int _iIndex)
 	default:
 		m_eSlotType = UCITEM_TORCH;
 		break;
-	}
+	}*/
 
 	m_iIndex = _iIndex;
+
+	m_bDirection = bDirection;
+
+	Ready_Table(); // 인덱스에 맞는 아이템을 map에 넣어줌
 
 	return S_OK;
 }
@@ -78,10 +84,12 @@ _int CUICraftSlot::Update_GameObject(const _float& fTimeDelta)
 		CInventory* pPlayerInv = dynamic_cast<Engine::CInventory*>
 			(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
 
+		/*
 		switch (m_eSlotType)
 		{
 		case UCITEM_TORCH:
-			if (pPlayerInv->Enough_Item(ITEM_WOOD, 1))
+
+			if(CCraftMgr::GetInstance()->Craftable(pPlayerInv, ITEM_TORCH, MATERIAL_WOOD))
 			{
 				m_bEnough = true;
 			}
@@ -90,7 +98,8 @@ _int CUICraftSlot::Update_GameObject(const _float& fTimeDelta)
 			break;
 
 		case UCITEM_WOODENPICK:
-			if (pPlayerInv->Enough_Item(ITEM_WOOD, 4))
+
+			if (CCraftMgr::GetInstance()->Craftable(pPlayerInv, ITEM_PICKAXE, MATERIAL_WOOD))
 			{
 				m_bEnough = true;
 			}
@@ -120,6 +129,15 @@ _int CUICraftSlot::Update_GameObject(const _float& fTimeDelta)
 			m_bEnough = false;
 			break;
 		}
+		*/
+
+		if (CCraftMgr::GetInstance()->Craftable(pPlayerInv, m_eItemType.eItemNum, m_eItemType.eItemMat))
+		{
+			m_bEnough = true;
+		}
+		else
+			m_bEnough = false;
+
 		if (Map_Picked(pt))
 		{
 			m_bCollapse = true;
@@ -129,44 +147,24 @@ _int CUICraftSlot::Update_GameObject(const _float& fTimeDelta)
 				if (m_bEnough)
 				{
 					CInventory* pCursorInv = dynamic_cast<CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_UI", L"UI_Cursor", L"Com_Inventory"));
-					CInventory* pPlayerInv = dynamic_cast<Engine::CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
 
+					pCursorInv->Add_Item(CCraftMgr::GetInstance()->Craft(pPlayerInv, m_eItemType.eItemNum, m_eItemType.eItemMat));
+					/*
 					CStage* pStage = dynamic_cast<CStage*>(Engine::Get_Scene());
 
 					CItem* pItem = nullptr;
 
+					
 					switch (m_eSlotType)
 					{
 					case UCITEM_TORCH:
-						pPlayerInv->Minus_Item(ITEM_WOOD, 1);
-
-						pItem = CTorch::Create(m_pGraphicDev);
-
-						pItem->Add_Count(2);
-
-						pCursorInv->Add_Item(pItem);
-
-						Craftstring[m_iCraftCount] = L"Torch" + to_wstring(m_iCraftCount);
-
-						pStage->Create_Item(L"Layer_UI", pItem, Craftstring[m_iCraftCount].c_str());
-
-						m_iCraftCount++;
+						pCursorInv->Add_Item(CCraftMgr::GetInstance()->Craft(pPlayerInv, ITEM_TORCH, MATERIAL_WOOD));
 						break;
 
 					case UCITEM_WOODENPICK:
-						pPlayerInv->Minus_Item(ITEM_WOOD, 4);
-
-						pItem = CPickaxe::Create(m_pGraphicDev, MATERIAL_WOOD);
-
-						pCursorInv->Add_Item(pItem);
-
-						Craftstring[m_iCraftCount] = L"PickAxe" + to_wstring(m_iCraftCount);
-
-						pStage->Create_Item(L"Layer_UI", pItem, Craftstring[m_iCraftCount].c_str());
-
-						m_iCraftCount++;
+						pCursorInv->Add_Item(CCraftMgr::GetInstance()->Craft(pPlayerInv, ITEM_PICKAXE, MATERIAL_WOOD));
 						break;
-					}
+					}*/
 				}	
 			}
 
@@ -204,6 +202,7 @@ void CUICraftSlot::Render_GameObject()
 	}
 	m_pBufferCom->Render_Buffer();
 
+	/*
 	switch (m_iIndex)
 	{
 	case 0:
@@ -226,7 +225,7 @@ void CUICraftSlot::Render_GameObject()
 		matWorld._22 -= 10.f;
 		break;
 
-	}
+	}*/
 	
 	if (!m_bEnough)
 	{
@@ -273,6 +272,73 @@ void CUICraftSlot::Render_GameObject()
 	}
 }
 
+void CUICraftSlot::Set_Window(TABLETYPE _eTableType, _bool _bDirection)
+{
+	if (m_bWindow)
+		m_bWindow = false;
+	else
+	{
+		m_bWindow = true;
+
+		auto iter = mapItemType.find({ _eTableType, _bDirection });
+
+		if (iter == mapItemType.end())
+		{
+			m_bWindow = false;
+
+			return;
+		}
+
+		m_eItemType = iter->second;
+	}
+}
+
+void CUICraftSlot::Ready_Table()
+{
+	switch (m_iIndex)
+	{
+	case 0:
+	{
+		UIITEM TORCH = { m_iIndex, ITEM_TORCH };
+		mapItemType.insert({ make_pair(TABLE_PLAYER, TRUE), TORCH });
+
+		UIITEM WOODSWORD = { m_iIndex, ITEM_SWORD, MATERIAL_WOOD };
+		mapItemType.insert({ make_pair(TABLE_CRAFT, TRUE), TORCH });
+
+		UIITEM COPPERPICKAXE = { m_iIndex, ITEM_PICKAXE, MATERIAL_COPPER };
+		mapItemType.insert({ make_pair(TABLE_CRAFT, TRUE), COPPERPICKAXE });
+
+		break;
+	}
+	case 1:
+	{
+		UIITEM WOODPICKAXE = { m_iIndex, ITEM_PICKAXE, MATERIAL_WOOD };
+		mapItemType.insert({ make_pair(TABLE_PLAYER, TRUE), WOODPICKAXE });
+
+		UIITEM WOODHOE = { m_iIndex, ITEM_HOE, MATERIAL_WOOD };
+		mapItemType.insert({ make_pair(TABLE_CRAFT, TRUE), WOODPICKAXE });
+
+		break;
+	}
+	case 2:
+	{
+		UIITEM BASICCRAFTTABLE = { m_iIndex, ITEM_TABLE };
+		mapItemType.insert({ make_pair(TABLE_PLAYER, TRUE), BASICCRAFTTABLE });
+
+		break;
+	}
+	case 3:
+	{
+		UIITEM CHEST = { m_iIndex, ITEM_CHEST };
+		mapItemType.insert({ make_pair(TABLE_PLAYER, TRUE), CHEST });
+
+		break;
+	}
+	default:
+		break;
+	}
+}
+
 HRESULT CUICraftSlot::Add_Component()
 {
 	CComponent* pComponent = NULL;
@@ -284,10 +350,6 @@ HRESULT CUICraftSlot::Add_Component()
 	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_UISlot"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Texture", pComponent });
-
-	pComponent = m_pItemTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_UICraftItem"));
-	NULL_CHECK_RETURN(pComponent, E_FAIL);
-	m_mapComponent[ID_STATIC].insert({ L"Com_ItemTexture", pComponent });
 
 	pComponent = m_pSlotBufferCom = dynamic_cast<CAnimTex*>(Engine::Clone_Proto(L"Proto_UISilhouettes"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
@@ -305,14 +367,19 @@ HRESULT CUICraftSlot::Add_Component()
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_SlotTexture", pComponent });
 
+	pComponent = m_pItemTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_UIPlayerCraftItem"));
+	NULL_CHECK_RETURN(pComponent, E_FAIL);
+	m_mapComponent[ID_STATIC].insert({ L"Com_ItemTexture", pComponent });
+
+
 	return S_OK;
 }
 
-CUICraftSlot* CUICraftSlot::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec2 vPos, _vec2 vSize, _int _iIndex)
+CUICraftSlot* CUICraftSlot::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec2 vPos, _vec2 vSize, _int _iIndex, _bool bDirection)
 {
 	CUICraftSlot* pUICraftSlot = new CUICraftSlot(pGraphicDev);
 
-	if (FAILED(pUICraftSlot->Ready_GameObject(vPos, vSize, _iIndex)))
+	if (FAILED(pUICraftSlot->Ready_GameObject(vPos, vSize, _iIndex, bDirection)))
 	{
 		Safe_Release(pUICraftSlot);
 		MSG_BOX("UIStatus Create Failed");

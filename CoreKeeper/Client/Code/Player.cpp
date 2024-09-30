@@ -813,21 +813,20 @@ void CPlayer::Set_MapWindow()
 		m_bMap = true;
 }
 
-void CPlayer::Set_Craft()
+void CPlayer::Set_Craft(TABLETYPE eTableType)
 {
 	CUICraft* pCraft = dynamic_cast<CUICraft*>(Engine::Get_GameObject(L"Layer_UI", L"UILeftCraft"));
 	pCraft->Set_Window();
 
-
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < 6; i++)
 	{
 		wstring string;
 
-		string = L"UICraftSlot_" + std::to_wstring(i);
+		string = L"UICraftLSlot_" + std::to_wstring(i);
 
 		CUICraftSlot* pSlot = dynamic_cast<CUICraftSlot*>(Engine::Get_GameObject(L"Layer_UI", string.c_str()));
 
-		pSlot->Set_Window();
+		pSlot->Set_Window(eTableType, true);
 	}
 
 
