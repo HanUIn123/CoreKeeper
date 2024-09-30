@@ -293,6 +293,18 @@ void CUICraftSlot::Set_Window(TABLETYPE _eTableType, MATERIAL _eMaterial, _bool 
 	{
 		m_bWindow = true;
 
+		if (_bDirection == true)
+		{
+			switch (_eTableType)
+			{
+			case TABLE_CRAFT:
+				m_BRect.left += 48.f;
+				m_BRect.right += 48.f;
+
+				break;
+			}
+		}
+
 		auto iter = mapItemType.find({ _eTableType, _bDirection });
 
 		if (iter != mapItemType.end() && iter->second.eItemMat != _eMaterial)
@@ -336,18 +348,6 @@ void CUICraftSlot::Set_Window(TABLETYPE _eTableType, MATERIAL _eMaterial, _bool 
 		m_eTableType = _eTableType;
 
 		m_eMatrial = _eMaterial;
-
-		if (_bDirection == true)
-		{
-			switch (_eTableType)
-			{
-			case TABLE_CRAFT:
-				m_BRect.left += 48.f;
-				m_BRect.right += 48.f;
-
-				break;
-			}
-		}
 	}
 }
 

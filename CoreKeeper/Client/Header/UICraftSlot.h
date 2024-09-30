@@ -50,6 +50,18 @@ public:
 	void            Set_DisableWindow()
 	{
 		m_bWindow = false;
+
+		if (m_bDirection == true)
+		{
+			switch (m_eTableType)
+			{
+			case TABLE_CRAFT:
+				m_BRect.left -= 48.f;
+				m_BRect.right -= 48.f;
+
+				break;
+			}
+		}
 	}
 	void            Ready_Table();
 

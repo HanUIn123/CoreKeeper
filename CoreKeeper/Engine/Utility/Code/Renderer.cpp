@@ -18,7 +18,7 @@ CRenderer::CRenderer()
 
 	m_MiniViewport.X = 1020;
 	m_MiniViewport.Y = 90;
-	m_MiniViewport.Width = 100;
+	m_MiniViewport.Width = 200;
 	m_MiniViewport.Height = 140;
 	m_MiniViewport.MinZ = 0.0f;
 	m_MiniViewport.MaxZ = 1.0f;
