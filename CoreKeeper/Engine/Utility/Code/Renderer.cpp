@@ -1,6 +1,10 @@
 #include "..\..\Header\Renderer.h"
 #include "..\..\Header\Management.h"
 #include "..\..\Header\Camera.h"
+#include "../../Client/Header/DynamicCamera.h"
+#include "../../Header/Export_System.h"
+#include "../../Header/Export_Utility.h"
+
 IMPLEMENT_SINGLETON(CRenderer)
 
 CRenderer::CRenderer()
@@ -11,6 +15,13 @@ CRenderer::CRenderer()
 	m_MainViewport.Height = WINCY;
 	m_MainViewport.MinZ = 0.0f;
 	m_MainViewport.MaxZ = 1.0f;
+
+	m_MiniViewport.X = 1020;
+	m_MiniViewport.Y = 90;
+	m_MiniViewport.Width = 200;
+	m_MiniViewport.Height = 140;
+	m_MiniViewport.MinZ = 0.0f;
+	m_MiniViewport.MaxZ = 1.0f;
 }
 
 CRenderer::~CRenderer()
@@ -29,6 +40,7 @@ void CRenderer::Add_RenderGroup(RENDERID eType, CGameObject * pGameObject)
 
 void CRenderer::Render_GameObject(LPDIRECT3DDEVICE9 & pGraphicDev)
 {
+	pGraphicDev->SetViewport(&m_MainViewport);
 	CCamera* pCamera = dynamic_cast<CCamera*>(Engine::CManagement::GetInstance()->Get_GameObject(L"Layer_Environment", L"DynamicCamera"));
 
 	// 원근 투영
@@ -39,15 +51,40 @@ void CRenderer::Render_GameObject(LPDIRECT3DDEVICE9 & pGraphicDev)
 	Render_Priority(pGraphicDev);
 	Render_NonAlpha(pGraphicDev);
 	Render_Alpha(pGraphicDev);
+
+	if (pCamera)
+	{
+		if (!dynamic_cast<CDynamicCamera*>(pCamera)->Get_IsWorldMap())
+		{
+		}
+		else
+		{
+			//Render_WorldMap(pGraphicDev);
+		}
+	}
+
+	if (pCamera)
+	{
+		if (!dynamic_cast<CDynamicCamera*>(pCamera)->Get_IsWorldMap())
+		{
+			pGraphicDev->SetViewport(&m_MiniViewport);
+			Render_MiniMap(pGraphicDev);
+		}
+	}
+
 	// UI 출력시에만 직교 투영하도록 정해줌
 	if (pCamera)
 	{
 		pCamera->Set_Render(TYPE_ORTHOGRAPHIC);
 	}
-	Render_UI(pGraphicDev);
-	//Render_Window(pGraphicDev);
-	//Render_UIALPHA(pGraphicDev);
 
+	if (pCamera)
+	{
+		if (!dynamic_cast<CDynamicCamera*>(pCamera)->Get_IsWorldMap())
+			Render_UI(pGraphicDev);
+		else
+			Render_WorldMap(pGraphicDev);
+	}
 	Clear_RenderGroup();
 }
 
@@ -138,22 +175,63 @@ void CRenderer::Render_UIALPHA(LPDIRECT3DDEVICE9& pGraphicDev)
 
 void CRenderer::Render_Window(LPDIRECT3DDEVICE9& pGraphicDev)
 {
-	_D3DVIEWPORT9 MapViewport;
+	//_D3DVIEWPORT9 MapViewport;
 
-	MapViewport.X = WINCX - 300.f;
-	MapViewport.Y = WINCY - 300.f;
-	MapViewport.Width = 200.f;
-	MapViewport.Height = 100.f;
-	MapViewport.MinZ = 0.0f;
-	MapViewport.MaxZ = 1.0f;
+	//MapViewport.X = WINCX - 300.f;
+	//MapViewport.Y = WINCY - 300.f;
+	//MapViewport.Width = 200.f;
+	//MapViewport.Height = 100.f;
+	//MapViewport.MinZ = 0.0f;
+	//MapViewport.MaxZ = 1.0f;
 
-	pGraphicDev->SetViewport(&MapViewport);
+	//pGraphicDev->SetViewport(&MapViewport);
 
 	for (auto& pGameObject : m_RenderGroup[RENDER_WINDOW])
 		pGameObject->Render_GameObject();
 
-	pGraphicDev->SetViewport(&m_MainViewport);
+	//pGraphicDev->SetViewport(&m_MainViewport);
 
+}
+
+void CRenderer::Render_MiniMap(LPDIRECT3DDEVICE9& pGraphicDev)
+{
+	//pGraphicDev->SetRenderState(D3DRS_ZENABLE, FALSE);
+	pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
+	pGraphicDev->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
+	pGraphicDev->SetRenderState(D3DRS_ALPHAREF, 0xc0);
+
+
+	for (auto& pGameObject : m_RenderGroup[RENDER_NONALPHA]) {
+		pGameObject->Render_GameObject();
+	}
+
+	for (auto& pGameObject : m_RenderGroup[RENDER_ALPHA])
+	{
+		pGameObject->Render_GameObject();
+	}
+
+	pGraphicDev->SetViewport(&m_MainViewport);
+	pGraphicDev->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_MODULATE);
+	pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+	//pGraphicDev->SetRenderState(D3DRS_ZENABLE, TRUE);
+}
+
+void CRenderer::Render_WorldMap(LPDIRECT3DDEVICE9& pGraphicDev)
+{
+	//pGraphicDev->SetRenderState(D3DRS_ZENABLE, FALSE);
+	pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
+	pGraphicDev->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
+	pGraphicDev->SetRenderState(D3DRS_ALPHAREF, 0xc0);
+
+	for (auto& pGameObject : m_RenderGroup[RENDER_MAP])
+	{
+		pGameObject->Render_GameObject();
+	}
+
+	pGraphicDev->SetViewport(&m_MainViewport);
+	pGraphicDev->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_MODULATE);
+	pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+	//pGraphicDev->SetRenderState(D3DRS_ZENABLE, TRUE);
 }
 
 void CRenderer::Render_UI(LPDIRECT3DDEVICE9 & pGraphicDev)

@@ -26,12 +26,14 @@ private:
 	void			Render_UI(LPDIRECT3DDEVICE9& pGraphicDev);
 	void			Render_UIALPHA(LPDIRECT3DDEVICE9& pGraphicDev);
 	void            Render_Window(LPDIRECT3DDEVICE9& pGraphicDev);
+	void			Render_MiniMap(LPDIRECT3DDEVICE9& pGraphicDev);
+	void			Render_WorldMap(LPDIRECT3DDEVICE9& pGraphicDev);
 
 private:
 	list<CGameObject*>			m_RenderGroup[RENDER_END];
 
 	_D3DVIEWPORT9 m_MainViewport;
-
+	_D3DVIEWPORT9 m_MiniViewport;
 private:
 	virtual void		Free();
 
