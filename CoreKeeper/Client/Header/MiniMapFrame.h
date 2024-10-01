@@ -35,10 +35,12 @@ private:
 
 public:
 	static CMiniMapFrame* Create(LPDIRECT3DDEVICE9 pGraphicDev);
+	void							Frame_Regulate();
 
 private:
 	_bool			m_bIsMinimapExpanded;
 	_bool			m_bKeyPressed;
+	_float							m_fZoomRatio;
 private:
 	virtual void		Free();
 };
