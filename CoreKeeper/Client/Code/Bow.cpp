@@ -84,7 +84,8 @@ _int CBow::Update_GameObject(const _float& fTimeDelta)
 			m_pArrow->Set_Active(true);
 			m_pArrow->Set_Direction(m_eDir);
 			m_pArrow->Get_Transform()->Set_Pos(vPos.x, 0.25f, vPos.z);
-			m_pArrow->Set_TextureNumber((MATERIAL)(m_eMaterial + 1));
+			// m_pArrow->Set_TextureNumber((MATERIAL)(m_eMaterial + 1));
+			m_pArrow->Set_TextureNumber(m_eMaterial);
 			dynamic_cast<CArrow*>(m_pArrow)->Set_Dir(m_vProjectileDir);
 		}
 	}

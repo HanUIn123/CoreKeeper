@@ -42,9 +42,9 @@ _int CArrow::Update_GameObject(const _float& fTimeDelta)
 		m_fTime += fTimeDelta;
 		
 		if (m_eDir == LEFT)
-			m_pTransformCom->Set_Scale(-0.25f, 0.25f, 0.25f);
+			m_pTransformCom->Set_Scale(-0.5f, 0.5f, 0.5f);
 		else
-			m_pTransformCom->Set_Scale(0.25f, 0.25f, 0.25f);
+			m_pTransformCom->Set_Scale(0.5f, 0.5f, 0.5f);
 
 		if (m_fTime >= 0.5f || m_iSpeedWeight == 0)
 		{
