@@ -13,7 +13,6 @@ CStaff::CStaff(LPDIRECT3DDEVICE9 pGraphicDev)
 
 	m_bShot = false;
 	m_pMagic = nullptr;
-
 }
 
 CStaff::~CStaff()
@@ -57,7 +56,7 @@ _int CStaff::Update_GameObject(const _float& fTimeDelta)
 	if (m_bUse)
 	{
 		// Swing(0, 5, 2);
-		Shoot(ARROW);
+		Shoot(MAGIC);
 		m_bActive = true;
 		m_bDrop = false;
 		if (m_eDir == LEFT)
@@ -65,6 +64,7 @@ _int CStaff::Update_GameObject(const _float& fTimeDelta)
 		else
 			m_pTransformCom->Set_Scale(1.5f, 1.5f, 1.5f);
 	}
+
 	if (m_bProjectileAttackSuccess || m_pMagic->Get_ProjectileAttackSuccess())
 	{
 		m_pMagic->Set_ProjectileAttackSuccess(false);
