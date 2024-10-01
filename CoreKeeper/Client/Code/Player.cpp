@@ -24,6 +24,7 @@
 #include "..\Header\UIJemSlot.h"
 #include "..\Header\UIStatueCraft.h"
 #include "..\Header\UIChestSort.h"
+#include "..\Header\Stage.h"
 
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CGameObject(pGraphicDev)
@@ -323,11 +324,21 @@ void CPlayer::Mouse_Click(const _float& fTimeDelta)
 				switch (m_pHandedItem->Get_ItemNum())
 				{
 				case ITEM_SWORD:
+					m_eState = SWING;
+					m_bSwing = true;
+					Swing_Equipment();
+					break;
 				case ITEM_PICKAXE:
+					m_eState = SWING;
+					m_bSwing = true;
+					Swing_Equipment();
+					PickAxe();
+					break;
 				case ITEM_HOE:
 					m_eState = SWING;
 					m_bSwing = true;
 					Swing_Equipment();
+					Hoe();
 					break;
 				case ITEM_BOW:
 				case ITEM_STAFF:
@@ -809,9 +820,82 @@ void CPlayer::Shoot_Equipment()
 				vLook.y = 0.f;
 				m_pHandedItem->Set_ProjectileDir(vLook);
 				m_pHandedItem->Set_Shoot(m_eDir, true);
-
 			}
 		}
+	}
+}
+
+void CPlayer::PickAxe()
+{
+	if (g_bIsTopCamera)
+	{
+		_vec3 vCheckPos, vLook, vRight;
+		m_pTransformCom->Get_Info(INFO_POS, &vCheckPos);
+		m_pTransformCom->Get_Info(INFO_LOOK, &vLook);
+		m_pTransformCom->Get_Info(INFO_RIGHT, &vRight);
+
+		switch (m_eDir)
+		{
+		case FRONT:
+			vCheckPos -= vLook;
+			break;
+		case BACK:
+			vCheckPos += vLook;
+			break;
+		case RIGHT:
+			vCheckPos += vRight;
+			break;
+		case LEFT:
+			vCheckPos += vRight;
+			break;
+		}
+		_int iIndex = _int(vCheckPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (vCheckPos.x + 0.5f * VTXITV);
+		CTerrain* pTerrain = dynamic_cast<CTerrain*>(Engine::Get_GameObject(L"Layer_Environment", L"Terrain"));
+		if (0 <= iIndex && iIndex < VTXCNTX * VTXCNTZ)
+		{
+			if (pTerrain->Get_UnreachableByIndex(iIndex))
+			{
+				CScene* pCurScene = Engine::Get_Scene();
+				dynamic_cast<CStage*>(pCurScene)->Get_WallNameByIndex(iIndex);
+				
+				CGameObject* pWall = Get_GameObject(L"Layer_Environment", dynamic_cast<CStage*>(pCurScene)->Get_WallNameByIndex(iIndex)->c_str());
+				pCurScene->Delete_GameObject(L"Layer_Environment", pWall, dynamic_cast<CStage*>(pCurScene)->Get_WallNameByIndex(iIndex)->c_str());
+				Engine::Delete_Renderer(RENDER_PRIORITY, pWall);
+				pTerrain->Set_Unreachable(iIndex, false);
+			}
+		}
+	}
+	else
+	{
+		_vec3 vCheckPos, vLook, vRight;
+		m_pTransformCom->Get_Info(INFO_POS, &vCheckPos);
+		m_pTransformCom->Get_Info(INFO_LOOK, &vLook);
+
+		vCheckPos += vLook;
+		
+		_int iIndex = _int(vCheckPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (vCheckPos.x + 0.5f * VTXITV);
+		CTerrain* pTerrain = dynamic_cast<CTerrain*>(Engine::Get_GameObject(L"Layer_Environment", L"Terrain"));
+		if (0 <= iIndex && iIndex < VTXCNTX * VTXCNTZ)
+		{
+			if (pTerrain->Get_UnreachableByIndex(iIndex))
+			{
+				CScene* pCurScene = Engine::Get_Scene();
+				dynamic_cast<CStage*>(pCurScene)->Get_WallNameByIndex(iIndex);
+
+				CGameObject* pWall = Get_GameObject(L"Layer_Environment", dynamic_cast<CStage*>(pCurScene)->Get_WallNameByIndex(iIndex)->c_str());
+				pCurScene->Delete_GameObject(L"Layer_Environment", pWall, dynamic_cast<CStage*>(pCurScene)->Get_WallNameByIndex(iIndex)->c_str());
+				Engine::Delete_Renderer(RENDER_PRIORITY, pWall);
+				pTerrain->Set_Unreachable(iIndex, false);
+			}
+		}
+	}
+}
+
+void CPlayer::Hoe()
+{
+	if (g_bIsTopCamera)
+	{
+
 	}
 }
 
