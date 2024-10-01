@@ -140,6 +140,11 @@ _float CRenderer::Get_ZoomRatio()
 	return m_fZoomRatio;
 }
 
+_bool CRenderer::Get_ExpandMap()
+{
+	return m_bExpandMinimap;
+}
+
 void CRenderer::Render_Priority(LPDIRECT3DDEVICE9 & pGraphicDev)
 {
 	for (auto& pGameObject : m_RenderGroup[RENDER_PRIORITY])
@@ -265,6 +270,11 @@ void CRenderer::Render_MiniMap(LPDIRECT3DDEVICE9& pGraphicDev)
 	}
 
 	for (auto& pGameObject : m_RenderGroup[RENDER_ALPHA])
+	{
+		pGameObject->Render_GameObject();
+	}
+
+	for (auto& pGameObject : m_RenderGroup[RENDER_MAP])
 	{
 		pGameObject->Render_GameObject();
 	}

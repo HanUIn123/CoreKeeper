@@ -112,7 +112,7 @@ CMiniMapFrame* CMiniMapFrame::Create(LPDIRECT3DDEVICE9 pGraphicDev)
 
 void CMiniMapFrame::Frame_Regulate()
 {
-    m_fZoomRatio = 300.0f / CRenderer::GetInstance()->Get_ZoomRatio();
+    //m_fZoomRatio = 300.0f / CRenderer::GetInstance()->Get_ZoomRatio();
 
     if (m_bIsMinimapExpanded)
     {

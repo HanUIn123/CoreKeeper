@@ -60,6 +60,7 @@ inline void			Clear_RenderGroup();
 inline void         Delete_Renderer(RENDERID _eType, CGameObject* pGameObject);
 inline void			Expand_MiniMap(LPDIRECT3DDEVICE9& pGraphicDev);
 inline _float		Get_ZoomRatio();
+inline _bool		Get_ExpandMap();
 // light
 
 inline HRESULT			Ready_Light(LPDIRECT3DDEVICE9 pGraphicDev,

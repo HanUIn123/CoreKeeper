@@ -17,9 +17,13 @@ CMiniObject::~CMiniObject()
 {
 }
 
-HRESULT CMiniObject::Ready_GameObject()
+HRESULT CMiniObject::Ready_GameObject(_vec3 vPos)
 {
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
+
+    m_pTransformCom->Set_Pos(vPos.x, vPos.y, vPos.z);
+
+    m_pTransformCom->Set_Scale(4.0f, 0.0f, 4.0f);
 
     return S_OK;
 }
@@ -27,25 +31,34 @@ HRESULT CMiniObject::Ready_GameObject()
 _int CMiniObject::Update_GameObject(const _float& fTimeDelta)
 {
     CDynamicCamera* pCamera = dynamic_cast<CDynamicCamera*>(Engine::Get_GameObject(L"Layer_Environment", L"DynamicCamera"));
+    CTransform* pPlayerTransform = dynamic_cast<CTransform*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Transform"));
 
-    if (pCamera && pCamera->Get_IsWorldMap())
+    if (CRenderer::GetInstance()->Get_ExpandMap())
     {
-        CTransform* pPlayerTransform = dynamic_cast<CTransform*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Transform"));
-        float zoomRatio = pCamera->Get_ZoomRatio();
+        //float zoomRatio = CRenderer::GetInstance()->Get_ZoomRatio();
 
         if (pPlayerTransform)
         {
             _vec3 vPlayerPos;
             pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
 
-            m_pTransformCom->Set_Scale(12.0f, 12.0f, 0.0f);
+            m_pTransformCom->Set_Scale(7.5f, 0.0f, 7.5f);
 
-            m_pTransformCom->Set_Pos((vPlayerPos.x - 128.0f) * 1.75 * zoomRatio, ((vPlayerPos.z - 128.0f) * 1.75 * zoomRatio), 0);
+            m_pTransformCom->Set_Pos((vPlayerPos.x),0,((vPlayerPos.z)));
         }
-
-        Add_RenderGroup(RENDER_MAP, this);
     }
-   
+    else
+    {
+        if (pPlayerTransform)
+        {
+            _vec3 vPlayerPos;
+            pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
+
+            m_pTransformCom->Set_Scale(4.0f, 0.0f, 4.0f);
+            m_pTransformCom->Set_Pos((vPlayerPos.x), 0, ((vPlayerPos.z)));
+        }
+    }
+    Add_RenderGroup(RENDER_MAP, this);
 
     return Engine::CGameObject::Update_GameObject(fTimeDelta);
 }
@@ -71,7 +84,7 @@ HRESULT CMiniObject::Add_Component()
 {
     CComponent* pComponent = NULL;
 
-    pComponent = m_pBufferCom = dynamic_cast<CRcTex*>(Engine::Clone_Proto(L"Proto_RcTex"));
+    pComponent = m_pBufferCom = dynamic_cast<CObjectTex*>(Engine::Clone_Proto(L"Proto_MiniPlayerTex"));
     NULL_CHECK_RETURN(pComponent, E_FAIL);
     m_mapComponent[ID_STATIC].insert({ L"Com_Buffer", pComponent });
 
@@ -86,11 +99,11 @@ HRESULT CMiniObject::Add_Component()
     return S_OK;
 }
 
-CMiniObject* CMiniObject::Create(LPDIRECT3DDEVICE9 pGraphicDev)
+CMiniObject* CMiniObject::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 {
     CMiniObject* pMiniObject = new CMiniObject(pGraphicDev);
 
-    if (FAILED(pMiniObject->Ready_GameObject()))
+    if (FAILED(pMiniObject->Ready_GameObject(vPos)))
     {
         Safe_Release(pMiniObject);
         MSG_BOX("pMiniObject Create Failed");

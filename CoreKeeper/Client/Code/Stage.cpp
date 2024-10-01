@@ -603,9 +603,9 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
 	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"WorldMap", pGameObject), E_FAIL);
 
-	//pGameObject = CMiniObject::Create(m_pGraphicDev);
-	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"MiniPlayer", pGameObject), E_FAIL);
+	pGameObject = CMiniObject::Create(m_pGraphicDev , { 128.5f, 0.1f, 128.5f });
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"MiniPlayer", pGameObject), E_FAIL);
 
 	vPos = { WINCX / 2.f, 200.f };
 	vSize = { 150.f, 130.f };

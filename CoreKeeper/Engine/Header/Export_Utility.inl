@@ -81,6 +81,10 @@ inline _float		Get_ZoomRatio()
 	CRenderer::GetInstance()->Get_ZoomRatio();
 }
 
+inline _bool		Get_ExpandMap()
+{
+	CRenderer::GetInstance()->Get_ExpandMap();
+}
 
 inline HRESULT			Ready_Light(LPDIRECT3DDEVICE9 pGraphicDev,
 	const D3DLIGHT9* pLightInfo,
