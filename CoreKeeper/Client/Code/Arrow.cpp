@@ -10,6 +10,7 @@ CArrow::CArrow(LPDIRECT3DDEVICE9 pGraphicDev)
 	m_fSpeed = 32.f;
 	m_bActive = false;
 	m_fTime = 0.f;
+	m_bHasRotated = false;
 }
 
 CArrow::~CArrow()
@@ -20,7 +21,7 @@ HRESULT CArrow::Ready_GameObject()
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_pTransformCom->Set_Scale(0.25f, 0.25f, 0.25f);
+	m_pTransformCom->Set_Scale(0.3f, 0.3f, 0.3f);
 	m_pShadowTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
 
 	//m_pTransformCom->Set_Pos(vPos.x, vPos.y, vPos.z);
@@ -42,9 +43,27 @@ _int CArrow::Update_GameObject(const _float& fTimeDelta)
 		m_fTime += fTimeDelta;
 		
 		if (m_eDir == LEFT)
-			m_pTransformCom->Set_Scale(-0.5f, 0.5f, 0.5f);
+			m_pTransformCom->Set_Scale(-0.3f, 0.3f, 0.3f);
 		else
-			m_pTransformCom->Set_Scale(0.5f, 0.5f, 0.5f);
+			m_pTransformCom->Set_Scale(0.3f, 0.3f, 0.3f);
+
+		if (!m_bHasRotated)
+		{
+			if (g_bIsTopCamera)
+			{
+				m_pTransformCom->Rotation(ROT_X, D3DXToRadian(90.f));
+			}
+			else
+			{
+				_vec3 vPlayerAngle;
+				CTransform* pPlayerTransformCom = dynamic_cast<Engine::CTransform*>
+					(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Transform"));
+
+				vPlayerAngle = *(pPlayerTransformCom->Get_Angle());
+				m_pTransformCom->Rotation(ROT_Y, vPlayerAngle.y);
+			}
+			m_bHasRotated = true;
+		}
 
 		if (m_fTime >= 0.5f || m_iSpeedWeight == 0)
 		{
@@ -52,6 +71,14 @@ _int CArrow::Update_GameObject(const _float& fTimeDelta)
 			m_iSpeedWeight = 0;
 			m_bProjectileAttackSuccess = true;
 			m_bActive = false;
+			if (m_bHasRotated)
+			{
+				m_bHasRotated = false;
+				if (g_bIsTopCamera)
+				{
+					m_pTransformCom->Rotation(ROT_X, D3DXToRadian(-90.f));
+				}
+			}
 		}
 		Set_Stop(&m_vDir, 1.f);
 		m_pTransformCom->Move_Pos(&m_vDir, fTimeDelta, m_fSpeed * m_iSpeedWeight);

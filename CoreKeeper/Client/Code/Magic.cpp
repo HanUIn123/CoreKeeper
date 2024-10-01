@@ -10,6 +10,7 @@ CMagic::CMagic(LPDIRECT3DDEVICE9 pGraphicDev)
 	m_fSpeed = 32.f;
 	m_bActive = false;
 	m_fTime = 0.f;
+	m_bHasRotated = false;
 }
 
 CMagic::~CMagic()
@@ -20,13 +21,8 @@ HRESULT CMagic::Ready_GameObject()
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_pTransformCom->Set_Scale(0.25f, 0.25f, 0.25f);
+	m_pTransformCom->Set_Scale(0.5f, 0.5f, 0.5f);
 	m_pShadowTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
-
-	//m_pTransformCom->Set_Pos(vPos.x, vPos.y, vPos.z);
-	//m_pShadowTransformCom->Set_Pos(vPos.x, 0.1f, vPos.z);
-	//m_vDir = vDir;
-
 	m_pAnimatorCom->Set_CurState(IDLE, 0, 0, 3);
 
 	return S_OK;
@@ -41,10 +37,42 @@ _int CMagic::Update_GameObject(const _float& fTimeDelta)
 	{
 		m_fTime += fTimeDelta;
 
-		if (m_eDir == LEFT)
-			m_pTransformCom->Set_Scale(-0.5f, 0.5f, 0.5f);
-		else
-			m_pTransformCom->Set_Scale(0.5f, 0.5f, 0.5f);
+		if (!m_bHasRotated)
+		{
+			if (g_bIsTopCamera)
+			{
+				switch (m_eDir)
+				{
+				case FRONT:
+					m_fAngle = -90.f;
+					m_fAngleY = 90.f;
+					break;
+				case LEFT:
+					m_fAngle = 180.f;
+					m_fAngleX = 90.f;
+					break;
+				case BACK:
+					m_fAngle = 90.f;
+					m_fAngleY = -90.f;
+					break;
+				default:
+					m_fAngle = 0.0f;
+					m_fAngleX = 90.f;
+					break;
+				}
+				m_pTransformCom->Rotation(ROT_Y, D3DXToRadian(m_fAngleY));
+				m_pTransformCom->Rotation(ROT_X, D3DXToRadian(m_fAngleX));
+				m_pTransformCom->Rotation(ROT_Z, D3DXToRadian(m_fAngle));
+			}
+			else
+			{
+				_vec3 vLook;
+				CTransform* pPlayerTransformCom = dynamic_cast<Engine::CTransform*>
+					(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Transform"));
+				m_pTransformCom->Set_RotArbit(&vLook, 90.f);
+			}
+			m_bHasRotated = true;
+		}
 
 		if (m_fTime >= 0.5f || m_iSpeedWeight == 0)
 		{
@@ -52,6 +80,19 @@ _int CMagic::Update_GameObject(const _float& fTimeDelta)
 			m_iSpeedWeight = 0;
 			m_bProjectileAttackSuccess = true;
 			m_bActive = false;
+			if (m_bHasRotated)
+			{
+				m_bHasRotated = false;
+				if (g_bIsTopCamera)
+				{
+					m_pTransformCom->Rotation(ROT_Z, D3DXToRadian(-m_fAngle));
+					m_pTransformCom->Rotation(ROT_X, D3DXToRadian(-m_fAngleX));
+					m_pTransformCom->Rotation(ROT_Y, D3DXToRadian(-m_fAngleY));
+					m_fAngle = 0.f;
+					m_fAngleX = 0.f;
+					m_fAngleY = 0.f;
+				}
+			}
 		}
 		Set_Stop(&m_vDir, 1.f);
 		m_pTransformCom->Move_Pos(&m_vDir, fTimeDelta, m_fSpeed * m_iSpeedWeight);
