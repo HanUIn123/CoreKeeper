@@ -525,8 +525,8 @@ void CPlayer::ShoulderView_Control(const _float& fTimeDelta)
 	else
 	{
 		m_eState = IDLE;
-		m_eDir = FRONT;
-		m_pAnimatorCom->Set_CurState(IDLE, 0, 0, 20);
+		m_eDir = BACK;
+		m_pAnimatorCom->Set_CurState(IDLE, 2, 2, 20);
 	}
 	if (m_eState == WALK)
 	{
@@ -858,9 +858,9 @@ void CPlayer::PickAxe()
 				CScene* pCurScene = Engine::Get_Scene();
 				dynamic_cast<CStage*>(pCurScene)->Get_WallNameByIndex(iIndex);
 				
-				CGameObject* pWall = Get_GameObject(L"Layer_Environment", dynamic_cast<CStage*>(pCurScene)->Get_WallNameByIndex(iIndex)->c_str());
+				CWall* pWall = dynamic_cast<CWall*>(Get_GameObject(L"Layer_Environment", dynamic_cast<CStage*>(pCurScene)->Get_WallNameByIndex(iIndex)->c_str()));
+				pWall->Set_Destroy();
 				pCurScene->Delete_GameObject(L"Layer_Environment", pWall, dynamic_cast<CStage*>(pCurScene)->Get_WallNameByIndex(iIndex)->c_str());
-				Engine::Delete_Renderer(RENDER_PRIORITY, pWall);
 				pTerrain->Set_Unreachable(iIndex, false);
 			}
 		}
@@ -895,7 +895,28 @@ void CPlayer::Hoe()
 {
 	if (g_bIsTopCamera)
 	{
-
+		_vec3 vPos;
+		m_pTransformCom->Get_Info(INFO_POS, &vPos);
+		// 플레이어와 마우스 커서 사이의 거리가 n 이하일 경우 커서에 타일 UI 뜨게 하기
+		// 해당 위치에 설치할 수 있을 경우 파란색 타일, 없을 경우 빨간색 타일
+		// 설치할 수 있는 타일일 때 클릭하면 타일 텍스쳐 넘버 변경
+		// 설치할 수 없는 타일일 때 클릭하면 경고 문구 띄울까 말까 : 대사 시스템 때 삽입하면 될듯
+		if (m_pCalculatorCom->Check_Distance2D(&vPos, &m_vMouseWorldPos, 5.f))
+		{
+			_int iIndex = _int(m_vMouseWorldPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (m_vMouseWorldPos.x + 0.5f * VTXITV);
+			switch (m_pHandedItem->Get_ItemMaterial())
+			{
+			case MATERIAL_WOOD: // 1 x 1
+				m_pTerrain->Set_TextureNumber(iIndex, 4);
+				break;
+			case MATERIAL_COPPER: // 3 x 3
+				m_pTerrain->Set_TextureNumber(iIndex, 4);
+				break;
+			case MATERIAL_IRON: // 5 x 5
+				m_pTerrain->Set_TextureNumber(iIndex, 4);
+				break;
+			}
+		}
 	}
 }
 

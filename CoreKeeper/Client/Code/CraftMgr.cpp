@@ -104,10 +104,10 @@ CItem* CCraftMgr::Craft(CInventory* _pInventory, ITEMNUM _eItemNum, MATERIAL _eM
     //case ITEM_ASSISTANCE:
     //    pItem = CAssistance::Create(m_pGraphicDev, _eMaterial);
     //    break;
-        /*
     case ITEM_TABLE:
         pItem = CTable::Create(m_pGraphicDev, _eMaterial);
         break;
+        /*
     case ITEM_POTION_TABLE:
         pItem = CPotionTable::Create(m_pGraphicDev, _eMaterial);
         break;

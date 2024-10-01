@@ -452,7 +452,8 @@ HRESULT CMapEditorScene::Piking_Wall()
                 NULL_CHECK_RETURN(m_pWallCom, E_FAIL);
                 FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsWallNameString[iIndex].c_str(), m_pWallCom), E_FAIL);
 
-                m_vecWallObject[iIndex]->Set_WallNumber(m_iWallImgNumber);
+                m_vecWallObject[iIndex]->Set_WallNumber(0);
+                //m_vecWallObject[iIndex]->Set_WallNumber(m_iWallImgNumber);
                 pTerrain->Set_Unreachable(iIndex, true);
 
                 m_iWallCreateCount++;
