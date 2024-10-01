@@ -17,8 +17,9 @@ class CWall : public Engine::CGameObject
 {
 private:
     explicit												CWall(LPDIRECT3DDEVICE9 pGraphicDev);
-public:
     virtual													~CWall();
+
+public:
 
 public:
     virtual			HRESULT									Ready_GameObject(_float _fWallX, _float _fWallZ, _int iWallImageNum, const wstring _pickedWallName);
@@ -45,6 +46,10 @@ public:
 
     void                                                    Add_WallArray(int _iIndex, CWall* _pWall) { m_vecAroundWall[_iIndex] = _pWall; }
     vector<CWall*>                                          Get_Around() { return m_vecAroundWall; }
+
+    void                                                    Set_Destroy();
+    void                                                    Set_DestoryWall(int _iIndex) { m_vecAroundWall[_iIndex] = nullptr; }
+
 private:
     HRESULT													Add_Component();
     HRESULT                                                 Setup_Material();

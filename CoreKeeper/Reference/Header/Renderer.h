@@ -19,6 +19,9 @@ public:
 	void			Clear_RenderGroup();
 	void            Delete_Renderer(RENDERID _eType, CGameObject* pGameObject);
 	void			Expand_MiniMap(LPDIRECT3DDEVICE9& pGraphicDev);
+	_float			Get_ZoomRatio();
+	_bool			Get_ExpandMap();
+
 private:
 	void			Render_Priority(LPDIRECT3DDEVICE9& pGraphicDev);
 	void			Render_NonAlpha(LPDIRECT3DDEVICE9& pGraphicDev);
@@ -38,6 +41,7 @@ private:
 
 private:
 	_bool						m_bExpandMinimap;
+	_float						m_fZoomRatio;
 private:
 	virtual void		Free();
 

@@ -9,6 +9,7 @@ IMPLEMENT_SINGLETON(CRenderer)
 
 CRenderer::CRenderer()
 	:m_bExpandMinimap(false)
+	, m_fZoomRatio(260.0f)
 {
 	m_MainViewport.X = 0;
 	m_MainViewport.Y = 0;
@@ -52,6 +53,7 @@ void CRenderer::Render_GameObject(LPDIRECT3DDEVICE9 & pGraphicDev)
 	Render_NonAlpha(pGraphicDev);
 	Render_Alpha(pGraphicDev);
 
+	// 미니맵 출력
 	if (pCamera)
 	{
 		if (!dynamic_cast<CDynamicCamera*>(pCamera)->Get_IsWorldMap())
@@ -62,7 +64,7 @@ void CRenderer::Render_GameObject(LPDIRECT3DDEVICE9 & pGraphicDev)
 		}
 	}
 
-	// UI 출력시에만 직교 투영하도록 정해줌
+	// UI 출력
 	if (pCamera)
 	{
 		pCamera->Set_Render(TYPE_ORTHOGRAPHIC);
@@ -110,10 +112,10 @@ void CRenderer::Expand_MiniMap(LPDIRECT3DDEVICE9& pGraphicDev)
 	if (!m_bExpandMinimap)
 	{
 		// 미니맵 확대
-		m_MiniViewport.X = 240;
-		m_MiniViewport.Y = 90;
-		m_MiniViewport.Width = 800;
-		m_MiniViewport.Height = 550;
+		m_MiniViewport.X = 300;
+		m_MiniViewport.Y = 110;
+		m_MiniViewport.Width = 680;
+		m_MiniViewport.Height = 500;
 		m_MiniViewport.MinZ = 0.0f;
 		m_MiniViewport.MaxZ = 1.0f;
 
@@ -131,6 +133,16 @@ void CRenderer::Expand_MiniMap(LPDIRECT3DDEVICE9& pGraphicDev)
 
 		m_bExpandMinimap = false;
 	}
+}
+
+_float CRenderer::Get_ZoomRatio()
+{
+	return m_fZoomRatio;
+}
+
+_bool CRenderer::Get_ExpandMap()
+{
+	return m_bExpandMinimap;
 }
 
 void CRenderer::Render_Priority(LPDIRECT3DDEVICE9 & pGraphicDev)
@@ -194,6 +206,8 @@ void CRenderer::Render_MiniMap(LPDIRECT3DDEVICE9& pGraphicDev)
 	pGraphicDev->SetRenderState(D3DRS_ALPHAREF, 0xc0);
 
 	CTransform* pPlayerTransform = dynamic_cast<CTransform*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Transform"));
+	CDynamicCamera* pDynamicCamera = dynamic_cast<CDynamicCamera*>(Engine::Get_GameObject(L"Layer_Environment", L"DynamicCamera"));
+
 	if (pPlayerTransform)
 	{
 		_vec3 playerPos;
@@ -222,12 +236,30 @@ void CRenderer::Render_MiniMap(LPDIRECT3DDEVICE9& pGraphicDev)
 			playerPos.z -= 0.01f;
 			vUp = _vec3(0.0f, 0.0f, 1.0f);
 
+			if (pDynamicCamera)
+			{
+				_long dwMouseWheel = Engine::Get_DIMouseMove(DIMS_Z);
+
+				if (dwMouseWheel > 0)
+				{
+					m_fZoomRatio -= 10.0f;
+					if (m_fZoomRatio < 100.0f)
+						m_fZoomRatio = 100.0f;
+				}
+				else if (dwMouseWheel < 0)
+				{
+					m_fZoomRatio += 10.0f;
+					if (m_fZoomRatio > 260.0f)
+						m_fZoomRatio = 260.0f;
+				}
+			}
+
 			D3DXMATRIX matView;
 			D3DXMatrixLookAtLH(&matView, &vEye, &vAt, &vUp);
 			pGraphicDev->SetTransform(D3DTS_VIEW, &matView);
 
 			D3DXMATRIX matOrtho;
-			D3DXMatrixOrthoLH(&matOrtho, 300.0f, 210.0f, 0.1f, 1000.0f);
+			D3DXMatrixOrthoLH(&matOrtho, m_fZoomRatio, m_fZoomRatio, 0.1f, 1000.0f);
 			pGraphicDev->SetTransform(D3DTS_PROJECTION, &matOrtho);
 		}
 	}
@@ -238,6 +270,11 @@ void CRenderer::Render_MiniMap(LPDIRECT3DDEVICE9& pGraphicDev)
 	}
 
 	for (auto& pGameObject : m_RenderGroup[RENDER_ALPHA])
+	{
+		pGameObject->Render_GameObject();
+	}
+
+	for (auto& pGameObject : m_RenderGroup[RENDER_MAP])
 	{
 		pGameObject->Render_GameObject();
 	}

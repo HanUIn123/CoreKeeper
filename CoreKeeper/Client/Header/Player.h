@@ -55,6 +55,8 @@ private:
 	void			Show_Equipment();
 	void			Swing_Equipment();
 	void			Shoot_Equipment();
+	void			PickAxe();
+	void			Hoe();
 
 	void			Set_EquippedStatus();
 	void			Set_Clothes();
