@@ -58,8 +58,6 @@ void CUICraft::Render_GameObject()
 
 	m_pTransformCom->Get_WorldMatrix(&matWorld);
 
-	m_pTextureCom->Set_Texture(1);
-
 	if (m_bLRCheck == true)
 	{
 		if (m_eTableType == TABLE_CRAFT || m_eTableType == TABLE_ANVIL)
@@ -69,6 +67,8 @@ void CUICraft::Render_GameObject()
 			matWorld._11 += 30.f;
 			matWorld._41 += 20.f;
 		}
+		else
+			m_pTextureCom->Set_Texture();
 	}
 	else
 		m_pTextureCom->Set_Texture();

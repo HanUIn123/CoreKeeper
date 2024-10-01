@@ -80,7 +80,11 @@ public:
 	void            Set_Map();
 	void            Set_Status();
 	void            Set_ChestInventory(CInventory* _pInventory = nullptr);
+	void            Set_GraveInventory();
 	void            Set_Statue(_int _StatueNum = 0);
+	void            Set_Furnace();
+
+	_bool           Get_GraveInv() { return m_bGraveInventory; }
 
 	void            UI_Disable();
 
@@ -138,9 +142,11 @@ private:
 	_bool                   m_bMap;       // Map 창 확인용
 	_bool                   m_bStatus;
 	_bool                   m_bChestInventory;
+	_bool                   m_bGraveInventory;
 	_bool                   m_bTableCraft;
 	_bool                   m_bAnvil;
 	_bool                   m_bStatue;
+	_bool                   m_bFurnace;
 
 	_bool                   m_bNoMove;    // UI건드릴때 캐릭터 움직이지 않게하는 용도
 
