@@ -453,6 +453,7 @@ HRESULT CMapEditorScene::Piking_Wall()
                 FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsWallNameString[iIndex].c_str(), m_pWallCom), E_FAIL);
 
                 m_vecWallObject[iIndex]->Set_WallNumber(m_iWallImgNumber);
+                pTerrain->Set_Unreachable(iIndex, true);
 
                 m_iWallCreateCount++;
                 m_vCheckPos = m_vPickPos;
@@ -477,6 +478,8 @@ HRESULT CMapEditorScene::Piking_Wall()
             {
                 Delete_Object(L"Layer_Environment", m_vecWallObject[iIndex]->Get_PickedWallName().c_str());
                 m_vecWallObject[iIndex] = nullptr;
+                pTerrain->Set_Unreachable(iIndex, false);
+
             }
         }
     }

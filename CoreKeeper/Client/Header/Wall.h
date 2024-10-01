@@ -34,6 +34,7 @@ public:
 
     // Delete_GameObject 함수를 사용하려면, 키값이 필요한데, 그 키값(이름)을 받아올 함수
     wstring													Get_PickedWallName() { return m_strPickedWallName; }
+    void													Set_PickedWallName(wstring _wallName) { m_strPickedWallName = _wallName; }
 
     _int                                                    Get_PikingIndex() { return m_iPikingWallIndex; }
     void                                                    Set_PikingIndex(_int _iPikingIndex) { m_iPikingWallIndex = _iPikingIndex; }

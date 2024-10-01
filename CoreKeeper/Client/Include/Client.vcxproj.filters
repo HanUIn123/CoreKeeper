@@ -238,9 +238,6 @@
     <Filter Include="02. GameObject\06. Item\06. Installation\08. Sprinkler">
       <UniqueIdentifier>{7bd48905-2ece-4883-9b89-d96dd8ec0a47}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\94.Wall">
-      <UniqueIdentifier>{9e769398-2d95-40c2-9c55-b97bbdf6ec0e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\06. Item\06. Installation\07. Gravestone">
       <UniqueIdentifier>{6de48782-7493-4f29-bb1b-c08ba1d279a2}</UniqueIdentifier>
     </Filter>
@@ -441,12 +438,15 @@
     </Filter>
     <Filter Include="02. GameObject\07. UI\06. UICraft\01. UICraftButton">
       <UniqueIdentifier>{f727a696-a3c8-48e4-94d0-34284aeef83a}</UniqueIdentifier>
-	</Filter>
+    </Filter>
     <Filter Include="02. GameObject\06. Item\01. Weapon\01. Bow\Arrow">
       <UniqueIdentifier>{15122301-100c-42fa-b901-0c0b078176ab}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameObject\06. Item\01. Weapon\02. Staff\Magic">
       <UniqueIdentifier>{02bdfade-6c0d-40cc-8a17-8926fbfb8c34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\08. Object\94.Wall">
+      <UniqueIdentifier>{9e769398-2d95-40c2-9c55-b97bbdf6ec0e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -571,7 +571,7 @@
       <Filter>02. GameObject\07. UI\06. UICraft</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\Wall.h">
-      <Filter>02. GameObject\94.Wall</Filter>
+      <Filter>02. GameObject\08. Object\94.Wall</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\Eye.h">
       <Filter>02. GameObject\01. Player\00. Eyes</Filter>
@@ -815,7 +815,7 @@
     </ClInclude>
     <ClInclude Include="..\Header\UICraftButton.h">
       <Filter>02. GameObject\07. UI\06. UICraft\01. UICraftButton</Filter>
-	</ClInclude>
+    </ClInclude>
     <ClInclude Include="..\Header\Arrow.h">
       <Filter>02. GameObject\06. Item\01. Weapon\01. Bow\Arrow</Filter>
     </ClInclude>
@@ -924,7 +924,7 @@
       <Filter>02. GameObject\07. UI\00. UIPlayerStatus\01. PlayerStat</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\Wall.cpp">
-      <Filter>02. GameObject\94.Wall</Filter>
+      <Filter>02. GameObject\08. Object\94.Wall</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\Eye.cpp">
       <Filter>02. GameObject\01. Player\00. Eyes</Filter>
@@ -1165,7 +1165,7 @@
     </ClCompile>
     <ClCompile Include="..\Code\UICraftButton.cpp">
       <Filter>02. GameObject\07. UI\06. UICraft\01. UICraftButton</Filter>
-	</ClCompile>
+    </ClCompile>
     <ClCompile Include="..\Code\Arrow.cpp">
       <Filter>02. GameObject\06. Item\01. Weapon\01. Bow\Arrow</Filter>
     </ClCompile>

@@ -18,7 +18,7 @@ public:
 	void			Render_GameObject(LPDIRECT3DDEVICE9& pGraphicDev);
 	void			Clear_RenderGroup();
 	void            Delete_Renderer(RENDERID _eType, CGameObject* pGameObject);
-	void			Expand_MiniMap();
+	void			Expand_MiniMap(LPDIRECT3DDEVICE9& pGraphicDev);
 private:
 	void			Render_Priority(LPDIRECT3DDEVICE9& pGraphicDev);
 	void			Render_NonAlpha(LPDIRECT3DDEVICE9& pGraphicDev);
@@ -35,6 +35,9 @@ private:
 
 	_D3DVIEWPORT9 m_MainViewport;
 	_D3DVIEWPORT9 m_MiniViewport;
+
+private:
+	_bool						m_bExpandMinimap;
 private:
 	virtual void		Free();
 

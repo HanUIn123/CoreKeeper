@@ -38,7 +38,7 @@ public:
 
 private:
 	_bool			m_bIsMinimapExpanded;
-
+	_bool			m_bKeyPressed;
 private:
 	virtual void		Free();
 };
