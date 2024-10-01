@@ -46,7 +46,11 @@ HRESULT CLayer::Delete_GameObject(const _tchar* pObjTag, CGameObject* pGameObjec
 	if (iter == m_mapObject.end())
 		return E_FAIL;
 
-	Safe_Release(iter->second);
+	CRenderer::GetInstance()->Delete_Renderer(RENDER_PRIORITY, iter->second);
+	CRenderer::GetInstance()->Delete_Renderer(RENDER_ALPHA, iter->second);
+
+	iter->second->Free_Component();
+	Safe_Delete(iter->second);
 
 	m_mapObject.erase(iter);
 
