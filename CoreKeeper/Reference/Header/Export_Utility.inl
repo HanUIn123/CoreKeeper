@@ -76,6 +76,12 @@ inline void			Expand_MiniMap(LPDIRECT3DDEVICE9& pGraphicDev)
 	CRenderer::GetInstance()->Expand_MiniMap(pGraphicDev);
 }
 
+inline _float		Get_ZoomRatio()
+{
+	CRenderer::GetInstance()->Get_ZoomRatio();
+}
+
+
 inline HRESULT			Ready_Light(LPDIRECT3DDEVICE9 pGraphicDev,
 	const D3DLIGHT9* pLightInfo,
 	const _uint& iIndex)
