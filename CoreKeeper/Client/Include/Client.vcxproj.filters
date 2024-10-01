@@ -819,6 +819,9 @@
     <ClInclude Include="..\Header\Arrow.h">
       <Filter>02. GameObject\06. Item\01. Weapon\01. Bow\Arrow</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\Magic.h">
+      <Filter>02. GameObject\06. Item\01. Weapon\02. Staff\Magic</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1168,6 +1171,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\Arrow.cpp">
       <Filter>02. GameObject\06. Item\01. Weapon\01. Bow\Arrow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Magic.cpp">
+      <Filter>02. GameObject\06. Item\01. Weapon\02. Staff\Magic</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

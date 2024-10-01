@@ -11,6 +11,8 @@ class CShadowTex;
 
 END
 
+class CMagic;
+
 class CStaff : public CItem
 {
 private:
@@ -25,6 +27,12 @@ public:
 
 private:
 	HRESULT			Add_Component();
+
+private:
+	wstring			m_strMagic;
+	CMagic* m_pMagic;
+	CTransform* m_pTransformMagic;
+	_bool			m_bShot;
 
 public:
 	static CStaff* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos = { 0.f, 0.f, 0.f });
