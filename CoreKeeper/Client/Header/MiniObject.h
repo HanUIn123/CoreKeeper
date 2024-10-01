@@ -6,7 +6,7 @@ BEGIN(Engine)
 
 class CTransform;
 class CTexture;
-class CRcTex;
+class CObjectTex;
 
 END
 
@@ -18,7 +18,7 @@ private:
     virtual													~CMiniObject();
 
 public:
-    virtual			HRESULT									Ready_GameObject();
+    virtual			HRESULT									Ready_GameObject(_vec3 vPos);
     virtual			_int									Update_GameObject(const _float& fTimeDelta);
     virtual			void									LateUpdate_GameObject();
     virtual			void									Render_GameObject();
@@ -29,10 +29,10 @@ private:
 private:
     Engine::CTransform* m_pTransformCom;
     Engine::CTexture* m_pTextureCom;
-    Engine::CRcTex* m_pBufferCom;
+    Engine::CObjectTex* m_pBufferCom;
 
 public:
-    static CMiniObject* Create(LPDIRECT3DDEVICE9 pGraphicDev);
+    static CMiniObject* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);
 
 private:
     virtual void											Free();
