@@ -732,12 +732,13 @@ HRESULT CStage::Load_MapFile()
 	{
 		ReadFile(m_hFile, &vec[i], sizeof(_int), &dwByte, nullptr);
 
-		bool bReachable = false;
-		ReadFile(m_hFile, &bReachable, sizeof(bool), &dwByte, nullptr);
-		pTerrain->Set_Unreachable(i, bReachable);
+		bool	bTemp(false);
+		ReadFile(m_hFile, &bTemp, sizeof(bool), &dwByte, nullptr);
+		vecReach[i] = bTemp;
 	}
 
 	pTerrain->Set_TextureNumber(vec);
+	pTerrain->Set_Unreachable(vecReach);
 
 	// ========================================================
 
