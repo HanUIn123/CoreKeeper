@@ -5,7 +5,7 @@
 #include "..\Header\Player.h"
 
 CGravestoneObject::CGravestoneObject(LPDIRECT3DDEVICE9 pGraphicDev)
-	: CObject(pGraphicDev)
+	: CObject(pGraphicDev), m_bCollision(false)
 {
 }
 
@@ -28,6 +28,17 @@ _int CGravestoneObject::Update_GameObject(const _float& fTimeDelta)
 	if (Check_Interaction())
 	{
 		Interaction();
+	}
+	else
+	{
+		if (m_bCollision)
+		{
+			CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
+
+			pPlayer->Set_ChestInventory(m_pInventoryCom);
+
+			m_bCollision = false;
+		}
 	}
 
 	Add_RenderGroup(RENDER_ALPHA, this);
@@ -68,6 +79,8 @@ void CGravestoneObject::Interaction()
 		CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
 
 		pPlayer->Set_ChestInventory(m_pInventoryCom);
+
+		m_bCollision = true;
 	}
 }
 

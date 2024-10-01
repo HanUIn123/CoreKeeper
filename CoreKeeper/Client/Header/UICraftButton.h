@@ -38,8 +38,19 @@ public:
 		m_bWindow = false;
 	}
 
+	_bool           UPRECT_Picked(POINT _screenPos) {
+		return  ::PtInRect(&m_UpRect, _screenPos);
+	}
+
+
+	_bool           DOWNRECT_Picked(POINT _screenPos) {
+		return  ::PtInRect(&m_DownRect, _screenPos);
+	}
+	
 private:
 	HRESULT			Add_Component();
+
+	void            Set_Slot();
 
 private:
 	_vec2 m_vPos;
@@ -47,6 +58,12 @@ private:
 
 	MATERIAL eTableMaterial;
 	TABLETYPE m_eTableType;
+
+	RECT m_UpRect;
+	RECT m_DownRect;
+
+	_bool m_bUpCollision;
+	_bool m_bDownCollision;
 
 private:
 	Engine::CRcTex* m_pBufferCom;

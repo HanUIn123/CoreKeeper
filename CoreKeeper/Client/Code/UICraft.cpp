@@ -60,12 +60,15 @@ void CUICraft::Render_GameObject()
 
 	m_pTextureCom->Set_Texture(1);
 
-	if (m_eTableType == TABLE_CRAFT || m_eTableType == TABLE_ANVIL)
+	if (m_bLRCheck == true)
 	{
-		m_pTextureCom->Set_Texture(1);
+		if (m_eTableType == TABLE_CRAFT || m_eTableType == TABLE_ANVIL)
+		{
+			m_pTextureCom->Set_Texture(1);
 
-		matWorld._11 += 30.f;
-	    matWorld._41 += 20.f;
+			matWorld._11 += 30.f;
+			matWorld._41 += 20.f;
+		}
 	}
 	else
 		m_pTextureCom->Set_Texture();
@@ -113,6 +116,7 @@ void CUICraft::Set_Window(TABLETYPE _eType, MATERIAL _eMaterial)
 		}
 	}
 }
+
 
 _int CUICraft::Check_Index()
 {

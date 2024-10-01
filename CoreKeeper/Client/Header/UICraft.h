@@ -27,6 +27,9 @@ public:
 public:
 	void            Set_Window(TABLETYPE _eType = TABLE_PLAYER, MATERIAL _eMaterial = MATERIAL_WOOD);
 
+	void            Set_Disable() { m_bWindow = false; }
+
+	MATERIAL        Get_Material() { return eTableMaterial; }
 private:
     _int            Check_Index();
 private:

@@ -385,7 +385,7 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UILeftCraft", pGameObject), E_FAIL);
 
 
-	vPos = { 470.f, 255.f };
+	vPos = { 800.f, 255.f };
 	vSize = { 120.f, 90.f };
 
 	pGameObject = CUICraft::Create(m_pGraphicDev, vPos, vSize, false);
@@ -414,10 +414,10 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
 	{
 		if (i < 3)
 		{
-			vPos = { 400.f + i * 70.f , 220.f };
+			vPos = { 730.f + i * 70.f , 220.f };
 		}
 		else
-			vPos = { 400.f + (i - 3) * 70.f, 220.f + (i / 3) * 70.f };
+			vPos = { 730.f + (i - 3) * 70.f, 220.f + (i / 3) * 70.f };
 
 		vSize = { 30.f, 30.f };
 

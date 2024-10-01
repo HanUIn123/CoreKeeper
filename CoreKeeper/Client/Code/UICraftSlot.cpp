@@ -305,6 +305,8 @@ void CUICraftSlot::Set_Window(TABLETYPE _eTableType, MATERIAL _eMaterial, _bool 
 			}
 		}
 
+		m_bDirection = _bDirection;
+
 		auto iter = mapItemType.find({ _eTableType, _bDirection });
 
 		if (iter != mapItemType.end() && iter->second.eItemMat != _eMaterial)
