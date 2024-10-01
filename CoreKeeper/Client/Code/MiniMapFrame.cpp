@@ -22,11 +22,34 @@ HRESULT CMiniMapFrame::Ready_GameObject()
 
 _int CMiniMapFrame::Update_GameObject(const _float& fTimeDelta)
 {
+    if (Engine::Get_DIKeyState(DIK_M) & 0x80)
+    {
+        if (!m_bKeyPressed)
+        {
+            m_bIsMinimapExpanded = !m_bIsMinimapExpanded;
+            m_bKeyPressed = true;
+        }
+    }
+    else
+    {
+        m_bKeyPressed = false;
+    }
 
-    _vec3 vPos;
-    m_pTransformCom->Set_Scale(100.0f, 75.0f, 0.0f);
-    m_pTransformCom->Get_Info(INFO_POS, &vPos);
-    m_pTransformCom->Set_Pos(480.0f, 200.0f, 0.0f);
+
+    if (m_bIsMinimapExpanded)
+    {
+        _vec3 vPos;
+        m_pTransformCom->Set_Scale(350.0f, 280.0f, 0.0f);
+        m_pTransformCom->Get_Info(INFO_POS, &vPos);
+        m_pTransformCom->Set_Pos(0.0f, 0.0f, 0.0f);
+    }
+    else
+    {
+        _vec3 vPos;
+        m_pTransformCom->Set_Scale(100.0f, 75.0f, 0.0f);
+        m_pTransformCom->Get_Info(INFO_POS, &vPos);
+        m_pTransformCom->Set_Pos(480.0f, 200.0f, 0.0f);
+    }
 
     Add_RenderGroup(RENDER_UI, this);
 

@@ -8,6 +8,7 @@
 IMPLEMENT_SINGLETON(CRenderer)
 
 CRenderer::CRenderer()
+	:m_bExpandMinimap(false)
 {
 	m_MainViewport.X = 0;
 	m_MainViewport.Y = 0;
@@ -98,9 +99,32 @@ void CRenderer::Delete_Renderer(RENDERID _eType, CGameObject* pGameObject)
 	}
 }
 
-void CRenderer::Expand_MiniMap()
+void CRenderer::Expand_MiniMap(LPDIRECT3DDEVICE9& pGraphicDev)
 {
+	if (!m_bExpandMinimap)
+	{
+		// ¹Ì´Ï¸Ê È®´ë
+		m_MiniViewport.X = 240;
+		m_MiniViewport.Y = 90;
+		m_MiniViewport.Width = 800;
+		m_MiniViewport.Height = 550;
+		m_MiniViewport.MinZ = 0.0f;
+		m_MiniViewport.MaxZ = 1.0f;
 
+		m_bExpandMinimap = true;
+	}
+	else
+	{
+		// ¹Ì´Ï¸Ê Ãà¼Ò
+		m_MiniViewport.X = 1020;
+		m_MiniViewport.Y = 90;
+		m_MiniViewport.Width = 200;
+		m_MiniViewport.Height = 140;
+		m_MiniViewport.MinZ = 0.0f;
+		m_MiniViewport.MaxZ = 1.0f;
+
+		m_bExpandMinimap = false;
+	}
 }
 
 void CRenderer::Render_Priority(LPDIRECT3DDEVICE9 & pGraphicDev)
@@ -164,23 +188,42 @@ void CRenderer::Render_MiniMap(LPDIRECT3DDEVICE9& pGraphicDev)
 	pGraphicDev->SetRenderState(D3DRS_ALPHAREF, 0xc0);
 
 	CTransform* pPlayerTransform = dynamic_cast<CTransform*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Transform"));
-
 	if (pPlayerTransform)
 	{
 		_vec3 playerPos;
 		pPlayerTransform->Get_Info(INFO_POS, &playerPos);
 
-		_vec3 vEye = playerPos + _vec3(0.0f, 20.0f, 0.0f);
-		_vec3 vAt = playerPos;
-		_vec3 vUp = _vec3(0.0f, 0.0f, 1.0f);
+		_vec3 vEye, vAt, vUp;
 
-		D3DXMATRIX matView;
-		D3DXMatrixLookAtLH(&matView, &vEye, &vAt, &vUp);
-		pGraphicDev->SetTransform(D3DTS_VIEW, &matView);
+		if (!m_bExpandMinimap)
+		{
+			vEye = playerPos + _vec3(0.0f, 20.0f, 0.0f);
+			vAt = playerPos;
+			vUp = _vec3(0.0f, 0.0f, 1.0f);
 
-		D3DXMATRIX matOrtho;
-		D3DXMatrixOrthoLH(&matOrtho, 40.0f, 40.0f, 0.1f, 1000.0f);
-		pGraphicDev->SetTransform(D3DTS_PROJECTION, &matOrtho);
+			D3DXMATRIX matView;
+			D3DXMatrixLookAtLH(&matView, &vEye, &vAt, &vUp);
+			pGraphicDev->SetTransform(D3DTS_VIEW, &matView);
+
+			D3DXMATRIX matOrtho;
+			D3DXMatrixOrthoLH(&matOrtho, 40.0f, 40.0f, 0.1f, 1000.0f);
+			pGraphicDev->SetTransform(D3DTS_PROJECTION, &matOrtho);
+		}
+		else
+		{
+			vEye = { 128.5f, 350.0f, 128.499f };
+			vAt = { 128.5f,0,128.5f };
+			playerPos.z -= 0.01f;
+			vUp = _vec3(0.0f, 0.0f, 1.0f);
+
+			D3DXMATRIX matView;
+			D3DXMatrixLookAtLH(&matView, &vEye, &vAt, &vUp);
+			pGraphicDev->SetTransform(D3DTS_VIEW, &matView);
+
+			D3DXMATRIX matOrtho;
+			D3DXMatrixOrthoLH(&matOrtho, 300.0f, 210.0f, 0.1f, 1000.0f);
+			pGraphicDev->SetTransform(D3DTS_PROJECTION, &matOrtho);
+		}
 	}
 
 	for (auto& pGameObject : m_RenderGroup[RENDER_NONALPHA])
@@ -193,9 +236,9 @@ void CRenderer::Render_MiniMap(LPDIRECT3DDEVICE9& pGraphicDev)
 		pGameObject->Render_GameObject();
 	}
 
-	D3DXMATRIX matPerspective;
-	D3DXMatrixPerspectiveFovLH(&matPerspective, D3DXToRadian(60), (float)WINCX / (float)WINCY, 0.1f, 1000.0f);
-	pGraphicDev->SetTransform(D3DTS_PROJECTION, &matPerspective);
+	D3DXMATRIX matPerspect;
+	D3DXMatrixPerspectiveFovLH(&matPerspect, D3DXToRadian(60), (float)WINCX / (float)WINCY, 0.1f, 1000.0f);
+	pGraphicDev->SetTransform(D3DTS_PROJECTION, &matPerspect);
 
 	pGraphicDev->SetViewport(&m_MainViewport);
 	pGraphicDev->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_MODULATE);
