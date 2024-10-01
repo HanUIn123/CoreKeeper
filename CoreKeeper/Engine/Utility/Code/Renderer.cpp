@@ -9,7 +9,7 @@ IMPLEMENT_SINGLETON(CRenderer)
 
 CRenderer::CRenderer()
 	:m_bExpandMinimap(false)
-	, m_fZoomRatio(260.0f)
+	, m_fZoomRatio(300.0f)
 {
 	m_MainViewport.X = 0;
 	m_MainViewport.Y = 0;
@@ -112,10 +112,10 @@ void CRenderer::Expand_MiniMap(LPDIRECT3DDEVICE9& pGraphicDev)
 	if (!m_bExpandMinimap)
 	{
 		// ¹Ì´Ï¸Ê È®´ë
-		m_MiniViewport.X = 300;
-		m_MiniViewport.Y = 110;
-		m_MiniViewport.Width = 680;
-		m_MiniViewport.Height = 500;
+		m_MiniViewport.X = 240;
+		m_MiniViewport.Y = 90;
+		m_MiniViewport.Width = 800;
+		m_MiniViewport.Height = 550;
 		m_MiniViewport.MinZ = 0.0f;
 		m_MiniViewport.MaxZ = 1.0f;
 
@@ -244,8 +244,8 @@ void CRenderer::Render_MiniMap(LPDIRECT3DDEVICE9& pGraphicDev)
 				else if (dwMouseWheel < 0)
 				{
 					m_fZoomRatio += 10.0f;
-					if (m_fZoomRatio > 260.0f)
-						m_fZoomRatio = 260.0f;
+					if (m_fZoomRatio > 400.0f)
+						m_fZoomRatio = 400.0f;
 				}
 			}
 
