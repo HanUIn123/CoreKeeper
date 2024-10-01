@@ -19,10 +19,10 @@ HRESULT CInventory::Ready_Inventory(int _iSlotCount)
 	return S_OK;
 }
 
-void CInventory::Sort_Item()
+void CInventory::Sort_Item(_int i)
 {
 	// 10번째 인덱스부터 끝까지 정렬
-	sort(m_vecItems.begin() + 10, m_vecItems.end(),
+	sort(m_vecItems.begin() + i, m_vecItems.end(),
 		[](CItem* a, CItem* b) {
 			// 둘 다 nullptr인 경우
 			if (a == nullptr && b == nullptr) return false;

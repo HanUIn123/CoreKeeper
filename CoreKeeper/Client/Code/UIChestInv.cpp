@@ -40,7 +40,7 @@ HRESULT CUIChestInv::Ready_GameObject(_vec2 vPos, _int _iIndex)
 	m_BRect.top = vPos.y - vSize.y / 2;
 	m_BRect.bottom = vPos.y + vSize.y / 2;
 
-	m_iIndex = _iIndex + 1;
+	m_iIndex = _iIndex;
 
 	return S_OK;
 }
@@ -62,21 +62,21 @@ _int CUIChestInv::Update_GameObject(const _float& fTimeDelta)
 				CInventory* pCursorInv = dynamic_cast<CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_UI", L"UI_Cursor", L"Com_Inventory"));
 
 				vector<CItem*>* pCvecItem = pCursorInv->Get_VecItemP();
-				vector<CItem*>* pPvecItem = m_pInventoryCom->Get_VecItemP();
-				_int iIndex = m_iIndex - 1;
+				vector<CItem*>* pPvecItem = m_pChestInv->Get_VecItemP();
+				//_int iIndex = m_iIndex - 1;
 
-				if (!m_pInventoryCom->Check_Empty(iIndex) && !pCursorInv->Check_Empty(0))
+				if (!m_pChestInv->Check_Empty(m_iIndex) && !pCursorInv->Check_Empty(0))
 				{
-					if ((*pPvecItem)[iIndex]->Get_ItemNum() > ITEM_ETC && (*pPvecItem)[iIndex]->Get_ItemNum() == (*pCvecItem)[0]->Get_ItemNum())
+					if ((*pPvecItem)[m_iIndex]->Get_ItemNum() > ITEM_ETC && (*pPvecItem)[m_iIndex]->Get_ItemNum() == (*pCvecItem)[0]->Get_ItemNum())
 					{
-						(*pPvecItem)[iIndex]->Add_Count((*pCvecItem)[0]->Get_Count());
+						(*pPvecItem)[m_iIndex]->Add_Count((*pCvecItem)[0]->Get_Count());
 						pCursorInv->Remove_Item(0);
 					}
-					else if ((*pPvecItem)[iIndex]->Get_ItemNum() != (*pCvecItem)[0]->Get_ItemNum())
-						m_pInventoryCom->Swap_Item(&(*pCvecItem)[0], &(*pPvecItem)[iIndex]);
+					else if ((*pPvecItem)[m_iIndex]->Get_ItemNum() != (*pCvecItem)[0]->Get_ItemNum())
+						m_pChestInv->Swap_Item(&(*pCvecItem)[0], &(*pPvecItem)[m_iIndex]);
 				}
 				else
-					m_pInventoryCom->Swap_Item(&(*pCvecItem)[0], &(*pPvecItem)[iIndex]);
+					m_pChestInv->Swap_Item(&(*pCvecItem)[0], &(*pPvecItem)[m_iIndex]);
 			}
 
 			m_bCollapse = true;
@@ -119,21 +119,20 @@ void CUIChestInv::Render_GameObject()
 
 	_int iIndex = m_iIndex;
 
-	//if (iIndex >= pPlayerInv->Get_SlotCount())
-	//{
-		//iIndex--;
-	//}
-
-	if (!m_pInventoryCom->Check_Empty(iIndex))
+	if (!m_pChestInv->Check_Empty(iIndex))
 	{
-		pItem = m_pInventoryCom->Get_Item(iIndex);
+		pItem = m_pChestInv->Get_Item(iIndex);
 
 		_int iCount = pItem->Get_Count();
 
-		pItem->Get_Texture()->Set_Texture();
+		Engine::MATERIAL material = pItem->Get_ItemMaterial();
+
+		if (material != 3)
+			pItem->Get_Texture()->Set_Texture(material);
+		else
+			pItem->Get_Texture()->Set_Texture();
 
 		Engine::ITEMNUM eNum = pItem->Get_ItemNum();
-
 
 		switch (eNum)
 		{
@@ -252,10 +251,6 @@ HRESULT CUIChestInv::Add_Component()
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_DYNAMIC].insert({ L"Com_UITransform", pComponent });
 
-	pComponent = m_pInventoryCom = dynamic_cast<CInventory*>(Engine::Clone_Proto(L"Proto_ChestInventory"));
-	NULL_CHECK_RETURN(pComponent, E_FAIL);
-	m_mapComponent[ID_STATIC].insert({ L"Com_Inventory", pComponent });
-
 	pComponent = m_pAnimatorCom = dynamic_cast<CAnimator*>(Engine::Clone_Proto(L"Proto_Animator"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Animator", pComponent });
@@ -275,7 +270,8 @@ CUIChestInv* CUIChestInv::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec2 vPos, _int
 {
 	CUIChestInv* pUIInventory = new CUIChestInv(pGraphicDev);
 
-	if (FAILED(pUIInventory->Ready_GameObject(vPos, _iIndex)))
+	if (FAILED(pUIInventory->Ready_GameObject(vPos
+		, _iIndex)))
 	{
 		Safe_Release(pUIInventory);
 		MSG_BOX("UIInventory Create Failed");

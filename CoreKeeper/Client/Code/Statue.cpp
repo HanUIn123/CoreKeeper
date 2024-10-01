@@ -2,6 +2,7 @@
 #include "../Header/Statue.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
+#include "..\Header\Player.h"
 
 CStatue::CStatue(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CObject(pGraphicDev), m_iImgNum(0)
@@ -25,6 +26,12 @@ HRESULT CStatue::Ready_GameObject(_vec3 vPos, int iImgNum)
 
 _int CStatue::Update_GameObject(const _float& fTimeDelta)
 {
+	
+	if (Check_Interaction())
+	{
+		Interaction();
+	}
+
 	Add_RenderGroup(RENDER_ALPHA, this);
 
 	return Engine::CGameObject::Update_GameObject(fTimeDelta);
@@ -41,15 +48,29 @@ void CStatue::Render_GameObject()
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
 
+	m_pColliderCom->Update_Collider(m_pTransformCom->Get_WorldMatrix());
+
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
 	m_pTextureCom->Set_Texture(m_iImgNum);
 
 	m_pBufferCom->Render_Buffer();
 
+	m_pColliderCom->Render_Collider();
+
 	//m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
+}
+
+void CStatue::Interaction()
+{
+	if (Engine::Key_Down(DIK_E))
+	{
+		CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
+
+		pPlayer->Set_Statue(m_iImgNum);
+	}
 }
 
 HRESULT CStatue::Add_Component()
@@ -63,7 +84,7 @@ HRESULT CStatue::Add_Component()
 	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_StatueTexture"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Texture", pComponent });
-
+	
 	pComponent = m_pTransformCom = dynamic_cast<CTransform*>(Engine::Clone_Proto(L"Proto_Transform"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_DYNAMIC].insert({ L"Com_Transform", pComponent });
@@ -71,6 +92,10 @@ HRESULT CStatue::Add_Component()
 	pComponent = m_pCalculCom = dynamic_cast<CCalculator*>(Engine::Clone_Proto(L"Proto_Calculator"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Calculator", pComponent });
+
+	pComponent = m_pColliderCom = dynamic_cast<CColliderCube*>(Engine::Clone_Proto(L"Proto_NormalCubeCollider"));
+	NULL_CHECK_RETURN(pComponent, E_FAIL);
+	m_mapComponent[ID_STATIC].insert({ L"Com_Collider", pComponent });
 
 	return S_OK;
 }

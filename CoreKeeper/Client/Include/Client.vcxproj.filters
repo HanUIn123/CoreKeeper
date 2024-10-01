@@ -106,9 +106,6 @@
     <Filter Include="02. GameObject\07. UI\00. UIPlayerStatus\01. PlayerStat">
       <UniqueIdentifier>{3ce9803a-08b8-47b4-8cc7-658d01c6f615}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\07. UI\06. PlayerCraft">
-      <UniqueIdentifier>{06a7d7b5-241f-4a7b-b257-c37509900efa}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\01. Player\00. Eyes">
       <UniqueIdentifier>{4a833dcc-9966-4821-99a8-4deb21a37bc8}</UniqueIdentifier>
     </Filter>
@@ -123,9 +120,6 @@
     </Filter>
     <Filter Include="02. GameObject\01. Player\01. Shirt">
       <UniqueIdentifier>{9c4f8f9c-26aa-4930-a6e2-aed8b4b12133}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\07. UI\06. PlayerCraft\00. UICraftSlot">
-      <UniqueIdentifier>{803ba04b-3425-4fed-a62c-359d9a488e36}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameObject\06. Item\04. Bag">
       <UniqueIdentifier>{3c75d086-ee82-45e4-9ea6-447afd10e5b0}</UniqueIdentifier>
@@ -250,6 +244,60 @@
     <Filter Include="02. GameObject\06. Item\06. Installation\07. Gravestone">
       <UniqueIdentifier>{6de48782-7493-4f29-bb1b-c08ba1d279a2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\06. Item\99. Etc\02. Potion">
+      <UniqueIdentifier>{cc2ed0f0-938f-44d2-8140-a41033ca8ec7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\99. Etc\02. Potion\00. HpPotion">
+      <UniqueIdentifier>{8ca4298f-2487-45fc-8f95-379100a38d19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\99. Etc\02. Potion\01. AttackPotion">
+      <UniqueIdentifier>{789b8f79-42fa-43ce-8401-39a9ce0381ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\99. Etc\02. Potion\02. DefensePotion">
+      <UniqueIdentifier>{fbd04b08-e3ea-4c77-b8e6-9b22f10061e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\99. Etc\03. Food">
+      <UniqueIdentifier>{e3a29a58-c512-4b3f-8e30-6c054146ff38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\99. Etc\04. Seed">
+      <UniqueIdentifier>{4d87b991-086f-41a7-a2a2-cdc69b86e9f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\99. Etc\04. Seed\00. BerrySeed">
+      <UniqueIdentifier>{08e3bc80-d6b2-4e10-aaca-93d13a3ba324}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\99. Etc\04. Seed\01. PepperSeed">
+      <UniqueIdentifier>{7014d163-a5db-4a1d-a68a-d26123e848a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\99. Etc\04. Seed\02. FlowerSeed">
+      <UniqueIdentifier>{2d5b4503-0819-4b1c-94ca-c6eccb15e6dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\99. Etc\05. StatueCore">
+      <UniqueIdentifier>{149d75a5-9fc8-4000-8a77-84c9ed7823c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\99. Etc\05. StatueCore\00. SlimeCore">
+      <UniqueIdentifier>{54231c3c-51be-40c6-a56f-dda1c3935b62}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\99. Etc\05. StatueCore\02. MalCore">
+      <UniqueIdentifier>{a9adc4d7-be42-4098-8868-aee9d258ee7e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\99. Etc\05. StatueCore\01. LarvaCore">
+      <UniqueIdentifier>{40a2ca2e-3354-44fb-b033-5c984529c69c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\07. UI\12. UIStatue">
+      <UniqueIdentifier>{74c6834d-a81e-448f-b0e3-838ca85c4ec1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\99. Etc\06. Spawner">
+      <UniqueIdentifier>{adc2feaf-9928-47cc-abfb-5c1b1176d49e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\99. Etc\06. Spawner\01. MalSpawner">
+      <UniqueIdentifier>{796124f5-79cc-45a2-99d3-a49e8cf27d8b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\99. Etc\06. Spawner\00. PlayerSpawner">
+      <UniqueIdentifier>{3b1c6582-40f4-468f-b8dc-dbe2550d2c3b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\99. Etc\06. Spawner\02. AzeosSpawner">
+      <UniqueIdentifier>{fd78a2e4-f7b9-4705-a2eb-e88e049c86da}</UniqueIdentifier>
+    </Filter>
     <Filter Include="02. GameObject\06. Item\99. Etc\07. Wood">
       <UniqueIdentifier>{e5f254c0-58c4-4571-bac7-f14444de781e}</UniqueIdentifier>
     </Filter>
@@ -258,6 +306,21 @@
     </Filter>
     <Filter Include="02. GameObject\06. Item\99. Etc\09. Piece">
       <UniqueIdentifier>{e04f8601-5724-400a-80a9-2718805579ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\07. UI\12. UIStatue\00. UIJemSlot">
+      <UniqueIdentifier>{40da8256-d357-4a9c-a9a1-6b0c0168dc02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\07. UI\12. UIStatue\01. UIStatueCraft">
+      <UniqueIdentifier>{4664de73-6815-41b5-a865-78e3aeee96f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\07. UI\11. UIChestInv\00. UIChestSort">
+      <UniqueIdentifier>{e767b36e-abe6-42eb-a00f-5e7f6e0610da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\07. UI\06. UICraft">
+      <UniqueIdentifier>{06a7d7b5-241f-4a7b-b257-c37509900efa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\07. UI\06. UICraft\00. UICraftSlot">
+      <UniqueIdentifier>{803ba04b-3425-4fed-a62c-359d9a488e36}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameObject\97.Map">
       <UniqueIdentifier>{681cea35-2838-437b-a7a7-52a7d680be86}</UniqueIdentifier>
@@ -376,6 +439,9 @@
     <Filter Include="03. Manager\00. CraftMgr">
       <UniqueIdentifier>{51fe876e-9cef-431f-8961-b5abe0eacb68}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\07. UI\06. UICraft\01. UICraftButton">
+      <UniqueIdentifier>{f727a696-a3c8-48e4-94d0-34284aeef83a}</UniqueIdentifier>
+	</Filter>
     <Filter Include="02. GameObject\06. Item\01. Weapon\01. Bow\Arrow">
       <UniqueIdentifier>{15122301-100c-42fa-b901-0c0b078176ab}</UniqueIdentifier>
     </Filter>
@@ -501,8 +567,8 @@
     <ClInclude Include="..\Header\UIPlayerStats.h">
       <Filter>02. GameObject\07. UI\00. UIPlayerStatus\01. PlayerStat</Filter>
     </ClInclude>
-    <ClInclude Include="..\Header\UIPlayerCraft.h">
-      <Filter>02. GameObject\07. UI\06. PlayerCraft</Filter>
+    <ClInclude Include="..\Header\UICraft.h">
+      <Filter>02. GameObject\07. UI\06. UICraft</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\Wall.h">
       <Filter>02. GameObject\94.Wall</Filter>
@@ -523,7 +589,7 @@
       <Filter>02. GameObject\01. Player\02. Pants</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\UICraftSlot.h">
-      <Filter>02. GameObject\07. UI\06. PlayerCraft\00. UICraftSlot</Filter>
+      <Filter>02. GameObject\07. UI\06. UICraft\00. UICraftSlot</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\Sword.h">
       <Filter>02. GameObject\06. Item\01. Weapon\00. Sword</Filter>
@@ -735,6 +801,21 @@
     <ClInclude Include="..\Header\MiniObject.h">
       <Filter>02. GameObject\91.MiniObject</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\UIStatue.h">
+      <Filter>02. GameObject\07. UI\12. UIStatue</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\UIJemSlot.h">
+      <Filter>02. GameObject\07. UI\12. UIStatue\00. UIJemSlot</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\UIStatueCraft.h">
+      <Filter>02. GameObject\07. UI\12. UIStatue\01. UIStatueCraft</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\UIChestSort.h">
+      <Filter>02. GameObject\07. UI\11. UIChestInv\00. UIChestSort</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\UICraftButton.h">
+      <Filter>02. GameObject\07. UI\06. UICraft\01. UICraftButton</Filter>
+	</ClInclude>
     <ClInclude Include="..\Header\Arrow.h">
       <Filter>02. GameObject\06. Item\01. Weapon\01. Bow\Arrow</Filter>
     </ClInclude>
@@ -842,9 +923,6 @@
     <ClCompile Include="..\Code\UIPlayerStats.cpp">
       <Filter>02. GameObject\07. UI\00. UIPlayerStatus\01. PlayerStat</Filter>
     </ClCompile>
-    <ClCompile Include="..\Code\UIPlayerCraft.cpp">
-      <Filter>02. GameObject\07. UI\06. PlayerCraft</Filter>
-    </ClCompile>
     <ClCompile Include="..\Code\Wall.cpp">
       <Filter>02. GameObject\94.Wall</Filter>
     </ClCompile>
@@ -864,7 +942,7 @@
       <Filter>02. GameObject\01. Player\02. Pants</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\UICraftSlot.cpp">
-      <Filter>02. GameObject\07. UI\06. PlayerCraft\00. UICraftSlot</Filter>
+      <Filter>02. GameObject\07. UI\06. UICraft\00. UICraftSlot</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\Sword.cpp">
       <Filter>02. GameObject\06. Item\01. Weapon\00. Sword</Filter>
@@ -1070,6 +1148,24 @@
     <ClCompile Include="..\Code\MiniObject.cpp">
       <Filter>02. GameObject\91.MiniObject</Filter>
     </ClCompile>
+    <ClCompile Include="..\Code\UIStatue.cpp">
+      <Filter>02. GameObject\07. UI\12. UIStatue</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\UIJemSlot.cpp">
+      <Filter>02. GameObject\07. UI\12. UIStatue\00. UIJemSlot</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\UIStatueCraft.cpp">
+      <Filter>02. GameObject\07. UI\12. UIStatue\01. UIStatueCraft</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\UIChestSort.cpp">
+      <Filter>02. GameObject\07. UI\11. UIChestInv\00. UIChestSort</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\UICraft.cpp">
+      <Filter>02. GameObject\07. UI\06. UICraft</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\UICraftButton.cpp">
+      <Filter>02. GameObject\07. UI\06. UICraft\01. UICraftButton</Filter>
+	</ClCompile>
     <ClCompile Include="..\Code\Arrow.cpp">
       <Filter>02. GameObject\06. Item\01. Weapon\01. Bow\Arrow</Filter>
     </ClCompile>

@@ -280,19 +280,17 @@ void CUIScreenInv::Render_GameObject()
 			Engine::Render_Font(L"Font_Item", tFont, &pos, D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
 		}
 
-		m_pItem->Get_Texture()->Set_Texture();
+		Engine::MATERIAL material = m_pItem->Get_ItemMaterial();
 
-		//_vec3 vScale = m_pItem->Get_Transform()->m_vScale;
-		
+		if(material != 3)
+			m_pItem->Get_Texture()->Set_Texture(material);
+		else
+			m_pItem->Get_Texture()->Set_Texture();
+
 		Engine::ITEMNUM eNum = m_pItem->Get_ItemNum();
 
 		switch (eNum)
 		{
-		//case ITEM_SEED:
-		//	matWorld._11 = 10.f;
-		//	matWorld._22 = 10.f;
-		//	break;
-
 		case ITEM_SWORD:
 			matWorld._11 = 40.f;
 			matWorld._22 = 40.f;
@@ -437,6 +435,10 @@ HRESULT CUIScreenInv::Add_Component()
 	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_UIScreenInvTex"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Texture", pComponent });
+
+	pComponent = m_pItemTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_UIScreenInvTex"));
+	NULL_CHECK_RETURN(pComponent, E_FAIL);
+	m_mapComponent[ID_STATIC].insert({ L"Com_ItemTexture", pComponent });
 
 	pComponent = m_pNumTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_UINumber"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);

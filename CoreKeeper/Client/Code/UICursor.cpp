@@ -138,14 +138,6 @@ void CUICursor::Render_GameObject()
 
 			matWorld._42 -= 8.f;
 			break;
-
-		//case ITEM_SHOVEL:
-		//	matWorld._11 = 60.f;
-		//	matWorld._22 = 60.f;
-
-		//	matWorld._42 -= 8.f;
-		//	break;
-
 		case ITEM_STAFF:
 			matWorld._11 = 35.f;
 			matWorld._22 = 35.f;
@@ -189,7 +181,12 @@ void CUICursor::Render_GameObject()
 
 		m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
 
-		m_pItem->Get_Texture()->Set_Texture();
+		Engine::MATERIAL material = m_pItem->Get_ItemMaterial();
+
+		if (material != 3)
+			m_pItem->Get_Texture()->Set_Texture(material);
+		else
+			m_pItem->Get_Texture()->Set_Texture();
 
 		m_pItem->Get_Buffer()->Render_First();
 

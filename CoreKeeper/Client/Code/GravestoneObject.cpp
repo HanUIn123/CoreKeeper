@@ -2,6 +2,7 @@
 #include "../Header/GravestoneObject.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
+#include "..\Header\Player.h"
 
 CGravestoneObject::CGravestoneObject(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CObject(pGraphicDev)
@@ -64,8 +65,9 @@ void CGravestoneObject::Interaction()
 {
 	if (Engine::Key_Down(DIK_E))
 	{
-		// UI 열리게 하는 걸 여기에 하면 됨
-		// UI가 열리면서 플레이어한테 bool값을 줘야함(다른 창 열림 방지)
+		CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
+
+		pPlayer->Set_ChestInventory(m_pInventoryCom);
 	}
 }
 

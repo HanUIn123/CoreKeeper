@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "Define.h"
 #include "..\Header\Item.h"
+#include "..\Header\UICraft.h"
 
 BEGIN(Engine)
 
@@ -17,14 +18,25 @@ END
 class CUICraftSlot : public Engine::CGameObject
 {
 public:
-	enum UICRAFTITEM { UCITEM_TORCH, UCITEM_WOODENPICK, UCITEM_WOODENSHOVEL, UCITEM_WORKBENCH, UCITEM_CHEST, UCITEM_END };
+	enum UIPLAYERCRAFT { UCITEM_TORCH, UCITEM_WOODENPICK, UCITEM_WORKBENCH, UCITEM_CHEST, UCITEM_END };
+
+	struct UIITEM
+	{
+		_int      iItemIndex;
+
+		ITEMNUM   eItemNum;
+
+		MATERIAL  eItemMat = MATERIAL_WOOD;
+
+		_int      iTextureNum = 0;
+	};
 
 private:
 	explicit CUICraftSlot(LPDIRECT3DDEVICE9 pGraphicDev);
 	virtual ~CUICraftSlot();
 
 public:
-	virtual			HRESULT			Ready_GameObject(_vec2 vPos, _vec2 vSize, _int iIndex);
+	virtual			HRESULT			Ready_GameObject(_vec2 vPos, _vec2 vSize, _int iIndex, _bool bDirection);
 	virtual			_int			Update_GameObject(const _float& fTimeDelta);
 	virtual			void			LateUpdate_GameObject();
 	virtual			void			Render_GameObject();
@@ -34,21 +46,30 @@ public:
 		return  ::PtInRect(&m_BRect, _screenPos);
 	}
 
-	void            Set_Window() {
-		if (m_bWindow)
-			m_bWindow = false;
-		else
-			m_bWindow = true;
+	void            Set_Window(TABLETYPE _eTableType = TABLE_PLAYER, MATERIAL _eMaterial = MATERIAL_WOOD, _bool _bDirection = true);
+	void            Set_DisableWindow()
+	{
+		m_bWindow = false;
+
+		if (m_bDirection == true)
+		{
+			switch (m_eTableType)
+			{
+			case TABLE_CRAFT:
+				m_BRect.left -= 48.f;
+				m_BRect.right -= 48.f;
+
+				break;
+			}
+		}
 	}
+	void            Ready_Table();
 
 private:
 	HRESULT			Add_Component();
 
 private:
 	_int m_iIndex;
-	
-	wstring Craftstring[500];
-	_int m_iCraftCount;
 
 	_vec2 m_vPos;
 
@@ -56,12 +77,20 @@ private:
 
 	_bool m_bWindow;
 	_bool m_bCollapse;
-	_bool m_bFirst;
 
 	_bool m_bEnough;
 
-	UICRAFTITEM m_eSlotType;
-	ITEMNUM     m_eItemType[3];
+	UIPLAYERCRAFT m_eSlotType;
+
+	UIITEM      m_eItemType;
+
+	TABLETYPE   m_eTableType;
+
+	_bool       m_bDirection;
+
+	MATERIAL    m_eMatrial;
+
+	multimap<pair<TABLETYPE, _bool>, UIITEM> mapItemType;
 
 private:
 	Engine::CAnimTex* m_pSlotBufferCom;
@@ -74,7 +103,7 @@ private:
 	Engine::CAnimator* m_pAnimatorCom;
 
 public:
-	static CUICraftSlot* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec2 vPos, _vec2 vSize, _int iIndex);
+	static CUICraftSlot* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec2 vPos, _vec2 vSize, _int iIndex, _bool bDirection);
 
 private:
 	virtual void		Free();

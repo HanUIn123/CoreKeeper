@@ -44,6 +44,7 @@
 #include "CoreBase.h"
 #include "GravestoneObject.h"
 #include "Skeleton.h"
+#include "TableObject.h"
 
 // UI
 #include "UIPlayerStatus.h"
@@ -55,7 +56,7 @@
 #include "UIInventory.h"
 #include "UIItemSlot.h"
 #include "UIPlayerStats.h"
-#include "UIPlayerCraft.h"
+#include "UICraft.h"
 #include "UICraftSlot.h"
 #include "UITrashCan.h"
 #include "UITrashSlot.h"
@@ -64,8 +65,17 @@
 #include "UIStatusFrame.h"
 #include "UIItemFrame.h"
 #include "UIBuff.h"
+#include "UICraftButton.h"
+#include "UIBuff.h"
+#include "UIChestInv.h"
+#include "UIStatue.h"
+#include "UIJemSlot.h"
+#include "UIStatueCraft.h"
+#include "UIChestSort.h"
 
 // Map 
 #include "MiniMapFrame.h"
 //#include "WorldMap.h"
+#include "MiniObject.h"
+#include "WorldMap.h"
 #include "MiniObject.h"
