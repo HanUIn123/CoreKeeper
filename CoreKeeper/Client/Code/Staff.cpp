@@ -2,6 +2,7 @@
 #include "..\Header\Staff.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
+#include "..\Header\Magic.h"
 
 CStaff::CStaff(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CItem(pGraphicDev)
@@ -9,6 +10,10 @@ CStaff::CStaff(LPDIRECT3DDEVICE9 pGraphicDev)
 	m_tStat.iAttack = 50;
 
 	m_eItemNum = ITEM_STAFF;
+
+	m_bShot = false;
+	m_pMagic = nullptr;
+
 }
 
 CStaff::~CStaff()
@@ -35,6 +40,14 @@ HRESULT CStaff::Ready_GameObject(_vec3 vPos)
 
 _int CStaff::Update_GameObject(const _float& fTimeDelta)
 {
+	if (!m_pMagic)
+	{
+		m_pMagic = dynamic_cast<CMagic*>(Get_GameObject(L"Layer_GameLogic", L"Magic"));
+		m_pTransformMagic = dynamic_cast<CTransform*>(m_pMagic->Get_Component(ID_DYNAMIC, L"Com_Transform"));
+	}
+	else
+		m_pColliderCubeCom->Update_Collider(m_pTransformMagic->Get_WorldMatrix());
+
 	m_pAnimatorCom->Update_Animation();
 
 	_vec3 vPos;
@@ -44,12 +57,37 @@ _int CStaff::Update_GameObject(const _float& fTimeDelta)
 	if (m_bUse)
 	{
 		// Swing(0, 5, 2);
-		Shoot(MAGIC);
-
+		Shoot(ARROW);
 		m_bActive = true;
 		m_bDrop = false;
-		m_pTransformCom->Set_Scale(1.5f, 1.5f, 1.5f);
+		if (m_eDir == LEFT)
+			m_pTransformCom->Set_Scale(-1.5f, 1.5f, 1.5f);
+		else
+			m_pTransformCom->Set_Scale(1.5f, 1.5f, 1.5f);
 	}
+	if (m_bProjectileAttackSuccess || m_pMagic->Get_ProjectileAttackSuccess())
+	{
+		m_pMagic->Set_ProjectileAttackSuccess(false);
+		m_bProjectileAttackSuccess = false;
+		m_bFired = false;
+		m_bShot = false;
+		m_pMagic->Set_Active(false);
+		m_pMagic->Get_Transform()->Set_Pos(vPos.x, -100.f, vPos.z);
+	}
+	if (m_bFired)
+	{
+		if (!m_bShot)
+		{
+			m_bShot = true;
+			m_pMagic->Set_Active(true);
+			m_pMagic->Set_Direction(m_eDir);
+			m_pMagic->Get_Transform()->Set_Pos(vPos.x, 0.25f, vPos.z);
+			m_pMagic->Set_TextureNumber((MATERIAL)(m_eMaterial + 1));
+			dynamic_cast<CMagic*>(m_pMagic)->Set_Dir(m_vProjectileDir);
+		}
+	}
+
+
 
 	if (m_bDrop)
 	{
@@ -65,7 +103,6 @@ _int CStaff::Update_GameObject(const _float& fTimeDelta)
 			In_Inventory();
 		}
 	}
-	
 	Add_RenderGroup(RENDER_ALPHA, this);
 
 	return Engine::CGameObject::Update_GameObject(fTimeDelta);
@@ -132,6 +169,10 @@ HRESULT CStaff::Add_Component()
 	pComponent = m_pColliderCom = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Proto_ItemCollider"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_DYNAMIC].insert({ L"Com_Collider", pComponent });
+
+	pComponent = m_pColliderCubeCom = dynamic_cast<CColliderCube*>(Engine::Clone_Proto(L"Proto_ShootCubeCollider"));
+	NULL_CHECK_RETURN(pComponent, E_FAIL);
+	m_mapComponent[ID_DYNAMIC].insert({ L"Com_ColliderCube", pComponent });
 
 	pComponent = m_pAnimatorCom = dynamic_cast<CAnimator*>(Engine::Clone_Proto(L"Proto_Animator"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);

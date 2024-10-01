@@ -25,6 +25,7 @@
 #include "Bow.h"
 #include "Arrow.h"
 #include "Staff.h"
+#include "Magic.h"
 
 #include "Helmet.h"
 #include "Chest.h"
