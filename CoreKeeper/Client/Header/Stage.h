@@ -24,7 +24,7 @@ public:
 public:
 	HRESULT							Create_Inventory(const _tchar* pLayerTag, const _tchar* pGameObjectTag);
 	HRESULT                         Create_Item(const _tchar* pLayerTag, CItem* pItem, const _tchar* pItemTag);
-
+	wstring*						Get_WallNameByIndex(_int iIndex) { return &m_wsWallNameString[iIndex]; }
 private:
 	HRESULT							Ready_LightInfo();
 	HRESULT							Ready_Layer_Environment(const _tchar* pLayerTag);

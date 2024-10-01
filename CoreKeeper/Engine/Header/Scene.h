@@ -20,6 +20,7 @@ public:
 	virtual			void			Render_Scene();
 
 	HRESULT							Create_GameObject(const _tchar* pLayerTag, CGameObject* pGameObject, const _tchar* pObjectTag);
+	HRESULT							Delete_GameObject(const _tchar* pLayerTag, CGameObject* pGameObject, const _tchar* pGameObjectTag);
 protected:
 	map<const _tchar*, CLayer*>		m_mapLayer;
 	LPDIRECT3DDEVICE9				m_pGraphicDev;

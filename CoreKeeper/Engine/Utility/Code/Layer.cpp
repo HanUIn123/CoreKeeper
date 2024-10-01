@@ -38,6 +38,26 @@ HRESULT CLayer::Add_GameObject(const _tchar * pObjTag, CGameObject * pGameObject
 	return S_OK;
 }
 
+HRESULT CLayer::Delete_GameObject(const _tchar* pObjTag, CGameObject* pGameObject)
+{
+	NULL_CHECK_RETURN(pObjTag, E_FAIL);
+
+	auto iter = m_mapObject.find(pObjTag);
+	if (iter == m_mapObject.end())
+		return E_FAIL;
+
+	CRenderer::GetInstance()->Delete_Renderer(RENDER_PRIORITY, iter->second);
+	CRenderer::GetInstance()->Delete_Renderer(RENDER_ALPHA, iter->second);
+
+	iter->second->Free_Component();
+	Safe_Delete(iter->second);
+
+	m_mapObject.erase(iter);
+
+	return S_OK;
+}
+
+
 HRESULT CLayer::Ready_Layer()
 {
 	return S_OK;

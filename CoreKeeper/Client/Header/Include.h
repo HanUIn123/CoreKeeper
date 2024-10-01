@@ -30,6 +30,8 @@
 #include "Chest.h"
 #include "Leg.h"
 
+#include "Table.h"
+
 #include "Wood.h"
 #include "Torch.h"
 

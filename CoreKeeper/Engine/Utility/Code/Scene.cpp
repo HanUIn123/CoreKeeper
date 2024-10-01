@@ -80,6 +80,18 @@ HRESULT CScene::Create_GameObject(const _tchar* pLayerTag, CGameObject* pGameObj
 	return pLayer->Add_GameObject(pObjectTag, pGameObject);
 }
 
+HRESULT CScene::Delete_GameObject(const _tchar* pLayerTag, CGameObject* pGameObject, const _tchar* pGameObjectTag)
+{
+	auto	iter = find_if(m_mapLayer.begin(), m_mapLayer.end(), CTag_Finder(pLayerTag));
+
+	if (iter == m_mapLayer.end())
+		return E_FAIL;
+
+	iter->second->Delete_GameObject(pGameObjectTag, pGameObject);
+
+	return S_OK;
+}
+
 void CScene::Free()
 {
 	for_each(m_mapLayer.begin(), m_mapLayer.end(), CDeleteMap());
