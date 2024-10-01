@@ -44,7 +44,7 @@ _int CWall::Update_GameObject(const _float& fTimeDelta)
         (Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Collider"));
 
     // 플레이어와 충돌
-    m_bActive = !(m_pColliderCom->Check_Sphere_Collision(pPlayerCollider));
+    //m_bActive = !(m_pColliderCom->Check_Sphere_Collision(pPlayerCollider));
 
     Update_Texture();
 
@@ -89,10 +89,7 @@ void CWall::Render_GameObject()
     m_pTextureCom->Set_Texture(m_iCurImgNum);
     //m_pTextureCom->Set_Texture(2);
 
-    if (m_bActive)
-    {
-        m_pBufferCom->Render_Buffer();
-    }
+    m_pBufferCom->Render_Buffer();
 
     m_pColliderCom->Render_Collider();
 
@@ -415,6 +412,24 @@ void CWall::Update_Texture()
     default:
         m_iWallImageNum = 0;
         break;
+    }
+}
+
+void CWall::Set_Destroy()
+{
+    for (int i = 0; i < 8; i++)
+    {
+        if (!m_vecAroundWall[i])
+            continue;
+
+        if (i < 4)
+        {
+            m_vecAroundWall[i]->Set_DestoryWall(i + 4);
+        }
+        else
+        {
+            m_vecAroundWall[i]->Set_DestoryWall(i - 4);
+        }
     }
 }
 
