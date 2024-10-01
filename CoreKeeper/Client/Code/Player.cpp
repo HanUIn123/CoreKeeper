@@ -25,6 +25,8 @@
 #include "..\Header\UIStatueCraft.h"
 #include "..\Header\UIChestSort.h"
 #include "..\Header\Stage.h"
+#include "..\Header\GravestoneObject.h"
+#include "..\Header\UIFurnace.h"
 
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CGameObject(pGraphicDev)
@@ -62,6 +64,8 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	m_bTableCraft = false;
 	m_bAnvil = false;
 	m_bStatue = false;
+	m_bGraveInventory = false;
+	m_bFurnace = false;
 
 	m_vStartPoint = { 0, 0, 0 };
 	m_vKnockBackDir = { 0, 0, 0 };
@@ -1019,7 +1023,7 @@ void CPlayer::Set_UI()
 	}
 	if (Engine::Key_Down(DIK_TAB))
 	{
-		if (m_bMap || m_bChestInventory || m_bCraft || m_bInventory || m_bStatue || m_bStatue)
+		if (m_bMap || m_bChestInventory || m_bCraft || m_bInventory || m_bStatue || m_bGraveInventory)
 			UI_Disable();
 
 		else if (!m_bMap && !m_bChestInventory)
@@ -1080,11 +1084,25 @@ void CPlayer::Set_Craft(TABLETYPE eTableType, MATERIAL _eMaterial)
 		CUICraft* pCraft = dynamic_cast<CUICraft*>(Engine::Get_GameObject(L"Layer_UI", L"UILeftCraft"));
 		pCraft->Set_Window(eTableType, _eMaterial);
 
+		CUICraft* pRightCraft = dynamic_cast<CUICraft*>(Engine::Get_GameObject(L"Layer_UI", L"UIRightCraft"));
+		pRightCraft->Set_Disable();
+
 		for (int i = 0; i < 6; i++)
 		{
 			wstring string;
 
 			string = L"UICraftLSlot_" + std::to_wstring(i);
+
+			CUICraftSlot* pSlot = dynamic_cast<CUICraftSlot*>(Engine::Get_GameObject(L"Layer_UI", string.c_str()));
+
+			pSlot->Set_DisableWindow();
+		}
+
+		for (int i = 0; i < 6; i++)
+		{
+			wstring string;
+
+			string = L"UICraftRSlot_" + std::to_wstring(i);
 
 			CUICraftSlot* pSlot = dynamic_cast<CUICraftSlot*>(Engine::Get_GameObject(L"Layer_UI", string.c_str()));
 
@@ -1107,6 +1125,23 @@ void CPlayer::Set_Craft(TABLETYPE eTableType, MATERIAL _eMaterial)
 			CUICraftSlot* pSlot = dynamic_cast<CUICraftSlot*>(Engine::Get_GameObject(L"Layer_UI", string.c_str()));
 
 			pSlot->Set_Window(eTableType, _eMaterial, true);
+		}
+
+		if (eTableType == TABLE_CRAFT || eTableType == TABLE_ANVIL)
+		{
+			CUICraft* pRightCraft = dynamic_cast<CUICraft*>(Engine::Get_GameObject(L"Layer_UI", L"UIRightCraft"));
+			pRightCraft->Set_Window(eTableType, _eMaterial);
+
+			for (int i = 0; i < 6; i++)
+			{
+				wstring string;
+
+				string = L"UICraftRSlot_" + std::to_wstring(i);
+
+				CUICraftSlot* pSlot = dynamic_cast<CUICraftSlot*>(Engine::Get_GameObject(L"Layer_UI", string.c_str()));
+
+				pSlot->Set_Window(eTableType, _eMaterial, false);
+			}
 		}
 
 		m_bCraft = true;
@@ -1225,6 +1260,49 @@ void CPlayer::Set_ChestInventory(CInventory* pInventory)
 		m_bChestInventory = true;
 }
 
+void CPlayer::Set_GraveInventory()
+{
+	if (m_bGraveInventory)
+	{
+		CInventory* pGraveInventory = dynamic_cast<CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_Environment", L"AheadGrave", L"Com_Inventory"));
+
+		for (int i = 0; i < 30; ++i)
+		{
+			wstring string;
+
+			string = L"UI_GraveInventory_" + std::to_wstring(i);
+
+			CUIChestInv* pChestInventory = dynamic_cast<CUIChestInv*>(Engine::Get_GameObject(L"Layer_UI", string.c_str()));
+
+			pChestInventory->Set_Disable();
+		}
+
+		if(m_bInventory)
+			Set_Inventory();
+
+		m_bGraveInventory = false;
+	}
+	else
+	{
+		CInventory* pGraveInventory = dynamic_cast<CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_Environment", L"AheadGrave", L"Com_Inventory"));
+
+		for (int i = 0; i < 30; ++i)
+		{
+			wstring string;
+
+			string = L"UI_GraveInventory_" + std::to_wstring(i);
+
+			CUIChestInv* pChestInventory = dynamic_cast<CUIChestInv*>(Engine::Get_GameObject(L"Layer_UI", string.c_str()));
+
+			pChestInventory->Set_Show(pGraveInventory);
+		}
+
+		Set_Inventory();
+
+		m_bGraveInventory = true;
+	}
+}
+
 void CPlayer::Set_Statue(_int _StatueNum)
 {
 	CUIStatue* pStatue = dynamic_cast<CUIStatue*>(Engine::Get_GameObject(L"Layer_UI", L"UI_Statue"));
@@ -1247,9 +1325,36 @@ void CPlayer::Set_Statue(_int _StatueNum)
 		m_bStatue = true;
 }
 
+void CPlayer::Set_Furnace()
+{
+	if (m_bFurnace)
+	{
+		CUIFurnace* pFurnace = dynamic_cast<CUIFurnace*>(Engine::Get_GameObject(L"Layer_UI", L"UI_Furnace"));
+
+		pFurnace->Set_Diable();
+
+		if (m_bInventory)
+		{
+			Set_Inventory();
+		}
+
+		m_bFurnace = false;
+	}
+	else
+	{
+		CUIFurnace* pFurnace = dynamic_cast<CUIFurnace*>(Engine::Get_GameObject(L"Layer_UI", L"UI_Furnace"));
+
+		pFurnace->Set_Window();
+
+		Set_Inventory();
+
+		m_bFurnace = true;
+	}
+}
+
 void CPlayer::UI_Disable()
 {
-	if (m_bInventory && !m_bChestInventory && !m_bStatue)
+	if (m_bInventory)
 	{
 		Set_Inventory();
 
@@ -1284,6 +1389,16 @@ void CPlayer::UI_Disable()
 	if (m_bChestInventory)
 	{
 		Set_ChestInventory();
+	}
+
+	if (m_bGraveInventory)
+	{
+		Set_GraveInventory();
+	}
+
+	if (m_bFurnace)
+	{
+		Set_Furnace();
 	}
 }
 

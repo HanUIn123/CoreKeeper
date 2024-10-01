@@ -88,15 +88,6 @@
     <Filter Include="02. GameObject\07. UI\02. UIStatus">
       <UniqueIdentifier>{5f789f66-086f-4154-b4fe-59e0c4ace950}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\07. UI\05. UIInventory">
-      <UniqueIdentifier>{6209e4eb-d697-45e9-ac69-1570c246f771}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\07. UI\05. UIInventory\00. UIInventory">
-      <UniqueIdentifier>{db2c7fa8-7d9c-435a-8a60-cf6280a80677}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\07. UI\05. UIInventory\01. InvPlate">
-      <UniqueIdentifier>{0ac47d63-794f-4ff2-a171-21b40ac20b90}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\07. UI\00. UIPlayerStatus">
       <UniqueIdentifier>{5534ff0c-7767-46ae-a9dd-70bd4ef43f2d}</UniqueIdentifier>
     </Filter>
@@ -447,6 +438,18 @@
     </Filter>
     <Filter Include="02. GameObject\08. Object\94.Wall">
       <UniqueIdentifier>{9e769398-2d95-40c2-9c55-b97bbdf6ec0e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\07. UI\13. UIFurnace">
+      <UniqueIdentifier>{04155040-a7ee-4e5f-9bff-ffc76e4c8c02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\07. UI\05. UIInventory">
+      <UniqueIdentifier>{6209e4eb-d697-45e9-ac69-1570c246f771}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\07. UI\05. UIInventory\00. UIInventory">
+      <UniqueIdentifier>{db2c7fa8-7d9c-435a-8a60-cf6280a80677}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\07. UI\05. UIInventory\01. InvPlate">
+      <UniqueIdentifier>{0ac47d63-794f-4ff2-a171-21b40ac20b90}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -822,6 +825,9 @@
     <ClInclude Include="..\Header\Magic.h">
       <Filter>02. GameObject\06. Item\01. Weapon\02. Staff\Magic</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\UIFurnace.h">
+      <Filter>02. GameObject\07. UI\13. UIFurnace</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1174,6 +1180,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\Magic.cpp">
       <Filter>02. GameObject\06. Item\01. Weapon\02. Staff\Magic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\UIFurnace.cpp">
+      <Filter>02. GameObject\07. UI\13. UIFurnace</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

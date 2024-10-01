@@ -152,6 +152,17 @@ CItem* CCraftMgr::Craft(CInventory* _pInventory, ITEMNUM _eItemNum, MATERIAL _eM
     //case ITEM_PLAYER_SPAWNER:
     //case ITEM_MAL_SPAWNER:
     //case ITEM_AZEOS_SPAWNER:
+    case ITEM_COPPER_BAR:
+        pItem = CBar::Create(m_pGraphicDev, MATERIAL_WOOD);
+        break;
+
+    case ITEM_IRON_BAR:
+        pItem = CBar::Create(m_pGraphicDev, MATERIAL_COPPER);
+        break;
+
+    case ITEM_SCARLET_BAR:
+        pItem = CBar::Create(m_pGraphicDev, MATERIAL_IRON);
+        break;
     }
 
     strCraftName[m_iCraftCount] = L"Craft_Item" + to_wstring(m_iCraftCount);
@@ -291,6 +302,18 @@ void CCraftMgr::Set_Recipe()
     Recipe torchRecipe;
     torchRecipe.vecIngredients.push_back({ ITEM_WOOD, 1 });
     m_mapRecipes[make_pair(ITEM_TORCH, MATERIAL_WOOD)] = torchRecipe;
+
+    Recipe CopperBar;
+    CopperBar.vecIngredients.push_back({ ITEM_COPPER, 1 });
+    m_mapRecipes[make_pair(ITEM_COPPER_BAR, MATERIAL_WOOD)] = CopperBar;
+
+    Recipe IronBar;
+    IronBar.vecIngredients.push_back({ ITEM_IRON, 1 });
+    m_mapRecipes[make_pair(ITEM_IRON_BAR, MATERIAL_WOOD)] = IronBar;
+
+    Recipe ScarletBar;
+    ScarletBar.vecIngredients.push_back({ ITEM_SCARLET, 1 });
+    m_mapRecipes[make_pair(ITEM_SCARLET_BAR, MATERIAL_WOOD)] = ScarletBar;
 }
 
 void CCraftMgr::Free()

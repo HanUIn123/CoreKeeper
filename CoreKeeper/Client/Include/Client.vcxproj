@@ -189,6 +189,7 @@ call Copy.bat</Command>
     <ClInclude Include="..\Header\Table.h" />
     <ClInclude Include="..\Header\UIChestSort.h" />
     <ClInclude Include="..\Header\UICraftButton.h" />
+    <ClInclude Include="..\Header\UIFurnace.h" />
     <ClInclude Include="..\Header\UIJemSlot.h" />
     <ClInclude Include="..\Header\UIStatue.h" />
     <ClInclude Include="..\Header\UIStatueCraft.h" />
@@ -315,6 +316,7 @@ call Copy.bat</Command>
     <ClCompile Include="..\Code\Table.cpp" />
     <ClCompile Include="..\Code\UIChestSort.cpp" />
     <ClCompile Include="..\Code\UICraftButton.cpp" />
+    <ClCompile Include="..\Code\UIFurnace.cpp" />
     <ClCompile Include="..\Code\UIJemSlot.cpp" />
     <ClCompile Include="..\Code\UICraft.cpp" />
     <ClCompile Include="..\Code\UIStatue.cpp" />

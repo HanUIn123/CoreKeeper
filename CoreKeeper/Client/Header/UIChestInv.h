@@ -43,6 +43,8 @@ public:
 			m_pChestInv = _pInventory;
 		}
 	}
+
+	void            Set_Disable() { m_bShow = false; }
 private:
 	HRESULT			Add_Component();
 

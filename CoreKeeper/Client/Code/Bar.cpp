@@ -17,7 +17,7 @@ HRESULT CBar::Ready_GameObject(MATERIAL _eMaterial, _vec3 vPos)
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
 	m_eMaterial = _eMaterial;
-	m_iTextureNumber = m_eMaterial;
+	m_iTextureNumber = m_eMaterial - 1;
 
 	switch (m_eMaterial)
 	{
@@ -139,7 +139,7 @@ HRESULT CBar::Add_Component()
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Buffer", pComponent });
 
-	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_WoodTexture"));
+	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_BarTexture"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Texture", pComponent });
 

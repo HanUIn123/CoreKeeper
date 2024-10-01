@@ -36,6 +36,10 @@
 #include "Wood.h"
 #include "Torch.h"
 
+#include "Bar.h"
+#include "Ore.h"
+
+
 // Etc
 #include "Terrain.h"
 #include "SkyBox.h"
@@ -48,6 +52,7 @@
 #include "GravestoneObject.h"
 #include "Skeleton.h"
 #include "TableObject.h"
+#include "FurnaceObject.h"
 
 // UI
 #include "UIPlayerStatus.h"
@@ -75,6 +80,7 @@
 #include "UIJemSlot.h"
 #include "UIStatueCraft.h"
 #include "UIChestSort.h"
+#include "UIFurnace.h"
 
 // Map 
 #include "MiniMapFrame.h"

@@ -171,6 +171,14 @@ HRESULT CStage::Ready_Layer_Environment(const _tchar* pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"CopperCraftTable", pGameObject), E_FAIL);
 
+	pGameObject = CTableObject::Create(m_pGraphicDev, { 105.f, 0.5f, 130.5f }, MATERIAL_IRON);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"IronCraftTable", pGameObject), E_FAIL);
+
+	pGameObject = CFurnaceObject::Create(m_pGraphicDev, { 120.f, .5f, 130.5f });
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Furnace", pGameObject), E_FAIL);
+
 	pGameObject = CSkeleton::Create(m_pGraphicDev, { 124.f, 0.5f, 130.5f });
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Skeleton", pGameObject), E_FAIL);
@@ -319,6 +327,31 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar* pLayerTag)
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Leg", pGameObject), E_FAIL);
 	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
 
+	pGameObject = CBar::Create(m_pGraphicDev, MATERIAL_COPPER);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"CopperBar", pGameObject), E_FAIL);
+	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
+
+	pGameObject = COre::Create(m_pGraphicDev, MATERIAL_COPPER);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"CopperOre", pGameObject), E_FAIL);
+	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
+
+	pGameObject = COre::Create(m_pGraphicDev, MATERIAL_COPPER);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"CopperOre2", pGameObject), E_FAIL);
+	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
+
+	pGameObject = COre::Create(m_pGraphicDev, MATERIAL_IRON);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"IronOre", pGameObject), E_FAIL);
+	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
+
+	pGameObject = COre::Create(m_pGraphicDev, MATERIAL_END);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"ScarletOre", pGameObject), E_FAIL);
+	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
+
 	//pGameObject = CCore::Create(m_pGraphicDev);
 	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Core", pGameObject), E_FAIL);
@@ -385,7 +418,7 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UILeftCraft", pGameObject), E_FAIL);
 
 
-	vPos = { 470.f, 255.f };
+	vPos = { 800.f, 255.f };
 	vSize = { 120.f, 90.f };
 
 	pGameObject = CUICraft::Create(m_pGraphicDev, vPos, vSize, false);
@@ -414,10 +447,10 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
 	{
 		if (i < 3)
 		{
-			vPos = { 400.f + i * 70.f , 220.f };
+			vPos = { 730.f + i * 70.f , 220.f };
 		}
 		else
-			vPos = { 400.f + (i - 3) * 70.f, 220.f + (i / 3) * 70.f };
+			vPos = { 730.f + (i - 3) * 70.f, 220.f + (i / 3) * 70.f };
 
 		vSize = { 30.f, 30.f };
 
@@ -521,6 +554,20 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
 		pGameObject = CUIChestInv::Create(m_pGraphicDev, vPos, i);
 		NULL_CHECK_RETURN(pGameObject, E_FAIL);
 		FAILED_CHECK_RETURN(pLayer->Add_GameObject(m_ChestInvstring[i].c_str(), pGameObject), E_FAIL);
+	}
+
+	for (int i = 0; i < 30; i++)
+	{
+		if (i % 10 == 0)
+			vPos = { 393.f + (63.f * (_float)(i - (i / 10) * 10)), 180.f + (_float)(i / 10) * 63.f };
+		else
+			vPos = { 393.f + (63.f * (_float)(i - (((i - 1) / 10) * 10))), 180.f + (_float)((i - 1) / 10) * 63.f };
+
+		m_GraveInvstring[i] = L"UI_GraveInventory_" + std::to_wstring(i);
+
+		pGameObject = CUIChestInv::Create(m_pGraphicDev, vPos, i);
+		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		FAILED_CHECK_RETURN(pLayer->Add_GameObject(m_GraveInvstring[i].c_str(), pGameObject), E_FAIL);
 	}
 
 	vPos = { 675.f, 398.f };
@@ -642,7 +689,15 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
 
 	pGameObject = CUICursor::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Cursor", pGameObject), E_FAIL)
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Cursor", pGameObject), E_FAIL);
+
+
+	vPos = { WINCX / 2.f , 230.f };
+	vSize = { 140.f, 115.f };
+
+	pGameObject = CUIFurnace::Create(m_pGraphicDev, vPos, vSize);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Furnace", pGameObject), E_FAIL);
 
 	m_mapLayer.insert({ pLayerTag , pLayer });
 

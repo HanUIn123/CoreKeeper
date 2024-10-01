@@ -357,6 +357,11 @@ void CUIScreenInv::Render_GameObject()
 			matWorld._42 += 15.f;
 			break;
 
+		case ITEM_COPPER:
+			matWorld._11 = 20.f;
+			matWorld._22 = 20.f;
+			break;
+
 		dafault:
 			matWorld._11 = 20.f;
 			matWorld._22 = 20.f;

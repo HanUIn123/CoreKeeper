@@ -48,6 +48,7 @@ private:
 private:
 	wstring							m_Invstring[50];
 	wstring                         m_ChestInvstring[50];
+	wstring                         m_GraveInvstring[30];
 	wstring							m_ItemSlot[10];
 	wstring                         m_CraftLSlot[6];
 	wstring                         m_CraftRSlot[6];
