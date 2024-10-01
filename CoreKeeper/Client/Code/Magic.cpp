@@ -42,9 +42,9 @@ _int CMagic::Update_GameObject(const _float& fTimeDelta)
 		m_fTime += fTimeDelta;
 
 		if (m_eDir == LEFT)
-			m_pTransformCom->Set_Scale(-0.25f, 0.25f, 0.25f);
+			m_pTransformCom->Set_Scale(-0.5f, 0.5f, 0.5f);
 		else
-			m_pTransformCom->Set_Scale(0.25f, 0.25f, 0.25f);
+			m_pTransformCom->Set_Scale(0.5f, 0.5f, 0.5f);
 
 		if (m_fTime >= 0.5f || m_iSpeedWeight == 0)
 		{
@@ -56,7 +56,7 @@ _int CMagic::Update_GameObject(const _float& fTimeDelta)
 		Set_Stop(&m_vDir, 1.f);
 		m_pTransformCom->Move_Pos(&m_vDir, fTimeDelta, m_fSpeed * m_iSpeedWeight);
 		
-		m_pAnimatorCom->Set_CurState(SHOOT, 0, 3, 4);
+		m_pAnimatorCom->Set_CurState(SHOOT, 0, 6, 4);
 
 		_vec3 vPos;
 		m_pTransformCom->Get_Info(INFO_POS, &vPos);

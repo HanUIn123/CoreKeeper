@@ -81,8 +81,8 @@ _int CStaff::Update_GameObject(const _float& fTimeDelta)
 			m_bShot = true;
 			m_pMagic->Set_Active(true);
 			m_pMagic->Set_Direction(m_eDir);
-			m_pMagic->Get_Transform()->Set_Pos(vPos.x, 0.25f, vPos.z);
-			m_pMagic->Set_TextureNumber((MATERIAL)(m_eMaterial + 1));
+			m_pMagic->Get_Transform()->Set_Pos(vPos.x, 0.5f, vPos.z);
+			// m_pMagic->Set_TextureNumber((MATERIAL)(m_eMaterial));
 			dynamic_cast<CMagic*>(m_pMagic)->Set_Dir(m_vProjectileDir);
 		}
 	}
