@@ -145,6 +145,7 @@ HRESULT CWall::Setup_Material()
 void CWall::Update_Texture()
 {
     int wallMask = 0;
+    m_pTransformCom->Set_Angle(0.f, 0.f, 0.f);
 
     //각 방향에 대해 벽 포인터를 확인
     for (int dir = 0; dir < 8; dir++)
@@ -248,12 +249,12 @@ void CWall::Update_Texture()
         }
         else if ((wallMask & 0b00010111) == 0b00010111)
         {
-            m_iCurImgNum = m_iWallImageNum + 8;
+            m_iCurImgNum = m_iWallImageNum + 6;
+            m_pTransformCom->Set_Angle(0.f, D3DXToRadian(-90.f), 0.f);
         }
         else if ((wallMask & 0b00011101) == 0b00011101)
         {
-            m_iCurImgNum = m_iWallImageNum + 6;
-            m_pTransformCom->Set_Angle(0.f, D3DXToRadian(-90.f), 0.f);
+            m_iCurImgNum = m_iWallImageNum + 8;
         }
         else
         {
@@ -270,16 +271,17 @@ void CWall::Update_Texture()
         }
         else if ((wallMask & 0b01011100) == 0b01011100)
         {
-            m_iCurImgNum = m_iWallImageNum + 8;
+            m_iCurImgNum = m_iWallImageNum + 6;
             m_pTransformCom->Set_Angle(0.f, D3DXToRadian(90.f), 0.f);
         }
         else if ((wallMask & 0b01110100) == 0b01110100)
         {
-            m_iCurImgNum = m_iWallImageNum + 6;
+            m_iCurImgNum = m_iWallImageNum + 8;
         }
         else
         {
             m_iCurImgNum = m_iWallImageNum + 5;
+            m_pTransformCom->Set_Angle(0.f, D3DXToRadian(180.f), 0.f);
         }
         break;
         // 좌 상 하
@@ -290,13 +292,13 @@ void CWall::Update_Texture()
         }
         else if ((wallMask & 0b11010001) == 0b11010001)
         {
-            m_iCurImgNum = m_iWallImageNum + 6;
-            m_pTransformCom->Set_Angle(0.f, D3DXToRadian(90.f), 0.f);
+            m_iCurImgNum = m_iWallImageNum + 8;
+            m_pTransformCom->Set_Angle(0.f, D3DXToRadian(180.f), 0.f);
         }
         else if ((wallMask & 0b01110001) == 0b01110001)
         {
-            m_iCurImgNum = m_iWallImageNum + 8;
-            m_pTransformCom->Set_Angle(0.f, D3DXToRadian(180.f), 0.f);
+            m_iCurImgNum = m_iWallImageNum + 6;
+            m_pTransformCom->Set_Angle(0.f, D3DXToRadian(90.f), 0.f);
         }
         else
         {
@@ -313,18 +315,17 @@ void CWall::Update_Texture()
         }
         else if ((wallMask & 0b01000111) == 0b01000111)
         {
-            m_iCurImgNum = m_iWallImageNum + 6;
-            m_pTransformCom->Set_Angle(0.f, D3DXToRadian(-90.f), 0.f);
+            m_iCurImgNum = m_iWallImageNum + 8;
+            m_pTransformCom->Set_Angle(0.f, D3DXToRadian(90.f), 0.f);
         }
         else if ((wallMask & 0b11000101) == 0b11000101)
         {
-            m_iCurImgNum = m_iWallImageNum + 8;
+            m_iCurImgNum = m_iWallImageNum + 6;
             m_pTransformCom->Set_Angle(0.f, D3DXToRadian(180.f), 0.f);
         }
         else
         {
             m_iCurImgNum = m_iWallImageNum + 5;
-            m_pTransformCom->Set_Angle(0.f, D3DXToRadian(90.f), 0.f);
         }
         break;
 
@@ -338,21 +339,21 @@ void CWall::Update_Texture()
         else if (wallMask == 0b01010111)
         {
             m_iCurImgNum = m_iWallImageNum + 10;
+            m_pTransformCom->Set_Angle(0.f, D3DXToRadian(90.f), 0.f);
         }
         else if (wallMask == 0b01011101)
         {
             m_iCurImgNum = m_iWallImageNum + 10;
-            m_pTransformCom->Set_Angle(0.f, D3DXToRadian(90.f), 0.f);
         }
         else if (wallMask == 0b01110101)
         {
             m_iCurImgNum = m_iWallImageNum + 10;
-            m_pTransformCom->Set_Angle(0.f, D3DXToRadian(180.f), 0.f);
+            m_pTransformCom->Set_Angle(0.f, D3DXToRadian(-90.f), 0.f);
         }
         else if (wallMask == 0b11010101)
         {
             m_iCurImgNum = m_iWallImageNum + 10;
-            m_pTransformCom->Set_Angle(0.f, D3DXToRadian(-90.f), 0.f);
+            m_pTransformCom->Set_Angle(0.f, D3DXToRadian(180.f), 0.f);
         }
         // 대각선 2개
         else if (wallMask == 0b01011111)
@@ -363,7 +364,6 @@ void CWall::Update_Texture()
         else if (wallMask == 0b01111101)
         {
             m_iCurImgNum = m_iWallImageNum + 11;
-            m_pTransformCom->Set_Angle(0.f, D3DXToRadian(180.f), 0.f);
         }
         else if (wallMask == 0b11110101)
         {
@@ -373,21 +373,21 @@ void CWall::Update_Texture()
         else if (wallMask == 0b11010111)
         {
             m_iCurImgNum = m_iWallImageNum + 11;
+            m_pTransformCom->Set_Angle(0.f, D3DXToRadian(180.f), 0.f);
         }
         else if (wallMask == 0b01110111)
         {
             m_iCurImgNum = m_iWallImageNum + 12;
-            m_pTransformCom->Set_Angle(0.f, D3DXToRadian(90.f), 0.f);
         }
         else if (wallMask == 0b11011101)
         {
             m_iCurImgNum = m_iWallImageNum + 12;
+            m_pTransformCom->Set_Angle(0.f, D3DXToRadian(90.f), 0.f);
         }
         // 대각선 3개
         else if (wallMask == 0b11111101)
         {
             m_iCurImgNum = m_iWallImageNum + 13;
-            m_pTransformCom->Set_Angle(0.f, D3DXToRadian(180.f), 0.f);
         }
         else if (wallMask == 0b11110111)
         {
@@ -397,6 +397,7 @@ void CWall::Update_Texture()
         else if (wallMask == 0b11011111)
         {
             m_iCurImgNum = m_iWallImageNum + 13;
+            m_pTransformCom->Set_Angle(0.f, D3DXToRadian(180.f), 0.f);
         }
         else if (wallMask == 0b01111111)
         {
