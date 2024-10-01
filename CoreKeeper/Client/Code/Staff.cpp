@@ -13,7 +13,6 @@ CStaff::CStaff(LPDIRECT3DDEVICE9 pGraphicDev)
 
 	m_bShot = false;
 	m_pMagic = nullptr;
-
 }
 
 CStaff::~CStaff()
@@ -57,7 +56,7 @@ _int CStaff::Update_GameObject(const _float& fTimeDelta)
 	if (m_bUse)
 	{
 		// Swing(0, 5, 2);
-		Shoot(ARROW);
+		Shoot(MAGIC);
 		m_bActive = true;
 		m_bDrop = false;
 		if (m_eDir == LEFT)
@@ -65,6 +64,7 @@ _int CStaff::Update_GameObject(const _float& fTimeDelta)
 		else
 			m_pTransformCom->Set_Scale(1.5f, 1.5f, 1.5f);
 	}
+
 	if (m_bProjectileAttackSuccess || m_pMagic->Get_ProjectileAttackSuccess())
 	{
 		m_pMagic->Set_ProjectileAttackSuccess(false);
@@ -81,8 +81,8 @@ _int CStaff::Update_GameObject(const _float& fTimeDelta)
 			m_bShot = true;
 			m_pMagic->Set_Active(true);
 			m_pMagic->Set_Direction(m_eDir);
-			m_pMagic->Get_Transform()->Set_Pos(vPos.x, 0.25f, vPos.z);
-			m_pMagic->Set_TextureNumber((MATERIAL)(m_eMaterial + 1));
+			m_pMagic->Get_Transform()->Set_Pos(vPos.x, 0.5f, vPos.z);
+			// m_pMagic->Set_TextureNumber((MATERIAL)(m_eMaterial));
 			dynamic_cast<CMagic*>(m_pMagic)->Set_Dir(m_vProjectileDir);
 		}
 	}
