@@ -912,13 +912,13 @@ void CPlayer::Hoe()
 			switch (m_pHandedItem->Get_ItemMaterial())
 			{
 			case MATERIAL_WOOD: // 1 x 1
-				m_pTerrain->Set_TextureNumber(iIndex, 4);
+				m_pTerrain->Set_TextureNumber(iIndex, 10);
 				break;
 			case MATERIAL_COPPER: // 3 x 3
-				m_pTerrain->Set_TextureNumber(iIndex, 4);
+				m_pTerrain->Set_TextureNumber(iIndex, 10);
 				break;
 			case MATERIAL_IRON: // 5 x 5
-				m_pTerrain->Set_TextureNumber(iIndex, 4);
+				m_pTerrain->Set_TextureNumber(iIndex, 10);
 				break;
 			}
 		}
