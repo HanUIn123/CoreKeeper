@@ -22,6 +22,8 @@ public:
 	static		CFollow* Create(LPDIRECT3DDEVICE9 pGraphicDev, D3DXVECTOR3* origin, _int numParticles, _int iMaxTexture);
 	virtual		CComponent* Clone();
 
+private:
+	_float      _fTime;
 public:
 	virtual void		Free();
 };

@@ -11,11 +11,11 @@ class CShadowTex;
 
 END
 
-class CAssistance : public CItem
+class CShield : public CItem
 {
 private:
-	explicit CAssistance(LPDIRECT3DDEVICE9 pGraphicDev);
-	virtual ~CAssistance();
+	explicit CShield(LPDIRECT3DDEVICE9 pGraphicDev);
+	virtual ~CShield();
 
 public:
 	virtual			HRESULT			Ready_GameObject(MATERIAL _eMaterial, _vec3 vPos);
@@ -27,7 +27,7 @@ private:
 	HRESULT			Add_Component();
 
 public:
-	static CAssistance* Create(LPDIRECT3DDEVICE9 pGraphicDev,  MATERIAL _eMaterial = MATERIAL_END, _vec3 vPos = { 0.f, 0.f, 0.f });
+	static CShield* Create(LPDIRECT3DDEVICE9 pGraphicDev,  MATERIAL _eMaterial = MATERIAL_END, _vec3 vPos = { 0.f, 0.f, 0.f });
 
 private:
 	virtual void		Free();

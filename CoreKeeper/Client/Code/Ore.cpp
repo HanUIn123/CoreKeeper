@@ -32,9 +32,12 @@ HRESULT COre::Ready_GameObject(MATERIAL _eMaterial, _vec3 vPos)
 		m_eItemNum = ITEM_IRON;
 		m_eMaterial = MATERIAL_COPPER;
 		break;
-	case MATERIAL_END:
+
+	case MATERIAL_SCARLET:
 		m_eItemNum = ITEM_SCARLET;
 		m_eMaterial = MATERIAL_IRON;
+		break;
+	case MATERIAL_END:
 		break;
 	}
 
@@ -111,7 +114,7 @@ void COre::Render_GameObject()
 
 	m_pTextureCom->Set_Texture(m_iTextureNumber);
 
-	m_pBufferCom->Set_Index(0);
+	//m_pBufferCom->Set_Index(0);
 
 	if (m_bActive)
 	{

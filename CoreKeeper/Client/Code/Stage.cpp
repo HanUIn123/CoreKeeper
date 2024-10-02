@@ -253,7 +253,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar* pLayerTag)
 	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
 
 
-	pGameObject = CBow::Create(m_pGraphicDev, MATERIAL_COPPER);
+	pGameObject = CBow::Create(m_pGraphicDev, MATERIAL_IRON);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Bow1", pGameObject), E_FAIL);
 	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
@@ -347,7 +347,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar* pLayerTag)
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"IronOre", pGameObject), E_FAIL);
 	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
 
-	pGameObject = COre::Create(m_pGraphicDev, MATERIAL_END);
+	pGameObject = COre::Create(m_pGraphicDev, MATERIAL_SCARLET);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"ScarletOre", pGameObject), E_FAIL);
 	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);

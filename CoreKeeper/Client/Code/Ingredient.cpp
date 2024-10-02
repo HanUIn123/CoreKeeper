@@ -1,26 +1,22 @@
 #include "pch.h"
-#include "..\Header\Anvil.h"
+#include "..\Header\Ingredient.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
 
-CAnvil::CAnvil(LPDIRECT3DDEVICE9 pGraphicDev)
+CIngredient::CIngredient(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CItem(pGraphicDev)
 {
-	 
-
-	m_eItemNum = ITEM_ANVIL;
 }
 
-CAnvil::~CAnvil()
+CIngredient::~CIngredient()
 {
 }
 
-HRESULT CAnvil::Ready_GameObject(_vec3 vPos, MATERIAL _eMaterial)
+HRESULT CIngredient::Ready_GameObject(ITEMNUM _eItemNum, _vec3 vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_eMaterial = _eMaterial;
-	m_iTextureNumber = m_eMaterial;
+	m_eItemNum = _eItemNum;
 
 	m_pTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
 	m_pShadowTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
@@ -37,7 +33,7 @@ HRESULT CAnvil::Ready_GameObject(_vec3 vPos, MATERIAL _eMaterial)
 	return S_OK;
 }
 
-_int CAnvil::Update_GameObject(const _float& fTimeDelta)
+_int CIngredient::Update_GameObject(const _float& fTimeDelta)
 {
 	m_pAnimatorCom->Update_Animation();
 
@@ -80,16 +76,13 @@ _int CAnvil::Update_GameObject(const _float& fTimeDelta)
 	return Engine::CGameObject::Update_GameObject(fTimeDelta);
 }
 
-void CAnvil::LateUpdate_GameObject()
+void CIngredient::LateUpdate_GameObject()
 {
 	Engine::CGameObject::LateUpdate_GameObject();
 }
 
-void CAnvil::Render_GameObject()
+void CIngredient::Render_GameObject()
 {
-	if (g_bIsTopCamera && m_bDrop)
-		CItem::Apply_Billboard();
-
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
@@ -122,7 +115,7 @@ void CAnvil::Render_GameObject()
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
-HRESULT CAnvil::Add_Component()
+HRESULT CIngredient::Add_Component()
 {
 	CComponent* pComponent = NULL;
 
@@ -130,7 +123,7 @@ HRESULT CAnvil::Add_Component()
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Buffer", pComponent });
 
-	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_WoodTex"));
+	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_IngredientTexture"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Texture", pComponent });
 
@@ -161,21 +154,21 @@ HRESULT CAnvil::Add_Component()
 	return S_OK;
 }
 
-CAnvil* CAnvil::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, MATERIAL _eMaterial)
+CIngredient* CIngredient::Create(LPDIRECT3DDEVICE9 pGraphicDev, ITEMNUM _eItemNum, _vec3 vPos)
 {
-	CAnvil* pAnvil = new CAnvil(pGraphicDev);
+	CIngredient* pIngredient = new CIngredient(pGraphicDev);
 
-	if (FAILED(pAnvil->Ready_GameObject(vPos, _eMaterial)))
+	if (FAILED(pIngredient->Ready_GameObject(_eItemNum, vPos)))
 	{
-		Safe_Release(pAnvil);
-		MSG_BOX("pSeed Create Failed");
+		Safe_Release(pIngredient);
+		MSG_BOX("pIngredient Create Failed");
 		return nullptr;
 	}
 
-	return pAnvil;
+	return pIngredient;
 }
 
-void CAnvil::Free()
+void CIngredient::Free()
 {
 	Engine::CGameObject::Free();
 }

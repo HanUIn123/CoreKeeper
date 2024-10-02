@@ -1,46 +1,53 @@
 #include "pch.h"
-#include "..\Header\Table.h"
+#include "..\Header\Feather.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
 
-CTable::CTable(LPDIRECT3DDEVICE9 pGraphicDev)
+CFeather::CFeather(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CItem(pGraphicDev)
 {
-	 
-
-	m_eItemNum = ITEM_TABLE;
+	m_eItemNum = ITEM_ASSISTANCE_FEATHER;
 }
 
-CTable::~CTable()
+CFeather::~CFeather()
 {
 }
 
-HRESULT CTable::Ready_GameObject(MATERIAL _eMaterial, _vec3 vPos)
+HRESULT CFeather::Ready_GameObject(MATERIAL _eMaterial, _vec3 vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	if (_eMaterial == MATERIAL_SCARLET)
+	if (_eMaterial == MATERIAL_SCARLET || _eMaterial == MATERIAL_END)
 		return E_FAIL;
 
 	m_eMaterial = _eMaterial;
-	m_iTextureNumber = m_eMaterial;
+	if (m_eMaterial == MATERIAL_END)
+	{
+		m_iTextureNumber = 0;
+	}
+	else
+	{
+		m_iTextureNumber = 1;
+	}
 
-	m_pTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
+	//m_tStat.iDefense = 10 * (m_eMaterial + 1);
+	//m_tStat.iMaxHp = 20 * (m_eMaterial + 1);
+
+	m_pTransformCom->Set_Scale(0.5f, 0.5f, 0.5f);
 	m_pShadowTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
+
 	m_pTransformCom->Set_Pos(vPos.x, vPos.y, vPos.z);
 	m_pShadowTransformCom->Set_Pos(vPos.x, 0.1f, vPos.z);
 
-
-	m_wItemExplain[0] = L"나무";
-	m_wItemExplain[1] = L"온갖 물건을 만드는 데 쓰는 ";
-	m_wItemExplain[2] = L"거대한 뿌리 조각입니다.";
 	// 원래의 Y 위치 저장
 	m_fFirstY = vPos.y;
+
+	m_pAnimatorCom->Set_CurState(IDLE, 0, 0, 3);
 
 	return S_OK;
 }
 
-_int CTable::Update_GameObject(const _float& fTimeDelta)
+_int CFeather::Update_GameObject(const _float& fTimeDelta)
 {
 	m_pAnimatorCom->Update_Animation();
 
@@ -50,9 +57,11 @@ _int CTable::Update_GameObject(const _float& fTimeDelta)
 
 	if (m_bUse)
 	{
+		Swing(0, 5, 2);
+
 		m_bActive = true;
 		m_bDrop = false;
-		m_pTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
+		m_pTransformCom->Set_Scale(1.5f, 1.5f, 1.5f);
 	}
 
 	if (m_bDrop)
@@ -66,30 +75,27 @@ _int CTable::Update_GameObject(const _float& fTimeDelta)
 		// 플레이어와 충돌
 		if (m_pColliderCom->Check_Collision(pPlayerCollider))
 		{
-			Engine::CInventory* pPlayerInventory = dynamic_cast<Engine::CInventory*>
-				(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
-		
-			// 인벤토리에 들어갔다
-			if (pPlayerInventory->Add_Item(this))
-			{
-				m_bActive = false;
-				m_bDrop = false;
-			}
+			In_Inventory();
 		}
-	}
+	}	
+	if (m_bFollow)
+		Follow_Player();
 	
 	Add_RenderGroup(RENDER_ALPHA, this);
 
 	return Engine::CGameObject::Update_GameObject(fTimeDelta);
 }
 
-void CTable::LateUpdate_GameObject()
+void CFeather::LateUpdate_GameObject()
 {
 	Engine::CGameObject::LateUpdate_GameObject();
 }
 
-void CTable::Render_GameObject()
+void CFeather::Render_GameObject()
 {
+	// 카메라를 바라보게 하면서 스케일 유지
+	//CItem::Apply_Billboard();  
+
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
@@ -97,7 +103,7 @@ void CTable::Render_GameObject()
 
 	m_pTextureCom->Set_Texture(m_iTextureNumber);
 
-	m_pBufferCom->Set_Index(0);
+	m_pBufferCom->Set_Index(m_pAnimatorCom->Get_MotionIndex());
 
 	if (m_bActive)
 	{
@@ -122,15 +128,15 @@ void CTable::Render_GameObject()
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
-HRESULT CTable::Add_Component()
+HRESULT CFeather::Add_Component()
 {
 	CComponent* pComponent = NULL;
 
-	pComponent = m_pBufferCom = dynamic_cast<CAnimTex*>(Engine::Clone_Proto(L"Proto_NormalAnimTex"));
+	pComponent = m_pBufferCom = dynamic_cast<CAnimTex*>(Engine::Clone_Proto(L"Proto_AnimTex"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Buffer", pComponent });
 
-	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_TableTexture"));
+	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_FeatherTexture"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Texture", pComponent });
 
@@ -161,21 +167,21 @@ HRESULT CTable::Add_Component()
 	return S_OK;
 }
 
-CTable* CTable::Create(LPDIRECT3DDEVICE9 pGraphicDev, MATERIAL _eMaterial, _vec3 vPos)
+CFeather* CFeather::Create(LPDIRECT3DDEVICE9 pGraphicDev, MATERIAL _eMaterial, _vec3 vPos)
 {
-	CTable* pTable = new CTable(pGraphicDev);
+	CFeather* pFeather = new CFeather(pGraphicDev);
 
-	if (FAILED(pTable->Ready_GameObject(_eMaterial, vPos)))
+	if (FAILED(pFeather->Ready_GameObject(_eMaterial, vPos)))
 	{
-		Safe_Release(pTable);
-		MSG_BOX("pTable Create Failed");
+		Safe_Release(pFeather);
+		MSG_BOX("pFeather Create Failed");
 		return nullptr;
 	}
 
-	return pTable;
+	return pFeather;
 }
 
-void CTable::Free()
+void CFeather::Free()
 {
 	Engine::CGameObject::Free();
 }

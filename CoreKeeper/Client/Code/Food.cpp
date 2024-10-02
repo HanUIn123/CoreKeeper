@@ -1,27 +1,69 @@
 #include "pch.h"
-#include "..\Header\Anvil.h"
+#include "..\Header\Food.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
 
-CAnvil::CAnvil(LPDIRECT3DDEVICE9 pGraphicDev)
+CFood::CFood(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CItem(pGraphicDev)
 {
-	 
 
-	m_eItemNum = ITEM_ANVIL;
 }
 
-CAnvil::~CAnvil()
+CFood::~CFood()
 {
 }
 
-HRESULT CAnvil::Ready_GameObject(_vec3 vPos, MATERIAL _eMaterial)
+HRESULT CFood::Ready_GameObject(ITEMNUM _eIngredient1, ITEMNUM _eIngredient2, _vec3 vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_eMaterial = _eMaterial;
-	m_iTextureNumber = m_eMaterial;
-
+	switch (_eIngredient1)
+	{
+	case ITEM_BERRY:
+		switch (_eIngredient2)
+		{
+		case ITEM_BERRY:
+			m_eItemNum = ITEM_BERRY_BERRY_FOOD;
+			break;
+		case ITEM_PEPPER:
+			m_eItemNum = ITEM_BERRY_PEPPER_FOOD;
+			break;
+		case ITEM_CARROT:
+			m_eItemNum = ITEM_BERRY_CARROT_FOOD;
+			break;
+		case ITEM_MUSHROOM:
+			m_eItemNum = ITEM_BERRY_MUSHROOM_FOOD;
+			break;
+		}
+	case ITEM_PEPPER:
+		switch (_eIngredient2)
+		{
+		case ITEM_PEPPER:
+			m_eItemNum = ITEM_PEPPER_PEPPER_FOOD;
+			break;
+		case ITEM_CARROT:
+			m_eItemNum = ITEM_PEPPER_CARROT_FOOD;
+			break;
+		case ITEM_MUSHROOM:
+			m_eItemNum = ITEM_PEPPER_MUSHROOM_FOOD;
+			break;
+		}
+	case ITEM_CARROT:
+		switch (_eIngredient2)
+		{
+		case ITEM_CARROT:
+			m_eItemNum = ITEM_CARROT_CARROT_FOOD;
+			break;
+		case ITEM_MUSHROOM:
+			m_eItemNum = ITEM_CARROT_MUSHROOM_FOOD;
+			break;
+		}
+	case ITEM_MUSHROOM:
+		m_eItemNum = ITEM_MUSHROOM_MUSHROOM_FOOD;
+		break;
+	default:
+		return E_FAIL;
+	}
 	m_pTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
 	m_pShadowTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
 	m_pTransformCom->Set_Pos(vPos.x, vPos.y, vPos.z);
@@ -37,7 +79,7 @@ HRESULT CAnvil::Ready_GameObject(_vec3 vPos, MATERIAL _eMaterial)
 	return S_OK;
 }
 
-_int CAnvil::Update_GameObject(const _float& fTimeDelta)
+_int CFood::Update_GameObject(const _float& fTimeDelta)
 {
 	m_pAnimatorCom->Update_Animation();
 
@@ -80,16 +122,13 @@ _int CAnvil::Update_GameObject(const _float& fTimeDelta)
 	return Engine::CGameObject::Update_GameObject(fTimeDelta);
 }
 
-void CAnvil::LateUpdate_GameObject()
+void CFood::LateUpdate_GameObject()
 {
 	Engine::CGameObject::LateUpdate_GameObject();
 }
 
-void CAnvil::Render_GameObject()
+void CFood::Render_GameObject()
 {
-	if (g_bIsTopCamera && m_bDrop)
-		CItem::Apply_Billboard();
-
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
@@ -122,7 +161,7 @@ void CAnvil::Render_GameObject()
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
-HRESULT CAnvil::Add_Component()
+HRESULT CFood::Add_Component()
 {
 	CComponent* pComponent = NULL;
 
@@ -130,7 +169,7 @@ HRESULT CAnvil::Add_Component()
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Buffer", pComponent });
 
-	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_WoodTex"));
+	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_FoodTexture"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Texture", pComponent });
 
@@ -161,21 +200,21 @@ HRESULT CAnvil::Add_Component()
 	return S_OK;
 }
 
-CAnvil* CAnvil::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, MATERIAL _eMaterial)
+CFood* CFood::Create(LPDIRECT3DDEVICE9 pGraphicDev, ITEMNUM _eIngredient1, ITEMNUM _eIngredient2, _vec3 vPos)
 {
-	CAnvil* pAnvil = new CAnvil(pGraphicDev);
+	CFood* pFood = new CFood(pGraphicDev);
 
-	if (FAILED(pAnvil->Ready_GameObject(vPos, _eMaterial)))
+	if (FAILED(pFood->Ready_GameObject(_eIngredient1, _eIngredient2, vPos)))
 	{
-		Safe_Release(pAnvil);
-		MSG_BOX("pSeed Create Failed");
+		Safe_Release(pFood);
+		MSG_BOX("pFood Create Failed");
 		return nullptr;
 	}
 
-	return pAnvil;
+	return pFood;
 }
 
-void CAnvil::Free()
+void CFood::Free()
 {
 	Engine::CGameObject::Free();
 }

@@ -26,7 +26,7 @@ PSystem::~PSystem()
 
 }
 
-bool PSystem::init(const _tchar* texFileName, _int iTexNum)
+bool PSystem::init(const _tchar* texFileName, _int iTexNum, _float fSize)
 {
 
 	HRESULT hr = 0;
@@ -57,6 +57,8 @@ bool PSystem::init(const _tchar* texFileName, _int iTexNum)
 
 		m_vecTexture.push_back(pTexture);
 	}
+
+	_size = fSize;
 
 	return true;
 }
@@ -134,9 +136,7 @@ void PSystem::render()
 		{
 			if (i->_isAlive) // 파티클(들)에 정보 넘겨주기
 			{
-				//m_pGraphicDev->SetTexture(0, m_vecTexture[i->_iTextureNum]);
-
-				m_pGraphicDev->SetTexture(0, m_vecTexture[3]);
+				m_pGraphicDev->SetTexture(0, m_vecTexture[i->_iTextureNum]);
 
 				v->_position = i->_position;
 				v->_color = (D3DCOLOR)i->_color;

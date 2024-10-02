@@ -232,59 +232,8 @@
     <Filter Include="02. GameObject\06. Item\06. Installation\07. Gravestone">
       <UniqueIdentifier>{6de48782-7493-4f29-bb1b-c08ba1d279a2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\06. Item\99. Etc\02. Potion">
-      <UniqueIdentifier>{cc2ed0f0-938f-44d2-8140-a41033ca8ec7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\06. Item\99. Etc\02. Potion\00. HpPotion">
-      <UniqueIdentifier>{8ca4298f-2487-45fc-8f95-379100a38d19}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\06. Item\99. Etc\02. Potion\01. AttackPotion">
-      <UniqueIdentifier>{789b8f79-42fa-43ce-8401-39a9ce0381ba}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\06. Item\99. Etc\02. Potion\02. DefensePotion">
-      <UniqueIdentifier>{fbd04b08-e3ea-4c77-b8e6-9b22f10061e2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\06. Item\99. Etc\03. Food">
-      <UniqueIdentifier>{e3a29a58-c512-4b3f-8e30-6c054146ff38}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\06. Item\99. Etc\04. Seed">
-      <UniqueIdentifier>{4d87b991-086f-41a7-a2a2-cdc69b86e9f4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\06. Item\99. Etc\04. Seed\00. BerrySeed">
-      <UniqueIdentifier>{08e3bc80-d6b2-4e10-aaca-93d13a3ba324}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\06. Item\99. Etc\04. Seed\01. PepperSeed">
-      <UniqueIdentifier>{7014d163-a5db-4a1d-a68a-d26123e848a7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\06. Item\99. Etc\04. Seed\02. FlowerSeed">
-      <UniqueIdentifier>{2d5b4503-0819-4b1c-94ca-c6eccb15e6dc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\06. Item\99. Etc\05. StatueCore">
-      <UniqueIdentifier>{149d75a5-9fc8-4000-8a77-84c9ed7823c0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\06. Item\99. Etc\05. StatueCore\00. SlimeCore">
-      <UniqueIdentifier>{54231c3c-51be-40c6-a56f-dda1c3935b62}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\06. Item\99. Etc\05. StatueCore\02. MalCore">
-      <UniqueIdentifier>{a9adc4d7-be42-4098-8868-aee9d258ee7e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\06. Item\99. Etc\05. StatueCore\01. LarvaCore">
-      <UniqueIdentifier>{40a2ca2e-3354-44fb-b033-5c984529c69c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\07. UI\12. UIStatue">
       <UniqueIdentifier>{74c6834d-a81e-448f-b0e3-838ca85c4ec1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\06. Item\99. Etc\06. Spawner">
-      <UniqueIdentifier>{adc2feaf-9928-47cc-abfb-5c1b1176d49e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\06. Item\99. Etc\06. Spawner\01. MalSpawner">
-      <UniqueIdentifier>{796124f5-79cc-45a2-99d3-a49e8cf27d8b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\06. Item\99. Etc\06. Spawner\00. PlayerSpawner">
-      <UniqueIdentifier>{3b1c6582-40f4-468f-b8dc-dbe2550d2c3b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\06. Item\99. Etc\06. Spawner\02. AzeosSpawner">
-      <UniqueIdentifier>{fd78a2e4-f7b9-4705-a2eb-e88e049c86da}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameObject\06. Item\99. Etc\07. Wood">
       <UniqueIdentifier>{e5f254c0-58c4-4571-bac7-f14444de781e}</UniqueIdentifier>
@@ -367,9 +316,6 @@
     <Filter Include="02. GameObject\06. Item\99. Etc\06. Bar">
       <UniqueIdentifier>{1a456cf0-81c0-4f35-ae87-b7fb4642d035}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\06. Item\99. Etc\01. Food">
-      <UniqueIdentifier>{e3a29a58-c512-4b3f-8e30-6c054146ff38}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\06. Item\99. Etc\00. Potion">
       <UniqueIdentifier>{cc2ed0f0-938f-44d2-8140-a41033ca8ec7}</UniqueIdentifier>
     </Filter>
@@ -384,18 +330,6 @@
     </Filter>
     <Filter Include="02. GameObject\06. Item\99. Etc\02. Seed">
       <UniqueIdentifier>{4d87b991-086f-41a7-a2a2-cdc69b86e9f4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\06. Item\99. Etc\02. Seed\00. BerrySeed">
-      <UniqueIdentifier>{08e3bc80-d6b2-4e10-aaca-93d13a3ba324}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\06. Item\99. Etc\02. Seed\01. PepperSeed">
-      <UniqueIdentifier>{7014d163-a5db-4a1d-a68a-d26123e848a7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\06. Item\99. Etc\02. Seed\02. FlowerSeed">
-      <UniqueIdentifier>{2d5b4503-0819-4b1c-94ca-c6eccb15e6dc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\06. Item\99. Etc\01. Food\00. Berry">
-      <UniqueIdentifier>{7d2041e7-88a8-46ba-a355-6956522a31e1}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameObject\06. Item\99. Etc\04. StatueCore">
       <UniqueIdentifier>{149d75a5-9fc8-4000-8a77-84c9ed7823c0}</UniqueIdentifier>
@@ -453,6 +387,24 @@
     </Filter>
     <Filter Include="02. GameObject\02. Monster\04. BossAzeos">
       <UniqueIdentifier>{d1b2a65f-7057-484a-a213-e2c56e5bd5d3}</UniqueIdentifier>
+	</Filter>
+    <Filter Include="02. GameObject\02. Monster\03. Malugaz">
+      <UniqueIdentifier>{64d60a91-eeb7-49b2-923c-53c267c5f070}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\03. Accessory\02. Assistance\00. Shield">
+      <UniqueIdentifier>{090064d5-af54-4eac-bd61-af5d2727d02a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\03. Accessory\02. Assistance\01. Feather">
+      <UniqueIdentifier>{80ac753b-3e44-402d-92cb-73d5697277c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\99. Etc\01. Cooking">
+      <UniqueIdentifier>{e3a29a58-c512-4b3f-8e30-6c054146ff38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\99. Etc\01. Cooking\00. Ingredient">
+      <UniqueIdentifier>{56d60d30-1046-4ebe-aae9-f6651b23082b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\99. Etc\01. Cooking\01. Food">
+      <UniqueIdentifier>{5c2f0fcd-ae51-4529-b928-a0f45772a3e3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -711,9 +663,6 @@
     <ClInclude Include="..\Header\Lantern.h">
       <Filter>02. GameObject\06. Item\05. Lantern</Filter>
     </ClInclude>
-    <ClInclude Include="..\Header\Assistance.h">
-      <Filter>02. GameObject\06. Item\03. Accessory\02. Assistance</Filter>
-    </ClInclude>
     <ClInclude Include="..\Header\Table.h">
       <Filter>02. GameObject\06. Item\06. Installation\00. Table</Filter>
     </ClInclude>
@@ -758,15 +707,6 @@
     </ClInclude>
     <ClInclude Include="..\Header\SlimeCore.h">
       <Filter>02. GameObject\06. Item\99. Etc\04. StatueCore\00. SlimeCore</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Header\PepperSeed.h">
-      <Filter>02. GameObject\06. Item\99. Etc\02. Seed\01. PepperSeed</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Header\BerrySeed.h">
-      <Filter>02. GameObject\06. Item\99. Etc\02. Seed\00. BerrySeed</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Header\FlowerSeed.h">
-      <Filter>02. GameObject\06. Item\99. Etc\02. Seed\02. FlowerSeed</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\LarvaCore.h">
       <Filter>02. GameObject\06. Item\99. Etc\04. StatueCore\01. LarvaCore</Filter>
@@ -833,6 +773,24 @@
     </ClInclude>
     <ClInclude Include="..\Header\Azeos.h">
       <Filter>02. GameObject\02. Monster\04. BossAzeos</Filter>
+	</ClInclude>
+    <ClInclude Include="..\Header\Malugaz.h">
+      <Filter>02. GameObject\02. Monster\03. Malugaz</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\Feather.h">
+      <Filter>02. GameObject\06. Item\03. Accessory\02. Assistance\01. Feather</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\Shield.h">
+      <Filter>02. GameObject\06. Item\03. Accessory\02. Assistance\00. Shield</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\Food.h">
+      <Filter>02. GameObject\06. Item\99. Etc\01. Cooking\01. Food</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\Ingredient.h">
+      <Filter>02. GameObject\06. Item\99. Etc\01. Cooking\00. Ingredient</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\Seed.h">
+      <Filter>02. GameObject\06. Item\99. Etc\02. Seed</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1067,9 +1025,6 @@
     <ClCompile Include="..\Code\Lantern.cpp">
       <Filter>02. GameObject\06. Item\05. Lantern</Filter>
     </ClCompile>
-    <ClCompile Include="..\Code\Assistance.cpp">
-      <Filter>02. GameObject\06. Item\03. Accessory\02. Assistance</Filter>
-    </ClCompile>
     <ClCompile Include="..\Code\Table.cpp">
       <Filter>02. GameObject\06. Item\06. Installation\00. Table</Filter>
     </ClCompile>
@@ -1114,15 +1069,6 @@
     </ClCompile>
     <ClCompile Include="..\Code\SlimeCore.cpp">
       <Filter>02. GameObject\06. Item\99. Etc\04. StatueCore\00. SlimeCore</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Code\PepperSeed.cpp">
-      <Filter>02. GameObject\06. Item\99. Etc\02. Seed\01. PepperSeed</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Code\BerrySeed.cpp">
-      <Filter>02. GameObject\06. Item\99. Etc\02. Seed\00. BerrySeed</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Code\FlowerSeed.cpp">
-      <Filter>02. GameObject\06. Item\99. Etc\02. Seed\02. FlowerSeed</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\LarvaCore.cpp">
       <Filter>02. GameObject\06. Item\99. Etc\04. StatueCore\01. LarvaCore</Filter>
@@ -1192,6 +1138,24 @@
     </ClCompile>
     <ClCompile Include="..\Code\Azeos.cpp">
       <Filter>02. GameObject\02. Monster\04. BossAzeos</Filter>
+	</ClCompile>
+    <ClCompile Include="..\Code\Malugaz.cpp">
+      <Filter>02. GameObject\02. Monster\03. Malugaz</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Feather.cpp">
+      <Filter>02. GameObject\06. Item\03. Accessory\02. Assistance\01. Feather</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Shield.cpp">
+      <Filter>02. GameObject\06. Item\03. Accessory\02. Assistance\00. Shield</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Food.cpp">
+      <Filter>02. GameObject\06. Item\99. Etc\01. Cooking\01. Food</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Ingredient.cpp">
+      <Filter>02. GameObject\06. Item\99. Etc\01. Cooking\00. Ingredient</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Seed.cpp">
+      <Filter>02. GameObject\06. Item\99. Etc\02. Seed</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

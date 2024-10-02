@@ -1,21 +1,23 @@
 #include "pch.h"
-#include "..\Header\FlowerSeed.h"
+#include "..\Header\Seed.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
 
-CFlowerSeed::CFlowerSeed(LPDIRECT3DDEVICE9 pGraphicDev)
+CSeed::CSeed(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CItem(pGraphicDev)
 {
-	m_eItemNum = ITEM_FLOWER_SEED;
 }
 
-CFlowerSeed::~CFlowerSeed()
+CSeed::~CSeed()
 {
 }
 
-HRESULT CFlowerSeed::Ready_GameObject(_vec3 vPos)
+HRESULT CSeed::Ready_GameObject(ITEMNUM _eItemNum, _vec3 vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
+
+	m_eItemNum = _eItemNum;
+	m_iTextureNumber = m_eItemNum;
 
 	m_pTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
 	m_pShadowTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
@@ -29,7 +31,7 @@ HRESULT CFlowerSeed::Ready_GameObject(_vec3 vPos)
 	return S_OK;
 }
 
-_int CFlowerSeed::Update_GameObject(const _float& fTimeDelta)
+_int CSeed::Update_GameObject(const _float& fTimeDelta)
 {
 	m_pAnimatorCom->Update_Animation();
 
@@ -74,12 +76,12 @@ _int CFlowerSeed::Update_GameObject(const _float& fTimeDelta)
 	return Engine::CGameObject::Update_GameObject(fTimeDelta);
 }
 
-void CFlowerSeed::LateUpdate_GameObject()
+void CSeed::LateUpdate_GameObject()
 {
 	Engine::CGameObject::LateUpdate_GameObject();
 }
 
-void CFlowerSeed::Render_GameObject()
+void CSeed::Render_GameObject()
 {
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
@@ -113,15 +115,15 @@ void CFlowerSeed::Render_GameObject()
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
-HRESULT CFlowerSeed::Add_Component()
+HRESULT CSeed::Add_Component()
 {
 	CComponent* pComponent = NULL;
 
-	pComponent = m_pBufferCom = dynamic_cast<CAnimTex*>(Engine::Clone_Proto(L"Proto_FlowerSeedAnimTex"));
+	pComponent = m_pBufferCom = dynamic_cast<CAnimTex*>(Engine::Clone_Proto(L"Proto_SeedAnimTex"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Buffer", pComponent });
 
-	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_FlowerSeedTex"));
+	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_SeedTex"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Texture", pComponent });
 
@@ -152,21 +154,21 @@ HRESULT CFlowerSeed::Add_Component()
 	return S_OK;
 }
 
-CFlowerSeed* CFlowerSeed::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
+CSeed* CSeed::Create(LPDIRECT3DDEVICE9 pGraphicDev, ITEMNUM _eItemNum, _vec3 vPos)
 {
-	CFlowerSeed* pFlowerSeed = new CFlowerSeed(pGraphicDev);
+	CSeed* pSeed = new CSeed(pGraphicDev);
 
-	if (FAILED(pFlowerSeed->Ready_GameObject(vPos)))
+	if (FAILED(pSeed->Ready_GameObject(_eItemNum, vPos)))
 	{
-		Safe_Release(pFlowerSeed);
-		MSG_BOX("pFlowerSeed Create Failed");
+		Safe_Release(pSeed);
+		MSG_BOX("pSeed Create Failed");
 		return nullptr;
 	}
 
-	return pFlowerSeed;
+	return pSeed;
 }
 
-void CFlowerSeed::Free()
+void CSeed::Free()
 {
 	Engine::CGameObject::Free();
 }

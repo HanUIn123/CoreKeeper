@@ -96,8 +96,7 @@ HRESULT CPlayer::Ready_GameObject()
 	m_pStateCom->Set_Stat(m_tBasicStat.iMaxHp, m_tBasicStat.iMaxMp, m_tBasicStat.iAttack, m_tBasicStat.iDefense);
 	m_pEquipInventoryCom->Set_SlotCount(10);
 
-	//m_pFireParticleCom->init(L"../Bin/Resource/Texture/Particle/flare.bmp"); // 파티클 시작
-	m_pFireParticleCom->init(L"../Bin/Resource/Texture/Particle//Fire_Particle/Fire_Particle_%d.png", 5); // 파티클 시작
+	m_pFireParticleCom->init(L"../Bin/Resource/Texture/Particle/Basic_Particle.png"); // 파티클 시작
 	m_pFollowParticleCom->init(L"../Bin/Resource/Texture/Particle/Fire_Particle/Fire_Particle_%d.png", 5); // 파티클 시작
 	return S_OK;
 }
@@ -319,7 +318,7 @@ void CPlayer::Mouse_Click(const _float& fTimeDelta)
 	else if (m_bShoot)
 	{
 		m_fClickTime += fTimeDelta;
-		if (m_fClickTime > 0.5f || m_pAnimatorCom->Get_MotionEnd())
+		if (m_fClickTime > 0.5f)
 		{
 			m_bShoot = false;
 			m_bShootOnce = false;
@@ -465,7 +464,7 @@ void CPlayer::Animation_SetUp(STATE st, DIRECTION dir)
 			else if (m_eDir == BACK)
 				m_pAnimatorCom->Set_CurState(st, 40, 41, 10);
 			else
-				m_pAnimatorCom->Set_CurState(st, 37, 39, 6);
+				m_pAnimatorCom->Set_CurState(st, 37, 39, 8);
 		}
 		break;
 	}

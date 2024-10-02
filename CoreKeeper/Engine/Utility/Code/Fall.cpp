@@ -25,7 +25,7 @@ CFall::~CFall()
 HRESULT CFall::Ready_Particles(D3DXVECTOR3* origin, _int numParticles)
 {
 	_origin = *origin;
-	_size = 0.2;
+	//_size = 0.2;
 	_vbSize = 2048;
 	_vbOffset = 0;
 	_vbBatchSize = 512;

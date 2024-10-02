@@ -12,7 +12,7 @@ public:
 	explicit PSystem(const PSystem& rhs);
 	virtual ~PSystem();
 
-	virtual bool init(const _tchar* texFileName, _int iTextNum = 1);
+	virtual bool init(const _tchar* texFileName, _int iTextNum = 1, _float fSize = 0.2f);
 	virtual void reset();
 
 	virtual void resetParticle(Attribute* attribute) = 0;

@@ -6,8 +6,6 @@
 CSword::CSword(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CItem(pGraphicDev)
 {
-	 
-
 	m_eItemNum = ITEM_SWORD;
 }
 
@@ -18,6 +16,9 @@ CSword::~CSword()
 HRESULT CSword::Ready_GameObject(MATERIAL _eMaterial, _vec3 vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
+
+	if (_eMaterial == MATERIAL_SCARLET)
+		return E_FAIL;
 
 	m_eMaterial = _eMaterial;
 	m_iTextureNumber = m_eMaterial;
