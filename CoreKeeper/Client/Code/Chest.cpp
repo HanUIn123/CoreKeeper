@@ -6,8 +6,6 @@
 CChest::CChest(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CItem(pGraphicDev)
 {
-	 
-
 	m_eItemNum = ITEM_CHEST;
 }
 

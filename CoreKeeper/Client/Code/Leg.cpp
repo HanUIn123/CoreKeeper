@@ -6,8 +6,6 @@
 CLeg::CLeg(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CItem(pGraphicDev)
 {
-	 
-
 	m_eItemNum = ITEM_LEG;
 }
 

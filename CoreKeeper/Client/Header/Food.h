@@ -11,14 +11,14 @@ class CShadowTex;
 
 END
 
-class CAnvil : public CItem
+class CFood : public CItem
 {
 private:
-	explicit CAnvil(LPDIRECT3DDEVICE9 pGraphicDev);
-	virtual ~CAnvil();
+	explicit CFood(LPDIRECT3DDEVICE9 pGraphicDev);
+	virtual ~CFood();
 
 public:
-	virtual			HRESULT			Ready_GameObject(_vec3 vPos, MATERIAL _eMaterial);
+	virtual			HRESULT			Ready_GameObject(ITEMNUM _eIngredient1, ITEMNUM _eIngredient2, _vec3 vPos);
 	virtual			_int			Update_GameObject(const _float& fTimeDelta);
 	virtual			void			LateUpdate_GameObject();
 	virtual			void			Render_GameObject();
@@ -27,7 +27,7 @@ private:
 	HRESULT			Add_Component();
 
 public:
-	static CAnvil* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos = { 0.f, 0.f, 0.f }, MATERIAL _eMaterial = MATERIAL_END);
+	static CFood* Create(LPDIRECT3DDEVICE9 pGraphicDev, ITEMNUM _eIngredient1, ITEMNUM _eIngredient2, _vec3 vPos = { 0.f, 0.f, 0.f });
 
 private:
 	virtual void		Free();

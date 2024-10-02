@@ -154,17 +154,19 @@ call Copy.bat</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\Header\Arrow.h" />
+    <ClInclude Include="..\Header\Food.h" />
+    <ClInclude Include="..\Header\Ingredient.h" />
     <ClInclude Include="..\Header\Magic.h" />
     <ClInclude Include="..\Header\MiniMapFrame.h" />
     <ClInclude Include="..\Header\MiniObject.h" />
     <ClInclude Include="..\Header\CraftMgr.h" />
+    <ClInclude Include="..\Header\Malugaz.h" />
+    <ClInclude Include="..\Header\Feather.h" />
     <ClInclude Include="..\Header\Skeleton.h" />
     <ClInclude Include="..\Header\BackGround.h" />
     <ClInclude Include="..\Header\Bag.h" />
     <ClInclude Include="..\Header\AzeosSpawner.h" />
     <ClInclude Include="..\Header\MalSpawner.h" />
-    <ClInclude Include="..\Header\PepperSeed.h" />
-    <ClInclude Include="..\Header\BerrySeed.h" />
     <ClInclude Include="..\Header\Sprinkler.h" />
     <ClInclude Include="..\Header\MalCore.h" />
     <ClInclude Include="..\Header\LarvaCore.h" />
@@ -178,7 +180,7 @@ call Copy.bat</Command>
     <ClInclude Include="..\Header\Gravestone.h" />
     <ClInclude Include="..\Header\Box.h" />
     <ClInclude Include="..\Header\Necklace.h" />
-    <ClInclude Include="..\Header\Assistance.h" />
+    <ClInclude Include="..\Header\Shield.h" />
     <ClInclude Include="..\Header\AttPotion.h" />
     <ClInclude Include="..\Header\DefPotion.h" />
     <ClInclude Include="..\Header\Ring.h" />
@@ -230,7 +232,7 @@ call Copy.bat</Command>
     <ClInclude Include="..\Header\Mucus.h" />
     <ClInclude Include="..\Header\Pants.h" />
     <ClInclude Include="..\Header\Player.h" />
-    <ClInclude Include="..\Header\FlowerSeed.h" />
+    <ClInclude Include="..\Header\Seed.h" />
     <ClInclude Include="..\Header\Shirt.h" />
     <ClInclude Include="..\Header\SkyBox.h" />
     <ClInclude Include="..\Header\Slime.h" />
@@ -281,17 +283,19 @@ call Copy.bat</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Code\Arrow.cpp" />
+    <ClCompile Include="..\Code\Food.cpp" />
+    <ClCompile Include="..\Code\Ingredient.cpp" />
     <ClCompile Include="..\Code\Magic.cpp" />
     <ClCompile Include="..\Code\MiniMapFrame.cpp" />
     <ClCompile Include="..\Code\MiniObject.cpp" />
     <ClCompile Include="..\Code\CraftMgr.cpp" />
+    <ClCompile Include="..\Code\Malugaz.cpp" />
+    <ClCompile Include="..\Code\Feather.cpp" />
     <ClCompile Include="..\Code\Skeleton.cpp" />
     <ClCompile Include="..\Code\BackGround.cpp" />
     <ClCompile Include="..\Code\Bag.cpp" />
     <ClCompile Include="..\Code\AzeosSpawner.cpp" />
     <ClCompile Include="..\Code\MalSpawner.cpp" />
-    <ClCompile Include="..\Code\PepperSeed.cpp" />
-    <ClCompile Include="..\Code\BerrySeed.cpp" />
     <ClCompile Include="..\Code\Sprinkler.cpp" />
     <ClCompile Include="..\Code\MalCore.cpp" />
     <ClCompile Include="..\Code\LarvaCore.cpp" />
@@ -305,7 +309,7 @@ call Copy.bat</Command>
     <ClCompile Include="..\Code\Gravestone.cpp" />
     <ClCompile Include="..\Code\Box.cpp" />
     <ClCompile Include="..\Code\Necklace.cpp" />
-    <ClCompile Include="..\Code\Assistance.cpp" />
+    <ClCompile Include="..\Code\Shield.cpp" />
     <ClCompile Include="..\Code\AttPotion.cpp" />
     <ClCompile Include="..\Code\DefPotion.cpp" />
     <ClCompile Include="..\Code\Ring.cpp" />
@@ -357,7 +361,7 @@ call Copy.bat</Command>
     <ClCompile Include="..\Code\Pants.cpp" />
     <ClCompile Include="..\Code\Pickaxe.cpp" />
     <ClCompile Include="..\Code\Player.cpp" />
-    <ClCompile Include="..\Code\FlowerSeed.cpp" />
+    <ClCompile Include="..\Code\Seed.cpp" />
     <ClCompile Include="..\Code\Shirt.cpp" />
     <ClCompile Include="..\Code\WateringCan.cpp" />
     <ClCompile Include="..\Code\SkyBox.cpp" />

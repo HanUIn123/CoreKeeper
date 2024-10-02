@@ -1,29 +1,33 @@
 #include "pch.h"
-#include "..\Header\Assistance.h"
+#include "..\Header\Shield.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
 
-CAssistance::CAssistance(LPDIRECT3DDEVICE9 pGraphicDev)
+CShield::CShield(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CItem(pGraphicDev)
 {
-	 
-
-	m_eItemNum = ITEM_ASSISTANCE;
+	m_eItemNum = ITEM_ASSISTANCE_SHIELD;
 }
 
-CAssistance::~CAssistance()
+CShield::~CShield()
 {
 }
 
-HRESULT CAssistance::Ready_GameObject(MATERIAL _eMaterial, _vec3 vPos)
+HRESULT CShield::Ready_GameObject(MATERIAL _eMaterial, _vec3 vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	//m_eMaterial = _eMaterial;
-	//m_iTextureNumber = m_eMaterial;
+	if (_eMaterial == MATERIAL_COPPER || _eMaterial == MATERIAL_SCARLET)
+		return E_FAIL;
 
-	//m_tStat.iDefense = 10 * (m_eMaterial + 1);
-	//m_tStat.iMaxHp = 20 * (m_eMaterial + 1);
+	m_eMaterial = _eMaterial;
+	if (m_eMaterial == MATERIAL_WOOD)
+		m_iTextureNumber = 0;
+	else
+		m_iTextureNumber = 1;
+
+	m_tStat.iDefense = 10 * (m_eMaterial + 1);
+	m_tStat.iMaxHp = 20 * (m_eMaterial + 1);
 
 	m_pTransformCom->Set_Scale(0.5f, 0.5f, 0.5f);
 	m_pShadowTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
@@ -39,7 +43,7 @@ HRESULT CAssistance::Ready_GameObject(MATERIAL _eMaterial, _vec3 vPos)
 	return S_OK;
 }
 
-_int CAssistance::Update_GameObject(const _float& fTimeDelta)
+_int CShield::Update_GameObject(const _float& fTimeDelta)
 {
 	m_pAnimatorCom->Update_Animation();
 
@@ -78,12 +82,12 @@ _int CAssistance::Update_GameObject(const _float& fTimeDelta)
 	return Engine::CGameObject::Update_GameObject(fTimeDelta);
 }
 
-void CAssistance::LateUpdate_GameObject()
+void CShield::LateUpdate_GameObject()
 {
 	Engine::CGameObject::LateUpdate_GameObject();
 }
 
-void CAssistance::Render_GameObject()
+void CShield::Render_GameObject()
 {
 	// 카메라를 바라보게 하면서 스케일 유지
 	//CItem::Apply_Billboard();  
@@ -120,7 +124,7 @@ void CAssistance::Render_GameObject()
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
-HRESULT CAssistance::Add_Component()
+HRESULT CShield::Add_Component()
 {
 	CComponent* pComponent = NULL;
 
@@ -128,7 +132,7 @@ HRESULT CAssistance::Add_Component()
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Buffer", pComponent });
 
-	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_AssistanceTexture"));
+	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_ShieldTexture"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Texture", pComponent });
 
@@ -159,21 +163,21 @@ HRESULT CAssistance::Add_Component()
 	return S_OK;
 }
 
-CAssistance* CAssistance::Create(LPDIRECT3DDEVICE9 pGraphicDev, MATERIAL _eMaterial, _vec3 vPos)
+CShield* CShield::Create(LPDIRECT3DDEVICE9 pGraphicDev, MATERIAL _eMaterial, _vec3 vPos)
 {
-	CAssistance* pAssistance = new CAssistance(pGraphicDev);
+	CShield* pShield = new CShield(pGraphicDev);
 
-	if (FAILED(pAssistance->Ready_GameObject(_eMaterial, vPos)))
+	if (FAILED(pShield->Ready_GameObject(_eMaterial, vPos)))
 	{
-		Safe_Release(pAssistance);
-		MSG_BOX("pAssistance Create Failed");
+		Safe_Release(pShield);
+		MSG_BOX("pShield Create Failed");
 		return nullptr;
 	}
 
-	return pAssistance;
+	return pShield;
 }
 
-void CAssistance::Free()
+void CShield::Free()
 {
 	Engine::CGameObject::Free();
 }
