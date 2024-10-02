@@ -111,7 +111,7 @@ void COre::Render_GameObject()
 
 	m_pTextureCom->Set_Texture(m_iTextureNumber);
 
-	m_pBufferCom->Set_Index(0);
+	//m_pBufferCom->Set_Index(0);
 
 	if (m_bActive)
 	{

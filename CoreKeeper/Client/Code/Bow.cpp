@@ -25,8 +25,7 @@ HRESULT CBow::Ready_GameObject(MATERIAL _eMaterial, _vec3 vPos)
 		return E_FAIL;
 
 	m_eMaterial = _eMaterial;
-	m_iTextureNumber = m_eMaterial;
-
+	m_iTextureNumber = 2;
 	m_tStat.iAttack = 20 * (m_eMaterial + 1);
 
 	m_pTransformCom->Set_Scale(1.2f, 1.2f, 1.2f);
