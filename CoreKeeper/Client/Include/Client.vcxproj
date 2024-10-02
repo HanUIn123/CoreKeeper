@@ -173,6 +173,10 @@ call Copy.bat</Command>
     <ClInclude Include="..\Header\CookingPotObject.h" />
     <ClInclude Include="..\Header\FurnaceObject.h" />
     <ClInclude Include="..\Header\AnvilObject.h" />
+    <ClInclude Include="..\Header\AnimalTable.h" />
+    <ClInclude Include="..\Header\MusicTable.h" />
+    <ClInclude Include="..\Header\AccessoryTable.h" />
+    <ClInclude Include="..\Header\PotionTable.h" />
     <ClInclude Include="..\Header\TableObject.h" />
     <ClInclude Include="..\Header\Gravestone.h" />
     <ClInclude Include="..\Header\Box.h" />
@@ -298,6 +302,10 @@ call Copy.bat</Command>
     <ClCompile Include="..\Code\CookingPotObject.cpp" />
     <ClCompile Include="..\Code\FurnaceObject.cpp" />
     <ClCompile Include="..\Code\AnvilObject.cpp" />
+    <ClCompile Include="..\Code\AnimalTable.cpp" />
+    <ClCompile Include="..\Code\MusicTable.cpp" />
+    <ClCompile Include="..\Code\AccessoryTable.cpp" />
+    <ClCompile Include="..\Code\PotionTable.cpp" />
     <ClCompile Include="..\Code\TableObject.cpp" />
     <ClCompile Include="..\Code\Gravestone.cpp" />
     <ClCompile Include="..\Code\Box.cpp" />

@@ -89,79 +89,89 @@ CItem* CCraftMgr::Craft(CInventory* _pInventory, ITEMNUM _eItemNum, MATERIAL _eM
         pItem = CLeg::Create(m_pGraphicDev, _eMaterial);
         break;
 
-    //case ITEM_NECKLACE:
-    //    pItem = CNecklace::Create(m_pGraphicDev, _eMaterial);
-    //    break;
-    //case ITEM_RING:
-    //    pItem = CRing::Create(m_pGraphicDev, _eMaterial);
-    //    break;
-    //case ITEM_BAG:
-    //    pItem = CBag::Create(m_pGraphicDev, _eMaterial);
-    //    break;
-    //case ITEM_LANTERN:
-    //    pItem = CLantern::Create(m_pGraphicDev, _eMaterial);
-    //    break;
-    //case ITEM_ASSISTANCE:
-    //    pItem = CAssistance::Create(m_pGraphicDev, _eMaterial);
-    //    break;
+    case ITEM_NECKLACE:
+        pItem = CNecklace::Create(m_pGraphicDev, _eMaterial);
+        break;
+    case ITEM_RING:
+        pItem = CRing::Create(m_pGraphicDev, _eMaterial);
+        break;
+
+    case ITEM_ASSISTANCE_SHIELD:
+        pItem = CShield::Create(m_pGraphicDev, _eMaterial);
+        break;
+    case ITEM_ASSISTANCE_FEATHER:
+        pItem = CFeather::Create(m_pGraphicDev, _eMaterial);
+        break;
+    case ITEM_ASSISTANCE_BOOK:
+        pItem = CBook::Create(m_pGraphicDev);
+        break;
+
+    case ITEM_BAG:
+        pItem = CBag::Create(m_pGraphicDev, _eMaterial);
+        break;
+    case ITEM_LANTERN:
+        pItem = CLantern::Create(m_pGraphicDev, _eMaterial);
+        break;
+
     case ITEM_TABLE:
         pItem = CTable::Create(m_pGraphicDev, _eMaterial);
         break;
-        /*
+
     case ITEM_POTION_TABLE:
-        pItem = CPotionTable::Create(m_pGraphicDev, _eMaterial);
+        pItem = CPotionTable::Create(m_pGraphicDev);
         break;
     case ITEM_ACCESSORY_TABLE:
-        pItem = CAccessoryTable::Create(m_pGraphicDev, _eMaterial);
+        pItem = CAccessoryTable::Create(m_pGraphicDev);
         break;
     case ITEM_MUSIC_TABLE:
-        pItem = CLeg::Create(m_pGraphicDev, _eMaterial);
+        pItem = CMusicTable::Create(m_pGraphicDev);
         break;
     case ITME_ANIMAL_TABLE:
-        pItem = CLeg::Create(m_pGraphicDev, _eMaterial);
+        pItem = CAnimalTable::Create(m_pGraphicDev);
         break;
 
     case ITEM_ANVIL:
-        pItem = CLeg::Create(m_pGraphicDev, _eMaterial);
+        pItem = CAnvil::Create(m_pGraphicDev);
         break;
     case ITEM_FURNACE:
-        pItem = CLeg::Create(m_pGraphicDev, _eMaterial);
+        pItem = CFurnace::Create(m_pGraphicDev);
         break;
     case ITEM_COOKINGPOT:
-        pItem = CLeg::Create(m_pGraphicDev, _eMaterial);
-        break;*/
+        pItem = CCookingPot::Create(m_pGraphicDev);
+        break;
 
     case ITEM_TORCH:
         pItem = CTorch::Create(m_pGraphicDev);
         pItem->Add_Count(2);
         break;
-    //case ITEM_BOX:
-    //    pItem = CBox::Create(m_pGraphicDev);
-    //    break;
-    //case ITEM_SPRINKLER:
-    //    pItem = CTorch::Create(m_pGraphicDev);
-    //    break;
-
-
-    //case ITEM_POTION_HP:
-    //case ITEM_POTION_ATT:
-    //case ITEM_POTION_DEF:
-
-        // 요리 추가
-
-    //case ITEM_PLAYER_SPAWNER:
-    //case ITEM_MAL_SPAWNER:
-    //case ITEM_AZEOS_SPAWNER:
-    case ITEM_COPPER_BAR:
-        pItem = CBar::Create(m_pGraphicDev, MATERIAL_WOOD);
+    case ITEM_BOX:
+        pItem = CBox::Create(m_pGraphicDev);
+        break;
+    case ITEM_SPRINKLER:
+        pItem = CSprinkler::Create(m_pGraphicDev);
         break;
 
-    case ITEM_IRON_BAR:
+
+    case ITEM_POTION_HP:
+    case ITEM_POTION_ATT:
+    case ITEM_POTION_DEF:
+        pItem = CPotion::Create(m_pGraphicDev, _eItemNum);
+        break;
+
+    case ITEM_PLAYER_SPAWNER:
+    case ITEM_MAL_SPAWNER:
+    case ITEM_AZEOS_SPAWNER:
+        pItem = CSpawner::Create(m_pGraphicDev, _eItemNum);
+        break;
+
+    case ITEM_COPPER_BAR:
         pItem = CBar::Create(m_pGraphicDev, MATERIAL_COPPER);
         break;
-
-    case ITEM_SCARLET_BAR:
+    case ITEM_IRON_BAR:
         pItem = CBar::Create(m_pGraphicDev, MATERIAL_IRON);
+        break;
+    case ITEM_SCARLET_BAR:
+        pItem = CBar::Create(m_pGraphicDev, MATERIAL_SCARLET);
         break;
     }
 
@@ -169,9 +179,29 @@ CItem* CCraftMgr::Craft(CInventory* _pInventory, ITEMNUM _eItemNum, MATERIAL _eM
 
     CScene* pScene = Engine::Get_Scene();
 
-    pScene->Create_GameObject(L"Layer_GameLogic", pItem, strCraftName[m_iCraftCount++].c_str());
+    pScene->Create_GameObject(L"Layer_UI", pItem, strCraftName[m_iCraftCount++].c_str());
 
 	return pItem;
+}
+
+CItem* CCraftMgr::Cook(CInventory* _pInventory, ITEMNUM _eItemNum1, ITEMNUM _eItemNum2)
+{
+    // 요리 재료가 아니면 nullptr 반환
+    if (_eItemNum1 < ITEM_BERRY || _eItemNum1 > ITEM_MUSHROOM || _eItemNum2 < ITEM_BERRY || _eItemNum2 > ITEM_MUSHROOM)
+        return nullptr;
+
+
+    _pInventory->Minus_Item(_eItemNum1, 1);
+    _pInventory->Minus_Item(_eItemNum2, 1);
+
+    CItem* pFood = nullptr;
+
+    if (_eItemNum1 > _eItemNum2)
+        pFood = CFood::Create(m_pGraphicDev, _eItemNum2, _eItemNum1);
+    else
+        pFood = CFood::Create(m_pGraphicDev, _eItemNum1, _eItemNum2);
+
+    return pFood;
 }
 
 void CCraftMgr::Set_Recipe()
@@ -292,7 +322,6 @@ void CCraftMgr::Set_Recipe()
     ironLegRecipe.vecIngredients.push_back({ ITEM_IRON_BAR, 13 });
     m_mapRecipes[make_pair(ITEM_LEG, MATERIAL_IRON)] = ironLegRecipe;
 
-
     // 구리 목걸이
     Recipe copperNecklaceRecipe;
     copperNecklaceRecipe.vecIngredients.push_back({ ITEM_COPPER_BAR, 10 });
@@ -357,39 +386,133 @@ void CCraftMgr::Set_Recipe()
     bookRecipe.vecIngredients.push_back({ ITEM_SKULL_PIECE, 8 });
     m_mapRecipes[make_pair(ITEM_ASSISTANCE_BOOK, MATERIAL_END)] = bookRecipe;
 
-
-    // 나무 테이블
+    // 나무 작업대
     Recipe woodTableRecipe;
     woodTableRecipe.vecIngredients.push_back({ ITEM_WOOD, 8 });
     m_mapRecipes[make_pair(ITEM_TABLE, MATERIAL_WOOD)] = woodTableRecipe;
 
+    // 구리 작업대
+    Recipe copperTableRecipe;
+    copperTableRecipe.vecIngredients.push_back({ ITEM_WOOD, 8 });
+    copperTableRecipe.vecIngredients.push_back({ ITEM_COPPER_BAR, 6 });
+    m_mapRecipes[make_pair(ITEM_TABLE, MATERIAL_COPPER)] = copperTableRecipe;
 
-    // 상자
-    Recipe boxRecipe;
-    boxRecipe.vecIngredients.push_back({ ITEM_WOOD, 5 });
-    m_mapRecipes[make_pair(ITEM_BOX, MATERIAL_WOOD)] = boxRecipe;
+    // 철제 작업대
+    Recipe ironTableRecipe;
+    ironTableRecipe.vecIngredients.push_back({ ITEM_WOOD, 10 });
+    ironTableRecipe.vecIngredients.push_back({ ITEM_COPPER_BAR, 10 });
+    ironTableRecipe.vecIngredients.push_back({ ITEM_IRON_BAR, 15 });
+    m_mapRecipes[make_pair(ITEM_TABLE, MATERIAL_IRON)] = ironTableRecipe;
 
+    // 연금술 작업대
+    Recipe potionTableRecipe;
+    potionTableRecipe.vecIngredients.push_back({ ITEM_WOOD, 8 });
+    potionTableRecipe.vecIngredients.push_back({ ITEM_MUCUS, 8 });
+    potionTableRecipe.vecIngredients.push_back({ ITEM_COPPER_BAR, 5 });
+    m_mapRecipes[make_pair(ITEM_POTION_TABLE, MATERIAL_END)] = potionTableRecipe;
 
+    // 장신구 작업대
+    Recipe accessoryTableRecipe;
+    accessoryTableRecipe.vecIngredients.push_back({ ITEM_WOOD, 8 });
+    accessoryTableRecipe.vecIngredients.push_back({ ITEM_COPPER_BAR, 4 });
+    accessoryTableRecipe.vecIngredients.push_back({ ITEM_IRON_BAR, 8 });
+    m_mapRecipes[make_pair(ITEM_ACCESSORY_TABLE, MATERIAL_END)] = accessoryTableRecipe;
 
+    // 음악 작업대
+    Recipe musicTableRecipe;
+    musicTableRecipe.vecIngredients.push_back({ ITEM_FIBER, 5 });
+    musicTableRecipe.vecIngredients.push_back({ ITEM_WOOD, 8 });
+    m_mapRecipes[make_pair(ITEM_MUSIC_TABLE, MATERIAL_END)] = musicTableRecipe;
 
+    // 구리 모루
+    Recipe copperAnvilRecipe;
+    copperAnvilRecipe.vecIngredients.push_back({ ITEM_COPPER_BAR, 8 });
+    m_mapRecipes[make_pair(ITEM_ANVIL, MATERIAL_COPPER)] = copperAnvilRecipe;
 
+    // 철제 모루
+    Recipe ironAnvilRecipe;
+    ironAnvilRecipe.vecIngredients.push_back({ ITEM_IRON_BAR, 10 });
+    m_mapRecipes[make_pair(ITEM_ANVIL, MATERIAL_IRON)] = ironAnvilRecipe;
+
+    // 용광로
+    Recipe furnaceRecipe;
+    furnaceRecipe.vecIngredients.push_back({ ITEM_DIRTWALL, 20 });
+    m_mapRecipes[make_pair(ITEM_FURNACE, MATERIAL_END)] = furnaceRecipe;
+
+    // 요리솥
+    Recipe cookingPotRecipe;
+    cookingPotRecipe.vecIngredients.push_back({ ITEM_WOOD, 2 });
+    cookingPotRecipe.vecIngredients.push_back({ ITEM_COPPER_BAR, 4 });
+    m_mapRecipes[make_pair(ITEM_COOKINGPOT, MATERIAL_END)] = cookingPotRecipe;
 
     // 횃불
     Recipe torchRecipe;
     torchRecipe.vecIngredients.push_back({ ITEM_WOOD, 1 });
-    m_mapRecipes[make_pair(ITEM_TORCH, MATERIAL_WOOD)] = torchRecipe;
+    m_mapRecipes[make_pair(ITEM_TORCH, MATERIAL_END)] = torchRecipe;
 
-    Recipe CopperBar;
-    CopperBar.vecIngredients.push_back({ ITEM_COPPER, 1 });
-    m_mapRecipes[make_pair(ITEM_COPPER_BAR, MATERIAL_WOOD)] = CopperBar;
+    // 상자
+    Recipe boxRecipe;
+    boxRecipe.vecIngredients.push_back({ ITEM_WOOD, 5 });
+    m_mapRecipes[make_pair(ITEM_BOX, MATERIAL_END)] = boxRecipe;
 
-    Recipe IronBar;
-    IronBar.vecIngredients.push_back({ ITEM_IRON, 1 });
-    m_mapRecipes[make_pair(ITEM_IRON_BAR, MATERIAL_WOOD)] = IronBar;
+    // 스프링쿨러
+    Recipe sprinklerRecipe;
+    sprinklerRecipe.vecIngredients.push_back({ ITEM_IRON_BAR, 8 });
+    sprinklerRecipe.vecIngredients.push_back({ ITEM_SCARLET_BAR, 8 });
+    m_mapRecipes[make_pair(ITEM_SPRINKLER, MATERIAL_END)] = sprinklerRecipe;
 
-    Recipe ScarletBar;
-    ScarletBar.vecIngredients.push_back({ ITEM_SCARLET, 1 });
-    m_mapRecipes[make_pair(ITEM_SCARLET_BAR, MATERIAL_WOOD)] = ScarletBar;
+    // HP 포션
+    Recipe hpPotionRecipe;
+    hpPotionRecipe.vecIngredients.push_back({ ITEM_MUCUS, 3 });
+    hpPotionRecipe.vecIngredients.push_back({ ITEM_BERRY, 3 });
+    m_mapRecipes[make_pair(ITEM_POTION_HP, MATERIAL_END)] = hpPotionRecipe;
+
+    // ATT 포션
+    Recipe attPotionRecipe;
+    attPotionRecipe.vecIngredients.push_back({ ITEM_MUCUS, 3 });
+    attPotionRecipe.vecIngredients.push_back({ ITEM_PEPPER, 2 });
+    m_mapRecipes[make_pair(ITEM_POTION_ATT, MATERIAL_END)] = attPotionRecipe;
+
+    // DEF 포션
+    Recipe defPotionRecipe;
+    defPotionRecipe.vecIngredients.push_back({ ITEM_MUCUS, 3 });
+    defPotionRecipe.vecIngredients.push_back({ ITEM_CARROT, 3 });
+    m_mapRecipes[make_pair(ITEM_POTION_DEF, MATERIAL_END)] = defPotionRecipe;
+
+    // 재료 뭐로하지?
+    // 플레이어 스포너
+    /*Recipe playerSpawnerRecipe;
+    playerSpawnerRecipe.vecIngredients.push_back({ ITEM_MUCUS, 3 });
+    playerSpawnerRecipe.vecIngredients.push_back({ ITEM_CARROT, 3 });
+    m_mapRecipes[make_pair(ITEM_PLAYER_SPAWNER, MATERIAL_END)] = playerSpawnerRecipe;*/
+
+    // 말루가즈 스포너
+    Recipe malugazSpawnerRecipe;
+    malugazSpawnerRecipe.vecIngredients.push_back({ ITEM_SKULL_PIECE, 3 });
+    m_mapRecipes[make_pair(ITEM_MAL_SPAWNER, MATERIAL_END)] = malugazSpawnerRecipe;
+
+    // 아제오스 스포너
+    Recipe azeosSpawnerRecipe;
+    azeosSpawnerRecipe.vecIngredients.push_back({ ITEM_COPPER_BAR, 10 });
+    azeosSpawnerRecipe.vecIngredients.push_back({ ITEM_IRON_BAR, 10 });
+    azeosSpawnerRecipe.vecIngredients.push_back({ ITEM_SCARLET_BAR, 10 });
+    azeosSpawnerRecipe.vecIngredients.push_back({ ITEM_FEATHER_PIECE, 3 });
+    m_mapRecipes[make_pair(ITEM_AZEOS_SPAWNER, MATERIAL_END)] = azeosSpawnerRecipe;
+
+    // 구리 주괴
+    Recipe CopperBarRecipe;
+    CopperBarRecipe.vecIngredients.push_back({ ITEM_COPPER, 1 });
+    m_mapRecipes[make_pair(ITEM_COPPER_BAR, MATERIAL_END)] = CopperBarRecipe;
+
+    // 철 주괴
+    Recipe IronBarRecipe;
+    IronBarRecipe.vecIngredients.push_back({ ITEM_IRON, 1 });
+    m_mapRecipes[make_pair(ITEM_IRON_BAR, MATERIAL_END)] = IronBarRecipe;
+
+    // 진홍석 주괴
+    Recipe ScarletBarRecipe;
+    ScarletBarRecipe.vecIngredients.push_back({ ITEM_SCARLET, 1 });
+    m_mapRecipes[make_pair(ITEM_SCARLET_BAR, MATERIAL_END)] = ScarletBarRecipe;
 }
 
 void CCraftMgr::Free()

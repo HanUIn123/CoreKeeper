@@ -1,19 +1,21 @@
 #include "pch.h"
-#include "..\Header\Anvil.h"
+#include "..\Header\MusicTable.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
 
-CAnvil::CAnvil(LPDIRECT3DDEVICE9 pGraphicDev)
+CMusicTable::CMusicTable(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CItem(pGraphicDev)
 {
-	m_eItemNum = ITEM_ANVIL;
+	 
+
+	m_eItemNum = ITEM_MUSIC_TABLE;
 }
 
-CAnvil::~CAnvil()
+CMusicTable::~CMusicTable()
 {
 }
 
-HRESULT CAnvil::Ready_GameObject(_vec3 vPos)
+HRESULT CMusicTable::Ready_GameObject(_vec3 vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
@@ -32,7 +34,7 @@ HRESULT CAnvil::Ready_GameObject(_vec3 vPos)
 	return S_OK;
 }
 
-_int CAnvil::Update_GameObject(const _float& fTimeDelta)
+_int CMusicTable::Update_GameObject(const _float& fTimeDelta)
 {
 	m_pAnimatorCom->Update_Animation();
 
@@ -60,7 +62,7 @@ _int CAnvil::Update_GameObject(const _float& fTimeDelta)
 		{
 			Engine::CInventory* pPlayerInventory = dynamic_cast<Engine::CInventory*>
 				(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
-
+		
 			// 인벤토리에 들어갔다
 			if (pPlayerInventory->Add_Item(this))
 			{
@@ -69,18 +71,18 @@ _int CAnvil::Update_GameObject(const _float& fTimeDelta)
 			}
 		}
 	}
-
+	
 	Add_RenderGroup(RENDER_ALPHA, this);
 
 	return Engine::CGameObject::Update_GameObject(fTimeDelta);
 }
 
-void CAnvil::LateUpdate_GameObject()
+void CMusicTable::LateUpdate_GameObject()
 {
 	Engine::CGameObject::LateUpdate_GameObject();
 }
 
-void CAnvil::Render_GameObject()
+void CMusicTable::Render_GameObject()
 {
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
@@ -114,7 +116,7 @@ void CAnvil::Render_GameObject()
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
-HRESULT CAnvil::Add_Component()
+HRESULT CMusicTable::Add_Component()
 {
 	CComponent* pComponent = NULL;
 
@@ -122,7 +124,7 @@ HRESULT CAnvil::Add_Component()
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Buffer", pComponent });
 
-	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_WoodTexture"));
+	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_MusicTableTexture"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Texture", pComponent });
 
@@ -153,21 +155,21 @@ HRESULT CAnvil::Add_Component()
 	return S_OK;
 }
 
-CAnvil* CAnvil::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
+CMusicTable* CMusicTable::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 {
-	CAnvil* pAnvil = new CAnvil(pGraphicDev);
+	CMusicTable* pMusicTable = new CMusicTable(pGraphicDev);
 
-	if (FAILED(pAnvil->Ready_GameObject(vPos)))
+	if (FAILED(pMusicTable->Ready_GameObject(vPos)))
 	{
-		Safe_Release(pAnvil);
-		MSG_BOX("pAnvil Create Failed");
+		Safe_Release(pMusicTable);
+		MSG_BOX("pMusicTable Create Failed");
 		return nullptr;
 	}
 
-	return pAnvil;
+	return pMusicTable;
 }
 
-void CAnvil::Free()
+void CMusicTable::Free()
 {
 	Engine::CGameObject::Free();
 }

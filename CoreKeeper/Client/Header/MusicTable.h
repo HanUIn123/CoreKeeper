@@ -11,11 +11,11 @@ class CShadowTex;
 
 END
 
-class CAnvil : public CItem
+class CMusicTable : public CItem
 {
 private:
-	explicit CAnvil(LPDIRECT3DDEVICE9 pGraphicDev);
-	virtual ~CAnvil();
+	explicit CMusicTable(LPDIRECT3DDEVICE9 pGraphicDev);
+	virtual ~CMusicTable();
 
 public:
 	virtual			HRESULT			Ready_GameObject(_vec3 vPos);
@@ -27,7 +27,7 @@ private:
 	HRESULT			Add_Component();
 
 public:
-	static CAnvil* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos = { 0.f, 0.f, 0.f });
+	static CMusicTable* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos = { 0.f, 0.f, 0.f });
 
 private:
 	virtual void		Free();
