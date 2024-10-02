@@ -164,8 +164,8 @@ HRESULT CMapEditorScene::Ready_Layer_Environment(const _tchar* pLayerTag)
 
     Engine::CGameObject* pGameObject = nullptr;
 
-    _vec3 eye(0.f, 10.f, -10.f);
-    _vec3 at(0.f, 0.f, 1.f);
+    _vec3 eye(128.5f, 20.f, 128.5f);
+    _vec3 at(128.5f, 0.f, 128.5f);
     _vec3 up(0.f, 1.f, 0.f);
 
     pGameObject = CMapToolCamera::Create(m_pGraphicDev,
@@ -463,7 +463,7 @@ HRESULT CMapEditorScene::Piking_Wall()
                 NULL_CHECK_RETURN(m_pWallCom, E_FAIL);
                 FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsWallNameString[iIndex].c_str(), m_pWallCom), E_FAIL);
 
-                m_vecWallObject[iIndex]->Set_WallNumber(0);
+                m_vecWallObject[iIndex]->Set_WallNumber(m_iWallImgNumber * 15);
                 //m_vecWallObject[iIndex]->Set_WallNumber(m_iWallImgNumber);
                 pTerrain->Set_Unreachable(iIndex, true);
 
