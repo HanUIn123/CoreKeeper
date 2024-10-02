@@ -2,14 +2,14 @@
 #include "PSystem.h"
 
 PSystem::PSystem()
-	: _emitRate(0), _size(0), _tex(0), _vb(0), _maxParticles(0), _vbSize(0), _vbOffset(0), _vbBatchSize(0)
+	: _emitRate(0), _size(0), _tex(0), _vb(0), _maxParticles(0), _vbSize(0), _vbOffset(0), _vbBatchSize(0), m_iMaxTexture(0)
 {	
 	_origin = {};
 	ZeroMemory(&_boundingBox, sizeof(_boundingBox));
 }
 
 PSystem::PSystem(LPDIRECT3DDEVICE9 pGraphicDev)
-	:CComponent(pGraphicDev), _emitRate(0), _size(0), _tex(0), _vb(0), _maxParticles(0), _vbSize(0), _vbOffset(0), _vbBatchSize(0)
+	:CComponent(pGraphicDev), _emitRate(0), _size(0), _tex(0), _vb(0), _maxParticles(0), _vbSize(0), _vbOffset(0), _vbBatchSize(0), m_iMaxTexture(0)
 {
 	_origin = {};
 	ZeroMemory(&_boundingBox, sizeof(_boundingBox));
@@ -17,7 +17,7 @@ PSystem::PSystem(LPDIRECT3DDEVICE9 pGraphicDev)
 
 PSystem::PSystem(const PSystem& rhs)
 	:CComponent(rhs), _origin(rhs._origin), _boundingBox(rhs._boundingBox), _emitRate(rhs._emitRate), _size(rhs._size), _tex(rhs._tex), _vb(rhs._vb), _particles(rhs._particles),
-	_maxParticles(rhs._maxParticles), _vbSize(rhs._vbSize), _vbOffset(rhs._vbOffset), _vbBatchSize(rhs._vbBatchSize)
+	_maxParticles(rhs._maxParticles), _vbSize(rhs._vbSize), _vbOffset(rhs._vbOffset), _vbBatchSize(rhs._vbBatchSize), m_iMaxTexture(rhs.m_iMaxTexture)
 {
 }
 
@@ -26,7 +26,7 @@ PSystem::~PSystem()
 
 }
 
-bool PSystem::init(const _tchar* texFileName)
+bool PSystem::init(const _tchar* texFileName, _int iTexNum)
 {
 
 	HRESULT hr = 0;
@@ -43,16 +43,19 @@ bool PSystem::init(const _tchar* texFileName)
 		::MessageBox(0, L"CreateVertexBuffer() - FAILED", L"PSystem", 0);
 	}
 
-	// 파티클에 붙일 텍스쳐 불러오기
-	hr = D3DXCreateTextureFromFile(
-		m_pGraphicDev,
-		texFileName,
-		&_tex);
+	m_vecTexture.reserve(iTexNum);
 
-	if (FAILED(hr))
+	IDirect3DTexture9* pTexture = NULL;
+
+	for (_int i = 0; i < iTexNum; ++i)
 	{
-		::MessageBox(0, L"D3DXCreateTextureFromFile() - FAILED", L"PSystem", 0);
-		return false;
+		TCHAR		szFileName[128] = L"";
+
+		wsprintf(szFileName, texFileName, i);
+
+		FAILED_CHECK_RETURN(D3DXCreateTextureFromFile(m_pGraphicDev, szFileName, (LPDIRECT3DTEXTURE9*)&pTexture), E_FAIL);
+
+		m_vecTexture.push_back(pTexture);
 	}
 
 	return true;
@@ -110,7 +113,6 @@ void PSystem::render()
 	{
 		preRender();
 
-		m_pGraphicDev->SetTexture(0, _tex);
 		m_pGraphicDev->SetFVF(FVF_PARTICLE);
 		m_pGraphicDev->SetStreamSource(0, _vb, 0, sizeof(Particle));
 
@@ -132,6 +134,10 @@ void PSystem::render()
 		{
 			if (i->_isAlive) // 파티클(들)에 정보 넘겨주기
 			{
+				//m_pGraphicDev->SetTexture(0, m_vecTexture[i->_iTextureNum]);
+
+				m_pGraphicDev->SetTexture(0, m_vecTexture[3]);
+
 				v->_position = i->_position;
 				v->_color = (D3DCOLOR)i->_color;
 				v++;

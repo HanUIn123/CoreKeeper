@@ -51,6 +51,8 @@ protected:
 	void			Set_Stop(_vec3* vDir1, _float fDirSpeed1, _vec3* vDir2 = nullptr, _float fDirSpeed2 = 0.f);
 	void			Set_StuckFree(const _float& fTimeDelta);
 
+	void            Render_HitEffect();
+
 protected:
 	Engine::CAnimTex*		m_pBufferCom;
 	Engine::CState*			m_pStateCom;

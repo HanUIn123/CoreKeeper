@@ -121,6 +121,12 @@
     <Filter Include="04. Component\09. Shader">
       <UniqueIdentifier>{0d594b66-679d-4a9e-a334-6817abde928b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04. Component\08. Particles\02. Smoke">
+      <UniqueIdentifier>{dd89f143-7922-460e-9118-0c733fc2c92b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Component\08. Particles\03. Followers">
+      <UniqueIdentifier>{f7ec90dd-7bb0-4416-a021-ffa6227a5c01}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Code\Scene.cpp">
@@ -233,6 +239,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\Shader.cpp">
       <Filter>04. Component\09. Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Followers.cpp">
+      <Filter>04. Component\08. Particles\03. Followers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -349,6 +358,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Header\Shader.h">
       <Filter>04. Component\09. Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Header\Followers.h">
+      <Filter>04. Component\08. Particles\03. Followers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

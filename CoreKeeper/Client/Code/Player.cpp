@@ -96,8 +96,9 @@ HRESULT CPlayer::Ready_GameObject()
 	m_pStateCom->Set_Stat(m_tBasicStat.iMaxHp, m_tBasicStat.iMaxMp, m_tBasicStat.iAttack, m_tBasicStat.iDefense);
 	m_pEquipInventoryCom->Set_SlotCount(10);
 
-	m_pFireParticleCom->init(L"../Bin/Resource/Texture/Particle/flare.bmp"); // 파티클 시작
-
+	//m_pFireParticleCom->init(L"../Bin/Resource/Texture/Particle/flare.bmp"); // 파티클 시작
+	m_pFireParticleCom->init(L"../Bin/Resource/Texture/Particle//Fire_Particle/Fire_Particle_%d.png", 5); // 파티클 시작
+	m_pFollowParticleCom->init(L"../Bin/Resource/Texture/Particle/Fire_Particle/Fire_Particle_%d.png", 5); // 파티클 시작
 	return S_OK;
 }
 
@@ -191,6 +192,8 @@ void CPlayer::Render_GameObject()
 
 	if(m_bBleed)
 	   m_pFireParticleCom->render(); // 파티클 렌더
+
+	m_pFollowParticleCom->render();
 }
 
 HRESULT CPlayer::Add_Component()
@@ -236,6 +239,10 @@ HRESULT CPlayer::Add_Component()
 	pComponent = m_pFireParticleCom = dynamic_cast<CFall*>(Engine::Clone_Proto(L"Proto_Fall"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_DYNAMIC].insert({ L"Com_Fall", pComponent });
+
+	pComponent = m_pFollowParticleCom = dynamic_cast<CFollow*>(Engine::Clone_Proto(L"Proto_Followers"));
+	NULL_CHECK_RETURN(pComponent, E_FAIL);
+	m_mapComponent[ID_DYNAMIC].insert({ L"Com_Follow", pComponent });
 	///m_pFireParticleCom
 	return S_OK;
 }
@@ -1418,6 +1425,8 @@ void CPlayer::Particle_Update(_float fTimeDelta)
 
 		m_pFireParticleCom->reset();
 	}
+
+	m_pFollowParticleCom->update(fTimeDelta);
 }
 
 void CPlayer::Set_KnockBack(_vec3 vEnemyPos, _int iDamage, _float fDist)

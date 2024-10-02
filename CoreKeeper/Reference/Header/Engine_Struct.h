@@ -114,6 +114,7 @@ namespace Engine
 		_float _age;
 		D3DXCOLOR _color;
 		D3DXCOLOR _colorFade;
+		_int      _iTextureNum;
 		bool _isAlive;
 	};
 

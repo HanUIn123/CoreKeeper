@@ -154,6 +154,7 @@ call Copy.bat</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\Header\Arrow.h" />
+    <ClInclude Include="..\Header\Azeos.h" />
     <ClInclude Include="..\Header\Magic.h" />
     <ClInclude Include="..\Header\MiniMapFrame.h" />
     <ClInclude Include="..\Header\MiniObject.h" />
@@ -281,6 +282,7 @@ call Copy.bat</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Code\Arrow.cpp" />
+    <ClCompile Include="..\Code\Azeos.cpp" />
     <ClCompile Include="..\Code\Magic.cpp" />
     <ClCompile Include="..\Code\MiniMapFrame.cpp" />
     <ClCompile Include="..\Code\MiniObject.cpp" />

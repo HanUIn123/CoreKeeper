@@ -361,6 +361,10 @@ void CMonster::Set_StuckFree(const _float& fTimeDelta)
 	}
 }
 
+void CMonster::Render_HitEffect()
+{
+}
+
 void CMonster::Free()
 {
 	Engine::CGameObject::Free();

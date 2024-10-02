@@ -97,7 +97,7 @@ _uint CLoading::Loading_Stage()
     _vec3 vPPos = { 0.f, 0.f, 0.f };
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Firework", Engine::CFirework::Create(m_pGraphicDev, &vPPos, 600)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Fall", Engine::CFall::Create(m_pGraphicDev, &vPPos, 8)), E_FAIL);
-
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Followers", Engine::CFollow::Create(m_pGraphicDev, &vPPos, 10, 5)), E_FAIL);
 
     lstrcpy(m_szLoading, L"Texture Loading...");
 
@@ -240,6 +240,7 @@ _uint CLoading::Loading_Stage()
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SlimeCollider", Engine::CCollider::Create(m_pGraphicDev, 0.5f)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ShroomManCollider", Engine::CCollider::Create(m_pGraphicDev, 0.7f)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ShamanCollider", Engine::CCollider::Create(m_pGraphicDev, 0.6f)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_AzeosCollider", Engine::CCollider::Create(m_pGraphicDev, 0.6f)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ShamProjectileCollider", Engine::CCollider::Create(m_pGraphicDev, 0.7f)), E_FAIL);
 
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SwordCollider", Engine::CCollider::Create(m_pGraphicDev, 0.4f)), E_FAIL);

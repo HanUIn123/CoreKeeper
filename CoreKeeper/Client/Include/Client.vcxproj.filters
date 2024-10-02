@@ -451,6 +451,9 @@
     <Filter Include="02. GameObject\07. UI\05. UIInventory\01. InvPlate">
       <UniqueIdentifier>{0ac47d63-794f-4ff2-a171-21b40ac20b90}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\02. Monster\04. BossAzeos">
+      <UniqueIdentifier>{d1b2a65f-7057-484a-a213-e2c56e5bd5d3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -828,6 +831,9 @@
     <ClInclude Include="..\Header\UIFurnace.h">
       <Filter>02. GameObject\07. UI\13. UIFurnace</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\Azeos.h">
+      <Filter>02. GameObject\02. Monster\04. BossAzeos</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1183,6 +1189,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\UIFurnace.cpp">
       <Filter>02. GameObject\07. UI\13. UIFurnace</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Azeos.cpp">
+      <Filter>02. GameObject\02. Monster\04. BossAzeos</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

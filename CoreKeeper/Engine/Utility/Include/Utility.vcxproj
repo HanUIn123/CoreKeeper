@@ -154,6 +154,7 @@ call CopyUtility.bat</Command>
     <ClCompile Include="..\Code\CubeTex.cpp" />
     <ClCompile Include="..\Code\d3dUtility.cpp" />
     <ClCompile Include="..\Code\Fall.cpp" />
+    <ClCompile Include="..\Code\Followers.cpp" />
     <ClCompile Include="..\Code\GameObject.cpp" />
     <ClCompile Include="..\Code\Shader.cpp" />
     <ClCompile Include="..\Code\Inventory.cpp" />
@@ -194,6 +195,7 @@ call CopyUtility.bat</Command>
     <ClInclude Include="..\..\Header\d3dUtility.h" />
     <ClInclude Include="..\..\Header\Export_Utility.h" />
     <ClInclude Include="..\..\Header\Fall.h" />
+    <ClInclude Include="..\..\Header\Followers.h" />
     <ClInclude Include="..\..\Header\GameObject.h" />
     <ClInclude Include="..\..\Header\Shader.h" />
     <ClInclude Include="..\..\Header\Inventory.h" />

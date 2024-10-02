@@ -30,6 +30,7 @@ HRESULT CFall::Ready_Particles(D3DXVECTOR3* origin, _int numParticles)
 	_vbOffset = 0;
 	_vbBatchSize = 512;
 	//파티클 기본 속성들
+	m_iMaxTexture = 0;
 
 	for (int i = 0; i < numParticles; i++)
 		addParticle();
@@ -73,6 +74,8 @@ void CFall::resetParticle(Attribute* attribute) // 파티클 리셋
 
 	attribute->_age = 0.0f;
 	attribute->_lifeTime = 1.0f; // 수명 1초
+	
+	attribute->_iTextureNum = 0;
 }
 
 void CFall::update(float timeDelta)

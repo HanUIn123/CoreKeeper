@@ -196,6 +196,10 @@ void CCraftMgr::Set_Recipe()
     woodHoeRecipe.vecIngredients.push_back({ ITEM_WOOD, 4 });
     m_mapRecipes[make_pair(ITEM_HOE, MATERIAL_WOOD)] = woodHoeRecipe;
 
+    Recipe wateringcan;
+    woodHoeRecipe.vecIngredients.push_back({ ITEM_WOOD, 3 });
+    m_mapRecipes[make_pair(ITEM_WATERINGCAN, MATERIAL_WOOD)] = wateringcan;
+
     // 구리 호미
     /*Recipe ironPickAxeRecipe;
     ironPickAxeRecipe.vecIngredients.push_back({ ITEM_WOOD, 4 });
@@ -309,11 +313,11 @@ void CCraftMgr::Set_Recipe()
 
     Recipe IronBar;
     IronBar.vecIngredients.push_back({ ITEM_IRON, 1 });
-    m_mapRecipes[make_pair(ITEM_IRON_BAR, MATERIAL_WOOD)] = IronBar;
+    m_mapRecipes[make_pair(ITEM_IRON_BAR, MATERIAL_COPPER)] = IronBar;
 
     Recipe ScarletBar;
     ScarletBar.vecIngredients.push_back({ ITEM_SCARLET, 1 });
-    m_mapRecipes[make_pair(ITEM_SCARLET_BAR, MATERIAL_WOOD)] = ScarletBar;
+    m_mapRecipes[make_pair(ITEM_SCARLET_BAR, MATERIAL_IRON)] = ScarletBar;
 }
 
 void CCraftMgr::Free()
