@@ -54,10 +54,14 @@ public:
 	void									Setting_ObjectList();
 	HRESULT									Piking_Object();
 
+	void									Setting_MonsterList();
+	HRESULT									Piking_Monster();
+
+
 	HRESULT									Delete_Object(const _tchar* pLayerTag, const _tchar* pGameObjectTag);
 
 	// ImGui에 Tile 미리보기 이미지 등록.
-	HRESULT									Resister_ImguiImage_ImGui(LPDIRECT3DDEVICE9 _pGraphicDeivce, const _tchar* _ImageFilePath, TEXTUREID _eTextureId, const int& _iImageNumber);
+	HRESULT									Resister_ImguiImage_ImGui(LPDIRECT3DDEVICE9 _pGraphicDeivce, const _tchar* _ImageFilePath, IMGUITEXTUREID _eTextureId, const int& _iImageNumber);
 private:
 	_int									m_iStandardIndex;
 	_int									m_iUpIndex;
@@ -69,8 +73,10 @@ private:
 	vector<IDirect3DBaseTexture9*>			m_vecTileTexture;
 	vector<IDirect3DBaseTexture9*>			m_vecWallTexture;
 	vector<IDirect3DBaseTexture9*>			m_vecObjectTexture;
+	vector<IDirect3DBaseTexture9*>			m_vecMonsterTexture;
 
-	LPDIRECT3DTEXTURE9						m_TileTextureInfo = NULL;
+	//LPDIRECT3DTEXTURE9						m_TileTextureInfo = NULL;
+	LPDIRECT3DTEXTURE9						m_TextureInfo = NULL;
 	D3DXIMAGE_INFO							m_tImageInfo;
 
 
@@ -81,13 +87,16 @@ private:
 	wstring									m_iImGuiTileListNum;
 
 	// n번 째 타일인지 담는 변수.
-	_int									m_iImageNumber;
+	_int									m_iTileNumber;
 
 	// n번 째 벽인지 담는 변수.
 	_int									m_iWallImgNumber;
 
 	// n번 째 건설물인지 담는 변수.
 	_int									m_iBuildingNumber;
+
+	// n번 째 몬스터인지 담는 변수.
+	_int									m_iMonsterNumber;
 public:
 	void									MapFile_Save();
 	HRESULT									MapFile_Load();
@@ -105,6 +114,7 @@ private:
 	bool									m_bSelectTile;
 	bool									m_bSelectWall;
 	bool									m_bSelectBuilding;
+	bool									m_bSelectMonster;
 	bool									m_bCanInstall;
 	bool									m_bAlreadyInstalled;
 	bool									m_bReposed;
