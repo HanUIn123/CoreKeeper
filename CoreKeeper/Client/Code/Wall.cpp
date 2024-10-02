@@ -87,6 +87,7 @@ void CWall::Render_GameObject()
     FAILED_CHECK_RETURN(Setup_Material(), );
 
     m_pTextureCom->Set_Texture(m_iCurImgNum);
+    //m_pTextureCom->Set_Texture(m_iWallImageNum * 15);
     //m_pTextureCom->Set_Texture(2);
 
     m_pBufferCom->Render_Buffer();
@@ -180,7 +181,6 @@ void CWall::Update_Texture()
         m_iCurImgNum = m_iWallImageNum + 1;
         m_pTransformCom->Set_Angle(0.f, D3DXToRadian(180.f), 0.f);
         break;
-
         // ªÛ«œ
     case 0b00010001:
         m_iCurImgNum = m_iWallImageNum + 2;
