@@ -58,6 +58,7 @@ CMonster::CMonster(LPDIRECT3DDEVICE9 pGraphicDev)
 
 	m_pPlayerTransform = nullptr;
 	m_pTerrain = nullptr;
+	m_bCheckWall = false;
 
 	m_vecDropItem.reserve(3);
 }
@@ -359,7 +360,7 @@ void CMonster::Set_StuckFree(const _float& fTimeDelta)
 			D3DXVec3Normalize(&vDir, &vDir);
 			vDir.y = 0;
 			m_iSpeedWeight = 1;
-			m_pTransformCom->Move_Pos(&vDir, fTimeDelta, m_fSpeed * 15);
+			m_pTransformCom->Move_Pos(&vDir, fTimeDelta, m_fSpeed * 10);
 		}
 	}
 }
@@ -371,89 +372,52 @@ _bool CMonster::Check_Wall()
 	if (!m_pTerrain)
 		m_pTerrain = dynamic_cast<CTerrain*>(Engine::Get_GameObject(L"Layer_Environment", L"Terrain"));
 
+	m_bCheckWall = false;
+	switch (m_eType)
+	{
+	case MON_SLIME:
+		if (m_eState != IDLE && m_pAnimatorCom->Get_MotionEnd())
+			Check_WallWithPlayer();
+		break;
+	case MON_SHROOMMAN:
+		if ((m_eState == SWING && m_bAttackSuccess && m_pAnimatorCom->Get_MotionEnd()) || m_eState == IDLE)
+			Check_WallWithPlayer();
+		break;
+	case MON_SHAMAN:
+		Check_WallWithPlayer();
+		break;
+	default:
+		break;
+	}
+	return m_bCheckWall;
+}
+
+void CMonster::Check_WallWithPlayer()
+{
 	_vec3 vPos, vPlayerPos, vPlayerDir;
 	m_pPlayerTransform->Get_Info(INFO_POS, &vPos);
 	m_pTransformCom->Get_Info(INFO_POS, &vPlayerPos);
-	if (m_eType == MON_SHAMAN)
+	if (m_pCalculatorCom->Check_Distance2D(&vPos, &vPlayerPos, m_fAggroDistance))
 	{
-		if (m_pCalculatorCom->Check_Distance2D(&vPos, &vPlayerPos, m_fAggroDistance))
+		_vec3 vPlayerDistance = vPlayerPos - vPos;
+		D3DXVec3Normalize(&vPlayerDir, &vPlayerDistance);
+		_float fPlayerDistance = D3DXVec3Length(&vPlayerDistance);
+		for (_int i = 0; i < (_int)fPlayerDistance * 10; i++)
 		{
-			_vec3 vPlayerDistance = vPlayerPos - vPos;
-			D3DXVec3Normalize(&vPlayerDir, &vPlayerDistance);
-			_float fPlayerDistance = D3DXVec3Length(&vPlayerDistance);
-			for (_int i = 0; i < (_int)fPlayerDistance * 2; i++)
+			_vec3 vCheckPos = vPos + vPlayerDir * i * 0.1f;
+			_int iIndex = _int(vCheckPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (vCheckPos.x + 0.5f * VTXITV);
+			if (0 <= iIndex && iIndex < VTXCNTX * VTXCNTZ)
 			{
-				_vec3 vCheckPos = vPos + vPlayerDir * i * 0.5f;
-				_int iIndex = _int(vCheckPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (vCheckPos.x + 0.5f * VTXITV);
-				if (0 <= iIndex && iIndex < VTXCNTX * VTXCNTZ)
+				if (m_pTerrain->Get_UnreachableByIndex(iIndex))
 				{
-					if (m_pTerrain->Get_UnreachableByIndex(iIndex))
-					{
-						m_eState = IDLE;
-						m_iDir = 0;
-						return true;
-					}
+					m_eState = IDLE;
+					m_iDir = 0;
+					m_bCheckWall = true;
 				}
 			}
 		}
 	}
-	else if (m_eType == MON_SHROOMMAN)
-	{
-		if ((m_eState == SWING && m_bAttackSuccess && m_pAnimatorCom->Get_MotionEnd()) || m_eState == IDLE)
-		{
-			if (m_pCalculatorCom->Check_Distance2D(&vPos, &vPlayerPos, m_fAggroDistance))
-			{
-				_vec3 vPlayerDistance = vPlayerPos - vPos;
-				D3DXVec3Normalize(&vPlayerDir, &vPlayerDistance);
-				_float fPlayerDistance = D3DXVec3Length(&vPlayerDistance);
-				for (_int i = 0; i < (_int)fPlayerDistance * 4; i++)
-				{
-					_vec3 vCheckPos = vPos + vPlayerDir * i * 0.25f;
-					_int iIndex = _int(vCheckPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (vCheckPos.x + 0.5f * VTXITV);
-					if (0 <= iIndex && iIndex < VTXCNTX * VTXCNTZ)
-					{
-						if (m_pTerrain->Get_UnreachableByIndex(iIndex))
-						{
-							m_eState = IDLE;
-							m_iDir = 0;
-							return true;
-						}
-					}
-				}
-			}
-		}
-	}
-	else
-	{
-		if (m_eState != IDLE && m_pAnimatorCom->Get_MotionEnd())
-		{
-			if (m_pCalculatorCom->Check_Distance2D(&vPos, &vPlayerPos, m_fAggroDistance))
-			{
-				_vec3 vPlayerDistance = vPlayerPos - vPos;
-				D3DXVec3Normalize(&vPlayerDir, &vPlayerDistance);
-				_float fPlayerDistance = D3DXVec3Length(&vPlayerDistance);
-				for (_int i = 0; i < (_int)fPlayerDistance * 2; i++)
-				{
-					_vec3 vCheckPos = vPos + vPlayerDir * i * 0.5f;
-					_int iIndex = _int(vCheckPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (vCheckPos.x + 0.5f * VTXITV);
-					if (0 <= iIndex && iIndex < VTXCNTX * VTXCNTZ)
-					{
-						if (m_pTerrain->Get_UnreachableByIndex(iIndex))
-						{
-							m_eState = IDLE;
-							m_iDir = 0;
-							return true;
-						}
-					}
-				}
-			}
-		}
-	}
-
-
-	return false;
 }
-
 
 void CMonster::Free()
 {

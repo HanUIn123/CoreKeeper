@@ -6,6 +6,7 @@
 CFeather::CFeather(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CItem(pGraphicDev)
 {
+	
 	m_eItemNum = ITEM_ASSISTANCE_FEATHER;
 }
 
@@ -16,9 +17,6 @@ CFeather::~CFeather()
 HRESULT CFeather::Ready_GameObject(MATERIAL _eMaterial, _vec3 vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
-
-	if (_eMaterial == MATERIAL_SCARLET || _eMaterial == MATERIAL_END)
-		return E_FAIL;
 
 	m_eMaterial = _eMaterial;
 	if (m_eMaterial == MATERIAL_END)
@@ -136,7 +134,7 @@ HRESULT CFeather::Add_Component()
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Buffer", pComponent });
 
-	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_FeatherTexture"));
+	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_AssistanceFeatherTexture"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Texture", pComponent });
 

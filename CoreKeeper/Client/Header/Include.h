@@ -38,6 +38,7 @@
 
 #include "Bar.h"
 #include "Ore.h"
+#include "Feather.h"
 
 
 // Etc

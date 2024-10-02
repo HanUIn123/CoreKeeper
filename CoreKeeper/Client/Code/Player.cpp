@@ -82,6 +82,12 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 
 	m_bShootOnce = false;
 	m_vMouseWorldPos = { 0, 0, 0 };
+
+	m_bDash = false;
+	m_fDashTime = 0.2f;
+	m_fDashTimeAcc = 0.f;
+	m_bDashCool = false;
+	m_fDashCoolTime = 0.5f;
 }
 
 CPlayer::~CPlayer()
@@ -151,6 +157,7 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 	}
 
 	Flip();
+	Dash(fTimeDelta);
 
 	if (!m_bRespawned)
 	{
@@ -373,7 +380,7 @@ void CPlayer::Walk_Y(const _float& fTimeDelta)
 	_vec3 vUp;
 	m_pTransformCom->Get_Info(INFO_UP, &vUp);
 
-	m_pTransformCom->Move_Pos(&vUp, fTimeDelta, m_fWalkYSpeed * m_iSpeedWeight);
+	m_pTransformCom->Move_Pos(&vUp, fTimeDelta, m_fWalkYSpeed);
 	if (m_pHandedItem)
 		m_pHandedItem->Walk_Equipped(fTimeDelta);
 }
@@ -393,6 +400,59 @@ void CPlayer::Flip()
 		_vec3 vSize;
 		vSize = *(m_pTransformCom->Get_Scale());
 		m_pTransformCom->Set_Scale(-vSize.x, vSize.y, vSize.z);
+	}
+}
+
+void CPlayer::Dash(const _float& fTimeDelta)
+{
+	// 보조장비에 깃털 장착 시
+	CItem* pAux;
+	wstring	strObjectTag = L"UIItemSlot_" + std::to_wstring(CUIItemSlot::SLOT_WEAPON);;
+	pAux = dynamic_cast<CUIItemSlot*>(Engine::Get_GameObject(L"Layer_UI", strObjectTag.c_str()))->Get_Item();
+	if (!pAux)
+		return;
+	if (pAux->Get_ItemNum() == ITEM_ASSISTANCE_FEATHER)
+	{
+		// 스페이스바를 누르면 대쉬
+		if (Engine::Get_DIKeyState(DIK_SPACE) & 0x80)
+		{
+			if (!m_bDash && !m_bDashCool)
+				m_bDash = true;
+		}
+
+		// 대쉬하는 동안 플레이어 콜라이더 끄기
+		if (m_bDash)
+		{
+			m_fDashTimeAcc += fTimeDelta;
+			m_pColliderCom->Set_Offset(_vec3(0, -100, 0));
+			// 대쉬 중 스피드 조절
+			_float fProgress = m_fDashTimeAcc / m_fDashTime;
+			if(fProgress < 0.5f)
+				m_iSpeedWeight += 1;
+			else
+				m_iSpeedWeight -= 1;
+
+			if (fProgress >= 1)
+			{
+				m_bDashCool = true;
+				m_bDash = false;
+				m_iSpeedWeight = 1;
+				m_fDashTimeAcc = 0.f;
+			}
+		}
+		else
+			m_pColliderCom->Set_Offset(_vec3(0, 0, 0));
+		
+		// 대쉬 쿨타임 설정
+		if (m_bDashCool)
+		{
+			m_fDashTimeAcc += fTimeDelta;
+			if (m_fDashTimeAcc >= m_fDashCoolTime)
+			{
+				m_bDashCool = false;
+				m_fDashTimeAcc = 0.f;
+			}
+		}
 	}
 }
 
@@ -568,7 +628,7 @@ void CPlayer::ShoulderView_Swing()
 
 void CPlayer::Set_Stop(_vec3* vDir1, _float fDirSpeed1, _vec3* vDir2, _float fDirSpeed2)
 {
-	m_iSpeedWeight = 1;
+	
 	_vec3 vCheckPos{};
 	m_pTransformCom->Get_Info(INFO_POS, &vCheckPos);
 
@@ -583,6 +643,8 @@ void CPlayer::Set_Stop(_vec3* vDir1, _float fDirSpeed1, _vec3* vDir2, _float fDi
 	if (0 <= iIndex && iIndex < VTXCNTX * VTXCNTZ)
 		if (pTerrain->Get_UnreachableByIndex(iIndex))
 			m_iSpeedWeight = 0;
+		else if(!m_bDash)
+			m_iSpeedWeight = 1;
 }
 
 void CPlayer::Set_Equipment()
