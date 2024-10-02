@@ -63,6 +63,9 @@
 
 #include "Wood.h"
 
+#include "Feather.h"
+
+
 // Etc
 #include "Terrain.h"
 #include "SkyBox.h"

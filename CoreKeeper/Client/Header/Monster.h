@@ -53,6 +53,9 @@ protected:
 
 	_bool			Check_Wall();
 
+private:
+	void			Check_WallWithPlayer();
+
 protected:
 	Engine::CAnimTex*		m_pBufferCom;
 	Engine::CState*			m_pStateCom;
@@ -115,6 +118,7 @@ protected:
 
 	CTransform*				m_pPlayerTransform;
 	CTerrain*				m_pTerrain;
+	_bool					m_bCheckWall;
 
 	static int				m_iTagNumber;
 
