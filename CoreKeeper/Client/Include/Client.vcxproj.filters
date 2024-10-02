@@ -319,41 +319,14 @@
     <Filter Include="02. GameObject\06. Item\99. Etc\00. Potion">
       <UniqueIdentifier>{cc2ed0f0-938f-44d2-8140-a41033ca8ec7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\06. Item\99. Etc\00. Potion\00. HpPotion">
-      <UniqueIdentifier>{8ca4298f-2487-45fc-8f95-379100a38d19}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\06. Item\99. Etc\00. Potion\01. AttackPotion">
-      <UniqueIdentifier>{789b8f79-42fa-43ce-8401-39a9ce0381ba}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\06. Item\99. Etc\00. Potion\02. DefensePotion">
-      <UniqueIdentifier>{fbd04b08-e3ea-4c77-b8e6-9b22f10061e2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\06. Item\99. Etc\02. Seed">
       <UniqueIdentifier>{4d87b991-086f-41a7-a2a2-cdc69b86e9f4}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameObject\06. Item\99. Etc\04. StatueCore">
       <UniqueIdentifier>{149d75a5-9fc8-4000-8a77-84c9ed7823c0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\06. Item\99. Etc\04. StatueCore\00. SlimeCore">
-      <UniqueIdentifier>{54231c3c-51be-40c6-a56f-dda1c3935b62}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\06. Item\99. Etc\04. StatueCore\02. MalCore">
-      <UniqueIdentifier>{a9adc4d7-be42-4098-8868-aee9d258ee7e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\06. Item\99. Etc\04. StatueCore\01. LarvaCore">
-      <UniqueIdentifier>{40a2ca2e-3354-44fb-b033-5c984529c69c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\06. Item\99. Etc\03. Spawner">
       <UniqueIdentifier>{adc2feaf-9928-47cc-abfb-5c1b1176d49e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\06. Item\99. Etc\03. Spawner\01. MalSpawner">
-      <UniqueIdentifier>{796124f5-79cc-45a2-99d3-a49e8cf27d8b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\06. Item\99. Etc\03. Spawner\00. PlayerSpawner">
-      <UniqueIdentifier>{3b1c6582-40f4-468f-b8dc-dbe2550d2c3b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\06. Item\99. Etc\03. Spawner\02. AzeosSpawner">
-      <UniqueIdentifier>{fd78a2e4-f7b9-4705-a2eb-e88e049c86da}</UniqueIdentifier>
     </Filter>
     <Filter Include="03. Manager">
       <UniqueIdentifier>{4adcfd26-d556-4908-b27d-96fc84192ca1}</UniqueIdentifier>
@@ -672,15 +645,6 @@
     <ClInclude Include="..\Header\Furnace.h">
       <Filter>02. GameObject\06. Item\06. Installation\02. Furnace</Filter>
     </ClInclude>
-    <ClInclude Include="..\Header\HpPotion.h">
-      <Filter>02. GameObject\06. Item\99. Etc\00. Potion\00. HpPotion</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Header\DefPotion.h">
-      <Filter>02. GameObject\06. Item\99. Etc\00. Potion\02. DefensePotion</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Header\AttPotion.h">
-      <Filter>02. GameObject\06. Item\99. Etc\00. Potion\01. AttackPotion</Filter>
-    </ClInclude>
     <ClInclude Include="..\Header\Box.h">
       <Filter>02. GameObject\06. Item\06. Installation\06. Box</Filter>
     </ClInclude>
@@ -689,24 +653,6 @@
     </ClInclude>
     <ClInclude Include="..\Header\Sprinkler.h">
       <Filter>02. GameObject\06. Item\06. Installation\08. Sprinkler</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Header\PlayerSpawner.h">
-      <Filter>02. GameObject\06. Item\99. Etc\03. Spawner\00. PlayerSpawner</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Header\MalSpawner.h">
-      <Filter>02. GameObject\06. Item\99. Etc\03. Spawner\01. MalSpawner</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Header\AzeosSpawner.h">
-      <Filter>02. GameObject\06. Item\99. Etc\03. Spawner\02. AzeosSpawner</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Header\MalCore.h">
-      <Filter>02. GameObject\06. Item\99. Etc\04. StatueCore\02. MalCore</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Header\SlimeCore.h">
-      <Filter>02. GameObject\06. Item\99. Etc\04. StatueCore\00. SlimeCore</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Header\LarvaCore.h">
-      <Filter>02. GameObject\06. Item\99. Etc\04. StatueCore\01. LarvaCore</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\TableObject.h">
       <Filter>02. GameObject\08. Object\03. Table</Filter>
@@ -785,6 +731,15 @@
     </ClInclude>
     <ClInclude Include="..\Header\Seed.h">
       <Filter>02. GameObject\06. Item\99. Etc\02. Seed</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\Potion.h">
+      <Filter>02. GameObject\06. Item\99. Etc\00. Potion</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\Spawner.h">
+      <Filter>02. GameObject\06. Item\99. Etc\03. Spawner</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\StatueCore.h">
+      <Filter>02. GameObject\06. Item\99. Etc\04. StatueCore</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1031,15 +986,6 @@
     <ClCompile Include="..\Code\CookingPot.cpp">
       <Filter>02. GameObject\06. Item\06. Installation\03. CookingPot</Filter>
     </ClCompile>
-    <ClCompile Include="..\Code\HpPotion.cpp">
-      <Filter>02. GameObject\06. Item\99. Etc\00. Potion\00. HpPotion</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Code\DefPotion.cpp">
-      <Filter>02. GameObject\06. Item\99. Etc\00. Potion\02. DefensePotion</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Code\AttPotion.cpp">
-      <Filter>02. GameObject\06. Item\99. Etc\00. Potion\01. AttackPotion</Filter>
-    </ClCompile>
     <ClCompile Include="..\Code\Box.cpp">
       <Filter>02. GameObject\06. Item\06. Installation\06. Box</Filter>
     </ClCompile>
@@ -1048,24 +994,6 @@
     </ClCompile>
     <ClCompile Include="..\Code\Sprinkler.cpp">
       <Filter>02. GameObject\06. Item\06. Installation\08. Sprinkler</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Code\PlayerSpawner.cpp">
-      <Filter>02. GameObject\06. Item\99. Etc\03. Spawner\00. PlayerSpawner</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Code\MalSpawner.cpp">
-      <Filter>02. GameObject\06. Item\99. Etc\03. Spawner\01. MalSpawner</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Code\AzeosSpawner.cpp">
-      <Filter>02. GameObject\06. Item\99. Etc\03. Spawner\02. AzeosSpawner</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Code\MalCore.cpp">
-      <Filter>02. GameObject\06. Item\99. Etc\04. StatueCore\02. MalCore</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Code\SlimeCore.cpp">
-      <Filter>02. GameObject\06. Item\99. Etc\04. StatueCore\00. SlimeCore</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Code\LarvaCore.cpp">
-      <Filter>02. GameObject\06. Item\99. Etc\04. StatueCore\01. LarvaCore</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\TableObject.cpp">
       <Filter>02. GameObject\08. Object\03. Table</Filter>
@@ -1147,6 +1075,15 @@
     </ClCompile>
     <ClCompile Include="..\Code\Seed.cpp">
       <Filter>02. GameObject\06. Item\99. Etc\02. Seed</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Potion.cpp">
+      <Filter>02. GameObject\06. Item\99. Etc\00. Potion</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Spawner.cpp">
+      <Filter>02. GameObject\06. Item\99. Etc\03. Spawner</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\StatueCore.cpp">
+      <Filter>02. GameObject\06. Item\99. Etc\04. StatueCore</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -1,24 +1,35 @@
 #include "pch.h"
-#include "..\Header\HpPotion.h"
+#include "..\Header\StatueCore.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
 
-CHpPotion::CHpPotion(LPDIRECT3DDEVICE9 pGraphicDev)
+CStatueCore::CStatueCore(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CItem(pGraphicDev)
 {
-	m_eItemNum = ITEM_POTION_HP;
-
-	m_tStat.iMaxHp = 10;
-
 }
 
-CHpPotion::~CHpPotion()
+CStatueCore::~CStatueCore()
 {
 }
 
-HRESULT CHpPotion::Ready_GameObject(_vec3 vPos)
+HRESULT CStatueCore::Ready_GameObject(ITEMNUM _eItemNum, _vec3 vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
+
+	m_eItemNum = _eItemNum;
+
+	switch (m_eItemNum)
+	{
+	case ITEM_SLIME_CORE:
+		m_iTextureNumber = 0;
+		break;
+	case ITEM_LARVA_CORE:
+		m_iTextureNumber = 1;
+		break;
+	case ITEM_MAL_CORE:
+		m_iTextureNumber = 2;
+		break;
+	}
 
 	m_pTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
 	m_pShadowTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
@@ -36,7 +47,7 @@ HRESULT CHpPotion::Ready_GameObject(_vec3 vPos)
 	return S_OK;
 }
 
-_int CHpPotion::Update_GameObject(const _float& fTimeDelta)
+_int CStatueCore::Update_GameObject(const _float& fTimeDelta)
 {
 	m_pAnimatorCom->Update_Animation();
 
@@ -79,12 +90,12 @@ _int CHpPotion::Update_GameObject(const _float& fTimeDelta)
 	return Engine::CGameObject::Update_GameObject(fTimeDelta);
 }
 
-void CHpPotion::LateUpdate_GameObject()
+void CStatueCore::LateUpdate_GameObject()
 {
 	Engine::CGameObject::LateUpdate_GameObject();
 }
 
-void CHpPotion::Render_GameObject()
+void CStatueCore::Render_GameObject()
 {
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
@@ -118,7 +129,7 @@ void CHpPotion::Render_GameObject()
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
-HRESULT CHpPotion::Add_Component()
+HRESULT CStatueCore::Add_Component()
 {
 	CComponent* pComponent = NULL;
 
@@ -157,21 +168,21 @@ HRESULT CHpPotion::Add_Component()
 	return S_OK;
 }
 
-CHpPotion* CHpPotion::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
+CStatueCore* CStatueCore::Create(LPDIRECT3DDEVICE9 pGraphicDev, ITEMNUM _eItemNum, _vec3 vPos)
 {
-	CHpPotion* pHpPotion = new CHpPotion(pGraphicDev);
+	CStatueCore* pStatueCore = new CStatueCore(pGraphicDev);
 
-	if (FAILED(pHpPotion->Ready_GameObject(vPos)))
+	if (FAILED(pStatueCore->Ready_GameObject(_eItemNum, vPos)))
 	{
-		Safe_Release(pHpPotion);
-		MSG_BOX("pHpPotion Create Failed");
+		Safe_Release(pStatueCore);
+		MSG_BOX("pStatueCore Create Failed");
 		return nullptr;
 	}
 
-	return pHpPotion;
+	return pStatueCore;
 }
 
-void CHpPotion::Free()
+void CStatueCore::Free()
 {
 	Engine::CGameObject::Free();
 }

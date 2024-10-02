@@ -11,14 +11,14 @@ class CShadowTex;
 
 END
 
-class CPlayerSpawner : public CItem
+class CPotion : public CItem
 {
 private:
-	explicit CPlayerSpawner(LPDIRECT3DDEVICE9 pGraphicDev);
-	virtual ~CPlayerSpawner();
+	explicit CPotion(LPDIRECT3DDEVICE9 pGraphicDev);
+	virtual ~CPotion();
 
 public:
-	virtual			HRESULT			Ready_GameObject(_vec3 vPos);
+	virtual			HRESULT			Ready_GameObject(ITEMNUM _eItemNum, _vec3 vPos);
 	virtual			_int			Update_GameObject(const _float& fTimeDelta);
 	virtual			void			LateUpdate_GameObject();
 	virtual			void			Render_GameObject();
@@ -27,7 +27,7 @@ private:
 	HRESULT			Add_Component();
 
 public:
-	static CPlayerSpawner* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos = { 0.f, 0.f, 0.f });
+	static CPotion* Create(LPDIRECT3DDEVICE9 pGraphicDev, ITEMNUM _eItemNum, _vec3 vPos = { 0.f, 0.f, 0.f });
 
 private:
 	virtual void		Free();

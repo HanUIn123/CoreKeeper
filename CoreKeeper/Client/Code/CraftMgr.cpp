@@ -66,14 +66,14 @@ CItem* CCraftMgr::Craft(CInventory* _pInventory, ITEMNUM _eItemNum, MATERIAL _eM
         pItem = CHoe::Create(m_pGraphicDev, _eMaterial);
         break;
     case ITEM_WATERINGCAN:
-        pItem = CWateringCan::Create(m_pGraphicDev, _eMaterial);
+        pItem = CWateringCan::Create(m_pGraphicDev);
         break;
 
     case ITEM_SWORD:
         pItem = CSword::Create(m_pGraphicDev, _eMaterial);
         break;
     case ITEM_BOW:
-        pItem = CBow::Create(m_pGraphicDev, _eMaterial);
+        pItem = CBow::Create(m_pGraphicDev);
         break;
     case ITEM_STAFF:
         pItem = CStaff::Create(m_pGraphicDev);

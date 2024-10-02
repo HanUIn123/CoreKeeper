@@ -1,27 +1,40 @@
 #include "pch.h"
-#include "..\Header\SlimeCore.h"
+#include "..\Header\Spawner.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
 
-CSlimeCore::CSlimeCore(LPDIRECT3DDEVICE9 pGraphicDev)
+CSpawner::CSpawner(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CItem(pGraphicDev)
 {
-	m_eItemNum = ITEM_SLIME_CORE;
 }
 
-CSlimeCore::~CSlimeCore()
+CSpawner::~CSpawner()
 {
 }
 
-HRESULT CSlimeCore::Ready_GameObject(_vec3 vPos)
+HRESULT CSpawner::Ready_GameObject(ITEMNUM _eItemNum, _vec3 vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
+	m_eItemNum = _eItemNum;
+
+	switch (m_eItemNum)
+	{
+	case ITEM_PLAYER_SPAWNER:
+		m_iTextureNumber = 0;
+		break;
+	case ITEM_MAL_SPAWNER:
+		m_iTextureNumber = 1;
+		break;
+	case ITEM_AZEOS_SPAWNER:
+		m_iTextureNumber = 2;
+		break;
+	}
 	m_pTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
 	m_pShadowTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
+
 	m_pTransformCom->Set_Pos(vPos.x, vPos.y, vPos.z);
 	m_pShadowTransformCom->Set_Pos(vPos.x, 0.1f, vPos.z);
-
 
 	m_wItemExplain[0] = L"나무";
 	m_wItemExplain[1] = L"온갖 물건을 만드는 데 쓰는 ";
@@ -32,7 +45,7 @@ HRESULT CSlimeCore::Ready_GameObject(_vec3 vPos)
 	return S_OK;
 }
 
-_int CSlimeCore::Update_GameObject(const _float& fTimeDelta)
+_int CSpawner::Update_GameObject(const _float& fTimeDelta)
 {
 	m_pAnimatorCom->Update_Animation();
 
@@ -52,17 +65,17 @@ _int CSlimeCore::Update_GameObject(const _float& fTimeDelta)
 		// 아이템 움직임
 		CItem::Wave(fTimeDelta);
 
-		Engine::CCollider* pPlayerCollider = dynamic_cast<Engine::CCollider*>
-			(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Collider"));
+		Engine::CCollider* pCollider = dynamic_cast<Engine::CCollider*>
+			(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"", L"Com_Collider"));
 
 		// 플레이어와 충돌
-		if (m_pColliderCom->Check_Collision(pPlayerCollider))
+		if (m_pColliderCom->Check_Collision(pCollider))
 		{
-			Engine::CInventory* pPlayerInventory = dynamic_cast<Engine::CInventory*>
-				(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
+			Engine::CInventory* pInventory = dynamic_cast<Engine::CInventory*>
+				(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"", L"Com_Inventory"));
 
 			// 인벤토리에 들어갔다
-			if (pPlayerInventory->Add_Item(this))
+			if (pInventory->Add_Item(this))
 			{
 				m_bActive = false;
 				m_bDrop = false;
@@ -75,12 +88,12 @@ _int CSlimeCore::Update_GameObject(const _float& fTimeDelta)
 	return Engine::CGameObject::Update_GameObject(fTimeDelta);
 }
 
-void CSlimeCore::LateUpdate_GameObject()
+void CSpawner::LateUpdate_GameObject()
 {
 	Engine::CGameObject::LateUpdate_GameObject();
 }
 
-void CSlimeCore::Render_GameObject()
+void CSpawner::Render_GameObject()
 {
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
@@ -114,7 +127,7 @@ void CSlimeCore::Render_GameObject()
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
-HRESULT CSlimeCore::Add_Component()
+HRESULT CSpawner::Add_Component()
 {
 	CComponent* pComponent = NULL;
 
@@ -153,21 +166,21 @@ HRESULT CSlimeCore::Add_Component()
 	return S_OK;
 }
 
-CSlimeCore* CSlimeCore::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
+CSpawner* CSpawner::Create(LPDIRECT3DDEVICE9 pGraphicDev, ITEMNUM _eItemNum, _vec3 vPos)
 {
-	CSlimeCore* pSlimeCore = new CSlimeCore(pGraphicDev);
+	CSpawner* pSpawner = new CSpawner(pGraphicDev);
 
-	if (FAILED(pSlimeCore->Ready_GameObject(vPos)))
+	if (FAILED(pSpawner->Ready_GameObject(_eItemNum, vPos)))
 	{
-		Safe_Release(pSlimeCore);
-		MSG_BOX("pSlimeCore Create Failed");
+		Safe_Release(pSpawner);
+		MSG_BOX("pSpawner Create Failed");
 		return nullptr;
 	}
 
-	return pSlimeCore;
+	return pSpawner;
 }
 
-void CSlimeCore::Free()
+void CSpawner::Free()
 {
 	Engine::CGameObject::Free();
 }

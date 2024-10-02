@@ -1,21 +1,42 @@
 #include "pch.h"
-#include "..\Header\PlayerSpawner.h"
+#include "..\Header\Potion.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
 
-CPlayerSpawner::CPlayerSpawner(LPDIRECT3DDEVICE9 pGraphicDev)
+CPotion::CPotion(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CItem(pGraphicDev)
 {
-	m_eItemNum = ITEM_PLAYER_SPAWNER;
+	m_eItemNum = ITEM_POTION_HP;
+
+	m_tStat.iMaxHp = 10;
+
 }
 
-CPlayerSpawner::~CPlayerSpawner()
+CPotion::~CPotion()
 {
 }
 
-HRESULT CPlayerSpawner::Ready_GameObject(_vec3 vPos)
+HRESULT CPotion::Ready_GameObject(ITEMNUM _eItemNum, _vec3 vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
+
+	m_eItemNum = _eItemNum;
+	
+	switch (m_eItemNum)
+	{
+	case ITEM_POTION_HP:
+		m_iTextureNumber = 0;
+		m_tStat.iMaxHp = 10;
+		break;
+	case ITEM_POTION_ATT:
+		m_iTextureNumber = 1;
+		m_tStat.iAttack = 10;
+		break;
+	case ITEM_POTION_DEF:
+		m_iTextureNumber = 2;
+		m_tStat.iDefense = 10;
+		break;
+	}
 
 	m_pTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
 	m_pShadowTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
@@ -32,7 +53,7 @@ HRESULT CPlayerSpawner::Ready_GameObject(_vec3 vPos)
 	return S_OK;
 }
 
-_int CPlayerSpawner::Update_GameObject(const _float& fTimeDelta)
+_int CPotion::Update_GameObject(const _float& fTimeDelta)
 {
 	m_pAnimatorCom->Update_Animation();
 
@@ -75,12 +96,12 @@ _int CPlayerSpawner::Update_GameObject(const _float& fTimeDelta)
 	return Engine::CGameObject::Update_GameObject(fTimeDelta);
 }
 
-void CPlayerSpawner::LateUpdate_GameObject()
+void CPotion::LateUpdate_GameObject()
 {
 	Engine::CGameObject::LateUpdate_GameObject();
 }
 
-void CPlayerSpawner::Render_GameObject()
+void CPotion::Render_GameObject()
 {
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
@@ -114,7 +135,7 @@ void CPlayerSpawner::Render_GameObject()
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
-HRESULT CPlayerSpawner::Add_Component()
+HRESULT CPotion::Add_Component()
 {
 	CComponent* pComponent = NULL;
 
@@ -153,21 +174,21 @@ HRESULT CPlayerSpawner::Add_Component()
 	return S_OK;
 }
 
-CPlayerSpawner* CPlayerSpawner::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
+CPotion* CPotion::Create(LPDIRECT3DDEVICE9 pGraphicDev, ITEMNUM _eItemNum, _vec3 vPos)
 {
-	CPlayerSpawner* pPlayerSpawner = new CPlayerSpawner(pGraphicDev);
+	CPotion* pPotion = new CPotion(pGraphicDev);
 
-	if (FAILED(pPlayerSpawner->Ready_GameObject(vPos)))
+	if (FAILED(pPotion->Ready_GameObject(_eItemNum, vPos)))
 	{
-		Safe_Release(pPlayerSpawner);
-		MSG_BOX("pPlayerSpawner Create Failed");
+		Safe_Release(pPotion);
+		MSG_BOX("pPotion Create Failed");
 		return nullptr;
 	}
 
-	return pPlayerSpawner;
+	return pPotion;
 }
 
-void CPlayerSpawner::Free()
+void CPotion::Free()
 {
 	Engine::CGameObject::Free();
 }

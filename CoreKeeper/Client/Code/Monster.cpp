@@ -273,7 +273,7 @@ void CMonster::Drop_Item()
 		m_vecItemName.push_back(L"Monster_Created_Sword" + std::to_wstring(m_iTagNumber++));
 		break;
 	case ITEM_BOW:
-		pGameObject = CBow::Create(m_pGraphicDev, MATERIAL_IRON, vPos);
+		pGameObject = CBow::Create(m_pGraphicDev, vPos);
 		NULL_CHECK(pGameObject);
 		m_vecItemName.push_back(L"Monster_Created_Bow" + std::to_wstring(m_iTagNumber++));
 		break;

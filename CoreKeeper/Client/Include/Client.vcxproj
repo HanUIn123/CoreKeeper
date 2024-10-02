@@ -165,11 +165,7 @@ call Copy.bat</Command>
     <ClInclude Include="..\Header\Skeleton.h" />
     <ClInclude Include="..\Header\BackGround.h" />
     <ClInclude Include="..\Header\Bag.h" />
-    <ClInclude Include="..\Header\AzeosSpawner.h" />
-    <ClInclude Include="..\Header\MalSpawner.h" />
     <ClInclude Include="..\Header\Sprinkler.h" />
-    <ClInclude Include="..\Header\MalCore.h" />
-    <ClInclude Include="..\Header\LarvaCore.h" />
     <ClInclude Include="..\Header\SprinklerObject.h" />
     <ClInclude Include="..\Header\GravestoneObject.h" />
     <ClInclude Include="..\Header\BoxObject.h" />
@@ -181,8 +177,6 @@ call Copy.bat</Command>
     <ClInclude Include="..\Header\Box.h" />
     <ClInclude Include="..\Header\Necklace.h" />
     <ClInclude Include="..\Header\Shield.h" />
-    <ClInclude Include="..\Header\AttPotion.h" />
-    <ClInclude Include="..\Header\DefPotion.h" />
     <ClInclude Include="..\Header\Ring.h" />
     <ClInclude Include="..\Header\Lantern.h" />
     <ClInclude Include="..\Header\CookingPot.h" />
@@ -197,9 +191,9 @@ call Copy.bat</Command>
     <ClInclude Include="..\Header\UIStatueCraft.h" />
     <ClInclude Include="..\Header\WallPiece.h" />
     <ClInclude Include="..\Header\Piece.h" />
-    <ClInclude Include="..\Header\PlayerSpawner.h" />
-    <ClInclude Include="..\Header\SlimeCore.h" />
-    <ClInclude Include="..\Header\HpPotion.h" />
+    <ClInclude Include="..\Header\Spawner.h" />
+    <ClInclude Include="..\Header\StatueCore.h" />
+    <ClInclude Include="..\Header\Potion.h" />
     <ClInclude Include="..\Header\Bar.h" />
     <ClInclude Include="..\Header\Projectile.h" />
     <ClInclude Include="..\Header\Statue.h" />
@@ -294,11 +288,7 @@ call Copy.bat</Command>
     <ClCompile Include="..\Code\Skeleton.cpp" />
     <ClCompile Include="..\Code\BackGround.cpp" />
     <ClCompile Include="..\Code\Bag.cpp" />
-    <ClCompile Include="..\Code\AzeosSpawner.cpp" />
-    <ClCompile Include="..\Code\MalSpawner.cpp" />
     <ClCompile Include="..\Code\Sprinkler.cpp" />
-    <ClCompile Include="..\Code\MalCore.cpp" />
-    <ClCompile Include="..\Code\LarvaCore.cpp" />
     <ClCompile Include="..\Code\SprinklerObject.cpp" />
     <ClCompile Include="..\Code\GravestoneObject.cpp" />
     <ClCompile Include="..\Code\BoxObject.cpp" />
@@ -310,8 +300,6 @@ call Copy.bat</Command>
     <ClCompile Include="..\Code\Box.cpp" />
     <ClCompile Include="..\Code\Necklace.cpp" />
     <ClCompile Include="..\Code\Shield.cpp" />
-    <ClCompile Include="..\Code\AttPotion.cpp" />
-    <ClCompile Include="..\Code\DefPotion.cpp" />
     <ClCompile Include="..\Code\Ring.cpp" />
     <ClCompile Include="..\Code\Lantern.cpp" />
     <ClCompile Include="..\Code\CookingPot.cpp" />
@@ -327,9 +315,9 @@ call Copy.bat</Command>
     <ClCompile Include="..\Code\UIStatueCraft.cpp" />
     <ClCompile Include="..\Code\WallPiece.cpp" />
     <ClCompile Include="..\Code\Piece.cpp" />
-    <ClCompile Include="..\Code\PlayerSpawner.cpp" />
-    <ClCompile Include="..\Code\SlimeCore.cpp" />
-    <ClCompile Include="..\Code\HpPotion.cpp" />
+    <ClCompile Include="..\Code\Spawner.cpp" />
+    <ClCompile Include="..\Code\StatueCore.cpp" />
+    <ClCompile Include="..\Code\Potion.cpp" />
     <ClCompile Include="..\Code\Bow.cpp" />
     <ClCompile Include="..\Code\Bar.cpp" />
     <ClCompile Include="..\Code\Projectile.cpp" />

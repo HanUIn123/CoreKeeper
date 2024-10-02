@@ -253,7 +253,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar* pLayerTag)
 	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
 
 
-	pGameObject = CBow::Create(m_pGraphicDev, MATERIAL_IRON);
+	pGameObject = CBow::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Bow1", pGameObject), E_FAIL);
 	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
