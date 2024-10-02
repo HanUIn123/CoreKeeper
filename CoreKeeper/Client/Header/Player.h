@@ -40,6 +40,8 @@ private:
 	void			Walk_Y(const _float& fTimeDelta);
 	void			Flip();
 	void			Dash(const _float& fTimeDelta);
+	void			Set_ImmuneByTime(_float fImmuneTime = 1.f);
+	void			Set_ImmuneByToggle();
 
 	// 탑뷰 함수
 	void			Key_Position(const _float& fTimeDelta);		// 플레이어 이동
@@ -171,6 +173,11 @@ private:
 	_float					m_fDashTimeAcc;
 	_bool					m_bDashCool;
 	_float					m_fDashCoolTime;
+
+	_bool					m_bImmune;
+	_bool					m_bImmuneByTime;
+	_float					m_fImmuneTimeAcc;
+	_float					m_fImmuneTime;
 
 public:
 	static CPlayer* Create(LPDIRECT3DDEVICE9 pGraphicDev);
