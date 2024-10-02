@@ -56,7 +56,8 @@ _int CShaman::Update_GameObject(const _float& fTimeDelta)
 
     Set_Light();
 
-    if (m_eState != DEAD)
+    
+    if (m_eState != DEAD && !Check_Wall())
         m_eState = State_Change();
     switch (m_eState)
     {

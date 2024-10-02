@@ -56,6 +56,9 @@ CMonster::CMonster(LPDIRECT3DDEVICE9 pGraphicDev)
 
 	m_iSpeedWeight = 1;
 
+	m_pPlayerTransform = nullptr;
+	m_pTerrain = nullptr;
+
 	m_vecDropItem.reserve(3);
 }
 
@@ -360,6 +363,41 @@ void CMonster::Set_StuckFree(const _float& fTimeDelta)
 		}
 	}
 }
+
+_bool CMonster::Check_Wall()
+{
+	if (!m_pPlayerTransform)
+		m_pPlayerTransform = dynamic_cast<CTransform*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Transform"));
+	if (!m_pTerrain)
+		m_pTerrain = dynamic_cast<CTerrain*>(Engine::Get_GameObject(L"Layer_Environment", L"Terrain"));
+
+	_vec3 vPos, vPlayerPos, vPlayerDir;
+	m_pPlayerTransform->Get_Info(INFO_POS, &vPos);
+	m_pTransformCom->Get_Info(INFO_POS, &vPlayerPos);
+
+	if (m_pCalculatorCom->Check_Distance2D(&vPos, &vPlayerPos, 20.f))
+	{
+		_vec3 vPlayerDistance = vPlayerPos - vPos;
+		D3DXVec3Normalize(&vPlayerDir, &vPlayerDistance);
+		_float fPlayerDistance = D3DXVec3Length(&vPlayerDistance);
+		for (_int i = 0; i < (_int)fPlayerDistance; i++)
+		{
+			_vec3 vCheckPos = vPos + vPlayerDir * i * 0.5f;
+			_int iIndex = _int(vCheckPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (vCheckPos.x + 0.5f * VTXITV);
+			if (0 <= iIndex && iIndex < VTXCNTX * VTXCNTZ)
+			{
+				if (m_pTerrain->Get_UnreachableByIndex(iIndex))
+				{
+					m_eState = IDLE;
+					return true;
+				}
+			}
+		}
+	}
+
+	return false;
+}
+
 
 void CMonster::Free()
 {

@@ -51,6 +51,8 @@ protected:
 	void			Set_Stop(_vec3* vDir1, _float fDirSpeed1, _vec3* vDir2 = nullptr, _float fDirSpeed2 = 0.f);
 	void			Set_StuckFree(const _float& fTimeDelta);
 
+	_bool			Check_Wall();
+
 protected:
 	Engine::CAnimTex*		m_pBufferCom;
 	Engine::CState*			m_pStateCom;
@@ -110,6 +112,9 @@ protected:
 	vector<wstring>			m_vecItemName;
 
 	_int					m_iSpeedWeight;
+
+	CTransform*				m_pPlayerTransform;
+	CTerrain*				m_pTerrain;
 
 	static int				m_iTagNumber;
 
