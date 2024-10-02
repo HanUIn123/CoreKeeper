@@ -241,9 +241,6 @@
     <Filter Include="02. GameObject\06. Item\99. Etc\08. Mucus">
       <UniqueIdentifier>{d7e2e7bf-da00-4517-acf2-d8521f0ede56}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\06. Item\99. Etc\09. Piece">
-      <UniqueIdentifier>{e04f8601-5724-400a-80a9-2718805579ff}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\07. UI\12. UIStatue\00. UIJemSlot">
       <UniqueIdentifier>{40da8256-d357-4a9c-a9a1-6b0c0168dc02}</UniqueIdentifier>
     </Filter>
@@ -379,9 +376,6 @@
     <Filter Include="02. GameObject\06. Item\03. Accessory\02. Assistance\02. Book">
       <UniqueIdentifier>{9b76f857-dd7d-4723-9b0f-91f92770c272}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\06. Item\99. Etc\10. Diary">
-      <UniqueIdentifier>{30f001ed-a454-4825-9f4f-4accc7df2ba5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\06. Item\06. Installation\00. Table\00. Table">
       <UniqueIdentifier>{4fb7de7b-4217-4891-b219-eac29986365e}</UniqueIdentifier>
     </Filter>
@@ -396,6 +390,15 @@
     </Filter>
     <Filter Include="02. GameObject\06. Item\06. Installation\00. Table\04. AnimalTable">
       <UniqueIdentifier>{3047f56c-6b4b-4551-81e2-3531605563bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\08. Object\11. Plant">
+      <UniqueIdentifier>{2e9fc9d0-3836-4d74-a81b-fa35e901e27b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\99. Etc\09. Piece">
+      <UniqueIdentifier>{e04f8601-5724-400a-80a9-2718805579ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\99. Etc\10. Diary">
+      <UniqueIdentifier>{30f001ed-a454-4825-9f4f-4accc7df2ba5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -780,6 +783,9 @@
     <ClInclude Include="..\Header\AnimalTable.h">
       <Filter>02. GameObject\06. Item\06. Installation\00. Table\04. AnimalTable</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\Plant.h">
+      <Filter>02. GameObject\08. Object\11. Plant</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1141,6 +1147,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\AnimalTable.cpp">
       <Filter>02. GameObject\06. Item\06. Installation\00. Table\04. AnimalTable</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Plant.cpp">
+      <Filter>02. GameObject\08. Object\11. Plant</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
