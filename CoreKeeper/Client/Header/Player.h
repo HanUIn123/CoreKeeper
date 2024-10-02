@@ -60,6 +60,7 @@ private:
 	void			Shoot_Equipment();
 	void			PickAxe();
 	void			Hoe();
+	void			Watering();
 
 	void			Set_EquippedStatus();
 	void			Set_Clothes();

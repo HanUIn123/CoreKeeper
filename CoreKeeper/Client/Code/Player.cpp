@@ -350,6 +350,7 @@ void CPlayer::Mouse_Click(const _float& fTimeDelta)
 			{
 				switch (m_pHandedItem->Get_ItemNum())
 				{
+				// 전투 관련
 				case ITEM_SWORD:
 					m_eState = SWING;
 					m_bSwing = true;
@@ -361,21 +362,25 @@ void CPlayer::Mouse_Click(const _float& fTimeDelta)
 					Swing_Equipment();
 					PickAxe();
 					break;
-				case ITEM_HOE:
-					m_eState = SWING;
-					m_bSwing = true;
-					Swing_Equipment();
-					Hoe();
-					break;
 				case ITEM_BOW:
 				case ITEM_STAFF:
 					m_eState = SHOOT;
 					m_bShoot = true;
 					Shoot_Equipment();
 					break;
-					//case ITEM_SEED:
-					//	// 농사
-					//	break;
+
+				// 농사 관련
+				case ITEM_HOE:
+					m_eState = SWING;
+					m_bSwing = true;
+					Swing_Equipment();
+					Hoe();
+					break;
+				case ITEM_WATERINGCAN:
+					Watering();
+					break;
+				// case ITEM_SEED:
+					// break;
 				default:
 					break;
 				}
@@ -1005,13 +1010,59 @@ void CPlayer::Hoe()
 			switch (m_pHandedItem->Get_ItemMaterial())
 			{
 			case MATERIAL_WOOD: // 1 x 1
-				m_pTerrain->Set_TextureNumber(iIndex, 10);
+				m_pTerrain->Set_TextureNumber(iIndex, 27);
 				break;
 			case MATERIAL_COPPER: // 3 x 3
-				m_pTerrain->Set_TextureNumber(iIndex, 10);
+				for (_int i = -1; i <= 1; i++)
+					for (_int j = -1; j <= 1; j++)
+						m_pTerrain->Set_TextureNumber(iIndex + i + j * (VTXCNTX - 1), 27);
 				break;
 			case MATERIAL_IRON: // 5 x 5
-				m_pTerrain->Set_TextureNumber(iIndex, 10);
+				for (_int i = -2; i <= 2; i++)
+					for (_int j = -2; j <= 2; j++)
+						m_pTerrain->Set_TextureNumber(iIndex + i + j * (VTXCNTX - 1), 27);
+				break;
+			}
+		}
+	}
+}
+
+void CPlayer::Watering()
+{
+	if (g_bIsTopCamera)
+	{
+		_vec3 vPos;
+		m_pTransformCom->Get_Info(INFO_POS, &vPos);
+		// 씨앗이 심어져 있는지 확인 추가
+		// 씨앗이 심어져 있을 경우 타일 변경과 동시에 해당 타일에 심겨진 씨앗 성장
+		if (m_pCalculatorCom->Check_Distance2D(&vPos, &m_vMouseWorldPos, 5.f))
+		{
+			_int iIndex = _int(m_vMouseWorldPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (m_vMouseWorldPos.x + 0.5f * VTXITV);
+			switch (m_pHandedItem->Get_ItemMaterial())
+			{
+			case MATERIAL_WOOD: // 1 x 1
+				if(m_pTerrain->Get_TextureNumber(iIndex) == 27)
+					m_pTerrain->Set_TextureNumber(iIndex, 28);
+				break;
+			case MATERIAL_COPPER: // 3 x 3
+				for (_int i = -1; i <= 1; i++)
+				{
+					for (_int j = -1; j <= 1; j++)
+					{
+						if (m_pTerrain->Get_TextureNumber(iIndex + i + j * (VTXCNTX - 1)) == 27)
+							m_pTerrain->Set_TextureNumber(iIndex + i + j * (VTXCNTX - 1), 28);
+					}
+				}
+				break;
+			case MATERIAL_IRON: // 5 x 5
+				for (_int i = -2; i <= 2; i++)
+				{
+					for (_int j = -2; j <= 2; j++)
+					{
+						if (m_pTerrain->Get_TextureNumber(iIndex + i + j * (VTXCNTX - 1)) == 27)
+							m_pTerrain->Set_TextureNumber(iIndex + i + j * (VTXCNTX - 1), 28);
+					}
+				}
 				break;
 			}
 		}
