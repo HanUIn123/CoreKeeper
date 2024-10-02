@@ -154,6 +154,7 @@ call Copy.bat</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\Header\Arrow.h" />
+    <ClInclude Include="..\Header\Book.h" />
     <ClInclude Include="..\Header\Food.h" />
     <ClInclude Include="..\Header\Ingredient.h" />
     <ClInclude Include="..\Header\Magic.h" />
@@ -258,6 +259,7 @@ call Copy.bat</Command>
     <ClInclude Include="..\Header\UITrashSlot.h" />
     <ClInclude Include="..\Header\Wall.h" />
     <ClInclude Include="..\Header\Ore.h" />
+    <ClInclude Include="..\Header\Diary.h" />
     <ClInclude Include="..\Header\Wood.h" />
     <ClInclude Include="..\Header\WorldMap.h" />
     <ClInclude Include="Client.h" />
@@ -277,6 +279,7 @@ call Copy.bat</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Code\Arrow.cpp" />
+    <ClCompile Include="..\Code\Book.cpp" />
     <ClCompile Include="..\Code\Food.cpp" />
     <ClCompile Include="..\Code\Ingredient.cpp" />
     <ClCompile Include="..\Code\Magic.cpp" />
@@ -378,6 +381,7 @@ call Copy.bat</Command>
     <ClCompile Include="..\Code\UITrashSlot.cpp" />
     <ClCompile Include="..\Code\Wall.cpp" />
     <ClCompile Include="..\Code\Ore.cpp" />
+    <ClCompile Include="..\Code\Diary.cpp" />
     <ClCompile Include="..\Code\Wood.cpp" />
     <ClCompile Include="..\Code\WorldMap.cpp" />
     <ClCompile Include="Client.cpp" />

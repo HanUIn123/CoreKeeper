@@ -6,8 +6,6 @@
 CRing::CRing(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CItem(pGraphicDev)
 {
-	 
-
 	m_eItemNum = ITEM_RING;
 }
 
@@ -19,11 +17,22 @@ HRESULT CRing::Ready_GameObject(MATERIAL _eMaterial, _vec3 vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	//m_eMaterial = _eMaterial;
-	//m_iTextureNumber = m_eMaterial;
+	m_eMaterial = _eMaterial;
 
-	//m_tStat.iDefense = 10 * (m_eMaterial + 1);
-	//m_tStat.iMaxHp = 20 * (m_eMaterial + 1);
+	switch (m_eMaterial)
+	{
+	case MATERIAL_COPPER:
+		m_iTextureNumber = 0;
+		break;
+	case MATERIAL_IRON:
+		m_iTextureNumber = 1;
+		break;
+	case MATERIAL_SPECIAL:
+		m_iTextureNumber = 2;
+		break;
+	default:
+		return E_FAIL;
+	}
 
 	m_pTransformCom->Set_Scale(0.5f, 0.5f, 0.5f);
 	m_pShadowTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);

@@ -1,39 +1,24 @@
 #include "pch.h"
-#include "..\Header\Necklace.h"
+#include "..\Header\Book.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
 
-CNecklace::CNecklace(LPDIRECT3DDEVICE9 pGraphicDev)
+CBook::CBook(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CItem(pGraphicDev)
 {
-	m_eItemNum = ITEM_NECKLACE;
+	m_eItemNum = ITEM_ASSISTANCE_BOOK;
 }
 
-CNecklace::~CNecklace()
+CBook::~CBook()
 {
 }
 
-HRESULT CNecklace::Ready_GameObject(MATERIAL _eMaterial, _vec3 vPos)
+HRESULT CBook::Ready_GameObject(_vec3 vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_eMaterial = _eMaterial;
-
-	switch (m_eMaterial)
-	{
-	case MATERIAL_COPPER:
-		m_iTextureNumber = 0;
-		break;
-	case MATERIAL_IRON:
-		m_iTextureNumber = 1;
-		break;
-	case MATERIAL_SPECIAL:
-		m_iTextureNumber = 2;
-		break;
-	default:
-		return E_FAIL;
-	}
-
+	//m_tStat.iDefense = 10 * (m_eMaterial + 1);
+	//m_tStat.iMaxHp = 20 * (m_eMaterial + 1);
 
 	m_pTransformCom->Set_Scale(0.5f, 0.5f, 0.5f);
 	m_pShadowTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
@@ -49,7 +34,7 @@ HRESULT CNecklace::Ready_GameObject(MATERIAL _eMaterial, _vec3 vPos)
 	return S_OK;
 }
 
-_int CNecklace::Update_GameObject(const _float& fTimeDelta)
+_int CBook::Update_GameObject(const _float& fTimeDelta)
 {
 	m_pAnimatorCom->Update_Animation();
 
@@ -88,12 +73,12 @@ _int CNecklace::Update_GameObject(const _float& fTimeDelta)
 	return Engine::CGameObject::Update_GameObject(fTimeDelta);
 }
 
-void CNecklace::LateUpdate_GameObject()
+void CBook::LateUpdate_GameObject()
 {
 	Engine::CGameObject::LateUpdate_GameObject();
 }
 
-void CNecklace::Render_GameObject()
+void CBook::Render_GameObject()
 {
 	// 카메라를 바라보게 하면서 스케일 유지
 	//CItem::Apply_Billboard();  
@@ -130,7 +115,7 @@ void CNecklace::Render_GameObject()
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
-HRESULT CNecklace::Add_Component()
+HRESULT CBook::Add_Component()
 {
 	CComponent* pComponent = NULL;
 
@@ -138,7 +123,7 @@ HRESULT CNecklace::Add_Component()
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Buffer", pComponent });
 
-	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_NecklaceTexture"));
+	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_BookTexture"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Texture", pComponent });
 
@@ -169,21 +154,21 @@ HRESULT CNecklace::Add_Component()
 	return S_OK;
 }
 
-CNecklace* CNecklace::Create(LPDIRECT3DDEVICE9 pGraphicDev, MATERIAL _eMaterial, _vec3 vPos)
+CBook* CBook::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 {
-	CNecklace* pNecklace = new CNecklace(pGraphicDev);
+	CBook* pBook = new CBook(pGraphicDev);
 
-	if (FAILED(pNecklace->Ready_GameObject(_eMaterial, vPos)))
+	if (FAILED(pBook->Ready_GameObject(vPos)))
 	{
-		Safe_Release(pNecklace);
-		MSG_BOX("pNecklace Create Failed");
+		Safe_Release(pBook);
+		MSG_BOX("pBook Create Failed");
 		return nullptr;
 	}
 
-	return pNecklace;
+	return pBook;
 }
 
-void CNecklace::Free()
+void CBook::Free()
 {
 	Engine::CGameObject::Free();
 }

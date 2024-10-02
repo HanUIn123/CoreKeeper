@@ -136,7 +136,7 @@ _uint CLoading::Loading_Stage()
 
     // 무기
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SwordTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Weapon/Sword_%d.png", TEX_NORMAL, 3)), E_FAIL);
-    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_BowTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Weapon/Bow_%d.png", TEX_NORMAL, 3)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_BowTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Weapon/Iron_Bow.png", TEX_NORMAL)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ArrowTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Weapon/Arrow_%d.png", TEX_NORMAL, 3)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_StaffTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Weapon/Suncaller_staff.png", TEX_NORMAL)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MagicTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Weapon/Magic.png", TEX_NORMAL)), E_FAIL);
@@ -146,15 +146,19 @@ _uint CLoading::Loading_Stage()
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ChestTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Equip/Chest_%d.png", TEX_NORMAL, 4)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_LegTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Equip/Pants_%d.png", TEX_NORMAL, 4)), E_FAIL);
 
-    // 아직 이미지가 없음
-    // 보조장비
-    //FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_NecklaceTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Equip/Pants_%d.png", TEX_NORMAL, 4)), E_FAIL);
-    //FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_RingTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Equip/Pants_%d.png", TEX_NORMAL, 4)), E_FAIL);
-    //FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_AssistanceTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Equip/Pants_%d.png", TEX_NORMAL, 4)), E_FAIL);
+    // 장신구
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_NecklaceTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Accessory/Necklace_%d.png", TEX_NORMAL, 3)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_RingTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Accessory/Ring_%d.png", TEX_NORMAL, 3)), E_FAIL);
 
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_BagTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Bag/Bag_%d.png", TEX_NORMAL, 2)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_LanternTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Lantern/Lantern_%d.png", TEX_NORMAL, 2)), E_FAIL);
 
+    // 보조장비
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_AssistanceShieldTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Assistance/Shield_%d.png", TEX_NORMAL, 2)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_AssistanceFeatherTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Assistance/Feather_%d.png", TEX_NORMAL, 2)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_AssistanceBookTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Assistance/Book.png", TEX_NORMAL)), E_FAIL);
+
+    // 설치물
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TableTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Table/Table_%d.png", TEX_NORMAL, 3)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_AnvilTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Anvil/Anvil_%d.png", TEX_NORMAL, 3)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_FurnaceTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Furnace/Furnace_%d.png", TEX_NORMAL)), E_FAIL);
@@ -165,16 +169,22 @@ _uint CLoading::Loading_Stage()
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_GravestoneTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Gravestone.png", TEX_NORMAL)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SprinklerTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Sprinkler.png", TEX_NORMAL)), E_FAIL);
 
+    // 포션, 음식
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_PotionTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Potion/Potion_%d.png", TEX_NORMAL, 3)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_IngredientTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Ingredient/Ingredient_%d.png", TEX_NORMAL, 4)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_FoodTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Food/Food_%d.png", TEX_NORMAL, 10)), E_FAIL);
+
+    // 기타 아이템
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_OreTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Ore/Ore_%d.png", TEX_NORMAL, 3)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_BarTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Bar/Bar_%d.png", TEX_NORMAL, 3)), E_FAIL);
-    //FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_PotionTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Sprinkler.png", TEX_NORMAL)), E_FAIL);
-    //FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_FoodTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Sprinkler.png", TEX_NORMAL)), E_FAIL);
-    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SeedTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Seed/Seed_%d.png", TEX_NORMAL, 3)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SeedTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Seed/Seed_%d.png", TEX_NORMAL, 4)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_StatueCoreTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Core/Core_%d.png", TEX_NORMAL, 3)), E_FAIL);
-    //FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SpawnerTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Sprinkler.png", TEX_NORMAL)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SpawnerTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Spawner/Spawner_%d.png", TEX_NORMAL, 3)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_WoodTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Wood.png", TEX_NORMAL)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MucusTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Mucus.png", TEX_NORMAL)), E_FAIL);
-    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_PieceTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Piece.png", TEX_NORMAL)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_PieceTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Piece_%d.png", TEX_NORMAL, 2)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_FiberTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Fiber.png", TEX_NORMAL)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_DiaryTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Diary.png", TEX_NORMAL)), E_FAIL);
 
     // SHADOW TEXTURE
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ShadowTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Shadow/shadow%d.png", TEX_NORMAL, 3)), E_FAIL);
@@ -184,8 +194,6 @@ _uint CLoading::Loading_Stage()
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_StatueTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/BaseCamp/Statue_%d.png", TEX_NORMAL, 3)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_CoreBaseTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/BaseCamp/BaseCamp.png", TEX_NORMAL)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SkeletonTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/BaseCamp/Skeleton.png", TEX_NORMAL)), E_FAIL);
-
-    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SpawnerTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Spawner/Spawner_%d.png", TEX_NORMAL, 3)), E_FAIL);
 
 #pragma endregion
 

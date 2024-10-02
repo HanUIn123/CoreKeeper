@@ -169,7 +169,7 @@ CItem* CCraftMgr::Craft(CInventory* _pInventory, ITEMNUM _eItemNum, MATERIAL _eM
 
     CScene* pScene = Engine::Get_Scene();
 
-    pScene->Create_GameObject(L"Layer_UI", pItem, strCraftName[m_iCraftCount++].c_str());
+    pScene->Create_GameObject(L"Layer_GameLogic", pItem, strCraftName[m_iCraftCount++].c_str());
 
 	return pItem;
 }
@@ -184,11 +184,14 @@ void CCraftMgr::Set_Recipe()
     // ±¸¸® °î±ªÀÌ
     Recipe copperPickAxeRecipe;
     copperPickAxeRecipe.vecIngredients.push_back({ ITEM_WOOD, 4 });
+    copperPickAxeRecipe.vecIngredients.push_back({ ITEM_COPPER_BAR, 2});
     m_mapRecipes[make_pair(ITEM_PICKAXE, MATERIAL_COPPER)] = copperPickAxeRecipe;
 
     // Ã¶ °î±ªÀÌ
     Recipe ironPickAxeRecipe;
     ironPickAxeRecipe.vecIngredients.push_back({ ITEM_WOOD, 4 });
+    ironPickAxeRecipe.vecIngredients.push_back({ ITEM_COPPER_BAR, 1 });
+    ironPickAxeRecipe.vecIngredients.push_back({ ITEM_IRON_BAR, 4 });
     m_mapRecipes[make_pair(ITEM_PICKAXE, MATERIAL_IRON)] = ironPickAxeRecipe;
 
     // ³ª¹« È£¹Ì
@@ -197,89 +200,162 @@ void CCraftMgr::Set_Recipe()
     m_mapRecipes[make_pair(ITEM_HOE, MATERIAL_WOOD)] = woodHoeRecipe;
 
     // ±¸¸® È£¹Ì
-    /*Recipe ironPickAxeRecipe;
-    ironPickAxeRecipe.vecIngredients.push_back({ ITEM_WOOD, 4 });
-    m_mapRecipes[make_pair(ITEM_PICKAXE, MATERIAL_WOOD)] = ironPickAxeRecipe;*/
+    Recipe copperHoeRecipe;
+    copperHoeRecipe.vecIngredients.push_back({ ITEM_WOOD, 4 });
+    copperHoeRecipe.vecIngredients.push_back({ ITEM_COPPER_BAR, 2 });
+    m_mapRecipes[make_pair(ITEM_HOE, MATERIAL_COPPER)] = copperHoeRecipe;
 
     // Ã¶ È£¹Ì
-    /*Recipe ironPickAxeRecipe;
-    ironPickAxeRecipe.vecIngredients.push_back({ ITEM_WOOD, 4 });
-    m_mapRecipes[make_pair(ITEM_PICKAXE, MATERIAL_WOOD)] = ironPickAxeRecipe;*/
+    Recipe ironHoeRecipe;
+    ironHoeRecipe.vecIngredients.push_back({ ITEM_WOOD, 4 });
+    ironHoeRecipe.vecIngredients.push_back({ ITEM_COPPER_BAR, 1 });
+    ironHoeRecipe.vecIngredients.push_back({ ITEM_IRON_BAR, 4 });
+    m_mapRecipes[make_pair(ITEM_HOE, MATERIAL_IRON)] = ironHoeRecipe;
+
+    // ¹°»Ñ¸®°³
+    Recipe wateringCanRecipe;
+    wateringCanRecipe.vecIngredients.push_back({ ITEM_COPPER_BAR, 4 });
+    m_mapRecipes[make_pair(ITEM_WATERINGCAN, MATERIAL_END)] = wateringCanRecipe;
 
     // ³ª¹« Ä®
-    /*Recipe ironPickAxeRecipe;
-    ironPickAxeRecipe.vecIngredients.push_back({ ITEM_WOOD, 4 });
-    m_mapRecipes[make_pair(ITEM_PICKAXE, MATERIAL_WOOD)] = ironPickAxeRecipe;*/
+    Recipe woodSwordRecipe;
+    woodSwordRecipe.vecIngredients.push_back({ ITEM_WOOD, 5 });
+    m_mapRecipes[make_pair(ITEM_SWORD, MATERIAL_WOOD)] = woodSwordRecipe;
 
     // ±¸¸® Ä®
-    /*Recipe ironPickAxeRecipe;
-    ironPickAxeRecipe.vecIngredients.push_back({ ITEM_WOOD, 4 });
-    m_mapRecipes[make_pair(ITEM_PICKAXE, MATERIAL_WOOD)] = ironPickAxeRecipe;*/
+    Recipe copperSwordRecipe;
+    copperSwordRecipe.vecIngredients.push_back({ ITEM_COPPER_BAR, 5 });
+    m_mapRecipes[make_pair(ITEM_SWORD, MATERIAL_COPPER)] = copperSwordRecipe;
 
     // Ã¶ Ä®
-    /*Recipe ironPickAxeRecipe;
-    ironPickAxeRecipe.vecIngredients.push_back({ ITEM_WOOD, 4 });
-    m_mapRecipes[make_pair(ITEM_PICKAXE, MATERIAL_WOOD)] = ironPickAxeRecipe;*/
-
-    // ³ª¹« È°
-    /*Recipe ironPickAxeRecipe;
-    ironPickAxeRecipe.vecIngredients.push_back({ ITEM_WOOD, 4 });
-    m_mapRecipes[make_pair(ITEM_PICKAXE, MATERIAL_WOOD)] = ironPickAxeRecipe;*/
+    Recipe ironSwordRecipe;
+    ironSwordRecipe.vecIngredients.push_back({ ITEM_COPPER_BAR, 1 });
+    ironSwordRecipe.vecIngredients.push_back({ ITEM_IRON_BAR, 8 });
+    m_mapRecipes[make_pair(ITEM_SWORD, MATERIAL_IRON)] = ironSwordRecipe;
 
     // Ã¶ È°
-    /*Recipe ironPickAxeRecipe;
-    ironPickAxeRecipe.vecIngredients.push_back({ ITEM_WOOD, 4 });
-    m_mapRecipes[make_pair(ITEM_PICKAXE, MATERIAL_WOOD)] = ironPickAxeRecipe;*/
+    Recipe ironBowRecipe;
+    ironBowRecipe.vecIngredients.push_back({ ITEM_WOOD, 5 });
+    ironBowRecipe.vecIngredients.push_back({ ITEM_COPPER_BAR, 1 });
+    ironBowRecipe.vecIngredients.push_back({ ITEM_IRON_BAR, 7 });
+    m_mapRecipes[make_pair(ITEM_BOW, MATERIAL_IRON)] = ironBowRecipe;
+    m_mapRecipes[make_pair(ITEM_BOW, MATERIAL_END)] = ironBowRecipe;
 
     // ³ª¹« Çï¸ä
-    /*Recipe ironPickAxeRecipe;
-    ironPickAxeRecipe.vecIngredients.push_back({ ITEM_WOOD, 4 });
-    m_mapRecipes[make_pair(ITEM_PICKAXE, MATERIAL_WOOD)] = ironPickAxeRecipe;*/
+    Recipe woodHelmetRecipe;
+    woodHelmetRecipe.vecIngredients.push_back({ ITEM_WOOD, 4 });
+    m_mapRecipes[make_pair(ITEM_HELMET, MATERIAL_WOOD)] = woodHelmetRecipe;
 
     // ±¸¸® Çï¸ä
-    /*Recipe ironPickAxeRecipe;
-    ironPickAxeRecipe.vecIngredients.push_back({ ITEM_WOOD, 4 });
-    m_mapRecipes[make_pair(ITEM_PICKAXE, MATERIAL_WOOD)] = ironPickAxeRecipe;*/
+    Recipe copperHelmetRecipe;
+    copperHelmetRecipe.vecIngredients.push_back({ ITEM_COPPER_BAR, 6 });
+    m_mapRecipes[make_pair(ITEM_HELMET, MATERIAL_COPPER)] = copperHelmetRecipe;
 
     // Ã¶ Çï¸ä
-    /*Recipe ironPickAxeRecipe;
-    ironPickAxeRecipe.vecIngredients.push_back({ ITEM_WOOD, 4 });
-    m_mapRecipes[make_pair(ITEM_PICKAXE, MATERIAL_WOOD)] = ironPickAxeRecipe;*/
+    Recipe ironHelmetRecipe;
+    ironHelmetRecipe.vecIngredients.push_back({ ITEM_FIBER, 5 });
+    ironHelmetRecipe.vecIngredients.push_back({ ITEM_COPPER_BAR, 1 });
+    ironHelmetRecipe.vecIngredients.push_back({ ITEM_IRON_BAR, 4 });
+    m_mapRecipes[make_pair(ITEM_HELMET, MATERIAL_IRON)] = ironHelmetRecipe;
 
     // ³ª¹« »óÀÇ
-    /*Recipe ironPickAxeRecipe;
-    ironPickAxeRecipe.vecIngredients.push_back({ ITEM_WOOD, 4 });
-    m_mapRecipes[make_pair(ITEM_PICKAXE, MATERIAL_WOOD)] = ironPickAxeRecipe;*/
+    Recipe woodChestRecipe;
+    woodChestRecipe.vecIngredients.push_back({ ITEM_WOOD, 6 });
+    m_mapRecipes[make_pair(ITEM_CHEST, MATERIAL_WOOD)] = woodChestRecipe;
 
     // ±¸¸® »óÀÇ
-    /*Recipe ironPickAxeRecipe;
-    ironPickAxeRecipe.vecIngredients.push_back({ ITEM_WOOD, 4 });
-    m_mapRecipes[make_pair(ITEM_PICKAXE, MATERIAL_WOOD)] = ironPickAxeRecipe;*/
+    Recipe copperChestRecipe;
+    copperChestRecipe.vecIngredients.push_back({ ITEM_COPPER_BAR, 8 });
+    m_mapRecipes[make_pair(ITEM_CHEST, MATERIAL_COPPER)] = copperChestRecipe;
 
     // Ã¶ »óÀÇ
-    /*Recipe ironPickAxeRecipe;
-    ironPickAxeRecipe.vecIngredients.push_back({ ITEM_WOOD, 4 });
-    m_mapRecipes[make_pair(ITEM_PICKAXE, MATERIAL_WOOD)] = ironPickAxeRecipe;*/
+    Recipe ironChestRecipe;
+    ironChestRecipe.vecIngredients.push_back({ ITEM_FIBER, 6 });
+    ironChestRecipe.vecIngredients.push_back({ ITEM_COPPER_BAR, 3 });
+    ironChestRecipe.vecIngredients.push_back({ ITEM_IRON_BAR, 15 });
+    m_mapRecipes[make_pair(ITEM_CHEST, MATERIAL_IRON)] = ironChestRecipe;
 
     // ³ª¹« ¹ÙÁö
-    /*Recipe ironPickAxeRecipe;
-    ironPickAxeRecipe.vecIngredients.push_back({ ITEM_WOOD, 4 });
-    m_mapRecipes[make_pair(ITEM_PICKAXE, MATERIAL_WOOD)] = ironPickAxeRecipe;*/
+    Recipe woodLegRecipe;
+    woodLegRecipe.vecIngredients.push_back({ ITEM_WOOD, 5 });
+    m_mapRecipes[make_pair(ITEM_LEG, MATERIAL_WOOD)] = woodLegRecipe;
 
     // ±¸¸® ¹ÙÁö
-    /*Recipe ironPickAxeRecipe;
-    ironPickAxeRecipe.vecIngredients.push_back({ ITEM_WOOD, 4 });
-    m_mapRecipes[make_pair(ITEM_PICKAXE, MATERIAL_WOOD)] = ironPickAxeRecipe;*/
+    Recipe copperLegRecipe;
+    copperLegRecipe.vecIngredients.push_back({ ITEM_COPPER_BAR, 7 });
+    m_mapRecipes[make_pair(ITEM_LEG, MATERIAL_COPPER)] = copperLegRecipe;
 
     // Ã¶ ¹ÙÁö
-    /*Recipe ironPickAxeRecipe;
-    ironPickAxeRecipe.vecIngredients.push_back({ ITEM_WOOD, 4 });
-    m_mapRecipes[make_pair(ITEM_PICKAXE, MATERIAL_WOOD)] = ironPickAxeRecipe;*/
+    Recipe ironLegRecipe;
+    ironLegRecipe.vecIngredients.push_back({ ITEM_FIBER, 6 });
+    ironLegRecipe.vecIngredients.push_back({ ITEM_COPPER_BAR, 2 });
+    ironLegRecipe.vecIngredients.push_back({ ITEM_IRON_BAR, 13 });
+    m_mapRecipes[make_pair(ITEM_LEG, MATERIAL_IRON)] = ironLegRecipe;
 
 
+    // ±¸¸® ¸ñ°ÉÀÌ
+    Recipe copperNecklaceRecipe;
+    copperNecklaceRecipe.vecIngredients.push_back({ ITEM_COPPER_BAR, 10 });
+    m_mapRecipes[make_pair(ITEM_NECKLACE, MATERIAL_COPPER)] = copperNecklaceRecipe;
 
+    // Ã¶ µ¢¾î¸® ¸ñ°ÉÀÌ
+    Recipe ironNecklaceRecipe;
+    ironNecklaceRecipe.vecIngredients.push_back({ ITEM_IRON_BAR, 10 });
+    m_mapRecipes[make_pair(ITEM_NECKLACE, MATERIAL_IRON)] = ironNecklaceRecipe;
 
+    // ÀÚ¼® ¹ÝÁö
+    Recipe magnetRingRecipe;
+    magnetRingRecipe.vecIngredients.push_back({ ITEM_COPPER_BAR, 5 });
+    magnetRingRecipe.vecIngredients.push_back({ ITEM_IRON_BAR, 5 });
+    m_mapRecipes[make_pair(ITEM_RING, MATERIAL_COPPER)] = magnetRingRecipe;
 
+    // ½Å¼Ó ¹ÝÁö
+    Recipe speedRingRecipe;
+    speedRingRecipe.vecIngredients.push_back({ ITEM_FEATHER_PIECE, 3 });
+    speedRingRecipe.vecIngredients.push_back({ ITEM_IRON_BAR, 10 });
+    m_mapRecipes[make_pair(ITEM_RING, MATERIAL_IRON)] = speedRingRecipe;
+
+    // º§Æ® ÁÖ¸Ó´Ï
+    Recipe copperBagRecipe;
+    copperBagRecipe.vecIngredients.push_back({ ITEM_WOOD, 5 });
+    copperBagRecipe.vecIngredients.push_back({ ITEM_COPPER_BAR, 2 });
+    m_mapRecipes[make_pair(ITEM_BAG, MATERIAL_COPPER)] = copperBagRecipe;
+
+    // Å½Çè°¡ ¹è³¶
+    Recipe ironBagRecipe;
+    ironBagRecipe.vecIngredients.push_back({ ITEM_FIBER, 10 });
+    ironBagRecipe.vecIngredients.push_back({ ITEM_IRON_BAR, 5 });
+    m_mapRecipes[make_pair(ITEM_BAG, MATERIAL_IRON)] = ironBagRecipe;
+
+    // ¼ÒÇü µîºÒ
+    Recipe copperLanternRecipe;
+    copperLanternRecipe.vecIngredients.push_back({ ITEM_MUCUS, 3 });
+    copperLanternRecipe.vecIngredients.push_back({ ITEM_COPPER_BAR, 3 });
+    m_mapRecipes[make_pair(ITEM_LANTERN, MATERIAL_COPPER)] = copperLanternRecipe;
+
+    // ±¸Ã¼ µîºÒ
+    Recipe ironLanternRecipe;
+    ironLanternRecipe.vecIngredients.push_back({ ITEM_MUCUS, 8 });
+    ironLanternRecipe.vecIngredients.push_back({ ITEM_IRON_BAR, 8 });
+    m_mapRecipes[make_pair(ITEM_LANTERN, MATERIAL_IRON)] = ironLanternRecipe;
+
+    // ³ª¹« ¹æÆÐ
+    Recipe woodShieldRecipe;
+    woodShieldRecipe.vecIngredients.push_back({ ITEM_WOOD, 10 });
+    woodShieldRecipe.vecIngredients.push_back({ ITEM_COPPER_BAR, 5 });
+    m_mapRecipes[make_pair(ITEM_ASSISTANCE_SHIELD , MATERIAL_WOOD)] = woodShieldRecipe;
+
+    // Ã¶ ¹æÆÐ
+    Recipe ironShieldRecipe;
+    ironShieldRecipe.vecIngredients.push_back({ ITEM_COPPER_BAR, 2 });
+    ironShieldRecipe.vecIngredients.push_back({ ITEM_IRON_BAR, 8 });
+    m_mapRecipes[make_pair(ITEM_ASSISTANCE_SHIELD, MATERIAL_IRON)] = ironShieldRecipe;
+
+    // Ã¥
+    Recipe bookRecipe;
+    bookRecipe.vecIngredients.push_back({ ITEM_FIBER, 8 });
+    bookRecipe.vecIngredients.push_back({ ITEM_SKULL_PIECE, 8 });
+    m_mapRecipes[make_pair(ITEM_ASSISTANCE_BOOK, MATERIAL_END)] = bookRecipe;
 
 
     // ³ª¹« Å×ÀÌºí

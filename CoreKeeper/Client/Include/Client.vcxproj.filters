@@ -376,6 +376,12 @@
     <Filter Include="02. GameObject\06. Item\99. Etc\01. Cooking\01. Food">
       <UniqueIdentifier>{5c2f0fcd-ae51-4529-b928-a0f45772a3e3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\06. Item\03. Accessory\02. Assistance\02. Book">
+      <UniqueIdentifier>{9b76f857-dd7d-4723-9b0f-91f92770c272}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\99. Etc\10. Diary">
+      <UniqueIdentifier>{30f001ed-a454-4825-9f4f-4accc7df2ba5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -741,6 +747,12 @@
     <ClInclude Include="..\Header\StatueCore.h">
       <Filter>02. GameObject\06. Item\99. Etc\04. StatueCore</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\Book.h">
+      <Filter>02. GameObject\06. Item\03. Accessory\02. Assistance\02. Book</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\Diary.h">
+      <Filter>02. GameObject\06. Item\99. Etc\10. Diary</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1084,6 +1096,12 @@
     </ClCompile>
     <ClCompile Include="..\Code\StatueCore.cpp">
       <Filter>02. GameObject\06. Item\99. Etc\04. StatueCore</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Book.cpp">
+      <Filter>02. GameObject\06. Item\03. Accessory\02. Assistance\02. Book</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Diary.cpp">
+      <Filter>02. GameObject\06. Item\99. Etc\10. Diary</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

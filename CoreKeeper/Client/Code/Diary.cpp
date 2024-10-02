@@ -1,55 +1,38 @@
 #include "pch.h"
-#include "..\Header\Necklace.h"
+#include "..\Header\Diary.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
 
-CNecklace::CNecklace(LPDIRECT3DDEVICE9 pGraphicDev)
+CDiary::CDiary(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CItem(pGraphicDev)
 {
-	m_eItemNum = ITEM_NECKLACE;
+	m_eItemNum = ITEM_DIARY;
 }
 
-CNecklace::~CNecklace()
+CDiary::~CDiary()
 {
 }
 
-HRESULT CNecklace::Ready_GameObject(MATERIAL _eMaterial, _vec3 vPos)
+HRESULT CDiary::Ready_GameObject(_vec3 vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_eMaterial = _eMaterial;
-
-	switch (m_eMaterial)
-	{
-	case MATERIAL_COPPER:
-		m_iTextureNumber = 0;
-		break;
-	case MATERIAL_IRON:
-		m_iTextureNumber = 1;
-		break;
-	case MATERIAL_SPECIAL:
-		m_iTextureNumber = 2;
-		break;
-	default:
-		return E_FAIL;
-	}
-
-
-	m_pTransformCom->Set_Scale(0.5f, 0.5f, 0.5f);
+	m_pTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
 	m_pShadowTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
-
 	m_pTransformCom->Set_Pos(vPos.x, vPos.y, vPos.z);
 	m_pShadowTransformCom->Set_Pos(vPos.x, 0.1f, vPos.z);
 
+
+	m_wItemExplain[0] = L"나무";
+	m_wItemExplain[1] = L"온갖 물건을 만드는 데 쓰는 ";
+	m_wItemExplain[2] = L"거대한 뿌리 조각입니다.";
 	// 원래의 Y 위치 저장
 	m_fFirstY = vPos.y;
-
-	m_pAnimatorCom->Set_CurState(IDLE, 0, 0, 3);
 
 	return S_OK;
 }
 
-_int CNecklace::Update_GameObject(const _float& fTimeDelta)
+_int CDiary::Update_GameObject(const _float& fTimeDelta)
 {
 	m_pAnimatorCom->Update_Animation();
 
@@ -59,11 +42,9 @@ _int CNecklace::Update_GameObject(const _float& fTimeDelta)
 
 	if (m_bUse)
 	{
-		Swing(0, 5, 2);
-
 		m_bActive = true;
 		m_bDrop = false;
-		m_pTransformCom->Set_Scale(1.5f, 1.5f, 1.5f);
+		m_pTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
 	}
 
 	if (m_bDrop)
@@ -77,27 +58,30 @@ _int CNecklace::Update_GameObject(const _float& fTimeDelta)
 		// 플레이어와 충돌
 		if (m_pColliderCom->Check_Collision(pPlayerCollider))
 		{
-			In_Inventory();
+			Engine::CInventory* pPlayerInventory = dynamic_cast<Engine::CInventory*>
+				(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
+		
+			// 인벤토리에 들어갔다
+			if (pPlayerInventory->Add_Item(this))
+			{
+				m_bActive = false;
+				m_bDrop = false;
+			}
 		}
-	}	
-	if (m_bFollow)
-		Follow_Player();
+	}
 	
 	Add_RenderGroup(RENDER_ALPHA, this);
 
 	return Engine::CGameObject::Update_GameObject(fTimeDelta);
 }
 
-void CNecklace::LateUpdate_GameObject()
+void CDiary::LateUpdate_GameObject()
 {
 	Engine::CGameObject::LateUpdate_GameObject();
 }
 
-void CNecklace::Render_GameObject()
+void CDiary::Render_GameObject()
 {
-	// 카메라를 바라보게 하면서 스케일 유지
-	//CItem::Apply_Billboard();  
-
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
@@ -105,7 +89,7 @@ void CNecklace::Render_GameObject()
 
 	m_pTextureCom->Set_Texture(m_iTextureNumber);
 
-	m_pBufferCom->Set_Index(m_pAnimatorCom->Get_MotionIndex());
+	m_pBufferCom->Set_Index(0);
 
 	if (m_bActive)
 	{
@@ -130,15 +114,15 @@ void CNecklace::Render_GameObject()
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
-HRESULT CNecklace::Add_Component()
+HRESULT CDiary::Add_Component()
 {
 	CComponent* pComponent = NULL;
 
-	pComponent = m_pBufferCom = dynamic_cast<CAnimTex*>(Engine::Clone_Proto(L"Proto_AnimTex"));
+	pComponent = m_pBufferCom = dynamic_cast<CAnimTex*>(Engine::Clone_Proto(L"Proto_NormalAnimTex"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Buffer", pComponent });
 
-	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_NecklaceTexture"));
+	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_DiaryTexture"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Texture", pComponent });
 
@@ -169,21 +153,21 @@ HRESULT CNecklace::Add_Component()
 	return S_OK;
 }
 
-CNecklace* CNecklace::Create(LPDIRECT3DDEVICE9 pGraphicDev, MATERIAL _eMaterial, _vec3 vPos)
+CDiary* CDiary::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 {
-	CNecklace* pNecklace = new CNecklace(pGraphicDev);
+	CDiary* pDiary = new CDiary(pGraphicDev);
 
-	if (FAILED(pNecklace->Ready_GameObject(_eMaterial, vPos)))
+	if (FAILED(pDiary->Ready_GameObject(vPos)))
 	{
-		Safe_Release(pNecklace);
-		MSG_BOX("pNecklace Create Failed");
+		Safe_Release(pDiary);
+		MSG_BOX("pDiary Create Failed");
 		return nullptr;
 	}
 
-	return pNecklace;
+	return pDiary;
 }
 
-void CNecklace::Free()
+void CDiary::Free()
 {
 	Engine::CGameObject::Free();
 }
