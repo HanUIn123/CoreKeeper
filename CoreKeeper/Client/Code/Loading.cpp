@@ -160,6 +160,11 @@ _uint CLoading::Loading_Stage()
 
     // 설치물
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TableTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Table/Table_%d.png", TEX_NORMAL, 3)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_PotionTableTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Table/PotionTable.png", TEX_NORMAL)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_AccessoryTableTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Table/AccessoryTable.png", TEX_NORMAL)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MusicTableTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Table/MusicTable.png", TEX_NORMAL)), E_FAIL);
+    //FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_AnimalTableTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Table/Table_%d.png", TEX_NORMAL, 3)), E_FAIL);
+    
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_AnvilTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Anvil/Anvil_%d.png", TEX_NORMAL, 3)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_FurnaceTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Furnace/Furnace_%d.png", TEX_NORMAL)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_CookingPotTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/CookingPot/CookingPot_%d.png", TEX_NORMAL)), E_FAIL);

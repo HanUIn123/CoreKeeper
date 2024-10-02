@@ -126,7 +126,7 @@ CItem* CCraftMgr::Craft(CInventory* _pInventory, ITEMNUM _eItemNum, MATERIAL _eM
     case ITEM_MUSIC_TABLE:
         pItem = CMusicTable::Create(m_pGraphicDev);
         break;
-    case ITME_ANIMAL_TABLE:
+    case ITEM_ANIMAL_TABLE:
         pItem = CAnimalTable::Create(m_pGraphicDev);
         break;
 
