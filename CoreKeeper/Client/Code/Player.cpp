@@ -40,7 +40,7 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	m_bShoot = false;
 	m_fClickTime = 0.f;
 
-	m_fFirstY = 1.f;
+	m_fFirstY = 0.8f;
 	m_fTimeAcc = 0.f;
 	m_fWalkYSpeed = 1.8f;
 	m_iSpeedWeight = 1;
@@ -88,6 +88,10 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	m_fDashTimeAcc = 0.f;
 	m_bDashCool = false;
 	m_fDashCoolTime = 0.5f;
+
+	m_bImmune = false;
+	m_fImmuneTimeAcc = 0.f;
+	m_bImmuneByTime = false;
 }
 
 CPlayer::~CPlayer()
@@ -158,6 +162,18 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 
 	Flip();
 	Dash(fTimeDelta);
+	Set_ImmuneByToggle();
+
+	// 시간제 무적용
+	if (m_bImmuneByTime)
+	{
+		m_fImmuneTimeAcc += fTimeDelta;
+		if (m_fImmuneTimeAcc >= m_fImmuneTime)
+		{
+			m_bImmuneByTime = false;
+			m_fImmuneTimeAcc = 0.f;
+		}
+	}
 
 	if (!m_bRespawned)
 	{
@@ -414,7 +430,7 @@ void CPlayer::Dash(const _float& fTimeDelta)
 	if (pAux->Get_ItemNum() == ITEM_ASSISTANCE_FEATHER)
 	{
 		// 스페이스바를 누르면 대쉬
-		if (Engine::Get_DIKeyState(DIK_SPACE) & 0x80)
+		if (Engine::Key_Down(DIK_SPACE))
 		{
 			if (!m_bDash && !m_bDashCool)
 				m_bDash = true;
@@ -455,6 +471,21 @@ void CPlayer::Dash(const _float& fTimeDelta)
 		}
 	}
 }
+
+void CPlayer::Set_ImmuneByTime(_float fImmuneTime)
+{
+	if (m_bImmune || m_bImmuneByTime)
+		return;
+	m_bImmuneByTime = true;
+	m_fImmuneTime = fImmuneTime;
+}
+
+void CPlayer::Set_ImmuneByToggle()
+{
+	if (Engine::Key_Down(DIK_F1))
+		m_bImmune = m_bImmune ? false : true;
+}
+
 
 void CPlayer::Mouse_Direction()
 {
@@ -1484,17 +1515,21 @@ void CPlayer::Particle_Update(_float fTimeDelta)
 
 void CPlayer::Set_KnockBack(_vec3 vEnemyPos, _int iDamage, _float fDist)
 {
-	_vec3 vPos;
-	m_pTransformCom->Get_Info(INFO_POS, &vPos);
-	m_bKnockBackStart = true;
-	m_bKnockBackEnd = false;
-	m_vKnockBackDir = vPos - vEnemyPos;
-	m_vKnockBackDir.y = 0;
-	D3DXVec3Normalize(&m_vKnockBackDir, &m_vKnockBackDir);
-	m_vStartPoint = vEnemyPos;
-	m_fKnockBackDist = fDist;
+	if (!m_bImmune && !m_bImmuneByTime)
+	{
+		_vec3 vPos;
+		m_pTransformCom->Get_Info(INFO_POS, &vPos);
+		m_bKnockBackStart = true;
+		m_bKnockBackEnd = false;
+		m_vKnockBackDir = vPos - vEnemyPos;
+		m_vKnockBackDir.y = 0;
+		D3DXVec3Normalize(&m_vKnockBackDir, &m_vKnockBackDir);
+		m_vStartPoint = vEnemyPos;
+		m_fKnockBackDist = fDist;
 
-	m_pStateCom->Set_Damaged(iDamage);
+		m_pStateCom->Set_Damaged(iDamage);
+		Set_ImmuneByTime();
+	}
 }
 
 void CPlayer::KnockBack(const _float& fTimeDelta)
