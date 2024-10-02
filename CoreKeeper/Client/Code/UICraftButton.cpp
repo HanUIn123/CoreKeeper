@@ -222,6 +222,18 @@ void CUICraftButton::Set_Slot()
 		pSlot->Set_DisableWindow();
 		pSlot->Set_Window(m_eTableType, eTableMaterial, true);
 	}
+
+	for (int i = 0; i < 6; i++)
+	{
+		wstring string;
+
+		string = L"UICraftRSlot_" + std::to_wstring(i);
+
+		CUICraftSlot* pSlot = dynamic_cast<CUICraftSlot*>(Engine::Get_GameObject(L"Layer_UI", string.c_str()));
+
+		pSlot->Set_DisableWindow();
+		pSlot->Set_Window(m_eTableType, eTableMaterial, false);
+	}
 }
 
 CUICraftButton* CUICraftButton::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec2 vPos, _vec2 vSize)
