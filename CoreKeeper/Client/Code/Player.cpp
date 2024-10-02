@@ -312,7 +312,7 @@ void CPlayer::Mouse_Click(const _float& fTimeDelta)
 	else if (m_bShoot)
 	{
 		m_fClickTime += fTimeDelta;
-		if (m_fClickTime > 0.5f || m_pAnimatorCom->Get_MotionEnd())
+		if (m_fClickTime > 0.5f)
 		{
 			m_bShoot = false;
 			m_bShootOnce = false;
@@ -458,7 +458,7 @@ void CPlayer::Animation_SetUp(STATE st, DIRECTION dir)
 			else if (m_eDir == BACK)
 				m_pAnimatorCom->Set_CurState(st, 40, 41, 10);
 			else
-				m_pAnimatorCom->Set_CurState(st, 37, 39, 6);
+				m_pAnimatorCom->Set_CurState(st, 37, 39, 8);
 		}
 		break;
 	}
