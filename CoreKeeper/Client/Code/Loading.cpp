@@ -132,7 +132,7 @@ _uint CLoading::Loading_Stage()
     // 도구
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_PickaxeTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Tool/Pickaxe_%d.png", TEX_NORMAL, 3)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_HoeTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Tool/Hoe_%d.png", TEX_NORMAL, 3)), E_FAIL);
-    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_WateringCanTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Tool/WateringCan.png", TEX_NORMAL)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_WateringCanTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Tool/WateringCan_%d.png", TEX_NORMAL, 2)), E_FAIL);
 
     // 무기
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SwordTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Weapon/Sword_%d.png", TEX_NORMAL, 3)), E_FAIL);

@@ -13,9 +13,21 @@ CWateringCan::~CWateringCan()
 {
 }
 
-HRESULT CWateringCan::Ready_GameObject(_vec3 vPos)
+HRESULT CWateringCan::Ready_GameObject(MATERIAL _eMaterial, _vec3 vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
+
+	m_eMaterial = _eMaterial;
+
+	switch (m_eMaterial)
+	{
+	case MATERIAL_COPPER:
+		m_iTextureNumber = 0;
+		break;
+	case MATERIAL_IRON:
+		m_iTextureNumber = 1;
+		break;
+	}
 
 	m_pTransformCom->Set_Scale(1.2f, 1.2f, 1.2f);
 	m_pShadowTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
@@ -156,11 +168,11 @@ HRESULT CWateringCan::Add_Component()
 	return S_OK;
 }
 
-CWateringCan* CWateringCan::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
+CWateringCan* CWateringCan::Create(LPDIRECT3DDEVICE9 pGraphicDev, MATERIAL _eMaterial, _vec3 vPos)
 {
 	CWateringCan* pWateringCan = new CWateringCan(pGraphicDev);
 
-	if (FAILED(pWateringCan->Ready_GameObject(vPos)))
+	if (FAILED(pWateringCan->Ready_GameObject(_eMaterial, vPos)))
 	{
 		Safe_Release(pWateringCan);
 		MSG_BOX("pWateringCan Create Failed");

@@ -66,7 +66,7 @@ CItem* CCraftMgr::Craft(CInventory* _pInventory, ITEMNUM _eItemNum, MATERIAL _eM
         pItem = CHoe::Create(m_pGraphicDev, _eMaterial);
         break;
     case ITEM_WATERINGCAN:
-        pItem = CWateringCan::Create(m_pGraphicDev);
+        pItem = CWateringCan::Create(m_pGraphicDev, _eMaterial);
         break;
 
     case ITEM_SWORD:
@@ -242,10 +242,15 @@ void CCraftMgr::Set_Recipe()
     ironHoeRecipe.vecIngredients.push_back({ ITEM_IRON_BAR, 4 });
     m_mapRecipes[make_pair(ITEM_HOE, MATERIAL_IRON)] = ironHoeRecipe;
 
-    // ¹°»Ñ¸®°³
-    Recipe wateringCanRecipe;
-    wateringCanRecipe.vecIngredients.push_back({ ITEM_COPPER_BAR, 4 });
-    m_mapRecipes[make_pair(ITEM_WATERINGCAN, MATERIAL_END)] = wateringCanRecipe;
+    // ±¸¸® ¹°»Ñ¸®°³
+    Recipe copperWateringCanRecipe;
+    copperWateringCanRecipe.vecIngredients.push_back({ ITEM_COPPER_BAR, 4 });
+    m_mapRecipes[make_pair(ITEM_WATERINGCAN, MATERIAL_COPPER)] = copperWateringCanRecipe;
+
+    // Ã¶ ¹°»Ñ¸®°³
+    Recipe ironWateringCanRecipe;
+    ironWateringCanRecipe.vecIngredients.push_back({ ITEM_IRON_BAR, 10 });
+    m_mapRecipes[make_pair(ITEM_WATERINGCAN, MATERIAL_IRON)] = ironWateringCanRecipe;
 
     // ³ª¹« Ä®
     Recipe woodSwordRecipe;
