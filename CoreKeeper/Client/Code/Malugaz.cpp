@@ -274,7 +274,7 @@ void CMalugaz::Pattern_Dead()
     {
         m_iPhase = 2;
         m_pStateCom->Set_Stat(2000, 0, 25, 0);
-        //m_bKnockBackEnd = false;
+        m_bKnockBackEnd = false;
     }
     if (m_bKnockBackEnd)
     {

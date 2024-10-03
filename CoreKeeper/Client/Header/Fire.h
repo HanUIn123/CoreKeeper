@@ -49,5 +49,9 @@ private:
 
 private:
 	_bool m_bCollision;
+	STATE m_eState;
+	float	  m_fBurnTime;
+	bool  m_bActive;
+	bool  m_bBurn;
 };
 
