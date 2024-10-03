@@ -375,15 +375,21 @@ STATE CMalugaz::State_Change()
         // 공격 모션이 끝났을 때
         if (m_bAttackSuccess)
         {
-            //// 공격 사거리 이내가 아닌 경우
+            if (m_iPhase == 1)
+                return IDLE;
+            else
+            {
+                return WALK;
+            }
+            // 공격 사거리 이내가 아닌 경우
             //if (!m_pCalculatorCom->Check_Distance2D(&vPlayerPos, &vPos, m_fRange))
             //{
             //    m_iFrameCount = 0;
             //    m_iAttackAnimProgress = 0;
             //    return WALK;
             //}
-            //if (!m_pCalculatorCom->Check_Distance2D(&vPlayerPos, &vPos, m_fAggroDistance))
-                return IDLE;
+            //if (m_pCalculatorCom->Check_Distance2D(&vPlayerPos, &vPos, m_fAggroDistance))
+            //    return IDLE;
         }
         break;
     }
