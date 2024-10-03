@@ -19,11 +19,13 @@ CStage::CStage(LPDIRECT3DDEVICE9 pGraphicDev)
 CStage::~CStage()
 {
 	CCraftMgr::DestroyInstance();
+	CFarmMgr::DestroyInstance();
 }
 
 HRESULT CStage::Ready_Scene()
 {
 	CCraftMgr::GetInstance()->Ready_Craft(m_pGraphicDev);
+	CFarmMgr::GetInstance()->Ready_Farm(m_pGraphicDev);
 
 	//FAILED_CHECK_RETURN(Ready_LightInfo(), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Layer_Environment"), E_FAIL);
@@ -33,7 +35,7 @@ HRESULT CStage::Ready_Scene()
 
 	FAILED_CHECK_RETURN(Ready_Layer_UI(L"Layer_UI"), E_FAIL);
 	Load_MapFile();
-
+	Load_MonsterData();
 	// 이거랑 Render_Scene() 주석 풀면 일단 stage를 위에서 꽂아서 보게됨.
 	//FAILED_CHECK_RETURN(Ready_Layer_MiniMap(L"Layer_MiniMap"), E_FAIL);
 	
@@ -45,7 +47,7 @@ HRESULT CStage::Ready_Scene()
 _int CStage::Update_Scene(const _float& fTimeDelta)
 {
 	_int	iExit = Engine::CScene::Update_Scene(fTimeDelta);
-
+	CFarmMgr::GetInstance()->Update_Farm(fTimeDelta);
 	return iExit;
 }
 
@@ -221,18 +223,6 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar* pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Player_HairShade", pGameObject), E_FAIL);
 
-	pGameObject = CSlime::Create(m_pGraphicDev, _vec3(VTXCNTX * 0.5f - 5.f, 10, VTXCNTZ * 0.5f - 5.f));
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Slime", pGameObject), E_FAIL);
-
-	pGameObject = CShroomMan::Create(m_pGraphicDev, _vec3(VTXCNTX * 0.5f + 5.f, 10, VTXCNTZ * 0.5f + 5.f));
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"ShroomMan", pGameObject), E_FAIL);
-
-	//pGameObject = CShaman::Create(m_pGraphicDev, _vec3(VTXCNTX * 0.5f - 5.f, 10, VTXCNTZ * 0.5f - 5.f));
-	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Shaman", pGameObject), E_FAIL);
-
 	pGameObject = CMalugaz::Create(m_pGraphicDev, _vec3(VTXCNTX * 0.5f - 5.f, 10, VTXCNTZ * 0.5f - 5.f));
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Malugaz", pGameObject), E_FAIL);
@@ -364,6 +354,11 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar* pLayerTag)
 	pGameObject = CWateringCan::Create(m_pGraphicDev, MATERIAL_COPPER);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"WateringCan", pGameObject), E_FAIL);
+	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
+
+	pGameObject = CSeed::Create(m_pGraphicDev, ITEM_PEPPER_SEED);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Seed", pGameObject), E_FAIL);
 	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
 
 	//pGameObject = CCore::Create(m_pGraphicDev);
@@ -945,6 +940,64 @@ HRESULT CStage::Load_MapFile()
 	MSG_BOX("Success Load File");
 
 	return S_OK;
+}
+
+HRESULT CStage::Load_MonsterData()
+{
+	auto	iter = find_if(m_mapLayer.begin(), m_mapLayer.end(), CTag_Finder(L"Layer_GameLogic"));
+
+	if (iter == m_mapLayer.end())
+		return E_FAIL;
+
+	const _tchar* strFileName = L"../../Data/MonsterData.txt";
+
+	m_hFile = CreateFile(strFileName, GENERIC_READ, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+
+	if (INVALID_HANDLE_VALUE == m_hFile)
+	{
+		MSG_BOX("Fail Open Monster file");
+		return E_FAIL;
+	}
+
+	// ========================================================
+
+	Engine::CGameObject* pGameObject = nullptr;
+	_int	iType, iIndex;
+	_float	fX, fZ;
+	DWORD	dwByte = 0;
+
+	while (true)
+	{
+		ReadFile(m_hFile, &iType, sizeof(_int), &dwByte, nullptr);
+		ReadFile(m_hFile, &iIndex, sizeof(_int), &dwByte, nullptr);
+
+		if (dwByte == 0)
+			break;
+
+		fX = (iIndex % (VTXCNTX - 1)) * VTXITV;
+		fZ = (iIndex / (VTXCNTX - 1)) * VTXITV;
+
+		switch (iType)
+		{
+		case MON_SLIME:
+			m_wsMonsterNameString[iIndex] = L"Slime_" + std::to_wstring(iIndex);
+			pGameObject = CSlime::Create(m_pGraphicDev, _vec3(fX, 10, fZ));
+			break;
+		case MON_SHROOMMAN:
+			m_wsMonsterNameString[iIndex] = L"ShroomMan_" + std::to_wstring(iIndex);
+			pGameObject = CShroomMan::Create(m_pGraphicDev, _vec3(fX, 10, fZ));
+			break;
+		case MON_SHAMAN:
+			m_wsMonsterNameString[iIndex] = L"Shaman_" + std::to_wstring(iIndex);
+			pGameObject = CShaman::Create(m_pGraphicDev, _vec3(fX, 10, fZ));
+			break;
+		}
+		NULL_CHECK_RETURN(pGameObject, E_FAIL);
+		FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsMonsterNameString[iIndex].c_str(), pGameObject), E_FAIL);
+	}
+
+	CloseHandle(m_hFile);
+	MSG_BOX("Success Load Monster File");
 }
 
 void CStage::Free()

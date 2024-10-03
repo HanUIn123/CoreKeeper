@@ -18,7 +18,7 @@ HRESULT CIngredient::Ready_GameObject(ITEMNUM _eItemNum, _vec3 vPos)
 
 	m_eItemNum = _eItemNum;
 
-	m_pTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
+	m_pTransformCom->Set_Scale(0.5f, 0.5f, 0.5f);
 	m_pShadowTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
 	m_pTransformCom->Set_Pos(vPos.x, vPos.y, vPos.z);
 	m_pShadowTransformCom->Set_Pos(vPos.x, 0.1f, vPos.z);
@@ -29,6 +29,22 @@ HRESULT CIngredient::Ready_GameObject(ITEMNUM _eItemNum, _vec3 vPos)
 	m_wItemExplain[2] = L"거대한 뿌리 조각입니다.";
 	// 원래의 Y 위치 저장
 	m_fFirstY = vPos.y;
+
+	switch (_eItemNum)
+	{
+	case ITEM_BERRY_SEED:
+		m_iTextureNumber = 0;
+		break;
+	case ITEM_PEPPER_SEED:
+		m_iTextureNumber = 1;
+		break;
+	case ITEM_CARROT_SEED:
+		m_iTextureNumber = 2;
+		break;
+	case ITEM_FIBER_SEED:
+		m_iTextureNumber = 3;
+		break;
+	}
 
 	return S_OK;
 }
@@ -45,7 +61,7 @@ _int CIngredient::Update_GameObject(const _float& fTimeDelta)
 	{
 		m_bActive = true;
 		m_bDrop = false;
-		m_pTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
+		m_pTransformCom->Set_Scale(0.5f, 0.5f, 0.5f);
 	}
 
 	if (m_bDrop)

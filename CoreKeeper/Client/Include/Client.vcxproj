@@ -155,6 +155,7 @@ call Copy.bat</Command>
   <ItemGroup>
     <ClInclude Include="..\Header\Arrow.h" />
     <ClInclude Include="..\Header\Book.h" />
+    <ClInclude Include="..\Header\FarmMgr.h" />
     <ClInclude Include="..\Header\Food.h" />
     <ClInclude Include="..\Header\Fire.h" />
     <ClInclude Include="..\Header\Ingredient.h" />
@@ -291,6 +292,7 @@ call Copy.bat</Command>
     <ClCompile Include="..\Code\Arrow.cpp" />
     <ClCompile Include="..\Code\Azeos.cpp" />
     <ClCompile Include="..\Code\Book.cpp" />
+    <ClCompile Include="..\Code\FarmMgr.cpp" />
     <ClCompile Include="..\Code\Food.cpp" />
     <ClCompile Include="..\Code\Fire.cpp" />
     <ClCompile Include="..\Code\Ingredient.cpp" />

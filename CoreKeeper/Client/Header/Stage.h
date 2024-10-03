@@ -5,6 +5,7 @@
 // 인클루드 헤더를 따로 만들었습니다.
 #include "Include.h"
 #include "CraftMgr.h"
+#include "FarmMgr.h"
 
 #include "MapToolTerrain.h"
 #include "../Header/MiniMapCamera.h"
@@ -39,6 +40,7 @@ public:
 
 
 	HRESULT							Load_MapFile();
+	HRESULT							Load_MonsterData();
 
 
 
@@ -61,6 +63,7 @@ private:
 	wstring							m_wsTileNameString[VTXCNTX * VTXCNTZ];
 	wstring							m_wsWallNameString[VTXCNTX * VTXCNTZ];
 	wstring							m_wsBuildingNameString[VTXCNTX * VTXCNTZ];
+	wstring							m_wsMonsterNameString[VTXCNTX * VTXCNTZ];
 	_int							m_iLoadTileCount;
 	_int							m_iLoadWallCount;
 

@@ -27,7 +27,6 @@
 #include "..\Header\Stage.h"
 #include "..\Header\GravestoneObject.h"
 #include "..\Header\UIFurnace.h"
-#include "..\Header\SlimeRender.h"
 
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CGameObject(pGraphicDev)
@@ -1026,11 +1025,8 @@ void CPlayer::Hoe()
 			case MATERIAL_WOOD: // 1 x 1
 				if (!m_pTerrain->Get_UnreachableByIndex(iIndex))
 				{
-					m_pTerrain->Set_TextureNumber(iIndex, 27);
-					CScene* pScene = Engine::Get_Scene();
-					CGameObject* pRenderSlime = CSlimeRender::Create(m_pGraphicDev, iIndex);
-					m_vecPlayerCreatedName.push_back(L"Monster" + std::to_wstring(iIndex));
-					pScene->Create_GameObject(L"Layer_GameLogic", pRenderSlime, m_vecPlayerCreatedName.back().c_str());
+					if (!CFarmMgr::GetInstance()->Harvest_Plant(iIndex))
+						m_pTerrain->Set_TextureNumber(iIndex, 27);
 				}
 				break;
 			case MATERIAL_COPPER: // 3 x 3
@@ -1038,8 +1034,11 @@ void CPlayer::Hoe()
 				{
 					for (_int j = -1; j <= 1; j++)
 					{
-						if(!m_pTerrain->Get_UnreachableByIndex(iIndex + i + j * (VTXCNTX - 1)))
-							m_pTerrain->Set_TextureNumber(iIndex + i + j * (VTXCNTX - 1), 27);
+						if (!m_pTerrain->Get_UnreachableByIndex(iIndex + i + j * (VTXCNTX - 1)))
+						{
+							if (!CFarmMgr::GetInstance()->Harvest_Plant(iIndex + i + j * (VTXCNTX - 1)))
+								m_pTerrain->Set_TextureNumber(iIndex + i + j * (VTXCNTX - 1), 27);
+						}
 					}
 				}
 				break;
@@ -1049,7 +1048,10 @@ void CPlayer::Hoe()
 					for (_int j = -2; j <= 2; j++)
 					{
 						if (!m_pTerrain->Get_UnreachableByIndex(iIndex + i + j * (VTXCNTX - 1)))
-							m_pTerrain->Set_TextureNumber(iIndex + i + j * (VTXCNTX - 1), 27);
+						{
+							if (!CFarmMgr::GetInstance()->Harvest_Plant(iIndex + i + j * (VTXCNTX - 1)))
+								m_pTerrain->Set_TextureNumber(iIndex + i + j * (VTXCNTX - 1), 27);
+						}
 					}
 				}
 				break;
@@ -1072,8 +1074,7 @@ void CPlayer::Watering()
 			switch (m_pHandedItem->Get_ItemMaterial())
 			{
 			case MATERIAL_WOOD: // 1 x 1
-				if(m_pTerrain->Get_TextureNumber(iIndex) == 27)
-					m_pTerrain->Set_TextureNumber(iIndex, 28);
+				CFarmMgr::GetInstance()->Watering_Plant(iIndex);
 				break;
 			case MATERIAL_COPPER: // 3 x 3
 				for (_int i = -1; i <= 1; i++)
@@ -1082,8 +1083,7 @@ void CPlayer::Watering()
 					{
 						if (!m_pTerrain->Get_UnreachableByIndex(iIndex + i + j * (VTXCNTX - 1)))
 						{
-							if (m_pTerrain->Get_TextureNumber(iIndex + i + j * (VTXCNTX - 1)) == 27)
-								m_pTerrain->Set_TextureNumber(iIndex + i + j * (VTXCNTX - 1), 28);
+							CFarmMgr::GetInstance()->Watering_Plant(iIndex + i + j * (VTXCNTX - 1));
 						}
 					}
 				}
@@ -1095,8 +1095,7 @@ void CPlayer::Watering()
 					{
 						if (!m_pTerrain->Get_UnreachableByIndex(iIndex + i + j * (VTXCNTX - 1)))
 						{
-							if (m_pTerrain->Get_TextureNumber(iIndex + i + j * (VTXCNTX - 1)) == 27)
-								m_pTerrain->Set_TextureNumber(iIndex + i + j * (VTXCNTX - 1), 28);
+							CFarmMgr::GetInstance()->Watering_Plant(iIndex + i + j * (VTXCNTX - 1));
 						}
 					}
 				}
@@ -1112,68 +1111,13 @@ void CPlayer::Plant(ITEMNUM eNum)
 	{
 		_vec3 vPos;
 		m_pTransformCom->Get_Info(INFO_POS, &vPos);
-		m_pInventoryCom->Minus_Item(eNum, 1);
 		if (m_pCalculatorCom->Check_Distance2D(&vPos, &m_vMouseWorldPos, 5.f))
 		{
 			_int iIndex = _int(m_vMouseWorldPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (m_vMouseWorldPos.x + 0.5f * VTXITV);
-			switch (eNum)
+			if (!m_pTerrain->Get_UnreachableByIndex(iIndex))
 			{
-			case ITEM_BERRY_SEED:
-				if (!m_pTerrain->Get_UnreachableByIndex(iIndex))
-				{
-					// º£¸® ÀÛ¹° »ý¼º(¿ÀºêÁ§Æ®)
-					if (m_pTerrain->Get_TextureNumber(iIndex) == 27)
-					{
-						// AnimTex(0) : ¹°¿¡ ¾È Á¥Àº ¾¾¾Ñ¸¸ ½É±â
-					}
-					else if (m_pTerrain->Get_TextureNumber(iIndex) == 28)
-					{
-						// AnimTex(1) : ¼ºÀå ½ÃÀÛ ´Ü°è(¹°¿¡ Á¥Àº ¾¾¾Ñ)
-					}
-				}
-				break;
-			case ITEM_PEPPER_SEED:
-				if (!m_pTerrain->Get_UnreachableByIndex(iIndex))
-				{
-					// ÆøÅº ÈÄÃß ÀÛ¹° »ý¼º
-					if (m_pTerrain->Get_TextureNumber(iIndex) == 27)
-					{
-						// AnimTex(0) : ¹°¿¡ ¾È Á¥Àº ¾¾¾Ñ¸¸ ½É±â
-					}
-					else if (m_pTerrain->Get_TextureNumber(iIndex) == 28)
-					{
-						// AnimTex(1) : ¼ºÀå ½ÃÀÛ ´Ü°è(¹°¿¡ Á¥Àº ¾¾¾Ñ)
-					}
-				}
-				break;
-			case ITEM_CARROT_SEED:
-				if (!m_pTerrain->Get_UnreachableByIndex(iIndex))
-				{
-					// µ¹´ç±Ù ÀÛ¹° »ý¼º
-					if (m_pTerrain->Get_TextureNumber(iIndex) == 27)
-					{
-						// AnimTex(0) : ¹°¿¡ ¾È Á¥Àº ¾¾¾Ñ¸¸ ½É±â
-					}
-					else if (m_pTerrain->Get_TextureNumber(iIndex) == 28)
-					{
-						// AnimTex(1) : ¼ºÀå ½ÃÀÛ ´Ü°è(¹°¿¡ Á¥Àº ¾¾¾Ñ)
-					}
-				}
-				break;
-			case ITEM_FIBER_SEED:
-				if (!m_pTerrain->Get_UnreachableByIndex(iIndex))
-				{
-					// ¼¶À¯Áú ÀÛ¹° »ý¼º
-					if (m_pTerrain->Get_TextureNumber(iIndex) == 27)
-					{
-						// AnimTex(0) : ¹°¿¡ ¾È Á¥Àº ¾¾¾Ñ¸¸ ½É±â
-					}
-					else if (m_pTerrain->Get_TextureNumber(iIndex) == 28)
-					{
-						// AnimTex(1) : ¼ºÀå ½ÃÀÛ ´Ü°è(¹°¿¡ Á¥Àº ¾¾¾Ñ)
-					}
-				}
-				break;
+				CFarmMgr::GetInstance()->Create_Plant(iIndex, eNum);
+				m_pInventoryCom->Minus_Item(eNum, 1);
 			}
 		}
 	}

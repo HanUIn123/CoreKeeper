@@ -184,8 +184,6 @@ private:
 	_float					m_fImmuneTimeAcc;
 	_float					m_fImmuneTime;
 
-	vector<wstring>			m_vecPlayerCreatedName;
-
 public:
 	static CPlayer* Create(LPDIRECT3DDEVICE9 pGraphicDev);
 
