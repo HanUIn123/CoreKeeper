@@ -166,6 +166,7 @@ call Copy.bat</Command>
     <ClInclude Include="..\Header\CraftMgr.h" />
     <ClInclude Include="..\Header\Malugaz.h" />
     <ClInclude Include="..\Header\Feather.h" />
+    <ClInclude Include="..\Header\MiniTerrain.h" />
     <ClInclude Include="..\Header\Plant.h" />
     <ClInclude Include="..\Header\ShamanRender.h" />
     <ClInclude Include="..\Header\ShroomManRender.h" />
@@ -303,6 +304,7 @@ call Copy.bat</Command>
     <ClCompile Include="..\Code\CraftMgr.cpp" />
     <ClCompile Include="..\Code\Malugaz.cpp" />
     <ClCompile Include="..\Code\Feather.cpp" />
+    <ClCompile Include="..\Code\MiniTerrain.cpp" />
     <ClCompile Include="..\Code\Plant.cpp" />
     <ClCompile Include="..\Code\ShamanRender.cpp" />
     <ClCompile Include="..\Code\ShroomManRender.cpp" />

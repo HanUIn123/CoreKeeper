@@ -141,6 +141,11 @@ HRESULT CStage::Ready_Layer_Environment(const _tchar* pLayerTag)
 	NULL_CHECK_RETURN(m_pTerrainObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Terrain", m_pTerrainObject), E_FAIL);
 
+	pGameObject = CMiniTerrain::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"MiniTerrain", pGameObject), E_FAIL);
+
+
 	pGameObject = CCore::Create(m_pGraphicDev, { VTXCNTX / 2, 1.5f, 21.5f });
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Core", pGameObject), E_FAIL);
