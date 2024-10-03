@@ -1073,25 +1073,13 @@ void CPlayer::Watering()
 			_int iIndex = _int(m_vMouseWorldPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (m_vMouseWorldPos.x + 0.5f * VTXITV);
 			switch (m_pHandedItem->Get_ItemMaterial())
 			{
-			case MATERIAL_WOOD: // 1 x 1
+			case MATERIAL_COPPER: // 1 x 1
 				CFarmMgr::GetInstance()->Watering_Plant(iIndex);
 				break;
-			case MATERIAL_COPPER: // 3 x 3
+			case MATERIAL_IRON: // 3 x 3
 				for (_int i = -1; i <= 1; i++)
 				{
 					for (_int j = -1; j <= 1; j++)
-					{
-						if (!m_pTerrain->Get_UnreachableByIndex(iIndex + i + j * (VTXCNTX - 1)))
-						{
-							CFarmMgr::GetInstance()->Watering_Plant(iIndex + i + j * (VTXCNTX - 1));
-						}
-					}
-				}
-				break;
-			case MATERIAL_IRON: // 5 x 5
-				for (_int i = -2; i <= 2; i++)
-				{
-					for (_int j = -2; j <= 2; j++)
 					{
 						if (!m_pTerrain->Get_UnreachableByIndex(iIndex + i + j * (VTXCNTX - 1)))
 						{
