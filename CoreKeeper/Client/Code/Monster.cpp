@@ -387,6 +387,7 @@ _bool CMonster::Check_Wall()
 			Check_WallWithPlayer();
 		break;
 	case MON_SHAMAN:
+	case MON_MALUGAZ:
 		Check_WallWithPlayer();
 		break;
 	default:

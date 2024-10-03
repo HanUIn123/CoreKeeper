@@ -20,6 +20,8 @@ public:
 	virtual			void			LateUpdate_GameObject();
 	virtual			void			Render_GameObject();
 
+	_int							Get_MonsterType() { return MON_SLIME; }
+
 private:
 	HRESULT			Add_Component();
 

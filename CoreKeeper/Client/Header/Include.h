@@ -14,7 +14,13 @@
 #include "Monster.h"
 #include "Slime.h"
 #include "ShroomMan.h"
-#include"Shaman.h"
+#include "Shaman.h"
+#include "Malugaz.h"
+
+// Monster Render in MapTool
+#include "SlimeRender.h"
+#include "ShamanRender.h"
+#include "ShroomManRender.h"
 
 // Item
 #include "Pickaxe.h"

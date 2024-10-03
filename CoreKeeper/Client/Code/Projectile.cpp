@@ -5,7 +5,7 @@
 #include "../Header/Player.h"
 
 CProjectile::CProjectile(LPDIRECT3DDEVICE9 pGraphicDev)
-    : CMonster(pGraphicDev)
+    : CMonster(pGraphicDev), m_bChargeActive(true), m_iChargingTime(45)
 {
     m_eType = Engine::MON_PROJECTILE;
     m_fIdleY = 0.2f;
@@ -105,6 +105,8 @@ void CProjectile::Render_GameObject()
         m_pGraphicDev->SetTransform(D3DTS_WORLD, &m_SmogMatrix);
         m_pSmogParticleCom->render();
     }
+    if (!m_bChargeActive && m_eState == IDLE)
+        return;
 
     if (m_bStopDraw)
     {
@@ -237,7 +239,7 @@ STATE CProjectile::State_Change()
     {
     case IDLE:
         // 차징 끝나면 WALK(공격)
-        if(m_fIdleTime > 45 * 3)
+        if(m_fIdleTime > m_iChargingTime * 3)
             m_eState = WALK;
         break;
     case WALK:
@@ -251,7 +253,7 @@ STATE CProjectile::State_Change()
             m_eState = SWING;
             m_bCollideWithPlayer = true;
         }
-        else if (0 <= iIndex && iIndex < VTXCNTX * VTXCNTZ)
+        else if (0 <= iIndex && iIndex < (VTXCNTX - 1) * (VTXCNTZ - 1))
         {
             if (pTerrain->Get_UnreachableByIndex(iIndex))
             {

@@ -25,6 +25,14 @@ private:
 	void			Set_Direction(_vec3* vPlayerPos);
 	void			Set_Light();
 
+	// 페이즈 1
+	void			Pattern_Shoot(const _float& fTimeDelta);
+	void			Pattern_Teleport(const _float& fTimeDelta);
+	void			Pattern_Generate(const _float& fTimeDelta);		// 불 오브젝트 10개 생성
+
+	// 페이즈 2
+	void			Pattern_Run(const _float& fTimeDelta);
+	void			Pattern_Punch(const _float& fTimeDelta);
 private:
 	_bool			m_bLightEnable;
 	_int			m_iLightNum;
@@ -36,7 +44,8 @@ private:
 	vector<wstring>			m_vecProjectileName;
 	_int			m_iCurNumber;
 
-
+	int				m_iPhase;
+	int				m_iIdleCount;
 public:
 	static CMalugaz* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);
 

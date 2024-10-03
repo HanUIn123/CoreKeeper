@@ -24,6 +24,8 @@ public:
 	virtual			void			LateUpdate_GameObject();
 	virtual			void			Render_GameObject() {}
 
+	void							Set_CameraPosition(_vec3 _vEye, _vec3 _vAt);
+
 private:
 	void			Key_Input(const _float& _fTimeDelta);
 	void			Mouse_Move();
@@ -41,7 +43,7 @@ public:
 		const _vec3* pUp,		// À§ 
 		const _float& _fFov = D3DXToRadian(60.f),
 		const _float& _fAspect = (float)WINCX / WINCY,
-		const _float& _fNear = 0.1f,
+		const _float& _fNear = 1.0f,
 		const _float& _fFar = 1000.f);
 
 private:

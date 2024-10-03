@@ -16,6 +16,7 @@ CMapEditorScene::CMapEditorScene(LPDIRECT3DDEVICE9 _pGraphicDevice)
     , m_bPushed(false)
     , m_bWallClickPushed(false)
     , m_bBuildingClick(false)
+    , m_bMonsterClickPushed(false)
     , m_bSwitch(false)
     , m_bReachable(false)
     , m_bSelectTile(false)
@@ -62,6 +63,7 @@ CMapEditorScene::CMapEditorScene(LPDIRECT3DDEVICE9 _pGraphicDevice)
 
     m_vecWallObject.resize((VTXCNTX - 1) * (VTXCNTZ - 1));
     //m_vecBuildingObject.resize((VTXCNTX - 1) * (VTXCNTZ - 1));
+    m_vecMonsterRenderObject.resize((VTXCNTX - 1) * (VTXCNTZ - 1));
 }
 
 CMapEditorScene::~CMapEditorScene()
@@ -114,6 +116,8 @@ _int CMapEditorScene::Update_Scene(const _float& fTimeDelta)
 
     Piking_Object();
 
+    Piking_Monster();
+
     return iExit;
 }
 
@@ -149,6 +153,9 @@ void CMapEditorScene::LateUpdate_Scene()
         m_bReachable = false;
     ImGui::End();
 
+    Setting_Camera_Position();
+
+
     Engine::CScene::LateUpdate_Scene();
 }
 
@@ -165,7 +172,7 @@ HRESULT CMapEditorScene::Ready_Layer_Environment(const _tchar* pLayerTag)
     Engine::CGameObject* pGameObject = nullptr;
 
     _vec3 eye(128.5f, 20.f, 128.5f);
-    _vec3 at(128.5f, 0.f, 128.5f);
+    _vec3 at(130.5f, 5.f, 128.5f);
     _vec3 up(0.f, 1.f, 0.f);
 
     pGameObject = CMapToolCamera::Create(m_pGraphicDev,
@@ -292,6 +299,50 @@ void CMapEditorScene::Setting_Menu()
     ImGui::SliderInt2("##", pos, 0, 10);
 }
 
+void CMapEditorScene::Setting_Camera_Position()
+{
+    if (!ImGui::CollapsingHeader("Camera Position"))
+        return;
+
+    static _vec3 vCameraPositions[] =
+    {
+        { 128.5f, 20.0f, 128.5f },
+        { 50.0f, 20.0f, 128.5f },
+        { 220.0f, 20.0f, 128.5f },
+        { 128.0f, 20.0f, 220.0f }
+    };
+
+    static _vec3 vAtPositions[] =
+    {
+        {130.5f, 10.f, 128.5f },
+        { 52.0f, 10.f, 128.5f },
+        { 222.0f, 10.f, 128.5f },
+        { 130.0f, 10.f, 220.0f }
+    };
+
+    const char* cameraItems[] =
+    {
+        "Base Camp",
+        "Boss Section 1",
+        "Boss Section 2",
+        "Farming Section"
+    };
+
+    static int nSelectedIndex = 0;
+
+    for (int i = 0; i < IM_ARRAYSIZE(vCameraPositions); ++i)
+    {
+        if (ImGui::RadioButton(cameraItems[i], &nSelectedIndex, i))
+        {
+            CMapToolCamera* pCamera = dynamic_cast<CMapToolCamera*>(Engine::Get_GameObject(L"Layer_Environment", L"MapToolCamera"));
+            if (pCamera)
+            {
+                pCamera->Set_CameraPosition(vCameraPositions[nSelectedIndex], vAtPositions[nSelectedIndex]);
+            }
+        }
+    }
+}
+
 void CMapEditorScene::Setting_TileList()
 {
     if (!ImGui::CollapsingHeader("Tile List"))
@@ -400,7 +451,6 @@ void CMapEditorScene::Setting_WallList()
                 m_iWallImgNumber = textureIndex;
             }
 
-            // Imgui 줄 3개 같은 가로줄 
             if ((i + 1) % 3 != 0)
             {
                 ImGui::SameLine();
@@ -491,7 +541,6 @@ HRESULT CMapEditorScene::Piking_Wall()
                 Delete_Object(L"Layer_Environment", m_vecWallObject[iIndex]->Get_PickedWallName().c_str());
                 m_vecWallObject[iIndex] = nullptr;
                 pTerrain->Set_Unreachable(iIndex, false);
-
             }
         }
     }
@@ -676,7 +725,6 @@ void CMapEditorScene::Setting_MonsterList()
                 m_iMonsterNumber = textureIndex;
             }
 
-            // Imgui 줄 3개 같은 가로줄 
             if ((i + 1) % 3 != 0)
             {
                 ImGui::SameLine();
@@ -687,7 +735,74 @@ void CMapEditorScene::Setting_MonsterList()
 
 HRESULT CMapEditorScene::Piking_Monster()
 {
-    return E_NOTIMPL;
+    auto	iter = find_if(m_mapLayer.begin(), m_mapLayer.end(), CTag_Finder(L"Layer_GameLogic"));
+
+    if (iter == m_mapLayer.end())
+        return E_FAIL;
+
+    if (!m_bGuiHovered)
+    {
+        if (Engine::Get_DIMouseState(DIM_LB) & 0x80 && m_bSelectMonster)
+        {
+            m_bMonsterClickPushed = true;
+
+            CMapToolTerrain* pTerrain = dynamic_cast<CMapToolTerrain*>(Engine::Get_GameObject(L"Layer_GameLogic", L"MapToolTerrain"));
+            CCalculator* pPickPos = dynamic_cast<CCalculator*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"MapToolTerrain", L"Com_Calculator"));
+            CMapToolTex* pMapToolBufferCom = dynamic_cast<CMapToolTex*>(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"MapToolTerrain", L"Com_Buffer"));
+            CTransform* pMapToolTransformCom = dynamic_cast<CTransform*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"MapToolTerrain", L"Com_Transform"));
+
+            m_vPickPos = pPickPos->Picking_OnTerrain(g_hWnd, pMapToolBufferCom, pMapToolTransformCom);
+            m_eMonsterType = (Engine::MONSTERTYPE)m_iMonsterNumber;
+
+            if (m_vPickPos.y < 0)
+                return S_OK;
+
+            m_bAlreadyInstalled = false;
+
+            if (m_vecMonsterRenderObject[unsigned __int64(m_vPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vPickPos.x + 0.5f * VTXITV])
+                m_bAlreadyInstalled = true;
+
+            if (m_bAlreadyInstalled)
+                m_bCanInstall = false;
+            else if (m_vCheckPos == m_vPickPos)
+                m_bCanInstall = false;
+            else
+                m_bCanInstall = true;
+
+            if (m_bCanInstall)
+            {
+                _int iIndex = _int(m_vPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vPickPos.x + 0.5f * VTXITV;
+
+                m_wsMonsterNameString[iIndex] = L"Monster_" + std::to_wstring(iIndex);
+
+                switch (m_eMonsterType)
+                {
+                case MON_SLIME:
+                    m_pMonsterCom = CSlimeRender::Create(m_pGraphicDev, iIndex);
+                    break;
+                case MON_SHROOMMAN:
+                    m_pMonsterCom = CShroomManRender::Create(m_pGraphicDev, iIndex);
+                    break;
+                case MON_SHAMAN:
+                    m_pMonsterCom = CShamanRender::Create(m_pGraphicDev, iIndex);
+                    break;
+                }
+
+                m_vecMonsterRenderObject[iIndex] = m_pMonsterCom;
+
+                NULL_CHECK_RETURN(m_pMonsterCom, E_FAIL);
+                FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsMonsterNameString[iIndex].c_str(), m_pMonsterCom), E_FAIL);
+
+                pTerrain->Set_Unreachable(iIndex, false);
+
+                m_vCheckPos = m_vPickPos;
+            }
+        }
+        if (!(Engine::Get_DIMouseState(DIM_LB) & 0x80))
+            m_bMonsterClickPushed = false;
+    }
+
+    return S_OK;
 }
 
 
@@ -720,19 +835,16 @@ HRESULT CMapEditorScene::Resister_ImguiImage_ImGui(LPDIRECT3DDEVICE9 _pGraphicDe
             break;
 
         case TEX_WALL:
-            // FAILED_CHECK_RETURN(D3DXCreateCubeTextureFromFile(m_pGraphicDev, szImageFileName, (LPDIRECT3DCUBETEXTURE9*)&m_TextureInfo), E_FAIL);
             FAILED_CHECK_RETURN(D3DXCreateTextureFromFile(m_pGraphicDev, szImageFileName, &m_TextureInfo), E_FAIL);
             m_vecWallTexture.emplace_back(m_TextureInfo);
             break;
 
         case TEX_OBJECT:
-            //FAILED_CHECK_RETURN(D3DXCreateCubeTextureFromFile(m_pGraphicDev, szImageFileName, (LPDIRECT3DCUBETEXTURE9*)&m_TextureInfo), E_FAIL);
             FAILED_CHECK_RETURN(D3DXCreateTextureFromFile(m_pGraphicDev, szImageFileName, &m_TextureInfo), E_FAIL);
             m_vecObjectTexture.emplace_back(m_TextureInfo);
             break;
 
         case TEX_MONSTER:
-            //FAILED_CHECK_RETURN(D3DXCreateCubeTextureFromFile(m_pGraphicDev, szImageFileName, (LPDIRECT3DCUBETEXTURE9*)&m_TextureInfo), E_FAIL);
             FAILED_CHECK_RETURN(D3DXCreateTextureFromFile(m_pGraphicDev, szImageFileName, &m_TextureInfo), E_FAIL);
             m_vecMonsterTexture.emplace_back(m_TextureInfo);
             break;
@@ -746,11 +858,13 @@ void CMapEditorScene::MapFile_Save()
     const _tchar* strFileName = L"../../Data/TileData.txt";
     const _tchar* strWallFileName = L"../../Data/WallData.txt";
     const _tchar* strObjectFileName = L"../../Data/ObjectData.txt";
-
+    const _tchar* strMonsterFileName = L"../../Data/MonsterData.txt";
 
     m_hFile = CreateFile(strFileName, GENERIC_WRITE, 0, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
     m_hWallFile = CreateFile(strWallFileName, GENERIC_WRITE, 0, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
     m_hObjectFile = CreateFile(strObjectFileName, GENERIC_WRITE, 0, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
+    m_hMonsterFile = CreateFile(strMonsterFileName, GENERIC_WRITE, 0, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
+
 
     if (INVALID_HANDLE_VALUE == m_hFile)
     {
@@ -769,6 +883,13 @@ void CMapEditorScene::MapFile_Save()
         MSG_BOX("Failed Object Create File");
         return;
     }
+
+    if (INVALID_HANDLE_VALUE == m_hMonsterFile)
+    {
+        MSG_BOX("Failed Monster Create File");
+        return;
+    }
+
 
     // ========================================================
 
@@ -842,9 +963,42 @@ void CMapEditorScene::MapFile_Save()
     //    vTempObjectIndex++;
     //}
 
+
+    // ========================================================
+
+    _int vTempMonsterType = 0;
+    _int vTempMonsterIndex = 0;
+    DWORD dwByte3 = 0;
+
+    for (_int i = 0; i < m_vecMonsterRenderObject.size(); ++i)
+    {
+        if (m_vecMonsterRenderObject[i] == nullptr)
+            continue;
+
+        // 몬스터의 타입을 저장
+        if (auto pSlimeRender = dynamic_cast<CSlimeRender*>(m_vecMonsterRenderObject[i]))
+        {
+            vTempMonsterType = pSlimeRender->Get_MonsterType();
+        }
+        else if (auto pShroomManRender = dynamic_cast<CShroomManRender*>(m_vecMonsterRenderObject[i]))
+        {
+            vTempMonsterType = pShroomManRender->Get_MonsterType();
+        }
+        else if (auto pShamanRender = dynamic_cast<CShamanRender*>(m_vecMonsterRenderObject[i]))
+        {
+            vTempMonsterType = pShamanRender->Get_MonsterType();
+        }
+
+        vTempMonsterIndex = i;
+
+        WriteFile(m_hMonsterFile, &vTempMonsterType, sizeof(_int), &dwByte3, nullptr);
+        WriteFile(m_hMonsterFile, &vTempMonsterIndex, sizeof(_int), &dwByte3, nullptr);
+    }
+
     CloseHandle(m_hFile);
     CloseHandle(m_hWallFile);
     CloseHandle(m_hObjectFile);
+    CloseHandle(m_hMonsterFile);
 }
 
 HRESULT CMapEditorScene::MapFile_Load()

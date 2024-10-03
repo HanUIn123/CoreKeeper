@@ -43,10 +43,16 @@ void CCollider::Render_Collider()
 
     //FAILED_CHECK_RETURN(Setup_Material(), );
 
-    m_pGraphicDev->SetTransform(D3DTS_WORLD, &m_matWorld);
+
+    // 원래 월드 행렬에서 위치는 유지하고, 스케일 요소는 제거
+    D3DXMATRIX matNoScale = m_matWorld;
+    matNoScale._11 = matNoScale._22 = matNoScale._33 = 1.0f; // 스케일을 1로 고정
+
     m_matWorld._41 -= m_vOffset.x;
     m_matWorld._42 -= m_vOffset.y;
     m_matWorld._43 -= m_vOffset.z;
+
+    m_pGraphicDev->SetTransform(D3DTS_WORLD, &matNoScale);
 
     DWORD preRenderState, preTextureStageState;
 

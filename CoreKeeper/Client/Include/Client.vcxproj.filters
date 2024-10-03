@@ -412,6 +412,9 @@
     <Filter Include="02. GameObject\02. Monster\02. Shaman\ShamanRender">
       <UniqueIdentifier>{6a4700ec-9978-44b7-a908-4c0b94328674}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\08. Object\12. Fire">
+      <UniqueIdentifier>{86d0bab2-1b5a-4db3-a24f-c52a4f9fce0f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -810,6 +813,9 @@
     <ClInclude Include="..\Header\SlimeRender.h">
       <Filter>02. GameObject\02. Monster\00. Slime\SlimeRender</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\Fire.h">
+      <Filter>02. GameObject\08. Object\12. Fire</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1186,6 +1192,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\ShamanRender.cpp">
       <Filter>02. GameObject\02. Monster\02. Shaman\ShamanRender</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Fire.cpp">
+      <Filter>02. GameObject\08. Object\12. Fire</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

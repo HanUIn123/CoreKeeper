@@ -156,6 +156,7 @@ call Copy.bat</Command>
     <ClInclude Include="..\Header\Arrow.h" />
     <ClInclude Include="..\Header\Book.h" />
     <ClInclude Include="..\Header\Food.h" />
+    <ClInclude Include="..\Header\Fire.h" />
     <ClInclude Include="..\Header\Ingredient.h" />
     <ClInclude Include="..\Header\Azeos.h" />
     <ClInclude Include="..\Header\Magic.h" />
@@ -291,6 +292,7 @@ call Copy.bat</Command>
     <ClCompile Include="..\Code\Azeos.cpp" />
     <ClCompile Include="..\Code\Book.cpp" />
     <ClCompile Include="..\Code\Food.cpp" />
+    <ClCompile Include="..\Code\Fire.cpp" />
     <ClCompile Include="..\Code\Ingredient.cpp" />
     <ClCompile Include="..\Code\Magic.cpp" />
     <ClCompile Include="..\Code\MiniMapFrame.cpp" />
