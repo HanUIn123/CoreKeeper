@@ -12,7 +12,7 @@ public:
 	explicit PSystem(const PSystem& rhs);
 	virtual ~PSystem();
 
-	virtual bool init(const _tchar* texFileName);
+	virtual bool init(const _tchar* texFileName, _int iTextNum = 1, _float fSize = 0.2f);
 	virtual void reset();
 
 	virtual void resetParticle(Attribute* attribute) = 0;
@@ -40,10 +40,13 @@ protected:
 	list<Attribute> _particles;
 	int             _maxParticles;
 
+	_int            m_iMaxTexture;
+
 	DWORD _vbSize;
 	DWORD _vbOffset;
 	DWORD _vbBatchSize;
 
+	vector<IDirect3DTexture9*> m_vecTexture;
 
 public:
 	virtual void		Free();

@@ -121,6 +121,18 @@
     <Filter Include="04. Component\09. Shader">
       <UniqueIdentifier>{0d594b66-679d-4a9e-a334-6817abde928b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04. Component\08. Particles\02. Smoke">
+      <UniqueIdentifier>{dd89f143-7922-460e-9118-0c733fc2c92b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Component\08. Particles\03. Followers">
+      <UniqueIdentifier>{f7ec90dd-7bb0-4416-a021-ffa6227a5c01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Component\08. Particles\04. Hit">
+      <UniqueIdentifier>{d209947b-8b82-454c-8f2d-fafc8eea6715}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Component\08. Particles\05. BIgSmog">
+      <UniqueIdentifier>{7c62318e-d3ae-45c3-941c-2b0b3c7e32cc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Code\Scene.cpp">
@@ -233,6 +245,18 @@
     </ClCompile>
     <ClCompile Include="..\Code\Shader.cpp">
       <Filter>04. Component\09. Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Followers.cpp">
+      <Filter>04. Component\08. Particles\03. Followers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Smoke.cpp">
+      <Filter>04. Component\08. Particles\02. Smoke</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Hit.cpp">
+      <Filter>04. Component\08. Particles\04. Hit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Smog.cpp">
+      <Filter>04. Component\08. Particles\05. BIgSmog</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -349,6 +373,18 @@
     </ClInclude>
     <ClInclude Include="..\..\Header\Shader.h">
       <Filter>04. Component\09. Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Header\Followers.h">
+      <Filter>04. Component\08. Particles\03. Followers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Header\Smoke.h">
+      <Filter>04. Component\08. Particles\02. Smoke</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Header\Hit.h">
+      <Filter>04. Component\08. Particles\04. Hit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Header\Smog.h">
+      <Filter>04. Component\08. Particles\05. BIgSmog</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,5 +1,12 @@
 #pragma once
 #include "Monster.h"
+
+BEGIN(Engine)
+
+class CSmog;
+
+END
+
 class CProjectile : public CMonster
 {
 	explicit CProjectile(LPDIRECT3DDEVICE9 pGraphicDev);
@@ -49,5 +56,12 @@ public:
 
 private:
 	virtual void		Free();
+
+private:
+	Engine::CSmog* m_pSmogParticleCom;
+
+	_bool    m_bSmog;
+
+	_matrix m_SmogMatrix;
 };
 

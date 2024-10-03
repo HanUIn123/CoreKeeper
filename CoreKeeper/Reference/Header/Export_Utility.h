@@ -21,6 +21,10 @@
 
 #include "Firework.h"
 #include "Fall.h"
+#include "Followers.h"
+#include "Smoke.h"
+#include "Hit.h"
+#include "Smog.h"
 
 #include "Texture.h"
 #include "ShadowTex.h"

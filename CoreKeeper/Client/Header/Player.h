@@ -15,6 +15,7 @@ class CCollider;
 class CState;
 class CInventory;
 class CFall;
+class CFollow;
 
 END
 
@@ -116,6 +117,8 @@ private:
 
 	Engine::CInventory*     m_pEquipInventoryCom; // 장비 인벤토리
 	Engine::CFall*			m_pFireParticleCom; // 파티클 컴퍼넌트
+	Engine::CFollow*        m_pFollowParticleCom; // 파티클 컴퍼넌트
+
 
 	Engine::DIRECTION		m_eDir;
 	Engine::STATE			m_eState;

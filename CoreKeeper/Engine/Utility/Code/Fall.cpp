@@ -25,11 +25,12 @@ CFall::~CFall()
 HRESULT CFall::Ready_Particles(D3DXVECTOR3* origin, _int numParticles)
 {
 	_origin = *origin;
-	_size = 0.2;
+	//_size = 0.2;
 	_vbSize = 2048;
 	_vbOffset = 0;
 	_vbBatchSize = 512;
 	//파티클 기본 속성들
+	m_iMaxTexture = 0;
 
 	for (int i = 0; i < numParticles; i++)
 		addParticle();
@@ -69,10 +70,12 @@ void CFall::resetParticle(Attribute* attribute) // 파티클 리셋
 
 	//attribute->_acceleration = { 0.f, 0.f, 0.f };
 
-	attribute->_color = D3DCOLOR_XRGB(255, 0, 0); // 랜덤 색 생성 (빨간색 X)
+	attribute->_color = D3DCOLOR_ARGB(255, 255, 0, 0); // 랜덤 색 생성 (빨간색 X)
 
 	attribute->_age = 0.0f;
 	attribute->_lifeTime = 1.0f; // 수명 1초
+	
+	attribute->_iTextureNum = 0;
 }
 
 void CFall::update(float timeDelta)

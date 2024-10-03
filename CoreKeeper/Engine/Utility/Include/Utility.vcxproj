@@ -154,7 +154,9 @@ call CopyUtility.bat</Command>
     <ClCompile Include="..\Code\CubeTex.cpp" />
     <ClCompile Include="..\Code\d3dUtility.cpp" />
     <ClCompile Include="..\Code\Fall.cpp" />
+    <ClCompile Include="..\Code\Followers.cpp" />
     <ClCompile Include="..\Code\GameObject.cpp" />
+    <ClCompile Include="..\Code\Hit.cpp" />
     <ClCompile Include="..\Code\Shader.cpp" />
     <ClCompile Include="..\Code\Inventory.cpp" />
     <ClCompile Include="..\Code\Layer.cpp" />
@@ -171,6 +173,8 @@ call CopyUtility.bat</Command>
     <ClCompile Include="..\Code\Renderer.cpp" />
     <ClCompile Include="..\Code\Scene.cpp" />
     <ClCompile Include="..\Code\ShadowTex.cpp" />
+    <ClCompile Include="..\Code\Smog.cpp" />
+    <ClCompile Include="..\Code\Smoke.cpp" />
     <ClCompile Include="..\Code\SphereCol.cpp" />
     <ClCompile Include="..\Code\State.cpp" />
     <ClCompile Include="..\Code\TerrainTex.cpp" />
@@ -194,7 +198,9 @@ call CopyUtility.bat</Command>
     <ClInclude Include="..\..\Header\d3dUtility.h" />
     <ClInclude Include="..\..\Header\Export_Utility.h" />
     <ClInclude Include="..\..\Header\Fall.h" />
+    <ClInclude Include="..\..\Header\Followers.h" />
     <ClInclude Include="..\..\Header\GameObject.h" />
+    <ClInclude Include="..\..\Header\Hit.h" />
     <ClInclude Include="..\..\Header\Shader.h" />
     <ClInclude Include="..\..\Header\Inventory.h" />
     <ClInclude Include="..\..\Header\Layer.h" />
@@ -211,6 +217,8 @@ call CopyUtility.bat</Command>
     <ClInclude Include="..\..\Header\Renderer.h" />
     <ClInclude Include="..\..\Header\Scene.h" />
     <ClInclude Include="..\..\Header\ShadowTex.h" />
+    <ClInclude Include="..\..\Header\Smog.h" />
+    <ClInclude Include="..\..\Header\Smoke.h" />
     <ClInclude Include="..\..\Header\SphereCol.h" />
     <ClInclude Include="..\..\Header\State.h" />
     <ClInclude Include="..\..\Header\TerrainTex.h" />
