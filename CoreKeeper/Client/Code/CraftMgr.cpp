@@ -209,6 +209,7 @@ void CCraftMgr::Set_Recipe()
     // 唱公 邦豹捞
     Recipe woodPickAxeRecipe;
     woodPickAxeRecipe.vecIngredients.push_back({ITEM_WOOD, 4});
+
     m_mapRecipes[make_pair(ITEM_PICKAXE, MATERIAL_WOOD)] = woodPickAxeRecipe;
 
     // 备府 邦豹捞
@@ -511,17 +512,17 @@ void CCraftMgr::Set_Recipe()
     // 备府 林鲍
     Recipe CopperBarRecipe;
     CopperBarRecipe.vecIngredients.push_back({ ITEM_COPPER, 1 });
-    m_mapRecipes[make_pair(ITEM_COPPER_BAR, MATERIAL_END)] = CopperBarRecipe;
+    m_mapRecipes[make_pair(ITEM_COPPER_BAR, MATERIAL_COPPER)] = CopperBarRecipe;
 
     // 枚 林鲍
     Recipe IronBarRecipe;
     IronBarRecipe.vecIngredients.push_back({ ITEM_IRON, 1 });
-    m_mapRecipes[make_pair(ITEM_IRON_BAR, MATERIAL_END)] = IronBarRecipe;
+    m_mapRecipes[make_pair(ITEM_IRON_BAR, MATERIAL_IRON)] = IronBarRecipe;
 
     // 柳全籍 林鲍
     Recipe ScarletBarRecipe;
     ScarletBarRecipe.vecIngredients.push_back({ ITEM_SCARLET, 1 });
-    m_mapRecipes[make_pair(ITEM_SCARLET_BAR, MATERIAL_END)] = ScarletBarRecipe;
+    m_mapRecipes[make_pair(ITEM_SCARLET_BAR, MATERIAL_SCARLET)] = ScarletBarRecipe;
 }
 
 void CCraftMgr::Free()

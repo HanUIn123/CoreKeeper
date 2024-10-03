@@ -48,25 +48,16 @@ void CSmog::resetParticle(Attribute* attribute) // 파티클 리셋
 		&min, &max);
 
 	attribute->_velocity.x = 0.f;
-	attribute->_velocity.y = 0.f;
+	attribute->_velocity.y = 1.f;
 	attribute->_velocity.z = 0.f;
-	
-	/*
-	//랜덤벡터 생성
-	d3d::GetRandomVector(
-		&attribute->_velocity,
-		&min,
-		&max);
 
 	// 구를 만들기 위한 초기화
 	D3DXVec3Normalize(
 		&attribute->_velocity,
 		&attribute->_velocity);
 
-	attribute->_velocity *= 100.0f; // 속도 지정
-	*
-	*/
-	
+	attribute->_velocity *= 10.0f; // 속도 지정
+
 	attribute->_color = D3DXCOLOR(1.f, 1.f, 1.f, 1.0f);
 
 	attribute->_iTextureNum = 0;
@@ -84,6 +75,8 @@ void CSmog::update(float timeDelta)
 		//살아있는 파티클만 업데이트
 		if (i->_isAlive)
 		{
+			i->_position.y += i->_velocity.y * timeDelta;
+
 			i->_age += timeDelta;
 
 			if (i->_age > i->_lifeTime) // 수명이 끝남

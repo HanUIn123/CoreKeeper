@@ -161,17 +161,17 @@ _int CUIFurnace::Update_GameObject(const _float& fTimeDelta)
 				{
 				case ITEM_COPPER:
 					eBarNum = ITEM_COPPER_BAR;
-					eBarMat = MATERIAL_WOOD;
+					eBarMat = MATERIAL_COPPER;
 					break;
 
 				case ITEM_IRON:
 					eBarNum = ITEM_IRON_BAR;
-					eBarMat = MATERIAL_COPPER;
+					eBarMat = MATERIAL_IRON;
 					break;
 
 				case ITEM_SCARLET:
 					eBarNum = ITEM_SCARLET_BAR;
-					eBarMat = MATERIAL_IRON;
+					eBarMat = MATERIAL_SCARLET;
 					break;
 
 				}
