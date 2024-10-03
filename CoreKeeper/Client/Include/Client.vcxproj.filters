@@ -418,6 +418,9 @@
     <Filter Include="03. Manager\01. FarmMgr">
       <UniqueIdentifier>{46c0290f-a39c-42b6-a938-69e5da0636cb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\90.MiniTerrain">
+      <UniqueIdentifier>{32dd4e78-ef08-4a4e-996c-aacf15d410bf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -822,6 +825,9 @@
     <ClInclude Include="..\Header\FarmMgr.h">
       <Filter>03. Manager\01. FarmMgr</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\MiniTerrain.h">
+      <Filter>02. GameObject\90.MiniTerrain</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1204,6 +1210,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\FarmMgr.cpp">
       <Filter>03. Manager\01. FarmMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\MiniTerrain.cpp">
+      <Filter>02. GameObject\90.MiniTerrain</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
