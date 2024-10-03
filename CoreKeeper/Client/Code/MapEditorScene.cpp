@@ -33,11 +33,7 @@ CMapEditorScene::CMapEditorScene(LPDIRECT3DDEVICE9 _pGraphicDevice)
     , m_iWallImgNumber(0)
     , m_iBuildingNumber(0)
     , m_iMonsterNumber(0)
-    , m_iStandardIndex(0)
-    , m_iUpIndex(0)
-    , m_iDownIndex(0)
-    , m_iRightIndex(0)
-    , m_iLeftIndex(0)
+    , m_iInstallWallCount(1)
 {
     ZeroMemory(&m_tImageInfo, sizeof(D3DXIMAGE_INFO));
 
@@ -51,6 +47,10 @@ CMapEditorScene::CMapEditorScene(LPDIRECT3DDEVICE9 _pGraphicDevice)
         Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/ImGuiImage/Wall/Dust_Wall.png", TEX_WALL, 1);
         Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/ImGuiImage/Wall/Rock_Wall.png", TEX_WALL, 1);
         Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/ImGuiImage/Wall/Grass_Wall.png", TEX_WALL, 1);
+
+        Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/ImGuiImage/Wall/GateWall_0.png", TEX_WALL, 1);
+        Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/ImGuiImage/Wall/GateWall_1.png", TEX_WALL, 1);
+        Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/ImGuiImage/Wall/MalGaWall_0.png", TEX_WALL, 1);
 
         Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/BaseCamp/Core.png", TEX_OBJECT, 1);
         Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/BaseCamp/CoreBase.png", TEX_OBJECT, 1);
@@ -118,6 +118,9 @@ _int CMapEditorScene::Update_Scene(const _float& fTimeDelta)
 
     Piking_Monster();
 
+  
+
+
     return iExit;
 }
 
@@ -128,6 +131,7 @@ void CMapEditorScene::LateUpdate_Scene()
     ImGui::Begin("Object List", NULL, ImGuiWindowFlags_MenuBar);
     Setting_TileList();
     Setting_WallList();
+    Setting_InstallWallCount();
     Setting_ObjectList();
     Setting_MonsterList();
     ImGui::End();
@@ -155,6 +159,8 @@ void CMapEditorScene::LateUpdate_Scene()
 
     Setting_Camera_Position();
 
+   
+
 
     Engine::CScene::LateUpdate_Scene();
 }
@@ -171,8 +177,8 @@ HRESULT CMapEditorScene::Ready_Layer_Environment(const _tchar* pLayerTag)
 
     Engine::CGameObject* pGameObject = nullptr;
 
-    _vec3 eye(128.5f, 20.f, 128.5f);
-    _vec3 at(130.5f, 5.f, 128.5f);
+    _vec3 eye(VTXCNTX / 2, 1.5f, 21.5f);
+    _vec3 at(VTXCNTX / 2 + 2.0f, 5.f, 128.5f);
     _vec3 up(0.f, 1.f, 0.f);
 
     pGameObject = CMapToolCamera::Create(m_pGraphicDev,
@@ -504,21 +510,81 @@ HRESULT CMapEditorScene::Piking_Wall()
 
             if (m_bCanInstall)
             {
-                _int iIndex = _int(m_vPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vPickPos.x + 0.5f * VTXITV;
+                for (_int i = 0; i < m_iInstallWallCount; ++i)
+                {
+                    _float offsetX = (i % 2) * VTXITV;
+                    _float offsetZ = (i / 2) * VTXITV;
 
-                m_wsWallNameString[iIndex] = L"Wall_" + std::to_wstring(iIndex);
-                m_pWallCom = CWall::Create(m_pGraphicDev, m_vPickPos.x + 0.5f * VTXITV, m_vPickPos.z + 0.5f * VTXITV, 0, m_wsWallNameString[iIndex].c_str());
-                m_vecWallObject[iIndex] = dynamic_cast<CWall*>(m_pWallCom);
+                    _int iIndex = _int((m_vPickPos.z + offsetZ + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vPickPos.x + offsetX + 0.5f * VTXITV);
 
-                NULL_CHECK_RETURN(m_pWallCom, E_FAIL);
-                FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsWallNameString[iIndex].c_str(), m_pWallCom), E_FAIL);
+                    if (m_vecWallObject[iIndex] != nullptr)
+                        continue;
 
-                m_vecWallObject[iIndex]->Set_WallNumber(m_iWallImgNumber * 15);
-                //m_vecWallObject[iIndex]->Set_WallNumber(m_iWallImgNumber);
-                pTerrain->Set_Unreachable(iIndex, true);
+                    m_wsWallNameString[iIndex] = L"Wall_" + std::to_wstring(iIndex);
+                    m_pWallCom = CWall::Create(m_pGraphicDev, m_vPickPos.x + offsetX + 0.5f * VTXITV, m_vPickPos.z + offsetZ + 0.5f * VTXITV, 0, m_wsWallNameString[iIndex].c_str());
+                    m_vecWallObject[iIndex] = dynamic_cast<CWall*>(m_pWallCom);
 
-                m_iWallCreateCount++;
+                    NULL_CHECK_RETURN(m_pWallCom, E_FAIL);
+                    FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsWallNameString[iIndex].c_str(), m_pWallCom), E_FAIL);
+
+                    if (m_iWallImgNumber == 3)
+                    {
+                        m_vecWallObject[iIndex]->Set_WallNumber(45);
+                    }
+                    else if (m_iWallImgNumber == 4)
+                    {
+                        m_vecWallObject[iIndex]->Set_WallNumber(46);
+                    }
+                    else if (m_iWallImgNumber == 5)
+                    {
+                        m_vecWallObject[iIndex]->Set_WallNumber(47);
+                    }
+                    else
+                    {
+                        m_vecWallObject[iIndex]->Set_WallNumber(m_iWallImgNumber * 15);
+                    }
+                    
+                    pTerrain->Set_Unreachable(iIndex, true);
+
+                }
+
+                m_iWallCreateCount += m_iInstallWallCount;
                 m_vCheckPos = m_vPickPos;
+
+                //_int iIndex = _int(m_vPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vPickPos.x + 0.5f * VTXITV;
+
+                //m_wsWallNameString[iIndex] = L"Wall_" + std::to_wstring(iIndex);
+                //m_pWallCom = CWall::Create(m_pGraphicDev, m_vPickPos.x + 0.5f * VTXITV, m_vPickPos.z + 0.5f * VTXITV, 0, m_wsWallNameString[iIndex].c_str());
+                //m_vecWallObject[iIndex] = dynamic_cast<CWall*>(m_pWallCom);
+
+                //NULL_CHECK_RETURN(m_pWallCom, E_FAIL);
+                //FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsWallNameString[iIndex].c_str(), m_pWallCom), E_FAIL);
+
+                //// 벽 3개 추가.
+                //if (m_iWallImgNumber == 3)
+                //{
+                //    m_vecWallObject[iIndex]->Set_WallNumber(45);
+                //}
+                //else if (m_iWallImgNumber == 4)
+                //{
+                //    m_vecWallObject[iIndex]->Set_WallNumber(46);
+                //}
+                //else if (m_iWallImgNumber == 5)
+                //{
+                //    m_vecWallObject[iIndex]->Set_WallNumber(47);
+                //}
+                //else
+                //{
+                //    m_vecWallObject[iIndex]->Set_WallNumber(m_iWallImgNumber * 15);
+                //}
+
+
+
+                ////m_vecWallObject[iIndex]->Set_WallNumber(m_iWallImgNumber);
+                //pTerrain->Set_Unreachable(iIndex, true);
+
+                //m_iWallCreateCount++;
+                //m_vCheckPos = m_vPickPos;
             }
 
         }
@@ -745,6 +811,10 @@ HRESULT CMapEditorScene::Piking_Monster()
         if (Engine::Get_DIMouseState(DIM_LB) & 0x80 && m_bSelectMonster)
         {
             m_bMonsterClickPushed = true;
+        }
+        if (!(Engine::Get_DIMouseState(DIM_LB) & 0x80) && m_bMonsterClickPushed)
+        {
+            m_bMonsterClickPushed = false;
 
             CMapToolTerrain* pTerrain = dynamic_cast<CMapToolTerrain*>(Engine::Get_GameObject(L"Layer_GameLogic", L"MapToolTerrain"));
             CCalculator* pPickPos = dynamic_cast<CCalculator*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"MapToolTerrain", L"Com_Calculator"));
@@ -797,12 +867,16 @@ HRESULT CMapEditorScene::Piking_Monster()
 
                 m_vCheckPos = m_vPickPos;
             }
+
         }
-        if (!(Engine::Get_DIMouseState(DIM_LB) & 0x80))
-            m_bMonsterClickPushed = false;
     }
 
     return S_OK;
+}
+
+void CMapEditorScene::Setting_InstallWallCount()
+{
+    ImGui::SliderInt("Install Count", &m_iInstallWallCount, 1, 6);
 }
 
 

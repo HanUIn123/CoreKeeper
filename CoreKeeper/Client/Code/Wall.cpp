@@ -80,7 +80,12 @@ void CWall::Render_GameObject()
 
     FAILED_CHECK_RETURN(Setup_Material(), );
 
-    m_pTextureCom->Set_Texture(m_iCurImgNum);
+    if (m_iWallImageNum > 44)
+        m_pTextureCom->Set_Texture(m_iWallImageNum);
+    else
+        m_pTextureCom->Set_Texture(m_iCurImgNum);
+
+    //m_pTextureCom->Set_Texture(m_iWallImageNum);
     //m_pTextureCom->Set_Texture(m_iWallImageNum * 15);
     //m_pTextureCom->Set_Texture(2);
 
