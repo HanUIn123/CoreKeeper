@@ -44,7 +44,14 @@ HRESULT CPlant::Ready_GameObject(ITEMNUM _eItemNum, _int iIndex)
 _int CPlant::Update_GameObject(const _float& fTimeDelta)
 {
 	Add_RenderGroup(RENDER_ALPHA, this);
-	m_pAnimatorCom->Update_Animation();
+	//m_pAnimatorCom->Update_Animation();
+	_vec3 vUp;
+	m_pTransformCom->Get_Info(INFO_UP, &vUp);
+
+	if (m_pAnimatorCom->Get_MotionIndex() < 5)
+	{
+		m_pTransformCom->Move_Pos(&vUp, fTimeDelta, 0.025f);
+	}
 	return Engine::CGameObject::Update_GameObject(fTimeDelta);
 }
 
