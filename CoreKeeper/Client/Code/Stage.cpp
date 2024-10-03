@@ -367,7 +367,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar* pLayerTag)
 
 	pGameObject = CIngredient::Create(m_pGraphicDev, ITEM_BERRY_SEED);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Berryw", pGameObject), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Berry", pGameObject), E_FAIL);
 	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
 
 	//pGameObject = CCore::Create(m_pGraphicDev);
