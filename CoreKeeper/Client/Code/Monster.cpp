@@ -376,7 +376,7 @@ _bool CMonster::Check_Wall()
 			Check_WallWithPlayer();
 		break;
 	case MON_SHROOMMAN:
-		if ((m_eState == SWING && m_bAttackSuccess && m_pAnimatorCom->Get_MotionEnd()) || m_eState == IDLE)
+		if ((m_bAttackSuccess && m_pAnimatorCom->Get_MotionEnd()) || m_eState == IDLE)
 			Check_WallWithPlayer();
 		break;
 	case MON_SHAMAN:
@@ -417,7 +417,7 @@ void CMonster::Check_WallWithPlayer()
 		{
 			_vec3 vCheckPos = vPos + vPlayerDir * i * 0.1f;
 			_int iIndex = _int(vCheckPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (vCheckPos.x + 0.5f * VTXITV);
-			if (0 <= iIndex && iIndex < VTXCNTX * VTXCNTZ)
+			if (0 <= iIndex && iIndex < (VTXCNTX - 1) * (VTXCNTZ - 1))
 			{
 				if (m_pTerrain->Get_UnreachableByIndex(iIndex))
 				{
