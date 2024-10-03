@@ -31,13 +31,39 @@
 #include "Chest.h"
 #include "Leg.h"
 
+#include "Necklace.h"
+#include "Ring.h"
+
+#include "Shield.h"
+#include "Feather.h"
+#include "Book.h"
+
+#include "Bag.h"
+#include "Lantern.h"
+
 #include "Table.h"
+#include "PotionTable.h"
+#include "AccessoryTable.h"
+#include "MusicTable.h"
+#include "AnimalTable.h"
+
+#include "Anvil.h"
+#include "Furnace.h"
+#include "CookingPot.h"
+#include "Torch.h"
+#include "Box.h"
+#include "Sprinkler.h"
+
+#include "Potion.h"
+#include "Food.h"
+#include "Spawner.h"
+
+#include "Ore.h"
+#include "Bar.h"
 
 #include "Wood.h"
-#include "Torch.h"
 
-#include "Bar.h"
-#include "Ore.h"
+#include "Feather.h"
 
 
 // Etc

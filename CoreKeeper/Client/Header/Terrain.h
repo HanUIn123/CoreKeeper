@@ -28,9 +28,10 @@ private:
 
 public:
 	vector<int>											Get_TextureNumber() { return m_vecTextureNumber; }
+	_int												Get_TextureNumber(_int _iIndex) { return m_vecTextureNumber[_iIndex]; }
 	void												Set_TextureNumber(int _iIndex, int _iNum) { m_vecTextureNumber[_iIndex] = _iNum; }
 	void                                                Set_TextureNumber(vector<int> _vecTextureNumber) { copy(_vecTextureNumber.begin(), _vecTextureNumber.end(), m_vecTextureNumber.begin());}
-
+	_int												Get_TextureMaxNumber() { return m_vecTextureNumber.size(); }
 	vector<bool>										Get_Unreachable() { return m_vecUnreachable; }
 	bool												Get_UnreachableByIndex(int _iIndex) { return m_vecUnreachable[_iIndex]; }
 	void												Set_Unreachable(int _iIndex, bool _bUnreachable) { m_vecUnreachable[_iIndex] = _bUnreachable; }

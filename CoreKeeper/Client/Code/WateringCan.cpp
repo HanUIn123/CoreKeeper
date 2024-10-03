@@ -6,8 +6,6 @@
 CWateringCan::CWateringCan(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CItem(pGraphicDev)
 {
-	 
-
 	m_eItemNum = ITEM_WATERINGCAN;
 }
 
@@ -20,6 +18,16 @@ HRESULT CWateringCan::Ready_GameObject(MATERIAL _eMaterial, _vec3 vPos)
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
 	m_eMaterial = _eMaterial;
+
+	switch (m_eMaterial)
+	{
+	case MATERIAL_COPPER:
+		m_iTextureNumber = 0;
+		break;
+	case MATERIAL_IRON:
+		m_iTextureNumber = 1;
+		break;
+	}
 
 	m_pTransformCom->Set_Scale(1.2f, 1.2f, 1.2f);
 	m_pShadowTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);

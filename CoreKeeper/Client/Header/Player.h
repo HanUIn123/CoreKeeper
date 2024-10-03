@@ -40,6 +40,9 @@ private:
 	void			Mouse_Click(const _float& fTimeDelta);								// 클릭 시 스윙, 스윙 끝 판단
 	void			Walk_Y(const _float& fTimeDelta);
 	void			Flip();
+	void			Dash(const _float& fTimeDelta);
+	void			Set_ImmuneByTime(_float fImmuneTime = 1.f);
+	void			Set_ImmuneByToggle();
 
 	// 탑뷰 함수
 	void			Key_Position(const _float& fTimeDelta);		// 플레이어 이동
@@ -58,6 +61,8 @@ private:
 	void			Shoot_Equipment();
 	void			PickAxe();
 	void			Hoe();
+	void			Watering();
+	void			Plant(ITEMNUM eNum);
 
 	void			Set_EquippedStatus();
 	void			Set_Clothes();
@@ -167,6 +172,19 @@ private:
 
 	CTerrain*				m_pTerrain;
 	_vec3					m_vMouseWorldPos;
+	_bool					m_bDash;
+
+	_float					m_fDashTime;
+	_float					m_fDashTimeAcc;
+	_bool					m_bDashCool;
+	_float					m_fDashCoolTime;
+
+	_bool					m_bImmune;
+	_bool					m_bImmuneByTime;
+	_float					m_fImmuneTimeAcc;
+	_float					m_fImmuneTime;
+
+	vector<wstring>			m_vecPlayerCreatedName;
 
 public:
 	static CPlayer* Create(LPDIRECT3DDEVICE9 pGraphicDev);

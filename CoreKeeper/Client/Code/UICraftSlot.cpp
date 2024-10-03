@@ -317,7 +317,7 @@ void CUICraftSlot::Ready_Table()
 
 		// ¿ìÃø
 
-		UIITEM ANIMALTABLE = { m_iIndex, ITME_ANIMAL_TABLE, MATERIAL_WOOD, 12 };
+		UIITEM ANIMALTABLE = { m_iIndex, ITEM_ANIMAL_TABLE, MATERIAL_WOOD, 12 };
 		mapItemType.insert({ make_pair(TABLE_CRAFT, FALSE), ANIMALTABLE });
 
 		break;

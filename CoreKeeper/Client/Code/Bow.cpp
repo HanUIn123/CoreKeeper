@@ -17,16 +17,11 @@ CBow::~CBow()
 {
 }
 
-HRESULT CBow::Ready_GameObject(MATERIAL _eMaterial, _vec3 vPos)
+HRESULT CBow::Ready_GameObject(_vec3 vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	if (_eMaterial != MATERIAL_IRON)
-		return E_FAIL;
-
-	m_eMaterial = _eMaterial;
-	m_iTextureNumber = 2;
-	m_tStat.iAttack = 20 * (m_eMaterial + 1);
+	m_tStat.iAttack = 20;
 
 	m_pTransformCom->Set_Scale(1.2f, 1.2f, 1.2f);
 	m_pShadowTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
@@ -87,7 +82,7 @@ _int CBow::Update_GameObject(const _float& fTimeDelta)
 			m_pArrow->Set_Direction(m_eDir);
 			m_pArrow->Get_Transform()->Set_Pos(vPos.x, 0.25f, vPos.z);
 			// m_pArrow->Set_TextureNumber((MATERIAL)(m_eMaterial + 1));
-			m_pArrow->Set_TextureNumber(m_eMaterial);
+			m_pArrow->Set_TextureNumber((MATERIAL)1);
 			dynamic_cast<CArrow*>(m_pArrow)->Set_Dir(m_vProjectileDir);
 		}
 	}
@@ -198,11 +193,11 @@ HRESULT CBow::Add_Component()
 	return S_OK;
 }
 
-CBow* CBow::Create(LPDIRECT3DDEVICE9 pGraphicDev, MATERIAL _eMaterial, _vec3 vPos)
+CBow* CBow::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 {
 	CBow* pBow = new CBow(pGraphicDev);
 
-	if (FAILED(pBow->Ready_GameObject(_eMaterial, vPos)))
+	if (FAILED(pBow->Ready_GameObject(vPos)))
 	{
 		Safe_Release(pBow);
 		MSG_BOX("pBow Create Failed");

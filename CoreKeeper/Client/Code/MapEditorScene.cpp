@@ -21,15 +21,17 @@ CMapEditorScene::CMapEditorScene(LPDIRECT3DDEVICE9 _pGraphicDevice)
     , m_bSelectTile(false)
     , m_bSelectWall(false)
     , m_bSelectBuilding(false)
+    , m_bSelectMonster(false)
     , m_bCanInstall(false)
     , m_bAlreadyInstalled(false)
     , m_bReposed(false)
     , m_iLoadTileCount(0)
     , m_iLoadWallCount(0)
     , m_iPikingIndex(0)
-    , m_iImageNumber(0)
+    , m_iTileNumber(0)
     , m_iWallImgNumber(0)
     , m_iBuildingNumber(0)
+    , m_iMonsterNumber(0)
     , m_iStandardIndex(0)
     , m_iUpIndex(0)
     , m_iDownIndex(0)
@@ -39,15 +41,23 @@ CMapEditorScene::CMapEditorScene(LPDIRECT3DDEVICE9 _pGraphicDevice)
     ZeroMemory(&m_tImageInfo, sizeof(D3DXIMAGE_INFO));
 
     // 시작할 때, ImGui에 Tile 이미지 등록함.
-    if (!m_TileTextureInfo)
+    if (!m_TextureInfo)
     {
-        Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/Tile/GrassTile/Grass_Tile_%d.png", TEX_NORMAL, 9);
-        Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/Tile/DustTile/Dust_Tile_%d.png", TEX_NORMAL, 9);
-        Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/Wall/Wall_%d.dds", TEX_CUBE, 6);
-        Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/DarkWall/Brick_Cube_%d.dds", TEX_CUBE, 15);
-        Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/BaseCamp/Core.png", TEX_NORMAL, 1);
-        Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/BaseCamp/CoreBase.png", TEX_NORMAL, 1);
-        Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/BaseCamp/SpawnPoint.png", TEX_NORMAL, 1);
+        Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/Tile/DustTile/Dust_Tile_%d.png", TEX_TILE, 9);
+        Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/Tile/RockTile/Rock_Tile_%d.png", TEX_TILE, 9);
+        Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/Tile/GrassTile/Grass_Tile_%d.png", TEX_TILE, 9);
+
+        Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/ImGuiImage/Wall/Dust_Wall.png", TEX_WALL, 1);
+        Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/ImGuiImage/Wall/Rock_Wall.png", TEX_WALL, 1);
+        Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/ImGuiImage/Wall/Grass_Wall.png", TEX_WALL, 1);
+
+        Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/BaseCamp/Core.png", TEX_OBJECT, 1);
+        Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/BaseCamp/CoreBase.png", TEX_OBJECT, 1);
+        Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/BaseCamp/SpawnPoint.png", TEX_OBJECT, 1);
+
+        Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/ImGuiImage/Monster/Slime.png", TEX_MONSTER, 1);
+        Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/ImGuiImage/Monster/Mushroom.png", TEX_MONSTER, 1);
+        Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/ImGuiImage/Monster/Shaman.png", TEX_MONSTER, 1);
     }
 
     m_vecWallObject.resize((VTXCNTX - 1) * (VTXCNTZ - 1));
@@ -115,6 +125,7 @@ void CMapEditorScene::LateUpdate_Scene()
     Setting_TileList();
     Setting_WallList();
     Setting_ObjectList();
+    Setting_MonsterList();
     ImGui::End();
 
 
@@ -153,8 +164,8 @@ HRESULT CMapEditorScene::Ready_Layer_Environment(const _tchar* pLayerTag)
 
     Engine::CGameObject* pGameObject = nullptr;
 
-    _vec3 eye(0.f, 10.f, -10.f);
-    _vec3 at(0.f, 0.f, 1.f);
+    _vec3 eye(128.5f, 20.f, 128.5f);
+    _vec3 at(128.5f, 0.f, 128.5f);
     _vec3 up(0.f, 1.f, 0.f);
 
     pGameObject = CMapToolCamera::Create(m_pGraphicDev,
@@ -288,9 +299,9 @@ void CMapEditorScene::Setting_TileList()
 
     CComponent* pComponent = NULL;
 
-    const char* items[] = 
+    const char* items[] =
     {
-        "Green_Tile", "Dust_Tile", "Brick_Tile"
+       "Dust_Tile", "Rock_Tile", "Green_Tile"
     };
 
     static int	nCurrentItem = 0;
@@ -311,7 +322,7 @@ void CMapEditorScene::Setting_TileList()
                 m_bSelectWall = false;
                 m_bSelectBuilding = false;
 
-                m_iImageNumber = textureIndex;
+                m_iTileNumber = textureIndex;
             }
 
             // Imgui 줄 3개 같은 가로줄 
@@ -344,7 +355,7 @@ void CMapEditorScene::Piking_Tile()
 
             int iIndex = (m_vPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vPickPos.x + 0.5f * VTXITV;
 
-            pTerrain->Set_TextureNumber(iIndex, m_iImageNumber);
+            pTerrain->Set_TextureNumber(iIndex, m_iTileNumber);
 
             if (m_bReachable)
                 pTerrain->Set_Unreachable(iIndex, true);
@@ -366,7 +377,7 @@ void CMapEditorScene::Setting_WallList()
 
     const char* items[] =
     {
-        "Wall_01", "Wall_02", "Wall_03"
+        "Wall_List"
     };
 
     static int	nCurrentItem = 0;
@@ -452,7 +463,7 @@ HRESULT CMapEditorScene::Piking_Wall()
                 NULL_CHECK_RETURN(m_pWallCom, E_FAIL);
                 FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsWallNameString[iIndex].c_str(), m_pWallCom), E_FAIL);
 
-                m_vecWallObject[iIndex]->Set_WallNumber(0);
+                m_vecWallObject[iIndex]->Set_WallNumber(m_iWallImgNumber * 15);
                 //m_vecWallObject[iIndex]->Set_WallNumber(m_iWallImgNumber);
                 pTerrain->Set_Unreachable(iIndex, true);
 
@@ -631,6 +642,54 @@ HRESULT CMapEditorScene::Piking_Object()
     return S_OK;
 }
 
+void CMapEditorScene::Setting_MonsterList()
+{
+    if (!ImGui::CollapsingHeader("Monster List"))
+        return;
+
+    CComponent* pComponent = NULL;
+
+    const char* items[] =
+    {
+        "Monster List"
+    };
+
+    static int	nCurrentItem = 0;
+    ImGui::Combo("##5", &nCurrentItem, items, IM_ARRAYSIZE(items));
+
+    int iCount(0);
+
+    for (_int i = 0; i < 3; ++i)
+    {
+        int textureIndex = nCurrentItem * 3 + i;
+
+        if (textureIndex < m_vecMonsterTexture.size())
+        {
+            // 여기서도 중복 방지.
+            if (ImGui::ImageButton(("Monster" + std::to_string(textureIndex)).c_str(), m_vecMonsterTexture[textureIndex], ImVec2(50.0f, 50.0f)))
+            {
+                m_bSelectTile = false;
+                m_bSelectWall = false;
+                m_bSelectBuilding = false;
+                m_bSelectMonster = true;
+
+                m_iMonsterNumber = textureIndex;
+            }
+
+            // Imgui 줄 3개 같은 가로줄 
+            if ((i + 1) % 3 != 0)
+            {
+                ImGui::SameLine();
+            }
+        }
+    }
+}
+
+HRESULT CMapEditorScene::Piking_Monster()
+{
+    return E_NOTIMPL;
+}
+
 
 
 HRESULT CMapEditorScene::Delete_Object(const _tchar* pLayerTag, const _tchar* pGameObjectTag)
@@ -645,7 +704,7 @@ HRESULT CMapEditorScene::Delete_Object(const _tchar* pLayerTag, const _tchar* pG
     return S_OK;
 }
 
-HRESULT CMapEditorScene::Resister_ImguiImage_ImGui(LPDIRECT3DDEVICE9 _pGraphicDeivce, const _tchar* _ImageFilePath, TEXTUREID _eTextureId, const int& _iImageNumber)
+HRESULT CMapEditorScene::Resister_ImguiImage_ImGui(LPDIRECT3DDEVICE9 _pGraphicDeivce, const _tchar* _ImageFilePath, IMGUITEXTUREID _eTextureId, const int& _iImageNumber)
 {
     for (_int i = 0; i < _iImageNumber; ++i)
     {
@@ -655,14 +714,27 @@ HRESULT CMapEditorScene::Resister_ImguiImage_ImGui(LPDIRECT3DDEVICE9 _pGraphicDe
 
         switch (_eTextureId)
         {
-        case TEX_NORMAL:
-            FAILED_CHECK_RETURN(D3DXCreateTextureFromFile(m_pGraphicDev, szImageFileName, &m_TileTextureInfo), E_FAIL);
-            m_vecTileTexture.emplace_back(m_TileTextureInfo);
+        case TEX_TILE:
+            FAILED_CHECK_RETURN(D3DXCreateTextureFromFile(m_pGraphicDev, szImageFileName, &m_TextureInfo), E_FAIL);
+            m_vecTileTexture.emplace_back(m_TextureInfo);
             break;
 
-        case TEX_CUBE:
-            FAILED_CHECK_RETURN(D3DXCreateCubeTextureFromFile(m_pGraphicDev, szImageFileName, (LPDIRECT3DCUBETEXTURE9*)&m_TileTextureInfo), E_FAIL);
-            m_vecWallTexture.emplace_back(m_TileTextureInfo);
+        case TEX_WALL:
+            // FAILED_CHECK_RETURN(D3DXCreateCubeTextureFromFile(m_pGraphicDev, szImageFileName, (LPDIRECT3DCUBETEXTURE9*)&m_TextureInfo), E_FAIL);
+            FAILED_CHECK_RETURN(D3DXCreateTextureFromFile(m_pGraphicDev, szImageFileName, &m_TextureInfo), E_FAIL);
+            m_vecWallTexture.emplace_back(m_TextureInfo);
+            break;
+
+        case TEX_OBJECT:
+            //FAILED_CHECK_RETURN(D3DXCreateCubeTextureFromFile(m_pGraphicDev, szImageFileName, (LPDIRECT3DCUBETEXTURE9*)&m_TextureInfo), E_FAIL);
+            FAILED_CHECK_RETURN(D3DXCreateTextureFromFile(m_pGraphicDev, szImageFileName, &m_TextureInfo), E_FAIL);
+            m_vecObjectTexture.emplace_back(m_TextureInfo);
+            break;
+
+        case TEX_MONSTER:
+            //FAILED_CHECK_RETURN(D3DXCreateCubeTextureFromFile(m_pGraphicDev, szImageFileName, (LPDIRECT3DCUBETEXTURE9*)&m_TextureInfo), E_FAIL);
+            FAILED_CHECK_RETURN(D3DXCreateTextureFromFile(m_pGraphicDev, szImageFileName, &m_TextureInfo), E_FAIL);
+            m_vecMonsterTexture.emplace_back(m_TextureInfo);
             break;
         }
     }

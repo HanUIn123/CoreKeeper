@@ -56,7 +56,8 @@ _int CShaman::Update_GameObject(const _float& fTimeDelta)
 
     Set_Light();
 
-    if (m_eState != DEAD)
+    
+    if (m_eState != DEAD && !Check_Wall())
         m_eState = State_Change();
     switch (m_eState)
     {
@@ -522,10 +523,7 @@ void CShaman::Set_Light()
     light.Attenuation2 = 0.0f;
 
     m_pGraphicDev->SetLight(m_iLightNum, &light); // 조명 설정
-    if (m_bLightEnable)
-        m_pGraphicDev->LightEnable(m_iLightNum, TRUE);
-    else
-        m_pGraphicDev->LightEnable(m_iLightNum, FALSE);
+    m_pGraphicDev->LightEnable(m_iLightNum, TRUE);
 }
 
 CShaman* CShaman::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)

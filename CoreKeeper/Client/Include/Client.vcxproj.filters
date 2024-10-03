@@ -241,9 +241,6 @@
     <Filter Include="02. GameObject\06. Item\99. Etc\08. Mucus">
       <UniqueIdentifier>{d7e2e7bf-da00-4517-acf2-d8521f0ede56}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\06. Item\99. Etc\09. Piece">
-      <UniqueIdentifier>{e04f8601-5724-400a-80a9-2718805579ff}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\07. UI\12. UIStatue\00. UIJemSlot">
       <UniqueIdentifier>{40da8256-d357-4a9c-a9a1-6b0c0168dc02}</UniqueIdentifier>
     </Filter>
@@ -319,41 +316,14 @@
     <Filter Include="02. GameObject\06. Item\99. Etc\00. Potion">
       <UniqueIdentifier>{cc2ed0f0-938f-44d2-8140-a41033ca8ec7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\06. Item\99. Etc\00. Potion\00. HpPotion">
-      <UniqueIdentifier>{8ca4298f-2487-45fc-8f95-379100a38d19}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\06. Item\99. Etc\00. Potion\01. AttackPotion">
-      <UniqueIdentifier>{789b8f79-42fa-43ce-8401-39a9ce0381ba}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\06. Item\99. Etc\00. Potion\02. DefensePotion">
-      <UniqueIdentifier>{fbd04b08-e3ea-4c77-b8e6-9b22f10061e2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\06. Item\99. Etc\02. Seed">
       <UniqueIdentifier>{4d87b991-086f-41a7-a2a2-cdc69b86e9f4}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameObject\06. Item\99. Etc\04. StatueCore">
       <UniqueIdentifier>{149d75a5-9fc8-4000-8a77-84c9ed7823c0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\06. Item\99. Etc\04. StatueCore\00. SlimeCore">
-      <UniqueIdentifier>{54231c3c-51be-40c6-a56f-dda1c3935b62}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\06. Item\99. Etc\04. StatueCore\02. MalCore">
-      <UniqueIdentifier>{a9adc4d7-be42-4098-8868-aee9d258ee7e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\06. Item\99. Etc\04. StatueCore\01. LarvaCore">
-      <UniqueIdentifier>{40a2ca2e-3354-44fb-b033-5c984529c69c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\06. Item\99. Etc\03. Spawner">
       <UniqueIdentifier>{adc2feaf-9928-47cc-abfb-5c1b1176d49e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\06. Item\99. Etc\03. Spawner\01. MalSpawner">
-      <UniqueIdentifier>{796124f5-79cc-45a2-99d3-a49e8cf27d8b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\06. Item\99. Etc\03. Spawner\00. PlayerSpawner">
-      <UniqueIdentifier>{3b1c6582-40f4-468f-b8dc-dbe2550d2c3b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\06. Item\99. Etc\03. Spawner\02. AzeosSpawner">
-      <UniqueIdentifier>{fd78a2e4-f7b9-4705-a2eb-e88e049c86da}</UniqueIdentifier>
     </Filter>
     <Filter Include="03. Manager">
       <UniqueIdentifier>{4adcfd26-d556-4908-b27d-96fc84192ca1}</UniqueIdentifier>
@@ -405,6 +375,42 @@
     </Filter>
     <Filter Include="02. GameObject\06. Item\99. Etc\01. Cooking\01. Food">
       <UniqueIdentifier>{5c2f0fcd-ae51-4529-b928-a0f45772a3e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\03. Accessory\02. Assistance\02. Book">
+      <UniqueIdentifier>{9b76f857-dd7d-4723-9b0f-91f92770c272}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\06. Installation\00. Table\00. Table">
+      <UniqueIdentifier>{4fb7de7b-4217-4891-b219-eac29986365e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\06. Installation\00. Table\01. PotionTable">
+      <UniqueIdentifier>{c5d09fa7-ddf9-4f81-ab37-badaa26a478a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\06. Installation\00. Table\02. AccessoryTable">
+      <UniqueIdentifier>{8d67c81e-63e4-41c1-959b-a20071ff1919}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\06. Installation\00. Table\03. MusicTable">
+      <UniqueIdentifier>{a86ebdd4-eb23-42f9-b852-618edf53c4f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\06. Installation\00. Table\04. AnimalTable">
+      <UniqueIdentifier>{3047f56c-6b4b-4551-81e2-3531605563bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\08. Object\11. Plant">
+      <UniqueIdentifier>{2e9fc9d0-3836-4d74-a81b-fa35e901e27b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\99. Etc\09. Piece">
+      <UniqueIdentifier>{e04f8601-5724-400a-80a9-2718805579ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\99. Etc\10. Diary">
+      <UniqueIdentifier>{30f001ed-a454-4825-9f4f-4accc7df2ba5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\02. Monster\00. Slime\SlimeRender">
+      <UniqueIdentifier>{0783f8a8-1d2c-44c1-99cd-0f75fb0897be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\02. Monster\01. ShroomMan\ShroomManRender">
+      <UniqueIdentifier>{945f787f-6105-4f68-a7b2-9a1cef82010a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\02. Monster\02. Shaman\ShamanRender">
+      <UniqueIdentifier>{6a4700ec-9978-44b7-a908-4c0b94328674}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -663,9 +669,6 @@
     <ClInclude Include="..\Header\Lantern.h">
       <Filter>02. GameObject\06. Item\05. Lantern</Filter>
     </ClInclude>
-    <ClInclude Include="..\Header\Table.h">
-      <Filter>02. GameObject\06. Item\06. Installation\00. Table</Filter>
-    </ClInclude>
     <ClInclude Include="..\Header\Anvil.h">
       <Filter>02. GameObject\06. Item\06. Installation\01. Anvil</Filter>
     </ClInclude>
@@ -675,15 +678,6 @@
     <ClInclude Include="..\Header\Furnace.h">
       <Filter>02. GameObject\06. Item\06. Installation\02. Furnace</Filter>
     </ClInclude>
-    <ClInclude Include="..\Header\HpPotion.h">
-      <Filter>02. GameObject\06. Item\99. Etc\00. Potion\00. HpPotion</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Header\DefPotion.h">
-      <Filter>02. GameObject\06. Item\99. Etc\00. Potion\02. DefensePotion</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Header\AttPotion.h">
-      <Filter>02. GameObject\06. Item\99. Etc\00. Potion\01. AttackPotion</Filter>
-    </ClInclude>
     <ClInclude Include="..\Header\Box.h">
       <Filter>02. GameObject\06. Item\06. Installation\06. Box</Filter>
     </ClInclude>
@@ -692,24 +686,6 @@
     </ClInclude>
     <ClInclude Include="..\Header\Sprinkler.h">
       <Filter>02. GameObject\06. Item\06. Installation\08. Sprinkler</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Header\PlayerSpawner.h">
-      <Filter>02. GameObject\06. Item\99. Etc\03. Spawner\00. PlayerSpawner</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Header\MalSpawner.h">
-      <Filter>02. GameObject\06. Item\99. Etc\03. Spawner\01. MalSpawner</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Header\AzeosSpawner.h">
-      <Filter>02. GameObject\06. Item\99. Etc\03. Spawner\02. AzeosSpawner</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Header\MalCore.h">
-      <Filter>02. GameObject\06. Item\99. Etc\04. StatueCore\02. MalCore</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Header\SlimeCore.h">
-      <Filter>02. GameObject\06. Item\99. Etc\04. StatueCore\00. SlimeCore</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Header\LarvaCore.h">
-      <Filter>02. GameObject\06. Item\99. Etc\04. StatueCore\01. LarvaCore</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\TableObject.h">
       <Filter>02. GameObject\08. Object\03. Table</Filter>
@@ -791,6 +767,48 @@
     </ClInclude>
     <ClInclude Include="..\Header\Seed.h">
       <Filter>02. GameObject\06. Item\99. Etc\02. Seed</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\Potion.h">
+      <Filter>02. GameObject\06. Item\99. Etc\00. Potion</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\Spawner.h">
+      <Filter>02. GameObject\06. Item\99. Etc\03. Spawner</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\StatueCore.h">
+      <Filter>02. GameObject\06. Item\99. Etc\04. StatueCore</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\Book.h">
+      <Filter>02. GameObject\06. Item\03. Accessory\02. Assistance\02. Book</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\Diary.h">
+      <Filter>02. GameObject\06. Item\99. Etc\10. Diary</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\Table.h">
+      <Filter>02. GameObject\06. Item\06. Installation\00. Table\00. Table</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\PotionTable.h">
+      <Filter>02. GameObject\06. Item\06. Installation\00. Table\01. PotionTable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\AccessoryTable.h">
+      <Filter>02. GameObject\06. Item\06. Installation\00. Table\02. AccessoryTable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\MusicTable.h">
+      <Filter>02. GameObject\06. Item\06. Installation\00. Table\03. MusicTable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\AnimalTable.h">
+      <Filter>02. GameObject\06. Item\06. Installation\00. Table\04. AnimalTable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\Plant.h">
+      <Filter>02. GameObject\08. Object\11. Plant</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\ShamanRender.h">
+      <Filter>02. GameObject\02. Monster\02. Shaman\ShamanRender</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\ShroomManRender.h">
+      <Filter>02. GameObject\02. Monster\01. ShroomMan\ShroomManRender</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\SlimeRender.h">
+      <Filter>02. GameObject\02. Monster\00. Slime\SlimeRender</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1025,9 +1043,6 @@
     <ClCompile Include="..\Code\Lantern.cpp">
       <Filter>02. GameObject\06. Item\05. Lantern</Filter>
     </ClCompile>
-    <ClCompile Include="..\Code\Table.cpp">
-      <Filter>02. GameObject\06. Item\06. Installation\00. Table</Filter>
-    </ClCompile>
     <ClCompile Include="..\Code\Anvil.cpp">
       <Filter>02. GameObject\06. Item\06. Installation\01. Anvil</Filter>
     </ClCompile>
@@ -1037,15 +1052,6 @@
     <ClCompile Include="..\Code\CookingPot.cpp">
       <Filter>02. GameObject\06. Item\06. Installation\03. CookingPot</Filter>
     </ClCompile>
-    <ClCompile Include="..\Code\HpPotion.cpp">
-      <Filter>02. GameObject\06. Item\99. Etc\00. Potion\00. HpPotion</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Code\DefPotion.cpp">
-      <Filter>02. GameObject\06. Item\99. Etc\00. Potion\02. DefensePotion</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Code\AttPotion.cpp">
-      <Filter>02. GameObject\06. Item\99. Etc\00. Potion\01. AttackPotion</Filter>
-    </ClCompile>
     <ClCompile Include="..\Code\Box.cpp">
       <Filter>02. GameObject\06. Item\06. Installation\06. Box</Filter>
     </ClCompile>
@@ -1054,24 +1060,6 @@
     </ClCompile>
     <ClCompile Include="..\Code\Sprinkler.cpp">
       <Filter>02. GameObject\06. Item\06. Installation\08. Sprinkler</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Code\PlayerSpawner.cpp">
-      <Filter>02. GameObject\06. Item\99. Etc\03. Spawner\00. PlayerSpawner</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Code\MalSpawner.cpp">
-      <Filter>02. GameObject\06. Item\99. Etc\03. Spawner\01. MalSpawner</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Code\AzeosSpawner.cpp">
-      <Filter>02. GameObject\06. Item\99. Etc\03. Spawner\02. AzeosSpawner</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Code\MalCore.cpp">
-      <Filter>02. GameObject\06. Item\99. Etc\04. StatueCore\02. MalCore</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Code\SlimeCore.cpp">
-      <Filter>02. GameObject\06. Item\99. Etc\04. StatueCore\00. SlimeCore</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Code\LarvaCore.cpp">
-      <Filter>02. GameObject\06. Item\99. Etc\04. StatueCore\01. LarvaCore</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\TableObject.cpp">
       <Filter>02. GameObject\08. Object\03. Table</Filter>
@@ -1156,6 +1144,48 @@
     </ClCompile>
     <ClCompile Include="..\Code\Seed.cpp">
       <Filter>02. GameObject\06. Item\99. Etc\02. Seed</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Potion.cpp">
+      <Filter>02. GameObject\06. Item\99. Etc\00. Potion</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Spawner.cpp">
+      <Filter>02. GameObject\06. Item\99. Etc\03. Spawner</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\StatueCore.cpp">
+      <Filter>02. GameObject\06. Item\99. Etc\04. StatueCore</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Book.cpp">
+      <Filter>02. GameObject\06. Item\03. Accessory\02. Assistance\02. Book</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Diary.cpp">
+      <Filter>02. GameObject\06. Item\99. Etc\10. Diary</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Table.cpp">
+      <Filter>02. GameObject\06. Item\06. Installation\00. Table\00. Table</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\PotionTable.cpp">
+      <Filter>02. GameObject\06. Item\06. Installation\00. Table\01. PotionTable</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\AccessoryTable.cpp">
+      <Filter>02. GameObject\06. Item\06. Installation\00. Table\02. AccessoryTable</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\MusicTable.cpp">
+      <Filter>02. GameObject\06. Item\06. Installation\00. Table\03. MusicTable</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\AnimalTable.cpp">
+      <Filter>02. GameObject\06. Item\06. Installation\00. Table\04. AnimalTable</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Plant.cpp">
+      <Filter>02. GameObject\08. Object\11. Plant</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\SlimeRender.cpp">
+      <Filter>02. GameObject\02. Monster\00. Slime\SlimeRender</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\ShroomManRender.cpp">
+      <Filter>02. GameObject\02. Monster\01. ShroomMan\ShroomManRender</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\ShamanRender.cpp">
+      <Filter>02. GameObject\02. Monster\02. Shaman\ShamanRender</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

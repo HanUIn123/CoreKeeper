@@ -6,18 +6,17 @@
 CPiece::CPiece(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CItem(pGraphicDev)
 {
-	 
-
-	m_eItemNum = ITEM_PIECE;
 }
 
 CPiece::~CPiece()
 {
 }
 
-HRESULT CPiece::Ready_GameObject(_vec3 vPos)
+HRESULT CPiece::Ready_GameObject(ITEMNUM _eItemNum, _vec3 vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
+
+	m_eItemNum = _eItemNum;
 
 	m_pTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
 	m_pShadowTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
@@ -155,11 +154,11 @@ HRESULT CPiece::Add_Component()
 	return S_OK;
 }
 
-CPiece* CPiece::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
+CPiece* CPiece::Create(LPDIRECT3DDEVICE9 pGraphicDev, ITEMNUM _eItemNum, _vec3 vPos)
 {
 	CPiece* pPiece = new CPiece(pGraphicDev);
 
-	if (FAILED(pPiece->Ready_GameObject(vPos)))
+	if (FAILED(pPiece->Ready_GameObject(_eItemNum, vPos)))
 	{
 		Safe_Release(pPiece);
 		MSG_BOX("pPiece Create Failed");

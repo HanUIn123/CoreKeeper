@@ -27,7 +27,7 @@ private:
 	HRESULT			Add_Component();
 
 public:
-	static CWateringCan* Create(LPDIRECT3DDEVICE9 pGraphicDev,  MATERIAL _eMaterial = MATERIAL_END, _vec3 vPos = { 0.f, 0.f, 0.f });
+	static CWateringCan* Create(LPDIRECT3DDEVICE9 pGraphicDev, MATERIAL _eMaterial, _vec3 vPos = { 0.f, 0.f, 0.f });
 
 private:
 	virtual void		Free();

@@ -27,6 +27,7 @@
 #include "..\Header\Stage.h"
 #include "..\Header\GravestoneObject.h"
 #include "..\Header\UIFurnace.h"
+#include "..\Header\SlimeRender.h"
 
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CGameObject(pGraphicDev)
@@ -40,7 +41,7 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	m_bShoot = false;
 	m_fClickTime = 0.f;
 
-	m_fFirstY = 1.f;
+	m_fFirstY = 0.8f;
 	m_fTimeAcc = 0.f;
 	m_fWalkYSpeed = 1.8f;
 	m_iSpeedWeight = 1;
@@ -82,6 +83,16 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 
 	m_bShootOnce = false;
 	m_vMouseWorldPos = { 0, 0, 0 };
+
+	m_bDash = false;
+	m_fDashTime = 0.2f;
+	m_fDashTimeAcc = 0.f;
+	m_bDashCool = false;
+	m_fDashCoolTime = 0.5f;
+
+	m_bImmune = false;
+	m_fImmuneTimeAcc = 0.f;
+	m_bImmuneByTime = false;
 }
 
 CPlayer::~CPlayer()
@@ -151,6 +162,19 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 	}
 
 	Flip();
+	Dash(fTimeDelta);
+	Set_ImmuneByToggle();
+
+	// 시간제 무적용
+	if (m_bImmuneByTime)
+	{
+		m_fImmuneTimeAcc += fTimeDelta;
+		if (m_fImmuneTimeAcc >= m_fImmuneTime)
+		{
+			m_bImmuneByTime = false;
+			m_fImmuneTimeAcc = 0.f;
+		}
+	}
 
 	if (!m_bRespawned)
 	{
@@ -333,6 +357,7 @@ void CPlayer::Mouse_Click(const _float& fTimeDelta)
 			{
 				switch (m_pHandedItem->Get_ItemNum())
 				{
+				// 전투 관련
 				case ITEM_SWORD:
 					m_eState = SWING;
 					m_bSwing = true;
@@ -344,26 +369,36 @@ void CPlayer::Mouse_Click(const _float& fTimeDelta)
 					Swing_Equipment();
 					PickAxe();
 					break;
-				case ITEM_HOE:
-					m_eState = SWING;
-					m_bSwing = true;
-					Swing_Equipment();
-					Hoe();
-					break;
 				case ITEM_BOW:
 				case ITEM_STAFF:
 					m_eState = SHOOT;
 					m_bShoot = true;
 					Shoot_Equipment();
 					break;
-					//case ITEM_SEED:
-					//	// 농사
-					//	break;
+
+				// 농사 관련
+				case ITEM_HOE:
+					m_eState = SWING;
+					m_bSwing = true;
+					Swing_Equipment();
+					Hoe();
+					break;
+				case ITEM_WATERINGCAN:
+					Watering();
+					break;
+				case ITEM_BERRY_SEED:
+				case ITEM_PEPPER_SEED:
+				case ITEM_CARROT_SEED:
+				case ITEM_FIBER_SEED:
+					Plant(m_pHandedItem->Get_ItemNum());
+					break;
+
+				// 설치 관련
+
 				default:
 					break;
 				}
 			}
-
 		}
 	}
 }
@@ -379,7 +414,7 @@ void CPlayer::Walk_Y(const _float& fTimeDelta)
 	_vec3 vUp;
 	m_pTransformCom->Get_Info(INFO_UP, &vUp);
 
-	m_pTransformCom->Move_Pos(&vUp, fTimeDelta, m_fWalkYSpeed * m_iSpeedWeight);
+	m_pTransformCom->Move_Pos(&vUp, fTimeDelta, m_fWalkYSpeed);
 	if (m_pHandedItem)
 		m_pHandedItem->Walk_Equipped(fTimeDelta);
 }
@@ -401,6 +436,74 @@ void CPlayer::Flip()
 		m_pTransformCom->Set_Scale(-vSize.x, vSize.y, vSize.z);
 	}
 }
+
+void CPlayer::Dash(const _float& fTimeDelta)
+{
+	// 보조장비에 깃털 장착 시
+	CItem* pAux;
+	wstring	strObjectTag = L"UIItemSlot_" + std::to_wstring(CUIItemSlot::SLOT_WEAPON);;
+	pAux = dynamic_cast<CUIItemSlot*>(Engine::Get_GameObject(L"Layer_UI", strObjectTag.c_str()))->Get_Item();
+	if (!pAux)
+		return;
+	if (pAux->Get_ItemNum() == ITEM_ASSISTANCE_FEATHER)
+	{
+		// 스페이스바를 누르면 대쉬
+		if (Engine::Key_Down(DIK_SPACE))
+		{
+			if (!m_bDash && !m_bDashCool)
+				m_bDash = true;
+		}
+
+		// 대쉬하는 동안 플레이어 콜라이더 끄기
+		if (m_bDash)
+		{
+			m_fDashTimeAcc += fTimeDelta;
+			m_pColliderCom->Set_Offset(_vec3(0, -100, 0));
+			// 대쉬 중 스피드 조절
+			_float fProgress = m_fDashTimeAcc / m_fDashTime;
+			if(fProgress < 0.5f)
+				m_iSpeedWeight += 1;
+			else
+				m_iSpeedWeight -= 1;
+
+			if (fProgress >= 1)
+			{
+				m_bDashCool = true;
+				m_bDash = false;
+				m_iSpeedWeight = 1;
+				m_fDashTimeAcc = 0.f;
+			}
+		}
+		else
+			m_pColliderCom->Set_Offset(_vec3(0, 0, 0));
+		
+		// 대쉬 쿨타임 설정
+		if (m_bDashCool)
+		{
+			m_fDashTimeAcc += fTimeDelta;
+			if (m_fDashTimeAcc >= m_fDashCoolTime)
+			{
+				m_bDashCool = false;
+				m_fDashTimeAcc = 0.f;
+			}
+		}
+	}
+}
+
+void CPlayer::Set_ImmuneByTime(_float fImmuneTime)
+{
+	if (m_bImmune || m_bImmuneByTime)
+		return;
+	m_bImmuneByTime = true;
+	m_fImmuneTime = fImmuneTime;
+}
+
+void CPlayer::Set_ImmuneByToggle()
+{
+	if (Engine::Key_Down(DIK_F1))
+		m_bImmune = m_bImmune ? false : true;
+}
+
 
 void CPlayer::Mouse_Direction()
 {
@@ -574,7 +677,7 @@ void CPlayer::ShoulderView_Swing()
 
 void CPlayer::Set_Stop(_vec3* vDir1, _float fDirSpeed1, _vec3* vDir2, _float fDirSpeed2)
 {
-	m_iSpeedWeight = 1;
+	
 	_vec3 vCheckPos{};
 	m_pTransformCom->Get_Info(INFO_POS, &vCheckPos);
 
@@ -589,6 +692,8 @@ void CPlayer::Set_Stop(_vec3* vDir1, _float fDirSpeed1, _vec3* vDir2, _float fDi
 	if (0 <= iIndex && iIndex < VTXCNTX * VTXCNTZ)
 		if (pTerrain->Get_UnreachableByIndex(iIndex))
 			m_iSpeedWeight = 0;
+		else if(!m_bDash)
+			m_iSpeedWeight = 1;
 }
 
 void CPlayer::Set_Equipment()
@@ -908,23 +1013,166 @@ void CPlayer::Hoe()
 	{
 		_vec3 vPos;
 		m_pTransformCom->Get_Info(INFO_POS, &vPos);
-		// 플레이어와 마우스 커서 사이의 거리가 n 이하일 경우 커서에 타일 UI 뜨게 하기
-		// 해당 위치에 설치할 수 있을 경우 파란색 타일, 없을 경우 빨간색 타일
-		// 설치할 수 있는 타일일 때 클릭하면 타일 텍스쳐 넘버 변경
-		// 설치할 수 없는 타일일 때 클릭하면 경고 문구 띄울까 말까 : 대사 시스템 때 삽입하면 될듯
+		// 씨앗 심은 땅 or 덜 자란 식물이면 해당 씨앗 아이템 생성
+		// 씨앗 안심은 땅이면 다시 원래 타일로 되돌리기
+		// 다 자란 식물이면 해당 농사 결과물(Ingredient) 아이템 생성
+		// 0 ~ 8번 : 27번
+		// 9 ~ 17번 : 29번
 		if (m_pCalculatorCom->Check_Distance2D(&vPos, &m_vMouseWorldPos, 5.f))
 		{
 			_int iIndex = _int(m_vMouseWorldPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (m_vMouseWorldPos.x + 0.5f * VTXITV);
 			switch (m_pHandedItem->Get_ItemMaterial())
 			{
 			case MATERIAL_WOOD: // 1 x 1
-				m_pTerrain->Set_TextureNumber(iIndex, 4);
+				if (!m_pTerrain->Get_UnreachableByIndex(iIndex))
+				{
+					m_pTerrain->Set_TextureNumber(iIndex, 27);
+					CScene* pScene = Engine::Get_Scene();
+					CGameObject* pRenderSlime = CSlimeRender::Create(m_pGraphicDev, iIndex);
+					m_vecPlayerCreatedName.push_back(L"Monster" + std::to_wstring(iIndex));
+					pScene->Create_GameObject(L"Layer_GameLogic", pRenderSlime, m_vecPlayerCreatedName.back().c_str());
+				}
 				break;
 			case MATERIAL_COPPER: // 3 x 3
-				m_pTerrain->Set_TextureNumber(iIndex, 4);
+				for (_int i = -1; i <= 1; i++)
+				{
+					for (_int j = -1; j <= 1; j++)
+					{
+						if(!m_pTerrain->Get_UnreachableByIndex(iIndex + i + j * (VTXCNTX - 1)))
+							m_pTerrain->Set_TextureNumber(iIndex + i + j * (VTXCNTX - 1), 27);
+					}
+				}
 				break;
 			case MATERIAL_IRON: // 5 x 5
-				m_pTerrain->Set_TextureNumber(iIndex, 4);
+				for (_int i = -2; i <= 2; i++)
+				{
+					for (_int j = -2; j <= 2; j++)
+					{
+						if (!m_pTerrain->Get_UnreachableByIndex(iIndex + i + j * (VTXCNTX - 1)))
+							m_pTerrain->Set_TextureNumber(iIndex + i + j * (VTXCNTX - 1), 27);
+					}
+				}
+				break;
+			}
+		}
+	}
+}
+
+void CPlayer::Watering()
+{
+	if (g_bIsTopCamera)
+	{
+		_vec3 vPos;
+		m_pTransformCom->Get_Info(INFO_POS, &vPos);
+		// 씨앗이 심어져 있는지 확인 추가
+		// 씨앗이 심어져 있을 경우 타일 변경과 동시에 해당 타일에 심겨진 씨앗 물에 젖은 상태로 변경(성장 시작)
+		if (m_pCalculatorCom->Check_Distance2D(&vPos, &m_vMouseWorldPos, 5.f))
+		{
+			_int iIndex = _int(m_vMouseWorldPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (m_vMouseWorldPos.x + 0.5f * VTXITV);
+			switch (m_pHandedItem->Get_ItemMaterial())
+			{
+			case MATERIAL_WOOD: // 1 x 1
+				if(m_pTerrain->Get_TextureNumber(iIndex) == 27)
+					m_pTerrain->Set_TextureNumber(iIndex, 28);
+				break;
+			case MATERIAL_COPPER: // 3 x 3
+				for (_int i = -1; i <= 1; i++)
+				{
+					for (_int j = -1; j <= 1; j++)
+					{
+						if (!m_pTerrain->Get_UnreachableByIndex(iIndex + i + j * (VTXCNTX - 1)))
+						{
+							if (m_pTerrain->Get_TextureNumber(iIndex + i + j * (VTXCNTX - 1)) == 27)
+								m_pTerrain->Set_TextureNumber(iIndex + i + j * (VTXCNTX - 1), 28);
+						}
+					}
+				}
+				break;
+			case MATERIAL_IRON: // 5 x 5
+				for (_int i = -2; i <= 2; i++)
+				{
+					for (_int j = -2; j <= 2; j++)
+					{
+						if (!m_pTerrain->Get_UnreachableByIndex(iIndex + i + j * (VTXCNTX - 1)))
+						{
+							if (m_pTerrain->Get_TextureNumber(iIndex + i + j * (VTXCNTX - 1)) == 27)
+								m_pTerrain->Set_TextureNumber(iIndex + i + j * (VTXCNTX - 1), 28);
+						}
+					}
+				}
+				break;
+			}
+		}
+	}
+}
+
+void CPlayer::Plant(ITEMNUM eNum)
+{
+	if (g_bIsTopCamera)
+	{
+		_vec3 vPos;
+		m_pTransformCom->Get_Info(INFO_POS, &vPos);
+		m_pInventoryCom->Minus_Item(eNum, 1);
+		if (m_pCalculatorCom->Check_Distance2D(&vPos, &m_vMouseWorldPos, 5.f))
+		{
+			_int iIndex = _int(m_vMouseWorldPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (m_vMouseWorldPos.x + 0.5f * VTXITV);
+			switch (eNum)
+			{
+			case ITEM_BERRY_SEED:
+				if (!m_pTerrain->Get_UnreachableByIndex(iIndex))
+				{
+					// 베리 작물 생성(오브젝트)
+					if (m_pTerrain->Get_TextureNumber(iIndex) == 27)
+					{
+						// AnimTex(0) : 물에 안 젖은 씨앗만 심기
+					}
+					else if (m_pTerrain->Get_TextureNumber(iIndex) == 28)
+					{
+						// AnimTex(1) : 성장 시작 단계(물에 젖은 씨앗)
+					}
+				}
+				break;
+			case ITEM_PEPPER_SEED:
+				if (!m_pTerrain->Get_UnreachableByIndex(iIndex))
+				{
+					// 폭탄 후추 작물 생성
+					if (m_pTerrain->Get_TextureNumber(iIndex) == 27)
+					{
+						// AnimTex(0) : 물에 안 젖은 씨앗만 심기
+					}
+					else if (m_pTerrain->Get_TextureNumber(iIndex) == 28)
+					{
+						// AnimTex(1) : 성장 시작 단계(물에 젖은 씨앗)
+					}
+				}
+				break;
+			case ITEM_CARROT_SEED:
+				if (!m_pTerrain->Get_UnreachableByIndex(iIndex))
+				{
+					// 돌당근 작물 생성
+					if (m_pTerrain->Get_TextureNumber(iIndex) == 27)
+					{
+						// AnimTex(0) : 물에 안 젖은 씨앗만 심기
+					}
+					else if (m_pTerrain->Get_TextureNumber(iIndex) == 28)
+					{
+						// AnimTex(1) : 성장 시작 단계(물에 젖은 씨앗)
+					}
+				}
+				break;
+			case ITEM_FIBER_SEED:
+				if (!m_pTerrain->Get_UnreachableByIndex(iIndex))
+				{
+					// 섬유질 작물 생성
+					if (m_pTerrain->Get_TextureNumber(iIndex) == 27)
+					{
+						// AnimTex(0) : 물에 안 젖은 씨앗만 심기
+					}
+					else if (m_pTerrain->Get_TextureNumber(iIndex) == 28)
+					{
+						// AnimTex(1) : 성장 시작 단계(물에 젖은 씨앗)
+					}
+				}
 				break;
 			}
 		}
@@ -1430,17 +1678,21 @@ void CPlayer::Particle_Update(_float fTimeDelta)
 
 void CPlayer::Set_KnockBack(_vec3 vEnemyPos, _int iDamage, _float fDist)
 {
-	_vec3 vPos;
-	m_pTransformCom->Get_Info(INFO_POS, &vPos);
-	m_bKnockBackStart = true;
-	m_bKnockBackEnd = false;
-	m_vKnockBackDir = vPos - vEnemyPos;
-	m_vKnockBackDir.y = 0;
-	D3DXVec3Normalize(&m_vKnockBackDir, &m_vKnockBackDir);
-	m_vStartPoint = vEnemyPos;
-	m_fKnockBackDist = fDist;
+	if (!m_bImmune && !m_bImmuneByTime)
+	{
+		_vec3 vPos;
+		m_pTransformCom->Get_Info(INFO_POS, &vPos);
+		m_bKnockBackStart = true;
+		m_bKnockBackEnd = false;
+		m_vKnockBackDir = vPos - vEnemyPos;
+		m_vKnockBackDir.y = 0;
+		D3DXVec3Normalize(&m_vKnockBackDir, &m_vKnockBackDir);
+		m_vStartPoint = vEnemyPos;
+		m_fKnockBackDist = fDist;
 
-	m_pStateCom->Set_Damaged(iDamage);
+		m_pStateCom->Set_Damaged(iDamage);
+		Set_ImmuneByTime();
+	}
 }
 
 void CPlayer::KnockBack(const _float& fTimeDelta)

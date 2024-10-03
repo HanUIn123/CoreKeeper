@@ -56,6 +56,7 @@ HRESULT CUIItemSlot::Ready_GameObject(_vec2 vPos, _vec2 vSize, SLOTTYPE _eType)
 
 	case SLOT_WEAPON:
 		m_iIndex = 2;
+		eSlotItemType = ITEM_ASSISTANCE_FEATHER;
 		break;
 
 	case SLOT_NECKLACE:

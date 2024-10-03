@@ -126,6 +126,7 @@ protected:
 	MATERIAL	m_eMaterial;
 
 	//아이템 설명
+	wstring m_wItemName;
 	wstring m_wItemExplain[30];
 	wstring m_wItemMetrial;
 

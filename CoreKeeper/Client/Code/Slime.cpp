@@ -40,7 +40,7 @@ _int CSlime::Update_GameObject(const _float& fTimeDelta)
 
     if (m_bKnockBackEnd)
     {
-        if (m_eState != DEAD)
+        if (m_eState != DEAD && !Check_Wall())
             m_eState = State_Change();
         switch (m_eState)
         {

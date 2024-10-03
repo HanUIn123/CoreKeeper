@@ -52,7 +52,10 @@ protected:
 	void			Set_Stop(_vec3* vDir1, _float fDirSpeed1, _vec3* vDir2 = nullptr, _float fDirSpeed2 = 0.f);
 	void			Set_StuckFree(const _float& fTimeDelta);
 
-	void            Render_HitEffect();
+	_bool			Check_Wall();
+
+private:
+	void			Check_WallWithPlayer();
 
 protected:
 	Engine::CAnimTex*		m_pBufferCom;
@@ -117,6 +120,10 @@ protected:
 	vector<wstring>			m_vecItemName;
 
 	_int					m_iSpeedWeight;
+
+	CTransform*				m_pPlayerTransform;
+	CTerrain*				m_pTerrain;
+	_bool					m_bCheckWall;
 
 	static int				m_iTagNumber;
 

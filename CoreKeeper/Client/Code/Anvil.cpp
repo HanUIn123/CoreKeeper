@@ -6,8 +6,6 @@
 CAnvil::CAnvil(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CItem(pGraphicDev)
 {
-	 
-
 	m_eItemNum = ITEM_ANVIL;
 }
 
@@ -15,12 +13,9 @@ CAnvil::~CAnvil()
 {
 }
 
-HRESULT CAnvil::Ready_GameObject(MATERIAL _eMaterial, _vec3 vPos)
+HRESULT CAnvil::Ready_GameObject(_vec3 vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
-
-	m_eMaterial = _eMaterial;
-	m_iTextureNumber = m_eMaterial;
 
 	m_pTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
 	m_pShadowTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
@@ -158,11 +153,11 @@ HRESULT CAnvil::Add_Component()
 	return S_OK;
 }
 
-CAnvil* CAnvil::Create(LPDIRECT3DDEVICE9 pGraphicDev, MATERIAL _eMaterial, _vec3 vPos)
+CAnvil* CAnvil::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 {
 	CAnvil* pAnvil = new CAnvil(pGraphicDev);
 
-	if (FAILED(pAnvil->Ready_GameObject(_eMaterial, vPos)))
+	if (FAILED(pAnvil->Ready_GameObject(vPos)))
 	{
 		Safe_Release(pAnvil);
 		MSG_BOX("pAnvil Create Failed");
