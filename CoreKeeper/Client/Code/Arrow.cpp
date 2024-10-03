@@ -74,10 +74,7 @@ _int CArrow::Update_GameObject(const _float& fTimeDelta)
 			if (m_bHasRotated)
 			{
 				m_bHasRotated = false;
-				if (g_bIsTopCamera)
-				{
-					m_pTransformCom->Rotation(ROT_X, D3DXToRadian(-90.f));
-				}
+				m_pTransformCom->Set_Angle(0, 0, 0);
 			}
 		}
 		Set_Stop(&m_vDir, 1.f);
