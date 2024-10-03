@@ -449,7 +449,8 @@ void CPlayer::Dash(const _float& fTimeDelta)
 	pAux = dynamic_cast<CUIItemSlot*>(Engine::Get_GameObject(L"Layer_UI", strObjectTag.c_str()))->Get_Item();
 	if (!pAux)
 		return;
-	if (pAux->Get_ItemNum() == ITEM_ASSISTANCE_FEATHER)
+	// 보조장비인지만 확인하는 중
+	if (pAux->Get_ItemNum() == ITEM_ASSISTANCE)
 	{
 		// 스페이스바를 누르면 대쉬
 		if (Engine::Key_Down(DIK_SPACE))

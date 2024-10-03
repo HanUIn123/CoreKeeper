@@ -40,10 +40,7 @@
 
 #include "Necklace.h"
 #include "Ring.h"
-
-#include "Shield.h"
-#include "Feather.h"
-#include "Book.h"
+#include "Assistance.h"
 
 #include "Bag.h"
 #include "Lantern.h"
@@ -69,8 +66,6 @@
 #include "Bar.h"
 
 #include "Wood.h"
-
-#include "Feather.h"
 
 #include "Ingredient.h"
 
