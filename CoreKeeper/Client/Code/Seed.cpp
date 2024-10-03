@@ -17,7 +17,7 @@ HRESULT CSeed::Ready_GameObject(ITEMNUM _eItemNum, _vec3 vPos)
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
 	m_eItemNum = _eItemNum;
-	m_iTextureNumber = m_eItemNum;
+	m_iTextureNumber = m_eItemNum - ITEM_BERRY_SEED;
 
 	m_pTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
 	m_pShadowTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
@@ -41,7 +41,7 @@ _int CSeed::Update_GameObject(const _float& fTimeDelta)
 
 	if (m_bUse)
 	{
-		Swing(0, 3, 10);
+		//Swing(0, 3, 10);
 
 		m_bActive = true;
 		m_bDrop = false;
@@ -119,7 +119,7 @@ HRESULT CSeed::Add_Component()
 {
 	CComponent* pComponent = NULL;
 
-	pComponent = m_pBufferCom = dynamic_cast<CAnimTex*>(Engine::Clone_Proto(L"Proto_SeedAnimTex"));
+	pComponent = m_pBufferCom = dynamic_cast<CAnimTex*>(Engine::Clone_Proto(L"Proto_NormalAnimTex"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Buffer", pComponent });
 
