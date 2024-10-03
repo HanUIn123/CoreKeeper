@@ -64,6 +64,9 @@ HRESULT CFood::Ready_GameObject(ITEMNUM _eIngredient1, ITEMNUM _eIngredient2, _v
 	default:
 		return E_FAIL;
 	}
+
+	m_iTextureNumber = m_eItemNum - ITEM_BERRY_BERRY_FOOD;
+
 	m_pTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
 	m_pShadowTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
 	m_pTransformCom->Set_Pos(vPos.x, vPos.y, vPos.z);

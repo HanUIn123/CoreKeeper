@@ -75,7 +75,7 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	m_bNude = true;
 
 	m_bRespawned = false;
-	m_vRespawnPoint = { 64.f, 0, 18.5f };
+	m_vRespawnPoint = { VTXCNTX / 2, 0, 18.5f };
 
 	m_bBleed = false;
 	m_fBleedTime = 0.f;
@@ -390,6 +390,9 @@ void CPlayer::Mouse_Click(const _float& fTimeDelta)
 				case ITEM_CARROT_SEED:
 				case ITEM_FIBER_SEED:
 					Plant(m_pHandedItem->Get_ItemNum());
+					m_pHandedItem->Set_Use(false);
+					m_pHandedItem->Set_Active(false);
+					m_pHandedItem->Set_Drop(false);
 					break;
 
 				// 설치 관련
