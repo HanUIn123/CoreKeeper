@@ -44,6 +44,7 @@ public:
 	// ImGui 기초 세팅 함수
 	void									Show_ImguiWindow();
 	void									Setting_Menu();
+	void									Setting_Camera_Position();
 
 	void									Setting_TileList();
 	void									Piking_Tile();
@@ -130,6 +131,7 @@ private:
 	HANDLE									m_hFile;
 	HANDLE									m_hWallFile;
 	HANDLE									m_hObjectFile;
+	HANDLE									m_hMonsterFile;
 
 	vector<CWall*>							m_vecWallObject;
 

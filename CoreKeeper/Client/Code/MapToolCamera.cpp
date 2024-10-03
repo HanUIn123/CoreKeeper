@@ -48,6 +48,12 @@ void CMapToolCamera::LateUpdate_GameObject()
     CCamera::LateUpdate_GameObject();
 }
 
+void CMapToolCamera::Set_CameraPosition(_vec3 _vEye, _vec3 _vAt)
+{
+    m_vEye = _vEye;
+    m_vAt = _vAt;
+}
+
 void CMapToolCamera::Key_Input(const _float& _fTimeDelta)
 {
     _matrix		matCamWorld;
