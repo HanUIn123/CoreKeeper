@@ -9,7 +9,7 @@ IMPLEMENT_SINGLETON(CRenderer)
 
 CRenderer::CRenderer()
 	:m_bExpandMinimap(false)
-	, m_fZoomRatio(260.0f)
+	, m_fZoomRatio(240.0f)
 {
 	m_MainViewport.X = 0;
 	m_MainViewport.Y = 0;
@@ -112,10 +112,10 @@ void CRenderer::Expand_MiniMap(LPDIRECT3DDEVICE9& pGraphicDev)
 	if (!m_bExpandMinimap)
 	{
 		// ¹Ì´Ï¸Ê È®´ë
-		m_MiniViewport.X = 300;
-		m_MiniViewport.Y = 110;
-		m_MiniViewport.Width = 680;
-		m_MiniViewport.Height = 500;
+		m_MiniViewport.X = 430;
+		m_MiniViewport.Y = 10;
+		m_MiniViewport.Width = 700;
+		m_MiniViewport.Height = 550;
 		m_MiniViewport.MinZ = 0.0f;
 		m_MiniViewport.MaxZ = 1.0f;
 
@@ -236,7 +236,7 @@ void CRenderer::Render_MiniMap(LPDIRECT3DDEVICE9& pGraphicDev)
 			playerPos.z -= 0.01f;
 			vUp = _vec3(0.0f, 0.0f, 1.0f);
 
-			if (pDynamicCamera)
+		/*	if (pDynamicCamera)
 			{
 				_long dwMouseWheel = Engine::Get_DIMouseMove(DIMS_Z);
 
@@ -252,7 +252,7 @@ void CRenderer::Render_MiniMap(LPDIRECT3DDEVICE9& pGraphicDev)
 					if (m_fZoomRatio > 260.0f)
 						m_fZoomRatio = 260.0f;
 				}
-			}
+			}*/
 
 			D3DXMATRIX matView;
 			D3DXMatrixLookAtLH(&matView, &vEye, &vAt, &vUp);

@@ -40,9 +40,9 @@ _int CMiniMapFrame::Update_GameObject(const _float& fTimeDelta)
     {
         _vec3 vPos;
 
-        m_pTransformCom->Set_Scale(350.0f, 260.0f, 0.0f);
+        m_pTransformCom->Set_Scale(225.0f, 180.0f, 0.0f);
         m_pTransformCom->Get_Info(INFO_POS, &vPos);
-        m_pTransformCom->Set_Pos(0.0f, 0.0f, 0.0f);
+        m_pTransformCom->Set_Pos(17.0f, -20.0f, 0.0f);
 
     }
     else
@@ -117,8 +117,8 @@ void CMiniMapFrame::Frame_Regulate()
     if (m_bIsMinimapExpanded)
     {
         _vec3 vPos;
-        float fFrameWidth = 350.f * m_fZoomRatio;
-        float fFrameHeight = 240.f * m_fZoomRatio;
+        float fFrameWidth = 205.0f * m_fZoomRatio;
+        float fFrameHeight = 160.0f * m_fZoomRatio;
 
         if (fFrameWidth <= 420.0f)
         {

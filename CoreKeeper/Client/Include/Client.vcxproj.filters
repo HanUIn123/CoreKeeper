@@ -418,6 +418,8 @@
     <Filter Include="03. Manager\01. FarmMgr">
       <UniqueIdentifier>{46c0290f-a39c-42b6-a938-69e5da0636cb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\90.MiniTerrain">
+      <UniqueIdentifier>{32dd4e78-ef08-4a4e-996c-aacf15d410bf}</UniqueIdentifier>
     <Filter Include="02. GameObject\07. UI\14. UICookingPot">
       <UniqueIdentifier>{988505d3-0d27-420a-95b8-9a7574ae34a2}</UniqueIdentifier>
     </Filter>
@@ -825,6 +827,8 @@
     <ClInclude Include="..\Header\FarmMgr.h">
       <Filter>03. Manager\01. FarmMgr</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\MiniTerrain.h">
+      <Filter>02. GameObject\90.MiniTerrain</Filter>
     <ClInclude Include="..\Header\UICookingPot.h">
       <Filter>02. GameObject\07. UI\14. UICookingPot</Filter>
     </ClInclude>
@@ -1211,6 +1215,8 @@
     <ClCompile Include="..\Code\FarmMgr.cpp">
       <Filter>03. Manager\01. FarmMgr</Filter>
     </ClCompile>
+    <ClCompile Include="..\Code\MiniTerrain.cpp">
+      <Filter>02. GameObject\90.MiniTerrain</Filter>
     <ClCompile Include="..\Code\UICookingPot.cpp">
       <Filter>02. GameObject\07. UI\14. UICookingPot</Filter>
     </ClCompile>
