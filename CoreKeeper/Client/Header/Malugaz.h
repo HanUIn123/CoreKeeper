@@ -46,6 +46,12 @@ private:
 
 	int				m_iPhase;
 	int				m_iIdleCount;
+	int				m_iTextureNum;
+
+private:
+	Engine::CAnimTex* m_pBufferCom2;
+	Engine::CAnimTex* m_pBufferCom3;
+
 public:
 	static CMalugaz* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);
 

@@ -50,6 +50,7 @@ _int CFire::Update_GameObject(const _float& fTimeDelta)
 		}
 		else if (m_eState == DEAD)
 		{
+			m_pAnimatorCom->Set_CurState(DEAD, 47, 47, 8);
 			m_bActive = false;
 			m_bBurn = false;
 		}
@@ -136,16 +137,16 @@ HRESULT CFire::Add_Component()
 
 CFire* CFire::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 {
-	CFire* pCore = new CFire(pGraphicDev);
+	CFire* pFire = new CFire(pGraphicDev);
 
-	if (FAILED(pCore->Ready_GameObject(vPos)))
+	if (FAILED(pFire->Ready_GameObject(vPos)))
 	{
-		Safe_Release(pCore);
-		MSG_BOX("pCore Create Failed");
+		Safe_Release(pFire);
+		MSG_BOX("pFire Create Failed");
 		return nullptr;
 	}
 
-	return pCore;
+	return pFire;
 }
 
 void CFire::Free()
