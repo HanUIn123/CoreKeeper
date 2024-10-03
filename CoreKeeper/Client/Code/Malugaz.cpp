@@ -55,6 +55,7 @@ _int CMalugaz::Update_GameObject(const _float& fTimeDelta)
     if (m_bStopDraw)
         return 0;
 
+    Set_Cast();
     //Set_Light();
 
     if (m_eState != DEAD)
@@ -321,11 +322,10 @@ STATE CMalugaz::State_Change()
         return IDLE;
     }*/
     
-    CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
     _vec3 vPlayerPos, vPos;
     CGameObject* pWeapon;
-    dynamic_cast<CTransform*>(pPlayer->Get_Component(ID_DYNAMIC, L"Com_Transform"))->Get_Info(INFO_POS, &vPlayerPos);
     m_pTransformCom->Get_Info(INFO_POS, &vPos);
+    m_pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
 
     switch (m_eState)
     {
@@ -337,9 +337,9 @@ STATE CMalugaz::State_Change()
         {
             m_iIdleCount = 0;
         }
-        pWeapon = pPlayer->Get_HandedItem();
+        pWeapon = m_pPlayer->Get_HandedItem();
         // 플레이어가 무기를 들고 공격하는 상태면 충돌 체크
-        if (pPlayer->Get_CurState() == SWING)
+        if (m_pPlayer->Get_CurState() == SWING)
         {
             CCollider* pWeaponCollider = dynamic_cast<Engine::CCollider*>(pWeapon->Get_Component(ID_DYNAMIC, L"Com_Collider"));
             if (m_pColliderCom->Check_Collision(pWeaponCollider))
@@ -451,12 +451,8 @@ void CMalugaz::Set_Light()
 void CMalugaz::Pattern_Shoot(const _float& fTimeDelta)
 {
     m_bAttackSuccess = false;
-    Engine::CTransform* pPlayerTransform = dynamic_cast<Engine::CTransform*>
-        (Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Transform"));
-    NULL_CHECK(pPlayerTransform);
-
     _vec3 vPlayerPos;
-    pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
+    m_pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
 
     // 플레이어 위치에 따른 방향(4방향) 계산
     if (g_bIsTopCamera)
@@ -526,22 +522,17 @@ void CMalugaz::Pattern_Shoot(const _float& fTimeDelta)
 
 void CMalugaz::Pattern_Teleport(const _float& fTimeDelta)
 {
-    CTransform* pPlayerTransform = dynamic_cast<CTransform*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Transform"));
     _vec3 vPlayerPos;
-    pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
-
+    m_pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
     m_pTransformCom->Set_Pos(vPlayerPos.x, 2.6f, vPlayerPos.z);
 }
 
 void CMalugaz::Pattern_Generate(const _float& fTimeDelta)
 {
     m_bAttackSuccess = false;
-    Engine::CTransform* pPlayerTransform = dynamic_cast<Engine::CTransform*>
-        (Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Transform"));
-    NULL_CHECK(pPlayerTransform);
 
     _vec3 vPlayerPos;
-    pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
+    m_pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
 
     // 플레이어 주위 위치 10개 지정하기
     _vec3 vFirePos[10];
@@ -625,13 +616,9 @@ void CMalugaz::Pattern_Generate(const _float& fTimeDelta)
 
 void CMalugaz::Pattern_Run(const _float& fTimeDelta)
 {
-    Engine::CTransform* pPlayerTransform = dynamic_cast<Engine::CTransform*>
-        (Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Transform"));
-    NULL_CHECK(pPlayerTransform);
-
     _vec3		vPos, vPlayerPos, vDir;
-    pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
     m_pTransformCom->Get_Info(INFO_POS, &vPos);
+    m_pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
     vDir = vPlayerPos - vPos;
     vDir.y = 0.0f;
     D3DXVec3Normalize(&vDir, &vDir);

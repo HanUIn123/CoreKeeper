@@ -3,7 +3,6 @@
 #include "Item.h"
 #include "Terrain.h"
 
-
 BEGIN(Engine)
 
 class CAnimTex;
@@ -17,6 +16,7 @@ class CHit;
 
 END
 
+class CPlayer;
 class CMonster : public Engine::CGameObject
 {
 protected:
@@ -53,6 +53,7 @@ protected:
 	void			Set_StuckFree(const _float& fTimeDelta);
 
 	_bool			Check_Wall();
+	void			Set_Cast();
 
 private:
 	void			Check_WallWithPlayer();
@@ -121,8 +122,11 @@ protected:
 
 	_int					m_iSpeedWeight;
 
-	CTransform*				m_pPlayerTransform;
 	CTerrain*				m_pTerrain;
+	CPlayer*				m_pPlayer;
+	CTransform*				m_pPlayerTransform;
+	CState*					m_pPlayerState;
+	CCollider*				m_pPlayerCollider;
 	_bool					m_bCheckWall;
 
 	static int				m_iTagNumber;

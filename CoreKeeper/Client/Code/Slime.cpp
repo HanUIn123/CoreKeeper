@@ -35,6 +35,8 @@ _int CSlime::Update_GameObject(const _float& fTimeDelta)
     if (m_bStopDraw)
         return 0;
 
+    Set_Cast();
+
     if (m_eState != DEAD && m_iSpeedWeight)
         Check_Hitted();
 
@@ -78,7 +80,13 @@ void CSlime::LateUpdate_GameObject()
 
 void CSlime::Render_GameObject()
 {
-    if (m_bStopDraw || !m_pCalculatorCom->In_Frustum(m_pTransformCom))
+    if (m_bStopDraw)
+        return;
+
+    _vec3		vPos, vPlayerPos;
+    m_pTransformCom->Get_Info(INFO_POS, &vPos);
+    m_pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
+    if (!m_pCalculatorCom->Check_Distance2D(&vPos, &vPlayerPos, 20.f))
         return;
     m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
     m_pColliderCom->Update_Collider(m_pTransformCom->Get_WorldMatrix());
@@ -217,12 +225,8 @@ void CSlime::Pattern_Idle(const _float& fTimeDelta)
 // 플레이어 방향으로 이동, 추후 A스타 알고리즘으로 변경
 void CSlime::Pattern_Chase(const _float& fTimeDelta)
 {
-    Engine::CTransform* pPlayerTransform = dynamic_cast<Engine::CTransform*>
-        (Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Transform"));
-    NULL_CHECK(pPlayerTransform);
-
     _vec3		vPlayerPos, vPos, vDir;
-    pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
+    m_pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
     m_pTransformCom->Get_Info(INFO_POS, &vPos);
     vDir = vPlayerPos - vPos;
     D3DXVec3Normalize(&vDir, &vDir);
@@ -241,13 +245,8 @@ void CSlime::Pattern_Attack(const _float& fTimeDelta)
 {
     _vec3		vPos, vPlayerPos;
     m_pTransformCom->Get_Info(INFO_POS, &vPos);
-    Engine::CTransform* pPlayerTransform = dynamic_cast<Engine::CTransform*>
-        (Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Transform"));
-    NULL_CHECK(pPlayerTransform);
-    Engine::CCollider* pPlayerCollider = dynamic_cast<Engine::CCollider*>
-        (Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Collider"));
     m_pAnimatorCom->Set_CurState(SWING, 24, 35, 8);
-    pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
+    m_pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
     m_fSpeedWeight = 0.f;
     // 점프 중이 아닐 때
     if (m_pAnimatorCom->Get_MotionIndex() <= 29 || m_pAnimatorCom->Get_MotionIndex() >= 34)
@@ -277,13 +276,12 @@ void CSlime::Pattern_Attack(const _float& fTimeDelta)
         if (vPos.y > m_fIdleY)
         {
             // 공격 성공
-            if (m_pColliderCom->Check_Collision(pPlayerCollider))
+            if (m_pColliderCom->Check_Collision(m_pPlayerCollider))
             {
                 if (!m_bAttackSuccess)
                 {
                     m_bAttackSuccess = true;
-                    dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"))
-                        ->Set_KnockBack(vPos, m_pStateCom->Get_Stat()->iAttack, (1 - (m_fJumpTime / m_fJumpFrame)) * 3.f + 1.f);
+                   m_pPlayer->Set_KnockBack(vPos, m_pStateCom->Get_Stat()->iAttack, (1 - (m_fJumpTime / m_fJumpFrame)) * 3.f + 1.f);
                 }
             }
         }
@@ -310,21 +308,19 @@ void CSlime::Pattern_Dead()
 
 STATE CSlime::State_Change()
 {
-    CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
     _vec3 vPos;
     m_pTransformCom->Get_Info(INFO_POS, &vPos);
     if (m_eState == IDLE)
     {
-        CGameObject* pWeapon = pPlayer->Get_HandedItem();
+        CGameObject* pWeapon = m_pPlayer->Get_HandedItem();
         // 플레이어가 무기를 들고 공격하는 상태면 충돌 체크
-        if (pPlayer->Get_CurState() == SWING)
+        if (m_pPlayer->Get_CurState() == SWING)
         {
             CCollider* pWeaponCollider = dynamic_cast<Engine::CCollider*>(pWeapon->Get_Component(ID_DYNAMIC, L"Com_Collider"));
             if (m_pColliderCom->Check_Collision(pWeaponCollider))
             {
                 _vec3 vPlayerPos;
-                dynamic_cast<CTransform*>(pPlayer->Get_Component(ID_DYNAMIC, L"Com_Transform"))->Get_Info(INFO_POS, &vPlayerPos);
-
+                m_pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
                 // 무기와 충돌 했는데 공격 범위 이내인 경우
                 if (m_pCalculatorCom->Check_Distance2D(&vPlayerPos, &vPos, m_fAggroDistance))
                     return SWING;
@@ -337,8 +333,7 @@ STATE CSlime::State_Change()
     if (m_eState == SWING && vPos.y == m_fIdleY)
     {
         _vec3 vPlayerPos;
-        dynamic_cast<CTransform*>(pPlayer->Get_Component(ID_DYNAMIC, L"Com_Transform"))->Get_Info(INFO_POS, &vPlayerPos);
-
+        m_pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
         if (!m_pCalculatorCom->Check_Distance2D(&vPlayerPos, &vPos, m_fAggroDistance))
             return IDLE;
     }

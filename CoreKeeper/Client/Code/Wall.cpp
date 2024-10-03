@@ -40,12 +40,6 @@ HRESULT CWall::Ready_GameObject(_float _fWallX, _float _fWallZ, _int iWallImageN
 
 _int CWall::Update_GameObject(const _float& fTimeDelta)
 {
-    Engine::CCollider* pPlayerCollider = dynamic_cast<Engine::CCollider*>
-        (Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Collider"));
-
-    // 플레이어와 충돌
-    //m_bActive = !(m_pColliderCom->Check_Sphere_Collision(pPlayerCollider));
-
     Update_Texture();
 
     Add_RenderGroup(RENDER_PRIORITY, this);
