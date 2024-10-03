@@ -4,17 +4,18 @@
 #include "Export_Utility.h"
 #include "../Header/Player.h"
 #include "../Header/Projectile.h"
+#include "../Header/Fire.h"
 
 CMalugaz::CMalugaz(LPDIRECT3DDEVICE9 pGraphicDev)
-    : CMonster(pGraphicDev)
+    : CMonster(pGraphicDev), m_iPhase(1), m_iIdleCount(0)
 {
     m_eType = Engine::MON_MALUGAZ;
-    m_fIdleY = 0.8f;
+    m_fIdleY = 2.6f;
     m_eState = IDLE;
 
     m_bFlip = false;
 
-    m_fAggroDistance = 14.f;
+    m_fAggroDistance = 100.f;
     m_fRange = 10.f;
 
     m_iAttackAnimProgress = 0;
@@ -40,12 +41,12 @@ HRESULT CMalugaz::Ready_GameObject(_vec3 vPos)
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
     m_pTransformCom->Set_Pos(vPos.x, m_fIdleY, vPos.z);
-    m_pTransformCom->Set_Scale(1.2f, 1.2f, 1.2f);
-    m_pColliderCom->Set_Offset(_vec3(-0.25f, 0, 0));
-    m_pStateCom->Set_Stat(100, 0, 10, 0);
-    m_vecDropItem.push_back(ITEM_STAFF);
-    m_vecDropItem.push_back(ITEM_WOOD);
-    Set_Speed(1.5f);
+    m_pTransformCom->Set_Scale(3.2f, 3.2f, 3.2f);
+    m_pColliderCom->Set_Offset(_vec3(-0.25f, -0.5f, 0));
+    m_pStateCom->Set_Stat(2000, 0, 25, 0);
+    //m_vecDropItem.push_back(ITEM_STAFF);
+    //m_vecDropItem.push_back(ITEM_WOOD);
+    Set_Speed(6.0f);
     return S_OK;
 }
 
@@ -54,7 +55,7 @@ _int CMalugaz::Update_GameObject(const _float& fTimeDelta)
     if (m_bStopDraw)
         return 0;
 
-    Set_Light();
+    //Set_Light();
 
     if (m_eState != DEAD)
         m_eState = State_Change();
@@ -103,19 +104,21 @@ void CMalugaz::Render_GameObject()
 {
     if (m_bStopDraw)
         return;
-    m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
+
+    //m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
     m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
 
     m_pColliderCom->Update_Collider(m_pTransformCom->Get_WorldMatrix());
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
     m_pTextureCom->Set_Texture();
+    m_pTransformCom->Apply_BillBoard();
 
     m_pBufferCom->Set_Index(m_pAnimatorCom->Get_MotionIndex());
     m_pBufferCom->Render_Buffer();
     m_pColliderCom->Render_Collider();
 
-    m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
+    //m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
@@ -139,15 +142,15 @@ HRESULT CMalugaz::Add_Component()
     NULL_CHECK_RETURN(pComponent, E_FAIL);
     m_mapComponent[ID_STATIC].insert({ L"Com_Animator", pComponent });
 
-    pComponent = m_pBufferCom = dynamic_cast<CAnimTex*>(Engine::Clone_Proto(L"Proto_ShamanAnimTex"));
+    pComponent = m_pBufferCom = dynamic_cast<CAnimTex*>(Engine::Clone_Proto(L"Proto_Malugaz1AnimTex"));
     NULL_CHECK_RETURN(pComponent, E_FAIL);
     m_mapComponent[ID_STATIC].insert({ L"Com_Buffer", pComponent });
 
-    pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_ShamanTex"));
+    pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_MalugazTex"));
     NULL_CHECK_RETURN(pComponent, E_FAIL);
     m_mapComponent[ID_STATIC].insert({ L"Com_Texture", pComponent });
 
-    pComponent = m_pColliderCom = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Proto_ShamanCollider"));
+    pComponent = m_pColliderCom = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Proto_MalugazCollider"));
     NULL_CHECK_RETURN(pComponent, E_FAIL);
     m_mapComponent[ID_DYNAMIC].insert({ L"Com_Collider", pComponent });
 
@@ -177,77 +180,15 @@ void CMalugaz::Pattern_Idle(const _float& fTimeDelta)
     if (m_fIdleTime <= m_fIdleTimeLimit)
     {
         m_fIdleTime += fTimeDelta;
-        _vec3	vLook, vRight;
+
+        // 이동을 없애기 위해 속도 값을 0으로 설정
         _float  fLookSpeed = 0, fRightSpeed = 0;
-        m_pTransformCom->Get_Info(INFO_LOOK, &vLook);
-        m_pTransformCom->Get_Info(INFO_RIGHT, &vRight);
 
-        // 실제 이동
-        switch (m_iDir)
-        {
-        case 0:
-            // 정지
-            break;
-        case 1:
-            // 상
-            m_eDir = BACK;
-            fLookSpeed = m_fSpeed;
-            break;
-        case 2:
-            // 우상
-            m_eDir = RIGHT;
-            fLookSpeed = m_fDiagSpeed;
-            fRightSpeed = m_fDiagSpeed;
-            break;
-        case 3:
-            // 우
-            m_eDir = RIGHT;
-            fRightSpeed = m_fSpeed;
-            break;
-        case 4:
-            // 우하
-            m_eDir = RIGHT;
-            fLookSpeed = -m_fDiagSpeed;
-            fRightSpeed = m_fDiagSpeed;
-            break;
-        case 5:
-            // 하
-            m_eDir = FRONT;
-            fLookSpeed = m_fSpeed;
-            break;
-        case 6:
-            // 좌하
-            m_eDir = LEFT;
-            fLookSpeed = -m_fDiagSpeed;
-            fRightSpeed = -m_fDiagSpeed;
-            break;
-        case 7:
-            // 좌
-            m_eDir = LEFT;
-            fRightSpeed = -m_fSpeed;
-            break;
-        case 8:
-            // 좌상
-            m_eDir = LEFT;
-            fLookSpeed = m_fDiagSpeed;
-            fRightSpeed = -m_fDiagSpeed;
-            break;
-        }
-
-        Set_Stop(&vLook, fLookSpeed, &vRight, fRightSpeed);
         if (m_iSpeedWeight == 0)
         {
             m_iDir = 0;
             m_bIdling = false;
             m_fIdleTime = 0.f;
-        }
-        else if (m_iDir)
-        {
-            _int iWeight = 1;
-            if (m_eDir == LEFT)
-                iWeight = -1;
-            m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, fLookSpeed * m_iSpeedWeight);
-            m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, fRightSpeed * iWeight * m_iSpeedWeight);
         }
     }
     else
@@ -282,130 +223,59 @@ void CMalugaz::Pattern_Idle(const _float& fTimeDelta)
         switch (m_eDir)
         {
         case FRONT:
-            m_pAnimatorCom->Set_CurState(IDLE, 24, 29, 8);
+            m_pAnimatorCom->Set_CurState(IDLE, 0, 11, 8);
             break;
         case RIGHT:
         case LEFT:
-            m_pAnimatorCom->Set_CurState(IDLE, 32, 37, 8);
+            m_pAnimatorCom->Set_CurState(IDLE, 12, 23, 8);
             break;
         case BACK:
-            m_pAnimatorCom->Set_CurState(IDLE, 40, 45, 8);
+            m_pAnimatorCom->Set_CurState(IDLE, 24, 35, 8);
             break;
         }
     }
-
 }
+
 
 // 플레이어 방향으로 이동, 추후 A스타 알고리즘으로 변경
 void CMalugaz::Pattern_Chase(const _float& fTimeDelta)
 {
-    Engine::CTransform* pPlayerTransform = dynamic_cast<Engine::CTransform*>
-        (Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Transform"));
-    NULL_CHECK(pPlayerTransform);
-
-    _vec3		vPos, vPlayerPos, vDir;
-    pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
-    m_pTransformCom->Get_Info(INFO_POS, &vPos);
-    vDir = vPlayerPos - vPos;
-    D3DXVec3Normalize(&vDir, &vDir);
-
-    // 플레이어 위치에 따른 방향(4방향) 계산
-    if (g_bIsTopCamera)
-        Set_Direction(&vPlayerPos);
-    else
-        m_eDir = FRONT;
-
-    // 방향에 따른 애니메이션 설정
-    switch (m_eDir)
+    if (m_iPhase == 1)
     {
-    case FRONT:
-        m_pAnimatorCom->Set_CurState(WALK, 24, 29, 8);
-        break;
-    case RIGHT:
-    case LEFT:
-        m_pAnimatorCom->Set_CurState(WALK, 32, 37, 8);
-        break;
-    case BACK:
-        m_pAnimatorCom->Set_CurState(WALK, 40, 45, 8);
-        break;
+        Pattern_Teleport(fTimeDelta);
     }
-    Set_Stop(&vDir, m_fSpeed);
-    m_pTransformCom->Move_Pos(&vDir, fTimeDelta, m_fSpeed * m_iSpeedWeight);
+    else
+    {
+        Pattern_Run(fTimeDelta);
+    }
 }
 
-// 투사체 생성해서 날리기
 void CMalugaz::Pattern_Attack(const _float& fTimeDelta)
 {
-    m_bAttackSuccess = false;
-    Engine::CTransform* pPlayerTransform = dynamic_cast<Engine::CTransform*>
-        (Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Transform"));
-    NULL_CHECK(pPlayerTransform);
+    if (m_iPhase == 1)
+    {
+        int iRandom = rand();
 
-    _vec3 vPlayerPos;
-    pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
-
-    // 플레이어 위치에 따른 방향(4방향) 계산
-    if (g_bIsTopCamera)
-        Set_Direction(&vPlayerPos);
+        if(iRandom % 10 < 7)
+            Pattern_Shoot(fTimeDelta);
+        else
+            Pattern_Generate(fTimeDelta);
+    }
     else
-        m_eDir = FRONT;
-
-    // 방향에 따른 애니메이션 설정 : 방향 바꼈다고 차징 끊기지 않도록 설정
-    _int iFrame = 0, iFrameSpeed = 0;
-    switch (m_eDir)
     {
-    case FRONT:
-        iFrame = 48 + m_iAttackAnimProgress;
-        break;
-    case RIGHT:
-    case LEFT:
-        iFrame = 56 + m_iAttackAnimProgress;
-        break;
-    case BACK:
-        iFrame = 64 + m_iAttackAnimProgress;
-        break;
-    }
-
-    // 차징 시
-    if (iFrame % 8 < 3)
-    {
-        if (m_bLightEnable)
-        {
-            m_bLightEnable = false;
-            // 샤먼 차징 시 조명 끄고 실제 불덩이 생성하여 조명 적용
-            CScene* pScene = Engine::Get_Scene();
-            _vec3 vPos;
-            m_pTransformCom->Get_Info(INFO_POS, &vPos);
-            vPos.y += 2.f;
-            CGameObject* pProjectile = CProjectile::Create(m_pGraphicDev, vPos);
-            NULL_CHECK(pProjectile);
-
-            m_vecProjectileName.push_back(L"Monster_Created_Fireball" + std::to_wstring(m_iTagNumber++));
-            FAILED_CHECK_RETURN(pScene->Create_GameObject(L"Layer_GameLogic", pProjectile, m_vecProjectileName.back().c_str()), );
-        }
-        iFrameSpeed = 45;
-    }
-    // 차징 종료 시
-    else
-        iFrameSpeed = 8;
-
-    if (m_iFrameCount++ > iFrameSpeed)
-    {
-        m_iFrameCount = 0;
-        if (++m_iAttackAnimProgress >= 8)
-        {
-            if (!m_bLightEnable)
-                m_bLightEnable = true;
-            m_bAttackSuccess = true;
-            m_iAttackAnimProgress = 0;
-        }
-        m_pAnimatorCom->Set_CurState(SWING, iFrame, iFrame, -1);
-    }
+        Pattern_Punch(fTimeDelta);
+    } 
 }
 
 // 죽어버리기
 void CMalugaz::Pattern_Dead()
 {
+    if (m_iPhase == 1)
+    {
+        m_iPhase = 2;
+        m_pStateCom->Set_Stat(2000, 0, 25, 0);
+        //m_bKnockBackEnd = false;
+    }
     if (m_bKnockBackEnd)
     {
         m_pAnimatorCom->Set_CurState(DEAD, 40, 44, 4);
@@ -421,14 +291,35 @@ void CMalugaz::Pattern_Dead()
 
 STATE CMalugaz::State_Change()
 {
+   /* m_iPatternNum %= 6;
+
+    switch (m_iPatternNum)
+    {
+    case 1:
+    case 6:
+        return SWING;
+    case 3:
+        return WALK;
+    default :
+        return IDLE;
+    }*/
+    
     CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
     _vec3 vPlayerPos, vPos;
     CGameObject* pWeapon;
     dynamic_cast<CTransform*>(pPlayer->Get_Component(ID_DYNAMIC, L"Com_Transform"))->Get_Info(INFO_POS, &vPlayerPos);
     m_pTransformCom->Get_Info(INFO_POS, &vPos);
+
     switch (m_eState)
     {
     case IDLE:
+        m_iIdleCount++;
+        if (m_iIdleCount <= 100)
+            return IDLE;
+        else
+        {
+            m_iIdleCount = 0;
+        }
         pWeapon = pPlayer->Get_HandedItem();
         // 플레이어가 무기를 들고 공격하는 상태면 충돌 체크
         if (pPlayer->Get_CurState() == SWING)
@@ -452,23 +343,23 @@ STATE CMalugaz::State_Change()
         break;
     case WALK:
         // 쫓아가면서 사거리 계산
-        if (m_pCalculatorCom->Check_Distance2D(&vPlayerPos, &vPos, m_fRange))
+        /*if (m_pCalculatorCom->Check_Distance2D(&vPlayerPos, &vPos, m_fRange))
             return SWING;
-        if (!m_pCalculatorCom->Check_Distance2D(&vPlayerPos, &vPos, m_fAggroDistance))
+        if (!m_pCalculatorCom->Check_Distance2D(&vPlayerPos, &vPos, m_fAggroDistance))*/
             return IDLE;
         break;
     case SWING:
         // 공격 모션이 끝났을 때
         if (m_bAttackSuccess)
         {
-            // 공격 사거리 이내가 아닌 경우
-            if (!m_pCalculatorCom->Check_Distance2D(&vPlayerPos, &vPos, m_fRange))
-            {
-                m_iFrameCount = 0;
-                m_iAttackAnimProgress = 0;
-                return WALK;
-            }
-            if (!m_pCalculatorCom->Check_Distance2D(&vPlayerPos, &vPos, m_fAggroDistance))
+            //// 공격 사거리 이내가 아닌 경우
+            //if (!m_pCalculatorCom->Check_Distance2D(&vPlayerPos, &vPos, m_fRange))
+            //{
+            //    m_iFrameCount = 0;
+            //    m_iAttackAnimProgress = 0;
+            //    return WALK;
+            //}
+            //if (!m_pCalculatorCom->Check_Distance2D(&vPlayerPos, &vPos, m_fAggroDistance))
                 return IDLE;
         }
         break;
@@ -522,23 +413,239 @@ void CMalugaz::Set_Light()
     light.Attenuation2 = 0.0f;
 
     m_pGraphicDev->SetLight(m_iLightNum, &light); // 조명 설정
-    if (m_bLightEnable)
-        m_pGraphicDev->LightEnable(m_iLightNum, TRUE);
+    //if (m_bLightEnable)
+    //    m_pGraphicDev->LightEnable(m_iLightNum, TRUE);
+    //else
+    //    m_pGraphicDev->LightEnable(m_iLightNum, FALSE);
+}
+
+void CMalugaz::Pattern_Shoot(const _float& fTimeDelta)
+{
+    m_bAttackSuccess = false;
+    Engine::CTransform* pPlayerTransform = dynamic_cast<Engine::CTransform*>
+        (Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Transform"));
+    NULL_CHECK(pPlayerTransform);
+
+    _vec3 vPlayerPos;
+    pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
+
+    // 플레이어 위치에 따른 방향(4방향) 계산
+    if (g_bIsTopCamera)
+        Set_Direction(&vPlayerPos);
     else
-        m_pGraphicDev->LightEnable(m_iLightNum, FALSE);
+        m_eDir = FRONT;
+
+    // 방향에 따른 애니메이션 설정 : 방향 바꼈다고 차징 끊기지 않도록 설정
+    _int iFrame = 0, iFrameSpeed = 0;
+    switch (m_eDir)
+    {
+    case FRONT:
+        iFrame = 72 + m_iAttackAnimProgress;
+        break;
+    case RIGHT:
+    case LEFT:
+        iFrame = 84 + m_iAttackAnimProgress;
+        break;
+    case BACK:
+        iFrame = 96 + m_iAttackAnimProgress;
+        break;
+    }
+
+    CGameObject* pProjectile(nullptr);
+
+    iFrameSpeed = 8;
+
+    // 차징 시
+    if (iFrame % 10 < 4)
+    {
+        if (m_bLightEnable)
+        {
+            m_bLightEnable = false;
+            // 샤먼 차징 시 조명 끄고 실제 불덩이 생성하여 조명 적용
+            CScene* pScene = Engine::Get_Scene();
+            _vec3 vPos;
+            m_pTransformCom->Get_Info(INFO_POS, &vPos);
+            vPos.y -= 2.f;
+            pProjectile = CProjectile::Create(m_pGraphicDev, vPos);
+            NULL_CHECK(pProjectile);
+            dynamic_cast<CProjectile*>(pProjectile)->Set_ChargeActive(false);
+            dynamic_cast<CProjectile*>(pProjectile)->Set_ChargingTime(10);
+            m_vecProjectileName.push_back(L"Monster_Created_Fireball" + std::to_wstring(m_iTagNumber++));
+            FAILED_CHECK_RETURN(pScene->Create_GameObject(L"Layer_GameLogic", pProjectile, m_vecProjectileName.back().c_str()), );
+        }
+        iFrameSpeed = 6;
+    }
+    else
+    {
+        iFrameSpeed = 8;
+    }
+
+
+    if (m_iFrameCount++ > iFrameSpeed)
+    {
+        m_iFrameCount = 0;
+        if (++m_iAttackAnimProgress >= 8)
+        {
+            if (!m_bLightEnable)
+                m_bLightEnable = true;
+            m_bAttackSuccess = true;
+            m_iAttackAnimProgress = 0;
+        }
+        m_pAnimatorCom->Set_CurState(SWING, iFrame, iFrame, -1);
+    }
+}
+
+void CMalugaz::Pattern_Teleport(const _float& fTimeDelta)
+{
+    CTransform* pPlayerTransform = dynamic_cast<CTransform*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Transform"));
+    _vec3 vPlayerPos;
+    pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
+
+    m_pTransformCom->Set_Pos(vPlayerPos.x, 2.6f, vPlayerPos.z);
+}
+
+void CMalugaz::Pattern_Generate(const _float& fTimeDelta)
+{
+    m_bAttackSuccess = false;
+    Engine::CTransform* pPlayerTransform = dynamic_cast<Engine::CTransform*>
+        (Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Transform"));
+    NULL_CHECK(pPlayerTransform);
+
+    _vec3 vPlayerPos;
+    pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
+
+    // 플레이어 주위 위치 10개 지정하기
+    _vec3 vFirePos[10];
+    float fRadius = 5.0f;  // 플레이어 주변의 거리(반경)를 설정
+    float fMinRadius = 2.0f; // 최소 반경 설정
+
+    for (int i = 0; i < 10; i++)
+    {
+        // 랜덤 반경(최소 반경과 최대 반경 사이의 값)
+        float randomRadius = fMinRadius + static_cast<float>(rand()) / RAND_MAX * (fRadius - fMinRadius);
+
+        // 랜덤 각도 (0 ~ 360도 사이)
+        float randomAngle = static_cast<float>(rand()) / RAND_MAX * 360.0f;
+
+        
+        // 각도와 반경을 기반으로 X, Z 좌표 계산
+        vFirePos[i].x = vPlayerPos.x + randomRadius * cosf(D3DXToRadian(randomAngle));
+        vFirePos[i].z = vPlayerPos.z + randomRadius * sinf(D3DXToRadian(randomAngle));
+
+        // Y 좌표는 플레이어의 Y 좌표와 동일하게 설정
+        vFirePos[i].y = vPlayerPos.y;
+    }
+
+    // 방향에 따른 애니메이션 설정 : 방향 바꼈다고 차징 끊기지 않도록 설정
+    _int iFrame = 0, iFrameSpeed = 0;
+    switch (m_eDir)
+    {
+    case FRONT:
+        iFrame = 36 + m_iAttackAnimProgress;
+        break;
+    case RIGHT:
+    case LEFT:
+        iFrame = 48 + m_iAttackAnimProgress;
+        break;
+    case BACK:
+        iFrame = 60 + m_iAttackAnimProgress;
+        break;
+    }
+
+    CGameObject* pFire(nullptr);
+
+    iFrameSpeed = 8;
+
+    // 차징 시
+    if (iFrame % 7 < 2)
+    {
+        if (m_bLightEnable)
+        {
+            m_bLightEnable = false;
+            // 샤먼 차징 시 조명 끄고 실제 불덩이 생성하여 조명 적용
+            CScene* pScene = Engine::Get_Scene();
+            for (int i = 0; i < 10; i++)
+            {
+                pFire = CFire::Create(m_pGraphicDev, vFirePos[i]);
+                NULL_CHECK(pFire);
+                m_vecProjectileName.push_back(L"Monster_Created_Fireball" + std::to_wstring(m_iTagNumber++));
+                FAILED_CHECK_RETURN(pScene->Create_GameObject(L"Layer_GameLogic", pFire, m_vecProjectileName.back().c_str()), );
+            }
+        }
+        iFrameSpeed = 6;
+    }
+    else
+    {
+        iFrameSpeed = 8;
+    }
+
+
+    if (m_iFrameCount++ > iFrameSpeed)
+    {
+        m_iFrameCount = 0;
+        if (++m_iAttackAnimProgress >= 8)
+        {
+            if (!m_bLightEnable)
+                m_bLightEnable = true;
+            m_bAttackSuccess = true;
+            m_iAttackAnimProgress = 0;
+        }
+        m_pAnimatorCom->Set_CurState(SWING, iFrame, iFrame, -1);
+    }
+}
+
+void CMalugaz::Pattern_Run(const _float& fTimeDelta)
+{
+    Engine::CTransform* pPlayerTransform = dynamic_cast<Engine::CTransform*>
+        (Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Transform"));
+    NULL_CHECK(pPlayerTransform);
+
+    _vec3		vPos, vPlayerPos, vDir;
+    pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
+    m_pTransformCom->Get_Info(INFO_POS, &vPos);
+    vDir = vPlayerPos - vPos;
+    vDir.y = 0.0f;
+    D3DXVec3Normalize(&vDir, &vDir);
+
+    // 플레이어 위치에 따른 방향(4방향) 계산
+    if (g_bIsTopCamera)
+        Set_Direction(&vPlayerPos);
+    else
+        m_eDir = FRONT;
+
+    // 방향에 따른 애니메이션 설정
+    switch (m_eDir)
+    {
+    case FRONT:
+        m_pAnimatorCom->Set_CurState(WALK, 18, 23, 8);
+        break;
+    case RIGHT:
+    case LEFT:
+        m_pAnimatorCom->Set_CurState(WALK, 24, 29, 8);
+        break;
+    case BACK:
+        m_pAnimatorCom->Set_CurState(WALK, 30, 35, 8);
+        break;
+    }
+    Set_Stop(&vDir, m_fSpeed);
+    m_pTransformCom->Move_Pos(&vDir, fTimeDelta, m_fSpeed * m_iSpeedWeight);
+}
+
+void CMalugaz::Pattern_Punch(const _float& fTimeDelta)
+{
 }
 
 CMalugaz* CMalugaz::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 {
-    CMalugaz* pShaman = new CMalugaz(pGraphicDev);
+    CMalugaz* pMalugaz = new CMalugaz(pGraphicDev);
 
-    if (FAILED(pShaman->Ready_GameObject(vPos)))
+    if (FAILED(pMalugaz->Ready_GameObject(vPos)))
     {
-        Safe_Release(pShaman);
-        MSG_BOX("Shaman Create Failed");
+        Safe_Release(pMalugaz);
+        MSG_BOX("Malugaz Create Failed");
         return nullptr;
     }
-    return pShaman;
+    return pMalugaz;
 }
 
 void CMalugaz::Free()

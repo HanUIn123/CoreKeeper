@@ -26,6 +26,13 @@ private:
 public:
 	void			Set_Chase(_vec3 vPlayerPos) { m_bCharging = false; m_vAttackPoint = vPlayerPos; }
 
+
+
+
+	// 말루가즈용
+	void			Set_ChargeActive(bool _bChargeActive) { m_bChargeActive = _bChargeActive; }
+	void			Set_ChargingTime(int _iChargingTime) { m_iChargingTime = _iChargingTime; }
+
 private:
 	_bool			m_bLightEnable;
 	_int			m_iLightNum;
@@ -35,6 +42,8 @@ private:
 
 	_float			m_fAttackTimeLimit;
 
+	bool			m_bChargeActive;
+	int				m_iChargingTime;
 public:
 	static CProjectile* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);
 
