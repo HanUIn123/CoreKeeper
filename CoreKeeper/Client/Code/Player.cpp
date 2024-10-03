@@ -736,20 +736,41 @@ void CPlayer::Show_Equipment()
 		{
 			if (m_pHandedItem->Get_ItemNum() == ITEM_BOW)
 			{
-				switch (m_eDir)
+				if (m_eState == SHOOT)
 				{
-				case FRONT:
-					m_pHandedTransformCom->Set_Pos(vPlayerPos.x - 0.3f, 1.2f, vPlayerPos.z - 0.2f);
-					break;
-				case RIGHT:
-					m_pHandedTransformCom->Set_Pos(vPlayerPos.x - 0.2f, 1.2f, vPlayerPos.z - 0.2f);
-					break;
-				case BACK:
-					m_pHandedTransformCom->Set_Pos(vPlayerPos.x + 0.3f, 1.2f, vPlayerPos.z + 0.2f);
-					break;
-				case LEFT:
-					m_pHandedTransformCom->Set_Pos(vPlayerPos.x + 0.2f, 1.2f, vPlayerPos.z - 0.2f);
-					break;
+					switch (m_eDir)
+					{
+					case FRONT:
+						m_pHandedTransformCom->Set_Pos(vPlayerPos.x, vPlayerPos.y, vPlayerPos.z - 0.4f);
+						break;
+					case RIGHT:
+						m_pHandedTransformCom->Set_Pos(vPlayerPos.x + 0.4f, vPlayerPos.y, vPlayerPos.z);
+						break;
+					case BACK:
+						m_pHandedTransformCom->Set_Pos(vPlayerPos.x + 0.4f, vPlayerPos.y, vPlayerPos.z + 0.4f);
+						break;
+					case LEFT:
+						m_pHandedTransformCom->Set_Pos(vPlayerPos.x - 0.4f, vPlayerPos.y, vPlayerPos.z);
+						break;
+					}
+				}
+				else
+				{
+					switch (m_eDir)
+					{
+					case FRONT:
+						m_pHandedTransformCom->Set_Pos(vPlayerPos.x - 0.3f, vPlayerPos.y, vPlayerPos.z - 0.2f);
+						break;
+					case RIGHT:
+						m_pHandedTransformCom->Set_Pos(vPlayerPos.x - 0.2f, vPlayerPos.y, vPlayerPos.z - 0.2f);
+						break;
+					case BACK:
+						m_pHandedTransformCom->Set_Pos(vPlayerPos.x + 0.3f, vPlayerPos.y, vPlayerPos.z + 0.2f);
+						break;
+					case LEFT:
+						m_pHandedTransformCom->Set_Pos(vPlayerPos.x + 0.2f, vPlayerPos.y, vPlayerPos.z - 0.2f);
+						break;
+					}
 				}
 			}
 			else
@@ -898,25 +919,7 @@ void CPlayer::Shoot_Equipment()
 	{
 		_vec3 vPlayerPos;
 		m_pTransformCom->Get_Info(INFO_POS, &vPlayerPos);
-		if (g_bIsTopCamera)
-		{
-			switch (m_eDir)
-			{
-			case FRONT:
-				m_pHandedTransformCom->Set_Pos(vPlayerPos.x, vPlayerPos.y, vPlayerPos.z - 0.4f);
-				break;
-			case RIGHT:
-				m_pHandedTransformCom->Set_Pos(vPlayerPos.x + 0.4f, vPlayerPos.y, vPlayerPos.z);
-				break;
-			case BACK:
-				m_pHandedTransformCom->Set_Pos(vPlayerPos.x + 0.4f, vPlayerPos.y, vPlayerPos.z + 0.4f);
-				break;
-			case LEFT:
-				m_pHandedTransformCom->Set_Pos(vPlayerPos.x - 0.4f, vPlayerPos.y, vPlayerPos.z);
-				break;
-			}
-		}
-		else
+		if (!g_bIsTopCamera)
 		{
 			m_eDir = BACK;
 			_vec3 vPlayerLook, vPlayerRight;
