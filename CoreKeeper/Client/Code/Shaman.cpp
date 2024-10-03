@@ -102,7 +102,7 @@ void CShaman::LateUpdate_GameObject()
 
 void CShaman::Render_GameObject()
 {
-    if (m_bStopDraw)
+    if (m_bStopDraw || !m_pCalculatorCom->In_Frustum(m_pTransformCom))
         return;
     m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
     m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());

@@ -116,7 +116,7 @@ _int CUICookingPot::Update_GameObject(const _float& fTimeDelta)
 
 				if (!pCursorInv->Check_Empty(0))
 				{
-					if (pCursorInv->Get_Item(0)->Get_ItemNum() == ITEM_BERRY || pCursorInv->Get_Item(0)->Get_ItemNum() == ITEM_MUSHROOM || pCursorInv->Get_Item(0)->Get_ItemNum() == ITEM_BERRY || pCursorInv->Get_Item(0)->Get_ItemNum() == ITEM_MUSHROOM)
+					if (pCursorInv->Get_Item(0)->Get_ItemNum() == ITEM_BERRY_SEED || pCursorInv->Get_Item(0)->Get_ItemNum() == ITEM_MUSHROOM || pCursorInv->Get_Item(0)->Get_ItemNum() == ITEM_BERRY || pCursorInv->Get_Item(0)->Get_ItemNum() == ITEM_MUSHROOM)
 					{
 						vector<CItem*>* pCvecItem = pCursorInv->Get_VecItemP();
 						vector<CItem*>* pFvecItem = m_pInventoryCom->Get_VecItemP();
