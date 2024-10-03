@@ -177,7 +177,7 @@ void CUIItemSlot::Render_GameObject()
 		Engine::MATERIAL material = m_pItem->Get_ItemMaterial();
 
 		if (material != 3)
-			m_pItem->Get_Texture()->Set_Texture(material);
+			m_pItem->Get_Texture()->Set_Texture(m_pItem->Get_TextureNumber());
 		else
 			m_pItem->Get_Texture()->Set_Texture();
 

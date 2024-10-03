@@ -82,6 +82,8 @@ public:
 
 	Engine::MATERIAL    Get_ItemMaterial() { return m_eMaterial; }
 
+	_int                Get_TextureNumber() { return m_iTextureNumber; }
+
 	//아이템 설명창
 	const wstring*      Get_Explain() { return m_wItemExplain; }
 	const wstring       Get_Meterial() { return m_wItemMetrial; }

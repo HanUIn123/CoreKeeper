@@ -418,6 +418,9 @@
     <Filter Include="03. Manager\01. FarmMgr">
       <UniqueIdentifier>{46c0290f-a39c-42b6-a938-69e5da0636cb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\07. UI\14. UICookingPot">
+      <UniqueIdentifier>{988505d3-0d27-420a-95b8-9a7574ae34a2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -822,6 +825,9 @@
     <ClInclude Include="..\Header\FarmMgr.h">
       <Filter>03. Manager\01. FarmMgr</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\UICookingPot.h">
+      <Filter>02. GameObject\07. UI\14. UICookingPot</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1204,6 +1210,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\FarmMgr.cpp">
       <Filter>03. Manager\01. FarmMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\UICookingPot.cpp">
+      <Filter>02. GameObject\07. UI\14. UICookingPot</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
