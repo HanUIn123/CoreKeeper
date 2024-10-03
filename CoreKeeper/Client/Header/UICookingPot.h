@@ -36,6 +36,11 @@ private:
 
 	RECT m_BRect[3];
 
+	RECT m_Rect;
+	RECT m_rFirstRect;
+
+	_float m_fTime;
+
 	_bool m_bRectPicked[3];
 
 private:
@@ -56,11 +61,16 @@ private:
 	Engine::CRcTex* m_pUSlotBufferCom;
 	Engine::CRcTex* m_pDSlotBufferCom;
 	Engine::CRcTex* m_pRSlotBufferCom;
+	Engine::CRcTex* m_pSciBufferCom;
 	Engine::CRcTex* m_pColBufferCom;
+	Engine::CRcTex* m_pFoodBufferCom;
 	Engine::CTransform* m_pTransformCom;
 	Engine::CTexture* m_pTextureCom;
 	Engine::CTexture* m_pColTextureCom;
-	Engine::CInventory* m_pInventoryCom;
+	Engine::CTexture* m_pFoodTextureCom;
+	Engine::CInventory* m_pUSlotInventoryCom;
+	Engine::CInventory* m_pDSlotInventoryCom;
+	Engine::CInventory* m_pRSlotInventoryCom;
 
 public:
 	void Set_Render() { 

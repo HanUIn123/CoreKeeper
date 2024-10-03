@@ -184,14 +184,11 @@ CItem* CCraftMgr::Craft(CInventory* _pInventory, ITEMNUM _eItemNum, MATERIAL _eM
 	return pItem;
 }
 
-CItem* CCraftMgr::Cook(CInventory* _pInventory, ITEMNUM _eItemNum1, ITEMNUM _eItemNum2)
+CItem* CCraftMgr::Cook(ITEMNUM _eItemNum1, ITEMNUM _eItemNum2)
 {
     // 요리 재료가 아니면 nullptr 반환
     if (_eItemNum1 < ITEM_BERRY || _eItemNum1 > ITEM_MUSHROOM || _eItemNum2 < ITEM_BERRY || _eItemNum2 > ITEM_MUSHROOM)
         return nullptr;
-
-    _pInventory->Minus_Item(_eItemNum1, 1);
-    _pInventory->Minus_Item(_eItemNum2, 1);
 
     CItem* pFood = nullptr;
 
@@ -199,6 +196,10 @@ CItem* CCraftMgr::Cook(CInventory* _pInventory, ITEMNUM _eItemNum1, ITEMNUM _eIt
         pFood = CFood::Create(m_pGraphicDev, _eItemNum2, _eItemNum1);
     else
         pFood = CFood::Create(m_pGraphicDev, _eItemNum1, _eItemNum2);
+
+    CScene* pScene = Engine::Get_Scene();
+
+    pScene->Create_GameObject(L"Layer_UI", pFood, strCraftName[m_iCraftCount++].c_str());
 
     return pFood;
 }

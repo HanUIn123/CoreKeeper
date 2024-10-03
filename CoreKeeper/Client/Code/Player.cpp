@@ -1211,7 +1211,7 @@ void CPlayer::Set_UI()
 	}
 	if (Engine::Key_Down(DIK_TAB))
 	{
-		if (m_bMap || m_bChestInventory || m_bCraft || m_bInventory || m_bStatue || m_bGraveInventory)
+		if (m_bMap || m_bChestInventory || m_bCraft || m_bInventory || m_bStatue || m_bGraveInventory || m_bFurnace || m_bCookingPot)
 			UI_Disable();
 
 		else if (!m_bMap && !m_bChestInventory)
@@ -1226,6 +1226,9 @@ void CPlayer::Set_UI()
 	{
 		UI_Disable();
 	}
+
+	if ((m_bMap || m_bChestInventory || m_bCraft || m_bStatue || m_bGraveInventory || m_bFurnace || m_bCookingPot) && (Engine::Key_Down(DIK_E)))
+		UI_Disable();
 
 	if (Engine::Key_Down(DIK_O))
 	{
@@ -1267,6 +1270,12 @@ void CPlayer::Set_MapWindow()
 
 void CPlayer::Set_Craft(TABLETYPE eTableType, MATERIAL _eMaterial)
 {
+	if (m_bMap || m_bStatue || m_bCookingPot || m_bFurnace || m_bGraveInventory || m_bChestInventory)
+	{
+		UI_Disable();
+		return;
+	}
+
 	if (m_bCraft)
 	{
 		CUICraft* pCraft = dynamic_cast<CUICraft*>(Engine::Get_GameObject(L"Layer_UI", L"UILeftCraft"));
@@ -1394,7 +1403,6 @@ void CPlayer::Set_Map()
 
 void CPlayer::Set_Status()
 {
-
 	CUIPlayerStatus* pStatus = dynamic_cast<CUIPlayerStatus*>(Engine::Get_GameObject(L"Layer_UI", L"UIPlayerStatus"));
 	pStatus->Set_Window();
 
@@ -1420,7 +1428,12 @@ void CPlayer::Set_Status()
 
 void CPlayer::Set_ChestInventory(CInventory* pInventory)
 {
-	
+	if (m_bMap || m_bCraft || m_bStatue || m_bCookingPot || m_bFurnace || m_bGraveInventory)
+	{
+		UI_Disable();
+		return;
+	}
+
 	for (int i = 0; i < 18; ++i)
 	{
 		wstring string;
@@ -1450,6 +1463,12 @@ void CPlayer::Set_ChestInventory(CInventory* pInventory)
 
 void CPlayer::Set_GraveInventory()
 {
+	if (m_bMap || m_bChestInventory || m_bCraft || m_bStatue || m_bCookingPot || m_bFurnace)
+	{
+		UI_Disable();
+		return;
+	}
+
 	if (m_bGraveInventory)
 	{
 		CInventory* pGraveInventory = dynamic_cast<CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_Environment", L"AheadGrave", L"Com_Inventory"));
@@ -1515,6 +1534,12 @@ void CPlayer::Set_Statue(_int _StatueNum)
 
 void CPlayer::Set_Furnace()
 {
+	if (m_bMap || m_bChestInventory || m_bCraft || m_bStatue || m_bGraveInventory || m_bCookingPot)
+	{
+		UI_Disable();
+		return;
+	}
+
 	if (m_bFurnace)
 	{
 		CUIFurnace* pFurnace = dynamic_cast<CUIFurnace*>(Engine::Get_GameObject(L"Layer_UI", L"UI_Furnace"));
@@ -1542,13 +1567,19 @@ void CPlayer::Set_Furnace()
 
 void CPlayer::Set_CookingPot()
 {
+	if (m_bMap || m_bChestInventory || m_bCraft || m_bStatue || m_bGraveInventory || m_bFurnace)
+	{
+		UI_Disable();
+		return;
+	}
+
 	if (m_bCookingPot)
 	{
 		CUICookingPot* pPot = dynamic_cast<CUICookingPot*>(Engine::Get_GameObject(L"Layer_UI", L"UI_CookingPot"));
 
 		pPot->Set_Disable();
 
-		if (m_bCookingPot)
+		if (m_bInventory)
 		{
 			Set_Inventory();
 		}
@@ -1614,6 +1645,11 @@ void CPlayer::UI_Disable()
 	if (m_bFurnace)
 	{
 		Set_Furnace();
+	}
+
+	if (m_bCookingPot)
+	{
+		Set_CookingPot();
 	}
 }
 
