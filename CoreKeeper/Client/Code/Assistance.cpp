@@ -1,22 +1,38 @@
 #include "pch.h"
-#include "..\Header\Book.h"
+#include "..\Header\Assistance.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
 
-CBook::CBook(LPDIRECT3DDEVICE9 pGraphicDev)
-	: CItem(pGraphicDev)
+CAssistance::CAssistance(LPDIRECT3DDEVICE9 pGraphicDev)
+	: CItem(pGraphicDev), m_eAssistance(ASSISTANCE_END)
 {
-	m_eItemNum = ITEM_ASSISTANCE_BOOK;
+	m_eItemNum = ITEM_ASSISTANCE;
 }
 
-CBook::~CBook()
+CAssistance::~CAssistance()
 {
 }
 
-HRESULT CBook::Ready_GameObject(_vec3 vPos)
+HRESULT CAssistance::Ready_GameObject(ASSISTANCE _eAssistance, _vec3 vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
+	m_eAssistance = _eAssistance;
+	m_iTextureNumber = m_eAssistance;
+
+	switch (m_eAssistance)
+	{
+	case ASSISTANCE_WOOD_SHIELD:
+		break;
+	case ASSISTANCE_IRON_SHIELD:
+		break;
+	case ASSISTANCE_FEATHER:
+		break;
+	case ASSISTANCE_AZEOS_FEATHER:
+		break;
+	case ASSISTANCE_BOOK:
+		break;
+	}
 	//m_tStat.iDefense = 10 * (m_eMaterial + 1);
 	//m_tStat.iMaxHp = 20 * (m_eMaterial + 1);
 
@@ -34,7 +50,7 @@ HRESULT CBook::Ready_GameObject(_vec3 vPos)
 	return S_OK;
 }
 
-_int CBook::Update_GameObject(const _float& fTimeDelta)
+_int CAssistance::Update_GameObject(const _float& fTimeDelta)
 {
 	m_pAnimatorCom->Update_Animation();
 
@@ -73,12 +89,12 @@ _int CBook::Update_GameObject(const _float& fTimeDelta)
 	return Engine::CGameObject::Update_GameObject(fTimeDelta);
 }
 
-void CBook::LateUpdate_GameObject()
+void CAssistance::LateUpdate_GameObject()
 {
 	Engine::CGameObject::LateUpdate_GameObject();
 }
 
-void CBook::Render_GameObject()
+void CAssistance::Render_GameObject()
 {
 	// 카메라를 바라보게 하면서 스케일 유지
 	//CItem::Apply_Billboard();  
@@ -115,7 +131,7 @@ void CBook::Render_GameObject()
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
-HRESULT CBook::Add_Component()
+HRESULT CAssistance::Add_Component()
 {
 	CComponent* pComponent = NULL;
 
@@ -123,7 +139,7 @@ HRESULT CBook::Add_Component()
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Buffer", pComponent });
 
-	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_AssistanceBookTexture"));
+	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_AssistanceTexture"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Texture", pComponent });
 
@@ -154,21 +170,21 @@ HRESULT CBook::Add_Component()
 	return S_OK;
 }
 
-CBook* CBook::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
+CAssistance* CAssistance::Create(LPDIRECT3DDEVICE9 pGraphicDev, ASSISTANCE _eAssistance, _vec3 vPos)
 {
-	CBook* pBook = new CBook(pGraphicDev);
+	CAssistance* pAssistance = new CAssistance(pGraphicDev);
 
-	if (FAILED(pBook->Ready_GameObject(vPos)))
+	if (FAILED(pAssistance->Ready_GameObject(_eAssistance, vPos)))
 	{
-		Safe_Release(pBook);
-		MSG_BOX("pBook Create Failed");
+		Safe_Release(pAssistance);
+		MSG_BOX("pAssistance Create Failed");
 		return nullptr;
 	}
 
-	return pBook;
+	return pAssistance;
 }
 
-void CBook::Free()
+void CAssistance::Free()
 {
 	Engine::CGameObject::Free();
 }

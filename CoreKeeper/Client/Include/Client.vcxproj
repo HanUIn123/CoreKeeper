@@ -154,7 +154,7 @@ call Copy.bat</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\Header\Arrow.h" />
-    <ClInclude Include="..\Header\Book.h" />
+    <ClInclude Include="..\Header\Assistance.h" />
     <ClInclude Include="..\Header\FarmMgr.h" />
     <ClInclude Include="..\Header\Food.h" />
     <ClInclude Include="..\Header\Fire.h" />
@@ -165,7 +165,7 @@ call Copy.bat</Command>
     <ClInclude Include="..\Header\MiniObject.h" />
     <ClInclude Include="..\Header\CraftMgr.h" />
     <ClInclude Include="..\Header\Malugaz.h" />
-    <ClInclude Include="..\Header\Feather.h" />
+    <ClInclude Include="..\Header\MiniTerrain.h" />
     <ClInclude Include="..\Header\Plant.h" />
     <ClInclude Include="..\Header\ShamanRender.h" />
     <ClInclude Include="..\Header\ShroomManRender.h" />
@@ -188,7 +188,6 @@ call Copy.bat</Command>
     <ClInclude Include="..\Header\Gravestone.h" />
     <ClInclude Include="..\Header\Box.h" />
     <ClInclude Include="..\Header\Necklace.h" />
-    <ClInclude Include="..\Header\Shield.h" />
     <ClInclude Include="..\Header\Ring.h" />
     <ClInclude Include="..\Header\Lantern.h" />
     <ClInclude Include="..\Header\CookingPot.h" />
@@ -292,7 +291,7 @@ call Copy.bat</Command>
   <ItemGroup>
     <ClCompile Include="..\Code\Arrow.cpp" />
     <ClCompile Include="..\Code\Azeos.cpp" />
-    <ClCompile Include="..\Code\Book.cpp" />
+    <ClCompile Include="..\Code\Assistance.cpp" />
     <ClCompile Include="..\Code\FarmMgr.cpp" />
     <ClCompile Include="..\Code\Food.cpp" />
     <ClCompile Include="..\Code\Fire.cpp" />
@@ -302,7 +301,7 @@ call Copy.bat</Command>
     <ClCompile Include="..\Code\MiniObject.cpp" />
     <ClCompile Include="..\Code\CraftMgr.cpp" />
     <ClCompile Include="..\Code\Malugaz.cpp" />
-    <ClCompile Include="..\Code\Feather.cpp" />
+    <ClCompile Include="..\Code\MiniTerrain.cpp" />
     <ClCompile Include="..\Code\Plant.cpp" />
     <ClCompile Include="..\Code\ShamanRender.cpp" />
     <ClCompile Include="..\Code\ShroomManRender.cpp" />
@@ -325,7 +324,6 @@ call Copy.bat</Command>
     <ClCompile Include="..\Code\Gravestone.cpp" />
     <ClCompile Include="..\Code\Box.cpp" />
     <ClCompile Include="..\Code\Necklace.cpp" />
-    <ClCompile Include="..\Code\Shield.cpp" />
     <ClCompile Include="..\Code\Ring.cpp" />
     <ClCompile Include="..\Code\Lantern.cpp" />
     <ClCompile Include="..\Code\CookingPot.cpp" />

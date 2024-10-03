@@ -34,9 +34,6 @@
     <Filter Include="02. GameObject\02. Monster">
       <UniqueIdentifier>{301f7126-4fbe-4325-b170-473466d90274}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. Scene\01. Stage">
-      <UniqueIdentifier>{dd503513-b5da-478f-b248-5529fc2e80ee}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01. Scene\02. Loading">
       <UniqueIdentifier>{4ffcb167-8a95-4665-b85b-2b0ddc2b0ebc}</UniqueIdentifier>
     </Filter>
@@ -361,12 +358,6 @@
     <Filter Include="02. GameObject\02. Monster\03. Malugaz">
       <UniqueIdentifier>{64d60a91-eeb7-49b2-923c-53c267c5f070}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\06. Item\03. Accessory\02. Assistance\00. Shield">
-      <UniqueIdentifier>{090064d5-af54-4eac-bd61-af5d2727d02a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\06. Item\03. Accessory\02. Assistance\01. Feather">
-      <UniqueIdentifier>{80ac753b-3e44-402d-92cb-73d5697277c9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\06. Item\99. Etc\01. Cooking">
       <UniqueIdentifier>{e3a29a58-c512-4b3f-8e30-6c054146ff38}</UniqueIdentifier>
     </Filter>
@@ -375,9 +366,6 @@
     </Filter>
     <Filter Include="02. GameObject\06. Item\99. Etc\01. Cooking\01. Food">
       <UniqueIdentifier>{5c2f0fcd-ae51-4529-b928-a0f45772a3e3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\06. Item\03. Accessory\02. Assistance\02. Book">
-      <UniqueIdentifier>{9b76f857-dd7d-4723-9b0f-91f92770c272}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameObject\06. Item\06. Installation\00. Table\00. Table">
       <UniqueIdentifier>{4fb7de7b-4217-4891-b219-eac29986365e}</UniqueIdentifier>
@@ -418,8 +406,17 @@
     <Filter Include="03. Manager\01. FarmMgr">
       <UniqueIdentifier>{46c0290f-a39c-42b6-a938-69e5da0636cb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\90.MiniTerrain">
+      <UniqueIdentifier>{32dd4e78-ef08-4a4e-996c-aacf15d410bf}</UniqueIdentifier>
+    </Filter>
     <Filter Include="02. GameObject\07. UI\14. UICookingPot">
       <UniqueIdentifier>{988505d3-0d27-420a-95b8-9a7574ae34a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Scene\03. Stage">
+      <UniqueIdentifier>{dd503513-b5da-478f-b248-5529fc2e80ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Scene\01. Story">
+      <UniqueIdentifier>{b00dfff5-9875-48b8-bcce-2037b6924b2b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -460,7 +457,7 @@
       <Filter>02. GameObject\03. Terrain</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\Stage.h">
-      <Filter>01. Scene\01. Stage</Filter>
+      <Filter>01. Scene\03. Stage</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\Loading.h">
       <Filter>01. Scene\02. Loading</Filter>
@@ -762,12 +759,6 @@
     <ClInclude Include="..\Header\Malugaz.h">
       <Filter>02. GameObject\02. Monster\03. Malugaz</Filter>
     </ClInclude>
-    <ClInclude Include="..\Header\Feather.h">
-      <Filter>02. GameObject\06. Item\03. Accessory\02. Assistance\01. Feather</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Header\Shield.h">
-      <Filter>02. GameObject\06. Item\03. Accessory\02. Assistance\00. Shield</Filter>
-    </ClInclude>
     <ClInclude Include="..\Header\Food.h">
       <Filter>02. GameObject\06. Item\99. Etc\01. Cooking\01. Food</Filter>
     </ClInclude>
@@ -785,9 +776,6 @@
     </ClInclude>
     <ClInclude Include="..\Header\StatueCore.h">
       <Filter>02. GameObject\06. Item\99. Etc\04. StatueCore</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Header\Book.h">
-      <Filter>02. GameObject\06. Item\03. Accessory\02. Assistance\02. Book</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\Diary.h">
       <Filter>02. GameObject\06. Item\99. Etc\10. Diary</Filter>
@@ -825,8 +813,14 @@
     <ClInclude Include="..\Header\FarmMgr.h">
       <Filter>03. Manager\01. FarmMgr</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\MiniTerrain.h">
+      <Filter>02. GameObject\90.MiniTerrain</Filter>
+    </ClInclude>
     <ClInclude Include="..\Header\UICookingPot.h">
       <Filter>02. GameObject\07. UI\14. UICookingPot</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\Assistance.h">
+      <Filter>02. GameObject\06. Item\03. Accessory\02. Assistance</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -855,7 +849,7 @@
       <Filter>02. GameObject\03. Terrain</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\Stage.cpp">
-      <Filter>01. Scene\01. Stage</Filter>
+      <Filter>01. Scene\03. Stage</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\Loading.cpp">
       <Filter>01. Scene\02. Loading</Filter>
@@ -1148,12 +1142,6 @@
     <ClCompile Include="..\Code\Malugaz.cpp">
       <Filter>02. GameObject\02. Monster\03. Malugaz</Filter>
     </ClCompile>
-    <ClCompile Include="..\Code\Feather.cpp">
-      <Filter>02. GameObject\06. Item\03. Accessory\02. Assistance\01. Feather</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Code\Shield.cpp">
-      <Filter>02. GameObject\06. Item\03. Accessory\02. Assistance\00. Shield</Filter>
-    </ClCompile>
     <ClCompile Include="..\Code\Food.cpp">
       <Filter>02. GameObject\06. Item\99. Etc\01. Cooking\01. Food</Filter>
     </ClCompile>
@@ -1171,9 +1159,6 @@
     </ClCompile>
     <ClCompile Include="..\Code\StatueCore.cpp">
       <Filter>02. GameObject\06. Item\99. Etc\04. StatueCore</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Code\Book.cpp">
-      <Filter>02. GameObject\06. Item\03. Accessory\02. Assistance\02. Book</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\Diary.cpp">
       <Filter>02. GameObject\06. Item\99. Etc\10. Diary</Filter>
@@ -1211,8 +1196,14 @@
     <ClCompile Include="..\Code\FarmMgr.cpp">
       <Filter>03. Manager\01. FarmMgr</Filter>
     </ClCompile>
+    <ClCompile Include="..\Code\MiniTerrain.cpp">
+      <Filter>02. GameObject\90.MiniTerrain</Filter>
+    </ClCompile>
     <ClCompile Include="..\Code\UICookingPot.cpp">
       <Filter>02. GameObject\07. UI\14. UICookingPot</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Assistance.cpp">
+      <Filter>02. GameObject\06. Item\03. Accessory\02. Assistance</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

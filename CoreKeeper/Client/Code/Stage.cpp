@@ -141,6 +141,11 @@ HRESULT CStage::Ready_Layer_Environment(const _tchar* pLayerTag)
 	NULL_CHECK_RETURN(m_pTerrainObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Terrain", m_pTerrainObject), E_FAIL);
 
+	pGameObject = CMiniTerrain::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"MiniTerrain", pGameObject), E_FAIL);
+
+
 	pGameObject = CCore::Create(m_pGraphicDev, { VTXCNTX / 2, 1.5f, 21.5f });
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Core", pGameObject), E_FAIL);
@@ -185,7 +190,7 @@ HRESULT CStage::Ready_Layer_Environment(const _tchar* pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Furnace", pGameObject), E_FAIL);
 
-	pGameObject = CCookingPotObject::Create(m_pGraphicDev, { 59.f, .5f, 16.f });
+	pGameObject = CCookingPotObject::Create(m_pGraphicDev, { 75.f, .5f, 16.f });
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"CookingPot", pGameObject), E_FAIL);
 
@@ -227,9 +232,9 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar* pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Player_HairShade", pGameObject), E_FAIL);
 
-	//pGameObject = CMalugaz::Create(m_pGraphicDev, _vec3(VTXCNTX * 0.5f - 5.f, 10, VTXCNTZ * 0.5f - 5.f));
-	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Malugaz", pGameObject), E_FAIL);
+	pGameObject = CMalugaz::Create(m_pGraphicDev, _vec3(VTXCNTX * 0.5f - 5.f, 10, VTXCNTZ * 0.5f - 5.f));
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Malugaz", pGameObject), E_FAIL);
 
 	pGameObject = CTorch::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
@@ -350,7 +355,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar* pLayerTag)
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"ScarletOre", pGameObject), E_FAIL);
 	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
 
-	pGameObject = CFeather::Create(m_pGraphicDev, MATERIAL_END);
+	pGameObject = CAssistance::Create(m_pGraphicDev, ASSISTANCE_FEATHER);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Feather", pGameObject), E_FAIL);
 	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);

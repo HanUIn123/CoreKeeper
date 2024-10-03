@@ -449,7 +449,10 @@ void CPlayer::Dash(const _float& fTimeDelta)
 	pAux = dynamic_cast<CUIItemSlot*>(Engine::Get_GameObject(L"Layer_UI", strObjectTag.c_str()))->Get_Item();
 	if (!pAux)
 		return;
-	if (pAux->Get_ItemNum() == ITEM_ASSISTANCE_FEATHER)
+
+	ASSISTANCE assistance = dynamic_cast<CAssistance*>(pAux)->Get_Assistance();
+
+	if (pAux->Get_ItemNum() == ITEM_ASSISTANCE && assistance == ASSISTANCE_FEATHER)
 	{
 		// 스페이스바를 누르면 대쉬
 		if (Engine::Key_Down(DIK_SPACE))
@@ -733,20 +736,41 @@ void CPlayer::Show_Equipment()
 		{
 			if (m_pHandedItem->Get_ItemNum() == ITEM_BOW)
 			{
-				switch (m_eDir)
+				if (m_eState == SHOOT)
 				{
-				case FRONT:
-					m_pHandedTransformCom->Set_Pos(vPlayerPos.x - 0.3f, 1.2f, vPlayerPos.z - 0.2f);
-					break;
-				case RIGHT:
-					m_pHandedTransformCom->Set_Pos(vPlayerPos.x - 0.2f, 1.2f, vPlayerPos.z - 0.2f);
-					break;
-				case BACK:
-					m_pHandedTransformCom->Set_Pos(vPlayerPos.x + 0.3f, 1.2f, vPlayerPos.z + 0.2f);
-					break;
-				case LEFT:
-					m_pHandedTransformCom->Set_Pos(vPlayerPos.x + 0.2f, 1.2f, vPlayerPos.z - 0.2f);
-					break;
+					switch (m_eDir)
+					{
+					case FRONT:
+						m_pHandedTransformCom->Set_Pos(vPlayerPos.x, vPlayerPos.y, vPlayerPos.z - 0.4f);
+						break;
+					case RIGHT:
+						m_pHandedTransformCom->Set_Pos(vPlayerPos.x + 0.4f, vPlayerPos.y, vPlayerPos.z);
+						break;
+					case BACK:
+						m_pHandedTransformCom->Set_Pos(vPlayerPos.x + 0.4f, vPlayerPos.y, vPlayerPos.z + 0.4f);
+						break;
+					case LEFT:
+						m_pHandedTransformCom->Set_Pos(vPlayerPos.x - 0.4f, vPlayerPos.y, vPlayerPos.z);
+						break;
+					}
+				}
+				else
+				{
+					switch (m_eDir)
+					{
+					case FRONT:
+						m_pHandedTransformCom->Set_Pos(vPlayerPos.x - 0.3f, vPlayerPos.y, vPlayerPos.z - 0.2f);
+						break;
+					case RIGHT:
+						m_pHandedTransformCom->Set_Pos(vPlayerPos.x - 0.2f, vPlayerPos.y, vPlayerPos.z - 0.2f);
+						break;
+					case BACK:
+						m_pHandedTransformCom->Set_Pos(vPlayerPos.x + 0.3f, vPlayerPos.y, vPlayerPos.z + 0.2f);
+						break;
+					case LEFT:
+						m_pHandedTransformCom->Set_Pos(vPlayerPos.x + 0.2f, vPlayerPos.y, vPlayerPos.z - 0.2f);
+						break;
+					}
 				}
 			}
 			else
@@ -895,25 +919,7 @@ void CPlayer::Shoot_Equipment()
 	{
 		_vec3 vPlayerPos;
 		m_pTransformCom->Get_Info(INFO_POS, &vPlayerPos);
-		if (g_bIsTopCamera)
-		{
-			switch (m_eDir)
-			{
-			case FRONT:
-				m_pHandedTransformCom->Set_Pos(vPlayerPos.x, vPlayerPos.y, vPlayerPos.z - 0.4f);
-				break;
-			case RIGHT:
-				m_pHandedTransformCom->Set_Pos(vPlayerPos.x + 0.4f, vPlayerPos.y, vPlayerPos.z);
-				break;
-			case BACK:
-				m_pHandedTransformCom->Set_Pos(vPlayerPos.x + 0.4f, vPlayerPos.y, vPlayerPos.z + 0.4f);
-				break;
-			case LEFT:
-				m_pHandedTransformCom->Set_Pos(vPlayerPos.x - 0.4f, vPlayerPos.y, vPlayerPos.z);
-				break;
-			}
-		}
-		else
+		if (!g_bIsTopCamera)
 		{
 			m_eDir = BACK;
 			_vec3 vPlayerLook, vPlayerRight;

@@ -96,14 +96,8 @@ CItem* CCraftMgr::Craft(CInventory* _pInventory, ITEMNUM _eItemNum, MATERIAL _eM
         pItem = CRing::Create(m_pGraphicDev, _eMaterial);
         break;
 
-    case ITEM_ASSISTANCE_SHIELD:
-        pItem = CShield::Create(m_pGraphicDev, _eMaterial);
-        break;
-    case ITEM_ASSISTANCE_FEATHER:
-        pItem = CFeather::Create(m_pGraphicDev, _eMaterial);
-        break;
-    case ITEM_ASSISTANCE_BOOK:
-        pItem = CBook::Create(m_pGraphicDev);
+    case ITEM_ASSISTANCE:
+        pItem = CAssistance::Create(m_pGraphicDev, (ASSISTANCE)_eMaterial);
         break;
 
     case ITEM_BAG:
@@ -382,19 +376,19 @@ void CCraftMgr::Set_Recipe()
     Recipe woodShieldRecipe;
     woodShieldRecipe.vecIngredients.push_back({ ITEM_WOOD, 10 });
     woodShieldRecipe.vecIngredients.push_back({ ITEM_COPPER_BAR, 5 });
-    m_mapRecipes[make_pair(ITEM_ASSISTANCE_SHIELD , MATERIAL_WOOD)] = woodShieldRecipe;
+    m_mapRecipes[make_pair(ITEM_ASSISTANCE, MATERIAL_WOOD)] = woodShieldRecipe;
 
     // 철 방패
     Recipe ironShieldRecipe;
     ironShieldRecipe.vecIngredients.push_back({ ITEM_COPPER_BAR, 2 });
     ironShieldRecipe.vecIngredients.push_back({ ITEM_IRON_BAR, 8 });
-    m_mapRecipes[make_pair(ITEM_ASSISTANCE_SHIELD, MATERIAL_IRON)] = ironShieldRecipe;
+    m_mapRecipes[make_pair(ITEM_ASSISTANCE, MATERIAL_IRON)] = ironShieldRecipe;
 
     // 책
     Recipe bookRecipe;
     bookRecipe.vecIngredients.push_back({ ITEM_FIBER, 8 });
     bookRecipe.vecIngredients.push_back({ ITEM_SKULL_PIECE, 8 });
-    m_mapRecipes[make_pair(ITEM_ASSISTANCE_BOOK, MATERIAL_END)] = bookRecipe;
+    m_mapRecipes[make_pair(ITEM_ASSISTANCE, MATERIAL_SPECIAL)] = bookRecipe;
 
     // 나무 작업대
     Recipe woodTableRecipe;
