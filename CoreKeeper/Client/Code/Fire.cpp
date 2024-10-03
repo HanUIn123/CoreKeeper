@@ -104,6 +104,13 @@ void CFire::Interaction()
 	// 플레이어쉒 화상입히기!!!!
 }
 
+void CFire::Set_Burn()
+{
+	m_pAnimatorCom->Set_CurState(WALK, 13, 17, 8);
+	m_bBurn = true;
+	m_eState = WALK;
+}
+
 HRESULT CFire::Add_Component()
 {
 	CComponent* pComponent = NULL;

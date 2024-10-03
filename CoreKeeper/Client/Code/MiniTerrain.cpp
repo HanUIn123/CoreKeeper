@@ -104,6 +104,10 @@ void CMiniTerrain::Illuminate_TerrainIndex(_int _iIndex)
     if (_iIndex >= 0 && _iIndex <= m_vecIlluminated.size())
     {
         m_vecIlluminated[_iIndex] = true;
+        if(_iIndex + 1 < m_vecIlluminated.size())
+            m_vecIlluminated[_iIndex + 1] = true;
+        if (_iIndex + VTXCNTX < m_vecIlluminated.size())
+            m_vecIlluminated[_iIndex + VTXCNTX] = true;
     }
 }
 

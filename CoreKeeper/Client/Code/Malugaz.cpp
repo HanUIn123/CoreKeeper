@@ -43,7 +43,7 @@ HRESULT CMalugaz::Ready_GameObject(_vec3 vPos)
     m_pTransformCom->Set_Pos(vPos.x, m_fIdleY, vPos.z);
     m_pTransformCom->Set_Scale(3.2f, 3.2f, 3.2f);
     m_pColliderCom->Set_Offset(_vec3(-0.25f, -0.5f, 0));
-    m_pStateCom->Set_Stat(2000, 0, 25, 0);
+    m_pStateCom->Set_Stat(1000, 0, 25, 0);
     //m_vecDropItem.push_back(ITEM_STAFF);
     //m_vecDropItem.push_back(ITEM_WOOD);
     Set_Speed(6.0f);
@@ -282,7 +282,7 @@ void CMalugaz::Pattern_Dead()
     if (m_iPhase == 1)
     {
         m_iPhase = 2;
-        m_pStateCom->Set_Stat(2000, 0, 25, 0);
+        m_pStateCom->Set_Stat(1000, 0, 25, 0);
         m_pStateCom->Set_Revive();
 
         m_fImmuneTime = 0.f;
@@ -296,7 +296,9 @@ void CMalugaz::Pattern_Dead()
     }
     if (m_bKnockBackEnd)
     {
-        m_pAnimatorCom->Set_CurState(DEAD, 40, 44, 4);
+        m_pBufferCom = m_pBufferCom3;
+        m_iTextureNum = 2;
+        m_pAnimatorCom->Set_CurState(DEAD, 0, 10, 8);
         if (m_pAnimatorCom->Get_MotionEnd())
         {
             m_pGraphicDev->LightEnable(m_iLightNum, FALSE); // 조명 비활성화
@@ -364,7 +366,7 @@ STATE CMalugaz::State_Change()
             return IDLE;
         else
         {
-            if (m_pCalculatorCom->Check_Distance2D(&vPlayerPos, &vPos, m_fRange))
+            if (m_pCalculatorCom->Check_Distance2D(&vPlayerPos, &vPos, m_fRange * 0.1f))
                 return SWING;
             else if(!m_pCalculatorCom->Check_Distance2D(&vPlayerPos, &vPos, m_fAggroDistance))
                 return WALK;    
@@ -579,6 +581,10 @@ void CMalugaz::Pattern_Generate(const _float& fTimeDelta)
     // 차징 시
     if (iFrame % 7 < 2)
     {
+        iFrameSpeed = 6;
+    }
+    else
+    {
         if (m_bLightEnable)
         {
             m_bLightEnable = false;
@@ -592,10 +598,6 @@ void CMalugaz::Pattern_Generate(const _float& fTimeDelta)
                 FAILED_CHECK_RETURN(pScene->Create_GameObject(L"Layer_GameLogic", pFire, m_vecProjectileName.back().c_str()), );
             }
         }
-        iFrameSpeed = 6;
-    }
-    else
-    {
         iFrameSpeed = 8;
     }
 
@@ -661,7 +663,7 @@ void CMalugaz::Pattern_Punch(const _float& fTimeDelta)
     {
         for (int j = -1; j <= 1; ++j)  // x축 방향 (-1, 0, 1)
         {
-            vFirePos[index] = _vec3(vPos.x + j * fOffset, 0.1f, vPos.z + i * fOffset);  // x, z 좌표에 오프셋 추가
+            vFirePos[index] = _vec3(vPos.x + j * fOffset, 0.8f, vPos.z + i * fOffset);  // x, z 좌표에 오프셋 추가
             ++index;
         }
     }
@@ -697,6 +699,7 @@ void CMalugaz::Pattern_Punch(const _float& fTimeDelta)
             for (int i = 0; i < 6; i++)
             {
                 pFire = CFire::Create(m_pGraphicDev, vFirePos[i]);
+                dynamic_cast<CFire*>(pFire)->Set_Burn();
                 NULL_CHECK(pFire);
                 m_vecProjectileName.push_back(L"Monster_Created_Fireball" + std::to_wstring(m_iTagNumber++));
                 FAILED_CHECK_RETURN(pScene->Create_GameObject(L"Layer_GameLogic", pFire, m_vecProjectileName.back().c_str()), );

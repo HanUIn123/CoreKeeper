@@ -183,23 +183,23 @@ HRESULT CMapEditorScene::Ready_Layer_Environment(const _tchar* pLayerTag)
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"MapToolCamera", pGameObject), E_FAIL);
 
-    pGameObject = CCore::Create(m_pGraphicDev, { 128.5f / 2.f, 1.5f, 17.f + 3.f });
+    pGameObject = CCore::Create(m_pGraphicDev, { VTXCNTX / 2, 1.5f, 21.5f });
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Core", pGameObject), E_FAIL);
 
-    pGameObject = CStatue::Create(m_pGraphicDev, { 128.5f / 2.f, 1.0f, 29.f }, 0);
+    pGameObject = CStatue::Create(m_pGraphicDev, { VTXCNTX / 2, 1.2f, 27.f }, 0);
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"SlimeStatue", pGameObject), E_FAIL);
 
-    pGameObject = CStatue::Create(m_pGraphicDev, { 112.5f / 2.f, 1.0f, 22.f }, 1);
+    pGameObject = CStatue::Create(m_pGraphicDev, { VTXCNTX / 2 - 8.f, 1.2f, 23.5f }, 1);
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"LarvaStatue", pGameObject), E_FAIL);
 
-    pGameObject = CStatue::Create(m_pGraphicDev, { 144.5f / 2.f, 1.0f, 22.f }, 2);
+    pGameObject = CStatue::Create(m_pGraphicDev, { VTXCNTX / 2 + 8.f, 1.2f, 23.5f }, 2);
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"MalugazStatue", pGameObject), E_FAIL);
 
-    pGameObject = CCoreBase::Create(m_pGraphicDev, { 128.5f / 2.f, 0.1f, 22.f });
+    pGameObject = CCoreBase::Create(m_pGraphicDev, { VTXCNTX / 2, 0.1f, 22.5f });
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"CoreBase", pGameObject), E_FAIL);
 

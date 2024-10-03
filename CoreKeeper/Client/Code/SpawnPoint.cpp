@@ -102,7 +102,7 @@ HRESULT CSpawnPoint::Add_Component()
 	return S_OK;
 }
 
-CBuilding* CSpawnPoint::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float fX, _float fY, _bool bReposed, _int iBuildImgNum, const wstring _pickedBuildName)
+CSpawnPoint* CSpawnPoint::Create(LPDIRECT3DDEVICE9 pGraphicDev, _float fX, _float fY, _bool bReposed, _int iBuildImgNum, const wstring _pickedBuildName)
 {
 	CSpawnPoint* pCore = new CSpawnPoint(pGraphicDev);
 

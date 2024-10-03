@@ -34,9 +34,6 @@
     <Filter Include="02. GameObject\02. Monster">
       <UniqueIdentifier>{301f7126-4fbe-4325-b170-473466d90274}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. Scene\01. Stage">
-      <UniqueIdentifier>{dd503513-b5da-478f-b248-5529fc2e80ee}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01. Scene\02. Loading">
       <UniqueIdentifier>{4ffcb167-8a95-4665-b85b-2b0ddc2b0ebc}</UniqueIdentifier>
     </Filter>
@@ -415,6 +412,12 @@
     <Filter Include="02. GameObject\07. UI\14. UICookingPot">
       <UniqueIdentifier>{988505d3-0d27-420a-95b8-9a7574ae34a2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01. Scene\03. Stage">
+      <UniqueIdentifier>{dd503513-b5da-478f-b248-5529fc2e80ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Scene\01. Story">
+      <UniqueIdentifier>{b00dfff5-9875-48b8-bcce-2037b6924b2b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -454,7 +457,7 @@
       <Filter>02. GameObject\03. Terrain</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\Stage.h">
-      <Filter>01. Scene\01. Stage</Filter>
+      <Filter>01. Scene\03. Stage</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\Loading.h">
       <Filter>01. Scene\02. Loading</Filter>
@@ -846,7 +849,7 @@
       <Filter>02. GameObject\03. Terrain</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\Stage.cpp">
-      <Filter>01. Scene\01. Stage</Filter>
+      <Filter>01. Scene\03. Stage</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\Loading.cpp">
       <Filter>01. Scene\02. Loading</Filter>
