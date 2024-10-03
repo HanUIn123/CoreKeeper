@@ -282,7 +282,9 @@ void CMalugaz::Pattern_Dead()
     {
         m_iPhase = 2;
         m_pStateCom->Set_Stat(2000, 0, 25, 0);
+        m_pStateCom->Set_Revive();
 
+        m_fImmuneTime = 0.f;
         m_bKnockBackStart = true;
         m_bKnockBackEnd = false;
 

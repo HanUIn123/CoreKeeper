@@ -39,6 +39,7 @@ public:
 	void				Set_UseMP(int iMP) { m_tStat.iMp -= iMP; }
 	void				Set_Recovor(int iHeal) { m_tStat.iHp += iHeal; }
 	void				Set_Dead() { m_bDead = true; }
+	void				Set_Revive() { m_bDead = false; }
 
 	void				Set_AttPlus(_int iAtt) { m_tStat.iAttack += iAtt; }
 	void				Set_MaxHpPlus(_int iMaxHp) { m_tStat.iMaxHp += iMaxHp; m_tStat.iHp += iMaxHp; }
