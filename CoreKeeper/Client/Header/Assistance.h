@@ -23,6 +23,7 @@ public:
 	virtual			void			LateUpdate_GameObject();
 	virtual			void			Render_GameObject();
 	
+	ASSISTANCE						Get_Assistance() { return m_eAssistance; }
 private:
 	HRESULT			Add_Component();
 
