@@ -16,8 +16,6 @@ HRESULT CIngredient::Ready_GameObject(ITEMNUM _eItemNum, _vec3 vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_eItemNum = _eItemNum;
-
 	m_pTransformCom->Set_Scale(0.5f, 0.5f, 0.5f);
 	m_pShadowTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
 	m_pTransformCom->Set_Pos(vPos.x, vPos.y, vPos.z);
@@ -33,15 +31,19 @@ HRESULT CIngredient::Ready_GameObject(ITEMNUM _eItemNum, _vec3 vPos)
 	switch (_eItemNum)
 	{
 	case ITEM_BERRY_SEED:
+		m_eItemNum = ITEM_BERRY;
 		m_iTextureNumber = 0;
 		break;
 	case ITEM_PEPPER_SEED:
+		m_eItemNum = ITEM_PEPPER;
 		m_iTextureNumber = 1;
 		break;
 	case ITEM_CARROT_SEED:
+		m_eItemNum = ITEM_CARROT;
 		m_iTextureNumber = 2;
 		break;
 	case ITEM_FIBER_SEED:
+		m_eItemNum = ITEM_FIBER;
 		m_iTextureNumber = 3;
 		break;
 	}
