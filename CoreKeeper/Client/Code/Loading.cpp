@@ -68,6 +68,7 @@ _uint CLoading::Loading_Stage()
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TorchAnimTex", Engine::CAnimTex::Create(m_pGraphicDev, 6, 1)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SeedAnimTex", Engine::CAnimTex::Create(m_pGraphicDev, 2, 1)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_PlantAnimTex", Engine::CAnimTex::Create(m_pGraphicDev, 6, 1)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_FireAnimTex", Engine::CAnimTex::Create(m_pGraphicDev, 13, 4)), E_FAIL);
 
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SlimeAnimTex", Engine::CAnimTex::Create(m_pGraphicDev, 12, 4)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ShroomManAnimTex", Engine::CAnimTex::Create(m_pGraphicDev, 9, 5)), E_FAIL);
@@ -207,14 +208,16 @@ _uint CLoading::Loading_Stage()
     // SHADOW TEXTURE
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ShadowTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Shadow/shadow%d.png", TEX_NORMAL, 3)), E_FAIL);
 
+#pragma endregion
+
     // OBJECT TEXTURE
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_CoreTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/BaseCamp/Core.png", TEX_NORMAL)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_StatueTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/BaseCamp/Statue_%d.png", TEX_NORMAL, 3)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_CoreBaseTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/BaseCamp/BaseCamp.png", TEX_NORMAL)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SkeletonTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/BaseCamp/Skeleton.png", TEX_NORMAL)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_PlantTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Plant/Plant_%d.png", TEX_NORMAL, 4)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_FireTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Monster/Fire.png", TEX_NORMAL)), E_FAIL);
 
-#pragma endregion
 
 #pragma region UI TEXTURE
 

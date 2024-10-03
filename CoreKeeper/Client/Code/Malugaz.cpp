@@ -7,7 +7,7 @@
 #include "../Header/Fire.h"
 
 CMalugaz::CMalugaz(LPDIRECT3DDEVICE9 pGraphicDev)
-    : CMonster(pGraphicDev), m_iPhase(1), m_iIdleCount(0)
+    : CMonster(pGraphicDev), m_iPhase(1), m_iIdleCount(0), m_iTextureNum(0)
 {
     m_eType = Engine::MON_MALUGAZ;
     m_fIdleY = 2.6f;
@@ -111,7 +111,7 @@ void CMalugaz::Render_GameObject()
     m_pColliderCom->Update_Collider(m_pTransformCom->Get_WorldMatrix());
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
-    m_pTextureCom->Set_Texture();
+    m_pTextureCom->Set_Texture(m_iTextureNum);
     m_pTransformCom->Apply_BillBoard();
 
     m_pBufferCom->Set_Index(m_pAnimatorCom->Get_MotionIndex());
@@ -145,6 +145,14 @@ HRESULT CMalugaz::Add_Component()
     pComponent = m_pBufferCom = dynamic_cast<CAnimTex*>(Engine::Clone_Proto(L"Proto_Malugaz1AnimTex"));
     NULL_CHECK_RETURN(pComponent, E_FAIL);
     m_mapComponent[ID_STATIC].insert({ L"Com_Buffer", pComponent });
+
+    pComponent = m_pBufferCom2 = dynamic_cast<CAnimTex*>(Engine::Clone_Proto(L"Proto_Malugaz2AnimTex"));
+    NULL_CHECK_RETURN(pComponent, E_FAIL);
+    m_mapComponent[ID_STATIC].insert({ L"Com_Buffer2", pComponent });
+
+    pComponent = m_pBufferCom3 = dynamic_cast<CAnimTex*>(Engine::Clone_Proto(L"Proto_Malugaz3AnimTex"));
+    NULL_CHECK_RETURN(pComponent, E_FAIL);
+    m_mapComponent[ID_STATIC].insert({ L"Com_Buffer3", pComponent });
 
     pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_MalugazTex"));
     NULL_CHECK_RETURN(pComponent, E_FAIL);
@@ -274,7 +282,16 @@ void CMalugaz::Pattern_Dead()
     {
         m_iPhase = 2;
         m_pStateCom->Set_Stat(2000, 0, 25, 0);
-        //m_bKnockBackEnd = false;
+        m_pStateCom->Set_Revive();
+
+        m_fImmuneTime = 0.f;
+        m_bKnockBackStart = true;
+        m_bKnockBackEnd = false;
+
+        m_pBufferCom = m_pBufferCom2;
+        m_iTextureNum = 1;
+        m_pAnimatorCom->Set_CurState(IDLE, 0, 5, 8);
+        m_eState = IDLE;
     }
     if (m_bKnockBackEnd)
     {
@@ -343,10 +360,16 @@ STATE CMalugaz::State_Change()
         break;
     case WALK:
         // 쫓아가면서 사거리 계산
-        /*if (m_pCalculatorCom->Check_Distance2D(&vPlayerPos, &vPos, m_fRange))
-            return SWING;
-        if (!m_pCalculatorCom->Check_Distance2D(&vPlayerPos, &vPos, m_fAggroDistance))*/
+        if (m_iPhase == 1)
             return IDLE;
+        else
+        {
+            if (m_pCalculatorCom->Check_Distance2D(&vPlayerPos, &vPos, m_fRange))
+                return SWING;
+            else if(!m_pCalculatorCom->Check_Distance2D(&vPlayerPos, &vPos, m_fAggroDistance))
+                return WALK;    
+        }
+        
         break;
     case SWING:
         // 공격 모션이 끝났을 때
@@ -633,6 +656,79 @@ void CMalugaz::Pattern_Run(const _float& fTimeDelta)
 
 void CMalugaz::Pattern_Punch(const _float& fTimeDelta)
 {
+    m_bAttackSuccess = false;
+
+    _vec3 vPos, vFirePos[9];
+    m_pTransformCom->Get_Info(INFO_POS, &vPos);
+
+    _float fOffset = 1.0f; // 각 불덩이 간의 거리
+    int index = 0;
+
+    for (int i = -1; i <= 1; ++i)  // z축 방향 (-1, 0, 1)
+    {
+        for (int j = -1; j <= 1; ++j)  // x축 방향 (-1, 0, 1)
+        {
+            vFirePos[index] = _vec3(vPos.x + j * fOffset, 0.1f, vPos.z + i * fOffset);  // x, z 좌표에 오프셋 추가
+            ++index;
+        }
+    }
+
+    // 방향에 따른 애니메이션 설정 : 방향 바꼈다고 차징 끊기지 않도록 설정
+    _int iFrame = 0, iFrameSpeed = 0;
+    switch (m_eDir)
+    {
+    case FRONT:
+        iFrame = 36 + m_iAttackAnimProgress;
+        break;
+    case RIGHT:
+    case LEFT:
+        iFrame = 42 + m_iAttackAnimProgress;
+        break;
+    case BACK:
+        iFrame = 48 + m_iAttackAnimProgress;
+        break;
+    }
+
+    CGameObject* pFire(nullptr);
+
+    iFrameSpeed = 8;
+
+    // 차징 시
+    if (iFrame % 6 < 2)
+    {
+        if (m_bLightEnable)
+        {
+            m_bLightEnable = false;
+            // 샤먼 차징 시 조명 끄고 실제 불덩이 생성하여 조명 적용
+            CScene* pScene = Engine::Get_Scene();
+            for (int i = 0; i < 6; i++)
+            {
+                pFire = CFire::Create(m_pGraphicDev, vFirePos[i]);
+                NULL_CHECK(pFire);
+                m_vecProjectileName.push_back(L"Monster_Created_Fireball" + std::to_wstring(m_iTagNumber++));
+                FAILED_CHECK_RETURN(pScene->Create_GameObject(L"Layer_GameLogic", pFire, m_vecProjectileName.back().c_str()), );
+            }
+        }
+        iFrameSpeed = 9;
+    }
+    else
+    {
+        iFrameSpeed = 8;
+    }
+
+
+    if (m_iFrameCount++ > iFrameSpeed)
+    {
+        m_iFrameCount = 0;
+        if (++m_iAttackAnimProgress >= 8)
+        {
+            if (!m_bLightEnable)
+                m_bLightEnable = true;
+            m_bAttackSuccess = true;
+            m_iAttackAnimProgress = 0;
+        }
+        m_pAnimatorCom->Set_CurState(SWING, iFrame, iFrame, -1);
+    }
 }
 
 CMalugaz* CMalugaz::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)

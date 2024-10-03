@@ -20,7 +20,7 @@ private:
 	explicit						CPlant(LPDIRECT3DDEVICE9 pGraphicDev);
 	virtual							~CPlant();
 public:
-	virtual			HRESULT			Ready_GameObject(ITEMNUM _eItemNum, _vec3 vPos);
+	virtual			HRESULT			Ready_GameObject(ITEMNUM _eItemNum, _int iIndex);
 	virtual			_int			Update_GameObject(const _float& fTimeDelta);
 	virtual			void			LateUpdate_GameObject();
 	virtual			void			Render_GameObject();
@@ -31,6 +31,7 @@ public:
 	virtual			_vec3			Get_ObjectPos() { return m_vBuildPosition; }
 	virtual			void			Set_ObjectPos(_vec3 _iBuildingPos) { m_vBuildPosition = _iBuildingPos; }
 
+	ITEMNUM			Get_ItemNum() { return m_eItemNum; }
 private:
 	HRESULT							Add_Component();
 
@@ -38,8 +39,11 @@ private:
 	Engine::CAnimTex* m_pAnimBufferCom;
 	Engine::CAnimator* m_pAnimatorCom;
 
+	ITEMNUM	m_eItemNum;
+	_int	m_iTextureNum;
+
 public:
-	static CPlant* Create(LPDIRECT3DDEVICE9 pGraphicDev, ITEMNUM _eItemNum, _vec3 vPos);
+	static CPlant* Create(LPDIRECT3DDEVICE9 pGraphicDev, ITEMNUM _eItemNum, _int iIndex);
 
 private:
 	virtual void					Free();

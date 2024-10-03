@@ -190,7 +190,6 @@ CItem* CCraftMgr::Cook(CInventory* _pInventory, ITEMNUM _eItemNum1, ITEMNUM _eIt
     if (_eItemNum1 < ITEM_BERRY || _eItemNum1 > ITEM_MUSHROOM || _eItemNum2 < ITEM_BERRY || _eItemNum2 > ITEM_MUSHROOM)
         return nullptr;
 
-
     _pInventory->Minus_Item(_eItemNum1, 1);
     _pInventory->Minus_Item(_eItemNum2, 1);
 

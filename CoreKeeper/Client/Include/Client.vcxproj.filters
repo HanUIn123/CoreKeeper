@@ -417,6 +417,9 @@
     </Filter>
     <Filter Include="02. GameObject\07. UI\14. UICook">
       <UniqueIdentifier>{988505d3-0d27-420a-95b8-9a7574ae34a2}</UniqueIdentifier>
+	</Filter>
+    <Filter Include="03. Manager\01. FarmMgr">
+      <UniqueIdentifier>{46c0290f-a39c-42b6-a938-69e5da0636cb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -819,6 +822,9 @@
     <ClInclude Include="..\Header\Fire.h">
       <Filter>02. GameObject\08. Object\12. Fire</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\FarmMgr.h">
+      <Filter>03. Manager\01. FarmMgr</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1198,6 +1204,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\Fire.cpp">
       <Filter>02. GameObject\08. Object\12. Fire</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\FarmMgr.cpp">
+      <Filter>03. Manager\01. FarmMgr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
