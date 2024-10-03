@@ -284,7 +284,7 @@ void CUICraftSlot::Ready_Table()
 
 		// ¿ìÃø
 
-		UIITEM FURNACE = { m_iIndex, ITEM_FURNACE, MATERIAL_COPPER, 10 };
+		UIITEM FURNACE = { m_iIndex, ITEM_FURNACE, MATERIAL_WOOD, 10 };
 		mapItemType.insert({ make_pair(TABLE_CRAFT, FALSE), FURNACE });
 
 		break;

@@ -141,48 +141,47 @@ _int CUIFurnace::Update_GameObject(const _float& fTimeDelta)
 		{
 			m_bRSlot = false;
 		}
-
-		if (!m_pInventoryCom->Check_Empty(0))
-		{
-			m_fTime -= fTimeDelta * 5.f;
-
-			m_Rect.top = (_long)(m_FirstRect.top + ((_float)(m_FirstRect.bottom - m_FirstRect.top) - ((_float)(m_FirstRect.bottom - m_FirstRect.top) * (m_fTime / 80.f))));
-
-			if (m_fTime <= 0)
-			{
-				m_fTime = 80.f;
-
-				CItem* pItem = m_pInventoryCom->Get_Item(0);
-
-				ITEMNUM eBarNum = ITEM_END;
-				MATERIAL eBarMat = MATERIAL_END;
-
-				switch (pItem->Get_ItemNum())
-				{
-				case ITEM_COPPER:
-					eBarNum = ITEM_COPPER_BAR;
-					eBarMat = MATERIAL_COPPER;
-					break;
-
-				case ITEM_IRON:
-					eBarNum = ITEM_IRON_BAR;
-					eBarMat = MATERIAL_IRON;
-					break;
-
-				case ITEM_SCARLET:
-					eBarNum = ITEM_SCARLET_BAR;
-					eBarMat = MATERIAL_SCARLET;
-					break;
-
-				}
-
-				CItem* pCraftItem = CCraftMgr::GetInstance()->Craft(m_pInventoryCom, eBarNum, eBarMat);
-
-				m_pSecondInventoryCom->Add_Item(pCraftItem);
-			}
-		}
-
 		Add_RenderGroup(RENDER_UI, this);
+	}
+
+	if (!m_pInventoryCom->Check_Empty(0))
+	{
+		m_fTime -= fTimeDelta * 5.f;
+
+		m_Rect.top = (_long)(m_FirstRect.top + ((_float)(m_FirstRect.bottom - m_FirstRect.top) - ((_float)(m_FirstRect.bottom - m_FirstRect.top) * (m_fTime / 80.f))));
+
+		if (m_fTime <= 0)
+		{
+			m_fTime = 80.f;
+
+			CItem* pItem = m_pInventoryCom->Get_Item(0);
+
+			ITEMNUM eBarNum = ITEM_END;
+			MATERIAL eBarMat = MATERIAL_END;
+
+			switch (pItem->Get_ItemNum())
+			{
+			case ITEM_COPPER:
+				eBarNum = ITEM_COPPER_BAR;
+				eBarMat = MATERIAL_COPPER;
+				break;
+
+			case ITEM_IRON:
+				eBarNum = ITEM_IRON_BAR;
+				eBarMat = MATERIAL_IRON;
+				break;
+
+			case ITEM_SCARLET:
+				eBarNum = ITEM_SCARLET_BAR;
+				eBarMat = MATERIAL_SCARLET;
+				break;
+
+			}
+
+			CItem* pCraftItem = CCraftMgr::GetInstance()->Craft(m_pInventoryCom, eBarNum, eBarMat);
+
+			m_pSecondInventoryCom->Add_Item(pCraftItem);
+		}
 	}
 
 	return iExit;
