@@ -54,6 +54,7 @@ _int CShaman::Update_GameObject(const _float& fTimeDelta)
     if (m_bStopDraw)
         return 0;
 
+    Set_Cast();
     Set_Light();
 
     
@@ -102,8 +103,16 @@ void CShaman::LateUpdate_GameObject()
 
 void CShaman::Render_GameObject()
 {
-    if (m_bStopDraw || !m_pCalculatorCom->In_Frustum(m_pTransformCom))
+    if (m_bStopDraw)
         return;
+
+    _vec3		vPos, vPlayerPos;
+    m_pTransformCom->Get_Info(INFO_POS, &vPos);
+    m_pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
+
+    if (!m_pCalculatorCom->Check_Distance2D(&vPos, &vPlayerPos, 20.f))
+        return;
+
     m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
     m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
 
@@ -300,12 +309,8 @@ void CShaman::Pattern_Idle(const _float& fTimeDelta)
 // 플레이어 방향으로 이동, 추후 A스타 알고리즘으로 변경
 void CShaman::Pattern_Chase(const _float& fTimeDelta)
 {
-    Engine::CTransform* pPlayerTransform = dynamic_cast<Engine::CTransform*>
-        (Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Transform"));
-    NULL_CHECK(pPlayerTransform);
-
     _vec3		vPos, vPlayerPos, vDir;
-    pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
+    m_pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
     m_pTransformCom->Get_Info(INFO_POS, &vPos);
     vDir = vPlayerPos - vPos;
     D3DXVec3Normalize(&vDir, &vDir);
@@ -338,12 +343,8 @@ void CShaman::Pattern_Chase(const _float& fTimeDelta)
 void CShaman::Pattern_Attack(const _float& fTimeDelta)
 {
     m_bAttackSuccess = false;
-    Engine::CTransform* pPlayerTransform = dynamic_cast<Engine::CTransform*>
-        (Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Transform"));
-    NULL_CHECK(pPlayerTransform);
-
     _vec3 vPlayerPos;
-    pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
+    m_pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
 
     // 플레이어 위치에 따른 방향(4방향) 계산
     if (g_bIsTopCamera)
@@ -422,17 +423,16 @@ void CShaman::Pattern_Dead()
 
 STATE CShaman::State_Change()
 {
-    CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
     _vec3 vPlayerPos, vPos;
     CGameObject* pWeapon;
-    dynamic_cast<CTransform*>(pPlayer->Get_Component(ID_DYNAMIC, L"Com_Transform"))->Get_Info(INFO_POS, &vPlayerPos);
     m_pTransformCom->Get_Info(INFO_POS, &vPos);
+    m_pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
     switch (m_eState)
     {
     case IDLE:
-        pWeapon = pPlayer->Get_HandedItem();
+        pWeapon = m_pPlayer->Get_HandedItem();
         // 플레이어가 무기를 들고 공격하는 상태면 충돌 체크
-        if (pPlayer->Get_CurState() == SWING)
+        if (m_pPlayer->Get_CurState() == SWING)
         {
             CCollider* pWeaponCollider = dynamic_cast<Engine::CCollider*>(pWeapon->Get_Component(ID_DYNAMIC, L"Com_Collider"));
             if (m_pColliderCom->Check_Collision(pWeaponCollider))

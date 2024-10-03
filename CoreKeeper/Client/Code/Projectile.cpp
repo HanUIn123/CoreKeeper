@@ -65,6 +65,7 @@ _int CProjectile::Update_GameObject(const _float& fTimeDelta)
     if (m_bStopDraw)
         return 0;
 
+    Set_Cast();
     Set_Light();
 
     if (m_eState != DEAD)
@@ -108,7 +109,14 @@ void CProjectile::Render_GameObject()
     if (!m_bChargeActive && m_eState == IDLE)
         return;
 
-    if (m_bStopDraw || !m_pCalculatorCom->In_Frustum(m_pTransformCom))
+    if (m_bStopDraw)
+        return;
+
+    _vec3		vPos, vPlayerPos;
+    m_pTransformCom->Get_Info(INFO_POS, &vPos);
+    m_pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
+
+    if (!m_pCalculatorCom->Check_Distance2D(&vPos, &vPlayerPos, 20.f))
         return;
 
     m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
@@ -181,9 +189,7 @@ void CProjectile::Pattern_Chase(const _float& fTimeDelta)
         m_bCharging = false;
         _vec3 vPos, vPlayerPos;
         m_pTransformCom->Get_Info(INFO_POS, &vPos);
-        Engine::CTransform * pPlayerTransform = dynamic_cast<Engine::CTransform*>
-            (Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Transform"));
-        pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
+        m_pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
         m_vAttackPoint = vPlayerPos - vPos;
         D3DXVec3Normalize(&m_vAttackPoint, &m_vAttackPoint);
         if (m_vAttackPoint.x < 0)
@@ -204,8 +210,7 @@ void CProjectile::Pattern_Attack(const _float& fTimeDelta)
         {
             _vec3		vPos;
             m_pTransformCom->Get_Info(INFO_POS, &vPos);
-            dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"))
-                ->Set_KnockBack(vPos, m_pStateCom->Get_Stat()->iAttack);
+            m_pPlayer->Set_KnockBack(vPos, m_pStateCom->Get_Stat()->iAttack);
             // 플레이어 화상 상태 이상 추가
         }
     }
@@ -227,12 +232,9 @@ void CProjectile::Pattern_Dead()
 
 STATE CProjectile::State_Change()
 {
-    CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
     _vec3 vPlayerPos, vPos, vCheckPos;
-    dynamic_cast<CTransform*>(pPlayer->Get_Component(ID_DYNAMIC, L"Com_Transform"))->Get_Info(INFO_POS, &vPlayerPos);
     m_pTransformCom->Get_Info(INFO_POS, &vPos);
-    CCollider* pPlayerCollider;
-    CTerrain* pTerrain;
+    m_pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
     _int iIndex;
     switch (m_eState)
     {
@@ -243,18 +245,16 @@ STATE CProjectile::State_Change()
         break;
     case WALK:
         // 날아가다가 플레이어랑 부딪히면 SWING(폭발)
-        pPlayerCollider = dynamic_cast<Engine::CCollider*>(pPlayer->Get_Component(ID_DYNAMIC, L"Com_Collider"));
         vCheckPos = vPos + m_vAttackPoint * m_fSpeed * m_fAttackTime * 0.1f;
         iIndex = _int(vCheckPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (vCheckPos.x + 0.5f * VTXITV);
-        pTerrain = dynamic_cast<CTerrain*>(Engine::Get_GameObject(L"Layer_Environment", L"Terrain"));
-        if (m_pColliderCom->Check_Collision(pPlayerCollider))
+        if (m_pColliderCom->Check_Collision(m_pPlayerCollider))
         {
             m_eState = SWING;
             m_bCollideWithPlayer = true;
         }
         else if (0 <= iIndex && iIndex < (VTXCNTX - 1) * (VTXCNTZ - 1))
         {
-            if (pTerrain->Get_UnreachableByIndex(iIndex))
+            if (m_pTerrain->Get_UnreachableByIndex(iIndex))
             {
                 m_eState = SWING;
                 m_bCollideWithPlayer = false;

@@ -43,6 +43,8 @@ _int CShroomMan::Update_GameObject(const _float& fTimeDelta)
     if (m_bStopDraw)
         return 0;
 
+    Set_Cast();
+
     if (g_bIsTopCamera)
     {
         if (m_vAttackPoint.x < 0)
@@ -111,7 +113,14 @@ void CShroomMan::LateUpdate_GameObject()
 
 void CShroomMan::Render_GameObject()
 {
-    if (m_bStopDraw || !m_pCalculatorCom->In_Frustum(m_pTransformCom))
+    if (m_bStopDraw)
+        return;
+
+    _vec3		vPos, vPlayerPos;
+    m_pTransformCom->Get_Info(INFO_POS, &vPos);
+    m_pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
+
+    if (!m_pCalculatorCom->Check_Distance2D(&vPos, &vPlayerPos, 20.f))
         return;
     m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
     m_pColliderCom->Update_Collider(m_pTransformCom->Get_WorldMatrix());
@@ -279,12 +288,8 @@ void CShroomMan::Pattern_Idle(const _float& fTimeDelta)
 // 플레이어 방향으로 돌진 설정 및 돌진 준비 애니메이션 재생
 void CShroomMan::Pattern_Chase(const _float& fTimeDelta)
 {
-    Engine::CTransform* pPlayerTransform = dynamic_cast<Engine::CTransform*>
-        (Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Transform"));
-    NULL_CHECK(pPlayerTransform);
-
     _vec3		vPlayerPos, vPos;
-    pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
+    m_pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
     m_pTransformCom->Get_Info(INFO_POS, &vPos);
 
     m_pAnimatorCom->Set_CurState(WALK, 27, 33, 8);
@@ -307,31 +312,24 @@ void CShroomMan::Pattern_Attack(const _float& fTimeDelta)
 {
     _vec3		vPos, vPlayerPos;
     m_pTransformCom->Get_Info(INFO_POS, &vPos);
-    Engine::CTransform* pPlayerTransform = dynamic_cast<Engine::CTransform*>
-        (Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Transform"));
-    NULL_CHECK(pPlayerTransform);
-    pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
+    m_pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
 
     // 일정 스피드 이상일 때 충돌 처리
     if (m_fAttackTime > 0.2f)
     {
         _vec3 vCheckPos = vPos + m_vAttackPoint * m_fSpeed * m_fAttackTime * 0.1f;
         _int iIndex = _int(vCheckPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (vCheckPos.x + 0.5f * VTXITV);
-        CTerrain* pTerrain = dynamic_cast<CTerrain*>(Engine::Get_GameObject(L"Layer_Environment", L"Terrain"));
-        Engine::CCollider* pPlayerCollider = dynamic_cast<Engine::CCollider*>
-            (Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Collider"));
+       
         // 플레이어 충돌 시 공격 성공
-        if (m_pColliderCom->Check_Collision(pPlayerCollider))
+        if (m_pColliderCom->Check_Collision(m_pPlayerCollider))
         {
             m_bAttackSuccess = true;
-            dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"))
-                ->Set_KnockBack(vPos, m_pStateCom->Get_Stat()->iAttack);
-
+            m_pPlayer->Set_KnockBack(vPos, m_pStateCom->Get_Stat()->iAttack);
         }
         // 벽 충돌
         else if (0 <= iIndex && iIndex < VTXCNTX * VTXCNTZ)
         {
-            if (pTerrain->Get_UnreachableByIndex(iIndex))
+            if (m_pTerrain->Get_UnreachableByIndex(iIndex))
                 m_bAttackSuccess = true;
         }
 
@@ -403,16 +401,14 @@ void CShroomMan::Pattern_Dead()
 
 STATE CShroomMan::State_Change()
 {
-    CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
     if (m_eState == IDLE)
     {
-        CGameObject* pWeapon = pPlayer->Get_HandedItem();
+        CGameObject* pWeapon = m_pPlayer->Get_HandedItem();
         _vec3 vPlayerPos, vPos;
-        dynamic_cast<CTransform*>(pPlayer->Get_Component(ID_DYNAMIC, L"Com_Transform"))->Get_Info(INFO_POS, &vPlayerPos);
         m_pTransformCom->Get_Info(INFO_POS, &vPos);
-
+        m_pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
         // 플레이어가 무기를 들고 공격하는 상태면 충돌 체크
-        if (pPlayer->Get_CurState() == SWING)
+        if (m_pPlayer->Get_CurState() == SWING)
         {
             CCollider* pWeaponCollider = dynamic_cast<Engine::CCollider*>(pWeapon->Get_Component(ID_DYNAMIC, L"Com_Collider"));
             if (m_pColliderCom->Check_Collision(pWeaponCollider))
