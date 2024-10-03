@@ -23,7 +23,7 @@ CFirework::~CFirework()
 HRESULT CFirework::Ready_Particles(D3DXVECTOR3* origin, _int numParticles)
 {
 	_origin = *origin;
-	_size = 0.9;
+	//_size = 0.9;
 	_vbSize = 2048;
 	_vbOffset = 0;
 	_vbBatchSize = 512;
@@ -54,13 +54,18 @@ void CFirework::resetParticle(Attribute* attribute) // 파티클 리셋
 		&attribute->_velocity,
 		&attribute->_velocity);
 
-	attribute->_velocity *= 100.0f; // 속도 지정
+	attribute->_velocity *= 10.0f; // 속도 지정
 
+	/*
 	attribute->_color = D3DXCOLOR(
 		d3d::GetRandomFloat(0.0f, 1.0f),
 		d3d::GetRandomFloat(0.0f, 1.0f),
 		d3d::GetRandomFloat(0.0f, 1.0f),
 		1.0f); // 랜덤 색 생성 (빨간색 X)
+		*/
+	attribute->_color = D3DXCOLOR(1.f, 1.f, 1.f, 1.f); 
+
+	attribute->_iTextureNum = 0;
 
 	attribute->_age = 0.0f;
 	attribute->_lifeTime = 2.0f; // 수명 2초
@@ -80,6 +85,13 @@ void CFirework::update(float timeDelta)
 			i->_age += timeDelta;
 
 			if (i->_age > i->_lifeTime) // 수명이 끝남
+			{
+				i->_iTextureNum++;
+
+				i->_age = 0.f;
+			}
+
+			if (i->_iTextureNum >= m_iMaxTexture)
 				i->_isAlive = false;
 		}
 	}

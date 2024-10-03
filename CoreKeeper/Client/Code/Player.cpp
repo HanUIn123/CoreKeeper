@@ -1215,9 +1215,10 @@ void CPlayer::Set_UI()
 	if (Engine::Key_Down(DIK_TAB))
 	{
 		if (m_bMap || m_bChestInventory || m_bCraft || m_bInventory || m_bStatue || m_bGraveInventory || m_bFurnace || m_bCookingPot)
+		{
 			UI_Disable();
-
-		else if (!m_bMap && !m_bChestInventory)
+		}
+		else if (!m_bMap && !m_bChestInventory && !m_bCraft && !m_bInventory && !m_bStatue && !m_bGraveInventory && !m_bFurnace && !m_bCookingPot)
 		{
 			Set_Inventory();
 			Set_Craft();
@@ -1406,6 +1407,13 @@ void CPlayer::Set_Map()
 
 void CPlayer::Set_Status()
 {
+
+	if (m_bMap || m_bStatue || m_bCookingPot || m_bFurnace || m_bGraveInventory || m_bChestInventory || !m_bInventory)
+	{
+		UI_Disable();
+		return;
+	}
+
 	CUIPlayerStatus* pStatus = dynamic_cast<CUIPlayerStatus*>(Engine::Get_GameObject(L"Layer_UI", L"UIPlayerStatus"));
 	pStatus->Set_Window();
 
@@ -1527,8 +1535,6 @@ void CPlayer::Set_Statue(_int _StatueNum)
 
 	pSCraft->Set_Window();
 
-	Set_Inventory();
-
 	if (m_bStatue)
 		m_bStatue = false;
 	else
@@ -1603,13 +1609,6 @@ void CPlayer::Set_CookingPot()
 
 void CPlayer::UI_Disable()
 {
-	if (m_bInventory)
-	{
-		Set_Inventory();
-
-		m_bInventory = false;
-	}
-
 	if (m_bCraft)
 	{
 		Set_Craft();
@@ -1654,6 +1653,14 @@ void CPlayer::UI_Disable()
 	{
 		Set_CookingPot();
 	}
+
+	if (m_bInventory)
+	{
+		Set_Inventory();
+
+		m_bInventory = false;	
+	}
+
 }
 
 void CPlayer::Particle_Update(_float fTimeDelta)

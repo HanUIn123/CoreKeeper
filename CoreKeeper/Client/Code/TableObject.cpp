@@ -31,6 +31,22 @@ _int CTableObject::Update_GameObject(const _float& fTimeDelta)
 	{
 		Interaction();
 	}
+	else if (!Check_Interaction())
+	{
+		if (m_bCollision)
+		{
+			CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
+
+			pPlayer->Set_Craft();
+
+			if (!pPlayer->Get_CraftUI())
+			{
+				pPlayer->Set_Inventory();
+
+				m_bCollision = false;
+			}
+		}
+	}
 
 	Add_RenderGroup(RENDER_ALPHA, this);
 
@@ -70,6 +86,8 @@ void CTableObject::Interaction()
 		pPlayer->Set_Craft(TABLE_CRAFT, m_eMaterial);
 
 		pPlayer->Set_Inventory();
+
+		m_bCollision = true;
 	}
 }
 

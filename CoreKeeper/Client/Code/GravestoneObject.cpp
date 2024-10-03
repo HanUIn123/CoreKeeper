@@ -5,7 +5,7 @@
 #include "..\Header\Player.h"
 
 CGravestoneObject::CGravestoneObject(LPDIRECT3DDEVICE9 pGraphicDev)
-	: CObject(pGraphicDev), m_bCollision(false)
+	: CObject(pGraphicDev)
 {
 }
 
@@ -37,7 +37,7 @@ _int CGravestoneObject::Update_GameObject(const _float& fTimeDelta)
 
 			pPlayer->Set_GraveInventory();
 
-			if (!pPlayer->Get_GraveInv())
+			if (!pPlayer->Get_GraveUI())
 			{
 				m_bCollision = false;
 			}

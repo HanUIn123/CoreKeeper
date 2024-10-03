@@ -222,6 +222,10 @@ _int CUICookingPot::Update_GameObject(const _float& fTimeDelta)
 			m_pDSlotInventoryCom->Minus_Item(m_pDSlotInventoryCom->Get_Item(0)->Get_ItemNum(), 1);
 		}
 	}
+	else if (m_pUSlotInventoryCom->Check_Empty(0) && !m_pDSlotInventoryCom->Check_Empty(0) || m_pUSlotInventoryCom->Check_Empty(0) && !m_pDSlotInventoryCom->Check_Empty(0))
+	{
+		m_fTime = 80.f;
+	}
 
 	return iExit;
 }

@@ -28,6 +28,20 @@ _int CCookingPotObject::Update_GameObject(const _float& fTimeDelta)
 	{
 		Interaction();
 	}
+	else if (!Check_Interaction())
+	{
+		if (m_bCollision)
+		{
+			CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
+
+			pPlayer->Set_CookingPot();
+
+			if (!pPlayer->Get_CookingUI())
+			{
+				m_bCollision = false;
+			}
+		}
+	}
 
 	Add_RenderGroup(RENDER_ALPHA, this);
 
@@ -65,6 +79,8 @@ void CCookingPotObject::Interaction()
 		CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
 
 		pPlayer->Set_CookingPot();
+
+		m_bCollision = true;
 	}
 }
 

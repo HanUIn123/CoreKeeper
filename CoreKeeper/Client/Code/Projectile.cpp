@@ -43,6 +43,8 @@ HRESULT CProjectile::Ready_GameObject(_vec3 vPos)
 
     m_pSmogParticleCom->init(L"../Bin/Resource/Texture/Particle/Smog_Particle/Big_Smog_%d.png", 6, 1.f);
 
+    m_pFlameParticleCom->init(L"../Bin/Resource/Texture/Particle/FirePulse/Fire_Pulse_%d.png", 4, 0.1f);
+
     return S_OK;
 }
 
@@ -52,7 +54,16 @@ _int CProjectile::Update_GameObject(const _float& fTimeDelta)
     {
         m_pSmogParticleCom->update(fTimeDelta);
 
+        m_pFlameParticleCom->update(fTimeDelta);
+
         Add_RenderGroup(RENDER_ALPHA, this);
+
+
+        if (m_pFlameParticleCom->isDead())
+        {
+
+            m_pFlameParticleCom->reset();
+        }
 
         if (m_pSmogParticleCom->isDead())
         {
@@ -60,6 +71,7 @@ _int CProjectile::Update_GameObject(const _float& fTimeDelta)
 
             m_pSmogParticleCom->reset();
         }
+
     }
 
     if (m_bStopDraw)
@@ -105,6 +117,8 @@ void CProjectile::Render_GameObject()
     {
         m_pGraphicDev->SetTransform(D3DTS_WORLD, &m_SmogMatrix);
         m_pSmogParticleCom->render();
+
+        m_pFlameParticleCom->render();
     }
     if (!m_bChargeActive && m_eState == IDLE)
         return;
@@ -170,6 +184,10 @@ HRESULT CProjectile::Add_Component()
     pComponent = m_pSmogParticleCom = dynamic_cast<CSmog*>(Engine::Clone_Proto(L"Proto_Smog"));
     NULL_CHECK_RETURN(pComponent, E_FAIL);
     m_mapComponent[ID_STATIC].insert({ L"Com_Particle", pComponent });
+
+    pComponent = m_pFlameParticleCom = dynamic_cast<CFirework*>(Engine::Clone_Proto(L"Proto_Firework"));
+    NULL_CHECK_RETURN(pComponent, E_FAIL);
+    m_mapComponent[ID_STATIC].insert({ L"Com_FireParticle", pComponent });
 
     return S_OK;
 

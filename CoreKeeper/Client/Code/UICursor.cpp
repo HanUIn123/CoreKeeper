@@ -101,11 +101,6 @@ void CUICursor::Render_GameObject()
 
 		switch (eNum)
 		{
-		//case ITEM_SEED:
-		//	matWorld._11 = 10.f;
-		//	matWorld._22 = 10.f;
-		//	break;
-
 		case ITEM_SWORD:
 			matWorld._11 = 40.f;
 			matWorld._22 = 40.f;
@@ -138,6 +133,7 @@ void CUICursor::Render_GameObject()
 
 			matWorld._42 -= 8.f;
 			break;
+
 		case ITEM_STAFF:
 			matWorld._11 = 35.f;
 			matWorld._22 = 35.f;
@@ -162,11 +158,6 @@ void CUICursor::Render_GameObject()
 			matWorld._22 = 40.f;
 
 			matWorld._42 += 15.f;
-			break;
-
-		case ITEM_TORCH:
-			matWorld._11 = 40.f;
-			matWorld._22 = 40.f;
 			break;
 
 		case ITEM_COPPER:
@@ -204,6 +195,7 @@ void CUICursor::Render_GameObject()
 			matWorld._22 = 20.f;
 			break;
 		}
+
 
 
 		matWorld._41 -= 25.f;
