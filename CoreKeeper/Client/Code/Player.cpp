@@ -27,6 +27,7 @@
 #include "..\Header\Stage.h"
 #include "..\Header\GravestoneObject.h"
 #include "..\Header\UIFurnace.h"
+#include "..\Header\SlimeRender.h"
 
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CGameObject(pGraphicDev)
@@ -379,13 +380,19 @@ void CPlayer::Mouse_Click(const _float& fTimeDelta)
 				case ITEM_WATERINGCAN:
 					Watering();
 					break;
-				// case ITEM_SEED:
-					// break;
+				case ITEM_BERRY_SEED:
+				case ITEM_PEPPER_SEED:
+				case ITEM_CARROT_SEED:
+				case ITEM_FIBER_SEED:
+					Plant(m_pHandedItem->Get_ItemNum());
+					break;
+
+				// 설치 관련
+
 				default:
 					break;
 				}
 			}
-
 		}
 	}
 }
@@ -1000,27 +1007,45 @@ void CPlayer::Hoe()
 	{
 		_vec3 vPos;
 		m_pTransformCom->Get_Info(INFO_POS, &vPos);
-		// 플레이어와 마우스 커서 사이의 거리가 n 이하일 경우 커서에 타일 UI 뜨게 하기
-		// 해당 위치에 설치할 수 있을 경우 파란색 타일, 없을 경우 빨간색 타일
-		// 설치할 수 있는 타일일 때 클릭하면 타일 텍스쳐 넘버 변경
-		// 설치할 수 없는 타일일 때 클릭하면 경고 문구 띄울까 말까 : 대사 시스템 때 삽입하면 될듯
+		// 씨앗 심은 땅 or 덜 자란 식물이면 해당 씨앗 아이템 생성
+		// 씨앗 안심은 땅이면 다시 원래 타일로 되돌리기
+		// 다 자란 식물이면 해당 농사 결과물(Ingredient) 아이템 생성
+		// 0 ~ 8번 : 27번
+		// 9 ~ 17번 : 29번
 		if (m_pCalculatorCom->Check_Distance2D(&vPos, &m_vMouseWorldPos, 5.f))
 		{
 			_int iIndex = _int(m_vMouseWorldPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (m_vMouseWorldPos.x + 0.5f * VTXITV);
 			switch (m_pHandedItem->Get_ItemMaterial())
 			{
 			case MATERIAL_WOOD: // 1 x 1
-				m_pTerrain->Set_TextureNumber(iIndex, 27);
+				if (!m_pTerrain->Get_UnreachableByIndex(iIndex))
+				{
+					m_pTerrain->Set_TextureNumber(iIndex, 27);
+					CScene* pScene = Engine::Get_Scene();
+					CGameObject* pRenderSlime = CSlimeRender::Create(m_pGraphicDev, iIndex);
+					m_vecPlayerCreatedName.push_back(L"Monster" + std::to_wstring(iIndex));
+					pScene->Create_GameObject(L"Layer_GameLogic", pRenderSlime, m_vecPlayerCreatedName.back().c_str());
+				}
 				break;
 			case MATERIAL_COPPER: // 3 x 3
 				for (_int i = -1; i <= 1; i++)
+				{
 					for (_int j = -1; j <= 1; j++)
-						m_pTerrain->Set_TextureNumber(iIndex + i + j * (VTXCNTX - 1), 27);
+					{
+						if(!m_pTerrain->Get_UnreachableByIndex(iIndex + i + j * (VTXCNTX - 1)))
+							m_pTerrain->Set_TextureNumber(iIndex + i + j * (VTXCNTX - 1), 27);
+					}
+				}
 				break;
 			case MATERIAL_IRON: // 5 x 5
 				for (_int i = -2; i <= 2; i++)
+				{
 					for (_int j = -2; j <= 2; j++)
-						m_pTerrain->Set_TextureNumber(iIndex + i + j * (VTXCNTX - 1), 27);
+					{
+						if (!m_pTerrain->Get_UnreachableByIndex(iIndex + i + j * (VTXCNTX - 1)))
+							m_pTerrain->Set_TextureNumber(iIndex + i + j * (VTXCNTX - 1), 27);
+					}
+				}
 				break;
 			}
 		}
@@ -1034,7 +1059,7 @@ void CPlayer::Watering()
 		_vec3 vPos;
 		m_pTransformCom->Get_Info(INFO_POS, &vPos);
 		// 씨앗이 심어져 있는지 확인 추가
-		// 씨앗이 심어져 있을 경우 타일 변경과 동시에 해당 타일에 심겨진 씨앗 성장
+		// 씨앗이 심어져 있을 경우 타일 변경과 동시에 해당 타일에 심겨진 씨앗 물에 젖은 상태로 변경(성장 시작)
 		if (m_pCalculatorCom->Check_Distance2D(&vPos, &m_vMouseWorldPos, 5.f))
 		{
 			_int iIndex = _int(m_vMouseWorldPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (m_vMouseWorldPos.x + 0.5f * VTXITV);
@@ -1049,8 +1074,11 @@ void CPlayer::Watering()
 				{
 					for (_int j = -1; j <= 1; j++)
 					{
-						if (m_pTerrain->Get_TextureNumber(iIndex + i + j * (VTXCNTX - 1)) == 27)
-							m_pTerrain->Set_TextureNumber(iIndex + i + j * (VTXCNTX - 1), 28);
+						if (!m_pTerrain->Get_UnreachableByIndex(iIndex + i + j * (VTXCNTX - 1)))
+						{
+							if (m_pTerrain->Get_TextureNumber(iIndex + i + j * (VTXCNTX - 1)) == 27)
+								m_pTerrain->Set_TextureNumber(iIndex + i + j * (VTXCNTX - 1), 28);
+						}
 					}
 				}
 				break;
@@ -1059,8 +1087,84 @@ void CPlayer::Watering()
 				{
 					for (_int j = -2; j <= 2; j++)
 					{
-						if (m_pTerrain->Get_TextureNumber(iIndex + i + j * (VTXCNTX - 1)) == 27)
-							m_pTerrain->Set_TextureNumber(iIndex + i + j * (VTXCNTX - 1), 28);
+						if (!m_pTerrain->Get_UnreachableByIndex(iIndex + i + j * (VTXCNTX - 1)))
+						{
+							if (m_pTerrain->Get_TextureNumber(iIndex + i + j * (VTXCNTX - 1)) == 27)
+								m_pTerrain->Set_TextureNumber(iIndex + i + j * (VTXCNTX - 1), 28);
+						}
+					}
+				}
+				break;
+			}
+		}
+	}
+}
+
+void CPlayer::Plant(ITEMNUM eNum)
+{
+	if (g_bIsTopCamera)
+	{
+		_vec3 vPos;
+		m_pTransformCom->Get_Info(INFO_POS, &vPos);
+		m_pInventoryCom->Minus_Item(eNum, 1);
+		if (m_pCalculatorCom->Check_Distance2D(&vPos, &m_vMouseWorldPos, 5.f))
+		{
+			_int iIndex = _int(m_vMouseWorldPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (m_vMouseWorldPos.x + 0.5f * VTXITV);
+			switch (eNum)
+			{
+			case ITEM_BERRY_SEED:
+				if (!m_pTerrain->Get_UnreachableByIndex(iIndex))
+				{
+					// 베리 작물 생성(오브젝트)
+					if (m_pTerrain->Get_TextureNumber(iIndex) == 27)
+					{
+						// AnimTex(0) : 물에 안 젖은 씨앗만 심기
+					}
+					else if (m_pTerrain->Get_TextureNumber(iIndex) == 28)
+					{
+						// AnimTex(1) : 성장 시작 단계(물에 젖은 씨앗)
+					}
+				}
+				break;
+			case ITEM_PEPPER_SEED:
+				if (!m_pTerrain->Get_UnreachableByIndex(iIndex))
+				{
+					// 폭탄 후추 작물 생성
+					if (m_pTerrain->Get_TextureNumber(iIndex) == 27)
+					{
+						// AnimTex(0) : 물에 안 젖은 씨앗만 심기
+					}
+					else if (m_pTerrain->Get_TextureNumber(iIndex) == 28)
+					{
+						// AnimTex(1) : 성장 시작 단계(물에 젖은 씨앗)
+					}
+				}
+				break;
+			case ITEM_CARROT_SEED:
+				if (!m_pTerrain->Get_UnreachableByIndex(iIndex))
+				{
+					// 돌당근 작물 생성
+					if (m_pTerrain->Get_TextureNumber(iIndex) == 27)
+					{
+						// AnimTex(0) : 물에 안 젖은 씨앗만 심기
+					}
+					else if (m_pTerrain->Get_TextureNumber(iIndex) == 28)
+					{
+						// AnimTex(1) : 성장 시작 단계(물에 젖은 씨앗)
+					}
+				}
+				break;
+			case ITEM_FIBER_SEED:
+				if (!m_pTerrain->Get_UnreachableByIndex(iIndex))
+				{
+					// 섬유질 작물 생성
+					if (m_pTerrain->Get_TextureNumber(iIndex) == 27)
+					{
+						// AnimTex(0) : 물에 안 젖은 씨앗만 심기
+					}
+					else if (m_pTerrain->Get_TextureNumber(iIndex) == 28)
+					{
+						// AnimTex(1) : 성장 시작 단계(물에 젖은 씨앗)
 					}
 				}
 				break;

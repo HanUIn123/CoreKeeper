@@ -61,6 +61,7 @@ private:
 	void			PickAxe();
 	void			Hoe();
 	void			Watering();
+	void			Plant(ITEMNUM eNum);
 
 	void			Set_EquippedStatus();
 	void			Set_Clothes();
@@ -179,6 +180,8 @@ private:
 	_bool					m_bImmuneByTime;
 	_float					m_fImmuneTimeAcc;
 	_float					m_fImmuneTime;
+
+	vector<wstring>			m_vecPlayerCreatedName;
 
 public:
 	static CPlayer* Create(LPDIRECT3DDEVICE9 pGraphicDev);

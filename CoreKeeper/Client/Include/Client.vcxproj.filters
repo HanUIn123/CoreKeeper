@@ -400,6 +400,15 @@
     <Filter Include="02. GameObject\06. Item\99. Etc\10. Diary">
       <UniqueIdentifier>{30f001ed-a454-4825-9f4f-4accc7df2ba5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\02. Monster\00. Slime\SlimeRender">
+      <UniqueIdentifier>{0783f8a8-1d2c-44c1-99cd-0f75fb0897be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\02. Monster\01. ShroomMan\ShroomManRender">
+      <UniqueIdentifier>{945f787f-6105-4f68-a7b2-9a1cef82010a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\02. Monster\02. Shaman\ShamanRender">
+      <UniqueIdentifier>{6a4700ec-9978-44b7-a908-4c0b94328674}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -786,6 +795,15 @@
     <ClInclude Include="..\Header\Plant.h">
       <Filter>02. GameObject\08. Object\11. Plant</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\ShamanRender.h">
+      <Filter>02. GameObject\02. Monster\02. Shaman\ShamanRender</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\ShroomManRender.h">
+      <Filter>02. GameObject\02. Monster\01. ShroomMan\ShroomManRender</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\SlimeRender.h">
+      <Filter>02. GameObject\02. Monster\00. Slime\SlimeRender</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1150,6 +1168,15 @@
     </ClCompile>
     <ClCompile Include="..\Code\Plant.cpp">
       <Filter>02. GameObject\08. Object\11. Plant</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\SlimeRender.cpp">
+      <Filter>02. GameObject\02. Monster\00. Slime\SlimeRender</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\ShroomManRender.cpp">
+      <Filter>02. GameObject\02. Monster\01. ShroomMan\ShroomManRender</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\ShamanRender.cpp">
+      <Filter>02. GameObject\02. Monster\02. Shaman\ShamanRender</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
