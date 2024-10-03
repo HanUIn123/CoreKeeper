@@ -195,33 +195,34 @@ _int CUICookingPot::Update_GameObject(const _float& fTimeDelta)
 		else
 			m_bRectPicked[2] = false;
 
-		if (!m_pUSlotInventoryCom->Check_Empty(0) && !m_pDSlotInventoryCom->Check_Empty(0))
-		{
-			m_fTime -= fTimeDelta * 5.f;
-
-			m_Rect.top = (_long)(m_rFirstRect.top + ((_float)(m_rFirstRect.bottom - m_rFirstRect.top) - ((_float)(m_rFirstRect.bottom - m_rFirstRect.top) * (m_fTime / 80.f))));
-
-			if (m_fTime <= 0)
-			{
-				m_fTime = 80.f;
-
-				ITEMNUM eUNum = m_pUSlotInventoryCom->Get_Item(0)->Get_ItemNum();
-
-				ITEMNUM eDNum = m_pDSlotInventoryCom->Get_Item(0)->Get_ItemNum();
-
-				CItem* pCraftItem = CCraftMgr::GetInstance()->Cook(eUNum, eDNum);
-
-				m_pRSlotInventoryCom->Add_Item(pCraftItem);
-
-				m_pUSlotInventoryCom->Minus_Item(m_pUSlotInventoryCom->Get_Item(0)->Get_ItemNum(), 1);
-
-				m_pDSlotInventoryCom->Minus_Item(m_pDSlotInventoryCom->Get_Item(0)->Get_ItemNum(), 1);
-			}
-		}
-
 
 		Add_RenderGroup(RENDER_UI, this);
 	}
+
+	if (!m_pUSlotInventoryCom->Check_Empty(0) && !m_pDSlotInventoryCom->Check_Empty(0))
+	{
+		m_fTime -= fTimeDelta * 5.f;
+
+		m_Rect.top = (_long)(m_rFirstRect.top + ((_float)(m_rFirstRect.bottom - m_rFirstRect.top) - ((_float)(m_rFirstRect.bottom - m_rFirstRect.top) * (m_fTime / 80.f))));
+
+		if (m_fTime <= 0)
+		{
+			m_fTime = 80.f;
+
+			ITEMNUM eUNum = m_pUSlotInventoryCom->Get_Item(0)->Get_ItemNum();
+
+			ITEMNUM eDNum = m_pDSlotInventoryCom->Get_Item(0)->Get_ItemNum();
+
+			CItem* pCraftItem = CCraftMgr::GetInstance()->Cook(eUNum, eDNum);
+
+			m_pRSlotInventoryCom->Add_Item(pCraftItem);
+
+			m_pUSlotInventoryCom->Minus_Item(m_pUSlotInventoryCom->Get_Item(0)->Get_ItemNum(), 1);
+
+			m_pDSlotInventoryCom->Minus_Item(m_pDSlotInventoryCom->Get_Item(0)->Get_ItemNum(), 1);
+		}
+	}
+
 	return iExit;
 }
 

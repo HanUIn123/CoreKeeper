@@ -214,12 +214,12 @@ void CUICursor::Render_GameObject()
 		Engine::MATERIAL material = m_pItem->Get_ItemMaterial();
 
 
-		if (material != MATERIAL_END)
+		//if (material != MATERIAL_END)
 			m_pItem->Get_Texture()->Set_Texture(m_pItem->Get_TextureNumber());
 		//else if (material == MATERIAL_SPECIAL)
 		//	m_pItem->Get_Texture()->Set_Texture(material);
-		else
-			m_pItem->Get_Texture()->Set_Texture();
+		//else
+		//	m_pItem->Get_Texture()->Set_Texture();
 
 		m_pItem->Get_Buffer()->Render_First();
 
