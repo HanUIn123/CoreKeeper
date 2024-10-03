@@ -19,6 +19,7 @@ HRESULT CFeather::Ready_GameObject(MATERIAL _eMaterial, _vec3 vPos)
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
 	m_eMaterial = _eMaterial;
+
 	if (m_eMaterial == MATERIAL_END)
 	{
 		m_iTextureNumber = 0;
