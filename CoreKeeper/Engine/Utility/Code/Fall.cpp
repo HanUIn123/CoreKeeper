@@ -70,7 +70,7 @@ void CFall::resetParticle(Attribute* attribute) // 파티클 리셋
 
 	//attribute->_acceleration = { 0.f, 0.f, 0.f };
 
-	attribute->_color = D3DCOLOR_XRGB(255, 0, 0); // 랜덤 색 생성 (빨간색 X)
+	attribute->_color = D3DCOLOR_ARGB(255, 255, 0, 0); // 랜덤 색 생성 (빨간색 X)
 
 	attribute->_age = 0.0f;
 	attribute->_lifeTime = 1.0f; // 수명 1초

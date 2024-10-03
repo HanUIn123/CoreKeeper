@@ -219,6 +219,9 @@ void CMonster::Check_Hitted()
 		pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
 		if (m_pColliderCom->Check_Cube_Collision(pHandedItemCollider))
 		{
+
+			m_bHit = true;
+			
 			if (!m_bKnockBackStart)
 			{
 				pPlayerHandedItem->Set_ProjectileAttackSuccess(true);

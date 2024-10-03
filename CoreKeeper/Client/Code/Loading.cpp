@@ -77,6 +77,9 @@ _uint CLoading::Loading_Stage()
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UISilhouettes", Engine::CAnimTex::Create(m_pGraphicDev, 5, 2)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_BuffIcons", Engine::CAnimTex::Create(m_pGraphicDev, 14, 4)), E_FAIL);
 
+    //이펙트
+
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_HitEffectAnimTex", Engine::CAnimTex::Create(m_pGraphicDev, 4, 2)), E_FAIL);
 
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_RangeTex", Engine::CRangeTex::Create(m_pGraphicDev)), E_FAIL);
 
@@ -97,7 +100,11 @@ _uint CLoading::Loading_Stage()
     _vec3 vPPos = { 0.f, 0.f, 0.f };
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Firework", Engine::CFirework::Create(m_pGraphicDev, &vPPos, 600)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Fall", Engine::CFall::Create(m_pGraphicDev, &vPPos, 8)), E_FAIL);
-    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Followers", Engine::CFollow::Create(m_pGraphicDev, &vPPos, 10, 5)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Followers", Engine::CFollow::Create(m_pGraphicDev, &vPPos, 10)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Smoke", Engine::CSmoke::Create(m_pGraphicDev, &vPPos, 12)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Hit", Engine::CHit::Create(m_pGraphicDev, &vPPos, 1)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Smog", Engine::CSmog::Create(m_pGraphicDev, &vPPos, 30)), E_FAIL);
+
 
     lstrcpy(m_szLoading, L"Texture Loading...");
 
@@ -222,6 +229,8 @@ _uint CLoading::Loading_Stage()
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UIChestSort", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/Chest_Sort_%d.png", TEX_NORMAL, 2)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UIPlayerCraftItem", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/Craft_Item/Craft_Item_%d.png", TEX_NORMAL, 14)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UIFurnace", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/Furnace_Craft/UI_Furnace_%d.png", TEX_NORMAL, 3)), E_FAIL);
+    
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_HitEffect", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Effect/Hit_effect2.png", TEX_NORMAL)), E_FAIL);
 
     // Mini Ui Texture
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MiniPlayer", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/MiniUI/MiniPlayer.png", TEX_NORMAL)), E_FAIL);

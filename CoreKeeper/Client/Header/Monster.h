@@ -13,6 +13,7 @@ class CTexture;
 class CAnimator;
 class CCalculator;
 class CCollider;
+class CHit;
 
 END
 
@@ -60,10 +61,14 @@ protected:
 	Engine::CAnimator*		m_pAnimatorCom;
 	Engine::CTexture*		m_pTextureCom;
 	Engine::CCalculator*	m_pCalculatorCom;
-	Engine::CCollider*		m_pColliderCom;
+	Engine::CCollider*      m_pColliderCom;
 
 	Engine::MONSTERTYPE		m_eType;
 	Engine::STATE			m_eState;
+
+	Engine::CHit*           m_pHitParticleCom;
+
+	_bool                   m_bHit;
 
 	_bool					m_bFlip;
 
@@ -114,6 +119,8 @@ protected:
 	_int					m_iSpeedWeight;
 
 	static int				m_iTagNumber;
+
+
 
 private:
 	virtual void		Free();

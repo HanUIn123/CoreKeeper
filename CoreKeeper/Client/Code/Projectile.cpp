@@ -24,6 +24,8 @@ CProjectile::CProjectile(LPDIRECT3DDEVICE9 pGraphicDev)
 
     m_bLightEnable = true;
     m_iLightNum = g_iLightNum++;
+
+    m_bSmog = false;
 }
 
 CProjectile::~CProjectile()
@@ -38,11 +40,28 @@ HRESULT CProjectile::Ready_GameObject(_vec3 vPos)
     m_pTransformCom->Set_Scale(0.6f, 0.6f, 0.6f);
     m_pStateCom->Set_Stat(100, 0, 50, 0);
     Set_Speed(8.f);
+
+    m_pSmogParticleCom->init(L"../Bin/Resource/Texture/Particle/Smog_Particle/Big_Smog_%d.png", 6, 1.f);
+
     return S_OK;
 }
 
 _int CProjectile::Update_GameObject(const _float& fTimeDelta)
 {
+    if (m_bSmog)
+    {
+        m_pSmogParticleCom->update(fTimeDelta);
+
+        Add_RenderGroup(RENDER_ALPHA, this);
+
+        if (m_pSmogParticleCom->isDead())
+        {
+            m_bSmog = false;
+
+            m_pSmogParticleCom->reset();
+        }
+    }
+
     if (m_bStopDraw)
         return 0;
 
@@ -66,6 +85,7 @@ _int CProjectile::Update_GameObject(const _float& fTimeDelta)
         break;
     }
 
+
     Flip();
     m_pAnimatorCom->Set_CurState(IDLE, 0, 5, 8);
     m_pAnimatorCom->Update_Animation();
@@ -80,8 +100,16 @@ void CProjectile::LateUpdate_GameObject()
 
 void CProjectile::Render_GameObject()
 {
+    if (m_bSmog)
+    {
+        m_pGraphicDev->SetTransform(D3DTS_WORLD, &m_SmogMatrix);
+        m_pSmogParticleCom->render();
+    }
+
     if (m_bStopDraw)
+    {
         return;
+    }
     m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
     m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
 
@@ -129,6 +157,10 @@ HRESULT CProjectile::Add_Component()
     pComponent = m_pColliderCom = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Proto_ShamProjectileCollider"));
     NULL_CHECK_RETURN(pComponent, E_FAIL);
     m_mapComponent[ID_DYNAMIC].insert({ L"Com_Collider", pComponent });
+
+    pComponent = m_pSmogParticleCom = dynamic_cast<CSmog*>(Engine::Clone_Proto(L"Proto_Smog"));
+    NULL_CHECK_RETURN(pComponent, E_FAIL);
+    m_mapComponent[ID_STATIC].insert({ L"Com_Particle", pComponent });
 
     return S_OK;
 
@@ -182,8 +214,14 @@ void CProjectile::Pattern_Attack(const _float& fTimeDelta)
 void CProjectile::Pattern_Dead()
 {
     // Æø¹ß ÀÌÆåÆ® »ý¼º
+    m_pTransformCom->Get_WorldMatrix(&m_SmogMatrix);
+
+    m_bSmog = true;
+
     m_bStopDraw = true;
     m_pGraphicDev->LightEnable(m_iLightNum, FALSE);
+
+
 }
 
 STATE CProjectile::State_Change()

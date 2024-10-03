@@ -60,6 +60,8 @@ bool PSystem::init(const _tchar* texFileName, _int iTexNum, _float fSize)
 
 	_size = fSize;
 
+	m_iMaxTexture = iTexNum;
+
 	return true;
 }
 

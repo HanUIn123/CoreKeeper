@@ -3,13 +3,13 @@
 
 BEGIN(Engine)
 
-class ENGINE_DLL CFollow : public PSystem
+class ENGINE_DLL CSmog : public PSystem
 {
 protected:
-	explicit CFollow();
-	explicit CFollow(LPDIRECT3DDEVICE9 pGraphicDev);
-	explicit CFollow(const CFollow& rhs);
-	virtual ~CFollow();
+	explicit CSmog();
+	explicit CSmog(LPDIRECT3DDEVICE9 pGraphicDev);
+	explicit CSmog(const CSmog& rhs);
+	virtual ~CSmog();
 
 public:
 	virtual     HRESULT         Ready_Particles(D3DXVECTOR3* origin, _int numParticles);
@@ -19,11 +19,9 @@ public:
 	virtual     void            preRender();
 	virtual     void            postRender();
 public:
-	static		CFollow* Create(LPDIRECT3DDEVICE9 pGraphicDev, D3DXVECTOR3* origin, _int numParticles);
+	static		CSmog* Create(LPDIRECT3DDEVICE9 pGraphicDev, D3DXVECTOR3* origin, _int numParticles);
 	virtual		CComponent* Clone();
 
-private:
-	_float      _fTime;
 public:
 	virtual void		Free();
 };

@@ -12,14 +12,14 @@ protected:
 	virtual ~CFollow();
 
 public:
-	virtual     HRESULT         Ready_Particles(D3DXVECTOR3* origin, _int numParticles, _int _iMaxTexture);
+	virtual     HRESULT         Ready_Particles(D3DXVECTOR3* origin, _int numParticles);
 	virtual		void			resetParticle(Attribute* attribute);
 	virtual		void			update(float timeDelta);
 	
 	virtual     void            preRender();
 	virtual     void            postRender();
 public:
-	static		CFollow* Create(LPDIRECT3DDEVICE9 pGraphicDev, D3DXVECTOR3* origin, _int numParticles, _int iMaxTexture);
+	static		CFollow* Create(LPDIRECT3DDEVICE9 pGraphicDev, D3DXVECTOR3* origin, _int numParticles);
 	virtual		CComponent* Clone();
 
 private:
