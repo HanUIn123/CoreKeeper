@@ -89,6 +89,7 @@ public:
 	void            Set_GraveInventory();
 	void            Set_Statue(_int _StatueNum = 0);
 	void            Set_Furnace();
+	void            Set_CookingPot();
 
 	_bool           Get_GraveInv() { return m_bGraveInventory; }
 
@@ -155,6 +156,7 @@ private:
 	_bool                   m_bAnvil;
 	_bool                   m_bStatue;
 	_bool                   m_bFurnace;
+	_bool                   m_bCookingPot;
 
 	_bool                   m_bNoMove;    // UI건드릴때 캐릭터 움직이지 않게하는 용도
 

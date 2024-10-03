@@ -80,6 +80,12 @@ bool CInventory::Minus_Item(ITEMNUM _eItemNum, int _iCount)
 			if (m_vecItems[i]->Get_Count() > _iCount)
 			{
 				m_vecItems[i]->Minus_Count(_iCount);
+
+				if (m_vecItems[i]->Get_Count() <= 0)
+				{
+					Remove_Item(i);
+				}
+
 				return true;
 			}
 			else if(m_vecItems[i]->Get_Count() == _iCount)

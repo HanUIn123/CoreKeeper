@@ -154,11 +154,11 @@ HRESULT CStage::Ready_Layer_Environment(const _tchar* pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"SlimeStatue", pGameObject), E_FAIL);
 
-	pGameObject = CStatue::Create(m_pGraphicDev, { 112.f / 2.f, 1.2f, 23.5f }, 1);
+	pGameObject = CStatue::Create(m_pGraphicDev, { VTXCNTX / 2 - 8.f, 1.2f, 23.5f }, 1);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"LarvaStatue", pGameObject), E_FAIL);
 
-	pGameObject = CStatue::Create(m_pGraphicDev, { 144.f / 2.f, 1.2f, 23.5f }, 2);
+	pGameObject = CStatue::Create(m_pGraphicDev, { VTXCNTX / 2 + 8.f, 1.2f, 23.5f }, 2);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"MalugazStatue", pGameObject), E_FAIL);
 
@@ -166,29 +166,33 @@ HRESULT CStage::Ready_Layer_Environment(const _tchar* pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"CoreBase", pGameObject), E_FAIL);
 
-	pGameObject = CGravestoneObject::Create(m_pGraphicDev, { 62.f, 0.5f, 19.f });
+	pGameObject = CGravestoneObject::Create(m_pGraphicDev, { 78.f, 0.5f, 19.f });
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"AheadGrave", pGameObject), E_FAIL);
 
-	pGameObject = CSkeleton::Create(m_pGraphicDev, { 61.f, 0.5f, 19.f });
+	pGameObject = CSkeleton::Create(m_pGraphicDev, { 77.f, 0.5f, 19.f });
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Skeleton", pGameObject), E_FAIL);
 
-	pGameObject = CTableObject::Create(m_pGraphicDev, { 67.f, 0.5f, 16.f }, MATERIAL_WOOD);
+	pGameObject = CTableObject::Create(m_pGraphicDev, { 83.f, 0.5f, 16.f }, MATERIAL_WOOD);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"WoodCraftTable", pGameObject), E_FAIL);
 
-	pGameObject = CTableObject::Create(m_pGraphicDev, { 65.f, 0.5f, 16.f }, MATERIAL_COPPER);
+	pGameObject = CTableObject::Create(m_pGraphicDev, { 81.f, 0.5f, 16.f }, MATERIAL_COPPER);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"CopperCraftTable", pGameObject), E_FAIL);
 
-	pGameObject = CTableObject::Create(m_pGraphicDev, { 63.f, 0.5f, 16.f }, MATERIAL_IRON);
+	pGameObject = CTableObject::Create(m_pGraphicDev, { 79.f, 0.5f, 16.f }, MATERIAL_IRON);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"IronCraftTable", pGameObject), E_FAIL);
 
-	pGameObject = CFurnaceObject::Create(m_pGraphicDev, { 61.f, .5f, 16.f });
+	pGameObject = CFurnaceObject::Create(m_pGraphicDev, { 77.f, .5f, 16.f });
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Furnace", pGameObject), E_FAIL);
+
+	pGameObject = CCookingPotObject::Create(m_pGraphicDev, { 59.f, .5f, 16.f });
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"CookingPot", pGameObject), E_FAIL);
 
 	m_mapLayer.insert({ pLayerTag , pLayer });
 
@@ -364,6 +368,17 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar* pLayerTag)
 	pGameObject = CSeed::Create(m_pGraphicDev, ITEM_PEPPER_SEED);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Seed", pGameObject), E_FAIL);
+	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
+
+	pGameObject = CIngredient::Create(m_pGraphicDev, ITEM_BERRY_SEED);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Berry", pGameObject), E_FAIL);
+	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
+
+
+	pGameObject = CIngredient::Create(m_pGraphicDev, ITEM_PEPPER_SEED);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Pepper", pGameObject), E_FAIL);
 	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
 
 	//pGameObject = CCore::Create(m_pGraphicDev);
@@ -712,6 +727,14 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
 	pGameObject = CUIFurnace::Create(m_pGraphicDev, vPos, vSize);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Furnace", pGameObject), E_FAIL);
+
+
+	vPos = { WINCX / 2.f , 230.f };
+	vSize = { 140.f, 115.f };
+
+	pGameObject = CUICookingPot::Create(m_pGraphicDev, vPos, vSize);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_CookingPot", pGameObject), E_FAIL);
 
 	m_mapLayer.insert({ pLayerTag , pLayer });
 

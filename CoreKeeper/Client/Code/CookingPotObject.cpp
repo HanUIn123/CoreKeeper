@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "../Header/CookingPotObject.h"
+#include "../Header/Player.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
 
@@ -23,6 +24,11 @@ HRESULT CCookingPotObject::Ready_GameObject(_vec3 vPos)
 
 _int CCookingPotObject::Update_GameObject(const _float& fTimeDelta)
 {
+	if (Check_Interaction())
+	{
+		Interaction();
+	}
+
 	Add_RenderGroup(RENDER_ALPHA, this);
 
 	return Engine::CGameObject::Update_GameObject(fTimeDelta);
@@ -39,6 +45,8 @@ void CCookingPotObject::Render_GameObject()
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
 
+	m_pColliderCom->Update_Collider(m_pTransformCom->Get_WorldMatrix());
+
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
 	m_pTextureCom->Set_Texture();
@@ -50,6 +58,16 @@ void CCookingPotObject::Render_GameObject()
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
+void CCookingPotObject::Interaction()
+{
+	if (Engine::Key_Down(DIK_E))
+	{
+		CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
+
+		pPlayer->Set_CookingPot();
+	}
+}
+
 HRESULT CCookingPotObject::Add_Component()
 {
 	CComponent* pComponent = NULL;
@@ -58,7 +76,7 @@ HRESULT CCookingPotObject::Add_Component()
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Buffer", pComponent });
 
-	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_CookingPotTextureture"));
+	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_CookingPotTexture"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Texture", pComponent });
 
@@ -69,6 +87,10 @@ HRESULT CCookingPotObject::Add_Component()
 	pComponent = m_pCalculCom = dynamic_cast<CCalculator*>(Engine::Clone_Proto(L"Proto_Calculator"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Calculator", pComponent });
+
+	pComponent = m_pColliderCom = dynamic_cast<CColliderCube*>(Engine::Clone_Proto(L"Proto_NormalCubeCollider"));
+	NULL_CHECK_RETURN(pComponent, E_FAIL);
+	m_mapComponent[ID_STATIC].insert({ L"Com_Collider", pComponent });
 
 	return S_OK;
 }

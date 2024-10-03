@@ -24,14 +24,29 @@ HRESULT CBar::Ready_GameObject(MATERIAL _eMaterial, _vec3 vPos)
 	//WOOD 넣지마세요
 	case MATERIAL_WOOD:
 	case MATERIAL_COPPER:
+	{
 		m_eItemNum = ITEM_COPPER_BAR;
+		m_eMaterial = MATERIAL_WOOD;
+	}
 		break;
 	case MATERIAL_IRON:
+	{
 		m_eItemNum = ITEM_IRON_BAR;
+		m_eMaterial = MATERIAL_COPPER;
 		break;
-	case MATERIAL_END:
+	}
+	case MATERIAL_SCARLET:
+	{
 		m_eItemNum = ITEM_SCARLET_BAR;
+		m_eMaterial = MATERIAL_IRON;
 		break;
+	}
+	case MATERIAL_END:
+	{
+		m_eItemNum = ITEM_SCARLET_BAR;
+		m_eMaterial = MATERIAL_IRON;
+		break;
+	}
 	}
 
 	m_pTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);

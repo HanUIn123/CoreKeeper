@@ -27,6 +27,7 @@
 #include "..\Header\Stage.h"
 #include "..\Header\GravestoneObject.h"
 #include "..\Header\UIFurnace.h"
+#include "..\Header\UICookingPot.h"
 
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CGameObject(pGraphicDev)
@@ -66,6 +67,7 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	m_bStatue = false;
 	m_bGraveInventory = false;
 	m_bFurnace = false;
+	m_bCookingPot = false;
 
 	m_vStartPoint = { 0, 0, 0 };
 	m_vKnockBackDir = { 0, 0, 0 };
@@ -75,7 +77,7 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	m_bNude = true;
 
 	m_bRespawned = false;
-	m_vRespawnPoint = { 64.f, 0, 18.5f };
+	m_vRespawnPoint = { VTXCNTX / 2, 0, 18.5f };
 
 	m_bBleed = false;
 	m_fBleedTime = 0.f;
@@ -390,6 +392,9 @@ void CPlayer::Mouse_Click(const _float& fTimeDelta)
 				case ITEM_CARROT_SEED:
 				case ITEM_FIBER_SEED:
 					Plant(m_pHandedItem->Get_ItemNum());
+					m_pHandedItem->Set_Use(false);
+					m_pHandedItem->Set_Active(false);
+					m_pHandedItem->Set_Drop(false);
 					break;
 
 				// 설치 관련
@@ -1209,7 +1214,7 @@ void CPlayer::Set_UI()
 	}
 	if (Engine::Key_Down(DIK_TAB))
 	{
-		if (m_bMap || m_bChestInventory || m_bCraft || m_bInventory || m_bStatue || m_bGraveInventory)
+		if (m_bMap || m_bChestInventory || m_bCraft || m_bInventory || m_bStatue || m_bGraveInventory || m_bFurnace || m_bCookingPot)
 			UI_Disable();
 
 		else if (!m_bMap && !m_bChestInventory)
@@ -1224,6 +1229,9 @@ void CPlayer::Set_UI()
 	{
 		UI_Disable();
 	}
+
+	if ((m_bMap || m_bChestInventory || m_bCraft || m_bStatue || m_bGraveInventory || m_bFurnace || m_bCookingPot) && (Engine::Key_Down(DIK_E)))
+		UI_Disable();
 
 	if (Engine::Key_Down(DIK_O))
 	{
@@ -1265,6 +1273,12 @@ void CPlayer::Set_MapWindow()
 
 void CPlayer::Set_Craft(TABLETYPE eTableType, MATERIAL _eMaterial)
 {
+	if (m_bMap || m_bStatue || m_bCookingPot || m_bFurnace || m_bGraveInventory || m_bChestInventory)
+	{
+		UI_Disable();
+		return;
+	}
+
 	if (m_bCraft)
 	{
 		CUICraft* pCraft = dynamic_cast<CUICraft*>(Engine::Get_GameObject(L"Layer_UI", L"UILeftCraft"));
@@ -1392,7 +1406,6 @@ void CPlayer::Set_Map()
 
 void CPlayer::Set_Status()
 {
-
 	CUIPlayerStatus* pStatus = dynamic_cast<CUIPlayerStatus*>(Engine::Get_GameObject(L"Layer_UI", L"UIPlayerStatus"));
 	pStatus->Set_Window();
 
@@ -1418,7 +1431,12 @@ void CPlayer::Set_Status()
 
 void CPlayer::Set_ChestInventory(CInventory* pInventory)
 {
-	
+	if (m_bMap || m_bCraft || m_bStatue || m_bCookingPot || m_bFurnace || m_bGraveInventory)
+	{
+		UI_Disable();
+		return;
+	}
+
 	for (int i = 0; i < 18; ++i)
 	{
 		wstring string;
@@ -1448,6 +1466,12 @@ void CPlayer::Set_ChestInventory(CInventory* pInventory)
 
 void CPlayer::Set_GraveInventory()
 {
+	if (m_bMap || m_bChestInventory || m_bCraft || m_bStatue || m_bCookingPot || m_bFurnace)
+	{
+		UI_Disable();
+		return;
+	}
+
 	if (m_bGraveInventory)
 	{
 		CInventory* pGraveInventory = dynamic_cast<CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_Environment", L"AheadGrave", L"Com_Inventory"));
@@ -1513,6 +1537,12 @@ void CPlayer::Set_Statue(_int _StatueNum)
 
 void CPlayer::Set_Furnace()
 {
+	if (m_bMap || m_bChestInventory || m_bCraft || m_bStatue || m_bGraveInventory || m_bCookingPot)
+	{
+		UI_Disable();
+		return;
+	}
+
 	if (m_bFurnace)
 	{
 		CUIFurnace* pFurnace = dynamic_cast<CUIFurnace*>(Engine::Get_GameObject(L"Layer_UI", L"UI_Furnace"));
@@ -1535,6 +1565,39 @@ void CPlayer::Set_Furnace()
 		Set_Inventory();
 
 		m_bFurnace = true;
+	}
+}
+
+void CPlayer::Set_CookingPot()
+{
+	if (m_bMap || m_bChestInventory || m_bCraft || m_bStatue || m_bGraveInventory || m_bFurnace)
+	{
+		UI_Disable();
+		return;
+	}
+
+	if (m_bCookingPot)
+	{
+		CUICookingPot* pPot = dynamic_cast<CUICookingPot*>(Engine::Get_GameObject(L"Layer_UI", L"UI_CookingPot"));
+
+		pPot->Set_Disable();
+
+		if (m_bInventory)
+		{
+			Set_Inventory();
+		}
+
+		m_bCookingPot = false;
+	}
+	else
+	{
+		CUICookingPot* pPot = dynamic_cast<CUICookingPot*>(Engine::Get_GameObject(L"Layer_UI", L"UI_CookingPot"));
+
+		pPot->Set_Render();
+
+		Set_Inventory();
+
+		m_bCookingPot = true;
 	}
 }
 
@@ -1585,6 +1648,11 @@ void CPlayer::UI_Disable()
 	if (m_bFurnace)
 	{
 		Set_Furnace();
+	}
+
+	if (m_bCookingPot)
+	{
+		Set_CookingPot();
 	}
 }
 

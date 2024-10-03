@@ -282,12 +282,14 @@ void CUIScreenInv::Render_GameObject()
 
 		Engine::MATERIAL material = m_pItem->Get_ItemMaterial();
 
-		if(material != MATERIAL_END)
-			m_pItem->Get_Texture()->Set_Texture(material);
+		//if (material != MATERIAL_END)
+			m_pItem->Get_Texture()->Set_Texture(m_pItem->Get_TextureNumber());
+		//else if (material == MATERIAL_END)
+			//m_pItem->Get_Texture()->Set_Texture(0);
 		//else if (material == MATERIAL_SPECIAL)
 		//	m_pItem->Get_Texture()->Set_Texture(material);
-		else
-			m_pItem->Get_Texture()->Set_Texture();
+		//else
+		//	m_pItem->Get_Texture()->Set_Texture();
 
 		Engine::ITEMNUM eNum = m_pItem->Get_ItemNum();
 
@@ -360,6 +362,31 @@ void CUIScreenInv::Render_GameObject()
 			break;
 
 		case ITEM_COPPER:
+			matWorld._11 = 20.f;
+			matWorld._22 = 20.f;
+			break;
+
+		case ITEM_IRON:
+			matWorld._11 = 20.f;
+			matWorld._22 = 20.f;
+			break;
+
+		case ITEM_SCARLET:
+			matWorld._11 = 20.f;
+			matWorld._22 = 20.f;
+			break;
+
+		case ITEM_COPPER_BAR:
+			matWorld._11 = 20.f;
+			matWorld._22 = 20.f;
+			break;
+
+		case ITEM_IRON_BAR:
+			matWorld._11 = 20.f;
+			matWorld._22 = 20.f;
+			break;
+
+		case ITEM_SCARLET_BAR:
 			matWorld._11 = 20.f;
 			matWorld._22 = 20.f;
 			break;
