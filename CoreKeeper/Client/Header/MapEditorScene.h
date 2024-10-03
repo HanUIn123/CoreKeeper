@@ -104,6 +104,7 @@ private:
 	Engine::CGameObject*					m_pMTGameObjectCom;
 	Engine::CGameObject*					m_pWallCom;
 	Engine::CGameObject*					m_pObjectCom;
+	Engine::CGameObject*					m_pMonsterCom;
 
 	int										m_iTileCreateCount;
 	int										m_iWallCreateCount;
@@ -111,6 +112,7 @@ private:
 	bool									m_bPushed;
 	bool									m_bWallClickPushed;
 	bool									m_bBuildingClick;
+	bool									m_bMonsterClickPushed;
 	bool									m_bSelectTile;
 	bool									m_bSelectWall;
 	bool									m_bSelectBuilding;
@@ -123,15 +125,18 @@ private:
 	wstring									m_wsTileNameString[VTXCNTX * VTXCNTZ];
 	wstring									m_wsWallNameString[VTXCNTX * VTXCNTZ];
 	wstring									m_wsObjectNameString[VTXCNTX * VTXCNTZ];
+	wstring									m_wsMonsterNameString[VTXCNTX * VTXCNTZ];
 
 	HANDLE									m_hFile;
 	HANDLE									m_hWallFile;
 	HANDLE									m_hObjectFile;
 
 	vector<CWall*>							m_vecWallObject;
-	//vector<CBuilding*>						m_vecBuildingObject;
 
 	list<CCore*>							m_listBuildingObject;
+
+	Engine::MONSTERTYPE						m_eMonsterType;
+	vector<CGameObject*>					m_vecMonsterRenderObject;
 
 	_vec3									m_vCheckPos;
 	_vec3                                   m_vPickPos;
