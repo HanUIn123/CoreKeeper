@@ -47,6 +47,9 @@ HRESULT CMalugaz::Ready_GameObject(_vec3 vPos)
     //m_vecDropItem.push_back(ITEM_STAFF);
     //m_vecDropItem.push_back(ITEM_WOOD);
     Set_Speed(6.0f);
+
+    m_pHitParticleCom->init(L"../Bin/Resource/Texture/Effect/Hit_%d.png", 5, 2.0f);
+
     return S_OK;
 }
 
@@ -89,6 +92,17 @@ _int CMalugaz::Update_GameObject(const _float& fTimeDelta)
         m_bKnockBackEnd = true;
     }
 
+    if (m_bHit)
+    {
+        m_pHitParticleCom->update(fTimeDelta);
+
+        if (m_pHitParticleCom->isDead())
+        {
+            m_pHitParticleCom->reset();
+            m_bHit = false;
+        }
+    }
+
     Flip();
     Set_StuckFree(fTimeDelta);
     m_pAnimatorCom->Update_Animation();
@@ -118,6 +132,9 @@ void CMalugaz::Render_GameObject()
     m_pBufferCom->Set_Index(m_pAnimatorCom->Get_MotionIndex());
     m_pBufferCom->Render_Buffer();
     m_pColliderCom->Render_Collider();
+
+    if (m_bHit)
+        m_pHitParticleCom->render();
 
     //m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
@@ -162,6 +179,10 @@ HRESULT CMalugaz::Add_Component()
     pComponent = m_pColliderCom = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Proto_MalugazCollider"));
     NULL_CHECK_RETURN(pComponent, E_FAIL);
     m_mapComponent[ID_DYNAMIC].insert({ L"Com_Collider", pComponent });
+
+    pComponent = m_pHitParticleCom = dynamic_cast<CHit*>(Engine::Clone_Proto(L"Proto_Hit"));
+    NULL_CHECK_RETURN(pComponent, E_FAIL);
+    m_mapComponent[ID_STATIC].insert({ L"Com_Hit", pComponent });
 
     return S_OK;
 

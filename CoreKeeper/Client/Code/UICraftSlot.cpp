@@ -200,21 +200,48 @@ void CUICraftSlot::Render_GameObject()
 void CUICraftSlot::Set_Window(TABLETYPE _eTableType, MATERIAL _eMaterial, _bool _bDirection)
 {
 	if (m_bWindow)
-		m_bWindow = false;
-	else if (!m_bWindow)
 	{
-		m_bWindow = true;
-
 		if (_bDirection == true)
 		{
 			switch (_eTableType)
 			{
 			case TABLE_CRAFT:
+			{
+				m_BRect.left -= 48.f;
+				m_BRect.right -= 48.f;
+				break;
+			}
+			}
+		}
+	}
+	else
+	{
+		if (_bDirection == true)
+		{
+			switch (_eTableType)
+			{
+			case TABLE_CRAFT:
+			{
 				m_BRect.left += 48.f;
 				m_BRect.right += 48.f;
 				break;
 			}
+			}
 		}
+	}
+
+	if (m_bWindow)
+	{
+		m_bWindow = false;
+	}
+	else if (!m_bWindow)
+	{
+
+		m_eTableType = _eTableType;
+
+		m_eMatrial = _eMaterial;
+
+		m_bWindow = true;
 
 		m_bDirection = _bDirection;
 
@@ -257,10 +284,6 @@ void CUICraftSlot::Set_Window(TABLETYPE _eTableType, MATERIAL _eMaterial, _bool 
 
 			return;
 		}
-
-		m_eTableType = _eTableType;
-
-		m_eMatrial = _eMaterial;
 	}
 }
 

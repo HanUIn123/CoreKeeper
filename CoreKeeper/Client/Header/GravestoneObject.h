@@ -40,8 +40,5 @@ public:
 
 private:
 	virtual void					Free();
-
-private:
-	_bool m_bCollision;
 };
 

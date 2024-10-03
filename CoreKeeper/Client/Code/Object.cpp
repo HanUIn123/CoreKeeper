@@ -8,6 +8,7 @@ CObject::CObject(LPDIRECT3DDEVICE9 pGraphicDev)
 	, m_pTransformCom(nullptr)
 	, m_pBufferCom(nullptr)
 	, m_iBuildingImgNum(0)
+	, m_bCollision(false)
 {
 }
 

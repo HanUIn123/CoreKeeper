@@ -58,5 +58,8 @@ private:
 protected:
 	_int							m_iBuildingImgNum;
 	_vec3							m_vBuildPosition;
+
+
+	_bool                           m_bCollision; // 플레이어와 충돌 체크
 };
 

@@ -183,6 +183,10 @@ _int CUIFurnace::Update_GameObject(const _float& fTimeDelta)
 			m_pSecondInventoryCom->Add_Item(pCraftItem);
 		}
 	}
+	else
+	{
+		m_fTime = 80.f; 
+	}
 
 	return iExit;
 }

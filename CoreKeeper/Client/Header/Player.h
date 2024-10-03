@@ -91,7 +91,11 @@ public:
 	void            Set_Furnace();
 	void            Set_CookingPot();
 
-	_bool           Get_GraveInv() { return m_bGraveInventory; }
+	_bool           Get_GraveUI() { return m_bGraveInventory; }
+	_bool           Get_FurnaceUI() { return m_bFurnace; }
+	_bool           Get_CookingUI() { return m_bCookingPot; }
+	_bool           Get_StatueUI() { return m_bStatue; }
+	_bool           Get_CraftUI() { return m_bCraft; }
 
 	void            UI_Disable();
 

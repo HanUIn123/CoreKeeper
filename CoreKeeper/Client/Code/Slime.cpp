@@ -27,6 +27,9 @@ HRESULT CSlime::Ready_GameObject(_vec3 vPos)
     m_vecDropItem.push_back(ITEM_MUCUS);
     m_vecDropItem.push_back(ITEM_WOOD);
     Set_Speed(0.8f);
+
+    m_pHitParticleCom->init(L"../Bin/Resource/Texture/Effect/Hit_%d.png", 5, 1.0f);
+
     return S_OK;
 }
 
@@ -69,6 +72,17 @@ _int CSlime::Update_GameObject(const _float& fTimeDelta)
     else
         KnockBack(fTimeDelta, 1.8f);
 
+    if (m_bHit)
+    {
+        m_pHitParticleCom->update(fTimeDelta);
+
+        if (m_pHitParticleCom->isDead())
+        {
+            m_pHitParticleCom->reset();
+            m_bHit = false;
+        }
+    }
+
 
     //Apply_Billboard();
 
@@ -104,6 +118,9 @@ void CSlime::Render_GameObject()
     m_pBufferCom->Render_Buffer();
     m_pColliderCom->Render_Collider();
 
+    if (m_bHit)
+        m_pHitParticleCom->render();
+
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
@@ -138,6 +155,10 @@ HRESULT CSlime::Add_Component()
     pComponent = m_pColliderCom = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Proto_SlimeCollider"));
     NULL_CHECK_RETURN(pComponent, E_FAIL);
     m_mapComponent[ID_DYNAMIC].insert({ L"Com_Collider", pComponent });
+
+    pComponent = m_pHitParticleCom = dynamic_cast<CHit*>(Engine::Clone_Proto(L"Proto_Hit"));
+    NULL_CHECK_RETURN(pComponent, E_FAIL);
+    m_mapComponent[ID_STATIC].insert({ L"Com_Hit", pComponent });
 
     return S_OK;
 

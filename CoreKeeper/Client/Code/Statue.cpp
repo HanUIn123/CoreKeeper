@@ -31,7 +31,22 @@ _int CStatue::Update_GameObject(const _float& fTimeDelta)
 	{
 		Interaction();
 	}
+	else if (!Check_Interaction())
+	{
+		if (m_bCollision)
+		{
+			CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
 
+			pPlayer->Set_Statue();
+
+			pPlayer->Set_Inventory();
+
+			if (!pPlayer->Get_StatueUI())
+			{
+				m_bCollision = false;
+			}
+		}
+	}
 	Add_RenderGroup(RENDER_ALPHA, this);
 
 	return Engine::CGameObject::Update_GameObject(fTimeDelta);
@@ -70,6 +85,10 @@ void CStatue::Interaction()
 		CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
 
 		pPlayer->Set_Statue(m_iImgNum);
+
+		pPlayer->Set_Inventory();
+	
+		m_bCollision = true;
 	}
 }
 

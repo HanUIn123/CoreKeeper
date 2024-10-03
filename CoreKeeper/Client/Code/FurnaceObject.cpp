@@ -28,8 +28,22 @@ _int CFurnaceObject::Update_GameObject(const _float& fTimeDelta)
 	{
 		Interaction();
 	}
+	else if (!Check_Interaction())
+	{
+		if (m_bCollision)
+		{
+			CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
 
-	Add_RenderGroup(RENDER_ALPHA, this);
+			pPlayer->Set_Furnace();
+
+			if (!pPlayer->Get_FurnaceUI())
+			{
+				m_bCollision = false;
+			}
+		}
+	}
+
+	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 
 	return Engine::CGameObject::Update_GameObject(fTimeDelta);
 }
@@ -65,6 +79,8 @@ void CFurnaceObject::Interaction()
 		CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
 
 		pPlayer->Set_Furnace();
+
+		m_bCollision = true;
 	}
 }
 

@@ -4,6 +4,7 @@
 BEGIN(Engine)
 
 class CSmog;
+class CFirework;
 
 END
 
@@ -59,6 +60,7 @@ private:
 
 private:
 	Engine::CSmog* m_pSmogParticleCom;
+	Engine::CFirework* m_pFlameParticleCom;
 
 	_bool    m_bSmog;
 

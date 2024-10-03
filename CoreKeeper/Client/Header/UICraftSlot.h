@@ -47,6 +47,11 @@ public:
 	}
 
 	void            Set_Window(TABLETYPE _eTableType = TABLE_PLAYER, MATERIAL _eMaterial = MATERIAL_WOOD, _bool _bDirection = true);
+
+	void            Set_DisableSlot()
+	{
+		m_bWindow = false;
+	}
 	void            Set_DisableWindow()
 	{
 		m_bWindow = false;

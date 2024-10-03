@@ -283,7 +283,7 @@ void CUIScreenInv::Render_GameObject()
 		Engine::MATERIAL material = m_pItem->Get_ItemMaterial();
 
 		//if (material != MATERIAL_END)
-			m_pItem->Get_Texture()->Set_Texture(m_pItem->Get_TextureNumber());
+		m_pItem->Get_Texture()->Set_Texture(m_pItem->Get_TextureNumber());
 		//else if (material == MATERIAL_END)
 			//m_pItem->Get_Texture()->Set_Texture(0);
 		//else if (material == MATERIAL_SPECIAL)
