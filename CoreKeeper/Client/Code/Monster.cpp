@@ -342,7 +342,7 @@ void CMonster::Set_Stop(_vec3* vDir1, _float fDirSpeed1, _vec3* vDir2, _float fD
 
 	// 미래 중점 좌표 기준 인덱스 값
 	_int iIndex = _int(vCheckPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (vCheckPos.x + 0.5f * VTXITV);
-	if (0 <= iIndex && iIndex < VTXCNTX * VTXCNTZ)
+	if (0 <= iIndex && iIndex < (VTXCNTX -1) * (VTXCNTZ - 1))
 		if (m_pTerrain->Get_UnreachableByIndex(iIndex))
 			m_iSpeedWeight = 0;
 }
@@ -353,7 +353,7 @@ void CMonster::Set_StuckFree(const _float& fTimeDelta)
 	m_pTransformCom->Get_Info(INFO_POS, &vCheckPos);
 	_int iIndex = _int(vCheckPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (vCheckPos.x + 0.5f * VTXITV);
 
-	if (0 <= iIndex && iIndex < VTXCNTX * VTXCNTZ)
+	if (0 <= iIndex && iIndex < (VTXCNTX - 1) * (VTXCNTZ - 1))
 	{
 		if (m_pTerrain->Get_UnreachableByIndex(iIndex))
 		{
