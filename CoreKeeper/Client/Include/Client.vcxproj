@@ -164,9 +164,12 @@ call Copy.bat</Command>
     <ClInclude Include="..\Header\Malugaz.h" />
     <ClInclude Include="..\Header\Feather.h" />
     <ClInclude Include="..\Header\Plant.h" />
+    <ClInclude Include="..\Header\ShamanRender.h" />
+    <ClInclude Include="..\Header\ShroomManRender.h" />
     <ClInclude Include="..\Header\Skeleton.h" />
     <ClInclude Include="..\Header\BackGround.h" />
     <ClInclude Include="..\Header\Bag.h" />
+    <ClInclude Include="..\Header\SlimeRender.h" />
     <ClInclude Include="..\Header\Sprinkler.h" />
     <ClInclude Include="..\Header\SprinklerObject.h" />
     <ClInclude Include="..\Header\GravestoneObject.h" />
@@ -294,9 +297,12 @@ call Copy.bat</Command>
     <ClCompile Include="..\Code\Malugaz.cpp" />
     <ClCompile Include="..\Code\Feather.cpp" />
     <ClCompile Include="..\Code\Plant.cpp" />
+    <ClCompile Include="..\Code\ShamanRender.cpp" />
+    <ClCompile Include="..\Code\ShroomManRender.cpp" />
     <ClCompile Include="..\Code\Skeleton.cpp" />
     <ClCompile Include="..\Code\BackGround.cpp" />
     <ClCompile Include="..\Code\Bag.cpp" />
+    <ClCompile Include="..\Code\SlimeRender.cpp" />
     <ClCompile Include="..\Code\Sprinkler.cpp" />
     <ClCompile Include="..\Code\SprinklerObject.cpp" />
     <ClCompile Include="..\Code\GravestoneObject.cpp" />
