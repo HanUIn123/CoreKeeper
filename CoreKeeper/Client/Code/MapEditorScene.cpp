@@ -16,6 +16,7 @@ CMapEditorScene::CMapEditorScene(LPDIRECT3DDEVICE9 _pGraphicDevice)
     , m_bPushed(false)
     , m_bWallClickPushed(false)
     , m_bBuildingClick(false)
+    , m_bMonsterClickPushed(false)
     , m_bSwitch(false)
     , m_bReachable(false)
     , m_bSelectTile(false)
@@ -62,6 +63,7 @@ CMapEditorScene::CMapEditorScene(LPDIRECT3DDEVICE9 _pGraphicDevice)
 
     m_vecWallObject.resize((VTXCNTX - 1) * (VTXCNTZ - 1));
     //m_vecBuildingObject.resize((VTXCNTX - 1) * (VTXCNTZ - 1));
+    m_vecMonsterRenderObject.resize((VTXCNTX - 1) * (VTXCNTZ - 1));
 }
 
 CMapEditorScene::~CMapEditorScene()
@@ -113,6 +115,8 @@ _int CMapEditorScene::Update_Scene(const _float& fTimeDelta)
     Piking_Wall();
 
     Piking_Object();
+
+    Piking_Monster();
 
     return iExit;
 }
@@ -687,7 +691,76 @@ void CMapEditorScene::Setting_MonsterList()
 
 HRESULT CMapEditorScene::Piking_Monster()
 {
-    return E_NOTIMPL;
+    auto	iter = find_if(m_mapLayer.begin(), m_mapLayer.end(), CTag_Finder(L"Layer_GameLogic"));
+
+    if (iter == m_mapLayer.end())
+        return E_FAIL;
+
+    if (!m_bGuiHovered)
+    {
+        if (Engine::Get_DIMouseState(DIM_LB) & 0x80 && m_bSelectMonster)
+        {
+            m_bMonsterClickPushed = true;
+
+            CMapToolTerrain* pTerrain = dynamic_cast<CMapToolTerrain*>(Engine::Get_GameObject(L"Layer_GameLogic", L"MapToolTerrain"));
+            CCalculator* pPickPos = dynamic_cast<CCalculator*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"MapToolTerrain", L"Com_Calculator"));
+            CMapToolTex* pMapToolBufferCom = dynamic_cast<CMapToolTex*>(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"MapToolTerrain", L"Com_Buffer"));
+            CTransform* pMapToolTransformCom = dynamic_cast<CTransform*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"MapToolTerrain", L"Com_Transform"));
+
+            m_vPickPos = pPickPos->Picking_OnTerrain(g_hWnd, pMapToolBufferCom, pMapToolTransformCom);
+            m_eMonsterType = (Engine::MONSTERTYPE)m_iMonsterNumber;
+
+
+            if (m_vPickPos.y < 0)
+                return S_OK;
+
+            m_bAlreadyInstalled = false;
+
+            if (m_vecMonsterRenderObject[unsigned __int64(m_vPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vPickPos.x + 0.5f * VTXITV])
+                m_bAlreadyInstalled = true;
+
+            if (m_bAlreadyInstalled)
+                m_bCanInstall = false;
+            else if (m_vCheckPos == m_vPickPos)
+                m_bCanInstall = false;
+            else
+                m_bCanInstall = true;
+
+            if (m_bCanInstall)
+            {
+                _int iIndex = _int(m_vPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vPickPos.x + 0.5f * VTXITV;
+
+                m_wsMonsterNameString[iIndex] = L"Monster_" + std::to_wstring(iIndex);
+
+                switch (m_eMonsterType)
+                {
+                case MON_SLIME:
+                    m_pMonsterCom = CSlimeRender::Create(m_pGraphicDev,iIndex);
+                    break;
+                case MON_SHROOMMAN:
+                    m_pMonsterCom = CShroomManRender::Create(m_pGraphicDev, iIndex);
+                    break;
+                case MON_SHAMAN:
+                    m_pMonsterCom = CShamanRender::Create(m_pGraphicDev, iIndex);
+                    break;
+                }
+
+                m_vecMonsterRenderObject[iIndex] = m_pMonsterCom;
+
+                NULL_CHECK_RETURN(m_pMonsterCom, E_FAIL);
+                FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsMonsterNameString[iIndex].c_str(), m_pMonsterCom), E_FAIL);
+
+                pTerrain->Set_Unreachable(iIndex, false);
+
+                m_vCheckPos = m_vPickPos;
+
+            }
+        }
+        if (!(Engine::Get_DIMouseState(DIM_LB) & 0x80))
+            m_bMonsterClickPushed = false;
+    }
+
+    return S_OK;
 }
 
 
