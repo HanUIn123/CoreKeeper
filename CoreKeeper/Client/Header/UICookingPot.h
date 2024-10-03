@@ -7,16 +7,17 @@ BEGIN(Engine)
 class CRcTex;
 class CTransform;
 class CTexture;
+class CInventory;
 //class CCalculator;
 //class CAnimator;
 
 END
 
-class CUIInvPlate : public Engine::CGameObject
+class CUICookingPot : public Engine::CGameObject
 {
 private:
-	explicit CUIInvPlate(LPDIRECT3DDEVICE9 pGraphicDev);
-	virtual ~CUIInvPlate();
+	explicit CUICookingPot(LPDIRECT3DDEVICE9 pGraphicDev);
+	virtual ~CUICookingPot();
 
 public:
 	virtual			HRESULT			Ready_GameObject(_vec2 vPos, _vec2 vSize);
@@ -32,10 +33,34 @@ private:
 	_matrix m_UIMatrix;
 
 	_bool m_bRender;
+
+	RECT m_BRect[3];
+
+	_bool m_bRectPicked[3];
+
+private:
+	_bool           USlot_Picked(POINT _screenPos) {
+		return ::PtInRect(&m_BRect[0], _screenPos);
+	}
+
+	_bool           DSlot_Picked(POINT _screenPos) {
+		return ::PtInRect(&m_BRect[1], _screenPos);
+	}
+
+	_bool           RSlot_Picked(POINT _screenPos) {
+		return ::PtInRect(&m_BRect[2], _screenPos);
+	}
+
 private:
 	Engine::CRcTex* m_pBufferCom;
+	Engine::CRcTex* m_pUSlotBufferCom;
+	Engine::CRcTex* m_pDSlotBufferCom;
+	Engine::CRcTex* m_pRSlotBufferCom;
+	Engine::CRcTex* m_pColBufferCom;
 	Engine::CTransform* m_pTransformCom;
 	Engine::CTexture* m_pTextureCom;
+	Engine::CTexture* m_pColTextureCom;
+	Engine::CInventory* m_pInventoryCom;
 
 public:
 	void Set_Render() { 
@@ -44,8 +69,10 @@ public:
 		else
 			m_bRender = true; }
 
+	void Set_Disable() { m_bRender = false; }
+
 public:
-	static CUIInvPlate* Create(LPDIRECT3DDEVICE9 pGraphicDe, _vec2 vPos, _vec2 vSize);
+	static CUICookingPot* Create(LPDIRECT3DDEVICE9 pGraphicDe, _vec2 vPos, _vec2 vSize);
 
 private:
 	virtual void		Free();

@@ -220,7 +220,7 @@ void CUICraftSlot::Set_Window(TABLETYPE _eTableType, MATERIAL _eMaterial, _bool 
 
 		auto iter = mapItemType.find({ _eTableType, _bDirection });
 
-		if (iter != mapItemType.end() && iter->second.eItemMat != _eMaterial)
+		if (iter != mapItemType.end() && iter->second.eItemMat != _eMaterial && iter->second.eItemMat != MATERIAL_END)
 		{
 			map<pair<TABLETYPE, _bool>, UIITEM>::iterator seconditer = mapItemType.find({ _eTableType, _bDirection });
 
@@ -272,7 +272,7 @@ void CUICraftSlot::Ready_Table()
 	{
 		//ÁÂÃø
 
-		UIITEM TORCH = { m_iIndex, ITEM_TORCH, MATERIAL_WOOD, 0 };
+		UIITEM TORCH = { m_iIndex, ITEM_TORCH, MATERIAL_END, 0 };
 		mapItemType.insert({ make_pair(TABLE_PLAYER, TRUE), TORCH });
 
 		UIITEM WOODSWORD = { m_iIndex, ITEM_SWORD, MATERIAL_WOOD, 4 };

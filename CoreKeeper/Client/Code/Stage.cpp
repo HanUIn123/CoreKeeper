@@ -152,7 +152,7 @@ HRESULT CStage::Ready_Layer_Environment(const _tchar* pLayerTag)
 	pGameObject = CStatue::Create(m_pGraphicDev, { 112.5f, 2.0f, 137.f + 2.f }, 1);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"LarvaStatue", pGameObject), E_FAIL);
-
+	 
 	pGameObject = CStatue::Create(m_pGraphicDev, { 144.5f, 2.0f, 137.f + 2.5f }, 2);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"MalugazStatue", pGameObject), E_FAIL);
@@ -180,6 +180,10 @@ HRESULT CStage::Ready_Layer_Environment(const _tchar* pLayerTag)
 	pGameObject = CFurnaceObject::Create(m_pGraphicDev, { 120.f, .5f, 130.5f });
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Furnace", pGameObject), E_FAIL);
+
+	pGameObject = CCookingPotObject::Create(m_pGraphicDev, { 120.f, .5f, 135.5f });
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"CookingPot", pGameObject), E_FAIL);
 
 	pGameObject = CSkeleton::Create(m_pGraphicDev, { 124.f, 0.5f, 130.5f });
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
@@ -359,6 +363,11 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar* pLayerTag)
 	pGameObject = CSeed::Create(m_pGraphicDev, ITEM_PEPPER_SEED);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Seed", pGameObject), E_FAIL);
+	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
+
+	pGameObject = CIngredient::Create(m_pGraphicDev, ITEM_BERRY_SEED);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Berryw", pGameObject), E_FAIL);
 	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
 
 	//pGameObject = CCore::Create(m_pGraphicDev);
@@ -707,6 +716,14 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
 	pGameObject = CUIFurnace::Create(m_pGraphicDev, vPos, vSize);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Furnace", pGameObject), E_FAIL);
+
+
+	vPos = { WINCX / 2.f , 230.f };
+	vSize = { 140.f, 115.f };
+
+	pGameObject = CUICookingPot::Create(m_pGraphicDev, vPos, vSize);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_CookingPot", pGameObject), E_FAIL);
 
 	m_mapLayer.insert({ pLayerTag , pLayer });
 

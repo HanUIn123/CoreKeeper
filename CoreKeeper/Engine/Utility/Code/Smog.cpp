@@ -40,15 +40,15 @@ void CSmog::resetParticle(Attribute* attribute) // 파티클 리셋
 	attribute->_isAlive = true;
 	//attribute->_position = _origin; // 처음위치로
 
-	D3DXVECTOR3 min = D3DXVECTOR3(-2.0f, -2.0f, -2.0f); // 최소
-	D3DXVECTOR3 max = D3DXVECTOR3(2.0f, 2.0f, 2.0f); // 최대
+	D3DXVECTOR3 min = D3DXVECTOR3(-3.0f, -2.0f, -3.0f); // 최소
+	D3DXVECTOR3 max = D3DXVECTOR3(3.0f, 2.0f, 3.0f); // 최대
 
 	d3d::GetRandomVector(
 		&attribute->_position,
 		&min, &max);
 
 	attribute->_velocity.x = 0.f;
-	attribute->_velocity.y = 1.f;
+	attribute->_velocity.y = 0.3f;
 	attribute->_velocity.z = 0.f;
 
 	// 구를 만들기 위한 초기화
@@ -56,14 +56,14 @@ void CSmog::resetParticle(Attribute* attribute) // 파티클 리셋
 		&attribute->_velocity,
 		&attribute->_velocity);
 
-	attribute->_velocity *= 10.0f; // 속도 지정
+	attribute->_velocity *= 5.0f; // 속도 지정
 
-	attribute->_color = D3DXCOLOR(1.f, 1.f, 1.f, 1.0f);
+	attribute->_color = D3DCOLOR_ARGB(255, 255, 255, 255);
 
 	attribute->_iTextureNum = 0;
 
 	attribute->_age = 0.0f;
-	attribute->_lifeTime = 0.1f; // 수명 2초
+	attribute->_lifeTime = 0.07f; // 수명 2초
 }
 
 void CSmog::update(float timeDelta)
@@ -78,7 +78,7 @@ void CSmog::update(float timeDelta)
 			i->_position.y += i->_velocity.y * timeDelta;
 
 			i->_age += timeDelta;
-
+			
 			if (i->_age > i->_lifeTime) // 수명이 끝남
 			{
 				i->_iTextureNum++;
@@ -96,8 +96,8 @@ void CSmog::preRender()
 {
 	PSystem::preRender();
 
-	m_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_ONE);
-	m_pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
+	//m_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_ONE);
+	//m_pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
 
 	// z버퍼 읽기 끔
 	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, false);

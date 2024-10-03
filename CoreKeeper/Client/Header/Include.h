@@ -72,6 +72,8 @@
 
 #include "Feather.h"
 
+#include "Ingredient.h"
+
 
 // Etc
 #include "Terrain.h"
@@ -86,6 +88,7 @@
 #include "Skeleton.h"
 #include "TableObject.h"
 #include "FurnaceObject.h"
+#include "CookingPotObject.h"
 
 // UI
 #include "UIPlayerStatus.h"
@@ -114,6 +117,7 @@
 #include "UIStatueCraft.h"
 #include "UIChestSort.h"
 #include "UIFurnace.h"
+#include "UICookingPot.h"
 
 // Map 
 #include "MiniMapFrame.h"

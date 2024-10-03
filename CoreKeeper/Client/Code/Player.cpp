@@ -27,6 +27,7 @@
 #include "..\Header\Stage.h"
 #include "..\Header\GravestoneObject.h"
 #include "..\Header\UIFurnace.h"
+#include "..\Header\UICookingPot.h"
 
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CGameObject(pGraphicDev)
@@ -66,6 +67,7 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	m_bStatue = false;
 	m_bGraveInventory = false;
 	m_bFurnace = false;
+	m_bCookingPot = false;
 
 	m_vStartPoint = { 0, 0, 0 };
 	m_vKnockBackDir = { 0, 0, 0 };
@@ -1547,6 +1549,33 @@ void CPlayer::Set_Furnace()
 		Set_Inventory();
 
 		m_bFurnace = true;
+	}
+}
+
+void CPlayer::Set_CookingPot()
+{
+	if (m_bCookingPot)
+	{
+		CUICookingPot* pPot = dynamic_cast<CUICookingPot*>(Engine::Get_GameObject(L"Layer_UI", L"UI_CookingPot"));
+
+		pPot->Set_Disable();
+
+		if (m_bCookingPot)
+		{
+			Set_Inventory();
+		}
+
+		m_bCookingPot = false;
+	}
+	else
+	{
+		CUICookingPot* pPot = dynamic_cast<CUICookingPot*>(Engine::Get_GameObject(L"Layer_UI", L"UI_CookingPot"));
+
+		pPot->Set_Render();
+
+		Set_Inventory();
+
+		m_bCookingPot = true;
 	}
 }
 
