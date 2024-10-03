@@ -185,7 +185,7 @@ HRESULT CStage::Ready_Layer_Environment(const _tchar* pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Furnace", pGameObject), E_FAIL);
 
-	pGameObject = CCookingPotObject::Create(m_pGraphicDev, { 59.f, .5f, 16.f });
+	pGameObject = CCookingPotObject::Create(m_pGraphicDev, { 75.f, .5f, 16.f });
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"CookingPot", pGameObject), E_FAIL);
 
