@@ -58,17 +58,16 @@ public:
 	void									Setting_MonsterList();
 	HRESULT									Piking_Monster();
 
+	void									Setting_InstallWallCount();
+
+
 
 	HRESULT									Delete_Object(const _tchar* pLayerTag, const _tchar* pGameObjectTag);
 
 	// ImGui에 Tile 미리보기 이미지 등록.
 	HRESULT									Resister_ImguiImage_ImGui(LPDIRECT3DDEVICE9 _pGraphicDeivce, const _tchar* _ImageFilePath, IMGUITEXTUREID _eTextureId, const int& _iImageNumber);
 private:
-	_int									m_iStandardIndex;
-	_int									m_iUpIndex;
-	_int									m_iDownIndex;
-	_int									m_iRightIndex;
-	_int									m_iLeftIndex;
+
 
 private:
 	vector<IDirect3DBaseTexture9*>			m_vecTileTexture;
@@ -86,6 +85,9 @@ private:
 	bool									m_bSwitch;
 	bool									m_bReachable;
 	wstring									m_iImGuiTileListNum;
+
+	_int									m_iInstallWallCount;
+
 
 	// n번 째 타일인지 담는 변수.
 	_int									m_iTileNumber;

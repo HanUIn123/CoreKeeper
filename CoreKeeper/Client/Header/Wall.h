@@ -33,6 +33,8 @@ public:
     _int													Get_WallNumber() { return m_iWallImageNum; }
     void													Set_WallNumber(_int _iWallNum) { m_iWallImageNum = _iWallNum; }
 
+    void													Set_SpecialWallNumber(_int _iWallNum) { m_iCurImgNum = _iWallNum; }
+
     // Delete_GameObject 함수를 사용하려면, 키값이 필요한데, 그 키값(이름)을 받아올 함수
     wstring													Get_PickedWallName() { return m_strPickedWallName; }
     void													Set_PickedWallName(wstring _wallName) { m_strPickedWallName = _wallName; }
