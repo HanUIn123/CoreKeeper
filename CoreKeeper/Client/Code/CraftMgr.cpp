@@ -184,14 +184,11 @@ CItem* CCraftMgr::Craft(CInventory* _pInventory, ITEMNUM _eItemNum, MATERIAL _eM
 	return pItem;
 }
 
-CItem* CCraftMgr::Cook(CInventory* _pInventory, ITEMNUM _eItemNum1, ITEMNUM _eItemNum2)
+CItem* CCraftMgr::Cook(ITEMNUM _eItemNum1, ITEMNUM _eItemNum2)
 {
     // ¿ä¸® Àç·á°¡ ¾Æ´Ï¸é nullptr ¹ÝÈ¯
     if (_eItemNum1 < ITEM_BERRY || _eItemNum1 > ITEM_MUSHROOM || _eItemNum2 < ITEM_BERRY || _eItemNum2 > ITEM_MUSHROOM)
         return nullptr;
-
-    _pInventory->Minus_Item(_eItemNum1, 1);
-    _pInventory->Minus_Item(_eItemNum2, 1);
 
     CItem* pFood = nullptr;
 
@@ -199,6 +196,10 @@ CItem* CCraftMgr::Cook(CInventory* _pInventory, ITEMNUM _eItemNum1, ITEMNUM _eIt
         pFood = CFood::Create(m_pGraphicDev, _eItemNum2, _eItemNum1);
     else
         pFood = CFood::Create(m_pGraphicDev, _eItemNum1, _eItemNum2);
+
+    CScene* pScene = Engine::Get_Scene();
+
+    pScene->Create_GameObject(L"Layer_UI", pFood, strCraftName[m_iCraftCount++].c_str());
 
     return pFood;
 }
@@ -208,6 +209,7 @@ void CCraftMgr::Set_Recipe()
     // ³ª¹« °î±ªÀÌ
     Recipe woodPickAxeRecipe;
     woodPickAxeRecipe.vecIngredients.push_back({ITEM_WOOD, 4});
+
     m_mapRecipes[make_pair(ITEM_PICKAXE, MATERIAL_WOOD)] = woodPickAxeRecipe;
 
     // ±¸¸® °î±ªÀÌ
@@ -510,17 +512,17 @@ void CCraftMgr::Set_Recipe()
     // ±¸¸® ÁÖ±«
     Recipe CopperBarRecipe;
     CopperBarRecipe.vecIngredients.push_back({ ITEM_COPPER, 1 });
-    m_mapRecipes[make_pair(ITEM_COPPER_BAR, MATERIAL_END)] = CopperBarRecipe;
+    m_mapRecipes[make_pair(ITEM_COPPER_BAR, MATERIAL_COPPER)] = CopperBarRecipe;
 
     // Ã¶ ÁÖ±«
     Recipe IronBarRecipe;
     IronBarRecipe.vecIngredients.push_back({ ITEM_IRON, 1 });
-    m_mapRecipes[make_pair(ITEM_IRON_BAR, MATERIAL_END)] = IronBarRecipe;
+    m_mapRecipes[make_pair(ITEM_IRON_BAR, MATERIAL_IRON)] = IronBarRecipe;
 
     // ÁøÈ«¼® ÁÖ±«
     Recipe ScarletBarRecipe;
     ScarletBarRecipe.vecIngredients.push_back({ ITEM_SCARLET, 1 });
-    m_mapRecipes[make_pair(ITEM_SCARLET_BAR, MATERIAL_END)] = ScarletBarRecipe;
+    m_mapRecipes[make_pair(ITEM_SCARLET_BAR, MATERIAL_SCARLET)] = ScarletBarRecipe;
 }
 
 void CCraftMgr::Free()

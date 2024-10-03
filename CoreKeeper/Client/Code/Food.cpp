@@ -35,6 +35,7 @@ HRESULT CFood::Ready_GameObject(ITEMNUM _eIngredient1, ITEMNUM _eIngredient2, _v
 			m_eItemNum = ITEM_BERRY_MUSHROOM_FOOD;
 			break;
 		}
+		break;
 	case ITEM_PEPPER:
 		switch (_eIngredient2)
 		{
@@ -48,6 +49,7 @@ HRESULT CFood::Ready_GameObject(ITEMNUM _eIngredient1, ITEMNUM _eIngredient2, _v
 			m_eItemNum = ITEM_PEPPER_MUSHROOM_FOOD;
 			break;
 		}
+		break;
 	case ITEM_CARROT:
 		switch (_eIngredient2)
 		{
@@ -58,6 +60,7 @@ HRESULT CFood::Ready_GameObject(ITEMNUM _eIngredient1, ITEMNUM _eIngredient2, _v
 			m_eItemNum = ITEM_CARROT_MUSHROOM_FOOD;
 			break;
 		}
+		break;
 	case ITEM_MUSHROOM:
 		m_eItemNum = ITEM_MUSHROOM_MUSHROOM_FOOD;
 		break;
