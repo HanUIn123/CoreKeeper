@@ -84,53 +84,6 @@ _int CUICraftSlot::Update_GameObject(const _float& fTimeDelta)
 		CInventory* pPlayerInv = dynamic_cast<Engine::CInventory*>
 			(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
 
-		/*
-		switch (m_eSlotType)
-		{
-		case UCITEM_TORCH:
-
-			if(CCraftMgr::GetInstance()->Craftable(pPlayerInv, ITEM_TORCH, MATERIAL_WOOD))
-			{
-				m_bEnough = true;
-			}
-			else
-				m_bEnough = false;
-			break;
-
-		case UCITEM_WOODENPICK:
-
-			if (CCraftMgr::GetInstance()->Craftable(pPlayerInv, ITEM_PICKAXE, MATERIAL_WOOD))
-			{
-				m_bEnough = true;
-			}
-			else
-				m_bEnough = false;
-			break;
-
-		case UCITEM_WORKBENCH:
-			if (pPlayerInv->Enough_Item(ITEM_WOOD, 8))
-			{
-				m_bEnough = true;
-			}
-			else
-				m_bEnough = false;
-			break;
-
-		case UCITEM_CHEST:
-			if (pPlayerInv->Enough_Item(ITEM_WOOD, 5))
-			{
-				m_bEnough = true;
-			}
-			else
-				m_bEnough = false;
-			break;
-
-		default:
-			m_bEnough = false;
-			break;
-		}
-		*/
-
 		if (CCraftMgr::GetInstance()->Craftable(pPlayerInv, m_eItemType.eItemNum, m_eItemType.eItemMat))
 		{
 			m_bEnough = true;
@@ -149,22 +102,6 @@ _int CUICraftSlot::Update_GameObject(const _float& fTimeDelta)
 					CInventory* pCursorInv = dynamic_cast<CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_UI", L"UI_Cursor", L"Com_Inventory"));
 
 					pCursorInv->Add_Item(CCraftMgr::GetInstance()->Craft(pPlayerInv, m_eItemType.eItemNum, m_eItemType.eItemMat));
-					/*
-					CStage* pStage = dynamic_cast<CStage*>(Engine::Get_Scene());
-
-					CItem* pItem = nullptr;
-
-					
-					switch (m_eSlotType)
-					{
-					case UCITEM_TORCH:
-						pCursorInv->Add_Item(CCraftMgr::GetInstance()->Craft(pPlayerInv, ITEM_TORCH, MATERIAL_WOOD));
-						break;
-
-					case UCITEM_WOODENPICK:
-						pCursorInv->Add_Item(CCraftMgr::GetInstance()->Craft(pPlayerInv, ITEM_PICKAXE, MATERIAL_WOOD));
-						break;
-					}*/
 				}	
 			}
 
@@ -212,31 +149,6 @@ void CUICraftSlot::Render_GameObject()
 	}
 	m_pBufferCom->Render_Buffer();
 
-	/*
-	switch (m_iIndex)
-	{
-	case 0:
-		matWorld._11 -= 20.f;
-		matWorld._22 -= 10.f;
-		break;
-
-	case 1:
-		matWorld._11 -= 10.f;
-		matWorld._22 -= 10.f;
-		break;
-
-	case 2:
-		matWorld._11 -= 10.f;
-		matWorld._22 -= 10.f;
-		break;
-
-	case 3:
-		matWorld._11 -= 10.f;
-		matWorld._22 -= 10.f;
-		break;
-
-	}*/
-	
 	matWorld._11 -= 3.f;
 	matWorld._22 -= 3.f;
 
@@ -300,7 +212,6 @@ void CUICraftSlot::Set_Window(TABLETYPE _eTableType, MATERIAL _eMaterial, _bool 
 			case TABLE_CRAFT:
 				m_BRect.left += 48.f;
 				m_BRect.right += 48.f;
-
 				break;
 			}
 		}
@@ -401,7 +312,7 @@ void CUICraftSlot::Ready_Table()
 		UIITEM BASICCRAFTTABLE = { m_iIndex, ITEM_TABLE, MATERIAL_WOOD, 2 };
 		mapItemType.insert({ make_pair(TABLE_PLAYER, TRUE), BASICCRAFTTABLE });
 
-		UIITEM WATERINGCAN= { m_iIndex, ITEM_TABLE, MATERIAL_WOOD, 6 };
+		UIITEM WATERINGCAN= { m_iIndex, ITEM_WATERINGCAN, MATERIAL_WOOD, 6 };
 		mapItemType.insert({ make_pair(TABLE_CRAFT, TRUE), WATERINGCAN });
 
 		// ¿ìÃø

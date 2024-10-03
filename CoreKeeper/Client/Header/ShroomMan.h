@@ -1,5 +1,13 @@
 #pragma once
 #include "Monster.h"
+
+BEGIN(Engine)
+
+class CSmoke;
+class CHit;
+
+END
+
 class CShroomMan : public CMonster
 {
 	explicit CShroomMan(LPDIRECT3DDEVICE9 pGraphicDev);
@@ -25,5 +33,8 @@ public:
 
 private:
 	virtual void		Free();
+
+private:
+	Engine::CSmoke* m_pSmokeParticleCom;
 };
 

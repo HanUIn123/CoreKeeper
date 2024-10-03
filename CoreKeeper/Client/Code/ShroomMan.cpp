@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "../Header/ShroomMan.h"
+#include "../Header/Player.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
-#include "../Header/Player.h"
 
 CShroomMan::CShroomMan(LPDIRECT3DDEVICE9 pGraphicDev)
     : CMonster(pGraphicDev)
@@ -12,6 +12,8 @@ CShroomMan::CShroomMan(LPDIRECT3DDEVICE9 pGraphicDev)
     m_eState = IDLE;
     m_bFlip = false;
     m_fAggroDistance = 8.f;
+
+    m_bHit = false;
 }
 
 CShroomMan::~CShroomMan()
@@ -28,6 +30,11 @@ HRESULT CShroomMan::Ready_GameObject(_vec3 vPos)
     m_vecDropItem.push_back(ITEM_BOW);
     m_vecDropItem.push_back(ITEM_WOOD);
     Set_Speed(1.0f);
+
+    m_pSmokeParticleCom->init(L"../Bin/Resource/Texture/Particle/Puff_Particle/Puff_Particle_%d.png", 3, 0.3f);
+
+    m_pHitParticleCom->init(L"../Bin/Resource/Texture/Effect/Hit_%d.png", 5, 1.0f);
+
     return S_OK;
 }
 
@@ -73,6 +80,26 @@ _int CShroomMan::Update_GameObject(const _float& fTimeDelta)
     Flip();
     Set_StuckFree(fTimeDelta);
     m_pAnimatorCom->Update_Animation();
+
+    if (m_eState == SWING)
+    {
+        m_pSmokeParticleCom->update(fTimeDelta);
+
+        if (m_pSmokeParticleCom->isDead())
+            m_pSmokeParticleCom->reset();
+    }
+    
+    if (m_bHit)
+    {
+        m_pHitParticleCom->update(fTimeDelta);
+
+        if (m_pHitParticleCom->isDead())
+        {
+            m_pHitParticleCom->reset();
+            m_bHit = false;
+        }
+    }
+
     Add_RenderGroup(RENDER_ALPHA, this);
     return Engine::CGameObject::Update_GameObject(fTimeDelta);
 }
@@ -95,6 +122,14 @@ void CShroomMan::Render_GameObject()
     m_pBufferCom->Set_Index(m_pAnimatorCom->Get_MotionIndex());
     m_pBufferCom->Render_Buffer();
     m_pColliderCom->Render_Collider();
+
+    if (m_eState == SWING)
+    {
+        m_pSmokeParticleCom->render();
+    }
+
+    if (m_bHit)
+        m_pHitParticleCom->render();
 
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
@@ -131,6 +166,14 @@ HRESULT CShroomMan::Add_Component()
     NULL_CHECK_RETURN(pComponent, E_FAIL);
     m_mapComponent[ID_DYNAMIC].insert({ L"Com_Collider", pComponent });
 
+
+    pComponent = m_pSmokeParticleCom = dynamic_cast<CSmoke*>(Engine::Clone_Proto(L"Proto_Smoke"));
+    NULL_CHECK_RETURN(pComponent, E_FAIL);
+    m_mapComponent[ID_STATIC].insert({ L"Com_Smoke", pComponent });
+
+    pComponent = m_pHitParticleCom = dynamic_cast<CHit*>(Engine::Clone_Proto(L"Proto_Hit"));
+    NULL_CHECK_RETURN(pComponent, E_FAIL);
+    m_mapComponent[ID_STATIC].insert({ L"Com_Hit", pComponent });
     return S_OK;
 }
 
@@ -376,7 +419,9 @@ STATE CShroomMan::State_Change()
             {
                 // 무기와 충돌 했는데 공격 범위 이내인 경우
                 if (m_pCalculatorCom->Check_Distance2D(&vPlayerPos, &vPos, m_fAggroDistance))
+                {
                     return SWING;
+                }
                 // 공격 범위 밖인 경우
                 else
                     return WALK;
