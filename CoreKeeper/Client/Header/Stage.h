@@ -40,6 +40,7 @@ public:
 
 
 	HRESULT							Load_MapFile();
+	HRESULT							Load_MonsterData();
 
 
 
@@ -62,6 +63,7 @@ private:
 	wstring							m_wsTileNameString[VTXCNTX * VTXCNTZ];
 	wstring							m_wsWallNameString[VTXCNTX * VTXCNTZ];
 	wstring							m_wsBuildingNameString[VTXCNTX * VTXCNTZ];
+	wstring							m_wsMonsterNameString[VTXCNTX * VTXCNTZ];
 	_int							m_iLoadTileCount;
 	_int							m_iLoadWallCount;
 
