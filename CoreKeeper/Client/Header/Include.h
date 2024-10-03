@@ -26,6 +26,7 @@
 #include "Pickaxe.h"
 #include "Hoe.h"
 #include "WateringCan.h"
+#include "Seed.h"
 
 #include "Sword.h"
 #include "Bow.h"

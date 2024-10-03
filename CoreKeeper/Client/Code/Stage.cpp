@@ -19,11 +19,13 @@ CStage::CStage(LPDIRECT3DDEVICE9 pGraphicDev)
 CStage::~CStage()
 {
 	CCraftMgr::DestroyInstance();
+	CFarmMgr::DestroyInstance();
 }
 
 HRESULT CStage::Ready_Scene()
 {
 	CCraftMgr::GetInstance()->Ready_Craft(m_pGraphicDev);
+	CFarmMgr::GetInstance()->Ready_Farm(m_pGraphicDev);
 
 	//FAILED_CHECK_RETURN(Ready_LightInfo(), E_FAIL);
 	FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Layer_Environment"), E_FAIL);
@@ -45,7 +47,7 @@ HRESULT CStage::Ready_Scene()
 _int CStage::Update_Scene(const _float& fTimeDelta)
 {
 	_int	iExit = Engine::CScene::Update_Scene(fTimeDelta);
-
+	CFarmMgr::GetInstance()->Update_Farm(fTimeDelta);
 	return iExit;
 }
 
@@ -364,6 +366,11 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar* pLayerTag)
 	pGameObject = CWateringCan::Create(m_pGraphicDev, MATERIAL_COPPER);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"WateringCan", pGameObject), E_FAIL);
+	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
+
+	pGameObject = CSeed::Create(m_pGraphicDev, ITEM_PEPPER_SEED);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Seed", pGameObject), E_FAIL);
 	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
 
 	//pGameObject = CCore::Create(m_pGraphicDev);
