@@ -22,16 +22,10 @@ HRESULT CWateringCan::Ready_GameObject(MATERIAL _eMaterial, _vec3 vPos)
 	switch (m_eMaterial)
 	{
 	case MATERIAL_COPPER:
-	{
 		m_iTextureNumber = 0;
-		m_eMaterial = MATERIAL_WOOD;
-	}
 		break;
 	case MATERIAL_IRON:
-	{
 		m_iTextureNumber = 1;
-		m_eMaterial = MATERIAL_COPPER;
-	}
 		break;
 	}
 

@@ -55,7 +55,6 @@ _int CBow::Update_GameObject(const _float& fTimeDelta)
 
 	if (m_bUse)
 	{
-		// Swing(0, 5, 2);
 		Shoot(ARROW);
 		m_bActive = true;
 		m_bDrop = false;
