@@ -215,7 +215,7 @@ void CUICursor::Render_GameObject()
 
 
 		if (material != MATERIAL_END)
-			m_pItem->Get_Texture()->Set_Texture(material);
+			m_pItem->Get_Texture()->Set_Texture(m_pItem->Get_TextureNumber());
 		//else if (material == MATERIAL_SPECIAL)
 		//	m_pItem->Get_Texture()->Set_Texture(material);
 		else

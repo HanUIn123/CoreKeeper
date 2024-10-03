@@ -138,8 +138,8 @@ void CUIInventory::Render_GameObject()
 
 		Engine::MATERIAL material = pItem->Get_ItemMaterial();
 
-		if (material != MATERIAL_END )
-			pItem->Get_Texture()->Set_Texture(material);
+		if (material != MATERIAL_END)
+			pItem->Get_Texture()->Set_Texture(pItem->Get_TextureNumber());
 		else
 			pItem->Get_Texture()->Set_Texture();
 
