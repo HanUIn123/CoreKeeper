@@ -56,8 +56,11 @@ CMonster::CMonster(LPDIRECT3DDEVICE9 pGraphicDev)
 
 	m_iSpeedWeight = 1;
 
-	m_pPlayerTransform = nullptr;
 	m_pTerrain = nullptr;
+	m_pPlayer = nullptr;
+	m_pPlayerTransform = nullptr;
+	m_pPlayerState = nullptr;
+	m_pPlayerCollider = nullptr;
 	m_bCheckWall = false;
 
 	m_vecDropItem.reserve(3);
@@ -212,15 +215,13 @@ void CMonster::Check_Hitted()
 {
 	_vec3 vPos, vPlayerPos;
 	m_pTransformCom->Get_Info(INFO_POS, &vPos);
-	CPlayer* pPlayer = dynamic_cast<CPlayer*>(Get_GameObject(L"Layer_GameLogic", L"Player"));
-	CItem* pPlayerHandedItem = pPlayer->Get_HandedItem();
 
-	if (pPlayer->Get_CurState() == SWING || pPlayer->Get_CurState() == SHOOT)
+	CItem* pPlayerHandedItem = m_pPlayer->Get_HandedItem();
+
+	if (m_pPlayer->Get_CurState() == SWING || m_pPlayer->Get_CurState() == SHOOT)
 	{
 		CColliderCube* pHandedItemCollider = dynamic_cast<CColliderCube*>(pPlayerHandedItem->Get_Component(ID_DYNAMIC, L"Com_ColliderCube"));
-
-		CTransform* pPlayerTransform = dynamic_cast<CTransform*>(pPlayer->Get_Component(ID_DYNAMIC, L"Com_Transform"));
-		pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
+		m_pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
 		if (m_pColliderCom->Check_Cube_Collision(pHandedItemCollider))
 		{
 
@@ -237,8 +238,7 @@ void CMonster::Check_Hitted()
 				m_vFallDir = vPos - vPlayerPos;
 				D3DXVec3Normalize(&m_vFallDir, &m_vFallDir);
 				m_vFallDir.y = 0;
-				CState* pPlayerState = dynamic_cast<CState*>(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_State"));
-				m_pStateCom->Set_Damaged(pPlayerState->Get_Stat()->iAttack);
+				m_pStateCom->Set_Damaged(m_pPlayerState->Get_Stat()->iAttack);
 				if (m_pStateCom->Get_Dead())
 					m_eState = DEAD;
 			}
@@ -342,22 +342,20 @@ void CMonster::Set_Stop(_vec3* vDir1, _float fDirSpeed1, _vec3* vDir2, _float fD
 
 	// 미래 중점 좌표 기준 인덱스 값
 	_int iIndex = _int(vCheckPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (vCheckPos.x + 0.5f * VTXITV);
-	CTerrain* pTerrain = dynamic_cast<CTerrain*>(Engine::Get_GameObject(L"Layer_Environment", L"Terrain"));
 	if (0 <= iIndex && iIndex < VTXCNTX * VTXCNTZ)
-		if (pTerrain->Get_UnreachableByIndex(iIndex))
+		if (m_pTerrain->Get_UnreachableByIndex(iIndex))
 			m_iSpeedWeight = 0;
 }
 
 void CMonster::Set_StuckFree(const _float& fTimeDelta)
 {
-	CTerrain* pTerrain = dynamic_cast<CTerrain*>(Engine::Get_GameObject(L"Layer_Environment", L"Terrain"));
 	_vec3 vCheckPos, vDir;
 	m_pTransformCom->Get_Info(INFO_POS, &vCheckPos);
 	_int iIndex = _int(vCheckPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (vCheckPos.x + 0.5f * VTXITV);
 
 	if (0 <= iIndex && iIndex < VTXCNTX * VTXCNTZ)
 	{
-		if (pTerrain->Get_UnreachableByIndex(iIndex))
+		if (m_pTerrain->Get_UnreachableByIndex(iIndex))
 		{
 			vDir = vCheckPos - _vec3(_int(vCheckPos.x + 0.5f * VTXITV), 0, _int(vCheckPos.z + 0.5f * VTXITV) * (VTXCNTX - 1));
 			D3DXVec3Normalize(&vDir, &vDir);
@@ -370,11 +368,6 @@ void CMonster::Set_StuckFree(const _float& fTimeDelta)
 
 _bool CMonster::Check_Wall()
 {
-	if (!m_pPlayerTransform)
-		m_pPlayerTransform = dynamic_cast<CTransform*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Transform"));
-	if (!m_pTerrain)
-		m_pTerrain = dynamic_cast<CTerrain*>(Engine::Get_GameObject(L"Layer_Environment", L"Terrain"));
-
 	m_bCheckWall = false;
 	switch (m_eType)
 	{
@@ -394,6 +387,20 @@ _bool CMonster::Check_Wall()
 		break;
 	}
 	return m_bCheckWall;
+}
+
+void CMonster::Set_Cast()
+{
+	if (!m_pPlayerTransform)
+		m_pPlayerTransform = dynamic_cast<CTransform*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Transform"));
+	if (!m_pTerrain)
+		m_pTerrain = dynamic_cast<CTerrain*>(Engine::Get_GameObject(L"Layer_Environment", L"Terrain"));
+	if(!m_pPlayer)
+		m_pPlayer = dynamic_cast<CPlayer*>(Get_GameObject(L"Layer_GameLogic", L"Player"));
+	if(!m_pPlayerState)
+		m_pPlayerState = dynamic_cast<CState*>(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_State"));
+	if(!m_pPlayerCollider)
+		m_pPlayerCollider = dynamic_cast<Engine::CCollider*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Collider"));
 }
 
 void CMonster::Check_WallWithPlayer()
