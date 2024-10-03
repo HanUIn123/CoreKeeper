@@ -3,6 +3,8 @@
 #include "Export_Utility.h"
 #include "GameObject.h"
 #include "../Header/Plant.h"
+#include "../Header/Seed.h"
+#include "..\Header\Ingredient.h"
 #include "../Header/Terrain.h"
 
 IMPLEMENT_SINGLETON(CFarmMgr)
@@ -20,7 +22,7 @@ HRESULT CFarmMgr::Ready_Farm(LPDIRECT3DDEVICE9 pGraphicDev)
 {
     m_pGraphicDev = pGraphicDev;
     m_pGraphicDev->AddRef();
-    m_fGrowTime = 5.f;
+    m_iGrowTime = 5;
     return S_OK;
 }
 
@@ -55,7 +57,7 @@ _bool CFarmMgr::Create_Plant(_int iIndex, ITEMNUM eIngredient)
                 pScene->Create_GameObject(L"Layer_GameLogic", pPlant, m_listPlantedName.back().c_str());
                 m_mapPlant.emplace(std::to_wstring(iIndex), pPlant);
                 CAnimator* pPlantAnimator = dynamic_cast<CAnimator*>(pPlant->Get_Component(ID_STATIC, L"Com_Animator"));
-                pPlantAnimator->Set_CurState(IDLE, 0, 0, -1);
+                pPlantAnimator->Set_CurState(IDLE, 0, 0, 20);
                 POINT tState = { iIndex, 0 };
                 m_vecPlantedState.push_back(tState);
                 return true;
@@ -79,9 +81,9 @@ _bool CFarmMgr::Create_Plant(_int iIndex, ITEMNUM eIngredient)
                 CAnimator* pPlantAnimator = dynamic_cast<CAnimator*>(pPlant->Get_Component(ID_STATIC, L"Com_Animator"));
                 // 타일이 28이면 바로 애니메이션 + 1
                 if (m_pTerrain->Get_TextureNumber(iIndex) == 27)
-                    pPlantAnimator->Set_CurState(IDLE, 0, 0, -1);
+                    pPlantAnimator->Set_CurState(IDLE, 0, 0, 20);
                 else
-                    pPlantAnimator->Set_CurState(IDLE, 1, 1, -1);
+                    pPlantAnimator->Set_CurState(IDLE, 1, 1, 20);
                 POINT tState = { iIndex, 0 };
                 m_vecPlantedState.push_back(tState);
                 return true;
@@ -97,16 +99,18 @@ _bool CFarmMgr::Harvest_Plant(_int iIndex)
     if (m_mapPlant.find(strBuffer) == m_mapPlant.end())
         return false;
     CGameObject* pPlant = m_mapPlant.find(std::to_wstring(iIndex))->second;
-
+    CTransform* pPlantTransform = dynamic_cast<CTransform*>(pPlant->Get_Component(ID_DYNAMIC, L"Com_Transform"));
     CAnimator* pPlantAnimator = dynamic_cast<CAnimator*>(pPlant->Get_Component(ID_STATIC, L"Com_Animator"));
     _int    iResult = pPlantAnimator->Get_MotionIndex();
     ITEMNUM eResultItem = dynamic_cast<CPlant*>(pPlant)->Get_ItemNum();
+    _vec3  vPos;
+    pPlantTransform->Get_Info(INFO_POS, &vPos);
     // 해당 인덱스의 식물이 덜 자란 상태면 씨앗 아이템 생성
     if (iResult < 5)
-        Create_Item(eResultItem);
+        Create_Seed(eResultItem, vPos);
     // 해당 인덱스의 식물이 다 자란 상태면 결과 아이템 생성
     else
-        Create_Object(eResultItem);
+        Create_Result(eResultItem, vPos);
     
     // 팜 매니저에서 삭제
     m_mapPlant.erase(std::to_wstring(iIndex));
@@ -149,7 +153,7 @@ void CFarmMgr::Watering_Plant(_int iIndex)
     CGameObject* pPlant = m_mapPlant.find(strBuffer)->second;
     CAnimator* pPlantAnimator = dynamic_cast<CAnimator*>(pPlant->Get_Component(ID_STATIC, L"Com_Animator"));
     if (pPlantAnimator->Get_MotionIndex() == 0)
-        pPlantAnimator->Set_CurState(IDLE, 1, 1, -1);
+        pPlantAnimator->Set_CurState(IDLE, 1, 1, 20);
 }
 
 _bool CFarmMgr::Get_GrownUp(_int iIndex)
@@ -173,48 +177,34 @@ void CFarmMgr::Grow_Plant()
         CGameObject* pPlant = m_mapPlant.find(strBuffer)->second;
         CAnimator* pPlantAnimator = dynamic_cast<CAnimator*>(pPlant->Get_Component(ID_STATIC, L"Com_Animator"));
         _int iMotion = pPlantAnimator->Get_MotionIndex();
-        if (iMotion > 0 && iMotion < 4)
-            m_vecPlantedState[i].y++;
+        if (iMotion > 0 && iMotion < 5)
+            m_vecPlantedState[i].y += 1;
 
-        if (m_vecPlantedState[i].y > 60 * m_fGrowTime)
+        if (m_vecPlantedState[i].y > 60 * m_iGrowTime)
         {
             m_vecPlantedState[i].y = 0;
-            CTransform* pPlantTransform = dynamic_cast<CTransform*>(pPlant->Get_Component(ID_DYNAMIC, L"Com_Transform"));
-            _vec3 vPos;
-            pPlantTransform->Get_Info(INFO_POS, &vPos);
-            switch (++iMotion)
-            {
-            case 0:
-                pPlantTransform->Set_Pos(vPos.x, 0.2f, vPos.y);
-                break;
-            case 1:
-                pPlantTransform->Set_Pos(vPos.x, 0.2f, vPos.y);
-                break;
-            case 2:
-                pPlantTransform->Set_Pos(vPos.x, 0.2f, vPos.y);
-                break;
-            case 3:
-                pPlantTransform->Set_Pos(vPos.x, 0.2f, vPos.y);
-                break;
-            case 4:
-                pPlantTransform->Set_Pos(vPos.x, 0.2f, vPos.y);
-                break;
-            case 5:
-                pPlantTransform->Set_Pos(vPos.x, 0.2f, vPos.y);
-                break;
-            }
-            pPlantAnimator->Set_CurState(IDLE, iMotion, iMotion, -1);
+            iMotion++;
+            pPlantAnimator->Set_CurState(IDLE, iMotion, iMotion, 20);
         }
     }
 }
 
-void CFarmMgr::Create_Object(ITEMNUM eItemNum)
+void CFarmMgr::Create_Seed(ITEMNUM eItemNum, _vec3 vPos)
 {
-
+    CScene* pScene = Engine::Get_Scene();
+    CGameObject* pSeed = CSeed::Create(m_pGraphicDev, eItemNum, vPos);
+    m_vecSeedName.push_back(L"Seed_" + std::to_wstring(iCreateNumber++));
+    pScene->Create_GameObject(L"Layer_GameLogic", pSeed, m_vecSeedName.back().c_str());
+    dynamic_cast<CItem*>(pSeed)->Set_Drop(true);
 }
 
-void CFarmMgr::Create_Item(ITEMNUM eItemNum)
+void CFarmMgr::Create_Result(ITEMNUM eItemNum, _vec3 vPos)
 {
+    CScene* pScene = Engine::Get_Scene();
+    CGameObject* pIngredient = CIngredient::Create(m_pGraphicDev, eItemNum, vPos);
+    m_vecResultName.push_back(L"Result_" + std::to_wstring(iCreateNumber++));
+    pScene->Create_GameObject(L"Layer_GameLogic", pIngredient, m_vecResultName.back().c_str());
+    dynamic_cast<CItem*>(pIngredient)->Set_Drop(true);
 }
 
 void CFarmMgr::Free()

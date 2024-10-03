@@ -32,8 +32,11 @@ public:
 
 private:
 	void		Grow_Plant();
-	void		Create_Object(ITEMNUM eItemNum);
-	void		Create_Item(ITEMNUM eItemNum);
+	void		Create_Seed(ITEMNUM eItemNum, _vec3 vPos);
+	void		Create_Result(ITEMNUM eItemNum, _vec3 vPos);
+
+private:
+	_int		iCreateNumber;
 
 private:
 	LPDIRECT3DDEVICE9						m_pGraphicDev;
@@ -44,7 +47,10 @@ private:
 	vector<POINT>							m_vecPlantedState; // 인덱스로 지난 시간 확인
 	POINT									m_tState; // x : 인덱스, y : 지난 시간
 	CTerrain*								m_pTerrain;
-	_float									m_fGrowTime;
+	_int									m_iGrowTime;
+
+	vector<wstring>							m_vecSeedName;
+	vector<wstring>							m_vecResultName;
 
 private:
 	virtual void		Free();
