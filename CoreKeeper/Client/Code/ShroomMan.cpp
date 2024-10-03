@@ -111,7 +111,7 @@ void CShroomMan::LateUpdate_GameObject()
 
 void CShroomMan::Render_GameObject()
 {
-    if (m_bStopDraw)
+    if (m_bStopDraw || !m_pCalculatorCom->In_Frustum(m_pTransformCom))
         return;
     m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
     m_pColliderCom->Update_Collider(m_pTransformCom->Get_WorldMatrix());
