@@ -34,9 +34,6 @@
     <Filter Include="02. GameObject\02. Monster">
       <UniqueIdentifier>{301f7126-4fbe-4325-b170-473466d90274}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. Scene\01. Stage">
-      <UniqueIdentifier>{dd503513-b5da-478f-b248-5529fc2e80ee}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01. Scene\02. Loading">
       <UniqueIdentifier>{4ffcb167-8a95-4665-b85b-2b0ddc2b0ebc}</UniqueIdentifier>
     </Filter>
@@ -415,8 +412,14 @@
     <Filter Include="02. GameObject\07. UI\14. UICookingPot">
       <UniqueIdentifier>{988505d3-0d27-420a-95b8-9a7574ae34a2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\02. Monster\05. Hunter">
-      <UniqueIdentifier>{6a48951b-5813-41d2-aedb-cd6a309a3500}</UniqueIdentifier>
+    <Filter Include="01. Scene\03. Stage">
+      <UniqueIdentifier>{dd503513-b5da-478f-b248-5529fc2e80ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Scene\01. Story">
+      <UniqueIdentifier>{b00dfff5-9875-48b8-bcce-2037b6924b2b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\89.MiniCore">
+      <UniqueIdentifier>{6059a8ae-2064-4092-b71f-2968a2d7f813}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -457,7 +460,7 @@
       <Filter>02. GameObject\03. Terrain</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\Stage.h">
-      <Filter>01. Scene\01. Stage</Filter>
+      <Filter>01. Scene\03. Stage</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\Loading.h">
       <Filter>01. Scene\02. Loading</Filter>
@@ -822,6 +825,9 @@
     <ClInclude Include="..\Header\Assistance.h">
       <Filter>02. GameObject\06. Item\03. Accessory\02. Assistance</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\MiniCore.h">
+      <Filter>02. GameObject\89.MiniCore</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -849,7 +855,7 @@
       <Filter>02. GameObject\03. Terrain</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\Stage.cpp">
-      <Filter>01. Scene\01. Stage</Filter>
+      <Filter>01. Scene\03. Stage</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\Loading.cpp">
       <Filter>01. Scene\02. Loading</Filter>
@@ -1204,6 +1210,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\Assistance.cpp">
       <Filter>02. GameObject\06. Item\03. Accessory\02. Assistance</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\MiniCore.cpp">
+      <Filter>02. GameObject\89.MiniCore</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -35,6 +35,7 @@ CMapEditorScene::CMapEditorScene(LPDIRECT3DDEVICE9 _pGraphicDevice)
     , m_iMonsterNumber(0)
     , m_iInstallWallCount(1)
     , m_iInstallTileIndexCount(1)
+    , m_iItvTile(1)
 {
     ZeroMemory(&m_tImageInfo, sizeof(D3DXIMAGE_INFO));
 
@@ -425,39 +426,18 @@ void CMapEditorScene::Piking_Tile()
 
             m_vPickPos = pPickPos->Picking_OnTerrain(g_hWnd, pMapToolBufferCom, pMapToolTransformCom);
 
-
-            /*
-
-                for (_int i = 0; i < m_iInstallWallCount; ++i)
-                {
-                    _float offsetX = (i % 2) * VTXITV;
-                    _float offsetZ = (i / 2) * VTXITV;
-
-                    _int iIndex = _int((m_vPickPos.z + offsetZ + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vPickPos.x + offsetX + 0.5f * VTXITV);
-
-                    if (m_vecWallObject[iIndex] != nullptr)
-                        continue;
-
-                    m_wsWallNameString[iIndex] = L"Wall_" + std::to_wstring(iIndex);
-                    m_pWallCom = CWall::Create(m_pGraphicDev, m_vPickPos.x + offsetX + 0.5f * VTXITV, m_vPickPos.z + offsetZ + 0.5f * VTXITV, 0, m_wsWallNameString[iIndex].c_str());
-                    m_vecWallObject[iIndex] = dynamic_cast<CWall*>(m_pWallCom);
-
-                }
-
-
-            */
-
-
-
             // 터레인 아닌 곳 피킹
             if (m_vPickPos.y < 0)
                 return;
 
-            for (_int i = 0; i < m_iInstallTileIndexCount; ++i)
+            _int iCount = pow(m_iInstallTileIndexCount, 2);
+
+            for (_int i = 0; i < iCount; ++i)
             {
-                // x축(가로) 쪽으로 최대 2칸 z축(세로) 쪽으로 3칸 무튼 세로 우선으로 2개 그 후 3개는 2개 + 가로 1 'ㄴ'자 모양.
-                _float offsetX = (i % 2) * VTXITV;
-                _float offsetZ = (i / 2) * VTXITV;
+                //// 정사각형 형태로 하려고, 
+
+                _float offsetX = (i % m_iInstallTileIndexCount) * VTXITV;
+                _float offsetZ = (i / m_iInstallTileIndexCount) * VTXITV;
 
                 _int iIndex = _int((m_vPickPos.z + offsetZ + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vPickPos.x + offsetX + 0.5f * VTXITV);
 
@@ -468,16 +448,6 @@ void CMapEditorScene::Piking_Tile()
                 else
                     pTerrain->Set_Unreachable(iIndex, false);
             }
-
-            // int iIndex = (m_vPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vPickPos.x + 0.5f * VTXITV;
-            // 
-            // pTerrain->Set_TextureNumber(iIndex, m_iTileNumber);
-            // 
-            // if (m_bReachable)
-            //     pTerrain->Set_Unreachable(iIndex, true);
-            // else
-            //     pTerrain->Set_Unreachable(iIndex, false);
-
         }
         if (!(Engine::Get_DIMouseState(DIM_LB) & 0x80))
             m_bPushed = false;
@@ -940,7 +910,9 @@ void CMapEditorScene::Setting_InstallWallCount()
 
 void CMapEditorScene::Setting_InstallTileCount()
 {
-    ImGui::SliderInt("Install Tile", &m_iInstallTileIndexCount, 1, 6);
+    ImGui::SliderInt("Install Tile", &m_iInstallTileIndexCount, 1, 10);
+
+    //ImGui::SliderInt("Tile Interval", &m_iItvTile, 2, 6);
 }
 
 

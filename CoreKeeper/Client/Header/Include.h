@@ -121,3 +121,4 @@
 #include "WorldMap.h"
 #include "MiniObject.h"
 #include "MiniTerrain.h"
+#include "MiniCore.h"
