@@ -25,6 +25,8 @@ _int CTerrain::Update_GameObject(const _float& fTimeDelta)
 {
 	Add_RenderGroup(RENDER_NONALPHA, this);
 
+	//Add_RenderGroup(RENDER_MAP, this);
+
 	return Engine::CGameObject::Update_GameObject(fTimeDelta);
 }
 

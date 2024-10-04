@@ -161,6 +161,7 @@ call Copy.bat</Command>
     <ClInclude Include="..\Header\Ingredient.h" />
     <ClInclude Include="..\Header\Azeos.h" />
     <ClInclude Include="..\Header\Magic.h" />
+    <ClInclude Include="..\Header\MiniCore.h" />
     <ClInclude Include="..\Header\MiniMapFrame.h" />
     <ClInclude Include="..\Header\MiniObject.h" />
     <ClInclude Include="..\Header\CraftMgr.h" />
@@ -297,6 +298,7 @@ call Copy.bat</Command>
     <ClCompile Include="..\Code\Fire.cpp" />
     <ClCompile Include="..\Code\Ingredient.cpp" />
     <ClCompile Include="..\Code\Magic.cpp" />
+    <ClCompile Include="..\Code\MiniCore.cpp" />
     <ClCompile Include="..\Code\MiniMapFrame.cpp" />
     <ClCompile Include="..\Code\MiniObject.cpp" />
     <ClCompile Include="..\Code\CraftMgr.cpp" />
