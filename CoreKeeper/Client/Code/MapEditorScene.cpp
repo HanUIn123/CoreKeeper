@@ -539,10 +539,12 @@ HRESULT CMapEditorScene::Piking_Wall()
 
             if (m_bCanInstall)
             {
-                for (_int i = 0; i < m_iInstallWallCount; ++i)
+                _int iCount2 = pow(m_iInstallWallCount, 2);
+
+                for (_int i = 0; i < iCount2; ++i)
                 {
-                    _float offsetX = (i % 2) * VTXITV;
-                    _float offsetZ = (i / 2) * VTXITV;
+                    _float offsetX = (i % m_iInstallWallCount) * VTXITV;
+                    _float offsetZ = (i / m_iInstallWallCount) * VTXITV;
 
                     _int iIndex = _int((m_vPickPos.z + offsetZ + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vPickPos.x + offsetX + 0.5f * VTXITV);
 
