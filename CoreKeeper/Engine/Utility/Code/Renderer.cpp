@@ -264,15 +264,15 @@ void CRenderer::Render_MiniMap(LPDIRECT3DDEVICE9& pGraphicDev)
 		}
 	}
 
-	for (auto& pGameObject : m_RenderGroup[RENDER_NONALPHA])
-	{
-		pGameObject->Render_GameObject();
-	}
+	//for (auto& pGameObject : m_RenderGroup[RENDER_NONALPHA])
+	//{
+	//	pGameObject->Render_GameObject();
+	//}
 
-	for (auto& pGameObject : m_RenderGroup[RENDER_ALPHA])
-	{
-		pGameObject->Render_GameObject();
-	}
+	//for (auto& pGameObject : m_RenderGroup[RENDER_ALPHA])
+	//{
+	//	pGameObject->Render_GameObject();
+	//}
 
 	for (auto& pGameObject : m_RenderGroup[RENDER_MAP])
 	{
