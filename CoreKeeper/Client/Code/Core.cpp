@@ -28,6 +28,8 @@ _int CCore::Update_GameObject(const _float& fTimeDelta)
 
 	Add_RenderGroup(RENDER_ALPHA, this);
 
+	Add_RenderGroup(RENDER_MAP, this);
+
 	return Engine::CGameObject::Update_GameObject(fTimeDelta);
 }
 

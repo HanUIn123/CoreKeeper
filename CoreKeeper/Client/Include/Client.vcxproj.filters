@@ -426,6 +426,9 @@
     </Filter>
     <Filter Include="02. GameObject\08. Object\11. Fire">
       <UniqueIdentifier>{86d0bab2-1b5a-4db3-a24f-c52a4f9fce0f}</UniqueIdentifier>
+	</Filter>
+    <Filter Include="02. GameObject\89.MiniCore">
+      <UniqueIdentifier>{6059a8ae-2064-4092-b71f-2968a2d7f813}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -836,6 +839,9 @@
     </ClInclude>
     <ClInclude Include="..\Header\SpawnPoint.h">
       <Filter>02. GameObject\08. Object\00. BaseCamp\04. SpawnPoint</Filter>
+	</ClInclude>
+	  <ClInclude Include="..\Header\MiniCore.h">
+      <Filter>02. GameObject\89.MiniCore</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1225,6 +1231,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\SpawnPoint.cpp">
       <Filter>02. GameObject\08. Object\00. BaseCamp\04. SpawnPoint</Filter>
+	</ClCompile>
+    <ClCompile Include="..\Code\MiniCore.cpp">
+      <Filter>02. GameObject\89.MiniCore</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

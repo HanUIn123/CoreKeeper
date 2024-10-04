@@ -375,7 +375,7 @@ void CPlayer::Mouse_Click(const _float& fTimeDelta)
 	}
 	else
 	{
-		if (Engine::Get_DIMouseState(DIM_LB) & 0x80)
+		if (Engine::Button_Down(DIM_LB))
 		{
 			if (m_pHandedItem)
 			{

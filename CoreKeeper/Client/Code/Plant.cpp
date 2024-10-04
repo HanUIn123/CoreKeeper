@@ -48,9 +48,9 @@ _int CPlant::Update_GameObject(const _float& fTimeDelta)
 	_vec3 vUp;
 	m_pTransformCom->Get_Info(INFO_UP, &vUp);
 
-	if (m_pAnimatorCom->Get_MotionIndex() < 5)
+	if (m_pAnimatorCom->Get_MotionIndex() < 5 && m_pAnimatorCom->Get_MotionIndex() > 1)
 	{
-		m_pTransformCom->Move_Pos(&vUp, fTimeDelta, 0.025f);
+		m_pTransformCom->Move_Pos(&vUp, fTimeDelta, 0.03f);
 	}
 	return Engine::CGameObject::Update_GameObject(fTimeDelta);
 }

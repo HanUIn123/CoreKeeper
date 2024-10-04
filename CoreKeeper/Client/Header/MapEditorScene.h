@@ -45,6 +45,7 @@ public:
 	void									Show_ImguiWindow();
 	void									Setting_Menu();
 	void									Setting_Camera_Position();
+	void									Setting_Camera_Speed();
 
 	void									Setting_TileList();
 	void									Piking_Tile();
@@ -59,6 +60,7 @@ public:
 	HRESULT									Piking_Monster();
 
 	void									Setting_InstallWallCount();
+	void									Setting_InstallTileCount();
 
 
 
@@ -87,6 +89,9 @@ private:
 	wstring									m_iImGuiTileListNum;
 
 	_int									m_iInstallWallCount;
+	_int									m_iInstallTileIndexCount;
+
+	_int									m_iItvTile;
 
 
 	// n번 째 타일인지 담는 변수.
