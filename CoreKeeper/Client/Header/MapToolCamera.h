@@ -25,6 +25,8 @@ public:
 	virtual			void			Render_GameObject() {}
 
 	void							Set_CameraPosition(_vec3 _vEye, _vec3 _vAt);
+	_float							Get_CameraSpeed() { return m_CameraSpeed; }
+	void							Set_CameraSpeed(_float _fSpeed) { m_CameraSpeed = _fSpeed; }
 
 private:
 	void			Key_Input(const _float& _fTimeDelta);
