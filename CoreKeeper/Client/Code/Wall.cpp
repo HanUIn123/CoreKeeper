@@ -63,6 +63,7 @@ void CWall::Render_GameObject()
     if (!m_pCalculatorCom->In_Frustum(m_pTransformCom))
         return;
 
+
     m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
 
     _matrix matWorld;
@@ -134,7 +135,7 @@ HRESULT CWall::Setup_Material()
     tMtrl.Specular = { 1.f, 1.f, 1.f, 1.f };
     tMtrl.Ambient = { 0.7f, 0.7f, 0.7f, 0.7f };
 
-    tMtrl.Emissive = { 0.2f, 0.2f, 0.2f, 0.2f };
+    tMtrl.Emissive = { 0.01f, 0.01f, 0.01f, 0.01f };
     tMtrl.Power = 0.f;
 
     m_pGraphicDev->SetMaterial(&tMtrl);

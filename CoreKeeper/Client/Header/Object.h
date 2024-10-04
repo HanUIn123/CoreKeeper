@@ -27,6 +27,9 @@ public:
 public:
 	virtual			void			Interaction();
 
+protected:
+	HRESULT                         Setup_Material();
+
 private:
 	HRESULT							Add_Component();
 
@@ -34,8 +37,6 @@ public:
 	bool							Check_Interaction();
 
 public:
-	HRESULT							Setup_Material();
-
 	virtual			_int			Get_BuildImgNum() { return m_iBuildingImgNum; }
 	virtual			void			Set_BuildImgNum(_int _iBuildingNum) { m_iBuildingImgNum = _iBuildingNum; }
 public:

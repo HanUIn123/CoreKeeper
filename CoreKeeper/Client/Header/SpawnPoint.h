@@ -6,10 +6,11 @@ BEGIN(Engine)
 class CObjectTex;
 class CTransform;
 class CCalculator;
-
+class CTexture;
+class CColliderCube;
+class CInventory;
 
 END
-
 
 class CSpawnPoint : public CObject
 {
@@ -17,7 +18,7 @@ private:
 	explicit						CSpawnPoint(LPDIRECT3DDEVICE9 pGraphicDev);
 	virtual							~CSpawnPoint();
 public:
-	virtual			HRESULT			Ready_GameObject(_float fX, _float fY, _bool bReposed, _int iBuildImgNum, const wstring _pickedBuildName);
+	virtual			HRESULT			Ready_GameObject(_vec3 vPos);
 	virtual			_int			Update_GameObject(const _float& fTimeDelta);
 	virtual			void			LateUpdate_GameObject();
 	virtual			void			Render_GameObject();
@@ -30,9 +31,9 @@ public:
 
 private:
 	HRESULT							Add_Component();
-
+	
 public:
-	static CSpawnPoint* Create(LPDIRECT3DDEVICE9 pGraphicDev, _float fX, _float fY, _bool bReposed, _int iBuildImgNum, const wstring _pickedBuildName);
+	static CSpawnPoint* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);
 
 private:
 	virtual void					Free();

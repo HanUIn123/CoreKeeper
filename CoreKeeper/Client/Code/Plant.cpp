@@ -62,17 +62,19 @@ void CPlant::LateUpdate_GameObject()
 
 void CPlant::Render_GameObject()
 {
-	//m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
+	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
 
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
+	FAILED_CHECK_RETURN(Setup_Material(), );
+
 	m_pTextureCom->Set_Texture(m_iTextureNum);
 	m_pAnimBufferCom->Set_Index(m_pAnimatorCom->Get_MotionIndex());
 	m_pAnimBufferCom->Render_Buffer();
 
-	//m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
+	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }

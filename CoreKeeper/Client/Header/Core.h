@@ -31,11 +31,15 @@ public:
 
 private:
 	HRESULT							Add_Component();
+	void							SetUp_Light();
 
 public:
 	static CCore* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos = { 0.f, 0.f, 0.f });
 
 private:
 	virtual void					Free();
+
+private:
+	_int			m_iLightNum;
 };
 

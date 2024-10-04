@@ -12,18 +12,16 @@ class CInventory;
 
 END
 
-class CStatue : public CObject
+class CStatueBase : public CObject
 {
 private:
-	explicit						CStatue(LPDIRECT3DDEVICE9 pGraphicDev);
-	virtual							~CStatue();
+	explicit						CStatueBase(LPDIRECT3DDEVICE9 pGraphicDev);
+	virtual							~CStatueBase();
 public:
-	virtual			HRESULT			Ready_GameObject(_vec3 vPosm, int iImgNum);
+	virtual			HRESULT			Ready_GameObject(_vec3 vPos, int _iNum);
 	virtual			_int			Update_GameObject(const _float& fTimeDelta);
 	virtual			void			LateUpdate_GameObject();
 	virtual			void			Render_GameObject();
-
-	virtual         void            Interaction();
 
 	virtual			_int			Get_BuildImgNum() { return m_iBuildingImgNum; }
 	virtual			void			Set_BuildImgNum(_int _iBuildingNum) { m_iBuildingImgNum = _iBuildingNum; }
@@ -35,12 +33,12 @@ private:
 	HRESULT							Add_Component();
 
 public:
-	static CStatue* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, int iImgNum);
+	static CStatueBase* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, int _iNum);
 
 private:
 	virtual void					Free();
 
 private:
-	int								m_iTextureNum;
+	int					m_iTextureNum;
 };
 

@@ -77,7 +77,7 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	m_bNude = true;
 
 	m_bRespawned = false;
-	m_vRespawnPoint = { VTXCNTX / 2, 0, 18.5f };
+	m_vRespawnPoint = { VTXCNTX / 2, 0, 17.f };
 
 	m_bBleed = false;
 	m_fBleedTime = 0.f;
@@ -204,14 +204,20 @@ void CPlayer::LateUpdate_GameObject()
 
 void CPlayer::Render_GameObject()
 {
+	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
+
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+
+	FAILED_CHECK_RETURN(Setup_Material(), );
 
 	m_pTextureCom->Set_Texture();
 
 	m_pBufferCom->Set_Index(m_pAnimatorCom->Get_MotionIndex());
 	m_pBufferCom->Render_Buffer();
 	m_pColliderCom->Render_Collider();
+
+	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 
 	if(m_bBleed)
@@ -268,6 +274,23 @@ HRESULT CPlayer::Add_Component()
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_DYNAMIC].insert({ L"Com_Follow", pComponent });
 	///m_pFireParticleCom
+	return S_OK;
+}
+
+HRESULT CPlayer::Setup_Material()
+{
+	D3DMATERIAL9		tMtrl;
+	ZeroMemory(&tMtrl, sizeof(D3DMATERIAL9));
+
+	tMtrl.Diffuse = { 1.f, 1.f, 1.f, 1.f };
+	tMtrl.Specular = { 1.f, 1.f, 1.f, 1.f };
+	tMtrl.Ambient = { 0.9f, 0.9f, 0.9f, 0.9f };
+
+	tMtrl.Emissive = { 0.01f, 0.01f, 0.01f, 0.01f };
+	tMtrl.Power = 0.f;
+
+	m_pGraphicDev->SetMaterial(&tMtrl);
+
 	return S_OK;
 }
 

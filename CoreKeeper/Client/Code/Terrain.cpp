@@ -93,7 +93,7 @@ HRESULT CTerrain::Setup_Material()
 	tMtrl.Specular = { 1.f, 1.f, 1.f, 1.f };
 	tMtrl.Ambient = { 0.7f, 0.7f, 0.7f, 0.7f };
 
-	tMtrl.Emissive = { 0.2f, 0.2f, 0.2f, 0.2f };
+	tMtrl.Emissive = { 0.01f, 0.01f, 0.01f, 0.01f };
 	tMtrl.Power = 0.f;
 
 	m_pGraphicDev->SetMaterial(&tMtrl);
