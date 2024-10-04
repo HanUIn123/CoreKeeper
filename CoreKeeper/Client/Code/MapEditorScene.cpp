@@ -539,10 +539,15 @@ HRESULT CMapEditorScene::Piking_Wall()
 
             if (m_bCanInstall)
             {
-                for (_int i = 0; i < m_iInstallWallCount; ++i)
+                _int iCount2 = pow(m_iInstallWallCount, 2);
+
+                for (_int i = 0; i < iCount2; ++i)
                 {
-                    _float offsetX = (i % 2) * VTXITV;
-                    _float offsetZ = (i / 2) * VTXITV;
+                    _float offsetX = (i % m_iInstallWallCount) * VTXITV;
+                    _float offsetZ = (i / m_iInstallWallCount) * VTXITV;
+
+                    if (m_vPickPos.x + offsetX + 0.5f >= VTXCNTX - 1 || m_vPickPos.z + offsetZ + 0.5f >=     VTXCNTZ - 1)
+                        continue;
 
                     _int iIndex = _int((m_vPickPos.z + offsetZ + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vPickPos.x + offsetX + 0.5f * VTXITV);
 
@@ -579,43 +584,7 @@ HRESULT CMapEditorScene::Piking_Wall()
 
                 m_iWallCreateCount += m_iInstallWallCount;
                 m_vCheckPos = m_vPickPos;
-
-                //_int iIndex = _int(m_vPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vPickPos.x + 0.5f * VTXITV;
-
-                //m_wsWallNameString[iIndex] = L"Wall_" + std::to_wstring(iIndex);
-                //m_pWallCom = CWall::Create(m_pGraphicDev, m_vPickPos.x + 0.5f * VTXITV, m_vPickPos.z + 0.5f * VTXITV, 0, m_wsWallNameString[iIndex].c_str());
-                //m_vecWallObject[iIndex] = dynamic_cast<CWall*>(m_pWallCom);
-
-                //NULL_CHECK_RETURN(m_pWallCom, E_FAIL);
-                //FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsWallNameString[iIndex].c_str(), m_pWallCom), E_FAIL);
-
-                //// 벽 3개 추가.
-                //if (m_iWallImgNumber == 3)
-                //{
-                //    m_vecWallObject[iIndex]->Set_WallNumber(45);
-                //}
-                //else if (m_iWallImgNumber == 4)
-                //{
-                //    m_vecWallObject[iIndex]->Set_WallNumber(46);
-                //}
-                //else if (m_iWallImgNumber == 5)
-                //{
-                //    m_vecWallObject[iIndex]->Set_WallNumber(47);
-                //}
-                //else
-                //{
-                //    m_vecWallObject[iIndex]->Set_WallNumber(m_iWallImgNumber * 15);
-                //}
-
-
-
-                ////m_vecWallObject[iIndex]->Set_WallNumber(m_iWallImgNumber);
-                //pTerrain->Set_Unreachable(iIndex, true);
-
-                //m_iWallCreateCount++;
-                //m_vCheckPos = m_vPickPos;
             }
-
         }
         if (!(Engine::Get_DIMouseState(DIM_LB) & 0x80))
             m_bWallClickPushed = false;

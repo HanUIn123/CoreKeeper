@@ -35,8 +35,6 @@ _int CMiniCore::Update_GameObject(const _float& fTimeDelta)
         if (pCoreTransform)
         {
             m_pTransformCom->Set_Scale(7.5f, 0.0f, 7.5f);
-
-            //m_pTransformCom->Set_Pos((vPlayerPos.x), 0, ((vPlayerPos.z)));
         }
     }
     else
