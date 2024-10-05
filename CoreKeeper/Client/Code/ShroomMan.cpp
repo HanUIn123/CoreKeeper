@@ -196,7 +196,6 @@ HRESULT CShroomMan::Add_Component()
 // 일정 시간마다 타일 한칸 이동 or 정지
 void CShroomMan::Pattern_Idle(const _float& fTimeDelta)
 {
-    // 벽 확인 추가할 것
     if (!m_bIdling)
     {
         m_bIdling = true;
@@ -402,6 +401,7 @@ void CShroomMan::Pattern_Dead()
     if (m_pAnimatorCom->Get_MotionEnd())
     {
         m_bStopDraw = true;
+        m_pColliderCom->Set_Offset(_vec3(0, -100.f, 0));
         Drop_Item();
     }
 }

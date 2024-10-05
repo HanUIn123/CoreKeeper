@@ -71,6 +71,9 @@ _uint CLoading::Loading_Stage()
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ShroomManAnimTex", Engine::CAnimTex::Create(m_pGraphicDev, 9, 5)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ShamanAnimTex", Engine::CAnimTex::Create(m_pGraphicDev, 8, 9)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ShamProjectileAnimTex", Engine::CAnimTex::Create(m_pGraphicDev, 6, 1)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_HunterAnimTex", Engine::CAnimTex::Create(m_pGraphicDev, 16, 20)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_HunterEyeAnimTex", Engine::CAnimTex::Create(m_pGraphicDev, 16, 20)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_HunterBulletAnimTex", Engine::CAnimTex::Create(m_pGraphicDev, 4, 1)), E_FAIL);
 
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Malugaz1AnimTex", Engine::CAnimTex::Create(m_pGraphicDev, 12, 9)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Malugaz2AnimTex", Engine::CAnimTex::Create(m_pGraphicDev, 6, 9)), E_FAIL);
@@ -130,6 +133,9 @@ _uint CLoading::Loading_Stage()
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ShroomManTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Monster/Mushroom.png", TEX_NORMAL)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ShamanTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Monster/Shaman.png", TEX_NORMAL)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ShamProjectileTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Monster/fireballChargedProjectile_idle.png", TEX_NORMAL)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_HunterTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Monster/Hunter/Hunter_Body.png", TEX_NORMAL)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_HunterEyeTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Monster/Hunter/Hunter_Eye_Red.png", TEX_NORMAL)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_HunterBulletTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Monster/Hunter/Bullet.png", TEX_NORMAL)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MalugazTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Monster/Malugaz_%d.png", TEX_NORMAL, 3)), E_FAIL);
 
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TerrainTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/MapTerrain/Terrain_%d.png", TEX_NORMAL, 30)), E_FAIL);
@@ -279,8 +285,10 @@ _uint CLoading::Loading_Stage()
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SlimeCollider", Engine::CCollider::Create(m_pGraphicDev, 0.5f)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ShroomManCollider", Engine::CCollider::Create(m_pGraphicDev, 0.7f)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ShamanCollider", Engine::CCollider::Create(m_pGraphicDev, 0.6f)), E_FAIL);
-    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_AzeosCollider", Engine::CCollider::Create(m_pGraphicDev, 0.6f)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ShamProjectileCollider", Engine::CCollider::Create(m_pGraphicDev, 0.7f)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_HunterCollider", Engine::CCollider::Create(m_pGraphicDev, 0.6f)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_HunterBulletCollider", Engine::CCollider::Create(m_pGraphicDev, 0.3f)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_AzeosCollider", Engine::CCollider::Create(m_pGraphicDev, 0.6f)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MalugazCollider", Engine::CCollider::Create(m_pGraphicDev, 2.f)), E_FAIL);
 
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SwordCollider", Engine::CCollider::Create(m_pGraphicDev, 0.4f)), E_FAIL);
