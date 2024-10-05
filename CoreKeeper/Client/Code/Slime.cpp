@@ -298,7 +298,7 @@ void CSlime::Pattern_Attack(const _float& fTimeDelta)
                 if (!m_bAttackSuccess)
                 {
                     m_bAttackSuccess = true;
-                    m_pPlayer->Set_KnockBack(vPos, m_pStateCom->Get_Stat()->iAttack, (1 - (m_fJumpTime / m_fJumpFrame)) * 3.f + 1.f);
+                    m_pPlayer->Set_KnockBack(vPos, m_pStateCom->Get_Stat()->iAttack, (1 - (m_fJumpTime / m_fJumpFrame)) * 2.f + 0.5f);
                 }
             }
         }
