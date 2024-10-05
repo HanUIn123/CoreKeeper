@@ -57,6 +57,9 @@ protected:
 
 	void			Respawn(const _float& fTimeDelta);
 
+public:
+	_bool			Get_StopDraw() { return m_bStopDraw; }
+
 private:
 	void			Check_WallWithPlayer();
 

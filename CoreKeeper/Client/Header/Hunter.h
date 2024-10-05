@@ -34,6 +34,7 @@ private:
 
 private:
 	HUNTERIDLETYPE			m_eIdleType;
+	_bool					m_bIdleFirstFrame;
 	/*
 	 	0. 은신(Bush)
 		0 - 1. 빼꼼(Peak)
@@ -49,7 +50,9 @@ private:
 		1. 빠른 이동(Move)
 	*/
 	_int					m_iSwingType;
+	_bool					m_bLeaveBeforeSwing;
 	_bool					m_bIsReloaded;
+	_bool					m_bSwingFirstFrame;
 	/*
 		0. 장전(Reload)
 		1. 발사(RangedAttack)

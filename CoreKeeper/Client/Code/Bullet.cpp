@@ -33,8 +33,9 @@ HRESULT CBullet::Ready_GameObject(_vec3 vPos)
 {
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
+    m_vRespawnPoint = { vPos.x, vPos.y, vPos.z };
     m_pTransformCom->Set_Pos(vPos.x, vPos.y, vPos.z);
-    m_pTransformCom->Set_Scale(0.4f, 0.4f, 0.4f);
+    m_pTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
     m_pStateCom->Set_Stat(100, 0, 50, 0);
     Set_Speed(8.f);
 
@@ -93,8 +94,6 @@ _int CBullet::Update_GameObject(const _float& fTimeDelta)
         break;
     }
 
-
-    Flip();
     m_pAnimatorCom->Set_CurState(WALK, 0, 3, 4);
     m_pAnimatorCom->Update_Animation();
     Add_RenderGroup(RENDER_ALPHA, this);
@@ -117,13 +116,6 @@ void CBullet::Render_GameObject()
     }
 
     if (m_bStopDraw)
-        return;
-
-    _vec3		vPos, vPlayerPos;
-    m_pTransformCom->Get_Info(INFO_POS, &vPos);
-    m_pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
-
-    if (!m_pCalculatorCom->Check_Distance2D(&vPos, &vPlayerPos, 20.f))
         return;
 
     m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
@@ -197,13 +189,11 @@ void CBullet::Pattern_Chase(const _float& fTimeDelta)
     if (m_bFirstFrame)
     {
         m_bFirstFrame = false;
-        _vec3 vPos, vPlayerPos;
-        m_pTransformCom->Get_Info(INFO_POS, &vPos);
+        _vec3 vPlayerPos;
         m_pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
-        m_vAttackPoint = vPlayerPos - vPos;
+        m_vAttackPoint = vPlayerPos - m_vRespawnPoint;
         D3DXVec3Normalize(&m_vAttackPoint, &m_vAttackPoint);
-        if (m_vAttackPoint.x < 0)
-            m_eDir = LEFT;
+        m_vAttackPoint.y = 0;
     }
     m_fAttackTime += fTimeDelta;
     m_pTransformCom->Move_Pos(&m_vAttackPoint, fTimeDelta, m_fSpeed);
