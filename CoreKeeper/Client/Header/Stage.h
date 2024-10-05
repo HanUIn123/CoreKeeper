@@ -71,6 +71,9 @@ private:
 	vector<CCore*>					m_vecCore;
 	vector<bool>					m_vecUnreachable;
 
+	vector<CMiniSpawn*>				m_vecMiniSpawn;
+
+
 	// È¤½Ã ¸ô¶ó, ÀÏ´Ü ¸â¹ö·Î »©¼­ ¸¸µé¾î µÒ.
 	CMiniMapCamera*					m_pMiniMapCamera;
 };

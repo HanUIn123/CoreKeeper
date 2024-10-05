@@ -127,3 +127,4 @@
 #include "MiniObject.h"
 #include "MiniTerrain.h"
 #include "MiniCore.h"
+#include "MiniSpawn.h"
