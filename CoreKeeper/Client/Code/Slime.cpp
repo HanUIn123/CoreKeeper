@@ -9,7 +9,7 @@ CSlime::CSlime(LPDIRECT3DDEVICE9 pGraphicDev)
 {
     m_eType = Engine::MON_SLIME;
     m_fIdleY = 0.4f;
-    m_fJumpY = 6.f;
+    m_fJumpY = 3.f;
     m_eState = IDLE;
     m_fAggroDistance = 8.f;
 }
@@ -39,12 +39,6 @@ _int CSlime::Update_GameObject(const _float& fTimeDelta)
         return 0;
 
     Set_Cast();
-
-    _vec3		vPos, vPlayerPos;
-    m_pTransformCom->Get_Info(INFO_POS, &vPos);
-    m_pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
-    if (!m_pCalculatorCom->Check_Distance2D(&vPos, &vPlayerPos, 50.f))
-        return 0;
 
     if (m_eState != DEAD && m_iSpeedWeight)
         Check_Hitted();
@@ -108,6 +102,7 @@ void CSlime::Render_GameObject()
     m_pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
     if (!m_pCalculatorCom->Check_Distance2D(&vPos, &vPlayerPos, 40.f))
         return;
+
     m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
     m_pColliderCom->Update_Collider(m_pTransformCom->Get_WorldMatrix());
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
@@ -294,7 +289,7 @@ void CSlime::Pattern_Attack(const _float& fTimeDelta)
         // 점프 할 때
     {
         JumpY(fTimeDelta);
-        m_fSpeedWeight = 8.f;
+        m_fSpeedWeight = 6.f;
         if (vPos.y > m_fIdleY)
         {
             // 공격 성공
@@ -303,7 +298,7 @@ void CSlime::Pattern_Attack(const _float& fTimeDelta)
                 if (!m_bAttackSuccess)
                 {
                     m_bAttackSuccess = true;
-                    m_pPlayer->Set_KnockBack(vPos, m_pStateCom->Get_Stat()->iAttack, (1 - (m_fJumpTime / m_fJumpFrame)) * 3.f + 1.f);
+                    m_pPlayer->Set_KnockBack(vPos, m_pStateCom->Get_Stat()->iAttack, (1 - (m_fJumpTime / m_fJumpFrame)) * 2.f + 0.5f);
                 }
             }
         }

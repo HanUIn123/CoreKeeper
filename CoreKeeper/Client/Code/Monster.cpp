@@ -63,6 +63,9 @@ CMonster::CMonster(LPDIRECT3DDEVICE9 pGraphicDev)
 	m_pPlayerCollider = nullptr;
 	m_bCheckWall = false;
 
+	m_bRespawned = false;
+	m_vRespawnPoint = { 0, 0, 0 };
+
 	m_vecDropItem.reserve(3);
 }
 
@@ -380,6 +383,7 @@ _bool CMonster::Check_Wall()
 			Check_WallWithPlayer();
 		break;
 	case MON_SHAMAN:
+	case MON_HUNTER:
 	case MON_MALUGAZ:
 		Check_WallWithPlayer();
 		break;
@@ -401,6 +405,15 @@ void CMonster::Set_Cast()
 		m_pPlayerState = dynamic_cast<CState*>(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_State"));
 	if(!m_pPlayerCollider)
 		m_pPlayerCollider = dynamic_cast<Engine::CCollider*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Collider"));
+}
+
+void CMonster::Respawn(const _float& fTimeDelta)
+{
+	if (!m_bRespawned)
+	{
+		m_bRespawned = true;
+		m_pTransformCom->Set_Pos(m_vRespawnPoint.x, m_vRespawnPoint.y, m_vRespawnPoint.z);
+	}
 }
 
 void CMonster::Check_WallWithPlayer()

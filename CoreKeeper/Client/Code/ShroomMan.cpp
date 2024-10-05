@@ -45,13 +45,6 @@ _int CShroomMan::Update_GameObject(const _float& fTimeDelta)
 
     Set_Cast();
 
-
-    _vec3		vPos, vPlayerPos;
-    m_pTransformCom->Get_Info(INFO_POS, &vPos);
-    m_pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
-    if (!m_pCalculatorCom->Check_Distance2D(&vPos, &vPlayerPos, 50.f))
-        return 0;
-
     if (g_bIsTopCamera)
     {
         if (m_vAttackPoint.x < 0)
@@ -126,9 +119,9 @@ void CShroomMan::Render_GameObject()
     _vec3		vPos, vPlayerPos;
     m_pTransformCom->Get_Info(INFO_POS, &vPos);
     m_pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
-
     if (!m_pCalculatorCom->Check_Distance2D(&vPos, &vPlayerPos, 40.f))
         return;
+
     m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
     m_pColliderCom->Update_Collider(m_pTransformCom->Get_WorldMatrix());
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
@@ -330,7 +323,7 @@ void CShroomMan::Pattern_Attack(const _float& fTimeDelta)
         if (m_pColliderCom->Check_Collision(m_pPlayerCollider))
         {
             m_bAttackSuccess = true;
-            m_pPlayer->Set_KnockBack(vPos, m_pStateCom->Get_Stat()->iAttack);
+            m_pPlayer->Set_KnockBack(vPos, m_pStateCom->Get_Stat()->iAttack, 1.f);
         }
         // 벽 충돌
         else if (0 <= iIndex && iIndex < VTXCNTX * VTXCNTZ)
@@ -414,22 +407,6 @@ STATE CShroomMan::State_Change()
         _vec3 vPlayerPos, vPos;
         m_pTransformCom->Get_Info(INFO_POS, &vPos);
         m_pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
-        // 플레이어가 무기를 들고 공격하는 상태면 충돌 체크
-        if (m_pPlayer->Get_CurState() == SWING)
-        {
-            CCollider* pWeaponCollider = dynamic_cast<Engine::CCollider*>(pWeapon->Get_Component(ID_DYNAMIC, L"Com_Collider"));
-            if (m_pColliderCom->Check_Collision(pWeaponCollider))
-            {
-                // 무기와 충돌 했는데 공격 범위 이내인 경우
-                if (m_pCalculatorCom->Check_Distance2D(&vPlayerPos, &vPos, m_fAggroDistance))
-                {
-                    return SWING;
-                }
-                // 공격 범위 밖인 경우
-                else
-                    return WALK;
-            }
-        }
         // 플레이어가 어그로 범위 내에 들어올 경우(선공)
         if (m_pCalculatorCom->Check_Distance2D(&vPlayerPos, &vPos, m_fAggroDistance))
             return WALK;

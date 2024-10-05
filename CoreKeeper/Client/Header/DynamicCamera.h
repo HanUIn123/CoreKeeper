@@ -5,7 +5,11 @@
 #include "Define.h"
 
 
+BEGIN(Engine)
 
+class CTransform;
+
+END
 class CDynamicCamera : public CCamera
 {
 private:
@@ -38,6 +42,9 @@ private:
 private:
 	_bool			m_bFix;
 	_bool			m_bIsWorldMap;
+	CTransform*		m_pTargetTransform;
+	_bool			m_bTargetPlayer;
+
 public:
 	static CDynamicCamera* Create(LPDIRECT3DDEVICE9 pGraphicDev,
 		const _vec3* pEye,

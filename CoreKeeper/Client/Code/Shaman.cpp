@@ -60,14 +60,6 @@ _int CShaman::Update_GameObject(const _float& fTimeDelta)
 
     Set_Cast();
     Set_Light();
-
-
-    _vec3		vPos, vPlayerPos;
-    m_pTransformCom->Get_Info(INFO_POS, &vPos);
-    m_pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
-    if (!m_pCalculatorCom->Check_Distance2D(&vPos, &vPlayerPos, 50.f))
-        return 0;
-
     
     if (m_eState != DEAD && !Check_Wall())
         m_eState = State_Change();
@@ -132,7 +124,6 @@ void CShaman::Render_GameObject()
     _vec3		vPos, vPlayerPos;
     m_pTransformCom->Get_Info(INFO_POS, &vPos);
     m_pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
-
     if (!m_pCalculatorCom->Check_Distance2D(&vPos, &vPlayerPos, 40.f))
         return;
 
@@ -460,24 +451,10 @@ STATE CShaman::State_Change()
     {
     case IDLE:
         pWeapon = m_pPlayer->Get_HandedItem();
-        // 플레이어가 무기를 들고 공격하는 상태면 충돌 체크
-        if (m_pPlayer->Get_CurState() == SWING)
-        {
-            CCollider* pWeaponCollider = dynamic_cast<Engine::CCollider*>(pWeapon->Get_Component(ID_DYNAMIC, L"Com_Collider"));
-            if (m_pColliderCom->Check_Collision(pWeaponCollider))
-            {
-                // 무기와 충돌 했는데 공격 범위 이내인 경우
-                if (m_pCalculatorCom->Check_Distance2D(&vPlayerPos, &vPos, m_fRange))
-                    return SWING;
-                // 공격 범위 밖인 경우
-                else
-                    return WALK;
-            }
-        }
         // 플레이어가 어그로 범위 내에 들어올 경우(선공)
         if (m_pCalculatorCom->Check_Distance2D(&vPlayerPos, &vPos, m_fRange))
             return SWING;
-        else if (m_pCalculatorCom->Check_Distance2D(&vPlayerPos, &vPos, m_fAggroDistance))
+        if (m_pCalculatorCom->Check_Distance2D(&vPlayerPos, &vPos, m_fAggroDistance))
             return WALK;
         break;
     case WALK:
