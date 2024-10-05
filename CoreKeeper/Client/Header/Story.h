@@ -1,13 +1,13 @@
 #pragma once
 #include "Scene.h"
-#include "BackGround.h"
+#include "StoryBackGround.h"
 #include "Loading.h"
 
-class CLogo : public Engine::CScene
+class CStory : public Engine::CScene
 {
 private:
-	explicit CLogo(LPDIRECT3DDEVICE9 pGraphicDev);
-	virtual ~CLogo();
+	explicit CStory(LPDIRECT3DDEVICE9 pGraphicDev);
+	virtual ~CStory();
 
 public:
 	virtual			HRESULT			Ready_Scene();
@@ -22,10 +22,12 @@ private:
 	HRESULT		Ready_Layer_GameLogic(const _tchar* pLayerTag) { return S_OK; }
 	HRESULT		Ready_Layer_UI(const _tchar* pLayerTag) { return S_OK; }
 
+private:
+	CLoading* m_pLoading;
+
 public:
-	static	CLogo* Create(LPDIRECT3DDEVICE9 pGraphicDev);
+	static	CStory* Create(LPDIRECT3DDEVICE9 pGraphicDev);
 private:
 	virtual void		Free();
-
 };
 

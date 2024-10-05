@@ -42,7 +42,6 @@ _uint CLoading::Loading_Stage()
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TrashInventory", Engine::CInventory::Create(m_pGraphicDev, 1)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ChestInventory", Engine::CInventory::Create(m_pGraphicDev, 18)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_GravestoneInventory", Engine::CInventory::Create(m_pGraphicDev, 30)), E_FAIL);
-
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_FurnaceInventory", Engine::CInventory::Create(m_pGraphicDev, 1)), E_FAIL);
 
     lstrcpy(m_szLoading, L"Buffer Loading...");
@@ -52,7 +51,6 @@ _uint CLoading::Loading_Stage()
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_RcTex", Engine::CRcTex::Create(m_pGraphicDev)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TerrainTex", Engine::CTerrainTex::Create(m_pGraphicDev)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_CubeTex", Engine::CCubeTex::Create(m_pGraphicDev)), E_FAIL);
-    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MapToolTex", Engine::CMapToolTex::Create(m_pGraphicDev)), E_FAIL);
     // Wall 전용, WallTex
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_WallTex", Engine::CWallTex::Create(m_pGraphicDev)), E_FAIL);
 

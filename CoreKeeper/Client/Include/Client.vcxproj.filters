@@ -882,6 +882,12 @@
     <ClInclude Include="..\Header\Hunter.h">
       <Filter>02. GameObject\02. Monster\05. Hunter</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\StoryBackGround.h">
+      <Filter>02. GameObject\00. BackGround\01. Story</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\Story.h">
+      <Filter>01. Scene\01. Story</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1288,6 +1294,12 @@
     </ClCompile>
     <ClCompile Include="..\Code\Hunter.cpp">
       <Filter>02. GameObject\02. Monster\05. Hunter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\StoryBackGround.cpp">
+      <Filter>02. GameObject\00. BackGround\01. Story</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Story.cpp">
+      <Filter>01. Scene\01. Story</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

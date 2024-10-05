@@ -29,6 +29,8 @@ public:
 
 private:
 	HRESULT									Ready_LightInfo();
+
+	HRESULT									Ready_Prototype();
 	HRESULT									Ready_Layer_Environment(const _tchar* pLayerTag);
 	HRESULT									Ready_Layer_GameLogic(const _tchar* pLayerTag);
 	HRESULT									Ready_Layer_UI(const _tchar* pLayerTag);
@@ -69,7 +71,7 @@ public:
 	// ImGui에 Tile 미리보기 이미지 등록.
 	HRESULT									Resister_ImguiImage_ImGui(LPDIRECT3DDEVICE9 _pGraphicDeivce, const _tchar* _ImageFilePath, IMGUITEXTUREID _eTextureId, const int& _iImageNumber);
 private:
-
+	void									Setting_BaseCamp();
 
 private:
 	vector<IDirect3DBaseTexture9*>			m_vecTileTexture;

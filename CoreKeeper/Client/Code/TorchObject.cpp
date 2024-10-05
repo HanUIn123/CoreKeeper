@@ -19,6 +19,8 @@ HRESULT CTorchObject::Ready_GameObject(_vec3 vPos)
 
 	m_pTransformCom->Set_Pos(vPos.x, vPos.y, vPos.z);	
 
+	m_pAnimatorCom->Set_CurState(IDLE, 0, 5, 3);
+
 	return S_OK;
 }
 
@@ -46,7 +48,7 @@ void CTorchObject::Render_GameObject()
 
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
-	m_pTextureCom->Set_Texture(m_iTextureNum);
+	m_pTextureCom->Set_Texture();
 	m_pAnimBufferCom->Set_Index(m_pAnimatorCom->Get_MotionIndex());
 	m_pAnimBufferCom->Render_Buffer();
 

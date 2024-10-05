@@ -47,6 +47,5 @@ private:
 
 private:
 	_int			m_iLightNum;
-	_int			m_iTextureNum;
 };
 
