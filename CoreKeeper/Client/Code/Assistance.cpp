@@ -99,7 +99,10 @@ void CAssistance::Render_GameObject()
 	// 카메라를 바라보게 하면서 스케일 유지
 	//CItem::Apply_Billboard();  
 
+	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+
+	FAILED_CHECK_RETURN(Setup_Material(), );
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
 	m_pColliderCom->Update_Collider(m_pTransformCom->Get_WorldMatrix());
@@ -128,6 +131,7 @@ void CAssistance::Render_GameObject()
 		m_pShadowBufferCom->Render_Buffer();
 	}
 
+	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
