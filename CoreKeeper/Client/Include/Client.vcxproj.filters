@@ -265,9 +265,6 @@
     <Filter Include="02. GameObject\97.Map\02.MiniMapFrame">
       <UniqueIdentifier>{f965b5fa-b464-49c7-bcbb-2a9ebdc97a1d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\91.MiniObject">
-      <UniqueIdentifier>{ddf0311c-4742-44cc-a204-e23b5d231eca}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\08. Object">
       <UniqueIdentifier>{ca829a02-3daf-4705-8f9a-1d189d8aa428}</UniqueIdentifier>
     </Filter>
@@ -367,9 +364,6 @@
     <Filter Include="03. Manager\01. FarmMgr">
       <UniqueIdentifier>{46c0290f-a39c-42b6-a938-69e5da0636cb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\90.MiniTerrain">
-      <UniqueIdentifier>{32dd4e78-ef08-4a4e-996c-aacf15d410bf}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\07. UI\14. UICookingPot">
       <UniqueIdentifier>{988505d3-0d27-420a-95b8-9a7574ae34a2}</UniqueIdentifier>
     </Filter>
@@ -427,9 +421,6 @@
     <Filter Include="02. GameObject\08. Object\11. Fire">
       <UniqueIdentifier>{86d0bab2-1b5a-4db3-a24f-c52a4f9fce0f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\89.MiniCore">
-      <UniqueIdentifier>{6059a8ae-2064-4092-b71f-2968a2d7f813}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\00. BackGround\00. Logo">
       <UniqueIdentifier>{5a28f59e-3ca3-45be-9a41-ef775a9c02fa}</UniqueIdentifier>
     </Filter>
@@ -459,6 +450,21 @@
     </Filter>
     <Filter Include="02. GameObject\02. Monster\05. Hunter\Bullet">
       <UniqueIdentifier>{fb6e3fce-8e28-4f83-b632-67acd29fec7e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\80.MiniObjects">
+      <UniqueIdentifier>{abf19305-11d3-4c31-bef5-bee76c99ef8f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\80.MiniObjects\89.MiniCore">
+      <UniqueIdentifier>{6059a8ae-2064-4092-b71f-2968a2d7f813}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\80.MiniObjects\90.MiniTerrain">
+      <UniqueIdentifier>{32dd4e78-ef08-4a4e-996c-aacf15d410bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\80.MiniObjects\91.MiniPlayer">
+      <UniqueIdentifier>{ddf0311c-4742-44cc-a204-e23b5d231eca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\80.MiniObjects\92.MiniSpawn">
+      <UniqueIdentifier>{5da1095e-0285-4d8e-99ba-e1b4fd0acb62}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -763,7 +769,7 @@
       <Filter>02. GameObject\97.Map\02.MiniMapFrame</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\MiniObject.h">
-      <Filter>02. GameObject\91.MiniObject</Filter>
+      <Filter>02. GameObject\80.MiniObjects\91.MiniPlayer</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\UIStatue.h">
       <Filter>02. GameObject\07. UI\12. UIStatue</Filter>
@@ -850,7 +856,7 @@
       <Filter>03. Manager\01. FarmMgr</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\MiniTerrain.h">
-      <Filter>02. GameObject\90.MiniTerrain</Filter>
+      <Filter>02. GameObject\80.MiniObjects\90.MiniTerrain</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\UICookingPot.h">
       <Filter>02. GameObject\07. UI\14. UICookingPot</Filter>
@@ -865,7 +871,7 @@
       <Filter>02. GameObject\08. Object\00. BaseCamp\04. SpawnPoint</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\MiniCore.h">
-      <Filter>02. GameObject\89.MiniCore</Filter>
+      <Filter>02. GameObject\80.MiniObjects\89.MiniCore</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\BackGround.h">
       <Filter>02. GameObject\00. BackGround\00. Logo</Filter>
@@ -899,6 +905,9 @@
     </ClInclude>
     <ClInclude Include="..\Header\Bullet.h">
       <Filter>02. GameObject\02. Monster\05. Hunter\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\MiniSpawn.h">
+      <Filter>02. GameObject\80.MiniObjects\92.MiniSpawn</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1179,7 +1188,7 @@
       <Filter>02. GameObject\97.Map\02.MiniMapFrame</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\MiniObject.cpp">
-      <Filter>02. GameObject\91.MiniObject</Filter>
+      <Filter>02. GameObject\80.MiniObjects\91.MiniPlayer</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\UIStatue.cpp">
       <Filter>02. GameObject\07. UI\12. UIStatue</Filter>
@@ -1269,7 +1278,7 @@
       <Filter>03. Manager\01. FarmMgr</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\MiniTerrain.cpp">
-      <Filter>02. GameObject\90.MiniTerrain</Filter>
+      <Filter>02. GameObject\80.MiniObjects\90.MiniTerrain</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\UICookingPot.cpp">
       <Filter>02. GameObject\07. UI\14. UICookingPot</Filter>
@@ -1284,7 +1293,7 @@
       <Filter>02. GameObject\08. Object\00. BaseCamp\04. SpawnPoint</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\MiniCore.cpp">
-      <Filter>02. GameObject\89.MiniCore</Filter>
+      <Filter>02. GameObject\80.MiniObjects\89.MiniCore</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\BackGround.cpp">
       <Filter>02. GameObject\00. BackGround\00. Logo</Filter>
@@ -1318,6 +1327,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\HunterEye.cpp">
       <Filter>02. GameObject\02. Monster\05. Hunter\HunterEye</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\MiniSpawn.cpp">
+      <Filter>02. GameObject\80.MiniObjects\92.MiniSpawn</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
