@@ -260,7 +260,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar* pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Malugaz", pGameObject), E_FAIL);*/
 
-	pGameObject = CHunter::Create(m_pGraphicDev, _vec3(VTXCNTX * 0.5f - 5.f, 10, VTXCNTZ * 0.5f - 5.f));
+	pGameObject = CHunter::Create(m_pGraphicDev, _vec3(VTXCNTX / 2, 0, 17.f));
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Hunter", pGameObject), E_FAIL);
 
@@ -974,7 +974,6 @@ HRESULT CStage::Load_MapFile()
 	CloseHandle(m_hFile);
 	CloseHandle(m_hWallFile);
 	CloseHandle(m_hObjectFile);
-	MSG_BOX("Success Load File");
 
 	return S_OK;
 }
@@ -1034,7 +1033,6 @@ HRESULT CStage::Load_MonsterData()
 	}
 
 	CloseHandle(m_hFile);
-	MSG_BOX("Success Load Monster File");
 }
 
 void CStage::Free()

@@ -44,7 +44,8 @@ HRESULT CHunter::Ready_GameObject(_vec3 vPos)
 {
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-    m_pTransformCom->Set_Pos(vPos.x, m_fIdleY, vPos.z);
+    m_vRespawnPoint = { vPos.x, m_fIdleY, vPos.z };
+    m_pTransformCom->Set_Pos(m_vRespawnPoint.x, m_vRespawnPoint.y, m_vRespawnPoint.z);
     m_pTransformCom->Set_Scale(1.2f, 1.2f, 1.2f);
     m_pStateCom->Set_Stat(100, 0, 10, 0);
     m_vecDropItem.push_back(ITEM_SWORD);
@@ -63,15 +64,9 @@ _int CHunter::Update_GameObject(const _float& fTimeDelta)
 
     Set_Cast();
 
-    _vec3		vPos, vPlayerPos;
-    m_pTransformCom->Get_Info(INFO_POS, &vPos);
-    m_pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
-    if (!m_pCalculatorCom->Check_Distance2D(&vPos, &vPlayerPos, 50.f))
-        return 0;
-
-
     if (m_eState != DEAD && !Check_Wall())
         m_eState = State_Change();
+
     switch (m_eState)
     {
     case IDLE:
@@ -115,6 +110,7 @@ _int CHunter::Update_GameObject(const _float& fTimeDelta)
 
     Flip();
     Set_StuckFree(fTimeDelta);
+
     m_pAnimatorCom->Update_Animation();
     Add_RenderGroup(RENDER_ALPHA, this);
     return Engine::CGameObject::Update_GameObject(fTimeDelta);
@@ -693,15 +689,15 @@ void CHunter::Set_Direction(_vec3* vPlayerPos)
 
 CHunter* CHunter::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 {
-    CHunter* pShaman = new CHunter(pGraphicDev);
+    CHunter* pHunter = new CHunter(pGraphicDev);
 
-    if (FAILED(pShaman->Ready_GameObject(vPos)))
+    if (FAILED(pHunter->Ready_GameObject(vPos)))
     {
-        Safe_Release(pShaman);
-        MSG_BOX("Shaman Create Failed");
+        Safe_Release(pHunter);
+        MSG_BOX("Hunter Create Failed");
         return nullptr;
     }
-    return pShaman;
+    return pHunter;
 }
 
 void CHunter::Free()

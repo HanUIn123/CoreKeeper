@@ -60,14 +60,6 @@ _int CShaman::Update_GameObject(const _float& fTimeDelta)
 
     Set_Cast();
     Set_Light();
-
-
-    _vec3		vPos, vPlayerPos;
-    m_pTransformCom->Get_Info(INFO_POS, &vPos);
-    m_pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
-    if (!m_pCalculatorCom->Check_Distance2D(&vPos, &vPlayerPos, 50.f))
-        return 0;
-
     
     if (m_eState != DEAD && !Check_Wall())
         m_eState = State_Change();
@@ -132,7 +124,6 @@ void CShaman::Render_GameObject()
     _vec3		vPos, vPlayerPos;
     m_pTransformCom->Get_Info(INFO_POS, &vPos);
     m_pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
-
     if (!m_pCalculatorCom->Check_Distance2D(&vPos, &vPlayerPos, 40.f))
         return;
 
