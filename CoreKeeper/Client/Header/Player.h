@@ -24,6 +24,9 @@ class CTerrain;
 class CPlayer : public Engine::CGameObject
 {
 private:
+	enum PLAYERDEBUFFTYPE { DEBUFF_STUN, DEBUFF_FIRE, DEBUFF_SLOW, DEBUFF_BLEED, DEBUFF_NONE };
+
+private:
 	explicit CPlayer(LPDIRECT3DDEVICE9 pGraphicDev);
 	virtual ~CPlayer();
 
@@ -106,7 +109,7 @@ public:
 
 	void            Particle_Update(_float fTimeDelta);
 
-	void			Set_KnockBack(_vec3 vEnemyPos, _int iDamage, _float fDist = 3.f);
+	void			Set_KnockBack(_vec3 vEnemyPos, _int iDamage, _float fDist = 3.f, PLAYERHITTYPE eHit = HIT_NORMAL);
 	void			Set_Respawn() { m_bRespawned = false; }
 
 private:
@@ -194,6 +197,7 @@ private:
 
 	vector<wstring>			m_vecInstallObjectName;
 	_int					m_iInstallNumber;
+	_int					m_iDebuff;
 
 public:
 	static CPlayer* Create(LPDIRECT3DDEVICE9 pGraphicDev);

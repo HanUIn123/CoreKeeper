@@ -323,7 +323,7 @@ void CShroomMan::Pattern_Attack(const _float& fTimeDelta)
         if (m_pColliderCom->Check_Collision(m_pPlayerCollider))
         {
             m_bAttackSuccess = true;
-            m_pPlayer->Set_KnockBack(vPos, m_pStateCom->Get_Stat()->iAttack);
+            m_pPlayer->Set_KnockBack(vPos, m_pStateCom->Get_Stat()->iAttack, 1.f);
         }
         // º® Ãæµ¹
         else if (0 <= iIndex && iIndex < VTXCNTX * VTXCNTZ)
