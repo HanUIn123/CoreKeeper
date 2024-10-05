@@ -145,6 +145,10 @@ void CDynamicCamera::Key_Input()
 				m_pTargetTransform = dynamic_cast<CTransform*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Transform"));
 			else
 				m_pTargetTransform = dynamic_cast<CTransform*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Hunter", L"Com_Transform"));
+
+			if(!m_pTargetTransform)
+				m_pTargetTransform = dynamic_cast<CTransform*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Transform"));
+
 		}
 	}
 

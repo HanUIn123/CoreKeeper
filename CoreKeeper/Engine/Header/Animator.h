@@ -14,6 +14,7 @@ public:
 	void			Update_Animation();
 
 	void			Set_CurState(STATE _eCurState, int _iStart, int _iEnd, int _iCount);
+	STATE			Get_PreState() { return m_tAnim.ePreState; }
 	int				Get_MotionIndex() { return m_tAnim.iMotion; }
 	bool			Get_MotionEnd() { return m_bMotionEnd; }
 
