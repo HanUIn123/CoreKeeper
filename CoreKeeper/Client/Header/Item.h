@@ -27,6 +27,9 @@ public:
 	virtual			void			LateUpdate_GameObject();
 	virtual			void			Render_GameObject();
 
+protected:
+	HRESULT                         Setup_Material();
+
 private:
 	HRESULT			Add_Component();
 	//void			SetUp_Light();

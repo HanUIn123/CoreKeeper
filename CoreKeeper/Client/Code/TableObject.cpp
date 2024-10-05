@@ -60,7 +60,7 @@ void CTableObject::LateUpdate_GameObject()
 
 void CTableObject::Render_GameObject()
 {
-	//m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
+	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
 
@@ -68,11 +68,13 @@ void CTableObject::Render_GameObject()
 
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
+	FAILED_CHECK_RETURN(Setup_Material(), );
+
 	m_pTextureCom->Set_Texture(m_iTextureNum);
 
 	m_pBufferCom->Render_Buffer();
 
-	//m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
+	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }

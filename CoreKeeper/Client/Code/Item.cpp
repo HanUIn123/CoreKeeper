@@ -114,6 +114,23 @@ void CItem::Render_GameObject()
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
+HRESULT CItem::Setup_Material()
+{
+	D3DMATERIAL9		tMtrl;
+	ZeroMemory(&tMtrl, sizeof(D3DMATERIAL9));
+
+	tMtrl.Diffuse = { 1.f, 1.f, 1.f, 1.f };
+	tMtrl.Specular = { 1.f, 1.f, 1.f, 1.f };
+	tMtrl.Ambient = { 0.7f, 0.7f, 0.7f, 0.7f };
+
+	tMtrl.Emissive = { 0.01f, 0.01f, 0.01f, 0.01f };
+	tMtrl.Power = 0.f;
+
+	m_pGraphicDev->SetMaterial(&tMtrl);
+
+	return S_OK;
+}
+
 HRESULT CItem::Add_Component()
 {
 	CComponent* pComponent = NULL;

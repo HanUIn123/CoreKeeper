@@ -25,6 +25,8 @@ _int CTerrain::Update_GameObject(const _float& fTimeDelta)
 {
 	Add_RenderGroup(RENDER_NONALPHA, this);
 
+	Add_RenderGroup(RENDER_MAP, this);
+
 	return Engine::CGameObject::Update_GameObject(fTimeDelta);
 }
 
@@ -93,7 +95,7 @@ HRESULT CTerrain::Setup_Material()
 	tMtrl.Specular = { 1.f, 1.f, 1.f, 1.f };
 	tMtrl.Ambient = { 0.7f, 0.7f, 0.7f, 0.7f };
 
-	tMtrl.Emissive = { 0.2f, 0.2f, 0.2f, 0.2f };
+	tMtrl.Emissive = { 0.01f, 0.01f, 0.01f, 0.01f };
 	tMtrl.Power = 0.f;
 
 	m_pGraphicDev->SetMaterial(&tMtrl);

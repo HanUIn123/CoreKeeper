@@ -56,7 +56,7 @@ void CGravestoneObject::LateUpdate_GameObject()
 
 void CGravestoneObject::Render_GameObject()
 {
-	//m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
+	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
 
@@ -64,13 +64,15 @@ void CGravestoneObject::Render_GameObject()
 
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
+	FAILED_CHECK_RETURN(Setup_Material(), );
+
 	m_pTextureCom->Set_Texture();
 
 	m_pBufferCom->Render_Buffer();
 
 	m_pColliderCom->Render_Collider();
 
-	//m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
+	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
@@ -85,6 +87,11 @@ void CGravestoneObject::Interaction()
 
 		m_bCollision = true;
 	}
+}
+
+void CGravestoneObject::Add_Item(CItem* _pItem)
+{
+	m_pInventoryCom->Add_Item(_pItem);
 }
 
 HRESULT CGravestoneObject::Add_Component()

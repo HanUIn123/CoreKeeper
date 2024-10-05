@@ -91,6 +91,8 @@ private:
 	_int									m_iInstallWallCount;
 	_int									m_iInstallTileIndexCount;
 
+	_int									m_iItvTile;
+
 
 	// n번 째 타일인지 담는 변수.
 	_int									m_iTileNumber;

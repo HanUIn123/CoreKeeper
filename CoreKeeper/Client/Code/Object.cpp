@@ -43,6 +43,23 @@ HRESULT CObject::Add_Component()
 	return S_OK;
 }
 
+HRESULT CObject::Setup_Material()
+{
+	D3DMATERIAL9		tMtrl;
+	ZeroMemory(&tMtrl, sizeof(D3DMATERIAL9));
+
+	tMtrl.Diffuse = { 1.f, 1.f, 1.f, 1.f };
+	tMtrl.Specular = { 1.f, 1.f, 1.f, 1.f };
+	tMtrl.Ambient = { 0.7f, 0.7f, 0.7f, 0.7f };
+
+	tMtrl.Emissive = { 0.01f, 0.01f, 0.01f, 0.01f };
+	tMtrl.Power = 0.f;
+
+	m_pGraphicDev->SetMaterial(&tMtrl);
+
+	return S_OK;
+}
+
 bool CObject::Check_Interaction()
 {
 	Engine::CCollider* pPlayerCollider = dynamic_cast<Engine::CCollider*>
@@ -63,23 +80,6 @@ void CObject::Interaction()
 	{
 
 	}
-}
-
-HRESULT CObject::Setup_Material()
-{
-	D3DMATERIAL9		tMtrl;
-	ZeroMemory(&tMtrl, sizeof(D3DMATERIAL9));
-
-	tMtrl.Diffuse = { 1.f, 1.f, 1.f, 1.f };
-	tMtrl.Specular = { 1.f, 1.f, 1.f, 1.f };
-	tMtrl.Ambient = { 0.7f, 0.7f, 0.7f, 0.7f };
-
-	tMtrl.Emissive = { 0.2f, 0.2f, 0.2f, 0.2f };
-	tMtrl.Power = 0.f;
-
-	m_pGraphicDev->SetMaterial(&tMtrl);
-
-	return S_OK;
 }
 
 CObject* CObject::Create(LPDIRECT3DDEVICE9 pGraphicDev)

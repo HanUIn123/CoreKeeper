@@ -41,6 +41,6 @@ private:
 	virtual void					Free();
 
 private:
-	int								m_iImgNum;
+	int								m_iTextureNum;
 };
 

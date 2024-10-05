@@ -34,9 +34,6 @@
     <Filter Include="02. GameObject\02. Monster">
       <UniqueIdentifier>{301f7126-4fbe-4325-b170-473466d90274}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. Scene\01. Stage">
-      <UniqueIdentifier>{dd503513-b5da-478f-b248-5529fc2e80ee}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01. Scene\02. Loading">
       <UniqueIdentifier>{4ffcb167-8a95-4665-b85b-2b0ddc2b0ebc}</UniqueIdentifier>
     </Filter>
@@ -274,39 +271,6 @@
     <Filter Include="02. GameObject\08. Object">
       <UniqueIdentifier>{ca829a02-3daf-4705-8f9a-1d189d8aa428}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\08. Object\02. CoreBase">
-      <UniqueIdentifier>{64c04727-f390-42fd-9e1c-b57ff9577161}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\08. Object\00. Core">
-      <UniqueIdentifier>{270f73f8-6ed9-4d63-a46b-8882ed003524}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\08. Object\01. Statue">
-      <UniqueIdentifier>{47546ecb-a0f7-481d-9042-430a725dbde5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\08. Object\03. Table">
-      <UniqueIdentifier>{722317c8-5875-4454-8800-92f8c6ec7fe1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\08. Object\04. Anvil">
-      <UniqueIdentifier>{54727387-06e4-4119-a32d-f7d833e4c2af}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\08. Object\05. Furnace">
-      <UniqueIdentifier>{35ef8023-9e1d-4a5b-8452-8489d87e1c49}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\08. Object\06. CookingPot">
-      <UniqueIdentifier>{705b37e0-c07d-4a7a-a856-bfe05ff7250f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\08. Object\07. Box">
-      <UniqueIdentifier>{cb460586-7845-48a1-ae7e-e52879cac7ce}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\08. Object\09. Sprinkler">
-      <UniqueIdentifier>{bb268d32-c1f1-401f-8f04-97498654f3bd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\08. Object\10. Skeleton">
-      <UniqueIdentifier>{92ea1f39-6cf1-4c93-8b8c-68dc0a0097cd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\08. Object\08. Gravestone">
-      <UniqueIdentifier>{1450c493-c791-4b23-a8c2-82adb86e2550}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\06. Item\99. Etc\05. Ore">
       <UniqueIdentifier>{828b4ed5-f6f2-4861-b6ef-128077ffc159}</UniqueIdentifier>
     </Filter>
@@ -385,9 +349,6 @@
     <Filter Include="02. GameObject\06. Item\06. Installation\00. Table\04. AnimalTable">
       <UniqueIdentifier>{3047f56c-6b4b-4551-81e2-3531605563bc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\08. Object\11. Plant">
-      <UniqueIdentifier>{2e9fc9d0-3836-4d74-a81b-fa35e901e27b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\06. Item\99. Etc\09. Piece">
       <UniqueIdentifier>{e04f8601-5724-400a-80a9-2718805579ff}</UniqueIdentifier>
     </Filter>
@@ -403,9 +364,6 @@
     <Filter Include="02. GameObject\02. Monster\02. Shaman\ShamanRender">
       <UniqueIdentifier>{6a4700ec-9978-44b7-a908-4c0b94328674}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\08. Object\12. Fire">
-      <UniqueIdentifier>{86d0bab2-1b5a-4db3-a24f-c52a4f9fce0f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="03. Manager\01. FarmMgr">
       <UniqueIdentifier>{46c0290f-a39c-42b6-a938-69e5da0636cb}</UniqueIdentifier>
     </Filter>
@@ -415,8 +373,62 @@
     <Filter Include="02. GameObject\07. UI\14. UICookingPot">
       <UniqueIdentifier>{988505d3-0d27-420a-95b8-9a7574ae34a2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\02. Monster\05. Hunter">
-      <UniqueIdentifier>{6a48951b-5813-41d2-aedb-cd6a309a3500}</UniqueIdentifier>
+    <Filter Include="01. Scene\03. Stage">
+      <UniqueIdentifier>{dd503513-b5da-478f-b248-5529fc2e80ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Scene\01. Story">
+      <UniqueIdentifier>{b00dfff5-9875-48b8-bcce-2037b6924b2b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\08. Object\00. BaseCamp">
+      <UniqueIdentifier>{9d22afe7-0fbb-476b-a66b-e87e57791a2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\08. Object\00. BaseCamp\00. Core">
+      <UniqueIdentifier>{270f73f8-6ed9-4d63-a46b-8882ed003524}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\08. Object\00. BaseCamp\01. CoreBase">
+      <UniqueIdentifier>{64c04727-f390-42fd-9e1c-b57ff9577161}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\08. Object\00. BaseCamp\02. Statue">
+      <UniqueIdentifier>{47546ecb-a0f7-481d-9042-430a725dbde5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\08. Object\00. BaseCamp\03. StatueBase">
+      <UniqueIdentifier>{393d40ae-dcea-4d4a-9e9f-639fc5c9e1f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\08. Object\00. BaseCamp\04. SpawnPoint">
+      <UniqueIdentifier>{a46bd387-51a1-4e51-a50e-9ebbc17f104a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\08. Object\02. Table">
+      <UniqueIdentifier>{722317c8-5875-4454-8800-92f8c6ec7fe1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\08. Object\03. Anvil">
+      <UniqueIdentifier>{54727387-06e4-4119-a32d-f7d833e4c2af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\08. Object\04. Furnace">
+      <UniqueIdentifier>{35ef8023-9e1d-4a5b-8452-8489d87e1c49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\08. Object\05. CookingPot">
+      <UniqueIdentifier>{705b37e0-c07d-4a7a-a856-bfe05ff7250f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\08. Object\06. Box">
+      <UniqueIdentifier>{cb460586-7845-48a1-ae7e-e52879cac7ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\08. Object\07. Gravestone">
+      <UniqueIdentifier>{1450c493-c791-4b23-a8c2-82adb86e2550}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\08. Object\08. Sprinkler">
+      <UniqueIdentifier>{bb268d32-c1f1-401f-8f04-97498654f3bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\08. Object\09. Skeleton">
+      <UniqueIdentifier>{92ea1f39-6cf1-4c93-8b8c-68dc0a0097cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\08. Object\10. Plant">
+      <UniqueIdentifier>{2e9fc9d0-3836-4d74-a81b-fa35e901e27b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\08. Object\11. Fire">
+      <UniqueIdentifier>{86d0bab2-1b5a-4db3-a24f-c52a4f9fce0f}</UniqueIdentifier>
+	</Filter>
+    <Filter Include="02. GameObject\89.MiniCore">
+      <UniqueIdentifier>{6059a8ae-2064-4092-b71f-2968a2d7f813}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -457,7 +469,7 @@
       <Filter>02. GameObject\03. Terrain</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\Stage.h">
-      <Filter>01. Scene\01. Stage</Filter>
+      <Filter>01. Scene\03. Stage</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\Loading.h">
       <Filter>01. Scene\02. Loading</Filter>
@@ -604,7 +616,7 @@
       <Filter>02. GameObject\06. Item\06. Installation\05. Torch</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\Core.h">
-      <Filter>02. GameObject\08. Object\00. Core</Filter>
+      <Filter>02. GameObject\08. Object\00. BaseCamp\00. Core</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\MiniMap.h">
       <Filter>02. GameObject\07. UI\08. MiniMap</Filter>
@@ -634,7 +646,7 @@
       <Filter>02. GameObject\07. UI\10. UIBuff</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\CoreBase.h">
-      <Filter>02. GameObject\08. Object\02. CoreBase</Filter>
+      <Filter>02. GameObject\08. Object\00. BaseCamp\01. CoreBase</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\ShroomMan.h">
       <Filter>02. GameObject\02. Monster\01. ShroomMan</Filter>
@@ -643,7 +655,7 @@
       <Filter>02. GameObject\02. Monster\02. Shaman</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\Statue.h">
-      <Filter>02. GameObject\08. Object\01. Statue</Filter>
+      <Filter>02. GameObject\08. Object\00. BaseCamp\02. Statue</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\Object.h">
       <Filter>02. GameObject\08. Object</Filter>
@@ -694,28 +706,28 @@
       <Filter>02. GameObject\06. Item\06. Installation\08. Sprinkler</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\TableObject.h">
-      <Filter>02. GameObject\08. Object\03. Table</Filter>
+      <Filter>02. GameObject\08. Object\02. Table</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\AnvilObject.h">
-      <Filter>02. GameObject\08. Object\04. Anvil</Filter>
+      <Filter>02. GameObject\08. Object\03. Anvil</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\FurnaceObject.h">
-      <Filter>02. GameObject\08. Object\05. Furnace</Filter>
+      <Filter>02. GameObject\08. Object\04. Furnace</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\CookingPotObject.h">
-      <Filter>02. GameObject\08. Object\06. CookingPot</Filter>
+      <Filter>02. GameObject\08. Object\05. CookingPot</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\BoxObject.h">
-      <Filter>02. GameObject\08. Object\07. Box</Filter>
+      <Filter>02. GameObject\08. Object\06. Box</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\GravestoneObject.h">
-      <Filter>02. GameObject\08. Object\08. Gravestone</Filter>
+      <Filter>02. GameObject\08. Object\07. Gravestone</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\SprinklerObject.h">
-      <Filter>02. GameObject\08. Object\09. Sprinkler</Filter>
+      <Filter>02. GameObject\08. Object\08. Sprinkler</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\Skeleton.h">
-      <Filter>02. GameObject\08. Object\10. Skeleton</Filter>
+      <Filter>02. GameObject\08. Object\09. Skeleton</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\CraftMgr.h">
       <Filter>03. Manager\00. CraftMgr</Filter>
@@ -796,7 +808,7 @@
       <Filter>02. GameObject\06. Item\06. Installation\00. Table\04. AnimalTable</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\Plant.h">
-      <Filter>02. GameObject\08. Object\11. Plant</Filter>
+      <Filter>02. GameObject\08. Object\10. Plant</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\ShamanRender.h">
       <Filter>02. GameObject\02. Monster\02. Shaman\ShamanRender</Filter>
@@ -808,7 +820,7 @@
       <Filter>02. GameObject\02. Monster\00. Slime\SlimeRender</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\Fire.h">
-      <Filter>02. GameObject\08. Object\12. Fire</Filter>
+      <Filter>02. GameObject\08. Object\11. Fire</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\FarmMgr.h">
       <Filter>03. Manager\01. FarmMgr</Filter>
@@ -821,6 +833,15 @@
     </ClInclude>
     <ClInclude Include="..\Header\Assistance.h">
       <Filter>02. GameObject\06. Item\03. Accessory\02. Assistance</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\StatueBase.h">
+      <Filter>02. GameObject\08. Object\00. BaseCamp\03. StatueBase</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\SpawnPoint.h">
+      <Filter>02. GameObject\08. Object\00. BaseCamp\04. SpawnPoint</Filter>
+	</ClInclude>
+	  <ClInclude Include="..\Header\MiniCore.h">
+      <Filter>02. GameObject\89.MiniCore</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -849,7 +870,7 @@
       <Filter>02. GameObject\03. Terrain</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\Stage.cpp">
-      <Filter>01. Scene\01. Stage</Filter>
+      <Filter>01. Scene\03. Stage</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\Loading.cpp">
       <Filter>01. Scene\02. Loading</Filter>
@@ -987,7 +1008,7 @@
       <Filter>02. GameObject\06. Item\06. Installation\05. Torch</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\Core.cpp">
-      <Filter>02. GameObject\08. Object\00. Core</Filter>
+      <Filter>02. GameObject\08. Object\00. BaseCamp\00. Core</Filter>
     </ClCompile>
     <ClCompile Include="MiniMap.cpp">
       <Filter>02. GameObject\07. UI\08. MiniMap</Filter>
@@ -1014,7 +1035,7 @@
       <Filter>02. GameObject\07. UI\10. UIBuff</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\CoreBase.cpp">
-      <Filter>02. GameObject\08. Object\02. CoreBase</Filter>
+      <Filter>02. GameObject\08. Object\00. BaseCamp\01. CoreBase</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\ShroomMan.cpp">
       <Filter>02. GameObject\02. Monster\01. ShroomMan</Filter>
@@ -1023,7 +1044,7 @@
       <Filter>02. GameObject\02. Monster\02. Shaman</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\Statue.cpp">
-      <Filter>02. GameObject\08. Object\01. Statue</Filter>
+      <Filter>02. GameObject\08. Object\00. BaseCamp\02. Statue</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\Object.cpp">
       <Filter>02. GameObject\08. Object</Filter>
@@ -1074,28 +1095,28 @@
       <Filter>02. GameObject\06. Item\06. Installation\08. Sprinkler</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\TableObject.cpp">
-      <Filter>02. GameObject\08. Object\03. Table</Filter>
+      <Filter>02. GameObject\08. Object\02. Table</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\AnvilObject.cpp">
-      <Filter>02. GameObject\08. Object\04. Anvil</Filter>
+      <Filter>02. GameObject\08. Object\03. Anvil</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\FurnaceObject.cpp">
-      <Filter>02. GameObject\08. Object\05. Furnace</Filter>
+      <Filter>02. GameObject\08. Object\04. Furnace</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\CookingPotObject.cpp">
-      <Filter>02. GameObject\08. Object\06. CookingPot</Filter>
+      <Filter>02. GameObject\08. Object\05. CookingPot</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\BoxObject.cpp">
-      <Filter>02. GameObject\08. Object\07. Box</Filter>
+      <Filter>02. GameObject\08. Object\06. Box</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\GravestoneObject.cpp">
-      <Filter>02. GameObject\08. Object\08. Gravestone</Filter>
+      <Filter>02. GameObject\08. Object\07. Gravestone</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\SprinklerObject.cpp">
-      <Filter>02. GameObject\08. Object\09. Sprinkler</Filter>
+      <Filter>02. GameObject\08. Object\08. Sprinkler</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\Skeleton.cpp">
-      <Filter>02. GameObject\08. Object\10. Skeleton</Filter>
+      <Filter>02. GameObject\08. Object\09. Skeleton</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\CraftMgr.cpp">
       <Filter>03. Manager\00. CraftMgr</Filter>
@@ -1179,7 +1200,7 @@
       <Filter>02. GameObject\06. Item\06. Installation\00. Table\04. AnimalTable</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\Plant.cpp">
-      <Filter>02. GameObject\08. Object\11. Plant</Filter>
+      <Filter>02. GameObject\08. Object\10. Plant</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\SlimeRender.cpp">
       <Filter>02. GameObject\02. Monster\00. Slime\SlimeRender</Filter>
@@ -1191,7 +1212,7 @@
       <Filter>02. GameObject\02. Monster\02. Shaman\ShamanRender</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\Fire.cpp">
-      <Filter>02. GameObject\08. Object\12. Fire</Filter>
+      <Filter>02. GameObject\08. Object\11. Fire</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\FarmMgr.cpp">
       <Filter>03. Manager\01. FarmMgr</Filter>
@@ -1204,6 +1225,15 @@
     </ClCompile>
     <ClCompile Include="..\Code\Assistance.cpp">
       <Filter>02. GameObject\06. Item\03. Accessory\02. Assistance</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\StatueBase.cpp">
+      <Filter>02. GameObject\08. Object\00. BaseCamp\03. StatueBase</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\SpawnPoint.cpp">
+      <Filter>02. GameObject\08. Object\00. BaseCamp\04. SpawnPoint</Filter>
+	</ClCompile>
+    <ClCompile Include="..\Code\MiniCore.cpp">
+      <Filter>02. GameObject\89.MiniCore</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -25,6 +25,7 @@ public:
 
 private:
 	HRESULT			Add_Component();
+	HRESULT			Setup_Material();
 	void			Follow_Player();
 
 private:

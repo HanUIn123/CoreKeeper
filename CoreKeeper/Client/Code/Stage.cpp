@@ -146,31 +146,55 @@ HRESULT CStage::Ready_Layer_Environment(const _tchar* pLayerTag)
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"MiniTerrain", pGameObject), E_FAIL);
 
 
-	pGameObject = CCore::Create(m_pGraphicDev, { VTXCNTX / 2, 1.5f, 21.5f });
+	pGameObject = CCore::Create(m_pGraphicDev, { VTXCNTX / 2, 2.3f, 21.f });
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Core", pGameObject), E_FAIL);
 
-	pGameObject = CStatue::Create(m_pGraphicDev, { VTXCNTX / 2, 1.2f, 27.f }, 0);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"SlimeStatue", pGameObject), E_FAIL);
-
-	pGameObject = CStatue::Create(m_pGraphicDev, { VTXCNTX / 2 - 8.f, 1.2f, 23.5f }, 1);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"LarvaStatue", pGameObject), E_FAIL);
-
-	pGameObject = CStatue::Create(m_pGraphicDev, { VTXCNTX / 2 + 8.f, 1.2f, 23.5f }, 2);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"MalugazStatue", pGameObject), E_FAIL);
-
-	pGameObject = CCoreBase::Create(m_pGraphicDev, { VTXCNTX / 2, 0.1f, 22.5f });
+	pGameObject = CCoreBase::Create(m_pGraphicDev, { VTXCNTX / 2, 0.1f, 21.f });
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"CoreBase", pGameObject), E_FAIL);
 
-	pGameObject = CGravestoneObject::Create(m_pGraphicDev, { 78.f, 0.5f, 19.f });
+	pGameObject = CStatue::Create(m_pGraphicDev, { VTXCNTX / 2, 1.3f, 27.f }, 0);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"SlimeStatue", pGameObject), E_FAIL);
+
+	pGameObject = CStatueBase::Create(m_pGraphicDev, { VTXCNTX / 2, 0.1f, 27.f }, 0);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"SlimeStatueBase", pGameObject), E_FAIL);
+
+	pGameObject = CStatue::Create(m_pGraphicDev, { VTXCNTX / 2 - 8.f, 1.3f, 23.f }, 1);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"LarvaStatue", pGameObject), E_FAIL);
+
+	pGameObject = CStatueBase::Create(m_pGraphicDev, { VTXCNTX / 2 - 8.f, 0.1f, 23.f }, 0);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"LarvaStatueBase", pGameObject), E_FAIL);
+
+	pGameObject = CStatue::Create(m_pGraphicDev, { VTXCNTX / 2 + 8.f, 1.3f, 23.f }, 2);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"MalugazStatue", pGameObject), E_FAIL);
+
+	pGameObject = CStatueBase::Create(m_pGraphicDev, { VTXCNTX / 2 + 8.f, 0.1f, 23.f }, 2);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"MalugazStatueBase", pGameObject), E_FAIL);
+
+	pGameObject = CSpawnPoint::Create(m_pGraphicDev, { VTXCNTX / 2, 0.1f, 17.f});
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"SpawnPoint", pGameObject), E_FAIL);
+
+	pGameObject = CWood::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Wood", pGameObject), E_FAIL);
+	dynamic_cast<CItem*>(pGameObject)->Add_Count(99);
+
+	CItem* pItem = dynamic_cast<CItem*>(pGameObject);
+
+	pGameObject = CGravestoneObject::Create(m_pGraphicDev, { 78.f, 0.5f, 18.f });
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"AheadGrave", pGameObject), E_FAIL);
+	dynamic_cast<CGravestoneObject*>(pGameObject)->Add_Item(pItem);
 
-	pGameObject = CSkeleton::Create(m_pGraphicDev, { 77.f, 0.5f, 19.f });
+	pGameObject = CSkeleton::Create(m_pGraphicDev, { 77.f, 0.5f, 18.f });
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Skeleton", pGameObject), E_FAIL);
 
@@ -232,13 +256,9 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar* pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Player_HairShade", pGameObject), E_FAIL);
 
-	pGameObject = CMalugaz::Create(m_pGraphicDev, _vec3(VTXCNTX * 0.5f - 5.f, 10, VTXCNTZ * 0.5f - 5.f));
+	/*pGameObject = CMalugaz::Create(m_pGraphicDev, _vec3(VTXCNTX * 0.5f - 5.f, 10, VTXCNTZ * 0.5f - 5.f));
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Malugaz", pGameObject), E_FAIL);
-
-	pGameObject = CTorch::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Torch", pGameObject), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Malugaz", pGameObject), E_FAIL);*/
 
 	pGameObject = CPickaxe::Create(m_pGraphicDev, MATERIAL_COPPER);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
@@ -273,47 +293,6 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar* pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Staff1", pGameObject), E_FAIL);
 	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
-
-	pGameObject = CWood::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Wood1", pGameObject), E_FAIL);
-	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
-
-	pGameObject = CWood::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Wood2", pGameObject), E_FAIL);
-	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
-
-	pGameObject = CWood::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Wood3", pGameObject), E_FAIL);
-	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
-
-	pGameObject = CWood::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Wood4", pGameObject), E_FAIL);
-	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
-
-	pGameObject = CWood::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Wood5", pGameObject), E_FAIL);
-	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
-
-	pGameObject = CWood::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Wood6", pGameObject), E_FAIL);
-	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
-
-	pGameObject = CWood::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Wood7", pGameObject), E_FAIL);
-	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
-
-	pGameObject = CWood::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Wood8", pGameObject), E_FAIL);
-	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
-
 
 	pGameObject = CHelmet::Create(m_pGraphicDev, MATERIAL_COPPER);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
@@ -696,6 +675,10 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
 	pGameObject = CMiniObject::Create(m_pGraphicDev , { 128.5f, 0.1f, 128.5f });
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"MiniPlayer", pGameObject), E_FAIL);
+
+	pGameObject = CMiniCore::Create(m_pGraphicDev, { VTXCNTX / 2, 1.5f, 21.5f });
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"MiniCore", pGameObject), E_FAIL);
 
 	vPos = { WINCX / 2.f, 200.f };
 	vSize = { 150.f, 130.f };

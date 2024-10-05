@@ -77,8 +77,11 @@
 
 // Object
 #include "Core.h"
-#include "Statue.h"
 #include "CoreBase.h"
+#include "Statue.h"
+#include "StatueBase.h"
+#include "SpawnPoint.h"
+
 #include "GravestoneObject.h"
 #include "Skeleton.h"
 #include "TableObject.h"
@@ -121,3 +124,4 @@
 #include "WorldMap.h"
 #include "MiniObject.h"
 #include "MiniTerrain.h"
+#include "MiniCore.h"

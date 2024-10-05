@@ -35,6 +35,7 @@ public:
 
 private:
 	HRESULT			Add_Component();
+	HRESULT			Setup_Material();
 
 	// ºä °øÅë
 	void			Mouse_Click(const _float& fTimeDelta);								// Å¬¸¯ ½Ã ½ºÀ®, ½ºÀ® ³¡ ÆÇ´Ü

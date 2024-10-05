@@ -5,7 +5,7 @@
 #include "..\Header\Player.h"
 
 CStatue::CStatue(LPDIRECT3DDEVICE9 pGraphicDev)
-	: CObject(pGraphicDev), m_iImgNum(0)
+	: CObject(pGraphicDev), m_iTextureNum(0)
 {
 }
 
@@ -19,7 +19,7 @@ HRESULT CStatue::Ready_GameObject(_vec3 vPos, int iImgNum)
 
 	m_pTransformCom->Set_Pos(vPos.x, vPos.y, vPos.z);
 
-	m_iImgNum = iImgNum;
+	m_iTextureNum = iImgNum;
 
 	return S_OK;
 }
@@ -59,7 +59,7 @@ void CStatue::LateUpdate_GameObject()
 
 void CStatue::Render_GameObject()
 {
-	//m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
+	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
 
@@ -67,13 +67,15 @@ void CStatue::Render_GameObject()
 
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
-	m_pTextureCom->Set_Texture(m_iImgNum);
+	FAILED_CHECK_RETURN(Setup_Material(), );
+
+	m_pTextureCom->Set_Texture(m_iTextureNum);
 
 	m_pBufferCom->Render_Buffer();
 
 	m_pColliderCom->Render_Collider();
 
-	//m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
+	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
@@ -84,7 +86,7 @@ void CStatue::Interaction()
 	{
 		CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
 
-		pPlayer->Set_Statue(m_iImgNum);
+		pPlayer->Set_Statue(m_iTextureNum);
 
 		pPlayer->Set_Inventory();
 	
