@@ -107,9 +107,12 @@ _bool CMiniSpawn::Piking_Teleport()
     {
         if (abs(ptMouse.x - spawnInMapnPos[i].x) <= 5 && abs(ptMouse.y - spawnInMapnPos[i].y) <= 5)
         {
-            m_pTransformCom->Set_Scale(10.0f, 0.0f, 10.0f);
+            if(CRenderer::GetInstance()->Get_ExpandMap())
+                m_pTransformCom->Set_Scale(10.0f, 0.0f, 10.0f);
+            else
+                m_pTransformCom->Set_Scale(5.0f, 0.0f, 5.0f);
 
-            if (Engine::Get_DIMouseState(DIM_LB) & 0x80 && !bClicked)
+            if (Engine::Get_DIMouseState(DIM_RB) & 0x80 && !bClicked)
             {
                 _matrix matWorld;
                 pPlayerTransform->Get_WorldMatrix(&matWorld); 
