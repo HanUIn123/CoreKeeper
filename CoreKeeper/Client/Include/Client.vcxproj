@@ -155,7 +155,9 @@ call Copy.bat</Command>
   <ItemGroup>
     <ClInclude Include="..\Header\Arrow.h" />
     <ClInclude Include="..\Header\Assistance.h" />
+    <ClInclude Include="..\Header\Bullet.h" />
     <ClInclude Include="..\Header\Hunter.h" />
+    <ClInclude Include="..\Header\HunterEye.h" />
     <ClInclude Include="..\Header\Story.h" />
     <ClInclude Include="..\Header\StoryBackGround.h" />
     <ClInclude Include="..\Header\TorchObject.h" />
@@ -302,7 +304,9 @@ call Copy.bat</Command>
     <ClCompile Include="..\Code\Arrow.cpp" />
     <ClCompile Include="..\Code\Azeos.cpp" />
     <ClCompile Include="..\Code\Assistance.cpp" />
+    <ClCompile Include="..\Code\Bullet.cpp" />
     <ClCompile Include="..\Code\Hunter.cpp" />
+    <ClCompile Include="..\Code\HunterEye.cpp" />
     <ClCompile Include="..\Code\Story.cpp" />
     <ClCompile Include="..\Code\StoryBackGround.cpp" />
     <ClCompile Include="..\Code\TorchObject.cpp" />

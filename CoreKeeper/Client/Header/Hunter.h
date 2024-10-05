@@ -1,9 +1,16 @@
 #pragma once
 #include "Monster.h"
 
+class CHunterEye;
 class CBUllet;
 class CHunter : public CMonster
 {
+public:
+	enum	HUNTERIDLETYPE
+	{
+		HUNTER_BUSH, HUNTER_PEAK, HUNTER_GOTOBUSH, HUNTER_LEAVEBUSH, HUNTER_IDLE, HUNTER_MOVE,		
+		HUNTER_END
+	};
 private:
 	explicit CHunter(LPDIRECT3DDEVICE9 pGraphicDev);
 	virtual ~CHunter();
@@ -26,6 +33,28 @@ private:
 	void			Set_Direction(_vec3* vPlayerPos);
 
 private:
+	HUNTERIDLETYPE			m_eIdleType;
+	/*
+	 	0. 은신(Bush)
+		0 - 1. 빼꼼(Peak)
+		0 - 2. 은신 진입(GoToBush)
+		0 - 3. 은신 해제(LeaveBush)
+		1. 정지(Idle)
+		2. 이동(Move)
+	*/
+	_int					m_iChaseType;
+	_bool					m_bChaseFirstFrame;
+	/*
+		0. 은신 해제(LeaveBush)
+		1. 빠른 이동(Move)
+	*/
+	_int					m_iSwingType;
+	_bool					m_bIsReloaded;
+	/*
+		0. 장전(Reload)
+		1. 발사(RangedAttack)
+	*/
+
 	_float					m_fRange;
 
 	_bool					m_bCharging;
@@ -34,6 +63,8 @@ private:
 	
 	vector<wstring>			m_vecBulletName;
 	_int					m_iCurNumber;
+	
+	CHunterEye*				m_pHunterEye;
 
 public:
 	static CHunter* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);

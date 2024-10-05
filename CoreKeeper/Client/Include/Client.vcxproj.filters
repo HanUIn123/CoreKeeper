@@ -454,6 +454,12 @@
     <Filter Include="02. GameObject\02. Monster\05. Hunter">
       <UniqueIdentifier>{a34077d9-fe8f-4b04-9aae-6786aa110b5f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\02. Monster\05. Hunter\HunterEye">
+      <UniqueIdentifier>{0b96d138-02fb-493e-be63-697b0150625e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\02. Monster\05. Hunter\Bullet">
+      <UniqueIdentifier>{fb6e3fce-8e28-4f83-b632-67acd29fec7e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -888,6 +894,12 @@
     <ClInclude Include="..\Header\Story.h">
       <Filter>01. Scene\01. Story</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\HunterEye.h">
+      <Filter>02. GameObject\02. Monster\05. Hunter\HunterEye</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\Bullet.h">
+      <Filter>02. GameObject\02. Monster\05. Hunter\Bullet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1300,6 +1312,12 @@
     </ClCompile>
     <ClCompile Include="..\Code\Story.cpp">
       <Filter>01. Scene\01. Story</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Bullet.cpp">
+      <Filter>02. GameObject\02. Monster\05. Hunter\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\HunterEye.cpp">
+      <Filter>02. GameObject\02. Monster\05. Hunter\HunterEye</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

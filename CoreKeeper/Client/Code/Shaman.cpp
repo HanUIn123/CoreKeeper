@@ -197,8 +197,6 @@ HRESULT CShaman::Add_Component()
 
 void CShaman::Pattern_Idle(const _float& fTimeDelta)
 {
-    // 벽 확인 추가할 것
-
     // 특정 방향으로 가다가 멈추면 해당 방향의 IDLE 적용 : IDLE은 방향 변경 금지
     if (!m_bIdling)
     {
@@ -336,7 +334,7 @@ void CShaman::Pattern_Idle(const _float& fTimeDelta)
 
 }
 
-// 플레이어 방향으로 이동, 추후 A스타 알고리즘으로 변경
+// 플레이어 방향으로 이동
 void CShaman::Pattern_Chase(const _float& fTimeDelta)
 {
     _vec3		vPos, vPlayerPos, vDir;
@@ -446,6 +444,7 @@ void CShaman::Pattern_Dead()
             m_pGraphicDev->LightEnable(m_iLightNum, FALSE); // 조명 비활성화
             m_bLightEnable = false;
             m_bStopDraw = true;
+            m_pColliderCom->Set_Offset(_vec3(0, -100.f, 0));
             Drop_Item();
         }
     }
@@ -492,6 +491,13 @@ STATE CShaman::State_Change()
         // 공격 모션이 끝났을 때
         if (m_bAttackSuccess)
         {
+            // 어그로 범위 내가 아닌 경우
+            if (!m_pCalculatorCom->Check_Distance2D(&vPlayerPos, &vPos, m_fAggroDistance))
+            {
+                m_iFrameCount = 0;
+                m_iAttackAnimProgress = 0;
+                return IDLE;
+            }
             // 공격 사거리 이내가 아닌 경우
             if (!m_pCalculatorCom->Check_Distance2D(&vPlayerPos, &vPos, m_fRange))
             {
@@ -499,8 +505,6 @@ STATE CShaman::State_Change()
                 m_iAttackAnimProgress = 0;
                 return WALK;
             }
-            if (!m_pCalculatorCom->Check_Distance2D(&vPlayerPos, &vPos, m_fAggroDistance))
-                return IDLE;
         }
         break;
     }
