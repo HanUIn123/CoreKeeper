@@ -302,13 +302,15 @@ void CUICraftSlot::Ready_Table()
 		mapItemType.insert({ make_pair(TABLE_CRAFT, TRUE), WOODSWORD });
 
 		UIITEM COPPERPICKAXE = { m_iIndex, ITEM_PICKAXE, MATERIAL_COPPER, 13 };
-
 		mapItemType.insert({ make_pair(TABLE_CRAFT, TRUE), COPPERPICKAXE });
 
 		// 우측
 
 		UIITEM FURNACE = { m_iIndex, ITEM_FURNACE, MATERIAL_WOOD, 10 };
 		mapItemType.insert({ make_pair(TABLE_CRAFT, FALSE), FURNACE });
+
+		UIITEM COPPERANVIL = { m_iIndex, ITEM_ANVIL, MATERIAL_COPPER, 15 };
+		mapItemType.insert({ make_pair(TABLE_CRAFT, FALSE), COPPERANVIL });
 
 		break;
 	}
@@ -321,10 +323,16 @@ void CUICraftSlot::Ready_Table()
 		UIITEM WOODHOE = { m_iIndex, ITEM_HOE, MATERIAL_WOOD , 5};
 		mapItemType.insert({ make_pair(TABLE_CRAFT, TRUE), WOODHOE });
 
+		UIITEM COPPERHOE = { m_iIndex, ITEM_HOE, MATERIAL_COPPER, 14 };
+		mapItemType.insert({ make_pair(TABLE_CRAFT, TRUE), COPPERHOE });
+
 		// 우측
 
-		UIITEM COOKINGPOT = { m_iIndex, ITEM_COOKINGPOT, MATERIAL_WOOD, 11 };
-		mapItemType.insert({ make_pair(TABLE_CRAFT, FALSE), COOKINGPOT });
+		UIITEM FURNACE = { m_iIndex, ITEM_FURNACE, MATERIAL_WOOD, 10 };
+		mapItemType.insert({ make_pair(TABLE_CRAFT, FALSE), FURNACE });
+
+		UIITEM POTIONTABLE = { m_iIndex, ITEM_POTION_TABLE, MATERIAL_COPPER, 16 };
+		mapItemType.insert({ make_pair(TABLE_CRAFT, FALSE), POTIONTABLE });
 
 		break;
 	}
@@ -342,6 +350,9 @@ void CUICraftSlot::Ready_Table()
 
 		UIITEM ANIMALTABLE = { m_iIndex, ITEM_ANIMAL_TABLE, MATERIAL_WOOD, 12 };
 		mapItemType.insert({ make_pair(TABLE_CRAFT, FALSE), ANIMALTABLE });
+
+		UIITEM COOKINGPOT = { m_iIndex, ITEM_COOKINGPOT, MATERIAL_WOOD, 11 };
+		mapItemType.insert({ make_pair(TABLE_CRAFT, FALSE), COOKINGPOT });
 
 		break;
 	}
