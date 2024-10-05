@@ -1197,6 +1197,9 @@ void CPlayer::Install(ITEMNUM eHandedNum)
 				m_vecInstallObjectName.push_back(L"Install_Object" + std::to_wstring(m_iInstallNumber++));
 				FAILED_CHECK_RETURN(pScene->Create_GameObject(L"Layer_GameLogic", pInstallObject, m_vecInstallObjectName.back().c_str()));
 				m_pTerrain->Set_Unreachable(iIndex, true);
+				m_pHandedItem->Set_Use(false);
+				m_pHandedItem->Set_Active(false);
+				m_pHandedItem->Set_Drop(false);
 				m_pInventoryCom->Minus_Item(eHandedNum);
 			}
 		}
