@@ -426,9 +426,30 @@
     </Filter>
     <Filter Include="02. GameObject\08. Object\11. Fire">
       <UniqueIdentifier>{86d0bab2-1b5a-4db3-a24f-c52a4f9fce0f}</UniqueIdentifier>
-	</Filter>
+    </Filter>
     <Filter Include="02. GameObject\89.MiniCore">
       <UniqueIdentifier>{6059a8ae-2064-4092-b71f-2968a2d7f813}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\00. BackGround\00. Logo">
+      <UniqueIdentifier>{5a28f59e-3ca3-45be-9a41-ef775a9c02fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\00. BackGround\01. Story">
+      <UniqueIdentifier>{f12cd232-016f-48d5-9eb9-13e31f00804d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\08. Object\02. Table\00. Table">
+      <UniqueIdentifier>{9e06a5cd-f817-4813-bf71-945024e2c9e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\08. Object\02. Table\01. PotionTable">
+      <UniqueIdentifier>{4d680257-2184-471a-925f-0016d89e6a33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\08. Object\02. Table\02. AccessoryTable">
+      <UniqueIdentifier>{816b4f61-b5be-4a2b-8379-072149d29b14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\08. Object\02. Table\03. MusicTable">
+      <UniqueIdentifier>{468a1da1-99e8-4ba1-b33e-8836a31008ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\08. Object\12. Torch">
+      <UniqueIdentifier>{e1dd83b3-5b3f-4b6c-8f01-ea4fb054acff}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -455,9 +476,6 @@
     </ClInclude>
     <ClInclude Include="..\Header\Logo.h">
       <Filter>01. Scene\00. Logo</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Header\BackGround.h">
-      <Filter>02. GameObject\00. BackGround</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\Player.h">
       <Filter>02. GameObject\01. Player</Filter>
@@ -705,9 +723,6 @@
     <ClInclude Include="..\Header\Sprinkler.h">
       <Filter>02. GameObject\06. Item\06. Installation\08. Sprinkler</Filter>
     </ClInclude>
-    <ClInclude Include="..\Header\TableObject.h">
-      <Filter>02. GameObject\08. Object\02. Table</Filter>
-    </ClInclude>
     <ClInclude Include="..\Header\AnvilObject.h">
       <Filter>02. GameObject\08. Object\03. Anvil</Filter>
     </ClInclude>
@@ -839,9 +854,33 @@
     </ClInclude>
     <ClInclude Include="..\Header\SpawnPoint.h">
       <Filter>02. GameObject\08. Object\00. BaseCamp\04. SpawnPoint</Filter>
-	</ClInclude>
-	  <ClInclude Include="..\Header\MiniCore.h">
+    </ClInclude>
+    <ClInclude Include="..\Header\MiniCore.h">
       <Filter>02. GameObject\89.MiniCore</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\Story.h">
+      <Filter>01. Scene\01. Story</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\BackGround.h">
+      <Filter>02. GameObject\00. BackGround\00. Logo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\StoryBackGround.h">
+      <Filter>02. GameObject\00. BackGround\01. Story</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\TableObject.h">
+      <Filter>02. GameObject\08. Object\02. Table\00. Table</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\PotionTableObject.h">
+      <Filter>02. GameObject\08. Object\02. Table\01. PotionTable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\MusicTableObject.h">
+      <Filter>02. GameObject\08. Object\02. Table\03. MusicTable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\AccessoryTableObject.h">
+      <Filter>02. GameObject\08. Object\02. Table\02. AccessoryTable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\TorchObject.h">
+      <Filter>02. GameObject\08. Object\12. Torch</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -856,9 +895,6 @@
     </ClCompile>
     <ClCompile Include="..\Code\Logo.cpp">
       <Filter>01. Scene\00. Logo</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Code\BackGround.cpp">
-      <Filter>02. GameObject\00. BackGround</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\Player.cpp">
       <Filter>02. GameObject\01. Player</Filter>
@@ -1094,9 +1130,6 @@
     <ClCompile Include="..\Code\Sprinkler.cpp">
       <Filter>02. GameObject\06. Item\06. Installation\08. Sprinkler</Filter>
     </ClCompile>
-    <ClCompile Include="..\Code\TableObject.cpp">
-      <Filter>02. GameObject\08. Object\02. Table</Filter>
-    </ClCompile>
     <ClCompile Include="..\Code\AnvilObject.cpp">
       <Filter>02. GameObject\08. Object\03. Anvil</Filter>
     </ClCompile>
@@ -1231,9 +1264,33 @@
     </ClCompile>
     <ClCompile Include="..\Code\SpawnPoint.cpp">
       <Filter>02. GameObject\08. Object\00. BaseCamp\04. SpawnPoint</Filter>
-	</ClCompile>
+    </ClCompile>
     <ClCompile Include="..\Code\MiniCore.cpp">
       <Filter>02. GameObject\89.MiniCore</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Story.cpp">
+      <Filter>01. Scene\01. Story</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\BackGround.cpp">
+      <Filter>02. GameObject\00. BackGround\00. Logo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\StoryBackGround.cpp">
+      <Filter>02. GameObject\00. BackGround\01. Story</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\TableObject.cpp">
+      <Filter>02. GameObject\08. Object\02. Table\00. Table</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\PotionTableObject.cpp">
+      <Filter>02. GameObject\08. Object\02. Table\01. PotionTable</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\MusicTableObject.cpp">
+      <Filter>02. GameObject\08. Object\02. Table\03. MusicTable</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\AccessoryTableObject.cpp">
+      <Filter>02. GameObject\08. Object\02. Table\02. AccessoryTable</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\TorchObject.cpp">
+      <Filter>02. GameObject\08. Object\12. Torch</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
