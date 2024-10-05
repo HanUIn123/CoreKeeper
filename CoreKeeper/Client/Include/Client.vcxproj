@@ -155,9 +155,8 @@ call Copy.bat</Command>
   <ItemGroup>
     <ClInclude Include="..\Header\Arrow.h" />
     <ClInclude Include="..\Header\Assistance.h" />
+    <ClInclude Include="..\Header\Hunter.h" />
     <ClInclude Include="..\Header\TorchObject.h" />
-    <ClInclude Include="..\Header\StoryBackGround.h" />
-    <ClInclude Include="..\Header\Story.h" />
     <ClInclude Include="..\Header\StatueBase.h" />
     <ClInclude Include="..\Header\FarmMgr.h" />
     <ClInclude Include="..\Header\Food.h" />
@@ -301,9 +300,8 @@ call Copy.bat</Command>
     <ClCompile Include="..\Code\Arrow.cpp" />
     <ClCompile Include="..\Code\Azeos.cpp" />
     <ClCompile Include="..\Code\Assistance.cpp" />
+    <ClCompile Include="..\Code\Hunter.cpp" />
     <ClCompile Include="..\Code\TorchObject.cpp" />
-    <ClCompile Include="..\Code\StoryBackGround.cpp" />
-    <ClCompile Include="..\Code\Story.cpp" />
     <ClCompile Include="..\Code\StatueBase.cpp" />
     <ClCompile Include="..\Code\FarmMgr.cpp" />
     <ClCompile Include="..\Code\Food.cpp" />
