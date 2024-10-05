@@ -1,3 +1,4 @@
+#include "MyFont.h"
 #include "..\..\Header\MyFont.h"
 
 
@@ -48,6 +49,17 @@ void CMyFont::Render_Font(const _tchar * pString, const _vec2 * pPos, D3DXCOLOR 
 	m_pSprite->Begin(D3DXSPRITE_ALPHABLEND);
 
 	m_pFont->DrawTextW(m_pSprite, pString, lstrlen(pString), &rc, DT_NOCLIP, Color);
+
+	m_pSprite->End();
+}
+
+void CMyFont::Render_Font_Center(const _tchar* pString, const _vec2* pPos, D3DXCOLOR Color)
+{
+	RECT	rc{ (_long)pPos->x, (_long)pPos->y };
+
+	m_pSprite->Begin(D3DXSPRITE_ALPHABLEND);
+
+	m_pFont->DrawTextW(m_pSprite, pString, lstrlen(pString), &rc, DT_CENTER | DT_NOCLIP, Color);
 
 	m_pSprite->End();
 }

@@ -18,7 +18,11 @@ public:
 
 	void				Render_Font(const _tchar* pString,
 									const _vec2* pPos, 
-									D3DXCOLOR Color); 
+									D3DXCOLOR Color);
+	void				Render_Font_Center(const _tchar* pString,
+										   const _vec2* pPos,
+										   D3DXCOLOR Color);
+
 
 private:
 	LPDIRECT3DDEVICE9			m_pGraphicDev;

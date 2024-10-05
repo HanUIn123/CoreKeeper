@@ -60,8 +60,8 @@ void CStory::Render_Scene()
 {
 	if (true == m_pLoading->Get_Finish())
 	{
-		_vec2 pos(725, 650);
-		Engine::Render_Font(L"Font_Default", L"ENTER키를 눌러 스킵", &pos, D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
+		_vec2 pos(975, 650);
+		Engine::Render_Font(L"Font_Skip", L"ENTER 키를 눌러 스킵", &pos, D3DXCOLOR(0.5f, 0.5f, 0.5f, 1.f));
 	}
 }
 

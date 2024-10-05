@@ -65,8 +65,8 @@ void CStoryBackGround::Render_GameObject()
 
 	wstring currentText = m_strMent[m_iTextureNum].substr(0, m_iCurrentIndex);
 
-	_vec2 pos(125, 500);
-	Engine::Render_Font(L"Font_Default", currentText.c_str(), &pos, D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
+	_vec2 pos(WINCX, 570);
+	Engine::Render_Font_Center(L"Font_Default", currentText.c_str(), &pos, D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
 }
 
 HRESULT CStoryBackGround::Add_Component()
