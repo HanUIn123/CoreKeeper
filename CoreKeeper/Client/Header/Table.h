@@ -27,7 +27,7 @@ private:
 	HRESULT			Add_Component();
 
 public:
-	static CTable* Create(LPDIRECT3DDEVICE9 pGraphicDev,  MATERIAL _eMaterial = MATERIAL_END, _vec3 vPos = { 0.f, 0.f, 0.f });
+	static CTable* Create(LPDIRECT3DDEVICE9 pGraphicDev, MATERIAL _eMaterial = MATERIAL_END, _vec3 vPos = { 0.f, 0.f, 0.f });
 
 private:
 	virtual void		Free();

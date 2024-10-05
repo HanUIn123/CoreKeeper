@@ -16,37 +16,48 @@ HRESULT CIngredient::Ready_GameObject(ITEMNUM _eItemNum, _vec3 vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_pTransformCom->Set_Scale(0.5f, 0.5f, 0.5f);
-	m_pShadowTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
-	m_pTransformCom->Set_Pos(vPos.x, vPos.y, vPos.z);
-	m_pShadowTransformCom->Set_Pos(vPos.x, 0.1f, vPos.z);
-
-
-	m_wItemExplain[0] = L"나무";
-	m_wItemExplain[1] = L"온갖 물건을 만드는 데 쓰는 ";
-	m_wItemExplain[2] = L"거대한 뿌리 조각입니다.";
-	// 원래의 Y 위치 저장
-	m_fFirstY = vPos.y;
-
 	switch (_eItemNum)
 	{
 	case ITEM_BERRY_SEED:
 		m_eItemNum = ITEM_BERRY;
 		m_iTextureNumber = 0;
+		m_wItemName = L"원기 베리";
+		m_wItemExplain[0] = L"몸에 활력을 주는 달콤하고 과즙이 가득한 베리입니다.";
 		break;
 	case ITEM_PEPPER_SEED:
 		m_eItemNum = ITEM_PEPPER;
 		m_iTextureNumber = 1;
+		m_wItemName = L"폭탄 후추";
+		m_wItemExplain[0] = L"음식에 풍미를 더하는 강렬한 맛의 채소입니다.";
 		break;
 	case ITEM_CARROT_SEED:
 		m_eItemNum = ITEM_CARROT;
 		m_iTextureNumber = 2;
+		m_wItemName = L"돌당근";
+		m_wItemExplain[0] = L"먹는 사람을 단련시켜주는 돌처럼 딱딱한 채소입니다.";
+		break;
+	case ITEM_END:
+		m_eItemNum = ITEM_MUSHROOM;
+		m_iTextureNumber = 3;
+		m_wItemName = L"버섯";
+		m_wItemExplain[0] = L"작은 동굴 버섯으로 가볍게 먹기에 아주 좋습니다.";
 		break;
 	case ITEM_FIBER_SEED:
 		m_eItemNum = ITEM_FIBER;
-		m_iTextureNumber = 3;
+		m_iTextureNumber = 4;
+		m_wItemName = L"섬유질";
+		m_wItemExplain[0] = L"천과 방어구를 만드는 비단같이 부드러운 소재입니다.";
 		break;
 	}
+
+	m_pTransformCom->Set_Scale(0.5f, 0.5f, 0.5f);
+	m_pShadowTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
+	m_pTransformCom->Set_Pos(vPos.x, vPos.y, vPos.z);
+	m_pShadowTransformCom->Set_Pos(vPos.x, 0.1f, vPos.z);
+
+	// 원래의 Y 위치 저장
+	m_fFirstY = vPos.y;
+
 
 	return S_OK;
 }

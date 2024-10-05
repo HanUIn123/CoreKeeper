@@ -93,7 +93,7 @@ void CTorchObject::SetUp_Light()
 	m_pTransformCom->Get_Info(INFO_POS, &vPos);
 
 	light.Position = vPos; // 횃불의 위치
-	light.Range = 3.0f; // 조명의 범위
+	light.Range = 5.0f; // 조명의 범위
 	light.Falloff = 1.f; // 감쇠
 	light.Attenuation0 = 1.0f; // 감쇠 계수
 	light.Attenuation1 = 0.01f;

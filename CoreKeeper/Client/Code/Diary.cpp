@@ -19,13 +19,14 @@ HRESULT CDiary::Ready_GameObject(_vec3 vPos)
 
 	m_pTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
 	m_pShadowTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
+
 	m_pTransformCom->Set_Pos(vPos.x, vPos.y, vPos.z);
 	m_pShadowTransformCom->Set_Pos(vPos.x, 0.1f, vPos.z);
 
+	m_wItemName = L"일기장";
+	m_wItemExplain[0] = L"남의 일기장을 훔쳐보는 건 안좋은 일이예요.";
+	m_wItemExplain[1] = L"궁금하긴 하지만요.";
 
-	m_wItemExplain[0] = L"나무";
-	m_wItemExplain[1] = L"온갖 물건을 만드는 데 쓰는 ";
-	m_wItemExplain[2] = L"거대한 뿌리 조각입니다.";
 	// 원래의 Y 위치 저장
 	m_fFirstY = vPos.y;
 
@@ -34,8 +35,6 @@ HRESULT CDiary::Ready_GameObject(_vec3 vPos)
 
 _int CDiary::Update_GameObject(const _float& fTimeDelta)
 {
-	m_pAnimatorCom->Update_Animation();
-
 	_vec3 vPos;
 	m_pTransformCom->Get_Info(INFO_POS, &vPos);
 	m_pShadowTransformCom->Set_Pos(vPos.x, 0.1f, vPos.z);

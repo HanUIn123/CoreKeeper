@@ -18,15 +18,24 @@ HRESULT CPiece::Ready_GameObject(ITEMNUM _eItemNum, _vec3 vPos)
 
 	m_eItemNum = _eItemNum;
 
+	switch (m_eItemNum)
+	{
+	case ITEM_SKULL_PIECE:
+		m_wItemName = L"크리스탈 해골 조각";
+		m_wItemExplain[0] = L"더 큰 어떤 물건의 부분인 고대 크리스탈 조각입니다.";
+		break;
+	case ITEM_FEATHER_PIECE:
+		m_wItemName = L"고대 깃털";
+		m_wItemExplain[0] = L"거대한 생물이 남긴 독특한 깃털입니다.";
+		break;
+	}
+
 	m_pTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
 	m_pShadowTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
 	m_pTransformCom->Set_Pos(vPos.x, vPos.y, vPos.z);
 	m_pShadowTransformCom->Set_Pos(vPos.x, 0.1f, vPos.z);
 
 
-	m_wItemExplain[0] = L"나무";
-	m_wItemExplain[1] = L"온갖 물건을 만드는 데 쓰는 ";
-	m_wItemExplain[2] = L"거대한 뿌리 조각입니다.";
 	// 원래의 Y 위치 저장
 	m_fFirstY = vPos.y;
 

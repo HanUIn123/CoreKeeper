@@ -22,23 +22,27 @@ HRESULT CSpawner::Ready_GameObject(ITEMNUM _eItemNum, _vec3 vPos)
 	{
 	case ITEM_PLAYER_SPAWNER:
 		m_iTextureNumber = 0;
+		m_wItemName = L"소환 우상";
+		m_wItemExplain[0] = L"코어로 다시 순간이동시켜주며, 그 과정에서 소모됩니다.";
 		break;
 	case ITEM_MAL_SPAWNER:
 		m_iTextureNumber = 1;
+		m_wItemName = L"타락한 주술사의 해골";
+		m_wItemExplain[0] = L"고대 기도문을 읊조리는 다시 이어붙인 크리스털 해골입니다. 이 물건은 왕좌의 방 인장 위로 두어야 한다는 욕구가 듭니다.";
 		break;
 	case ITEM_AZEOS_SPAWNER:
 		m_iTextureNumber = 2;
+		m_wItemName = L"반짝이고 깜빡이는 거대한 물건";
+		m_wItemExplain[0] = L"크리스털 같은 계란 모양의 물건입니다. 먼 거리에서도 눈길을 사로잡습니다.";
 		break;
 	}
+	
 	m_pTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
 	m_pShadowTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
 
 	m_pTransformCom->Set_Pos(vPos.x, vPos.y, vPos.z);
 	m_pShadowTransformCom->Set_Pos(vPos.x, 0.1f, vPos.z);
 
-	m_wItemExplain[0] = L"나무";
-	m_wItemExplain[1] = L"온갖 물건을 만드는 데 쓰는 ";
-	m_wItemExplain[2] = L"거대한 뿌리 조각입니다.";
 	// 원래의 Y 위치 저장
 	m_fFirstY = vPos.y;
 

@@ -25,6 +25,27 @@ HRESULT CPickaxe::Ready_GameObject(MATERIAL _eMaterial, _vec3 vPos)
 
 	m_tStat.iAttack = 5 * (m_eMaterial + 1);
 
+
+	switch (m_eMaterial)
+	{
+	case MATERIAL_WOOD:
+		m_wItemName = L"나무 곡괭이";
+		m_wItemExplain[0] = L"조잡한 도구로 벽을 부수는 데 유용합니다.";
+		break;
+	case MATERIAL_COPPER:
+		m_wItemName = L"구리 곡괭이";
+		m_wItemExplain[0] = L"벽을 손쉽게 부수는 데 알맞은 튼튼한 도구입니다.";
+		break;
+	case MATERIAL_IRON:
+		m_wItemName = L"철제 곡괭이";
+		m_wItemExplain[0] = L"딱딱한 벽을 허무는 데 아주 좋은 탁원한 도구입니다.";
+		break;
+	case MATERIAL_SCARLET:
+		m_wItemName = L"진홍 곡괭이";
+		m_wItemExplain[0] = L"극도로 단단한 벽을 허무는 데 아주 좋은 도구입니다.";
+		break;
+	}
+
 	m_pTransformCom->Set_Scale(1.2f, 1.2f, 1.2f);
 	m_pShadowTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
 

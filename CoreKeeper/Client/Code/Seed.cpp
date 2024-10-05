@@ -19,6 +19,26 @@ HRESULT CSeed::Ready_GameObject(ITEMNUM _eItemNum, _vec3 vPos)
 	m_eItemNum = _eItemNum;
 	m_iTextureNumber = m_eItemNum - ITEM_BERRY_SEED;
 
+	switch (m_eItemNum)
+	{
+	case ITEM_BERRY_SEED:
+		m_wItemName = L"¿ø±â º£¸® ¾¾¾Ñ";
+		m_wItemExplain[0] = L"½ÉÀ¸¸é °Ç°­ÇÑ °úÀÏ·Î ÀÚ¶ó³³´Ï´Ù.";
+		break;
+	case ITEM_PEPPER_SEED:
+		m_wItemName = L"ÆøÅº ÈÄÃß ¾¾¾Ñ";
+		m_wItemExplain[0] = L"½ÉÀ¸¸é ¸Å¿î Ã¤¼Ò·Î ÀÚ¶ó³³´Ï´Ù.";
+		break;
+	case ITEM_CARROT_SEED:
+		m_wItemName = L"µ¹´ç±Ù ¾¾¾Ñ";
+		m_wItemExplain[0] = L"µ¹ ¼Ó¿¡¼­¸¸ ÀÚ¶ó³ª´Â Æ°Æ°ÇÑ ¾¾¾ÑÀÔ´Ï´Ù.";
+		break;
+	case ITEM_FIBER_SEED:
+		m_wItemName = L"À¯Ãæ ÄÉÀÌÆø ¾¾¾Ñ";
+		m_wItemExplain[0] = L"¼öÈ®ÇÏ¸é ¼¶À¯ÁúÀÌ ³ª¿À´Â ½Ä¹°·Î ÀÚ¶ó³³´Ï´Ù.";
+		break;
+	}
+
 	m_pTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
 	m_pShadowTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
 

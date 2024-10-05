@@ -1171,10 +1171,11 @@ void CPlayer::Install(ITEMNUM eHandedNum)
 					pInstallObject = CMusicTableObject::Create(m_pGraphicDev, vInstallPos);
 					break;
 				case ITEM_ANVIL:
-					pInstallObject = CAnvil::Create(m_pGraphicDev, vInstallPos);
+					mat = m_pHandedItem->Get_ItemMaterial();
+					pInstallObject = CAnvilObject::Create(m_pGraphicDev, vInstallPos, mat);
 					break;
 				case ITEM_FURNACE:
-					pInstallObject = CFurnace::Create(m_pGraphicDev, vInstallPos);
+					pInstallObject = CFurnaceObject::Create(m_pGraphicDev, vInstallPos);
 					break;
 				case ITEM_COOKINGPOT:
 					pInstallObject = CCookingPotObject::Create(m_pGraphicDev, vInstallPos);
@@ -1196,7 +1197,10 @@ void CPlayer::Install(ITEMNUM eHandedNum)
 				}
 				m_vecInstallObjectName.push_back(L"Install_Object" + std::to_wstring(m_iInstallNumber++));
 				FAILED_CHECK_RETURN(pScene->Create_GameObject(L"Layer_GameLogic", pInstallObject, m_vecInstallObjectName.back().c_str()));
-				m_pTerrain->Set_Unreachable(iIndex, true);
+				
+				if(eHandedNum != ITEM_TORCH)
+					m_pTerrain->Set_Unreachable(iIndex, true);
+
 				m_pHandedItem->Set_Use(false);
 				m_pHandedItem->Set_Active(false);
 				m_pHandedItem->Set_Drop(false);

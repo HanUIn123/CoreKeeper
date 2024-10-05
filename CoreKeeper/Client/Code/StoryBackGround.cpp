@@ -52,6 +52,7 @@ void CStoryBackGround::Render_GameObject()
 		if (m_iCurrentIndex < m_strMent[m_iTextureNum].length())
 		{
 			m_iCurrentIndex++;
+			
 		}
 		else
 		{
@@ -60,6 +61,11 @@ void CStoryBackGround::Render_GameObject()
 				m_iTextureNum++;
 				m_iCurrentIndex = 0;
 			}
+		}
+
+		if (m_iCurrentIndex < m_strMent[m_iTextureNum].length() - 6)
+		{
+			Engine::Play(L"FIXME_menu_select.wav", SOUND_EFFECT, 0.1f);
 		}
 	}
 

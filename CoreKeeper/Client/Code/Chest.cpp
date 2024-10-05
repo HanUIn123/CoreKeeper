@@ -23,6 +23,27 @@ HRESULT CChest::Ready_GameObject(MATERIAL _eMaterial, _vec3 vPos)
 	m_tStat.iDefense = 10 * (m_eMaterial + 1);
 	m_tStat.iMaxHp = 20 * (m_eMaterial + 1);
 
+	switch (m_eMaterial)
+	{
+	case MATERIAL_WOOD:
+		m_wItemName = L"나무 몸통 방어구";
+		m_wItemExplain[0] = L"조잡한 상체 방어구 입니다.";
+		m_wItemExplain[1] = L"몸을 어느 정도 보호해줍니다.";
+		break;
+	case MATERIAL_COPPER:
+		m_wItemName = L"구리 갑옷";
+		m_wItemExplain[0] = L"식스팩이 없다고요? 하나 만들어 보세요!";
+		break;
+	case MATERIAL_IRON:
+		m_wItemName = L"철제 갑옷";
+		m_wItemExplain[0] = L"이 영웅적인 갑옷을 입고 전투에 뛰어들어 보세요.";
+		break;
+	case MATERIAL_SPECIAL:
+		m_wItemName = L"마술사 로브";
+		m_wItemExplain[0] = L"직물이 공격을 견딜 수 있게 해주는 마법이 부여된 튼튼한 로브입니다.";
+		break;
+	}
+
 	m_pTransformCom->Set_Scale(0.5f, 0.5f, 0.5f);
 	m_pShadowTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
 

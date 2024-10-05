@@ -38,7 +38,7 @@ public:
 	CItem*		Cook(ITEMNUM _eItemNum1, ITEMNUM _eItemNum2);
 private:
 	void		Set_Recipe();
-
+	void		Set_Name();
 private:
 	virtual void		Free();
 
@@ -46,6 +46,7 @@ private:
 	LPDIRECT3DDEVICE9					m_pGraphicDev;
 
 	wstring								strCraftName[500];
+	map<ITEMNUM, wstring>				m_mapName;
 	int									m_iCraftCount;
 
 	map<pair<ITEMNUM, MATERIAL>, Recipe> m_mapRecipes;

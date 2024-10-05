@@ -23,12 +23,18 @@ HRESULT CRing::Ready_GameObject(MATERIAL _eMaterial, _vec3 vPos)
 	{
 	case MATERIAL_COPPER:
 		m_iTextureNumber = 0;
+		m_wItemName = L"구리 십자가 목걸이";
+		m_wItemExplain[0] = L"";
 		break;
 	case MATERIAL_IRON:
 		m_iTextureNumber = 1;
+		m_wItemName = L"구리 십자가 목걸이";
+		m_wItemExplain[0] = L"";
 		break;
 	case MATERIAL_SPECIAL:
 		m_iTextureNumber = 2;
+		m_wItemName = L"구리 십자가 목걸이";
+		m_wItemExplain[0] = L"";
 		break;
 	default:
 		return E_FAIL;

@@ -23,6 +23,9 @@ HRESULT CBow::Ready_GameObject(_vec3 vPos)
 
 	m_tStat.iAttack = 20;
 
+	m_wItemName = L"철제 활";
+	m_wItemExplain[0] = L"튼튼한 활로, 멀리 있는 적을 쏠 수 있습니다.";
+
 	m_pTransformCom->Set_Scale(1.2f, 1.2f, 1.2f);
 	m_pShadowTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
 

@@ -24,29 +24,33 @@ HRESULT CWallPiece::Ready_GameObject(MATERIAL _eMaterial, _vec3 vPos)
 	{
 	case MATERIAL_WOOD:
 		m_eItemNum = ITEM_DIRTWALL;
+		m_wItemName = L"진흙 블록";
+		m_wItemExplain[0] = L"단단한 갈색 흙입니다.";
 		break;
 	case MATERIAL_COPPER: 
 		m_eItemNum = ITEM_STONEWALL;
+		m_wItemName = L"돌 블록";
+		m_wItemExplain[0] = L"튼튼한 돌입니다.";
 		break;
 	case MATERIAL_IRON:
 		m_eItemNum = ITEM_GRASSWALL;
+		m_wItemName = L"잔디 블록";
+		m_wItemExplain[0] = L"식물이 수직으로 무성하게 자라난 덩어리입니다.";
 		break;
 	case MATERIAL_END:
 		m_eItemNum = ITEM_PASTUREWALL;
-		m_iTextureNumber = 0;
+		m_wItemName = L"초원 블록";
+		m_wItemExplain[0] = L"작은 여름 꽃이 자라나는 그윽한 느낌의 흙 덩어리입니다.";
 		break;
 	}
 	
 
 	m_pTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
 	m_pShadowTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
+
 	m_pTransformCom->Set_Pos(vPos.x, vPos.y, vPos.z);
 	m_pShadowTransformCom->Set_Pos(vPos.x, 0.1f, vPos.z);
 
-
-	m_wItemExplain[0] = L"나무";
-	m_wItemExplain[1] = L"온갖 물건을 만드는 데 쓰는 ";
-	m_wItemExplain[2] = L"거대한 뿌리 조각입니다.";
 	// 원래의 Y 위치 저장
 	m_fFirstY = vPos.y;
 

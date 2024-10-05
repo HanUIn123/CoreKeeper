@@ -20,6 +20,7 @@ HRESULT CCraftMgr::Ready_Craft(LPDIRECT3DDEVICE9 pGraphicDev)
     m_pGraphicDev->AddRef();
 
     Set_Recipe();
+    Set_Name();
 
 	return S_OK;
 }
@@ -517,6 +518,35 @@ void CCraftMgr::Set_Recipe()
     Recipe ScarletBarRecipe;
     ScarletBarRecipe.vecIngredients.push_back({ ITEM_SCARLET, 1 });
     m_mapRecipes[make_pair(ITEM_SCARLET_BAR, MATERIAL_SCARLET)] = ScarletBarRecipe;
+}
+
+void CCraftMgr::Set_Name()
+{
+    // 재료들의 이름
+    // 재료로 쓰이는 것만 일단 추가해두겠습니다.
+        
+    m_mapName[ITEM_BERRY] = L"원기 베리";
+    m_mapName[ITEM_PEPPER] = L"폭탄 후추";
+    m_mapName[ITEM_CARROT] = L"돌당근";
+    m_mapName[ITEM_MUSHROOM] = L"버섯";
+
+    m_mapName[ITEM_COPPER] = L"구리광석";
+    m_mapName[ITEM_IRON] = L"철광석";
+    m_mapName[ITEM_SCARLET] = L"진홍석";
+
+    m_mapName[ITEM_COPPER_BAR] = L"구리 주괴";
+    m_mapName[ITEM_IRON_BAR] = L"철 주괴";
+    m_mapName[ITEM_SCARLET_BAR] = L"진홍 바";
+
+    m_mapName[ITEM_DIRTWALL] = L"진흙 블록";
+    m_mapName[ITEM_STONEWALL] = L"돌 블록";
+    m_mapName[ITEM_GRASSWALL] = L"잔디 블록";
+
+    m_mapName[ITEM_WOOD] = L"나무";
+    m_mapName[ITEM_MUCUS] = L"슬라임";
+    m_mapName[ITEM_FIBER] = L"섬유질";
+    m_mapName[ITEM_SKULL_PIECE] = L"크리스탈 해골 조각";
+    m_mapName[ITEM_FEATHER_PIECE] = L"고대 깃털";
 }
 
 void CCraftMgr::Free()

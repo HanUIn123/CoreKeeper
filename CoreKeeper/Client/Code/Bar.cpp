@@ -21,43 +21,29 @@ HRESULT CBar::Ready_GameObject(MATERIAL _eMaterial, _vec3 vPos)
 
 	switch (m_eMaterial)
 	{
-	//WOOD 넣지마세요
-	case MATERIAL_WOOD:
 	case MATERIAL_COPPER:
-	{
 		m_eItemNum = ITEM_COPPER_BAR;
-		m_eMaterial = MATERIAL_WOOD;
-	}
+		m_wItemName = L"구리 주괴";
+		m_wItemExplain[0] = L"대장장이 일에 쓰는 단순한 금속 주괴입니다.";
 		break;
 	case MATERIAL_IRON:
-	{
 		m_eItemNum = ITEM_IRON_BAR;
-		m_eMaterial = MATERIAL_COPPER;
+		m_wItemName = L"철 주괴";
+		m_wItemExplain[0] = L"대장장이 일에 쓰는 튼튼한 금속 주괴입니다.";
 		break;
-	}
 	case MATERIAL_SCARLET:
-	{
 		m_eItemNum = ITEM_SCARLET_BAR;
-		m_eMaterial = MATERIAL_IRON;
+		m_wItemName = L"진홍 바";
+		m_wItemExplain[0] = L"고급 대장장이 작업을 위한 값진 주괴입니다.";
 		break;
-	}
-	case MATERIAL_END:
-	{
-		m_eItemNum = ITEM_SCARLET_BAR;
-		m_eMaterial = MATERIAL_IRON;
-		break;
-	}
 	}
 
 	m_pTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
 	m_pShadowTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
+
 	m_pTransformCom->Set_Pos(vPos.x, vPos.y, vPos.z);
 	m_pShadowTransformCom->Set_Pos(vPos.x, 0.1f, vPos.z);
 
-
-	m_wItemExplain[0] = L"나무";
-	m_wItemExplain[1] = L"온갖 물건을 만드는 데 쓰는 ";
-	m_wItemExplain[2] = L"거대한 뿌리 조각입니다.";
 	// 원래의 Y 위치 저장
 	m_fFirstY = vPos.y;
 

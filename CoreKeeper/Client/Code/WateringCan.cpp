@@ -23,9 +23,15 @@ HRESULT CWateringCan::Ready_GameObject(MATERIAL _eMaterial, _vec3 vPos)
 	{
 	case MATERIAL_COPPER:
 		m_iTextureNumber = 0;
+		m_wItemName = L"물뿌리개";
+		m_wItemExplain[0] = L"씨앗과 토양에 물을 줄 때 사용합니다.";
 		break;
 	case MATERIAL_IRON:
 		m_iTextureNumber = 1;
+		m_wItemName = L"거대 물뿌리개";
+		m_wItemExplain[0] = L"씨앗과 토양에 물을 줄 때 사용합니다.";
+		m_wItemExplain[1] = L"물뿌리개보다 더 많은 양의 물을 담으며";
+		m_wItemExplain[2] = L"3x3 타일의 영역을 아우릅니다.";
 		break;
 	}
 

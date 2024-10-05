@@ -25,6 +25,22 @@ HRESULT CTable::Ready_GameObject(MATERIAL _eMaterial, _vec3 vPos)
 	m_eMaterial = _eMaterial;
 	m_iTextureNumber = m_eMaterial;
 
+	switch (m_eMaterial)
+	{
+	case MATERIAL_WOOD:
+		m_wItemName = L"기본 작업대";
+		m_wItemExplain[0] = L"가장 기본적인 작업대입니다.";
+		break;
+	case MATERIAL_COPPER:
+		m_wItemName = L"구리 작업대";
+		m_wItemExplain[0] = L"지하 세계에 대비하게 해주는 다재다능한 작업대입니다.";
+		break;
+	case MATERIAL_IRON:
+		m_wItemName = L"철제 작업대";
+		m_wItemExplain[0] = L"지하에서 살아남으려면 반드시 필요한 작업대입니다.";
+		break;
+	}
+
 	m_pTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
 	m_pShadowTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
 	m_pTransformCom->Set_Pos(vPos.x, vPos.y, vPos.z);

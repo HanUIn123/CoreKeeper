@@ -23,6 +23,24 @@ HRESULT CHoe::Ready_GameObject(MATERIAL _eMaterial, _vec3 vPos)
 	m_eMaterial = _eMaterial;
 	m_iTextureNumber = m_eMaterial;
 
+	switch (m_eMaterial)
+	{
+	case MATERIAL_WOOD:
+		m_wItemName = L"나무 괭이";
+		m_wItemExplain[0] = L"농사 지을 땅을 일구는 조잡한 도구입니다.";
+		break;
+	case MATERIAL_COPPER:
+		m_wItemName = L"구리 괭이";
+		m_wItemExplain[0] = L"농사를 지을 땅을 일구는 튼튼한 도구입니다.";
+		m_wItemExplain[1] = L"3x3 타일 구역을 아우를 수 있습니다.";
+		break;
+	case MATERIAL_IRON:
+		m_wItemName = L"철제 괭이";
+		m_wItemExplain[0] = L"농사를 지을 땅을 일구는 탁월한 도구입니다.";
+		m_wItemExplain[1] = L"5x5 타일 구역을 아우를 수 있습니다.";
+		break;
+	}
+
 	m_pTransformCom->Set_Scale(1.2f, 1.2f, 1.2f);
 	m_pShadowTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
 

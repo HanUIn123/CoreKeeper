@@ -27,14 +27,20 @@ HRESULT CPotion::Ready_GameObject(ITEMNUM _eItemNum, _vec3 vPos)
 	case ITEM_POTION_HP:
 		m_iTextureNumber = 0;
 		m_tStat.iMaxHp = 10;
+		m_wItemName = L"치유 물약";
+		m_wItemExplain[0] = L"몸에 좋은 물약으로, 마시면 즉시 치유됩니다. 물론 맛도 좋습니다.";
 		break;
 	case ITEM_POTION_ATT:
 		m_iTextureNumber = 1;
 		m_tStat.iAttack = 10;
+		m_wItemName = L"격노 물약";
+		m_wItemExplain[0] = L"근육을 강화하고 화를 돋우는 강력한 물약입니다.";
 		break;
 	case ITEM_POTION_DEF:
 		m_iTextureNumber = 2;
 		m_tStat.iDefense = 10;
+		m_wItemName = L"암석 피부 물약";
+		m_wItemExplain[0] = L"피부를 단단하게 만들고 회복력을 높이는 짭짤한 물약입니다.";
 		break;
 	}
 
@@ -44,9 +50,6 @@ HRESULT CPotion::Ready_GameObject(ITEMNUM _eItemNum, _vec3 vPos)
 	m_pTransformCom->Set_Pos(vPos.x, vPos.y, vPos.z);
 	m_pShadowTransformCom->Set_Pos(vPos.x, 0.1f, vPos.z);
 
-	m_wItemExplain[0] = L"나무";
-	m_wItemExplain[1] = L"온갖 물건을 만드는 데 쓰는 ";
-	m_wItemExplain[2] = L"거대한 뿌리 조각입니다.";
 	// 원래의 Y 위치 저장
 	m_fFirstY = vPos.y;
 
