@@ -999,9 +999,12 @@ void CPlayer::PickAxe()
 				dynamic_cast<CStage*>(pCurScene)->Get_WallNameByIndex(iIndex);
 				
 				CWall* pWall = dynamic_cast<CWall*>(Get_GameObject(L"Layer_Environment", dynamic_cast<CStage*>(pCurScene)->Get_WallNameByIndex(iIndex)->c_str()));
-				pWall->Set_Destroy();
-				pCurScene->Delete_GameObject(L"Layer_Environment", pWall, dynamic_cast<CStage*>(pCurScene)->Get_WallNameByIndex(iIndex)->c_str());
-				pTerrain->Set_Unreachable(iIndex, false);
+				if (pWall)
+				{
+					pWall->Set_Destroy();
+					pCurScene->Delete_GameObject(L"Layer_Environment", pWall, dynamic_cast<CStage*>(pCurScene)->Get_WallNameByIndex(iIndex)->c_str());
+					pTerrain->Set_Unreachable(iIndex, false);
+				}
 			}
 		}
 	}
