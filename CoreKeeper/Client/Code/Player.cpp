@@ -2,32 +2,8 @@
 #include "..\Header\Player.h"
 
 #include "Export_Utility.h"
-#include "..\Header\UIStatusBar.h"
-#include "..\Header\Sword.h"
-#include "..\Header\Terrain.h"
 
-#include "..\Header\UICraft.h" // UI 헤더 추가
-#include "..\Header\UIScreenIcon.h"
-#include "..\Header\UIScreenInv.h"
-#include "..\Header\UIInventory.h"
-#include "..\Header\UIPlayerStatus.h"
-#include "..\Header\UIInvPlate.h"
-#include "..\Header\UIItemSlot.h"
-#include "..\Header\UIPlayerStats.h"
-#include "..\Header\UICraftSlot.h"
-#include "..\Header\UITrashCan.h"
-#include "..\Header\UITrashSlot.h"
-#include "..\Header\UISort.h"
-#include "..\Header\UIBuff.h"
-#include "..\Header\UIChestInv.h"
-#include "..\Header\UIStatue.h"
-#include "..\Header\UIJemSlot.h"
-#include "..\Header\UIStatueCraft.h"
-#include "..\Header\UIChestSort.h"
-#include "..\Header\Stage.h"
-#include "..\Header\GravestoneObject.h"
-#include "..\Header\UIFurnace.h"
-#include "..\Header\UICookingPot.h"
+#include "..\Header\PlayerInclude.h"
 
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CGameObject(pGraphicDev)
@@ -94,6 +70,9 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	m_bImmune = false;
 	m_fImmuneTimeAcc = 0.f;
 	m_bImmuneByTime = false;
+
+	m_vecInstallObjectName.reserve(16);
+	m_iInstallNumber = 0;
 }
 
 CPlayer::~CPlayer()
@@ -379,7 +358,8 @@ void CPlayer::Mouse_Click(const _float& fTimeDelta)
 		{
 			if (m_pHandedItem)
 			{
-				switch (m_pHandedItem->Get_ItemNum())
+				ITEMNUM eHandedNum = m_pHandedItem->Get_ItemNum();
+				switch (eHandedNum)
 				{
 				// 전투 관련
 				case ITEM_SWORD:
@@ -414,14 +394,26 @@ void CPlayer::Mouse_Click(const _float& fTimeDelta)
 				case ITEM_PEPPER_SEED:
 				case ITEM_CARROT_SEED:
 				case ITEM_FIBER_SEED:
-					Plant(m_pHandedItem->Get_ItemNum());
+					Plant(eHandedNum);
 					m_pHandedItem->Set_Use(false);
 					m_pHandedItem->Set_Active(false);
 					m_pHandedItem->Set_Drop(false);
 					break;
 
 				// 설치 관련
-
+				case ITEM_TABLE:
+				case ITEM_POTION_TABLE:
+				case ITEM_ACCESSORY_TABLE:
+				case ITEM_MUSIC_TABLE:
+				case ITEM_ANVIL:
+				case ITEM_FURNACE:
+				case ITEM_COOKINGPOT:
+				case ITEM_TORCH:
+				case ITEM_BOX:
+				case ITEM_GRAVESTONE:
+				case ITEM_SPRINKLER:
+					Install(eHandedNum);
+					break;
 				default:
 					break;
 				}
@@ -1127,7 +1119,7 @@ void CPlayer::Watering()
 	}
 }
 
-void CPlayer::Plant(ITEMNUM eNum)
+void CPlayer::Plant(ITEMNUM eHandedNum)
 {
 	if (g_bIsTopCamera)
 	{
@@ -1138,8 +1130,74 @@ void CPlayer::Plant(ITEMNUM eNum)
 			_int iIndex = _int(m_vMouseWorldPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (m_vMouseWorldPos.x + 0.5f * VTXITV);
 			if (!m_pTerrain->Get_UnreachableByIndex(iIndex))
 			{
-				CFarmMgr::GetInstance()->Create_Plant(iIndex, eNum);
-				m_pInventoryCom->Minus_Item(eNum, 1);
+				CFarmMgr::GetInstance()->Create_Plant(iIndex, eHandedNum);
+				m_pInventoryCom->Minus_Item(eHandedNum, 1);
+			}
+		}
+	}
+}
+
+void CPlayer::Install(ITEMNUM eHandedNum)
+{
+	if (g_bIsTopCamera)
+	{
+		_vec3 vPos;
+		m_pTransformCom->Get_Info(INFO_POS, &vPos);
+		if (m_pCalculatorCom->Check_Distance2D(&vPos, &m_vMouseWorldPos, 5.f))
+		{
+			_int iIndex = _int(m_vMouseWorldPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (m_vMouseWorldPos.x + 0.5f * VTXITV);
+			if (!m_pTerrain->Get_UnreachableByIndex(iIndex))
+			{
+				CScene* pScene = Engine::Get_Scene();
+				CGameObject* pInstallObject = nullptr;
+				_vec3 vInstallPos = { _float((iIndex % (VTXCNTX - 1)) * VTXITV), 0.5f, _float((iIndex / (VTXCNTX - 1)) * VTXITV)};
+				MATERIAL mat;
+				switch (eHandedNum)
+				{
+				case ITEM_TABLE:
+					mat = m_pHandedItem->Get_ItemMaterial();
+					pInstallObject = CTableObject::Create(m_pGraphicDev, vInstallPos, mat);
+					break;
+				case ITEM_POTION_TABLE:
+					pInstallObject = CPotionTableObject::Create(m_pGraphicDev, vInstallPos);
+					break;
+				case ITEM_ACCESSORY_TABLE:
+					pInstallObject = CAccessoryTableObject::Create(m_pGraphicDev, vInstallPos);
+					break;
+				case ITEM_MUSIC_TABLE:
+					if (m_pTerrain->Get_UnreachableByIndex(iIndex + 1))
+						return;
+					m_pTerrain->Set_Unreachable(iIndex + 1, true);
+					pInstallObject = CMusicTableObject::Create(m_pGraphicDev, vInstallPos);
+					break;
+				case ITEM_ANVIL:
+					pInstallObject = CAnvil::Create(m_pGraphicDev, vInstallPos);
+					break;
+				case ITEM_FURNACE:
+					pInstallObject = CFurnace::Create(m_pGraphicDev, vInstallPos);
+					break;
+				case ITEM_COOKINGPOT:
+					pInstallObject = CCookingPotObject::Create(m_pGraphicDev, vInstallPos);
+					break;
+				case ITEM_TORCH:
+					pInstallObject = CTorchObject::Create(m_pGraphicDev, vInstallPos);
+					break;
+				case ITEM_BOX:
+					pInstallObject = CBoxObject::Create(m_pGraphicDev, vInstallPos);
+					break;
+				case ITEM_GRAVESTONE:
+					pInstallObject = CGravestoneObject::Create(m_pGraphicDev, vInstallPos);
+					break;
+				case ITEM_SPRINKLER:
+					pInstallObject = CSprinklerObject::Create(m_pGraphicDev, vInstallPos);
+					break;
+				default:
+					return;
+				}
+				m_vecInstallObjectName.push_back(L"Install_Object" + std::to_wstring(m_iInstallNumber++));
+				FAILED_CHECK_RETURN(pScene->Create_GameObject(L"Layer_GameLogic", pInstallObject, m_vecInstallObjectName.back().c_str()));
+				m_pTerrain->Set_Unreachable(iIndex, true);
+				m_pInventoryCom->Minus_Item(eHandedNum);
 			}
 		}
 	}

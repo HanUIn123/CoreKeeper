@@ -15,6 +15,7 @@
 #include "Slime.h"
 #include "ShroomMan.h"
 #include "Shaman.h"
+#include "Hunter.h"
 #include "Malugaz.h"
 
 // Monster Render in MapTool

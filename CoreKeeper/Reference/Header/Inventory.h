@@ -15,7 +15,7 @@ public:
 
 	void				Sort_Item(_int i = 10);
 	bool				Add_Item(CItem* _pItem);
-	bool				Minus_Item(ITEMNUM _eItemNum, int _iCount);
+	bool				Minus_Item(ITEMNUM _eItemNum, int _iCount = 1);
 
 	void				Swap_Item(CItem** _ppItem1, CItem** _ppItem2);
 	void				Remove_Item(int _iIndex);

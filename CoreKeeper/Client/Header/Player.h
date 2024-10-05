@@ -63,7 +63,8 @@ private:
 	void			PickAxe();
 	void			Hoe();
 	void			Watering();
-	void			Plant(ITEMNUM eNum);
+	void			Plant(ITEMNUM eHandedNum);
+	void			Install(ITEMNUM eHandedNum);
 
 	void			Set_EquippedStatus();
 	void			Set_Clothes();
@@ -190,6 +191,9 @@ private:
 	_bool					m_bImmuneByTime;
 	_float					m_fImmuneTimeAcc;
 	_float					m_fImmuneTime;
+
+	vector<wstring>			m_vecInstallObjectName;
+	_int					m_iInstallNumber;
 
 public:
 	static CPlayer* Create(LPDIRECT3DDEVICE9 pGraphicDev);

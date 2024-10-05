@@ -1,11 +1,10 @@
 #include "pch.h"
-#include "../Header/Shaman.h"
+#include "..\Header\Hunter.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
 #include "../Header/Player.h"
-#include "../Header/Projectile.h"
 
-CShaman::CShaman(LPDIRECT3DDEVICE9 pGraphicDev)
+CHunter::CHunter(LPDIRECT3DDEVICE9 pGraphicDev)
     : CMonster(pGraphicDev)
 {
     m_eType = Engine::MON_SHAMAN;
@@ -14,29 +13,24 @@ CShaman::CShaman(LPDIRECT3DDEVICE9 pGraphicDev)
 
     m_bFlip = false;
 
-    m_fAggroDistance = 12.f;
-    m_fRange = 10.f;
+    m_fAggroDistance = 14.f;
+    m_fRange = 12.f;
 
     m_iAttackAnimProgress = 0;
     m_bCharging = false;
     m_iFrameCount = 0;
 
-    m_fSpeedWeight = 2.f;
+    m_vecBulletName.reserve(16);
+    m_iCurNumber = 0;
 
     m_fImmuneTimeLimit = 0.5f;
-
-    m_bLightEnable = true;
-    m_iLightNum = g_iLightNum++;
-
-    m_vecProjectileName.reserve(8);
-    m_iCurNumber = 0;
 }
 
-CShaman::~CShaman()
+CHunter::~CHunter()
 {
 }
 
-HRESULT CShaman::Ready_GameObject(_vec3 vPos)
+HRESULT CHunter::Ready_GameObject(_vec3 vPos)
 {
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
@@ -53,14 +47,12 @@ HRESULT CShaman::Ready_GameObject(_vec3 vPos)
     return S_OK;
 }
 
-_int CShaman::Update_GameObject(const _float& fTimeDelta)
+_int CHunter::Update_GameObject(const _float& fTimeDelta)
 {
     if (m_bStopDraw)
         return 0;
 
     Set_Cast();
-    Set_Light();
-
 
     _vec3		vPos, vPlayerPos;
     m_pTransformCom->Get_Info(INFO_POS, &vPos);
@@ -68,7 +60,7 @@ _int CShaman::Update_GameObject(const _float& fTimeDelta)
     if (!m_pCalculatorCom->Check_Distance2D(&vPos, &vPlayerPos, 50.f))
         return 0;
 
-    
+
     if (m_eState != DEAD && !Check_Wall())
         m_eState = State_Change();
     switch (m_eState)
@@ -119,12 +111,12 @@ _int CShaman::Update_GameObject(const _float& fTimeDelta)
     return Engine::CGameObject::Update_GameObject(fTimeDelta);
 }
 
-void CShaman::LateUpdate_GameObject()
+void CHunter::LateUpdate_GameObject()
 {
     Engine::CGameObject::LateUpdate_GameObject();
 }
 
-void CShaman::Render_GameObject()
+void CHunter::Render_GameObject()
 {
     if (m_bStopDraw)
         return;
@@ -155,7 +147,7 @@ void CShaman::Render_GameObject()
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
-HRESULT CShaman::Add_Component()
+HRESULT CHunter::Add_Component()
 {
     CComponent* pComponent = NULL;
 
@@ -195,7 +187,7 @@ HRESULT CShaman::Add_Component()
 
 }
 
-void CShaman::Pattern_Idle(const _float& fTimeDelta)
+void CHunter::Pattern_Idle(const _float& fTimeDelta)
 {
     // 벽 확인 추가할 것
 
@@ -337,7 +329,7 @@ void CShaman::Pattern_Idle(const _float& fTimeDelta)
 }
 
 // 플레이어 방향으로 이동, 추후 A스타 알고리즘으로 변경
-void CShaman::Pattern_Chase(const _float& fTimeDelta)
+void CHunter::Pattern_Chase(const _float& fTimeDelta)
 {
     _vec3		vPos, vPlayerPos, vDir;
     m_pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
@@ -370,7 +362,7 @@ void CShaman::Pattern_Chase(const _float& fTimeDelta)
 }
 
 // 투사체 생성해서 날리기
-void CShaman::Pattern_Attack(const _float& fTimeDelta)
+void CHunter::Pattern_Attack(const _float& fTimeDelta)
 {
     m_bAttackSuccess = false;
     _vec3 vPlayerPos;
@@ -401,9 +393,7 @@ void CShaman::Pattern_Attack(const _float& fTimeDelta)
     // 차징 시
     if (iFrame % 8 < 3)
     {
-        if (m_bLightEnable)
-        {
-            m_bLightEnable = false;
+        /*
             // 샤먼 차징 시 조명 끄고 실제 불덩이 생성하여 조명 적용
             CScene* pScene = Engine::Get_Scene();
             _vec3 vPos;
@@ -414,7 +404,7 @@ void CShaman::Pattern_Attack(const _float& fTimeDelta)
 
             m_vecProjectileName.push_back(L"Monster_Created_Fireball" + std::to_wstring(m_iTagNumber++));
             FAILED_CHECK_RETURN(pScene->Create_GameObject(L"Layer_GameLogic", pProjectile, m_vecProjectileName.back().c_str()), );
-        }
+        */
         iFrameSpeed = 45;
     }
     // 차징 종료 시
@@ -426,8 +416,6 @@ void CShaman::Pattern_Attack(const _float& fTimeDelta)
         m_iFrameCount = 0;
         if (++m_iAttackAnimProgress >= 8)
         {
-            if (!m_bLightEnable)
-                m_bLightEnable = true;
             m_bAttackSuccess = true;
             m_iAttackAnimProgress = 0;
         }
@@ -436,22 +424,20 @@ void CShaman::Pattern_Attack(const _float& fTimeDelta)
 }
 
 // 죽어버리기
-void CShaman::Pattern_Dead()
+void CHunter::Pattern_Dead()
 {
     if (m_bKnockBackEnd)
     {
         m_pAnimatorCom->Set_CurState(DEAD, 40, 44, 4);
         if (m_pAnimatorCom->Get_MotionEnd())
         {
-            m_pGraphicDev->LightEnable(m_iLightNum, FALSE); // 조명 비활성화
-            m_bLightEnable = false;
             m_bStopDraw = true;
             Drop_Item();
         }
     }
 }
 
-STATE CShaman::State_Change()
+STATE CHunter::State_Change()
 {
     _vec3 vPlayerPos, vPos;
     CGameObject* pWeapon;
@@ -507,7 +493,7 @@ STATE CShaman::State_Change()
     return m_eState;
 }
 
-void CShaman::Set_Direction(_vec3* vPlayerPos)
+void CHunter::Set_Direction(_vec3* vPlayerPos)
 {
     _vec3 vPos;
     m_pTransformCom->Get_Info(INFO_POS, &vPos);
@@ -532,33 +518,11 @@ void CShaman::Set_Direction(_vec3* vPlayerPos)
         m_eDir = FRONT;
 }
 
-void CShaman::Set_Light()
+
+
+CHunter* CHunter::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 {
-    D3DLIGHT9 light;
-    ZeroMemory(&light, sizeof(D3DLIGHT9));
-
-    light.Type = D3DLIGHT_POINT; // 포인트 조명
-    light.Diffuse = { 1.f, 1.f, 1.f, 1.f }; // 확산 색상
-    light.Specular = { 1.f, 1.f, 1.f, 1.f }; // 반사 색상
-    light.Ambient = { 1.f, 1.f, 1.f, 1.f }; // 주변광
-
-    _vec3 vPos;
-    m_pTransformCom->Get_Info(INFO_POS, &vPos);
-
-    light.Position = vPos; // 횃불의 위치
-    light.Range = 3.0f; // 조명의 범위
-    light.Falloff = 1.f; // 감쇠
-    light.Attenuation0 = 1.0f; // 감쇠 계수
-    light.Attenuation1 = 0.01f;
-    light.Attenuation2 = 0.0f;
-
-    m_pGraphicDev->SetLight(m_iLightNum, &light); // 조명 설정
-    m_pGraphicDev->LightEnable(m_iLightNum, TRUE);
-}
-
-CShaman* CShaman::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
-{
-    CShaman* pShaman = new CShaman(pGraphicDev);
+    CHunter* pShaman = new CHunter(pGraphicDev);
 
     if (FAILED(pShaman->Ready_GameObject(vPos)))
     {
@@ -569,7 +533,7 @@ CShaman* CShaman::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
     return pShaman;
 }
 
-void CShaman::Free()
+void CHunter::Free()
 {
     Engine::CGameObject::Free();
 }

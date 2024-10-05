@@ -451,6 +451,9 @@
     <Filter Include="02. GameObject\08. Object\12. Torch">
       <UniqueIdentifier>{e1dd83b3-5b3f-4b6c-8f01-ea4fb054acff}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\02. Monster\05. Hunter">
+      <UniqueIdentifier>{a34077d9-fe8f-4b04-9aae-6786aa110b5f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -858,14 +861,8 @@
     <ClInclude Include="..\Header\MiniCore.h">
       <Filter>02. GameObject\89.MiniCore</Filter>
     </ClInclude>
-    <ClInclude Include="..\Header\Story.h">
-      <Filter>01. Scene\01. Story</Filter>
-    </ClInclude>
     <ClInclude Include="..\Header\BackGround.h">
       <Filter>02. GameObject\00. BackGround\00. Logo</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Header\StoryBackGround.h">
-      <Filter>02. GameObject\00. BackGround\01. Story</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\TableObject.h">
       <Filter>02. GameObject\08. Object\02. Table\00. Table</Filter>
@@ -881,6 +878,9 @@
     </ClInclude>
     <ClInclude Include="..\Header\TorchObject.h">
       <Filter>02. GameObject\08. Object\12. Torch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\Hunter.h">
+      <Filter>02. GameObject\02. Monster\05. Hunter</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1268,14 +1268,8 @@
     <ClCompile Include="..\Code\MiniCore.cpp">
       <Filter>02. GameObject\89.MiniCore</Filter>
     </ClCompile>
-    <ClCompile Include="..\Code\Story.cpp">
-      <Filter>01. Scene\01. Story</Filter>
-    </ClCompile>
     <ClCompile Include="..\Code\BackGround.cpp">
       <Filter>02. GameObject\00. BackGround\00. Logo</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Code\StoryBackGround.cpp">
-      <Filter>02. GameObject\00. BackGround\01. Story</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\TableObject.cpp">
       <Filter>02. GameObject\08. Object\02. Table\00. Table</Filter>
@@ -1291,6 +1285,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\TorchObject.cpp">
       <Filter>02. GameObject\08. Object\12. Torch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Hunter.cpp">
+      <Filter>02. GameObject\02. Monster\05. Hunter</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
