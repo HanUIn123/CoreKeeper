@@ -23,6 +23,26 @@ HRESULT CHelmet::Ready_GameObject(MATERIAL _eMaterial, _vec3 vPos)
 	m_tStat.iDefense = 10 * (m_eMaterial + 1);
 	m_tStat.iMaxHp = 20 * (m_eMaterial + 1);
 
+	switch (m_eMaterial)
+	{
+	case MATERIAL_WOOD:
+		m_wItemName = L"나무 투구";
+		m_wItemExplain[0] = L"머리를 약간 보호해주지만 곧 더 나은 옵션을 찾아봐야 합니다.";
+		break;
+	case MATERIAL_COPPER:
+		m_wItemName = L"구리 투구";
+		m_wItemExplain[0] = L"투구라기 보다는 양동이를 더 닮았지만, 머리를 강력한 타격으로부터 보호해줍니다.";
+		break;
+	case MATERIAL_IRON:
+		m_wItemName = L"철제 투구";
+		m_wItemExplain[0] = L"기사에게 어울리는 튼튼한 투구입니다. 얼굴 가리개와 화려한 깃털이 붙어 있습니다.";
+		break;
+	case MATERIAL_SPECIAL:
+		m_wItemName = L"마술사 후드";
+		m_wItemExplain[0] = L"시험을 통과한 마술사가 걸치는 후드입니다.";
+		break;
+	}
+
 	m_pTransformCom->Set_Scale(0.5f, 0.5f, 0.5f);
 	m_pShadowTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
 

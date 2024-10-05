@@ -9,7 +9,7 @@ CSlime::CSlime(LPDIRECT3DDEVICE9 pGraphicDev)
 {
     m_eType = Engine::MON_SLIME;
     m_fIdleY = 0.4f;
-    m_fJumpY = 6.f;
+    m_fJumpY = 3.f;
     m_eState = IDLE;
     m_fAggroDistance = 8.f;
 }
@@ -39,12 +39,6 @@ _int CSlime::Update_GameObject(const _float& fTimeDelta)
         return 0;
 
     Set_Cast();
-
-    _vec3		vPos, vPlayerPos;
-    m_pTransformCom->Get_Info(INFO_POS, &vPos);
-    m_pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
-    if (!m_pCalculatorCom->Check_Distance2D(&vPos, &vPlayerPos, 50.f))
-        return 0;
 
     if (m_eState != DEAD && m_iSpeedWeight)
         Check_Hitted();
@@ -108,6 +102,7 @@ void CSlime::Render_GameObject()
     m_pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
     if (!m_pCalculatorCom->Check_Distance2D(&vPos, &vPlayerPos, 40.f))
         return;
+
     m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
     m_pColliderCom->Update_Collider(m_pTransformCom->Get_WorldMatrix());
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
@@ -167,7 +162,6 @@ HRESULT CSlime::Add_Component()
 // 일정 시간마다 타일 한칸 이동 or 정지
 void CSlime::Pattern_Idle(const _float& fTimeDelta)
 {
-    // 벽 확인 추가할 것
     m_pAnimatorCom->Set_CurState(IDLE, 0, 8, 10);
     if (!m_bIdling)
     {
@@ -249,7 +243,7 @@ void CSlime::Pattern_Idle(const _float& fTimeDelta)
     }
 }
 
-// 플레이어 방향으로 이동, 추후 A스타 알고리즘으로 변경
+// 플레이어 방향으로 이동
 void CSlime::Pattern_Chase(const _float& fTimeDelta)
 {
     _vec3		vPlayerPos, vPos, vDir;
@@ -261,10 +255,6 @@ void CSlime::Pattern_Chase(const _float& fTimeDelta)
 
     Set_Stop(&vDir, m_fSpeed);
     m_pTransformCom->Move_Pos(&vDir, fTimeDelta, m_fSpeed * m_iSpeedWeight);
-    if (m_pCalculatorCom->Check_Distance2D(&vPlayerPos, &vPos, m_fAggroDistance))
-        m_eState = SWING;
-    else
-        m_eState = WALK;
 }
 
 // 점프 공격
@@ -289,17 +279,17 @@ void CSlime::Pattern_Attack(const _float& fTimeDelta)
         {
             m_pTransformCom->Set_Pos(vPos.x, m_fIdleY, vPos.z);
             m_bJumping = false;
-            if (m_pCalculatorCom->Check_Distance2D(&vPlayerPos, &vPos, m_fAggroDistance))
-                m_eState = SWING;
-            else
-                m_eState = WALK;
+            //if (m_pCalculatorCom->Check_Distance2D(&vPlayerPos, &vPos, m_fAggroDistance))
+            //    m_eState = SWING;
+            //else
+            //    m_eState = WALK;
         }
     }
     else
         // 점프 할 때
     {
         JumpY(fTimeDelta);
-        m_fSpeedWeight = 8.f;
+        m_fSpeedWeight = 6.f;
         if (vPos.y > m_fIdleY)
         {
             // 공격 성공
@@ -329,38 +319,25 @@ void CSlime::Pattern_Dead()
     if (m_pAnimatorCom->Get_MotionEnd())
     {
         m_bStopDraw = true;
+        m_pColliderCom->Set_Offset(_vec3(0, -100.f, 0));
         Drop_Item();
     }
 }
 
 STATE CSlime::State_Change()
 {
-    _vec3 vPos;
+    _vec3 vPos, vPlayerPos;
     m_pTransformCom->Get_Info(INFO_POS, &vPos);
-    if (m_eState == IDLE)
+    m_pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
+    if (m_eState == WALK)
     {
-        CGameObject* pWeapon = m_pPlayer->Get_HandedItem();
-        // 플레이어가 무기를 들고 공격하는 상태면 충돌 체크
-        if (m_pPlayer->Get_CurState() == SWING)
-        {
-            CCollider* pWeaponCollider = dynamic_cast<Engine::CCollider*>(pWeapon->Get_Component(ID_DYNAMIC, L"Com_Collider"));
-            if (m_pColliderCom->Check_Collision(pWeaponCollider))
-            {
-                _vec3 vPlayerPos;
-                m_pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
-                // 무기와 충돌 했는데 공격 범위 이내인 경우
-                if (m_pCalculatorCom->Check_Distance2D(&vPlayerPos, &vPos, m_fAggroDistance))
-                    return SWING;
-                // 공격 범위 밖인 경우
-                else
-                    return WALK;
-            }
-        }
+        if (m_pCalculatorCom->Check_Distance2D(&vPlayerPos, &vPos, m_fAggroDistance))
+            m_eState = SWING;
+        else
+            m_eState = WALK;
     }
     if (m_eState == SWING && vPos.y == m_fIdleY)
     {
-        _vec3 vPlayerPos;
-        m_pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
         if (!m_pCalculatorCom->Check_Distance2D(&vPlayerPos, &vPos, m_fAggroDistance))
             return IDLE;
     }

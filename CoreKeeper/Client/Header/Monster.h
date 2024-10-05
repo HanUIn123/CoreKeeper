@@ -55,6 +55,8 @@ protected:
 	_bool			Check_Wall();
 	void			Set_Cast();
 
+	void			Respawn(const _float& fTimeDelta);
+
 private:
 	void			Check_WallWithPlayer();
 
@@ -128,6 +130,9 @@ protected:
 	CState*					m_pPlayerState;
 	CCollider*				m_pPlayerCollider;
 	_bool					m_bCheckWall;
+
+	_vec3					m_vRespawnPoint;
+	_bool					m_bRespawned;
 
 	static int				m_iTagNumber;
 

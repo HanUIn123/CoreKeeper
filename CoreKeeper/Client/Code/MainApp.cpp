@@ -86,7 +86,8 @@ HRESULT CMainApp::SetUp_DefaultSetting(LPDIRECT3DDEVICE9* ppGraphicDev)
 	//FAILED_CHECK_RETURN(Engine::Ready_Font(*ppGraphicDev, L"Font_Status", L"궁서", 12, 18, FW_NORMAL), E_FAIL);//Stat용
 
 	// 숫자
-	FAILED_CHECK_RETURN(Engine::Ready_Font(*ppGraphicDev, L"Font_Default", L"Galmuri9 Regular", 40, 40, FW_NORMAL), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Font(*ppGraphicDev, L"Font_Default", L"Galmuri9 Regular", 30, 30, FW_NORMAL), E_FAIL);
+	FAILED_CHECK_RETURN(Engine::Ready_Font(*ppGraphicDev, L"Font_Skip", L"Galmuri9 Regular", 25, 25, FW_NORMAL), E_FAIL);
 
 	FAILED_CHECK_RETURN(Engine::Ready_Font(*ppGraphicDev, L"Font_HP", L"PF Stardust", 20, 20, FW_NORMAL), E_FAIL); //HP출력용
 	FAILED_CHECK_RETURN(Engine::Ready_Font(*ppGraphicDev, L"Font_Inv", L"PF Stardust", 22, 22, FW_ULTRABOLD), E_FAIL);//Item용

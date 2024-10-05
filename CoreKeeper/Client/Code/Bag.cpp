@@ -27,6 +27,21 @@ HRESULT CBag::Ready_GameObject(MATERIAL _eMaterial, _vec3 vPos)
 
 	m_iAddSlotCount = 5 * (m_eMaterial + 1);
 
+	switch (m_eMaterial)
+	{
+	case MATERIAL_COPPER:
+		m_wItemName = L"벨트 주머니";
+		m_wItemExplain[0] = L"클립으로 고정하는 단순한 벨트 주머니입니다.";
+		m_wItemExplain[1] = L"부드럽게 만든 나무껍질로 만들었습니다.";
+		break;
+
+	case MATERIAL_IRON:
+		m_wItemName = L"탐험가 배낭";
+		m_wItemExplain[0] = L"지하 동굴 탐험을 위해 만들어진 단순한 배낭입니다.";
+		m_wItemExplain[1] = L"꽤 많은 아이템이 들어갑니다.";
+		break;
+	}
+
 	m_pTransformCom->Set_Scale(1.2f, 1.2f, 1.2f);
 	m_pShadowTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
 

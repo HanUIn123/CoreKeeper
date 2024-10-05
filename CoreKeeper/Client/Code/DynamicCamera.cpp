@@ -5,7 +5,7 @@
 #include "..\Header\UICursor.h"
 
 CDynamicCamera::CDynamicCamera(LPDIRECT3DDEVICE9 pGraphicDev)
-	: CCamera(pGraphicDev), m_bFix(false), m_bIsWorldMap(false)
+	: CCamera(pGraphicDev), m_bFix(false), m_bIsWorldMap(false), m_pTargetTransform(nullptr), m_bTargetPlayer(true)
 {
 }
 
@@ -33,28 +33,28 @@ HRESULT CDynamicCamera::Ready_GameObject(const _vec3* pEye, const _vec3* pAt, co
 _int CDynamicCamera::Update_GameObject(const _float& fTimeDelta)
 {
 	_int iExit = CCamera::Update_GameObject(fTimeDelta);
-
+	if(!m_pTargetTransform)
+		m_pTargetTransform = dynamic_cast<CTransform*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Transform"));
 
 	return iExit;
 }
 
 void CDynamicCamera::LateUpdate_GameObject()
 {
-	CTransform* pPlayerTransform = dynamic_cast<CTransform*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Transform"));
-	if (pPlayerTransform)
+	if (m_pTargetTransform)
 	{
 		Key_Input();
 		if (g_bIsTopCamera)
 		{
-			pPlayerTransform->Set_Angle(0, 0, 0);
+			m_pTargetTransform->Set_Angle(0, 0, 0);
 
-			_vec3 vPlayerPos;
-			pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
+			_vec3 vTargetPos;
+			m_pTargetTransform->Get_Info(INFO_POS, &vTargetPos);
 
-			m_vAt = vPlayerPos;
+			m_vAt = vTargetPos;
 			m_vAt.y = 0.f;
-			vPlayerPos.z -= 10.f;
-			m_vEye = vPlayerPos;
+			vTargetPos.z -= 10.f;
+			m_vEye = vTargetPos;
 			m_vEye.y = 12.f;
 		}
 	/*	 if (m_bIsWorldMap)
@@ -137,6 +137,15 @@ void CDynamicCamera::Key_Input()
 
 			pCursor->Set_Cursor_Disable();
 		}
+
+		if (Engine::Key_Down(DIK_F6))
+		{
+			m_bTargetPlayer = m_bTargetPlayer ? false : true;
+			if(m_bTargetPlayer)
+				m_pTargetTransform = dynamic_cast<CTransform*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Transform"));
+			else
+				m_pTargetTransform = dynamic_cast<CTransform*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Hunter", L"Com_Transform"));
+		}
 	}
 
 	//if (g_bIsTopCamera)
@@ -155,29 +164,26 @@ void CDynamicCamera::Key_Input()
 
 void CDynamicCamera::Mouse_Move()
 {
-	CTransform* pPlayerTransform = dynamic_cast<CTransform*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Transform"));
-	NULL_CHECK(pPlayerTransform);
+	_vec3 vTargetPos;
+	m_pTargetTransform->Get_Info(INFO_POS, &vTargetPos);
 
-	_vec3 vPlayerPos;
-	pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
-
-	_matrix		matPlayerWorld;
-	memcpy(&matPlayerWorld, pPlayerTransform->Get_WorldMatrix(), sizeof(_matrix));
+	_matrix		matTargetWorld;
+	memcpy(&matTargetWorld, m_pTargetTransform->Get_WorldMatrix(), sizeof(_matrix));
 
 	_long	dwMouseMove(0);
 	if (dwMouseMove = Engine::Get_DIMouseMove(DIMS_X))
-		pPlayerTransform->Rotation(ROT_Y, D3DXToRadian(dwMouseMove / 10.f));
+		m_pTargetTransform->Rotation(ROT_Y, D3DXToRadian(dwMouseMove / 10.f));
 
 	_vec3	vLook;
-	memcpy(&vLook, &matPlayerWorld.m[INFO_LOOK][0], sizeof(_vec3));
+	memcpy(&vLook, &matTargetWorld.m[INFO_LOOK][0], sizeof(_vec3));
 
-	m_vAt.x = vPlayerPos.x + vLook.x * 2;
+	m_vAt.x = vTargetPos.x + vLook.x * 2;
 	m_vAt.y = 0.8f;
-	m_vAt.z = vPlayerPos.z + vLook.z * 2;
+	m_vAt.z = vTargetPos.z + vLook.z * 2;
 
-	m_vEye.x = vPlayerPos.x - vLook.x * 3;
+	m_vEye.x = vTargetPos.x - vLook.x * 3;
 	m_vEye.y = 3.f;
-	m_vEye.z = vPlayerPos.z - vLook.z * 3;
+	m_vEye.z = vTargetPos.z - vLook.z * 3;
 }
 
 void CDynamicCamera::Mouse_Fix()

@@ -25,6 +25,10 @@ HRESULT CMucus::Ready_GameObject(_vec3 vPos)
 	m_pTransformCom->Set_Pos(vPos.x, vPos.y, vPos.z);
 	m_pShadowTransformCom->Set_Pos(vPos.x, 0.1f, vPos.z);
 
+	m_wItemName = L"슬라임";
+	m_wItemExplain[0] = L"주황색 방울 모양의 슬라임입니다.";
+	m_wItemExplain[1] = L"추가로 가공할 수 있습니다.";
+
 	// 원래의 Y 위치 저장
 	m_fFirstY = vPos.y;
 

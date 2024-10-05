@@ -23,21 +23,21 @@ HRESULT COre::Ready_GameObject(MATERIAL _eMaterial, _vec3 vPos)
 	switch (m_eMaterial)
 	{
 	//WOOD 넣지마세요
-	case MATERIAL_WOOD:
 	case MATERIAL_COPPER:
 		m_eItemNum = ITEM_COPPER;
-		m_eMaterial = MATERIAL_WOOD;
+		m_wItemName = L"구리 광석";
+		m_wItemExplain[0] = L"진흙 벽에서 흔히 찾아볼 수 있습니다.";
 		break;
 	case MATERIAL_IRON:
 		m_eItemNum = ITEM_IRON;
-		m_eMaterial = MATERIAL_COPPER;
+		m_wItemName = L"철광석";
+		m_wItemExplain[0] = L"돌벽에서 흔히 찾아볼 수 있습니다.";
 		break;
 
 	case MATERIAL_SCARLET:
 		m_eItemNum = ITEM_SCARLET;
-		m_eMaterial = MATERIAL_IRON;
-		break;
-	case MATERIAL_END:
+		m_wItemName = L"진홍 광석";
+		m_wItemExplain[0] = L"진홍 광석은 풀 벽에서 흔히 찾아볼 수 있습니다.";
 		break;
 	}
 
@@ -47,10 +47,6 @@ HRESULT COre::Ready_GameObject(MATERIAL _eMaterial, _vec3 vPos)
 	m_pTransformCom->Set_Pos(vPos.x, vPos.y, vPos.z);
 	m_pShadowTransformCom->Set_Pos(vPos.x, 0.1f, vPos.z);
 
-
-	m_wItemExplain[0] = L"나무";
-	m_wItemExplain[1] = L"온갖 물건을 만드는 데 쓰는 ";
-	m_wItemExplain[2] = L"거대한 뿌리 조각입니다.";
 	// 원래의 Y 위치 저장
 	m_fFirstY = vPos.y;
 

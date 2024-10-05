@@ -24,15 +24,23 @@ HRESULT CFood::Ready_GameObject(ITEMNUM _eIngredient1, ITEMNUM _eIngredient2, _v
 		{
 		case ITEM_BERRY:
 			m_eItemNum = ITEM_BERRY_BERRY_FOOD;
+			m_wItemName = L"원기의 베리 푸딩";
+			m_wItemExplain[0] = L"";
 			break;
 		case ITEM_PEPPER:
 			m_eItemNum = ITEM_BERRY_PEPPER_FOOD;
+			m_wItemName = L"원기의 후추 랩";
+			m_wItemExplain[0] = L"";
 			break;
 		case ITEM_CARROT:
 			m_eItemNum = ITEM_BERRY_CARROT_FOOD;
+			m_wItemName = L"바삭한 베리 푸딩";
+			m_wItemExplain[0] = L"";
 			break;
 		case ITEM_MUSHROOM:
 			m_eItemNum = ITEM_BERRY_MUSHROOM_FOOD;
+			m_wItemName = L"버섯 향 베리 푸딩";
+			m_wItemExplain[0] = L"";
 			break;
 		}
 		break;
@@ -41,12 +49,18 @@ HRESULT CFood::Ready_GameObject(ITEMNUM _eIngredient1, ITEMNUM _eIngredient2, _v
 		{
 		case ITEM_PEPPER:
 			m_eItemNum = ITEM_PEPPER_PEPPER_FOOD;
+			m_wItemName = L"매콤한 후추 랩";
+			m_wItemExplain[0] = L"";
 			break;
 		case ITEM_CARROT:
 			m_eItemNum = ITEM_PEPPER_CARROT_FOOD;
+			m_wItemName = L"바삭한 후추 랩";
+			m_wItemExplain[0] = L"";
 			break;
 		case ITEM_MUSHROOM:
 			m_eItemNum = ITEM_PEPPER_MUSHROOM_FOOD;
+			m_wItemName = L"버섯 향 후추 랩";
+			m_wItemExplain[0] = L"";
 			break;
 		}
 		break;
@@ -55,14 +69,20 @@ HRESULT CFood::Ready_GameObject(ITEMNUM _eIngredient1, ITEMNUM _eIngredient2, _v
 		{
 		case ITEM_CARROT:
 			m_eItemNum = ITEM_CARROT_CARROT_FOOD;
+			m_wItemName = L"바삭한 돌 디핑 스낵";
+			m_wItemExplain[0] = L"";
 			break;
 		case ITEM_MUSHROOM:
 			m_eItemNum = ITEM_CARROT_MUSHROOM_FOOD;
+			m_wItemName = L"바삭한 버섯 수프";
+			m_wItemExplain[0] = L"";
 			break;
 		}
 		break;
 	case ITEM_MUSHROOM:
 		m_eItemNum = ITEM_MUSHROOM_MUSHROOM_FOOD;
+		m_wItemName = L"버섯 향 버섯 수프";
+		m_wItemExplain[0] = L"";
 		break;
 	default:
 		return E_FAIL;
@@ -72,13 +92,10 @@ HRESULT CFood::Ready_GameObject(ITEMNUM _eIngredient1, ITEMNUM _eIngredient2, _v
 
 	m_pTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
 	m_pShadowTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
+
 	m_pTransformCom->Set_Pos(vPos.x, vPos.y, vPos.z);
 	m_pShadowTransformCom->Set_Pos(vPos.x, 0.1f, vPos.z);
 
-
-	m_wItemExplain[0] = L"나무";
-	m_wItemExplain[1] = L"온갖 물건을 만드는 데 쓰는 ";
-	m_wItemExplain[2] = L"거대한 뿌리 조각입니다.";
 	// 원래의 Y 위치 저장
 	m_fFirstY = vPos.y;
 

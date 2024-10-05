@@ -25,6 +25,22 @@ HRESULT CSword::Ready_GameObject(MATERIAL _eMaterial, _vec3 vPos)
 
 	m_tStat.iAttack = 25 * (m_eMaterial + 1);
 
+	switch (m_eMaterial)
+	{
+	case MATERIAL_WOOD:
+		m_wItemName = L"목검";
+		m_wItemExplain[0] = L"적을 막아낼 수 있는 조잡한 무기입니다.";
+		break;
+	case MATERIAL_COPPER:
+		m_wItemName = L"구리 검";
+		m_wItemExplain[0] = L"적을 처치하는 데 사용하는 탁월한 무기입니다.";
+		break;
+	case MATERIAL_IRON:
+		m_wItemName = L"철검";
+		m_wItemExplain[0] = L"적을 처치하는 데 사용하는 강력한 무기입니다.";
+		break;
+	}
+
 	m_pTransformCom->Set_Scale(1.2f, 1.2f, 1.2f);
 	m_pShadowTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
 

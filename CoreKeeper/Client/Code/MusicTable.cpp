@@ -21,13 +21,12 @@ HRESULT CMusicTable::Ready_GameObject(_vec3 vPos)
 
 	m_pTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
 	m_pShadowTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
+
 	m_pTransformCom->Set_Pos(vPos.x, vPos.y, vPos.z);
 	m_pShadowTransformCom->Set_Pos(vPos.x, 0.1f, vPos.z);
 
-
-	m_wItemExplain[0] = L"나무";
-	m_wItemExplain[1] = L"온갖 물건을 만드는 데 쓰는 ";
-	m_wItemExplain[2] = L"거대한 뿌리 조각입니다.";
+	m_wItemName = L"음악 작업대";
+	m_wItemExplain[0] = L"이 작곡가의 테이블은 음악 지휘에 사용되는 도구와 곡의 영감을 떠오르게 만듭니다.";
 	// 원래의 Y 위치 저장
 	m_fFirstY = vPos.y;
 

@@ -260,6 +260,10 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar* pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Malugaz", pGameObject), E_FAIL);*/
 
+	pGameObject = CHunter::Create(m_pGraphicDev, _vec3(VTXCNTX / 2, 0, 17.f));
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Hunter", pGameObject), E_FAIL);
+
 	pGameObject = CPickaxe::Create(m_pGraphicDev, MATERIAL_COPPER);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
@@ -369,6 +373,18 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar* pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Pepper", pGameObject), E_FAIL);
 	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
+
+	pGameObject = CTable::Create(m_pGraphicDev, MATERIAL_WOOD);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Table_Test", pGameObject), E_FAIL);
+	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
+
+
+	pGameObject = CMusicTable::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"MusicTable_Test", pGameObject), E_FAIL);
+	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
+
 
 	//pGameObject = CCore::Create(m_pGraphicDev);
 	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
@@ -958,7 +974,6 @@ HRESULT CStage::Load_MapFile()
 	CloseHandle(m_hFile);
 	CloseHandle(m_hWallFile);
 	CloseHandle(m_hObjectFile);
-	MSG_BOX("Success Load File");
 
 	return S_OK;
 }
@@ -1018,7 +1033,6 @@ HRESULT CStage::Load_MonsterData()
 	}
 
 	CloseHandle(m_hFile);
-	MSG_BOX("Success Load Monster File");
 }
 
 void CStage::Free()

@@ -13,19 +13,31 @@ CAnvil::~CAnvil()
 {
 }
 
-HRESULT CAnvil::Ready_GameObject(_vec3 vPos)
+HRESULT CAnvil::Ready_GameObject(MATERIAL _eMaterial, _vec3 vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
 	m_pTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
 	m_pShadowTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
+
 	m_pTransformCom->Set_Pos(vPos.x, vPos.y, vPos.z);
 	m_pShadowTransformCom->Set_Pos(vPos.x, 0.1f, vPos.z);
 
+	m_eMaterial = _eMaterial;
+	m_iTextureNumber = m_eMaterial;
 
-	m_wItemExplain[0] = L"나무";
-	m_wItemExplain[1] = L"온갖 물건을 만드는 데 쓰는 ";
-	m_wItemExplain[2] = L"거대한 뿌리 조각입니다.";
+	switch (m_eMaterial)
+	{
+	case MATERIAL_COPPER:
+		m_wItemName = L"구리 모루";
+		m_wItemExplain[0] = L"보기에도 좋고 전투에도 유용한 방어구를 만들어보세요.";
+		break;
+	case MATERIAL_IRON:
+		m_wItemName = L"철제 모루";
+		m_wItemExplain[0] = L"고급 장비를 만들기에 매우 좋습니다.";
+		break;
+	}
+
 	// 원래의 Y 위치 저장
 	m_fFirstY = vPos.y;
 
@@ -157,11 +169,11 @@ HRESULT CAnvil::Add_Component()
 	return S_OK;
 }
 
-CAnvil* CAnvil::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
+CAnvil* CAnvil::Create(LPDIRECT3DDEVICE9 pGraphicDev, MATERIAL _eMaterial, _vec3 vPos)
 {
 	CAnvil* pAnvil = new CAnvil(pGraphicDev);
 
-	if (FAILED(pAnvil->Ready_GameObject(vPos)))
+	if (FAILED(pAnvil->Ready_GameObject(_eMaterial, vPos)))
 	{
 		Safe_Release(pAnvil);
 		MSG_BOX("pAnvil Create Failed");

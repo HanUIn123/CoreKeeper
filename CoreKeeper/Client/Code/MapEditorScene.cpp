@@ -92,12 +92,16 @@ HRESULT CMapEditorScene::Ready_LightInfo()
 
 HRESULT CMapEditorScene::Ready_Scene()
 {
+    FAILED_CHECK_RETURN(Ready_Prototype(), E_FAIL);
+
     FAILED_CHECK_RETURN(Ready_LightInfo(), E_FAIL);
     FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Layer_Environment"), E_FAIL);
     FAILED_CHECK_RETURN(Ready_Layer_GameLogic(L"Layer_GameLogic"), E_FAIL);
     FAILED_CHECK_RETURN(Ready_Layer_UI(L"Layer_UI"), E_FAIL);
 
     m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
+
+    Setting_BaseCamp();
 
     return S_OK;
 }
@@ -172,6 +176,29 @@ void CMapEditorScene::Render_Scene()
     Show_ImguiWindow();
 }
 
+HRESULT CMapEditorScene::Ready_Prototype()
+{
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Transform", Engine::CTransform::Create(m_pGraphicDev)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Calculator", Engine::CCalculator::Create(m_pGraphicDev)), E_FAIL);
+
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MapToolTex", Engine::CMapToolTex::Create(m_pGraphicDev)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_WallTex", Engine::CWallTex::Create(m_pGraphicDev)), E_FAIL);
+
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TerrainTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/MapTerrain/Terrain_%d.png", TEX_NORMAL, 30)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SkyBox", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/SkyBox/burger%d.dds", TEX_CUBE, 4)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_DarkBox", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/SkyBox/DarkSky.dds", TEX_CUBE, 1)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_WallCube", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Wall/Wall_%d.dds", TEX_CUBE, 3)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_DarkWallCube", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/DarkWall/Brick_Cube_%d.dds", TEX_CUBE, 48)), E_FAIL);
+
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ObjectTex", Engine::CObjectTex::Create(m_pGraphicDev, 0.5f, 0.5f, 0.0f)), E_FAIL);
+
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_GrassTileTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Tile/GrassTile/Grass_Tile_%d.png", TEX_NORMAL, 9)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_DustTileTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Tile/DustTile/Dust_Tile_%d.png", TEX_NORMAL, 9)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MapToolTerrainTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/MapTerrain/Terrain_%d.png", TEX_NORMAL, 30)), E_FAIL);
+    
+    return S_OK;
+}
+
 HRESULT CMapEditorScene::Ready_Layer_Environment(const _tchar* pLayerTag)
 {
     Engine::CLayer* pLayer = CLayer::Create();
@@ -190,50 +217,6 @@ HRESULT CMapEditorScene::Ready_Layer_Environment(const _tchar* pLayerTag)
 
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"MapToolCamera", pGameObject), E_FAIL);
-
-    pGameObject = CCore::Create(m_pGraphicDev, { VTXCNTX / 2, 2.3f, 21.f });
-    NULL_CHECK_RETURN(pGameObject, E_FAIL);
-    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Core", pGameObject), E_FAIL);
-
-    pGameObject = CCoreBase::Create(m_pGraphicDev, { VTXCNTX / 2, 0.1f, 21.f });
-    NULL_CHECK_RETURN(pGameObject, E_FAIL);
-    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"CoreBase", pGameObject), E_FAIL);
-
-    pGameObject = CStatue::Create(m_pGraphicDev, { VTXCNTX / 2, 1.3f, 27.f }, 0);
-    NULL_CHECK_RETURN(pGameObject, E_FAIL);
-    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"SlimeStatue", pGameObject), E_FAIL);
-
-    pGameObject = CStatueBase::Create(m_pGraphicDev, { VTXCNTX / 2, 0.1f, 27.f }, 0);
-    NULL_CHECK_RETURN(pGameObject, E_FAIL);
-    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"SlimeStatueBase", pGameObject), E_FAIL);
-
-    pGameObject = CStatue::Create(m_pGraphicDev, { VTXCNTX / 2 - 8.f, 1.3f, 23.f }, 1);
-    NULL_CHECK_RETURN(pGameObject, E_FAIL);
-    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"LarvaStatue", pGameObject), E_FAIL);
-
-    pGameObject = CStatueBase::Create(m_pGraphicDev, { VTXCNTX / 2 - 8.f, 0.1f, 23.f }, 0);
-    NULL_CHECK_RETURN(pGameObject, E_FAIL);
-    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"LarvaStatueBase", pGameObject), E_FAIL);
-
-    pGameObject = CStatue::Create(m_pGraphicDev, { VTXCNTX / 2 + 8.f, 1.3f, 23.f }, 2);
-    NULL_CHECK_RETURN(pGameObject, E_FAIL);
-    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"MalugazStatue", pGameObject), E_FAIL);
-
-    pGameObject = CStatueBase::Create(m_pGraphicDev, { VTXCNTX / 2 + 8.f, 0.1f, 23.f }, 2);
-    NULL_CHECK_RETURN(pGameObject, E_FAIL);
-    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"MalugazStatueBase", pGameObject), E_FAIL);
-
-    pGameObject = CSpawnPoint::Create(m_pGraphicDev, { VTXCNTX / 2, 0.1f, 17.f });
-    NULL_CHECK_RETURN(pGameObject, E_FAIL);
-    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"SpawnPoint", pGameObject), E_FAIL);
-
-    pGameObject = CGravestoneObject::Create(m_pGraphicDev, { 78.f, 0.5f, 18.f });
-    NULL_CHECK_RETURN(pGameObject, E_FAIL);
-    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"AheadGrave", pGameObject), E_FAIL);
-
-    pGameObject = CSkeleton::Create(m_pGraphicDev, { 77.f, 0.5f, 18.f });
-    NULL_CHECK_RETURN(pGameObject, E_FAIL);
-    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Skeleton", pGameObject), E_FAIL);
 
     m_mapLayer.insert({ pLayerTag , pLayer });
 
@@ -954,6 +937,81 @@ HRESULT CMapEditorScene::Resister_ImguiImage_ImGui(LPDIRECT3DDEVICE9 _pGraphicDe
         }
     }
     return S_OK;
+}
+
+void CMapEditorScene::Setting_BaseCamp()
+{
+    CMapToolTerrain* pTerrain = dynamic_cast<CMapToolTerrain*>(m_pMTGameObjectCom);
+
+    // CORE
+    _int iIndex = _int(21.f * (VTXCNTX - 1) + VTXCNTX / 2);
+    pTerrain->Set_Unreachable(iIndex, true);
+    pTerrain->Set_Unreachable(iIndex - 1, true);
+    pTerrain->Set_Unreachable(iIndex - 2, true);
+    pTerrain->Set_Unreachable(iIndex + 1, true);
+    pTerrain->Set_Unreachable(iIndex + 2, true);
+
+    pTerrain->Set_Unreachable(iIndex - (VTXCNTX-1), true);
+    pTerrain->Set_Unreachable(iIndex - (VTXCNTX - 1) - 1, true);
+    pTerrain->Set_Unreachable(iIndex - (VTXCNTX - 1) - 2, true);
+    pTerrain->Set_Unreachable(iIndex - (VTXCNTX - 1) + 1, true);
+    pTerrain->Set_Unreachable(iIndex - (VTXCNTX - 1) + 2, true);
+
+    pTerrain->Set_Unreachable(iIndex - (VTXCNTX - 1) * 2 - 1, true);
+    pTerrain->Set_Unreachable(iIndex - (VTXCNTX - 1) * 2 - 2, true);
+    pTerrain->Set_Unreachable(iIndex - (VTXCNTX - 1) * 2 + 1, true);
+    pTerrain->Set_Unreachable(iIndex - (VTXCNTX - 1) * 2 + 2, true);
+
+    pTerrain->Set_Unreachable(iIndex + (VTXCNTX-1), true);
+    pTerrain->Set_Unreachable(iIndex + (VTXCNTX-1) - 1, true);
+    pTerrain->Set_Unreachable(iIndex + (VTXCNTX-1) - 2, true);
+    pTerrain->Set_Unreachable(iIndex + (VTXCNTX-1) + 1, true);
+    pTerrain->Set_Unreachable(iIndex + (VTXCNTX-1) + 2, true);
+
+    pTerrain->Set_Unreachable(iIndex + (VTXCNTX-1) * 2, true);
+    pTerrain->Set_Unreachable(iIndex + (VTXCNTX-1) * 2 - 1, true);
+    pTerrain->Set_Unreachable(iIndex + (VTXCNTX-1) * 2 - 2, true);
+    pTerrain->Set_Unreachable(iIndex + (VTXCNTX-1) * 2 + 1, true);
+    pTerrain->Set_Unreachable(iIndex + (VTXCNTX-1) * 2 + 2, true);
+
+    // SLIMESTATUE
+    iIndex = _int(27.f * (VTXCNTX - 1) + VTXCNTX / 2);
+    pTerrain->Set_Unreachable(iIndex, true);
+    pTerrain->Set_Unreachable(iIndex - 1, true);
+    pTerrain->Set_Unreachable(iIndex + 1, true);
+
+    pTerrain->Set_Unreachable(iIndex + (VTXCNTX - 1), true);
+    pTerrain->Set_Unreachable(iIndex + (VTXCNTX - 1) - 1, true);
+    pTerrain->Set_Unreachable(iIndex + (VTXCNTX - 1) + 1, true);
+
+    pTerrain->Set_Unreachable(iIndex - (VTXCNTX - 1) - 1, true);
+    pTerrain->Set_Unreachable(iIndex - (VTXCNTX - 1) + 1, true);
+
+    // LARVASTATUE
+    iIndex = _int(23.f * (VTXCNTX - 1) + VTXCNTX / 2 - 8.f);
+    pTerrain->Set_Unreachable(iIndex, true);
+    pTerrain->Set_Unreachable(iIndex - 1, true);
+    pTerrain->Set_Unreachable(iIndex + 1, true);
+
+    pTerrain->Set_Unreachable(iIndex + (VTXCNTX - 1), true);
+    pTerrain->Set_Unreachable(iIndex + (VTXCNTX - 1) - 1, true);
+    pTerrain->Set_Unreachable(iIndex + (VTXCNTX - 1) + 1, true);
+
+    pTerrain->Set_Unreachable(iIndex - (VTXCNTX - 1) - 1, true);
+    pTerrain->Set_Unreachable(iIndex - (VTXCNTX - 1) + 1, true);
+
+    // MALUGAZSTATUE
+    iIndex = _int(23.f * (VTXCNTX - 1) + VTXCNTX / 2 + 8.f);
+    pTerrain->Set_Unreachable(iIndex, true);
+    pTerrain->Set_Unreachable(iIndex - 1, true);
+    pTerrain->Set_Unreachable(iIndex + 1, true);
+
+    pTerrain->Set_Unreachable(iIndex + (VTXCNTX - 1), true);
+    pTerrain->Set_Unreachable(iIndex + (VTXCNTX - 1) - 1, true);
+    pTerrain->Set_Unreachable(iIndex + (VTXCNTX - 1) + 1, true);
+
+    pTerrain->Set_Unreachable(iIndex - (VTXCNTX - 1) - 1, true);
+    pTerrain->Set_Unreachable(iIndex - (VTXCNTX - 1) + 1, true);
 }
 
 void CMapEditorScene::MapFile_Save()

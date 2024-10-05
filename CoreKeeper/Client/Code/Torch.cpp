@@ -31,13 +31,9 @@ HRESULT CTorch::Ready_GameObject(_vec3 vPos)
 
 	m_pAnimatorCom->Set_CurState(IDLE, 0, 5, 3);
 
-	m_wItemExplain[0] = L"횃불";
-	m_wItemExplain[1] = L"주변에 불을 밝힙니다.땅에 설치하거나 ";
-	m_wItemExplain[2] = L"벽에 부착할 수도 있습니다.";
-	
-	m_wItemMetrial = L"소재 : 나무 1";
-
-	m_bMeterial = true;
+	m_wItemName = L"횃불";
+	m_wItemExplain[0] = L"주변에 불을 밝힙니다.땅에 설치하거나 ";
+	m_wItemExplain[1] = L"벽에 부착할 수도 있습니다.";
 
 	return S_OK;
 }

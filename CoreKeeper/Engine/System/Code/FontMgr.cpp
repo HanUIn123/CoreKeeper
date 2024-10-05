@@ -1,3 +1,4 @@
+#include "FontMgr.h"
 #include "..\..\Header\FontMgr.h"
 
 IMPLEMENT_SINGLETON(CFontMgr)
@@ -33,6 +34,14 @@ void CFontMgr::Render_Font(const _tchar * pFontTag, const _tchar * pString, cons
 	NULL_CHECK(pMyFont);
 
 	pMyFont->Render_Font(pString, pPos, Color);
+}
+
+void CFontMgr::Render_Font_Center(const _tchar* pFontTag, const _tchar* pString, const _vec2* pPos, D3DXCOLOR Color)
+{
+	CMyFont* pMyFont = Find_Font(pFontTag);
+	NULL_CHECK(pMyFont);
+
+	pMyFont->Render_Font_Center(pString, pPos, Color);
 }
 
 CMyFont * CFontMgr::Find_Font(const _tchar * pFontTag)

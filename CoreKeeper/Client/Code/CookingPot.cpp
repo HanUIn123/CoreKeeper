@@ -23,10 +23,10 @@ HRESULT CCookingPot::Ready_GameObject(_vec3 vPos)
 	m_pTransformCom->Set_Pos(vPos.x, vPos.y, vPos.z);
 	m_pShadowTransformCom->Set_Pos(vPos.x, 0.1f, vPos.z);
 
+	m_wItemName = L"요리 솥";
+	m_wItemExplain[0] = L"재료의 진가는 요리한 후에야 드러납니다!";
+	m_wItemExplain[1] = L"재료를 합치고 어떤 음식이 나오는지 보세요!";
 
-	m_wItemExplain[0] = L"나무";
-	m_wItemExplain[1] = L"온갖 물건을 만드는 데 쓰는 ";
-	m_wItemExplain[2] = L"거대한 뿌리 조각입니다.";
 	// 원래의 Y 위치 저장
 	m_fFirstY = vPos.y;
 

@@ -23,6 +23,26 @@ HRESULT CLeg::Ready_GameObject(MATERIAL _eMaterial, _vec3 vPos)
 	m_tStat.iDefense = 10 * (m_eMaterial + 1);
 	m_tStat.iMaxHp = 20 * (m_eMaterial + 1);
 
+	switch (m_eMaterial)
+	{
+	case MATERIAL_WOOD:
+		m_wItemName = L"나무 바지";
+		m_wItemExplain[0] = L"하체 방어구에 차선책으로 쓸 수 있습니다.";
+		break;
+	case MATERIAL_COPPER:
+		m_wItemName = L"구리 바지";
+		m_wItemExplain[0] = L"정강이를 확실하게 보호해줍니다.";
+		break;
+	case MATERIAL_IRON:
+		m_wItemName = L"철제 바지";
+		m_wItemExplain[0] = L"강철 다리의 소유자이시네요!";
+		break;
+	case MATERIAL_SPECIAL:
+		m_wItemName = L"마술사 바지";
+		m_wItemExplain[0] = L"마법 장신구를 넣을 주머니가 많이 달린 튼튼한 바지입니다.";
+		break;
+	}
+
 	m_pTransformCom->Set_Scale(0.5f, 0.5f, 0.5f);
 	m_pShadowTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
 
