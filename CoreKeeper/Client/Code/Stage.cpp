@@ -267,10 +267,25 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar* pLayerTag)
 	//dynamic_cast<CHunterEye*>(pGameObject)->Set_Hunter(pHunter);
 	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"HunterEye", pGameObject), E_FAIL);
 
-	pGameObject = CTorch::Create(m_pGraphicDev);
+	//pGameObject = CTorch::Create(m_pGraphicDev);
+	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	//dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
+	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Torch", pGameObject), E_FAIL);
+
+	pGameObject = CLantern::Create(m_pGraphicDev, MATERIAL_WOOD);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Torch", pGameObject), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Lantern_Wood", pGameObject), E_FAIL);
+
+	pGameObject = CLantern::Create(m_pGraphicDev, MATERIAL_COPPER);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Lantern_Copper", pGameObject), E_FAIL);
+
+	pGameObject = CLantern::Create(m_pGraphicDev, MATERIAL_IRON);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Lantern_Iron", pGameObject), E_FAIL);
 
 	pGameObject = CPickaxe::Create(m_pGraphicDev, MATERIAL_COPPER);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);

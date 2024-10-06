@@ -75,8 +75,9 @@ HRESULT CUIItemSlot::Ready_GameObject(_vec2 vPos, _vec2 vSize, SLOTTYPE _eType)
 		m_iIndex = 3;
 		break;
 
-	case SLOT_LANTTERN:
+	case SLOT_LANTERN:
 		m_iIndex = 4;
+		eSlotItemType = ITEM_LANTERN;
 		break;
 
 	case SLOT_PET:
