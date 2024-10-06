@@ -21,6 +21,8 @@ HRESULT CCrystal::Ready_GameObject(_vec3 vPos)
 
 	m_pTransformCom->Set_Pos(vPos.x, vPos.y, vPos.z);
 
+	m_pTransformCom->Set_Scale(2.f, 2.f, 2.f);
+
 	return S_OK;
 }
 
@@ -30,9 +32,10 @@ _int CCrystal::Update_GameObject(const _float& fTimeDelta)
 
 	CAzeos* pAzeos = dynamic_cast<CAzeos*>(Engine::Get_GameObject(L"Layer_Environment", L"Azeos"));
 
+	CTransform* pAzeosTransform = dynamic_cast<CTransform*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_Environment", L"Azeos", L"Com_Transform"));
+
 	if (pAzeos->Get_Crystal())
 	{
-		CTransform* pAzeosTransform = dynamic_cast<CTransform*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_Environment", L"Azeos", L"Com_Transform"));
 
 		_vec3 vPos;
 		m_pTransformCom->Get_Info(INFO_POS, &vPos);
@@ -40,6 +43,17 @@ _int CCrystal::Update_GameObject(const _float& fTimeDelta)
 		pAzeosTransform->Set_Pos(vPos.x, 3.f, vPos.z);
 
 		pAzeos->Set_Crystal();
+	}
+
+	_vec3 vAzeosPos, vCrystalPos, vTotal;
+	pAzeosTransform->Get_Info(INFO_POS, &vAzeosPos);
+	m_pTransformCom->Get_Info(INFO_POS, &vCrystalPos);
+
+	vTotal = vAzeosPos - vCrystalPos;
+
+	if (D3DXVec3Length(&vTotal) < 4)
+	{
+
 	}
 
 	CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));

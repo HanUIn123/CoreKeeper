@@ -106,7 +106,7 @@ void CUIStatueCraft::Render_GameObject()
 
 	m_pTransformCom->Get_WorldMatrix(&matWorld);
 
-	if (m_iIndex == 1)
+	if (m_iIndex == 0)
 	{
 		matWorld._42 -= 8.f;
 	}

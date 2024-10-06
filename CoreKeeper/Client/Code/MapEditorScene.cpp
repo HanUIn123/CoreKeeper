@@ -489,6 +489,11 @@ void CMapEditorScene::Piking_Tile()
 
                 _int iIndex = _int((m_vPickPos.z + offsetZ + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vPickPos.x + offsetX + 0.5f * VTXITV);
 
+                if (iIndex < 0 || iIndex >= (VTXCNTX - 1) * (VTXCNTZ - 1))
+                {
+                    continue;
+                }
+
                 pTerrain->Set_TextureNumber(iIndex, m_iTileNumber);
 
                 if (m_bReachable)
