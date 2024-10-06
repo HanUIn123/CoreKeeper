@@ -26,9 +26,9 @@ private:
 	HRESULT			Add_Component();
 
 private:
-	Engine::CAnimTex* m_pBufferCom;
-	Engine::CTransform* m_pTransformCom;
-	Engine::CTexture* m_pTextureCom;
+	Engine::CAnimTex*			m_pBufferCom;
+	Engine::CTransform*			m_pTransformCom;
+	Engine::CTexture*			m_pTextureCom;
 
 public:
 	static	CHunterRender* Create(LPDIRECT3DDEVICE9 pGraphicDev, _int iIndex);

@@ -84,8 +84,8 @@ namespace Engine
     enum MONSTERTYPE 
     { 
         MON_SLIME, MON_SHROOMMAN, 
-        MON_SHAMAN, MON_PROJECTILE, 
-        MON_HUNTER, MON_BULLET, 
+        MON_SHAMAN,
+        MON_HUNTER, MON_PROJECTILE, MON_BULLET,
         MON_MALUGAZ, MON_AZEOS, 
         MON_END 
     };

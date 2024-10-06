@@ -148,6 +148,7 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 
 	Flip();
 	Dash(fTimeDelta);
+	Lantern();
 	Set_ImmuneByToggle();
 
 	// 시간제 무적용
@@ -537,6 +538,32 @@ void CPlayer::Dash(const _float& fTimeDelta)
 				m_bDashCool = false;
 				m_fDashTimeAcc = 0.f;
 			}
+		}
+	}
+}
+
+void CPlayer::Lantern()
+{
+	// 보조장비에 깃털 장착 시
+	CItem* pLantern;
+	wstring	strObjectTag = L"UIItemSlot_" + std::to_wstring(CUIItemSlot::SLOT_LANTERN);;
+	pLantern = dynamic_cast<CUIItemSlot*>(Engine::Get_GameObject(L"Layer_UI", strObjectTag.c_str()))->Get_Item();
+	if (!pLantern)
+		return;
+
+	if (pLantern->Get_ItemNum() == ITEM_LANTERN)
+	{
+		switch (pLantern->Get_ItemMaterial())
+		{
+		case MATERIAL_WOOD:
+			m_fLightRange = 3.f;
+			break;
+		case MATERIAL_COPPER:
+			m_fLightRange = 5.f;
+			break;
+		case MATERIAL_IRON:
+			m_fLightRange = 7.f;
+			break;
 		}
 	}
 }
