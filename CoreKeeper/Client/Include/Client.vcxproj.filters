@@ -466,6 +466,9 @@
     <Filter Include="02. GameObject\80.MiniObjects\92.MiniSpawn">
       <UniqueIdentifier>{5da1095e-0285-4d8e-99ba-e1b4fd0acb62}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\02. Monster\05. Hunter\HunterRender">
+      <UniqueIdentifier>{eea8fc7f-accf-40e5-bea1-90a5962df3f9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -909,6 +912,9 @@
     <ClInclude Include="..\Header\MiniSpawn.h">
       <Filter>02. GameObject\80.MiniObjects\92.MiniSpawn</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\HunterRender.h">
+      <Filter>02. GameObject\02. Monster\05. Hunter\HunterRender</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1330,6 +1336,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\MiniSpawn.cpp">
       <Filter>02. GameObject\80.MiniObjects\92.MiniSpawn</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\HunterRender.cpp">
+      <Filter>02. GameObject\02. Monster\05. Hunter\HunterRender</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
