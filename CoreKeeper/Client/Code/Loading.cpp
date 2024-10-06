@@ -218,6 +218,8 @@ _uint CLoading::Loading_Stage()
 
 #pragma endregion
 
+#pragma region Object TEXTURE
+
     // OBJECT TEXTURE
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_CoreTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/BaseCamp/Core.png", TEX_NORMAL)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_CoreBaseTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/BaseCamp/CoreBase.png", TEX_NORMAL)), E_FAIL);
@@ -228,6 +230,7 @@ _uint CLoading::Loading_Stage()
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_PlantTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Plant/Plant_%d.png", TEX_NORMAL, 4)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_FireTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Monster/Fire.png", TEX_NORMAL)), E_FAIL);
 
+#pragma endregion
 
 #pragma region UI TEXTURE
 

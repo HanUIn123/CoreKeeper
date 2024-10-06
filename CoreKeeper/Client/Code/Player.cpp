@@ -6,7 +6,7 @@
 #include "..\Header\PlayerInclude.h"
 
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
-	: Engine::CGameObject(pGraphicDev)
+	: Engine::CGameObject(pGraphicDev), m_fLightRange(0.f)
 {
 	m_eDir = DIRECTION_END;
 	m_eState = STATE_END;
@@ -73,6 +73,8 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 
 	m_vecInstallObjectName.reserve(16);
 	m_iInstallNumber = 0;
+
+	m_iLightNum = g_iLightNum++;
 }
 
 CPlayer::~CPlayer()
@@ -94,6 +96,9 @@ HRESULT CPlayer::Ready_GameObject()
 
 _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 {
+	// 랜턴
+	SetUp_Light();
+
 	if (m_bNude)
 		Set_Clothes();
 	Set_MouseWorldPos();
@@ -271,6 +276,30 @@ HRESULT CPlayer::Setup_Material()
 	m_pGraphicDev->SetMaterial(&tMtrl);
 
 	return S_OK;
+}
+
+void CPlayer::SetUp_Light()
+{
+	D3DLIGHT9 light;
+	ZeroMemory(&light, sizeof(D3DLIGHT9));
+
+	light.Type = D3DLIGHT_POINT; // 포인트 조명
+	light.Diffuse = { 1.f, 1.f, 1.f, 1.f }; // 확산 색상
+	light.Specular = { 1.f, 1.f, 1.f, 1.f }; // 반사 색상
+	light.Ambient = { 1.f, 1.f, 1.f, 1.f }; // 주변광
+
+	_vec3 vPos;
+	m_pTransformCom->Get_Info(INFO_POS, &vPos);
+
+	light.Position = vPos; // 횃불의 위치
+	light.Range = m_fLightRange; // 조명의 범위
+	light.Falloff = 1.f; // 감쇠
+	light.Attenuation0 = 1.0f; // 감쇠 계수
+	light.Attenuation1 = 0.01f;
+	light.Attenuation2 = 0.0f;
+
+	m_pGraphicDev->SetLight(m_iLightNum, &light); // 조명 설정
+	m_pGraphicDev->LightEnable(m_iLightNum, TRUE); // 조명 활성화
 }
 
 void CPlayer::Key_Position(const _float& fTimeDelta)

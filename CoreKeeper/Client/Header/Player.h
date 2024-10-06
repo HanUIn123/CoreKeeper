@@ -36,6 +36,7 @@ public:
 private:
 	HRESULT			Add_Component();
 	HRESULT			Setup_Material();
+	void			SetUp_Light();
 
 	// 뷰 공통
 	void			Mouse_Click(const _float& fTimeDelta);								// 클릭 시 스윙, 스윙 끝 판단
@@ -194,6 +195,10 @@ private:
 
 	vector<wstring>			m_vecInstallObjectName;
 	_int					m_iInstallNumber;
+
+	// 랜턴
+	_int					m_iLightNum;
+	_float					m_fLightRange;
 
 public:
 	static CPlayer* Create(LPDIRECT3DDEVICE9 pGraphicDev);
