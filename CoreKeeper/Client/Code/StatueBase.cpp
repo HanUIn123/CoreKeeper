@@ -2,9 +2,10 @@
 #include "../Header/StatueBase.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
+#include "..\Header\Core.h"
 
 CStatueBase::CStatueBase(LPDIRECT3DDEVICE9 pGraphicDev)
-	: CObject(pGraphicDev), m_iTextureNum(0)
+	: CObject(pGraphicDev), m_iTextureNum(0), m_bActive(false)
 {
 }
 
@@ -14,7 +15,7 @@ CStatueBase::~CStatueBase()
 
 HRESULT CStatueBase::Ready_GameObject(_vec3 vPos, int _iNum)
 {
-	m_iTextureNum = _iNum;
+	m_iTextureNum = _iNum * 2;
 
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
@@ -25,6 +26,14 @@ HRESULT CStatueBase::Ready_GameObject(_vec3 vPos, int _iNum)
 
 _int CStatueBase::Update_GameObject(const _float& fTimeDelta)
 {
+	if (!m_bActive)
+	{
+		CCore* pCore = dynamic_cast<CCore*>(Engine::Get_GameObject(L"Layer_Environment", L"Core"));
+		m_bActive = pCore->Get_ActiveCore(m_iTextureNum/2);
+		if(m_bActive)
+			m_iTextureNum++;
+	}
+	
 	Add_RenderGroup(RENDER_ALPHA, this);
 
 	return Engine::CGameObject::Update_GameObject(fTimeDelta);

@@ -33,6 +33,7 @@ public:
 
 private:
 	HRESULT							Add_Component();
+	void							SetUp_Light();
 
 public:
 	static CStatue* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, int iImgNum);
@@ -42,5 +43,8 @@ private:
 
 private:
 	int								m_iTextureNum;
+	bool							m_bActive;
+	int								m_iLightNum;
+
 };
 

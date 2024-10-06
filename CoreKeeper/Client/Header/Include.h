@@ -93,6 +93,7 @@
 #include "Statue.h"
 #include "StatueBase.h"
 #include "SpawnPoint.h"
+#include "Tile.h"
 
 #include "GravestoneObject.h"
 #include "Skeleton.h"
