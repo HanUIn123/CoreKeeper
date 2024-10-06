@@ -77,6 +77,8 @@ private:
 
 	void            Set_UI();
 
+	void			Respawn_Progress(const _float& fTimeDelta);
+
 public:
 	CItem*			Get_HandedItem()		{ return m_pHandedItem; }
 	STATE			Get_CurState()			{ return m_eState; }
@@ -204,6 +206,9 @@ private:
 	// ∑£≈œ
 	_int					m_iLightNum;
 	_float					m_fLightRange;
+
+	_bool					m_bRespawnFirstFrame;
+	_float					m_fRespawnProgress;
 
 public:
 	static CPlayer* Create(LPDIRECT3DDEVICE9 pGraphicDev);

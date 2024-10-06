@@ -55,6 +55,8 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 
 	m_bRespawned = false;
 	m_vRespawnPoint = { VTXCNTX / 2, 0, 17.f };
+	m_bRespawnFirstFrame = true;
+	m_fRespawnProgress = 0.f;
 
 	m_bBleed = false;
 	m_fBleedTime = 0.f;
@@ -97,6 +99,12 @@ HRESULT CPlayer::Ready_GameObject()
 
 _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 {
+	Set_UI();
+	if (m_pStateCom->Get_Dead())
+	{
+		Respawn_Progress(fTimeDelta);
+		return 0;
+	}
 	// 랜턴
 	SetUp_Light();
 
@@ -175,10 +183,6 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 	Particle_Update(fTimeDelta);
 
 	Add_RenderGroup(RENDER_ALPHA, this);
-
-	Set_UI();
-
-
 	return Engine::CGameObject::Update_GameObject(fTimeDelta);
 }
 
@@ -190,6 +194,8 @@ void CPlayer::LateUpdate_GameObject()
 
 void CPlayer::Render_GameObject()
 {
+	if (m_pStateCom->Get_Dead())
+		return;
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
@@ -1086,10 +1092,13 @@ void CPlayer::PickAxe()
 				dynamic_cast<CStage*>(pCurScene)->Get_WallNameByIndex(iIndex);
 
 				CGameObject* pWall = Get_GameObject(L"Layer_Environment", dynamic_cast<CStage*>(pCurScene)->Get_WallNameByIndex(iIndex)->c_str());
-				dynamic_cast<CWall*>(pWall)->Set_Destroy();
-				pCurScene->Delete_GameObject(L"Layer_Environment", pWall, dynamic_cast<CStage*>(pCurScene)->Get_WallNameByIndex(iIndex)->c_str());
-				Engine::Delete_Renderer(RENDER_PRIORITY, pWall);
-				pTerrain->Set_Unreachable(iIndex, false);
+				if (pWall)
+				{
+					dynamic_cast<CWall*>(pWall)->Set_Destroy();
+					pCurScene->Delete_GameObject(L"Layer_Environment", pWall, dynamic_cast<CStage*>(pCurScene)->Get_WallNameByIndex(iIndex)->c_str());
+					Engine::Delete_Renderer(RENDER_PRIORITY, pWall);
+					pTerrain->Set_Unreachable(iIndex, false);
+				}
 			}
 		}
 	}
@@ -1403,6 +1412,85 @@ void CPlayer::Set_UI()
 		
 		//Set_Statue();
 	}
+}
+
+void CPlayer::Respawn_Progress(const _float& fTimeDelta)
+{
+	m_fRespawnProgress += fTimeDelta;
+
+	if (m_fRespawnProgress <= 3.f)
+	{
+		_vec3 vPos;
+		m_pTransformCom->Get_Info(INFO_POS, &vPos);
+		m_pTransformCom->Set_Pos(vPos.x, vPos.y, vPos.z);
+		if (m_bRespawnFirstFrame)
+		{
+			m_bRespawnFirstFrame = false;
+
+			// 장착 장비 off
+			m_pHandedItem->Set_Use(false);
+			m_pHandedItem->Set_Active(false);
+			CItem* pArmor;
+			for (_int i = 0; i < CUIItemSlot::SLOT_END; i++)
+			{
+				wstring	strObjectTag = L"UIItemSlot_";
+				switch (i)
+				{
+				case CUIItemSlot::SLOT_HELM:
+					strObjectTag += std::to_wstring(i);
+					pArmor = dynamic_cast<CUIItemSlot*>(Engine::Get_GameObject(L"Layer_UI", strObjectTag.c_str()))->Get_Item();
+					if (pArmor)
+						pArmor->Set_Active(false);
+					else
+					{
+						m_pClothes[0]->Set_Active(false);
+						m_pClothes[1]->Set_Active(false);
+						m_pClothes[2]->Set_Active(false);
+					}
+					break;
+				case CUIItemSlot::SLOT_CHEST:
+					strObjectTag += std::to_wstring(i);
+					pArmor = dynamic_cast<CUIItemSlot*>(Engine::Get_GameObject(L"Layer_UI", strObjectTag.c_str()))->Get_Item();
+					if (pArmor)
+						pArmor->Set_Active(false);
+					else
+						m_pClothes[3]->Set_Active(false);
+					break;
+				case CUIItemSlot::SLOT_LEGGINGS:
+					strObjectTag += std::to_wstring(i);
+					pArmor = dynamic_cast<CUIItemSlot*>(Engine::Get_GameObject(L"Layer_UI", strObjectTag.c_str()))->Get_Item();
+					if (pArmor)
+						pArmor->Set_Active(false);
+					else
+						m_pClothes[4]->Set_Active(false);
+					break;
+				}
+			}
+			// 묘비 생성 및 미니맵 표시
+			CScene* pScene = Engine::Get_Scene();
+			CGameObject* pGraveStone = CGravestoneObject::Create(m_pGraphicDev, vPos);
+			m_vecInstallObjectName.push_back(L"Player_Created_Gravestone_" + std::to_wstring(m_iInstallNumber));
+			pScene->Create_GameObject(L"Layer_GameLogic", pGraveStone, m_vecInstallObjectName.back().c_str());
+			// 인벤토리 아이템 전부 묘비로 옮기기
+		}
+	}
+	else if (m_fRespawnProgress <= 5.f)
+	{
+		if (!m_bRespawnFirstFrame)
+		{
+			m_bRespawnFirstFrame = true;
+			// 리스폰 포인트로 이동 후 이펙트 생성
+
+		}
+		m_pTransformCom->Set_Pos(m_vRespawnPoint.x, m_vRespawnPoint.y, m_vRespawnPoint.z);
+	}
+	else if (m_fRespawnProgress <= 6.f)
+	{
+		// 리스폰 완료
+		m_pStateCom->Set_Revive();
+		m_fRespawnProgress = 0.f;
+	}
+
 }
 
 void CPlayer::Set_InvWindow()
