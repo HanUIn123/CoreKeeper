@@ -258,15 +258,6 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar* pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Malugaz", pGameObject), E_FAIL);*/
 
-	//CGameObject* pHunter = CHunter::Create(m_pGraphicDev, _vec3(VTXCNTX / 2, 0, 17.f));
-	//NULL_CHECK_RETURN(pHunter, E_FAIL);
-	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Hunter", pHunter), E_FAIL);
-
-	//pGameObject = CHunterEye::Create(m_pGraphicDev);
-	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	//dynamic_cast<CHunterEye*>(pGameObject)->Set_Hunter(pHunter);
-	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"HunterEye", pGameObject), E_FAIL);
-
 	//pGameObject = CTorch::Create(m_pGraphicDev);
 	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	//dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
@@ -1040,6 +1031,7 @@ HRESULT CStage::Load_MonsterData()
 	// ========================================================
 
 	Engine::CGameObject* pGameObject = nullptr;
+	Engine::CGameObject* pEye = nullptr;
 	_int	iType, iIndex;
 	_float	fX, fZ;
 	DWORD	dwByte = 0;
@@ -1060,22 +1052,35 @@ HRESULT CStage::Load_MonsterData()
 		case MON_SLIME:
 			m_wsMonsterNameString[iIndex] = L"Slime_" + std::to_wstring(iIndex);
 			pGameObject = CSlime::Create(m_pGraphicDev, _vec3(fX, 10, fZ));
+			NULL_CHECK_RETURN(pGameObject, E_FAIL);
+			FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsMonsterNameString[iIndex].c_str(), pGameObject), E_FAIL);
 			break;
 		case MON_SHROOMMAN:
 			m_wsMonsterNameString[iIndex] = L"ShroomMan_" + std::to_wstring(iIndex);
 			pGameObject = CShroomMan::Create(m_pGraphicDev, _vec3(fX, 10, fZ));
+			NULL_CHECK_RETURN(pGameObject, E_FAIL);
+			FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsMonsterNameString[iIndex].c_str(), pGameObject), E_FAIL);
 			break;
 		case MON_SHAMAN:
 			m_wsMonsterNameString[iIndex] = L"Shaman_" + std::to_wstring(iIndex);
 			pGameObject = CShaman::Create(m_pGraphicDev, _vec3(fX, 10, fZ));
+			NULL_CHECK_RETURN(pGameObject, E_FAIL);
+			FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsMonsterNameString[iIndex].c_str(), pGameObject), E_FAIL);
 			break;
 		case MON_HUNTER:
 			m_wsMonsterNameString[iIndex] = L"Hunter_" + std::to_wstring(iIndex);
 			pGameObject = CHunter::Create(m_pGraphicDev, _vec3(fX, 10, fZ));
+			NULL_CHECK_RETURN(pGameObject, E_FAIL);
+			FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsMonsterNameString[iIndex].c_str(), pGameObject), E_FAIL);
+
+			m_wsMonsterNameString[iIndex] = L"HunterEye_" + std::to_wstring(iIndex);
+			pEye = CHunterEye::Create(m_pGraphicDev);
+			NULL_CHECK_RETURN(pEye, E_FAIL);
+			dynamic_cast<CHunterEye*>(pEye)->Set_Hunter(pGameObject);
+			FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsMonsterNameString[iIndex].c_str(), pEye), E_FAIL);
 			break;
 		}
-		NULL_CHECK_RETURN(pGameObject, E_FAIL);
-		FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsMonsterNameString[iIndex].c_str(), pGameObject), E_FAIL);
+
 	}
 
 	CloseHandle(m_hFile);

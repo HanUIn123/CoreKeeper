@@ -29,12 +29,13 @@ public:
 	virtual			void			LateUpdate_GameObject();
 	virtual			void			Render_GameObject() {}
 
-
+public:
+	void							Shaking(_float fDuration, _float fPower);
 	//_bool							Get_IsWorldMap() { return m_bIsWorldMap; }
 private:
-	void		Key_Input();
-	void		Mouse_Move();
-	void		Mouse_Fix();
+	void							Key_Input();
+	void							Mouse_Move();
+	void							Mouse_Fix();
 
 	void							Zoom_In();
 	void							Zoom_Out();

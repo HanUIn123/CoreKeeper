@@ -124,6 +124,11 @@ void CDynamicCamera::Free()
 	CCamera::Free();
 }
 
+void CDynamicCamera::Shaking(_float fDuration, _float fPower)
+{
+
+}
+
 void CDynamicCamera::Key_Input()
 {
 	if (!m_bIsWorldMap)
