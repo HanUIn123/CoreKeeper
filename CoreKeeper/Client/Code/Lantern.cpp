@@ -20,14 +20,19 @@ HRESULT CLantern::Ready_GameObject(MATERIAL _eMaterial, _vec3 vPos)
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
 	m_eMaterial = _eMaterial;
-	m_iTextureNumber = m_eMaterial-1;
+	m_iTextureNumber = m_eMaterial;
 
 	switch (m_eMaterial)
 	{
-	case MATERIAL_COPPER:
+	case MATERIAL_WOOD:
 		m_wItemName = L"소형 등불";
 		m_wItemExplain[0] = L"벨트에 장착할 수 있는 전등입니다.";
 		m_wItemExplain[1] = L"약한 빛을 냅니다.";
+		break;
+
+	case MATERIAL_COPPER:
+		m_wItemName = L"등불";
+		m_wItemExplain[0] = L"손 슬롯을 차지하지 않는 작고 유용한 등입니다.";
 		break;
 
 	case MATERIAL_IRON:

@@ -178,7 +178,7 @@ _uint CLoading::Loading_Stage()
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_RingTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Accessory/Ring_%d.png", TEX_NORMAL, 3)), E_FAIL);
 
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_BagTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Bag/Bag_%d.png", TEX_NORMAL, 2)), E_FAIL);
-    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_LanternTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Lantern/Lantern_%d.png", TEX_NORMAL, 2)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_LanternTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Lantern/Lantern_%d.png", TEX_NORMAL, 3)), E_FAIL);
 
     // 보조장비
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_AssistanceTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Assistance/Assistance_%d.png", TEX_NORMAL, 5)), E_FAIL);
