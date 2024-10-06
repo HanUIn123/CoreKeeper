@@ -66,7 +66,7 @@ void CSmog::resetParticle(Attribute* attribute) // 파티클 리셋
 	attribute->_lifeTime = 0.07f; // 수명 2초
 }
 
-void CSmog::update(float timeDelta)
+void CSmog::update(float timeDelta, _vec3 vDir)
 {
 	std::list<Attribute>::iterator i;
 

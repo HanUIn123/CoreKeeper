@@ -14,7 +14,7 @@ protected:
 public:
 	virtual     HRESULT         Ready_Particles(D3DXVECTOR3* origin, _int numParticles, _int _iMaxTexture);
 	virtual		void			resetParticle(Attribute* attribute);
-	virtual		void			update(float timeDelta);
+	virtual		void			update(float timeDelta, _vec3 vDir = { 0.f, 0.f, 0.f });
 	
 	virtual     void            preRender();
 	virtual     void            postRender();

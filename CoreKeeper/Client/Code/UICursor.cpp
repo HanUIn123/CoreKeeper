@@ -134,6 +134,13 @@ void CUICursor::Render_GameObject()
 			matWorld._42 -= 8.f;
 			break;
 
+			//case ITEM_SHOVEL:
+			//	matWorld._11 = 60.f;
+			//	matWorld._22 = 60.f;
+
+			//	matWorld._42 -= 8.f;
+			//	break;
+
 		case ITEM_STAFF:
 			matWorld._11 = 35.f;
 			matWorld._22 = 35.f;
@@ -190,13 +197,16 @@ void CUICursor::Render_GameObject()
 			matWorld._22 = 20.f;
 			break;
 
-		dafault:
-			matWorld._11 = 20.f;
-			matWorld._22 = 20.f;
+		case ITEM_TORCH:
+			matWorld._11 = 25.f;
+			matWorld._22 = 25.f;
+			break;
+
+		default:
+			matWorld._11 = 15.f;
+			matWorld._22 = 15.f;
 			break;
 		}
-
-
 
 		matWorld._41 -= 25.f;
 		matWorld._42 += 10.f;

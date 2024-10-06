@@ -1717,7 +1717,7 @@ void CPlayer::Set_ChestInventory(CInventory* pInventory)
 		m_bChestInventory = true;
 }
 
-void CPlayer::Set_GraveInventory()
+void CPlayer::Set_GraveInventory(CInventory* pInventory)
 {
 	if (m_bMap || m_bChestInventory || m_bCraft || m_bStatue || m_bCookingPot || m_bFurnace)
 	{
@@ -1727,7 +1727,7 @@ void CPlayer::Set_GraveInventory()
 
 	if (m_bGraveInventory)
 	{
-		CInventory* pGraveInventory = dynamic_cast<CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_Environment", L"AheadGrave", L"Com_Inventory"));
+		//CInventory* pGraveInventory = dynamic_cast<CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_Environment", L"AheadGrave", L"Com_Inventory"));
 
 		for (int i = 0; i < 30; ++i)
 		{
@@ -1747,7 +1747,7 @@ void CPlayer::Set_GraveInventory()
 	}
 	else
 	{
-		CInventory* pGraveInventory = dynamic_cast<CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_Environment", L"AheadGrave", L"Com_Inventory"));
+		//CInventory* pGraveInventory = dynamic_cast<CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_Environment", L"AheadGrave", L"Com_Inventory"));
 
 		for (int i = 0; i < 30; ++i)
 		{
@@ -1757,7 +1757,7 @@ void CPlayer::Set_GraveInventory()
 
 			CUIChestInv* pChestInventory = dynamic_cast<CUIChestInv*>(Engine::Get_GameObject(L"Layer_UI", string.c_str()));
 
-			pChestInventory->Set_Show(pGraveInventory);
+			pChestInventory->Set_Show(pInventory);
 		}
 
 		Set_Inventory();

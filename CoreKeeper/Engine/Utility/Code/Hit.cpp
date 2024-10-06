@@ -70,7 +70,7 @@ void CHit::resetParticle(Attribute* attribute) // 파티클 리셋
 	attribute->_lifeTime = 0.07f; // 수명 2초
 }
 
-void CHit::update(float timeDelta)
+void CHit::update(float timeDelta, _vec3 vDir)
 {
 	std::list<Attribute>::iterator i;
 

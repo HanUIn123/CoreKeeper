@@ -387,6 +387,11 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar* pLayerTag)
 	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Torch", pGameObject), E_FAIL);
 
+	pGameObject = CGravestone::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Gravestone", pGameObject), E_FAIL);
+
 	/*pGameObject = CBox::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Box_Test", pGameObject), E_FAIL);

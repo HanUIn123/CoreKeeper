@@ -85,7 +85,14 @@ _int CShroomMan::Update_GameObject(const _float& fTimeDelta)
 
     if (m_eState == SWING)
     {
-        m_pSmokeParticleCom->update(fTimeDelta);
+        _vec3 vDir, vCurPos;
+        m_pTransformCom->Get_Info(INFO_POS, &vCurPos);
+
+        vDir = vCurPos - vPrePos;
+
+        m_pSmokeParticleCom->update(fTimeDelta, -vDir);
+
+        vPrePos = vCurPos;
 
         if (m_pSmokeParticleCom->isDead())
             m_pSmokeParticleCom->reset();

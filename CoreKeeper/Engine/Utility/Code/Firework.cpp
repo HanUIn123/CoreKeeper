@@ -71,7 +71,7 @@ void CFirework::resetParticle(Attribute* attribute) // 파티클 리셋
 	attribute->_lifeTime = 2.0f; // 수명 2초
 }
 
-void CFirework::update(float timeDelta)
+void CFirework::update(float timeDelta, _vec3 vDir)
 {
 	std::list<Attribute>::iterator i;
 

@@ -148,11 +148,6 @@ void CUIInventory::Render_GameObject()
 
 		switch (eNum)
 		{
-		//case ITEM_SEED:
-		//	matWorld._11 = 10.f;
-		//	matWorld._22 = 10.f;
-		//	break;
-
 		case ITEM_SWORD:
 			matWorld._11 = 40.f;
 			matWorld._22 = 40.f;
@@ -249,9 +244,9 @@ void CUIInventory::Render_GameObject()
 			matWorld._22 = 20.f;
 			break;
 
-		dafault:
-			matWorld._11 = 20.f;
-			matWorld._22 = 20.f;
+		default:
+			matWorld._11 = 10.f;
+			matWorld._22 = 10.f;
 			break;
 		}
 
