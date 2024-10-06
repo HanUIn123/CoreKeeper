@@ -77,6 +77,9 @@
 #include "Terrain.h"
 #include "SkyBox.h"
 #include "Wall.h"
+#include "MapToolWall.h"
+
+
 
 // Object
 #include "Core.h"

@@ -469,6 +469,9 @@
     <Filter Include="02. GameObject\02. Monster\05. Hunter\HunterRender">
       <UniqueIdentifier>{eea8fc7f-accf-40e5-bea1-90a5962df3f9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\94.MapToolWall">
+      <UniqueIdentifier>{8c67f9de-76fe-4c47-a1f0-54a462250104}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -915,6 +918,9 @@
     <ClInclude Include="..\Header\HunterRender.h">
       <Filter>02. GameObject\02. Monster\05. Hunter\HunterRender</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\MapToolWall.h">
+      <Filter>02. GameObject\94.MapToolWall</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1339,6 +1345,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\HunterRender.cpp">
       <Filter>02. GameObject\02. Monster\05. Hunter\HunterRender</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\MapToolWall.cpp">
+      <Filter>02. GameObject\94.MapToolWall</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
