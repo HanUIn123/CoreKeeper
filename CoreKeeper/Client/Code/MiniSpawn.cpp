@@ -7,6 +7,7 @@ CMiniSpawn::CMiniSpawn(LPDIRECT3DDEVICE9 pGraphicDev)
     :Engine::CGameObject(pGraphicDev)
     , m_pTransformCom(nullptr)
     , m_pTextureCom(nullptr)
+    , m_bRevealed(false)
 {
 }
 
@@ -27,6 +28,8 @@ HRESULT CMiniSpawn::Ready_GameObject(_vec3 vPos)
 
 _int CMiniSpawn::Update_GameObject(const _float& fTimeDelta)
 {
+    Check_PlayerPos(m_bRevealed);
+
     Add_RenderGroup(RENDER_MAP, this);
 
     return Engine::CGameObject::Update_GameObject(fTimeDelta);
@@ -41,13 +44,17 @@ void CMiniSpawn::LateUpdate_GameObject()
 
 void CMiniSpawn::Render_GameObject()
 {
+
     m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
 
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
-    m_pTextureCom->Set_Texture();
+    if (m_bRevealed)
+    {
+        m_pTextureCom->Set_Texture();
+        m_pBufferCom->Render_Buffer();
+    }
 
-    m_pBufferCom->Render_Buffer();
 
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
@@ -98,16 +105,16 @@ _bool CMiniSpawn::Piking_Teleport()
 
     _vec3 spawnInGamedPos[3] =
     {
-        { VTXCNTX / 2 + 65.f, 0.1f, 21.5f + 80.f },  
+        { VTXCNTX / 2 + 65.f, 0.1f, 21.5f + 80.f },
         { VTXCNTX / 2, 0.1f, 17.f },
-        { VTXCNTX / 2 - 40.f, 0.1f, 21.5f + 60.f }   
+        { VTXCNTX / 2 - 40.f, 0.1f, 21.5f + 60.f }
     };
 
     for (int i = 0; i < 3; ++i)
     {
         if (abs(ptMouse.x - spawnInMapnPos[i].x) <= 5 && abs(ptMouse.y - spawnInMapnPos[i].y) <= 5)
         {
-            if(CRenderer::GetInstance()->Get_ExpandMap())
+            if (CRenderer::GetInstance()->Get_ExpandMap())
                 m_pTransformCom->Set_Scale(10.0f, 0.0f, 10.0f);
             else
                 m_pTransformCom->Set_Scale(5.0f, 0.0f, 5.0f);
@@ -115,7 +122,7 @@ _bool CMiniSpawn::Piking_Teleport()
             if (Engine::Get_DIMouseState(DIM_RB) & 0x80 && !bClicked)
             {
                 _matrix matWorld;
-                pPlayerTransform->Get_WorldMatrix(&matWorld); 
+                pPlayerTransform->Get_WorldMatrix(&matWorld);
 
                 if (i == 0)
                 {
@@ -150,6 +157,30 @@ _bool CMiniSpawn::Piking_Teleport()
     m_pTransformCom->Set_Scale(5.0f, 0.0f, 5.0f);
 
     return false;
+}
+
+_bool CMiniSpawn::Check_PlayerPos(_bool _bRevealed)
+{
+    CTransform* pPlayerTransform = dynamic_cast<CTransform*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Transform"));
+
+    if (pPlayerTransform)
+    {
+        _vec3 vPlayerPos;
+        pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
+
+        _vec3 vSpawnPos;
+        m_pTransformCom->Get_Info(INFO_POS, &vSpawnPos);
+
+        _vec3 vResult = vPlayerPos - vSpawnPos;
+        _float fDistance = D3DXVec3Length(&(vResult));
+
+        if (fDistance <= 20.0f)
+        {
+            m_bRevealed = true;
+        }
+    }
+
+    return m_bRevealed;
 }
 
 CMiniSpawn* CMiniSpawn::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
