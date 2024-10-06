@@ -129,15 +129,12 @@ void CUITrashSlot::Render_GameObject()
 
 		ITEMNUM pNum = m_pItem->Get_ItemNum();
 
+		m_pItem->Get_Texture()->Set_Texture(m_pItem->Get_TextureNumber());
+
 		_int iCount = m_pItem->Get_Count();
 
 		switch (pNum)
 		{
-		//case ITEM_SEED:
-		//	matWorld._11 = 10.f;
-		//	matWorld._22 = 10.f;
-		//	break;
-
 		case ITEM_SWORD:
 			matWorld._11 = 40.f;
 			matWorld._22 = 40.f;
@@ -171,12 +168,12 @@ void CUITrashSlot::Render_GameObject()
 			matWorld._42 -= 8.f;
 			break;
 
-		//case ITEM_SHOVEL:
-		//	matWorld._11 = 60.f;
-		//	matWorld._22 = 60.f;
+			//case ITEM_SHOVEL:
+			//	matWorld._11 = 60.f;
+			//	matWorld._22 = 60.f;
 
-		//	matWorld._42 -= 8.f;
-			break;
+			//	matWorld._42 -= 8.f;
+			//	break;
 
 		case ITEM_STAFF:
 			matWorld._11 = 35.f;
@@ -203,6 +200,46 @@ void CUITrashSlot::Render_GameObject()
 
 			matWorld._42 += 15.f;
 			break;
+
+		case ITEM_COPPER:
+			matWorld._11 = 20.f;
+			matWorld._22 = 20.f;
+			break;
+
+		case ITEM_IRON:
+			matWorld._11 = 20.f;
+			matWorld._22 = 20.f;
+			break;
+
+		case ITEM_SCARLET:
+			matWorld._11 = 20.f;
+			matWorld._22 = 20.f;
+			break;
+
+		case ITEM_COPPER_BAR:
+			matWorld._11 = 20.f;
+			matWorld._22 = 20.f;
+			break;
+
+		case ITEM_IRON_BAR:
+			matWorld._11 = 20.f;
+			matWorld._22 = 20.f;
+			break;
+
+		case ITEM_SCARLET_BAR:
+			matWorld._11 = 20.f;
+			matWorld._22 = 20.f;
+			break;
+
+		case ITEM_TORCH:
+			matWorld._11 = 25.f;
+			matWorld._22 = 25.f;
+			break;
+
+		default:
+			matWorld._11 = 15.f;
+			matWorld._22 = 15.f;
+			break;
 		}
 
 
@@ -218,8 +255,6 @@ void CUITrashSlot::Render_GameObject()
 		}
 
 		m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
-
-		m_pItem->Get_Texture()->Set_Texture();
 
 		m_pItem->Get_Buffer()->Render_First();
 	}

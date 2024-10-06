@@ -35,10 +35,10 @@ _int CGravestoneObject::Update_GameObject(const _float& fTimeDelta)
 		{
 			CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
 
-			pPlayer->Set_GraveInventory();
-
-			if (!pPlayer->Get_GraveUI())
+			if (pPlayer->Get_GraveUI())
 			{
+				pPlayer->Set_GraveInventory();
+
 				m_bCollision = false;
 			}
 		}
@@ -83,7 +83,7 @@ void CGravestoneObject::Interaction()
 	{
 		CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
 
-		pPlayer->Set_GraveInventory();
+		pPlayer->Set_GraveInventory(m_pInventoryCom);
 
 		m_bCollision = true;
 	}

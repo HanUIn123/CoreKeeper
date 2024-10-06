@@ -36,5 +36,7 @@ private:
 
 private:
 	Engine::CSmoke* m_pSmokeParticleCom;
+
+	_vec3 vPrePos;
 };
 

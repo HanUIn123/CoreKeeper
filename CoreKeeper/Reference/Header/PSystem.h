@@ -18,7 +18,7 @@ public:
 	virtual void resetParticle(Attribute* attribute) = 0;
 	virtual void addParticle();
 
-	virtual void update(_float timeDelta) = 0;
+	virtual void update(_float timeDelta, _vec3 vDir = {0.f, 0.f, 0.f}) = 0;
 
 	virtual void preRender();
 	virtual void render();

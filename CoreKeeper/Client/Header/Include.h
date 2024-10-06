@@ -18,6 +18,7 @@
 #include "Hunter.h"
 #include "HunterEye.h"
 #include "Malugaz.h"
+#include "Azeos.h"
 
 // Monster Render in MapTool
 #include "SlimeRender.h"

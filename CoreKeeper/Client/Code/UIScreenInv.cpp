@@ -391,9 +391,14 @@ void CUIScreenInv::Render_GameObject()
 			matWorld._22 = 20.f;
 			break;
 
-		dafault:
-			matWorld._11 = 20.f;
-			matWorld._22 = 20.f;
+		case ITEM_TORCH:
+			matWorld._11 = 25.f;
+			matWorld._22 = 25.f;
+			break;
+
+		default:
+			matWorld._11 = 15.f;
+			matWorld._22 = 15.f;
 			break;
 		}
 

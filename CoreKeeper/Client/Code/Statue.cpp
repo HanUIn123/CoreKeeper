@@ -43,12 +43,12 @@ _int CStatue::Update_GameObject(const _float& fTimeDelta)
 
 			CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
 
-			pPlayer->Set_Statue();
-
-			pPlayer->Set_Inventory();
-
-			if (!pPlayer->Get_StatueUI())
+			if (pPlayer->Get_StatueUI())
 			{
+				pPlayer->Set_Statue();
+
+				pPlayer->Set_Inventory();
+
 				m_bCollision = false;
 			}
 		}

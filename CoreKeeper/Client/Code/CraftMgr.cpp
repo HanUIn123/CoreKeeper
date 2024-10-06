@@ -126,7 +126,7 @@ CItem* CCraftMgr::Craft(CInventory* _pInventory, ITEMNUM _eItemNum, MATERIAL _eM
         break;
 
     case ITEM_ANVIL:
-        pItem = CAnvil::Create(m_pGraphicDev);
+        pItem = CAnvil::Create(m_pGraphicDev, _eMaterial);
         break;
     case ITEM_FURNACE:
         pItem = CFurnace::Create(m_pGraphicDev);
@@ -414,20 +414,20 @@ void CCraftMgr::Set_Recipe()
     potionTableRecipe.vecIngredients.push_back({ ITEM_WOOD, 8 });
     potionTableRecipe.vecIngredients.push_back({ ITEM_MUCUS, 8 });
     potionTableRecipe.vecIngredients.push_back({ ITEM_COPPER_BAR, 5 });
-    m_mapRecipes[make_pair(ITEM_POTION_TABLE, MATERIAL_END)] = potionTableRecipe;
+    m_mapRecipes[make_pair(ITEM_POTION_TABLE, MATERIAL_COPPER)] = potionTableRecipe;
 
     // 장신구 작업대
     Recipe accessoryTableRecipe;
     accessoryTableRecipe.vecIngredients.push_back({ ITEM_WOOD, 8 });
     accessoryTableRecipe.vecIngredients.push_back({ ITEM_COPPER_BAR, 4 });
     accessoryTableRecipe.vecIngredients.push_back({ ITEM_IRON_BAR, 8 });
-    m_mapRecipes[make_pair(ITEM_ACCESSORY_TABLE, MATERIAL_END)] = accessoryTableRecipe;
+    m_mapRecipes[make_pair(ITEM_ACCESSORY_TABLE, MATERIAL_IRON)] = accessoryTableRecipe;
 
     // 음악 작업대
     Recipe musicTableRecipe;
     musicTableRecipe.vecIngredients.push_back({ ITEM_FIBER, 5 });
     musicTableRecipe.vecIngredients.push_back({ ITEM_WOOD, 8 });
-    m_mapRecipes[make_pair(ITEM_MUSIC_TABLE, MATERIAL_END)] = musicTableRecipe;
+    m_mapRecipes[make_pair(ITEM_MUSIC_TABLE, MATERIAL_IRON)] = musicTableRecipe;
 
     // 구리 모루
     Recipe copperAnvilRecipe;
@@ -442,13 +442,13 @@ void CCraftMgr::Set_Recipe()
     // 용광로
     Recipe furnaceRecipe;
     furnaceRecipe.vecIngredients.push_back({ ITEM_DIRTWALL, 20 });
-    m_mapRecipes[make_pair(ITEM_FURNACE, MATERIAL_END)] = furnaceRecipe;
+    m_mapRecipes[make_pair(ITEM_FURNACE, MATERIAL_WOOD)] = furnaceRecipe;
 
     // 요리솥
     Recipe cookingPotRecipe;
     cookingPotRecipe.vecIngredients.push_back({ ITEM_WOOD, 2 });
     cookingPotRecipe.vecIngredients.push_back({ ITEM_COPPER_BAR, 4 });
-    m_mapRecipes[make_pair(ITEM_COOKINGPOT, MATERIAL_END)] = cookingPotRecipe;
+    m_mapRecipes[make_pair(ITEM_COOKINGPOT, MATERIAL_WOOD)] = cookingPotRecipe;
 
     // 횃불
     Recipe torchRecipe;
@@ -464,7 +464,7 @@ void CCraftMgr::Set_Recipe()
     Recipe sprinklerRecipe;
     sprinklerRecipe.vecIngredients.push_back({ ITEM_IRON_BAR, 8 });
     sprinklerRecipe.vecIngredients.push_back({ ITEM_SCARLET_BAR, 8 });
-    m_mapRecipes[make_pair(ITEM_SPRINKLER, MATERIAL_END)] = sprinklerRecipe;
+    m_mapRecipes[make_pair(ITEM_SPRINKLER, MATERIAL_IRON)] = sprinklerRecipe;
 
     // HP 포션
     Recipe hpPotionRecipe;

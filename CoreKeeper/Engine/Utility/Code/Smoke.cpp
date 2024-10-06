@@ -74,7 +74,7 @@ void CSmoke::resetParticle(Attribute* attribute) // 파티클 리셋
 	attribute->_lifeTime = 2.0f; // 수명 2초
 }
 
-void CSmoke::update(float timeDelta)
+void CSmoke::update(float timeDelta, _vec3 vDir)
 {
 	std::list<Attribute>::iterator i;
 
@@ -84,6 +84,8 @@ void CSmoke::update(float timeDelta)
 		if (i->_isAlive)
 		{
 			i->_color -= i->_colorFade * timeDelta;
+
+			i->_position += vDir;
 
 			if (i->_color.a <= 0.f) // 수명이 끝남
 			{

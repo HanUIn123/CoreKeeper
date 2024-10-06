@@ -95,7 +95,7 @@ public:
 	void            Set_Map();
 	void            Set_Status();
 	void            Set_ChestInventory(CInventory* _pInventory = nullptr);
-	void            Set_GraveInventory();
+	void            Set_GraveInventory(CInventory* pInventory = nullptr);
 	void            Set_Statue(_int _StatueNum = 0);
 	void            Set_Furnace();
 	void            Set_CookingPot();

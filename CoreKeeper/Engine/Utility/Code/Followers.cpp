@@ -77,7 +77,7 @@ void CFollow::resetParticle(Attribute* attribute) // 파티클 리셋
 	attribute->_lifeTime = 0.08f; // 수명 2초
 }
 
-void CFollow::update(float timeDelta)
+void CFollow::update(float timeDelta, _vec3 vDir)
 {
 	std::list<Attribute>::iterator i;
 

@@ -258,10 +258,26 @@ HRESULT CStage::Ready_Layer_Environment(const _tchar* pLayerTag)
 
 	CItem* pItem = dynamic_cast<CItem*>(pGameObject);
 
+	pGameObject = CBar::Create(m_pGraphicDev, MATERIAL_IRON);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"IronBar", pGameObject), E_FAIL);
+	dynamic_cast<CItem*>(pGameObject)->Add_Count(99);
+
+	CItem* pItem2 = dynamic_cast<CItem*>(pGameObject);
+
+	pGameObject = CBar::Create(m_pGraphicDev, MATERIAL_COPPER);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"CopperBar", pGameObject), E_FAIL);
+	dynamic_cast<CItem*>(pGameObject)->Add_Count(99);
+
+	CItem* pItem3 = dynamic_cast<CItem*>(pGameObject);
+
 	pGameObject = CGravestoneObject::Create(m_pGraphicDev, { 78.f, 0.5f, 18.f });
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"AheadGrave", pGameObject), E_FAIL);
 	dynamic_cast<CGravestoneObject*>(pGameObject)->Add_Item(pItem);
+	dynamic_cast<CGravestoneObject*>(pGameObject)->Add_Item(pItem2);
+	dynamic_cast<CGravestoneObject*>(pGameObject)->Add_Item(pItem3);
 
 	pGameObject = CSkeleton::Create(m_pGraphicDev, { 77.f, 0.5f, 18.f });
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
@@ -286,6 +302,10 @@ HRESULT CStage::Ready_Layer_Environment(const _tchar* pLayerTag)
 	pGameObject = CCookingPotObject::Create(m_pGraphicDev, { 75.f, .5f, 16.f });
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"CookingPot", pGameObject), E_FAIL);
+
+	pGameObject = CAzeos::Create(m_pGraphicDev, { 75.f, 1.f, 16.f });
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Azeos", pGameObject), E_FAIL);
 
 	m_mapLayer.insert({ pLayerTag , pLayer });
 
@@ -453,6 +473,11 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar* pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Torch", pGameObject), E_FAIL);
+
+	pGameObject = CGravestone::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Gravestone", pGameObject), E_FAIL);
 
 	/*pGameObject = CBox::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);

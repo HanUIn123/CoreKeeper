@@ -34,10 +34,10 @@ _int CCookingPotObject::Update_GameObject(const _float& fTimeDelta)
 		{
 			CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
 
-			pPlayer->Set_CookingPot();
-
-			if (!pPlayer->Get_CookingUI())
+			if (pPlayer->Get_CookingUI())
 			{
+				pPlayer->Set_CookingPot();
+
 				m_bCollision = false;
 			}
 		}

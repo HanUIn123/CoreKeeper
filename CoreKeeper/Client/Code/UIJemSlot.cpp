@@ -85,9 +85,9 @@ void CUIJemSlot::Render_GameObject()
 
 	m_pTransformCom->Get_WorldMatrix(&matWorld);
 
-	if (m_iIndex == 1)
+	if (m_iIndex == 0)
 	{
-		matWorld._42 -= 17.f;
+		matWorld._42 -= 18.f;
 	}
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);

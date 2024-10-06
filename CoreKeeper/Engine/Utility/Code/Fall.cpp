@@ -78,7 +78,7 @@ void CFall::resetParticle(Attribute* attribute) // 파티클 리셋
 	attribute->_iTextureNum = 0;
 }
 
-void CFall::update(float timeDelta)
+void CFall::update(float timeDelta, _vec3 vDir)
 {
 	std::list<Attribute>::iterator i;
 

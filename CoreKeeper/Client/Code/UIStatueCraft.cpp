@@ -106,7 +106,7 @@ void CUIStatueCraft::Render_GameObject()
 
 	m_pTransformCom->Get_WorldMatrix(&matWorld);
 
-	if (m_iIndex == 1)
+	if (m_iIndex == 0)
 	{
 		matWorld._42 -= 8.f;
 	}
@@ -120,37 +120,39 @@ void CUIStatueCraft::Render_GameObject()
 		m_pBufferCom->Render_Buffer();
 	}
 
-	matWorld._11 = 25.f;
-	matWorld._22 = 25.f;
-
-	m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
-
-	m_pTextureCom->Set_Texture(m_iIndex);
-
-	if(m_bEnough)
+	if (m_iIndex != 3)
 	{
-		m_pBufferCom->Render_Buffer();
+		matWorld._11 = 25.f;
+		matWorld._22 = 25.f;
 
-	}
-	else
-	{
-		m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
-		m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+		m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
 
-		m_pGraphicDev->SetRenderState(D3DRS_TEXTUREFACTOR, D3DCOLOR_ARGB(100, 255, 255, 255));
-		m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
-		m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
-		m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_TFACTOR);
-		m_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
-		m_pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+		m_pTextureCom->Set_Texture(m_iIndex);
+		if (m_bEnough)
+		{
+			m_pBufferCom->Render_Buffer();
 
-		m_pBufferCom->Render_Buffer();
+		}
+		else
+		{
+			m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+			m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
 
-		m_pGraphicDev->SetRenderState(D3DRS_TEXTUREFACTOR, 0xffffffff);
+			m_pGraphicDev->SetRenderState(D3DRS_TEXTUREFACTOR, D3DCOLOR_ARGB(100, 255, 255, 255));
+			m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
+			m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
+			m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_TFACTOR);
+			m_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+			m_pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 
-		m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
+			m_pBufferCom->Render_Buffer();
 
-		m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
+			m_pGraphicDev->SetRenderState(D3DRS_TEXTUREFACTOR, 0xffffffff);
+
+			m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
+
+			m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
+		}
 	}
 }
 
