@@ -1054,6 +1054,10 @@ HRESULT CStage::Load_MonsterData()
 			m_wsMonsterNameString[iIndex] = L"Shaman_" + std::to_wstring(iIndex);
 			pGameObject = CShaman::Create(m_pGraphicDev, _vec3(fX, 10, fZ));
 			break;
+		case MON_HUNTER:
+			m_wsMonsterNameString[iIndex] = L"Hunter_" + std::to_wstring(iIndex);
+			pGameObject = CHunter::Create(m_pGraphicDev, _vec3(fX, 10, fZ));
+			break;
 		}
 		NULL_CHECK_RETURN(pGameObject, E_FAIL);
 		FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsMonsterNameString[iIndex].c_str(), pGameObject), E_FAIL);

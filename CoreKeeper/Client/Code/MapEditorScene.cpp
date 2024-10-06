@@ -61,6 +61,7 @@ CMapEditorScene::CMapEditorScene(LPDIRECT3DDEVICE9 _pGraphicDevice)
         Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/ImGuiImage/Monster/Slime.png", TEX_MONSTER, 1);
         Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/ImGuiImage/Monster/Mushroom.png", TEX_MONSTER, 1);
         Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/ImGuiImage/Monster/Shaman.png", TEX_MONSTER, 1);
+        Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/ImGuiImage/Monster/Hunter.png", TEX_MONSTER, 1);
     }
 
     m_vecWallObject.resize((VTXCNTX - 1) * (VTXCNTZ - 1));
@@ -792,9 +793,9 @@ void CMapEditorScene::Setting_MonsterList()
 
     int iCount(0);
 
-    for (_int i = 0; i < 3; ++i)
+    for (_int i = 0; i < 4; ++i)
     {
-        int textureIndex = nCurrentItem * 3 + i;
+        int textureIndex = nCurrentItem * 4 + i;
 
         if (textureIndex < m_vecMonsterTexture.size())
         {
@@ -873,6 +874,9 @@ HRESULT CMapEditorScene::Piking_Monster()
                     break;
                 case MON_SHAMAN:
                     m_pMonsterCom = CShamanRender::Create(m_pGraphicDev, iIndex);
+                    break;
+                case MON_HUNTER:
+                    m_pMonsterCom = CHunterRender::Create(m_pGraphicDev, iIndex);
                     break;
                 }
 
@@ -1162,7 +1166,10 @@ void CMapEditorScene::MapFile_Save()
         {
             vTempMonsterType = pShamanRender->Get_MonsterType();
         }
-
+        else if (auto pHunterRender = dynamic_cast<CHunterRender*>(m_vecMonsterRenderObject[i]))
+        {
+            vTempMonsterType = pHunterRender->Get_MonsterType();
+        }
         vTempMonsterIndex = i;
 
         WriteFile(m_hMonsterFile, &vTempMonsterType, sizeof(_int), &dwByte3, nullptr);
