@@ -676,6 +676,7 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_MiniMap", pGameObject), E_FAIL);
 	*/
+
 	vPos = { 60.f, 130.f };
 	vSize = { 20.f, 20.f };
 
@@ -701,6 +702,23 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
 	pGameObject = CMiniObject::Create(m_pGraphicDev , { 128.5f, 0.1f, 128.5f });
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"MiniPlayer", pGameObject), E_FAIL);
+
+	_vec3	vSpawnPos[3] =
+	{
+		{ VTXCNTX / 2 + 65.f, 0.1f, 21.5f + 80.f },
+		{ VTXCNTX / 2, 0.1f, 17.f},
+		{ VTXCNTX / 2 - 40.f, 0.1f, 21.5f + 60.f }
+	};
+
+	for (_int i = 0; i < 3; ++i)
+	{
+		wstring wsMiniSpawnName = L"MiniSpawn_" + std::to_wstring(i);
+		CMiniSpawn* pMiniSpawn = CMiniSpawn::Create(m_pGraphicDev, vSpawnPos[i]);
+		NULL_CHECK_RETURN(pMiniSpawn, E_FAIL);
+		FAILED_CHECK_RETURN(pLayer->Add_GameObject(wsMiniSpawnName.c_str(), pMiniSpawn), E_FAIL);
+
+		m_vecMiniSpawn.push_back(pMiniSpawn);
+	}
 
 	pGameObject = CMiniCore::Create(m_pGraphicDev, { VTXCNTX / 2, 1.5f, 21.5f });
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);

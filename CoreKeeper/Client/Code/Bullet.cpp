@@ -210,7 +210,7 @@ void CBullet::Pattern_Attack(const _float& fTimeDelta)
         {
             _vec3		vPos;
             m_pTransformCom->Get_Info(INFO_POS, &vPos);
-            m_pPlayer->Set_KnockBack(vPos, m_pStateCom->Get_Stat()->iAttack);
+            m_pPlayer->Set_KnockBack(vPos, m_pStateCom->Get_Stat()->iAttack, 2.f, HIT_BULLET);
         }
     }
 }

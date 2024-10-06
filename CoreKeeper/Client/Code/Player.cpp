@@ -73,8 +73,8 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 
 	m_vecInstallObjectName.reserve(16);
 	m_iInstallNumber = 0;
-
 	m_iLightNum = g_iLightNum++;
+	m_iDebuff = 0;
 }
 
 CPlayer::~CPlayer()
@@ -1809,7 +1809,7 @@ void CPlayer::Particle_Update(_float fTimeDelta)
 	m_pFollowParticleCom->update(fTimeDelta);
 }
 
-void CPlayer::Set_KnockBack(_vec3 vEnemyPos, _int iDamage, _float fDist)
+void CPlayer::Set_KnockBack(_vec3 vEnemyPos, _int iDamage, _float fDist, PLAYERHITTYPE eHit)
 {
 	if (!m_bImmune && !m_bImmuneByTime)
 	{
@@ -1825,6 +1825,30 @@ void CPlayer::Set_KnockBack(_vec3 vEnemyPos, _int iDamage, _float fDist)
 
 		m_pStateCom->Set_Damaged(iDamage);
 		Set_ImmuneByTime();
+
+		// 여기에 이펙트 추가
+		switch (eHit)
+		{
+		case HIT_NORMAL:
+			break;
+		case HIT_FIRE:
+			m_iDebuff += pow(2, (_int)DEBUFF_FIRE);
+			break;
+		case HIT_ELECTRIC:
+			if ((m_iDebuff & DEBUFF_SLOW) == DEBUFF_SLOW)
+			{
+				m_iDebuff += pow(2, (_int)DEBUFF_STUN);
+				m_iDebuff -= pow(2, (_int)DEBUFF_SLOW);
+			}
+			else
+				m_iDebuff += pow(2, (_int)DEBUFF_SLOW);			
+			break;
+		case HIT_BULLET:
+			m_iDebuff += pow(2, (_int)DEBUFF_BLEED);
+			break;
+		default:
+			break;
+		}
 	}
 }
 
