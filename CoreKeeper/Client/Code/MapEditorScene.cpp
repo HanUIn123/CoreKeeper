@@ -22,7 +22,7 @@ CMapEditorScene::CMapEditorScene(LPDIRECT3DDEVICE9 _pGraphicDevice)
     , m_bReachable(false)
     , m_bSelectTile(false)
     , m_bSelectWall(false)
-    , m_bSelectBuilding(false)
+    , m_bSelectObject(false)
     , m_bSelectMonster(false)
     , m_bCanInstall(false)
     , m_bAlreadyInstalled(false)
@@ -32,7 +32,7 @@ CMapEditorScene::CMapEditorScene(LPDIRECT3DDEVICE9 _pGraphicDevice)
     , m_iPikingIndex(0)
     , m_iTileNumber(0)
     , m_iWallImgNumber(0)
-    , m_iBuildingNumber(0)
+    , m_iObjectNumber(0)
     , m_iMonsterNumber(0)
     , m_iInstallWallCount(1)
     , m_iInstallTileIndexCount(1)
@@ -55,9 +55,9 @@ CMapEditorScene::CMapEditorScene(LPDIRECT3DDEVICE9 _pGraphicDevice)
         Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/ImGuiImage/Wall/GateWall_1.png", TEX_WALL, 1);
         Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/ImGuiImage/Wall/MalGaWall_0.png", TEX_WALL, 1);
 
-        Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/BaseCamp/Core.png", TEX_OBJECT, 1);
-        Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/BaseCamp/CoreBase.png", TEX_OBJECT, 1);
-        Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/BaseCamp/SpawnPoint.png", TEX_OBJECT, 1);
+        Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/ImGuiImage/Object/Slime_Floor/slime_tile_%d.png", TEX_OBJECT, 9);
+        Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/ImGuiImage/Object/Mushroom/mushroom_%d.png", TEX_OBJECT, 3);
+        Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/ImGuiImage/Object/Azeos_Poop/bird_poop_%d.png", TEX_OBJECT, 3);
 
         Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/ImGuiImage/Monster/Slime.png", TEX_MONSTER, 1);
         Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/ImGuiImage/Monster/Mushroom.png", TEX_MONSTER, 1);
@@ -445,7 +445,7 @@ void CMapEditorScene::Setting_TileList()
             {
                 m_bSelectTile = true;
                 m_bSelectWall = false;
-                m_bSelectBuilding = false;
+                m_bSelectObject = false;
 
                 m_iTileNumber = textureIndex;
             }
@@ -483,11 +483,13 @@ void CMapEditorScene::Piking_Tile()
             for (_int i = 0; i < iCount; ++i)
             {
                 //// 정사각형 형태로 하려고, 
-
                 _float offsetX = (i % m_iInstallTileIndexCount) * VTXITV;
                 _float offsetZ = (i / m_iInstallTileIndexCount) * VTXITV;
 
                 _int iIndex = _int((m_vPickPos.z + offsetZ + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vPickPos.x + offsetX + 0.5f * VTXITV);
+
+                if (iIndex < 0 || iIndex >= (VTXCNTX - 1) * (VTXCNTZ - 1))
+                    continue;
 
                 pTerrain->Set_TextureNumber(iIndex, m_iTileNumber);
 
@@ -529,7 +531,7 @@ void CMapEditorScene::Setting_WallList()
             {
                 m_bSelectTile = false;
                 m_bSelectWall = true;
-                m_bSelectBuilding = false;
+                m_bSelectObject = false;
 
                 m_iWallImgNumber = textureIndex;
             }
@@ -540,7 +542,6 @@ void CMapEditorScene::Setting_WallList()
             }
         }
     }
-
 }
 
 HRESULT CMapEditorScene::Piking_Wall()
@@ -665,28 +666,49 @@ void CMapEditorScene::Setting_ObjectList()
     if (!ImGui::CollapsingHeader("Object List"))
         return;
 
-    CComponent* pComponent = NULL;
+    const char* items[] =
+    {
+      "Slime_Floor", "MushRoom", "Azeos_Poop"
+    };
 
-    const char* items[] = { "Core","CoreBase", "SpawnPoint", "Box","Object2", "Object3" };
+    int imageCounts[] = { 9, 3, 3 };
 
     static int	nCurrentItem = 0;
     ImGui::Combo("##4", &nCurrentItem, items, IM_ARRAYSIZE(items));
 
-    for (_int i = 0; i < m_vecObjectTexture.size(); ++i)
+    int itemImageCount = imageCounts[nCurrentItem];
+
+    int iIndex = 0;
+
+    for (int j = 0; j < nCurrentItem; ++j)
     {
-        if (nCurrentItem == i)
+        iIndex += imageCounts[j];
+    }
+
+    for (_int i = 0; i < itemImageCount; ++i)
+    {
+        int textureIndex = iIndex + i;
+
+        if (textureIndex < m_vecObjectTexture.size())
         {
-            if (ImGui::ImageButton("Object", m_vecObjectTexture[i], ImVec2(50.0f, 50.0f)))
+            if (ImGui::ImageButton(("Object" + std::to_string(textureIndex)).c_str(), m_vecObjectTexture[textureIndex], ImVec2(50.0f, 50.0f)))
             {
                 m_bSelectTile = false;
                 m_bSelectWall = false;
-                m_bSelectBuilding = true;
+                m_bSelectObject = true;
 
-                //if (m_pWallCom != nullptr)       //-> 이거 안하면 터짐.
-                m_iBuildingNumber = nCurrentItem;
+                //m_iObjectNumber = nCurrentItem;
+                m_iObjectNumber = textureIndex;
+            }
+
+            if ((i + 1) % 3 != 0)
+            {
+                ImGui::SameLine();
             }
         }
     }
+    //==========================================================
+
 }
 
 HRESULT CMapEditorScene::Piking_Object()
@@ -831,7 +853,7 @@ void CMapEditorScene::Setting_MonsterList()
             {
                 m_bSelectTile = false;
                 m_bSelectWall = false;
-                m_bSelectBuilding = false;
+                m_bSelectObject = false;
                 m_bSelectMonster = true;
 
                 m_iMonsterNumber = textureIndex;

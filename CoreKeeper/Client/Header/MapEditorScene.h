@@ -80,7 +80,6 @@ private:
 	vector<IDirect3DBaseTexture9*>			m_vecObjectTexture;
 	vector<IDirect3DBaseTexture9*>			m_vecMonsterTexture;
 
-	//LPDIRECT3DTEXTURE9						m_TileTextureInfo = NULL;
 	LPDIRECT3DTEXTURE9						m_TextureInfo = NULL;
 	D3DXIMAGE_INFO							m_tImageInfo;
 
@@ -103,8 +102,8 @@ private:
 	// n번 째 벽인지 담는 변수.
 	_int									m_iWallImgNumber;
 
-	// n번 째 건설물인지 담는 변수.
-	_int									m_iBuildingNumber;
+	// n번 째 오브젝트인지 담는 변수.
+	_int									m_iObjectNumber;
 
 	// n번 째 몬스터인지 담는 변수.
 	_int									m_iMonsterNumber;
@@ -127,7 +126,7 @@ private:
 	bool									m_bMonsterClickPushed;
 	bool									m_bSelectTile;
 	bool									m_bSelectWall;
-	bool									m_bSelectBuilding;
+	bool									m_bSelectObject;
 	bool									m_bSelectMonster;
 	bool									m_bCanInstall;
 	bool									m_bAlreadyInstalled;
