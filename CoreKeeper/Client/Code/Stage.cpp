@@ -66,11 +66,9 @@ void CStage::Render_Scene()
 	//m_pGraphicDev->SetViewport(&miniMapViewport);
 }
 
-
 HRESULT CStage::Create_Inventory(const _tchar* pLayerTag, const _tchar* pGameObjectTag) 
 {
 	auto	iter = find_if(m_mapLayer.begin(), m_mapLayer.end(), CTag_Finder(pLayerTag));
-
 
 	if (iter == m_mapLayer.end())
 		return E_FAIL;
@@ -710,12 +708,13 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
 		{ VTXCNTX / 2 - 40.f, 0.1f, 21.5f + 60.f }
 	};
 
+	wstring wsMiniSpawnName[3];
 	for (_int i = 0; i < 3; ++i)
 	{
-		wstring wsMiniSpawnName = L"MiniSpawn_" + std::to_wstring(i);
+		wsMiniSpawnName[i] = L"MiniSpawn_" + std::to_wstring(i);
 		CMiniSpawn* pMiniSpawn = CMiniSpawn::Create(m_pGraphicDev, vSpawnPos[i]);
 		NULL_CHECK_RETURN(pMiniSpawn, E_FAIL);
-		FAILED_CHECK_RETURN(pLayer->Add_GameObject(wsMiniSpawnName.c_str(), pMiniSpawn), E_FAIL);
+		FAILED_CHECK_RETURN(pLayer->Add_GameObject(wsMiniSpawnName[i].c_str(), pMiniSpawn), E_FAIL);
 
 		m_vecMiniSpawn.push_back(pMiniSpawn);
 	}
