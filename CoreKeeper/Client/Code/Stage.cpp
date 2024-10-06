@@ -894,10 +894,13 @@ HRESULT CStage::Load_MapFile()
 	const _tchar* strFileName = L"../../Data/TileData.txt";
 	const _tchar* strWallFileName = L"../../Data/WallData.txt";
 	const _tchar* strObjectFileName = L"../../Data/ObjectData.txt";
+	const _tchar* strBigWallFileName = L"../../Data/BigWallData.txt";  
 
 	m_hFile = CreateFile(strFileName, GENERIC_READ, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
 	m_hWallFile = CreateFile(strWallFileName, GENERIC_READ, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
 	m_hObjectFile = CreateFile(strObjectFileName, GENERIC_READ, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+	m_hBigWallFile = CreateFile(strBigWallFileName, GENERIC_READ, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0); 
+
 
 	if (INVALID_HANDLE_VALUE == m_hFile)
 	{
@@ -914,6 +917,12 @@ HRESULT CStage::Load_MapFile()
 	if (INVALID_HANDLE_VALUE == m_hObjectFile)
 	{
 		MSG_BOX("Fail Open Object file");
+		return E_FAIL;
+	}
+
+	if (INVALID_HANDLE_VALUE == m_hBigWallFile) 
+	{
+		MSG_BOX("Fail Open BigWall file");
 		return E_FAIL;
 	}
 
@@ -945,6 +954,51 @@ HRESULT CStage::Load_MapFile()
 	pTerrain->Set_Unreachable(vecReach);
 
 	// ========================================================
+
+	/*
+	
+	_vec3	vSpawnPos[3] =
+	{
+		{ VTXCNTX / 2 + 65.f, 0.1f, 21.5f + 80.f },
+		{ VTXCNTX / 2, 0.1f, 17.f},
+		{ VTXCNTX / 2 - 40.f, 0.1f, 21.5f + 60.f }
+	};
+
+	wstring wsMiniSpawnName[3];
+	for (_int i = 0; i < 3; ++i)
+	{
+		wsMiniSpawnName[i] = L"MiniSpawn_" + std::to_wstring(i);
+		CMiniSpawn* pMiniSpawn = CMiniSpawn::Create(m_pGraphicDev, vSpawnPos[i]);
+		NULL_CHECK_RETURN(pMiniSpawn, E_FAIL);
+		FAILED_CHECK_RETURN(pLayer->Add_GameObject(wsMiniSpawnName[i].c_str(), pMiniSpawn), E_FAIL);
+
+		m_vecMiniSpawn.push_back(pMiniSpawn);
+	}
+	*/
+
+
+
+
+	DWORD dwByte4 = 0;
+	_vec3 vTempBigWallPos(0.0f, 0.0f, 0.0f);
+	_int  vTempBigWallType(0);
+
+	wstring wsBigWallName[4];
+	for (_int i = 0; i < 4; ++i) 
+	{
+		ReadFile(m_hBigWallFile, &vTempBigWallPos, sizeof(_vec3), &dwByte4, nullptr);
+		ReadFile(m_hBigWallFile, &vTempBigWallType, sizeof(_int), &dwByte4, nullptr);
+
+		if (dwByte4 == 0)
+			break;
+
+		wsBigWallName[i] = L"BigWall_" + std::to_wstring(i);
+		CMapToolWall* pBigWall = CMapToolWall::Create(m_pGraphicDev, vTempBigWallPos.x, vTempBigWallPos.z, vTempBigWallType);
+		NULL_CHECK_RETURN(pBigWall, E_FAIL);
+		FAILED_CHECK_RETURN(iter->second->Add_GameObject(wsBigWallName[i].c_str(), pBigWall), E_FAIL);
+	}
+
+	// ========================================================	
 
 	DWORD dwByte2 = 0;
 	_vec3 vTempWallPos(0.0f, 0.0f, 0.0f);

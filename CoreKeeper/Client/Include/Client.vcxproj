@@ -161,6 +161,7 @@ call Copy.bat</Command>
     <ClInclude Include="..\Header\Hunter.h" />
     <ClInclude Include="..\Header\HunterEye.h" />
     <ClInclude Include="..\Header\HunterRender.h" />
+    <ClInclude Include="..\Header\MapToolWall.h" />
     <ClInclude Include="..\Header\MiniSpawn.h" />
     <ClInclude Include="..\Header\Story.h" />
     <ClInclude Include="..\Header\StoryBackGround.h" />
@@ -314,6 +315,7 @@ call Copy.bat</Command>
     <ClCompile Include="..\Code\Hunter.cpp" />
     <ClCompile Include="..\Code\HunterEye.cpp" />
     <ClCompile Include="..\Code\HunterRender.cpp" />
+    <ClCompile Include="..\Code\MapToolWall.cpp" />
     <ClCompile Include="..\Code\MiniSpawn.cpp" />
     <ClCompile Include="..\Code\Story.cpp" />
     <ClCompile Include="..\Code\StoryBackGround.cpp" />

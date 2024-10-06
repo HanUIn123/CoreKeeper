@@ -59,6 +59,7 @@ private:
 	HANDLE							m_hFile;
 	HANDLE							m_hWallFile;
 	HANDLE							m_hObjectFile;
+	HANDLE							m_hBigWallFile;
 
 	wstring							m_wsTileNameString[VTXCNTX * VTXCNTZ];
 	wstring							m_wsWallNameString[VTXCNTX * VTXCNTZ];
