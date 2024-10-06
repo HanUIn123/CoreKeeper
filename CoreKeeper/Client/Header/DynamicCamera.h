@@ -30,7 +30,7 @@ public:
 	virtual			void			Render_GameObject() {}
 
 public:
-	void							Shaking(_float fDuration, _float fPower);
+	void							Set_ShakeInfo(_float fDuration, _float fPower);
 	//_bool							Get_IsWorldMap() { return m_bIsWorldMap; }
 private:
 	void							Key_Input();
@@ -40,11 +40,19 @@ private:
 	void							Zoom_In();
 	void							Zoom_Out();
 
+	void							Shaking(const _float& fTimeDelta);
+
 private:
 	_bool			m_bFix;
 	_bool			m_bIsWorldMap;
 	CTransform*		m_pTargetTransform;
 	_bool			m_bTargetPlayer;
+
+	_bool			m_bShaking;
+	_float			m_fDuration;
+	_float			m_fAccTime;
+	_float			m_fPower;
+	_vec3			m_vOffset;
 
 public:
 	static CDynamicCamera* Create(LPDIRECT3DDEVICE9 pGraphicDev,
