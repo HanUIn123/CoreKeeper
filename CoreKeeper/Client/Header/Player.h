@@ -46,6 +46,7 @@ private:
 	void			Walk_Y(const _float& fTimeDelta);
 	void			Flip();
 	void			Dash(const _float& fTimeDelta);
+	void			Lantern();
 	void			Set_ImmuneByTime(_float fImmuneTime = 1.f);
 	void			Set_ImmuneByToggle();
 
