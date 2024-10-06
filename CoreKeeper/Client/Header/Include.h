@@ -23,6 +23,7 @@
 #include "SlimeRender.h"
 #include "ShamanRender.h"
 #include "ShroomManRender.h"
+#include "HunterRender.h"
 
 // Item
 #include "Pickaxe.h"

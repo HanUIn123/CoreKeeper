@@ -174,7 +174,7 @@ _bool CMiniSpawn::Check_PlayerPos(_bool _bRevealed)
         _vec3 vResult = vPlayerPos - vSpawnPos;
         _float fDistance = D3DXVec3Length(&(vResult));
 
-        if (fDistance <= 20.0f)
+        if (fDistance <= 10.0f)
         {
             m_bRevealed = true;
         }
