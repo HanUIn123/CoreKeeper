@@ -3,6 +3,10 @@
 #include "Export_System.h"
 #include "Export_Utility.h"
 #include "../Header/Player.h"
+#include "../Header/Fire.h"
+#include "../Header/Thunder.h"
+#include "../Header/Crystal.h"
+#include <math.h>
 
 CAzeos::CAzeos(LPDIRECT3DDEVICE9 pGraphicDev)
     : CMonster(pGraphicDev)
@@ -12,6 +16,17 @@ CAzeos::CAzeos(LPDIRECT3DDEVICE9 pGraphicDev)
     m_fJumpY = 6.f;
     m_eState = IDLE;
     m_fAggroDistance = 32.f;
+    m_iTagNumber = 10;
+
+    m_iIdleCount = 0;
+    m_bCrystal = false;
+    m_iRandomPattern = 0;
+    m_iRandom = 0;
+    m_iEndCount = 0;
+
+    m_iCrystalNumber = 0;
+
+    m_bAttack = false;
 }
 
 CAzeos::~CAzeos()
@@ -22,11 +37,19 @@ HRESULT CAzeos::Ready_GameObject(_vec3 vPos)
 {
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-    m_pTransformCom->Set_Pos(vPos.x, m_fIdleY, vPos.z);
-    m_pStateCom->Set_Stat(100, 0, 10, 0);
-    m_vecDropItem.push_back(ITEM_MUCUS);
-    m_vecDropItem.push_back(ITEM_WOOD);
-    Set_Speed(0.8f);
+
+    m_pTransformCom->Set_Pos(vPos.x, 3.f, vPos.z);
+    m_pTransformCom->Set_Scale(3.2f, 3.2f, 3.2f);
+    m_pColliderCom->Set_Offset(_vec3(-0.25f, -0.5f, 0));
+    m_pStateCom->Set_Stat(1000, 0, 25, 0);
+    //m_vecDropItem.push_back(ITEM_STAFF);
+    //m_vecDropItem.push_back(ITEM_WOOD);
+    Set_Speed(6.0f);
+
+    m_pHitParticleCom->init(L"../Bin/Resource/Texture/Effect/Hit_%d.png", 5, 2.0f);
+
+    m_vFirstPos = vPos;
+
     return S_OK;
 }
 
@@ -35,35 +58,53 @@ _int CAzeos::Update_GameObject(const _float& fTimeDelta)
     if (m_bStopDraw)
         return 0;
 
-    if (m_eState != DEAD && m_iSpeedWeight)
+    Set_Cast();
+    //Set_Light();
+
+    if (m_eState != DEAD)
+        m_eState = State_Change();
+    switch (m_eState)
+    {
+    case IDLE:
+        Pattern_Idle(fTimeDelta);
+        break;
+    case WALK:
+        Pattern_Chase(fTimeDelta);
+        break;
+    case SWING:
+        Pattern_Attack(fTimeDelta);
+        break;
+    case DEAD:
+        Pattern_Dead();
+        break;
+    }
+
+    if (m_eState != DEAD && m_bKnockBackEnd)
         Check_Hitted();
 
-    if (m_bKnockBackEnd)
+    if (m_bKnockBackStart)
+        m_fImmuneTime += fTimeDelta;
+
+    if (m_fImmuneTime > m_fImmuneTimeLimit)
     {
-        if (m_eState != DEAD)
-            m_eState = State_Change();
-        switch (m_eState)
+        m_fImmuneTime = 0.f;
+        m_bKnockBackStart = false;
+        m_bKnockBackEnd = true;
+    }
+
+    if (m_bHit)
+    {
+        m_pHitParticleCom->update(fTimeDelta);
+
+        if (m_pHitParticleCom->isDead())
         {
-        case IDLE:
-            Pattern_Idle(fTimeDelta);
-            break;
-        case WALK:
-            Pattern_Chase(fTimeDelta);
-            break;
-        case SWING:
-            Pattern_Attack(fTimeDelta);
-            break;
-        case DEAD:
-            Pattern_Dead();
-            break;
+            m_pHitParticleCom->reset();
+            m_bHit = false;
         }
     }
-    else
-        KnockBack(fTimeDelta, 1.8f);
+    m_pTransformCom->Get_Info(INFO_POS, &m_vPos);
 
-
-    //Apply_Billboard();
-
+    Flip();
     Set_StuckFree(fTimeDelta);
     m_pAnimatorCom->Update_Animation();
     Add_RenderGroup(RENDER_ALPHA, this);
@@ -90,6 +131,11 @@ void CAzeos::Render_GameObject()
     m_pBufferCom->Render_Buffer();
     m_pColliderCom->Render_Collider();
 
+    if (m_bHit)
+    {
+        m_pHitParticleCom->render();
+    }
+
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
@@ -113,132 +159,99 @@ HRESULT CAzeos::Add_Component()
     NULL_CHECK_RETURN(pComponent, E_FAIL);
     m_mapComponent[ID_STATIC].insert({ L"Com_Animator", pComponent });
 
-    pComponent = m_pBufferCom = dynamic_cast<CAnimTex*>(Engine::Clone_Proto(L"Proto_SlimeAnimTex"));
+    pComponent = m_pBufferCom = dynamic_cast<CAnimTex*>(Engine::Clone_Proto(L"Proto_AzeosAnimTex"));
     NULL_CHECK_RETURN(pComponent, E_FAIL);
     m_mapComponent[ID_STATIC].insert({ L"Com_Buffer", pComponent });
 
-    pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_SlimeTex"));
+    pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_AzeosTex"));
     NULL_CHECK_RETURN(pComponent, E_FAIL);
     m_mapComponent[ID_STATIC].insert({ L"Com_Texture", pComponent });
 
-    pComponent = m_pColliderCom = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Proto_SlimeCollider"));
+    pComponent = m_pColliderCom = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Proto_MalugazCollider"));
     NULL_CHECK_RETURN(pComponent, E_FAIL);
     m_mapComponent[ID_DYNAMIC].insert({ L"Com_Collider", pComponent });
+
+    pComponent = m_pHitParticleCom = dynamic_cast<CHit*>(Engine::Clone_Proto(L"Proto_Hit"));
+    NULL_CHECK_RETURN(pComponent, E_FAIL);
+    m_mapComponent[ID_STATIC].insert({ L"Com_Hit", pComponent });
 
     return S_OK;
 
 }
 
-// 일정 시간마다 타일 한칸 이동 or 정지
 void CAzeos::Pattern_Idle(const _float& fTimeDelta)
 {
     // 벽 확인 추가할 것
-    m_pAnimatorCom->Set_CurState(IDLE, 0, 8, 10);
-    if (!m_bIdling)
-    {
-        m_bIdling = true;
-        if (m_iDir)
-        {
-            m_fIdleTimeLimit = rand() % 3 + 1; // 1 ~ 3초
-            m_iDir = 0;
-        }
-        else
-        {
-            m_fIdleTimeLimit = rand() % 4 + 2; // 1 ~ 5초
-            m_iDir = rand() % 8 + 1;
-        }
-    }
-    if (m_fIdleTime <= m_fIdleTimeLimit)
-    {
-        m_fIdleTime += fTimeDelta;
-        _vec3	vLook, vRight;
-        _float  fLookSpeed = 0, fRightSpeed = 0;
-        m_pTransformCom->Get_Info(INFO_LOOK, &vLook);
-        m_pTransformCom->Get_Info(INFO_RIGHT, &vRight);
 
-        switch (m_iDir)
-        {
-        case 0:
-            // 정지
-            break;
-        case 1:
-            // 상
-            fLookSpeed = m_fSpeed;
-            break;
-        case 2:
-            // 우상
-            fLookSpeed = m_fDiagSpeed;
-            fRightSpeed = m_fDiagSpeed;
-            break;
-        case 3:
-            // 우
-            fRightSpeed = m_fSpeed;
-            break;
-        case 4:
-            // 우하
-            fLookSpeed = -m_fDiagSpeed;
-            fRightSpeed = m_fDiagSpeed;
-            break;
-        case 5:
-            // 하
-            fLookSpeed = m_fSpeed;
-            break;
-        case 6:
-            // 좌하
-            fLookSpeed = -m_fDiagSpeed;
-            fRightSpeed = -m_fDiagSpeed;
-            break;
-        case 7:
-            // 좌
-            fRightSpeed = -m_fSpeed;
-            break;
-        case 8:
-            // 좌상
-            fLookSpeed = m_fDiagSpeed;
-            fRightSpeed = -m_fDiagSpeed;
-            break;
-        }
+    if (!g_bIsTopCamera)
+        m_eDir = FRONT;
 
-        Set_Stop(&vLook, fLookSpeed, &vRight, fRightSpeed);
-
-        if (m_iDir)
-        {
-            m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, fLookSpeed * m_iSpeedWeight);
-            m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, fRightSpeed * m_iSpeedWeight);
-        }
-    }
-    else
-    {
-        m_bIdling = false;
-        m_fIdleTime = 0.f;
-    }
+    m_pAnimatorCom->Set_CurState(IDLE, 0, 7, 8);
 }
 
-// 플레이어 방향으로 이동, 추후 A스타 알고리즘으로 변경
+// 텔레포트
 void CAzeos::Pattern_Chase(const _float& fTimeDelta)
 {
-    Engine::CTransform* pPlayerTransform = dynamic_cast<Engine::CTransform*>
-        (Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Transform"));
-    NULL_CHECK(pPlayerTransform);
-
     _vec3		vPlayerPos, vPos, vDir;
-    pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
+    m_pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
     m_pTransformCom->Get_Info(INFO_POS, &vPos);
-    vDir = vPlayerPos - vPos;
+    /* vDir = vPlayerPos - vPos;
     D3DXVec3Normalize(&vDir, &vDir);
     m_pAnimatorCom->Set_CurState(WALK, 12, 21, 8);
-
     Set_Stop(&vDir, m_fSpeed);
-    m_pTransformCom->Move_Pos(&vDir, fTimeDelta, m_fSpeed * m_iSpeedWeight);
-    if (m_pCalculatorCom->Check_Distance2D(&vPlayerPos, &vPos, m_fAggroDistance))
-        m_eState = SWING;
-    else
-        m_eState = WALK;
+    m_pTransformCom->Move_Pos(&vDir, fTimeDelta, m_fSpeed * m_iSpeedWeight);*/
+
+    // 플레이어 보다 밖에 있을 경우
+   // if (m_pCalculatorCom->Check_Distance2D(&vPlayerPos, &vPos, m_fAggroDdwistance))
+    //    m_eState = IDLE;
+   // else // 아닐 경우 텔레포트
+   // {
+        Pattern_Teleport();
+
+        m_eState = IDLE;
+    //}
 }
 
-// 점프 공격
 void CAzeos::Pattern_Attack(const _float& fTimeDelta)
 {
+    m_pAnimatorCom->Set_CurState(SWING, 8, 20, 8);
+
+
+    if (m_pAnimatorCom->Get_MotionIndex() == 20)
+    {
+        m_eState = IDLE;
+
+        m_bAttack = false;
+        return;
+    }
+
+    if (m_pAnimatorCom->Get_MotionIndex() <= 8 && !m_bAttack)
+    {
+        _int iRand = rand() % 2;
+
+        while (true) //  똑같은 함수 반복되지 않게 함
+        {
+            if (iRand == 0 && m_iRandomPattern != iRand)
+            {
+                Pattern_GenerateThunder();
+                m_iRandomPattern = iRand;
+
+                m_bAttack = true;
+                return;
+            }
+            else if (iRand == 1 && m_iRandomPattern != iRand)
+            {
+                Pattern_GenerateCrystal();
+                m_iRandomPattern = iRand;
+
+                m_bAttack = true;
+                return;
+            }
+
+            iRand = rand() % 2;
+        }
+    }
+    /*
     _vec3		vPos, vPlayerPos;
     m_pTransformCom->Get_Info(INFO_POS, &vPos);
     Engine::CTransform* pPlayerTransform = dynamic_cast<Engine::CTransform*>
@@ -294,15 +307,20 @@ void CAzeos::Pattern_Attack(const _float& fTimeDelta)
             Set_Stop(&m_vAttackPoint, m_fSpeedWeight);
             m_pTransformCom->Move_Pos(&m_vAttackPoint, fTimeDelta, m_fSpeedWeight * m_iSpeedWeight);
         }
-    }
+    }*/
 }
 
 void CAzeos::Pattern_Dead()
-{
-    m_pAnimatorCom->Set_CurState(DEAD, 36, 41, 8);
+{  
+    m_pAnimatorCom->Set_CurState(DEAD, 9, 18, 12);
 
-    if (m_pAnimatorCom->Get_MotionEnd())
+    m_iEndCount++;
+
+    if (m_pAnimatorCom->Get_MotionIndex() == 18 && m_iEndCount >= 500)
     {
+        m_iEndCount = 0;
+       // m_pGraphicDev->LightEnable(m_iLightNum, FALSE); // 조명 비활성화
+        m_bLightEnable = false;
         m_bStopDraw = true;
         Drop_Item();
     }
@@ -310,39 +328,279 @@ void CAzeos::Pattern_Dead()
 
 STATE CAzeos::State_Change()
 {
-    CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
-    _vec3 vPos;
+    // 공격하고 IDLE 순간이동하고 IDLE 반복
+    _vec3 vPlayerPos, vPos;
+    CGameObject* pWeapon;
     m_pTransformCom->Get_Info(INFO_POS, &vPos);
-    if (m_eState == IDLE)
+    m_pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
+
+    switch (m_eState)
     {
-        CGameObject* pWeapon = pPlayer->Get_HandedItem();
-        // 플레이어가 무기를 들고 공격하는 상태면 충돌 체크
-        if (pPlayer->Get_CurState() == SWING)
+    case IDLE:
+    {
+        if (m_iIdleCount >= 200)
         {
-            CCollider* pWeaponCollider = dynamic_cast<Engine::CCollider*>(pWeapon->Get_Component(ID_DYNAMIC, L"Com_Collider"));
-            if (m_pColliderCom->Check_Collision(pWeaponCollider))
+            _int iRandom = rand() % 3;
+            // 플레이어가 어그로 범위 내에 들어올 경우(선공)
+            if (m_pCalculatorCom->Check_Distance2D(&vPlayerPos, &vPos, m_fAggroDistance) && iRandom <= 1)
             {
-                _vec3 vPlayerPos;
-                dynamic_cast<CTransform*>(pPlayer->Get_Component(ID_DYNAMIC, L"Com_Transform"))->Get_Info(INFO_POS, &vPlayerPos);
+                m_iIdleCount = 0;
 
-                // 무기와 충돌 했는데 공격 범위 이내인 경우
-                if (m_pCalculatorCom->Check_Distance2D(&vPlayerPos, &vPos, m_fAggroDistance))
-                    return SWING;
-                // 공격 범위 밖인 경우
-                else
-                    return WALK;
+                return SWING;
             }
-        }
-    }
-    if (m_eState == SWING && vPos.y == m_fIdleY)
-    {
-        _vec3 vPlayerPos;
-        dynamic_cast<CTransform*>(pPlayer->Get_Component(ID_DYNAMIC, L"Com_Transform"))->Get_Info(INFO_POS, &vPlayerPos);
+            else if (iRandom == 2)
+            {
+                m_iIdleCount = 0;
 
-        if (!m_pCalculatorCom->Check_Distance2D(&vPlayerPos, &vPos, m_fAggroDistance))
+                return WALK;
+            }
+      
+        }
+        else if (m_bAttackSuccess)
+        {
+            m_iIdleCount = 0;
+        }
+        else
+        {
+            m_iIdleCount++;
+
             return IDLE;
+        }
+
+        break;
+    }
+    case WALK:
+    {
+        if (!m_pCalculatorCom->Check_Distance2D(&vPlayerPos, &vPos, m_fAggroDistance))
+            return WALK;
+
+        return IDLE;
+        break;
+    }
+    case SWING:
+        // 공격 모션이 끝났을 때
+        if (m_bAttackSuccess)
+        {
+            return IDLE;       
+        }
+        break;
     }
     return m_eState;
+}
+
+void CAzeos::Pattern_Teleport()
+{
+    _vec3 vPlayerPos;
+
+    _int iRand = rand() % 5;
+
+    if (iRand <= 3) // 75% 확률?
+    {
+        m_pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
+
+        float randomAngle = static_cast<float>(rand()) / RAND_MAX * 360.0f;
+
+        _float fX = vPlayerPos.x + 5.f * cosf(D3DXToRadian(randomAngle));
+        _float fZ = vPlayerPos.z + 5.f * sinf(D3DXToRadian(randomAngle));
+
+        m_pTransformCom->Set_Pos(fX, 2.6f, fZ);
+        //플레이어와 일정한 거리 안에서 랜덤하게 텔레포트
+    }
+
+    else if (iRand == 4) // 25% 확률?
+    {
+        m_bCrystal = true;
+        //크리스탈 쪽으로 
+    }
+}
+
+void CAzeos::Pattern_GenerateThunder()
+{
+    _int iRandom = rand() % 3;
+
+    while (true)
+    {
+        if (iRandom == 0 && m_iRandom != iRandom)  // 이전에 나왔던 수와 같으면 실행 안되게함
+        {
+            Generate_Line();
+
+            m_iRandom = iRandom;
+            return;
+        }
+        else if (iRandom == 1 && m_iRandom != iRandom)
+        {
+            Generate_Circle();
+
+            m_iRandom = iRandom;
+            return;
+        }
+        else if (iRandom == 2 && m_iRandom != iRandom)
+        {
+            Generate_Random();
+
+            m_iRandom = iRandom;
+            return;
+        }
+
+        iRandom = rand() % 3;
+    }
+}
+
+//플레이어 중심으로 일렬로 20개 생성
+void CAzeos::Generate_Line()
+{
+    _vec3 vPlayerPos;
+    m_pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
+
+    _vec3 vThunderPos[15];
+
+    _float fFirstZPos = vPlayerPos.z + 5.f;
+
+    for (int i = 0; i < 7; i++)
+    {
+        vThunderPos[i].z = fFirstZPos - (i * 2.f);
+        vThunderPos[i].x = vPlayerPos.x - 3.f;
+
+        vThunderPos[i].y = vPlayerPos.y;
+    }
+
+    for (int i = 7; i < 15; i++)
+    {
+        vThunderPos[i].z = fFirstZPos - ((i + 1) * 2.f);
+        vThunderPos[i].x = vPlayerPos.x + 3.f;
+
+        vThunderPos[i].y = vPlayerPos.y;
+    }
+
+    CGameObject* pThunder;
+
+    CScene* pScene = Engine::Get_Scene();
+    for (int i = 0; i < 15; i++)
+    {
+        pThunder = CThunder::Create(m_pGraphicDev, vThunderPos[i], CThunder::THUNDER_LINE);
+        NULL_CHECK(pThunder);
+        m_vecProjectileName.push_back(L"Monster_Created_Thunder" + std::to_wstring(m_iTagNumber++));
+        FAILED_CHECK_RETURN(pScene->Create_GameObject(L"Layer_GameLogic", pThunder, m_vecProjectileName.back().c_str()), );
+    }
+}
+
+// 플레이어 중심으로 랜덤한 거리에 20개 생성
+void CAzeos::Generate_Random()
+{
+    m_bAttackSuccess = false;
+
+    _vec3 vPlayerPos;
+    m_pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
+
+    // 플레이어 주위 위치 10개 지정하기
+    _vec3 vFirePos[15];
+    float fRadius = 7.0f;  // 플레이어 주변의 거리(반경)를 설정
+    float fMinRadius = 2.0f; // 최소 반경 설정
+
+
+
+    for (int i = 0; i < 15; i++)
+    {
+        // 랜덤 반경(최소 반경과 최대 반경 사이의 값)
+        float randomRadius = fMinRadius + static_cast<float>(rand()) / RAND_MAX * (fRadius - fMinRadius);
+
+        // 랜덤 각도 (0 ~ 360도 사이)
+        float randomAngle = static_cast<float>(rand()) / RAND_MAX * 360.0f;
+
+
+        // 각도와 반경을 기반으로 X, Z 좌표 계산
+        vFirePos[i].x = vPlayerPos.x + randomRadius * cosf(D3DXToRadian(randomAngle));
+        vFirePos[i].z = vPlayerPos.z + randomRadius * sinf(D3DXToRadian(randomAngle));
+
+        // Y 좌표는 플레이어의 Y 좌표와 동일하게 설정
+        vFirePos[i].y = vPlayerPos.y;
+    }
+
+    CGameObject* pThunder;
+
+    CScene* pScene = Engine::Get_Scene();
+    for (int i = 0; i < 15; i++)
+    {
+        pThunder = CThunder::Create(m_pGraphicDev, vFirePos[i], CThunder::THUNDER_RANDOM);
+        NULL_CHECK(pThunder);
+        m_vecProjectileName.push_back(L"Monster_Created_Thunder" + std::to_wstring(m_iTagNumber++));
+        FAILED_CHECK_RETURN(pScene->Create_GameObject(L"Layer_GameLogic", pThunder, m_vecProjectileName.back().c_str()), );
+    }
+}
+
+void CAzeos::Generate_Circle()
+{
+    m_bAttackSuccess = false;
+
+    _vec3 vPlayerPos;
+    m_pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
+
+    // 플레이어 주위 위치 20개 지정하기
+    _vec3 vFirePos[15];
+    float fRadius = 10.0f;  // 플레이어 주변의 거리(반경)를 설정
+
+    for (int i = 0; i < 15; i++)
+    {
+
+        // 랜덤 각도 (0 ~ 360도 사이)
+        float randomAngle = static_cast<float>(rand()) / RAND_MAX * 360.0f;
+
+
+        // 각도와 반경을 기반으로 X, Z 좌표 계산
+        vFirePos[i].x = vPlayerPos.x + fRadius * cosf(D3DXToRadian(randomAngle));
+        vFirePos[i].z = vPlayerPos.z + fRadius * sinf(D3DXToRadian(randomAngle));
+
+        // Y 좌표는 플레이어의 Y 좌표와 동일하게 설정
+        vFirePos[i].y = vPlayerPos.y;
+    }
+
+    CGameObject* pThunder;
+
+    CScene* pScene = Engine::Get_Scene();
+    for (int i = 0; i < 15; i++)
+    {
+        pThunder = CThunder::Create(m_pGraphicDev, vFirePos[i], CThunder::THUNDER_CIRCLE);
+        NULL_CHECK(pThunder);
+        m_vecProjectileName.push_back(L"Monster_Created_Fireball" + std::to_wstring(m_iTagNumber++));
+        FAILED_CHECK_RETURN(pScene->Create_GameObject(L"Layer_GameLogic", pThunder, m_vecProjectileName.back().c_str()), );
+    }
+}
+
+void CAzeos::Pattern_GenerateCrystal()
+{
+    m_bAttackSuccess = false;
+
+    // 보스 처음생성 위치로 부터 랜덤한 거리에 3개 지정하기
+    _vec3 vFirePos[3];
+    float fRadius = 10.0f;  // 플레이어 주변의 거리(반경)를 설정
+    float fMinRadius = 5.0f; // 최소 반경 설정
+
+    for (int i = 0; i < 3; i++)
+    {
+        // 랜덤 반경(최소 반경과 최대 반경 사이의 값)
+        float randomRadius = fMinRadius + static_cast<float>(rand()) / RAND_MAX * (fRadius - fMinRadius);
+
+        // 랜덤 각도 (0 ~ 360도 사이)
+        float randomAngle = static_cast<float>(rand()) / RAND_MAX * 360.0f;
+
+        // 각도와 반경을 기반으로 X, Z 좌표 계산
+        vFirePos[i].x = m_vFirstPos.x + randomRadius * cosf(D3DXToRadian(randomAngle));
+        vFirePos[i].z = m_vFirstPos.z + randomRadius * sinf(D3DXToRadian(randomAngle));
+
+        // Y 좌표는 플레이어의 Y 좌표와 동일하게 설정
+        vFirePos[i].y = 0.5f;
+    }
+
+    CGameObject* pCrystal;
+
+    CScene* pScene = Engine::Get_Scene();
+    for (int i = 0; i < 3; i++)
+    {
+        pCrystal = CCrystal::Create(m_pGraphicDev, vFirePos[i]);
+        NULL_CHECK(pCrystal);
+        m_vecProjectileName.push_back(L"Crystal_" + std::to_wstring(m_iCrystalNumber++));
+        FAILED_CHECK_RETURN(pScene->Create_GameObject(L"Layer_GameLogic", pCrystal, m_vecProjectileName.back().c_str()), );
+    }
 }
 
 CAzeos* CAzeos::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)

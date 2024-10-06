@@ -156,10 +156,12 @@ call Copy.bat</Command>
     <ClInclude Include="..\Header\Arrow.h" />
     <ClInclude Include="..\Header\Assistance.h" />
     <ClInclude Include="..\Header\Bullet.h" />
+    <ClInclude Include="..\Header\Crystal.h" />
     <ClInclude Include="..\Header\Hunter.h" />
     <ClInclude Include="..\Header\HunterEye.h" />
     <ClInclude Include="..\Header\Story.h" />
     <ClInclude Include="..\Header\StoryBackGround.h" />
+    <ClInclude Include="..\Header\Thunder.h" />
     <ClInclude Include="..\Header\TorchObject.h" />
     <ClInclude Include="..\Header\StatueBase.h" />
     <ClInclude Include="..\Header\FarmMgr.h" />
@@ -305,10 +307,12 @@ call Copy.bat</Command>
     <ClCompile Include="..\Code\Azeos.cpp" />
     <ClCompile Include="..\Code\Assistance.cpp" />
     <ClCompile Include="..\Code\Bullet.cpp" />
+    <ClCompile Include="..\Code\Crystal.cpp" />
     <ClCompile Include="..\Code\Hunter.cpp" />
     <ClCompile Include="..\Code\HunterEye.cpp" />
     <ClCompile Include="..\Code\Story.cpp" />
     <ClCompile Include="..\Code\StoryBackGround.cpp" />
+    <ClCompile Include="..\Code\Thunder.cpp" />
     <ClCompile Include="..\Code\TorchObject.cpp" />
     <ClCompile Include="..\Code\StatueBase.cpp" />
     <ClCompile Include="..\Code\FarmMgr.cpp" />

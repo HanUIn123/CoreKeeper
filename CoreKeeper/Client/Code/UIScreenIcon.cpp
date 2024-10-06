@@ -85,6 +85,8 @@ _int CUIScreenIcon::Update_GameObject(const _float& fTimeDelta)
 
 			if (m_iIndex == ICON_BAG || m_iIndex == ICON_BAG_COL)
 			{
+				pPlayer->UI_Disable();
+
 				pPlayer->Set_Inventory();
 				pPlayer->Set_Craft();
 				pPlayer->Set_Status();

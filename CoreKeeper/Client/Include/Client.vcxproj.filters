@@ -319,9 +319,6 @@
     <Filter Include="02. GameObject\07. UI\05. UIInventory\01. InvPlate">
       <UniqueIdentifier>{0ac47d63-794f-4ff2-a171-21b40ac20b90}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\02. Monster\04. BossAzeos">
-      <UniqueIdentifier>{d1b2a65f-7057-484a-a213-e2c56e5bd5d3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\02. Monster\03. Malugaz">
       <UniqueIdentifier>{64d60a91-eeb7-49b2-923c-53c267c5f070}</UniqueIdentifier>
     </Filter>
@@ -459,6 +456,15 @@
     </Filter>
     <Filter Include="02. GameObject\02. Monster\05. Hunter\Bullet">
       <UniqueIdentifier>{fb6e3fce-8e28-4f83-b632-67acd29fec7e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\02. Monster\04. Azeos">
+      <UniqueIdentifier>{d1b2a65f-7057-484a-a213-e2c56e5bd5d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\08. Object\13. Thunder">
+      <UniqueIdentifier>{1d055478-0799-4741-94db-031be4283227}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\08. Object\14. Crystal">
+      <UniqueIdentifier>{f79a2805-c1ec-4d8f-b951-4429be5cd7e1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -790,7 +796,7 @@
       <Filter>02. GameObject\07. UI\13. UIFurnace</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\Azeos.h">
-      <Filter>02. GameObject\02. Monster\04. BossAzeos</Filter>
+      <Filter>02. GameObject\02. Monster\04. Azeos</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\Malugaz.h">
       <Filter>02. GameObject\02. Monster\03. Malugaz</Filter>
@@ -899,6 +905,12 @@
     </ClInclude>
     <ClInclude Include="..\Header\Bullet.h">
       <Filter>02. GameObject\02. Monster\05. Hunter\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\Thunder.h">
+      <Filter>02. GameObject\08. Object\13. Thunder</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\Crystal.h">
+      <Filter>02. GameObject\08. Object\14. Crystal</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1209,7 +1221,7 @@
       <Filter>02. GameObject\07. UI\13. UIFurnace</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\Azeos.cpp">
-      <Filter>02. GameObject\02. Monster\04. BossAzeos</Filter>
+      <Filter>02. GameObject\02. Monster\04. Azeos</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\Malugaz.cpp">
       <Filter>02. GameObject\02. Monster\03. Malugaz</Filter>
@@ -1318,6 +1330,12 @@
     </ClCompile>
     <ClCompile Include="..\Code\HunterEye.cpp">
       <Filter>02. GameObject\02. Monster\05. Hunter\HunterEye</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Thunder.cpp">
+      <Filter>02. GameObject\08. Object\13. Thunder</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Crystal.cpp">
+      <Filter>02. GameObject\08. Object\14. Crystal</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

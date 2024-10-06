@@ -218,6 +218,10 @@ HRESULT CStage::Ready_Layer_Environment(const _tchar* pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"CookingPot", pGameObject), E_FAIL);
 
+	pGameObject = CAzeos::Create(m_pGraphicDev, { 75.f, 1.f, 16.f });
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Azeos", pGameObject), E_FAIL);
+
 	m_mapLayer.insert({ pLayerTag , pLayer });
 
 	return S_OK;

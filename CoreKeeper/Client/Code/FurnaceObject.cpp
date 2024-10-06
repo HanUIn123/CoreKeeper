@@ -34,10 +34,10 @@ _int CFurnaceObject::Update_GameObject(const _float& fTimeDelta)
 		{
 			CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
 
-			pPlayer->Set_Furnace();
-
-			if (!pPlayer->Get_FurnaceUI())
+			if (pPlayer->Get_FurnaceUI())
 			{
+				pPlayer->Set_Furnace();
+
 				m_bCollision = false;
 			}
 		}

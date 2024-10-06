@@ -127,10 +127,7 @@ void CUIChestInv::Render_GameObject()
 
 		Engine::MATERIAL material = pItem->Get_ItemMaterial();
 
-		if (material != 3)
-			pItem->Get_Texture()->Set_Texture(material);
-		else
-			pItem->Get_Texture()->Set_Texture();
+		pItem->Get_Texture()->Set_Texture(pItem->Get_TextureNumber());
 
 		Engine::ITEMNUM eNum = pItem->Get_ItemNum();
 
