@@ -23,7 +23,7 @@ HRESULT CBag::Ready_GameObject(MATERIAL _eMaterial, _vec3 vPos)
 	//	return E_FAIL;
 
 	m_eMaterial = _eMaterial;
-	m_iTextureNumber = m_eMaterial;
+	m_iTextureNumber = m_eMaterial - 1;
 
 	m_iAddSlotCount = 5 * (m_eMaterial + 1);
 

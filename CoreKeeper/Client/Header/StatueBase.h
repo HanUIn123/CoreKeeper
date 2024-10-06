@@ -40,5 +40,6 @@ private:
 
 private:
 	int					m_iTextureNum;
+	bool				m_bActive;
 };
 

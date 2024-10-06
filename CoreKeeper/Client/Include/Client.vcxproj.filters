@@ -301,9 +301,6 @@
     <Filter Include="02. GameObject\06. Item\01. Weapon\02. Staff\Magic">
       <UniqueIdentifier>{02bdfade-6c0d-40cc-8a17-8926fbfb8c34}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\08. Object\94.Wall">
-      <UniqueIdentifier>{9e769398-2d95-40c2-9c55-b97bbdf6ec0e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\07. UI\13. UIFurnace">
       <UniqueIdentifier>{04155040-a7ee-4e5f-9bff-ffc76e4c8c02}</UniqueIdentifier>
     </Filter>
@@ -483,6 +480,12 @@
     </Filter>
     <Filter Include="02. GameObject\08. Object\14. Crystal">
       <UniqueIdentifier>{f79a2805-c1ec-4d8f-b951-4429be5cd7e1}</UniqueIdentifier>
+	</Filter>
+    <Filter Include="02. GameObject\08. Object\13. Wall">
+      <UniqueIdentifier>{9e769398-2d95-40c2-9c55-b97bbdf6ec0e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\08. Object\00. BaseCamp\05. Tile">
+      <UniqueIdentifier>{eeddca41-a8c4-46b9-9ce3-de13819c2c14}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -604,7 +607,7 @@
       <Filter>02. GameObject\07. UI\06. UICraft</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\Wall.h">
-      <Filter>02. GameObject\08. Object\94.Wall</Filter>
+      <Filter>02. GameObject\08. Object\13. Wall</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\Eye.h">
       <Filter>02. GameObject\01. Player\00. Eyes</Filter>
@@ -945,6 +948,9 @@
     <ClInclude Include="..\Header\ChocoBar.h">
       <Filter>02. GameObject\06. Item\99. Etc\12. ChocoBar</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\Tile.h">
+      <Filter>02. GameObject\08. Object\00. BaseCamp\05. Tile</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1047,7 +1053,7 @@
       <Filter>02. GameObject\07. UI\00. UIPlayerStatus\01. PlayerStat</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\Wall.cpp">
-      <Filter>02. GameObject\08. Object\94.Wall</Filter>
+      <Filter>02. GameObject\08. Object\13. Wall</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\Eye.cpp">
       <Filter>02. GameObject\01. Player\00. Eyes</Filter>
@@ -1384,6 +1390,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\Lunch.cpp">
       <Filter>02. GameObject\06. Item\99. Etc\11. Lunch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Tile.cpp">
+      <Filter>02. GameObject\08. Object\00. BaseCamp\05. Tile</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -7,6 +7,11 @@ CCore::CCore(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CObject(pGraphicDev)
 {
 	m_iLightNum = g_iLightNum++;
+	ZeroMemory(&m_bActiveCore, sizeof(bool) * 3);
+
+	//m_bActiveCore[0] = true;
+	//m_bActiveCore[1] = true;
+	//m_bActiveCore[2] = true;
 }
 
 CCore::~CCore()
@@ -92,7 +97,17 @@ void CCore::SetUp_Light()
 	m_pTransformCom->Get_Info(INFO_POS, &vPos);
 
 	light.Position = vPos; // 횃불의 위치
-	light.Range = 5.0f; // 조명의 범위
+	
+	// 범위도 넓어지고 밝기도 밝게 하고싶다!
+	int iRange(0);
+
+	for (int i = 0; i < 3; i++)
+	{
+		if (m_bActiveCore[i])
+			iRange+=2;
+	}
+
+	light.Range = 5.0f + iRange; // 조명의 범위
 	light.Falloff = 1.f; // 감쇠
 	light.Attenuation0 = 1.0f; // 감쇠 계수
 	light.Attenuation1 = 0.01f;

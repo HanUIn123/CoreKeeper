@@ -1,56 +1,50 @@
 #pragma once
-#include "GameObject.h"
-#include "Define.h"
-#include "Export_System.h"
+#include "Object.h"
 
 BEGIN(Engine)
 
+class CObjectTex;
 class CTransform;
-class CTexture;
 class CCalculator;
-class CTileTex;
-class CMapToolTex;
+class CTexture;
+class CColliderCube;
+class CInventory;
 
 END
 
-class CTile : public Engine::CGameObject
+class CTile : public CObject
 {
 private:
-	explicit												CTile(LPDIRECT3DDEVICE9 pGraphicDev);
-	virtual													~CTile();
+	explicit						CTile(LPDIRECT3DDEVICE9 pGraphicDev);
+	virtual							~CTile();
+public:
+	virtual			HRESULT			Ready_GameObject(int _iStatueNum, int _iTextureNum, _vec3 vPos);
+	virtual			_int			Update_GameObject(const _float& fTimeDelta);
+	virtual			void			LateUpdate_GameObject();
+	virtual			void			Render_GameObject();
+
+	virtual			_int			Get_BuildImgNum() { return m_iBuildingImgNum; }
+	virtual			void			Set_BuildImgNum(_int _iBuildingNum) { m_iBuildingImgNum = _iBuildingNum; }
+
+	virtual			_vec3			Get_ObjectPos() { return m_vBuildPosition; }
+	virtual			void			Set_ObjectPos(_vec3 _iBuildingPos) { m_vBuildPosition = _iBuildingPos; }
+
+private:
+	HRESULT							Add_Component();
+
+protected:
+	Engine::CObjectTex* m_pEmissiveBufferCom;
+	Engine::CTexture* m_pEmissiveTextureCom;
 
 public:
-	virtual			HRESULT									Ready_GameObject(_float _fTileX, _float _fTileZ, _int iTileImageNum);
-	virtual			_int									Update_GameObject(const _float& fTimeDelta);
-	virtual			void									LateUpdate_GameObject();
-	virtual			void									Render_GameObject();
-
-	_int													Get_TileNumber() { return m_iTileImageNum; }
-	void													Set_TileNumber(_int _iTileNum) { m_iTileImageNum = _iTileNum; }
-
-
-
-	_vec3													Get_TilePos() { return m_vTilePosition; }
-	void													Set_TilePos(_vec3 _iTilePos) { m_vTilePosition = _iTilePos; }
+	static CTile* Create(LPDIRECT3DDEVICE9 pGraphicDev, int _iStatueNum, int _iTextureNum, _vec3 vPos);
 
 private:
-	HRESULT													Add_Component();
-	HRESULT													Setup_Material();
+	virtual void					Free();
 
 private:
-	Engine::CTransform*										m_pTransformCom;
-	Engine::CTexture*										m_pTextureCom;
-	Engine::CCalculator*									m_pCalculatorCom;
-	Engine::CTileTex*										m_pTileTexCom;
-	Engine::CMapToolTex*									m_pMapToolBufferCom;
-
-public:
-	static CTile*											Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _fTileX, _float _fTileZ, _int iTileImageNum);
-
-private:
-	virtual void											Free();
-	_vec3													m_vTilePosition;
-	_int													m_iTileImageNum;
+	int								m_iTextureNum;
+	int								m_iStatueNum;
+	bool							m_bActive;
 };
-
 
