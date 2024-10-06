@@ -78,7 +78,7 @@ _int CUICraftSlot::Update_GameObject(const _float& fTimeDelta)
 	if (m_bWindow)
 	{
 		POINT pt;
-		GetCursorPos(&pt);
+			GetCursorPos(&pt);
 		ScreenToClient(g_hWnd, &pt);
 
 		CInventory* pPlayerInv = dynamic_cast<Engine::CInventory*>
@@ -250,6 +250,12 @@ void CUICraftSlot::Set_Window(TABLETYPE _eTableType, MATERIAL _eMaterial, _bool 
 		if (iter != mapItemType.end() && iter->second.eItemMat != _eMaterial && iter->second.eItemMat != MATERIAL_END)
 		{
 			map<pair<TABLETYPE, _bool>, UIITEM>::iterator seconditer = mapItemType.find({ _eTableType, _bDirection });
+
+			if (iter->second.eItemMat > _eMaterial)
+			{
+				m_bWindow = false;
+				return;
+			}
 
 			for (; seconditer != mapItemType.end(); seconditer++)
 			{

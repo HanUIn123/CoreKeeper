@@ -126,7 +126,7 @@ CItem* CCraftMgr::Craft(CInventory* _pInventory, ITEMNUM _eItemNum, MATERIAL _eM
         break;
 
     case ITEM_ANVIL:
-        pItem = CAnvil::Create(m_pGraphicDev);
+        pItem = CAnvil::Create(m_pGraphicDev, _eMaterial);
         break;
     case ITEM_FURNACE:
         pItem = CFurnace::Create(m_pGraphicDev);
