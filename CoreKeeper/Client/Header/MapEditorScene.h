@@ -5,6 +5,7 @@
 #include "Engine_Define.h"
 
 #include "MapToolTerrain.h"
+#include "MapToolWall.h"
 
 #include "Include.h"
 
@@ -112,6 +113,7 @@ public:
 	HRESULT									MapFile_Load();
 private:
 	Engine::CGameObject*					m_pMTGameObjectCom;
+	Engine::CGameObject*					m_pMTWGemeObjectCom;
 	Engine::CGameObject*					m_pWallCom;
 	Engine::CGameObject*					m_pObjectCom;
 	Engine::CGameObject*					m_pMonsterCom;
@@ -137,6 +139,7 @@ private:
 	wstring									m_wsObjectNameString[VTXCNTX * VTXCNTZ];
 	wstring									m_wsMonsterNameString[VTXCNTX * VTXCNTZ];
 
+	HANDLE									m_hBigWallFile;
 	HANDLE									m_hFile;
 	HANDLE									m_hWallFile;
 	HANDLE									m_hObjectFile;

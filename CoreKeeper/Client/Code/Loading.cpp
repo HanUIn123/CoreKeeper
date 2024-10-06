@@ -110,6 +110,9 @@ _uint CLoading::Loading_Stage()
     // Mini_Object Render Tex
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MiniPlayerTex", Engine::CObjectTex::Create(m_pGraphicDev, 0.5f, 0.0f, 0.5f)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MiniCoreTex", Engine::CObjectTex::Create(m_pGraphicDev, 0.5f, 0.0f, 0.5f)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MiniSpawnTex", Engine::CObjectTex::Create(m_pGraphicDev, 0.5f, 0.0f, 0.5f)), E_FAIL);
+
+
 
 
 
@@ -150,6 +153,11 @@ _uint CLoading::Loading_Stage()
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_DarkBox", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/SkyBox/DarkSky.dds", TEX_CUBE, 1)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_WallCube", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Wall/Wall_%d.dds", TEX_CUBE, 3)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_DarkWallCube", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/DarkWall/Brick_Cube_%d.dds", TEX_CUBE, 48)), E_FAIL);
+    //FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MapToolWallCube", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/MapToolWall/BigWall_%d.dds", TEX_CUBE, 3)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MapToolWallCube", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/MapToolWall/black.dds", TEX_CUBE, 1)), E_FAIL);
+
+
+
 
     //MapTool TEXTURE
     //FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_BasicTileTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Tile/BasicTile/BasicTile_%d.png", TEX_NORMAL, 11)), E_FAIL);
@@ -182,7 +190,7 @@ _uint CLoading::Loading_Stage()
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_RingTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Accessory/Ring_%d.png", TEX_NORMAL, 3)), E_FAIL);
 
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_BagTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Bag/Bag_%d.png", TEX_NORMAL, 2)), E_FAIL);
-    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_LanternTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Lantern/Lantern_%d.png", TEX_NORMAL, 2)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_LanternTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Lantern/Lantern_%d.png", TEX_NORMAL, 3)), E_FAIL);
 
     // 보조장비
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_AssistanceTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Assistance/Assistance_%d.png", TEX_NORMAL, 5)), E_FAIL);
@@ -207,6 +215,8 @@ _uint CLoading::Loading_Stage()
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_PotionTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Potion/Potion_%d.png", TEX_NORMAL, 3)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_IngredientTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Ingredient/Ingredient_%d.png", TEX_NORMAL, 5)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_FoodTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Food/Food_%d.png", TEX_NORMAL, 10)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_LunchTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Food/Lunch.png", TEX_NORMAL)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ChocoBarTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Food/ChocoBar.png", TEX_NORMAL)), E_FAIL);
 
     // 기타 아이템
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_OreTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Ore/Ore_%d.png", TEX_NORMAL, 3)), E_FAIL);
@@ -225,6 +235,8 @@ _uint CLoading::Loading_Stage()
 
 #pragma endregion
 
+#pragma region Object TEXTURE
+
     // OBJECT TEXTURE
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_CoreTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/BaseCamp/Core.png", TEX_NORMAL)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_CoreBaseTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/BaseCamp/CoreBase.png", TEX_NORMAL)), E_FAIL);
@@ -236,6 +248,8 @@ _uint CLoading::Loading_Stage()
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_FireTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Monster/Fire.png", TEX_NORMAL)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ThunderTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Effect/ThunderEffects.png", TEX_NORMAL)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ElectricTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Effect/Electricity_Emissive.png", TEX_NORMAL)), E_FAIL);
+
+#pragma endregion
 
 #pragma region UI TEXTURE
 
@@ -277,7 +291,7 @@ _uint CLoading::Loading_Stage()
     // Mini Ui Texture
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MiniPlayer", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/MiniUI/MiniPlayer.png", TEX_NORMAL)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MiniCore", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/MiniUI/CoreIcon.png", TEX_NORMAL)), E_FAIL);
-
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MiniSpawn", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/MiniUI/TeleportIcon.png", TEX_NORMAL)), E_FAIL);
  
 #pragma endregion
 

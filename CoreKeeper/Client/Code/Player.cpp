@@ -4,9 +4,10 @@
 #include "Export_Utility.h"
 
 #include "..\Header\PlayerInclude.h"
+#include "..\Header\DynamicCamera.h"
 
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
-	: Engine::CGameObject(pGraphicDev)
+	: Engine::CGameObject(pGraphicDev), m_fLightRange(0.f)
 {
 	m_eDir = DIRECTION_END;
 	m_eState = STATE_END;
@@ -54,6 +55,8 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 
 	m_bRespawned = false;
 	m_vRespawnPoint = { VTXCNTX / 2, 0, 17.f };
+	m_bRespawnFirstFrame = true;
+	m_fRespawnProgress = 0.f;
 
 	m_bBleed = false;
 	m_fBleedTime = 0.f;
@@ -73,6 +76,8 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 
 	m_vecInstallObjectName.reserve(16);
 	m_iInstallNumber = 0;
+	m_iLightNum = g_iLightNum++;
+	m_iDebuff = 0;
 }
 
 CPlayer::~CPlayer()
@@ -94,6 +99,15 @@ HRESULT CPlayer::Ready_GameObject()
 
 _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 {
+	Set_UI();
+	if (m_pStateCom->Get_Dead())
+	{
+		Respawn_Progress(fTimeDelta);
+		return 0;
+	}
+	// 랜턴
+	SetUp_Light();
+
 	if (m_bNude)
 		Set_Clothes();
 	Set_MouseWorldPos();
@@ -143,6 +157,7 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 
 	Flip();
 	Dash(fTimeDelta);
+	Lantern();
 	Set_ImmuneByToggle();
 
 	// 시간제 무적용
@@ -168,10 +183,6 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 	Particle_Update(fTimeDelta);
 
 	Add_RenderGroup(RENDER_ALPHA, this);
-
-	Set_UI();
-
-
 	return Engine::CGameObject::Update_GameObject(fTimeDelta);
 }
 
@@ -183,6 +194,8 @@ void CPlayer::LateUpdate_GameObject()
 
 void CPlayer::Render_GameObject()
 {
+	if (m_pStateCom->Get_Dead())
+		return;
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
@@ -271,6 +284,30 @@ HRESULT CPlayer::Setup_Material()
 	m_pGraphicDev->SetMaterial(&tMtrl);
 
 	return S_OK;
+}
+
+void CPlayer::SetUp_Light()
+{
+	D3DLIGHT9 light;
+	ZeroMemory(&light, sizeof(D3DLIGHT9));
+
+	light.Type = D3DLIGHT_POINT; // 포인트 조명
+	light.Diffuse = { 1.f, 1.f, 1.f, 1.f }; // 확산 색상
+	light.Specular = { 1.f, 1.f, 1.f, 1.f }; // 반사 색상
+	light.Ambient = { 1.f, 1.f, 1.f, 1.f }; // 주변광
+
+	_vec3 vPos;
+	m_pTransformCom->Get_Info(INFO_POS, &vPos);
+
+	light.Position = vPos; // 횃불의 위치
+	light.Range = m_fLightRange; // 조명의 범위
+	light.Falloff = 1.f; // 감쇠
+	light.Attenuation0 = 1.0f; // 감쇠 계수
+	light.Attenuation1 = 0.01f;
+	light.Attenuation2 = 0.0f;
+
+	m_pGraphicDev->SetLight(m_iLightNum, &light); // 조명 설정
+	m_pGraphicDev->LightEnable(m_iLightNum, TRUE); // 조명 활성화
 }
 
 void CPlayer::Key_Position(const _float& fTimeDelta)
@@ -512,6 +549,32 @@ void CPlayer::Dash(const _float& fTimeDelta)
 	}
 }
 
+void CPlayer::Lantern()
+{
+	// 보조장비에 깃털 장착 시
+	CItem* pLantern;
+	wstring	strObjectTag = L"UIItemSlot_" + std::to_wstring(CUIItemSlot::SLOT_LANTERN);;
+	pLantern = dynamic_cast<CUIItemSlot*>(Engine::Get_GameObject(L"Layer_UI", strObjectTag.c_str()))->Get_Item();
+	if (!pLantern)
+		return;
+
+	if (pLantern->Get_ItemNum() == ITEM_LANTERN)
+	{
+		switch (pLantern->Get_ItemMaterial())
+		{
+		case MATERIAL_WOOD:
+			m_fLightRange = 3.f;
+			break;
+		case MATERIAL_COPPER:
+			m_fLightRange = 5.f;
+			break;
+		case MATERIAL_IRON:
+			m_fLightRange = 7.f;
+			break;
+		}
+	}
+}
+
 void CPlayer::Set_ImmuneByTime(_float fImmuneTime)
 {
 	if (m_bImmune || m_bImmuneByTime)
@@ -524,6 +587,9 @@ void CPlayer::Set_ImmuneByToggle()
 {
 	if (Engine::Key_Down(DIK_F1))
 		m_bImmune = m_bImmune ? false : true;
+
+	if (Engine::Key_Down(DIK_F2))
+		dynamic_cast<CDynamicCamera*>(Engine::Get_GameObject(L"Layer_Environment", L"DynamicCamera"))->Set_ShakeInfo(3.f, 5.f);
 }
 
 
@@ -1026,10 +1092,13 @@ void CPlayer::PickAxe()
 				dynamic_cast<CStage*>(pCurScene)->Get_WallNameByIndex(iIndex);
 
 				CGameObject* pWall = Get_GameObject(L"Layer_Environment", dynamic_cast<CStage*>(pCurScene)->Get_WallNameByIndex(iIndex)->c_str());
-				dynamic_cast<CWall*>(pWall)->Set_Destroy();
-				pCurScene->Delete_GameObject(L"Layer_Environment", pWall, dynamic_cast<CStage*>(pCurScene)->Get_WallNameByIndex(iIndex)->c_str());
-				Engine::Delete_Renderer(RENDER_PRIORITY, pWall);
-				pTerrain->Set_Unreachable(iIndex, false);
+				if (pWall)
+				{
+					dynamic_cast<CWall*>(pWall)->Set_Destroy();
+					pCurScene->Delete_GameObject(L"Layer_Environment", pWall, dynamic_cast<CStage*>(pCurScene)->Get_WallNameByIndex(iIndex)->c_str());
+					Engine::Delete_Renderer(RENDER_PRIORITY, pWall);
+					pTerrain->Set_Unreachable(iIndex, false);
+				}
 			}
 		}
 	}
@@ -1343,6 +1412,85 @@ void CPlayer::Set_UI()
 		
 		//Set_Statue();
 	}
+}
+
+void CPlayer::Respawn_Progress(const _float& fTimeDelta)
+{
+	m_fRespawnProgress += fTimeDelta;
+
+	if (m_fRespawnProgress <= 3.f)
+	{
+		_vec3 vPos;
+		m_pTransformCom->Get_Info(INFO_POS, &vPos);
+		m_pTransformCom->Set_Pos(vPos.x, vPos.y, vPos.z);
+		if (m_bRespawnFirstFrame)
+		{
+			m_bRespawnFirstFrame = false;
+
+			// 장착 장비 off
+			m_pHandedItem->Set_Use(false);
+			m_pHandedItem->Set_Active(false);
+			CItem* pArmor;
+			for (_int i = 0; i < CUIItemSlot::SLOT_END; i++)
+			{
+				wstring	strObjectTag = L"UIItemSlot_";
+				switch (i)
+				{
+				case CUIItemSlot::SLOT_HELM:
+					strObjectTag += std::to_wstring(i);
+					pArmor = dynamic_cast<CUIItemSlot*>(Engine::Get_GameObject(L"Layer_UI", strObjectTag.c_str()))->Get_Item();
+					if (pArmor)
+						pArmor->Set_Active(false);
+					else
+					{
+						m_pClothes[0]->Set_Active(false);
+						m_pClothes[1]->Set_Active(false);
+						m_pClothes[2]->Set_Active(false);
+					}
+					break;
+				case CUIItemSlot::SLOT_CHEST:
+					strObjectTag += std::to_wstring(i);
+					pArmor = dynamic_cast<CUIItemSlot*>(Engine::Get_GameObject(L"Layer_UI", strObjectTag.c_str()))->Get_Item();
+					if (pArmor)
+						pArmor->Set_Active(false);
+					else
+						m_pClothes[3]->Set_Active(false);
+					break;
+				case CUIItemSlot::SLOT_LEGGINGS:
+					strObjectTag += std::to_wstring(i);
+					pArmor = dynamic_cast<CUIItemSlot*>(Engine::Get_GameObject(L"Layer_UI", strObjectTag.c_str()))->Get_Item();
+					if (pArmor)
+						pArmor->Set_Active(false);
+					else
+						m_pClothes[4]->Set_Active(false);
+					break;
+				}
+			}
+			// 묘비 생성 및 미니맵 표시
+			CScene* pScene = Engine::Get_Scene();
+			CGameObject* pGraveStone = CGravestoneObject::Create(m_pGraphicDev, vPos);
+			m_vecInstallObjectName.push_back(L"Player_Created_Gravestone_" + std::to_wstring(m_iInstallNumber));
+			pScene->Create_GameObject(L"Layer_GameLogic", pGraveStone, m_vecInstallObjectName.back().c_str());
+			// 인벤토리 아이템 전부 묘비로 옮기기
+		}
+	}
+	else if (m_fRespawnProgress <= 5.f)
+	{
+		if (!m_bRespawnFirstFrame)
+		{
+			m_bRespawnFirstFrame = true;
+			// 리스폰 포인트로 이동 후 이펙트 생성
+
+		}
+		m_pTransformCom->Set_Pos(m_vRespawnPoint.x, m_vRespawnPoint.y, m_vRespawnPoint.z);
+	}
+	else if (m_fRespawnProgress <= 6.f)
+	{
+		// 리스폰 완료
+		m_pStateCom->Set_Revive();
+		m_fRespawnProgress = 0.f;
+	}
+
 }
 
 void CPlayer::Set_InvWindow()
@@ -1780,7 +1928,7 @@ void CPlayer::Particle_Update(_float fTimeDelta)
 	m_pFollowParticleCom->update(fTimeDelta);
 }
 
-void CPlayer::Set_KnockBack(_vec3 vEnemyPos, _int iDamage, _float fDist)
+void CPlayer::Set_KnockBack(_vec3 vEnemyPos, _int iDamage, _float fDist, PLAYERHITTYPE eHit)
 {
 	if (!m_bImmune && !m_bImmuneByTime)
 	{
@@ -1796,6 +1944,30 @@ void CPlayer::Set_KnockBack(_vec3 vEnemyPos, _int iDamage, _float fDist)
 
 		m_pStateCom->Set_Damaged(iDamage);
 		Set_ImmuneByTime();
+
+		// 여기에 이펙트 추가
+		switch (eHit)
+		{
+		case HIT_NORMAL:
+			break;
+		case HIT_FIRE:
+			m_iDebuff += pow(2, (_int)DEBUFF_FIRE);
+			break;
+		case HIT_ELECTRIC:
+			if ((m_iDebuff & DEBUFF_SLOW) == DEBUFF_SLOW)
+			{
+				m_iDebuff += pow(2, (_int)DEBUFF_STUN);
+				m_iDebuff -= pow(2, (_int)DEBUFF_SLOW);
+			}
+			else
+				m_iDebuff += pow(2, (_int)DEBUFF_SLOW);			
+			break;
+		case HIT_BULLET:
+			m_iDebuff += pow(2, (_int)DEBUFF_BLEED);
+			break;
+		default:
+			break;
+		}
 	}
 }
 

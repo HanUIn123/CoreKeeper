@@ -13,6 +13,7 @@ CMapEditorScene::CMapEditorScene(LPDIRECT3DDEVICE9 _pGraphicDevice)
     , m_iBuildCreateCount(0)
     , m_pWallCom(nullptr)
     , m_pObjectCom(nullptr)
+    , m_pMTWGemeObjectCom(nullptr)
     , m_bPushed(false)
     , m_bWallClickPushed(false)
     , m_bBuildingClick(false)
@@ -61,6 +62,7 @@ CMapEditorScene::CMapEditorScene(LPDIRECT3DDEVICE9 _pGraphicDevice)
         Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/ImGuiImage/Monster/Slime.png", TEX_MONSTER, 1);
         Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/ImGuiImage/Monster/Mushroom.png", TEX_MONSTER, 1);
         Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/ImGuiImage/Monster/Shaman.png", TEX_MONSTER, 1);
+        Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/ImGuiImage/Monster/Hunter.png", TEX_MONSTER, 1);
     }
 
     m_vecWallObject.resize((VTXCNTX - 1) * (VTXCNTZ - 1));
@@ -189,12 +191,27 @@ HRESULT CMapEditorScene::Ready_Prototype()
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_DarkBox", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/SkyBox/DarkSky.dds", TEX_CUBE, 1)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_WallCube", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Wall/Wall_%d.dds", TEX_CUBE, 3)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_DarkWallCube", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/DarkWall/Brick_Cube_%d.dds", TEX_CUBE, 48)), E_FAIL);
+    //FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MapToolWallCube", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/MapToolWall/BigWall_%d.dds", TEX_CUBE, 3)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MapToolWallCube", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/MapToolWall/black.dds", TEX_CUBE, 1)), E_FAIL);
 
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ObjectTex", Engine::CObjectTex::Create(m_pGraphicDev, 0.5f, 0.5f, 0.0f)), E_FAIL);
 
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_GrassTileTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Tile/GrassTile/Grass_Tile_%d.png", TEX_NORMAL, 9)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_DustTileTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Tile/DustTile/Dust_Tile_%d.png", TEX_NORMAL, 9)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MapToolTerrainTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/MapTerrain/Terrain_%d.png", TEX_NORMAL, 30)), E_FAIL);
+    
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_WallCollider", Engine::CColliderCube::Create(m_pGraphicDev, _vec3(-0.5f, -0.5f, -0.5f), _vec3(0.5f, 0.5f, 0.5f))), E_FAIL);
+
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SlimeAnimTex", Engine::CAnimTex::Create(m_pGraphicDev, 12, 4)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ShroomManAnimTex", Engine::CAnimTex::Create(m_pGraphicDev, 9, 5)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ShamanAnimTex", Engine::CAnimTex::Create(m_pGraphicDev, 8, 9)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_HunterAnimTex", Engine::CAnimTex::Create(m_pGraphicDev, 16, 20)), E_FAIL);
+
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SlimeTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Monster/Slime.png", TEX_NORMAL)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ShroomManTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Monster/Mushroom.png", TEX_NORMAL)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ShamanTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Monster/Shaman.png", TEX_NORMAL)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ShamProjectileTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Monster/fireballChargedProjectile_idle.png", TEX_NORMAL)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_HunterTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Monster/Hunter/Hunter_Body.png", TEX_NORMAL)), E_FAIL);
     
     return S_OK;
 }
@@ -231,6 +248,30 @@ HRESULT CMapEditorScene::Ready_Layer_GameLogic(const _tchar* pLayerTag)
     m_pMTGameObjectCom = CMapToolTerrain::Create(m_pGraphicDev);
     NULL_CHECK_RETURN(m_pMTGameObjectCom, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"MapToolTerrain", m_pMTGameObjectCom), E_FAIL);
+
+    _vec2 vBigWallPos[4] =
+    {
+        // 아래쪽 큰 벽
+        {79.5f, -12.5f},
+        // 왼쪽 큰 벽
+        {-12.5f, 99.5f},
+        //오른쪽 큰 벽
+        {171.5f, 99.5f},
+        // 위쪽 큰 벽
+        {79.5f, 171.5f}
+    };
+
+    wstring wsBigWallName[4];
+    for (_int i = 0; i < 4; ++i)
+    {
+        wsBigWallName[i] = L"MapToolWall_" + std::to_wstring(i);
+        if(i == 0 || i == 3)
+            m_pMTWGemeObjectCom = CMapToolWall::Create(m_pGraphicDev, vBigWallPos[i].x, vBigWallPos[i].y, 1);
+        else if(i == 1 || i == 2)
+            m_pMTWGemeObjectCom = CMapToolWall::Create(m_pGraphicDev, vBigWallPos[i].x, vBigWallPos[i].y, 2);
+        NULL_CHECK_RETURN(m_pMTWGemeObjectCom, E_FAIL);
+        FAILED_CHECK_RETURN(pLayer->Add_GameObject(wsBigWallName[i].c_str(), m_pMTWGemeObjectCom), E_FAIL);
+    }
 
     m_mapLayer.insert({ pLayerTag , pLayer });
 
@@ -779,9 +820,9 @@ void CMapEditorScene::Setting_MonsterList()
 
     int iCount(0);
 
-    for (_int i = 0; i < 3; ++i)
+    for (_int i = 0; i < 4; ++i)
     {
-        int textureIndex = nCurrentItem * 3 + i;
+        int textureIndex = nCurrentItem * 4 + i;
 
         if (textureIndex < m_vecMonsterTexture.size())
         {
@@ -860,6 +901,9 @@ HRESULT CMapEditorScene::Piking_Monster()
                     break;
                 case MON_SHAMAN:
                     m_pMonsterCom = CShamanRender::Create(m_pGraphicDev, iIndex);
+                    break;
+                case MON_HUNTER:
+                    m_pMonsterCom = CHunterRender::Create(m_pGraphicDev, iIndex);
                     break;
                 }
 
@@ -1016,16 +1060,24 @@ void CMapEditorScene::Setting_BaseCamp()
 
 void CMapEditorScene::MapFile_Save()
 {
+    const _tchar* strBigWallName = L"../../Data/BigWallData.txt";
     const _tchar* strFileName = L"../../Data/TileData.txt";
     const _tchar* strWallFileName = L"../../Data/WallData.txt";
     const _tchar* strObjectFileName = L"../../Data/ObjectData.txt";
     const _tchar* strMonsterFileName = L"../../Data/MonsterData.txt";
 
+    m_hBigWallFile = CreateFile(strBigWallName, GENERIC_WRITE, 0, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
     m_hFile = CreateFile(strFileName, GENERIC_WRITE, 0, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
     m_hWallFile = CreateFile(strWallFileName, GENERIC_WRITE, 0, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
     m_hObjectFile = CreateFile(strObjectFileName, GENERIC_WRITE, 0, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
     m_hMonsterFile = CreateFile(strMonsterFileName, GENERIC_WRITE, 0, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
 
+
+    if (INVALID_HANDLE_VALUE == m_hBigWallFile)
+    {
+        MSG_BOX("Failed BigWall Create File");
+        return;
+    }
 
     if (INVALID_HANDLE_VALUE == m_hFile)
     {
@@ -1051,6 +1103,59 @@ void CMapEditorScene::MapFile_Save()
         return;
     }
 
+    // ========================================================
+
+    /*
+        _vec3													m_vBigWallPosition;
+
+        // 세로인지 가로인지 구별하는 int 변수
+        _int                                                    m_iWallType;
+    */
+
+    CMapToolWall* pBigWall = dynamic_cast<CMapToolWall*>(Engine::Get_GameObject(L"Layer_GameLogic", L"MapToolWall"));
+
+    _vec3 vTempBigWallPos(0.0f, 0.0f, 0.0f);
+    _int  vTempBigWallType(0);
+
+    DWORD	dwByte4(0);
+
+    /*
+          // 아래쪽 큰 벽
+        {79.5f, -12.5f},
+        // 왼쪽 큰 벽
+        {-12.5f, 99.5f},
+        //오른쪽 큰 벽
+        {171.5f, 99.5f},
+        // 위쪽 큰 벽
+        {79.5f, 171.5f}
+    */
+
+    for (_int i = 0; i < 4; ++i)
+    {
+        if (i == 0)
+        {
+            vTempBigWallPos = _vec3(79, 0.0f, -12.5f);
+            vTempBigWallType = 1;
+        }
+        else if (i == 1)
+        {
+            vTempBigWallPos = _vec3(-12.5f, 0.0f, 99.5f);
+            vTempBigWallType = 2; 
+        }
+        else if (i == 2)
+        {
+            vTempBigWallPos = _vec3(79.f, 0.0f, 171.f);
+            vTempBigWallType = 1;
+        }
+        else if (i == 3)
+        {
+            vTempBigWallPos = _vec3(171.f, 0.0f, 99.5f);
+            vTempBigWallType = 2; 
+        }
+
+        WriteFile(m_hBigWallFile, &vTempBigWallPos, sizeof(_vec3), &dwByte4, nullptr);
+        WriteFile(m_hBigWallFile, &vTempBigWallType, sizeof(_int), &dwByte4, nullptr);
+    }
 
     // ========================================================
 
@@ -1149,7 +1254,10 @@ void CMapEditorScene::MapFile_Save()
         {
             vTempMonsterType = pShamanRender->Get_MonsterType();
         }
-
+        else if (auto pHunterRender = dynamic_cast<CHunterRender*>(m_vecMonsterRenderObject[i]))
+        {
+            vTempMonsterType = pHunterRender->Get_MonsterType();
+        }
         vTempMonsterIndex = i;
 
         WriteFile(m_hMonsterFile, &vTempMonsterType, sizeof(_int), &dwByte3, nullptr);

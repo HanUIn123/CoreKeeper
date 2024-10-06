@@ -466,7 +466,7 @@ void CAzeos::Generate_Line()
 
     for (int i = 7; i < 15; i++)
     {
-        vThunderPos[i].z = fFirstZPos - ((i + 1) * 2.f);
+        vThunderPos[i].z = fFirstZPos - (((i - 7) + 1) * 2.f);
         vThunderPos[i].x = vPlayerPos.x + 3.f;
 
         vThunderPos[i].y = vPlayerPos.y;

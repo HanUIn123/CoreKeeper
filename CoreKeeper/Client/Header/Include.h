@@ -16,6 +16,7 @@
 #include "ShroomMan.h"
 #include "Shaman.h"
 #include "Hunter.h"
+#include "HunterEye.h"
 #include "Malugaz.h"
 #include "Azeos.h"
 
@@ -23,12 +24,12 @@
 #include "SlimeRender.h"
 #include "ShamanRender.h"
 #include "ShroomManRender.h"
+#include "HunterRender.h"
 
 // Item
 #include "Pickaxe.h"
 #include "Hoe.h"
 #include "WateringCan.h"
-#include "Seed.h"
 
 #include "Sword.h"
 #include "Bow.h"
@@ -57,25 +58,35 @@
 #include "Furnace.h"
 #include "CookingPot.h"
 #include "Torch.h"
+#include "WallPiece.h"
 #include "Box.h"
+#include "Gravestone.h"
 #include "Sprinkler.h"
 
 #include "Potion.h"
+#include "Ingredient.h"
 #include "Food.h"
+#include "Seed.h"
 #include "Spawner.h"
-
+#include "StatueCore.h"
 #include "Ore.h"
 #include "Bar.h"
-
 #include "Wood.h"
+#include "Mucus.h"
+#include "Piece.h"
+#include "Diary.h"
+#include "Lunch.h"
+#include "ChocoBar.h"
 
-#include "Ingredient.h"
 
 
 // Etc
 #include "Terrain.h"
 #include "SkyBox.h"
 #include "Wall.h"
+#include "MapToolWall.h"
+
+
 
 // Object
 #include "Core.h"
@@ -127,3 +138,4 @@
 #include "MiniObject.h"
 #include "MiniTerrain.h"
 #include "MiniCore.h"
+#include "MiniSpawn.h"

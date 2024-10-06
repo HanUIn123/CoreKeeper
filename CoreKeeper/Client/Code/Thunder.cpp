@@ -34,7 +34,7 @@ HRESULT CThunder::Ready_GameObject(_vec3 vPos, THUNDER_TYPE eType)
 		CTransform* pPlayerTrans = dynamic_cast<CTransform*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Transform"));
 		pPlayerTrans->Get_Info(INFO_POS, &vPlayerPos);
 
-		if ((vPlayerPos.x - m_vPos.x) > 0)
+		if ((vPlayerPos.x - vPos.x) > 0)
 			m_bLR = true;
 		else
 			m_bLR = false;
