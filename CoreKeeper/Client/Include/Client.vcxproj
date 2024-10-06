@@ -156,6 +156,8 @@ call Copy.bat</Command>
     <ClInclude Include="..\Header\Arrow.h" />
     <ClInclude Include="..\Header\Assistance.h" />
     <ClInclude Include="..\Header\Bullet.h" />
+    <ClInclude Include="..\Header\ChocoBar.h" />
+    <ClInclude Include="..\Header\Lunch.h" />
     <ClInclude Include="..\Header\Hunter.h" />
     <ClInclude Include="..\Header\HunterEye.h" />
     <ClInclude Include="..\Header\HunterRender.h" />
@@ -307,6 +309,8 @@ call Copy.bat</Command>
     <ClCompile Include="..\Code\Azeos.cpp" />
     <ClCompile Include="..\Code\Assistance.cpp" />
     <ClCompile Include="..\Code\Bullet.cpp" />
+    <ClCompile Include="..\Code\ChocoBar.cpp" />
+    <ClCompile Include="..\Code\Lunch.cpp" />
     <ClCompile Include="..\Code\Hunter.cpp" />
     <ClCompile Include="..\Code\HunterEye.cpp" />
     <ClCompile Include="..\Code\HunterRender.cpp" />

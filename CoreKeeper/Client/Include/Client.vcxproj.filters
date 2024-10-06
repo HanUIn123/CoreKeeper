@@ -469,6 +469,12 @@
     <Filter Include="02. GameObject\02. Monster\05. Hunter\HunterRender">
       <UniqueIdentifier>{eea8fc7f-accf-40e5-bea1-90a5962df3f9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\06. Item\99. Etc\11. Lunch">
+      <UniqueIdentifier>{db7c8c32-d31f-4fda-aab3-141a41ca272c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\99. Etc\12. ChocoBar">
+      <UniqueIdentifier>{af84efa6-5b36-4812-8f9a-aadbc47eb24a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -915,6 +921,12 @@
     <ClInclude Include="..\Header\HunterRender.h">
       <Filter>02. GameObject\02. Monster\05. Hunter\HunterRender</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\Lunch.h">
+      <Filter>02. GameObject\06. Item\99. Etc\11. Lunch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\ChocoBar.h">
+      <Filter>02. GameObject\06. Item\99. Etc\12. ChocoBar</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1339,6 +1351,12 @@
     </ClCompile>
     <ClCompile Include="..\Code\HunterRender.cpp">
       <Filter>02. GameObject\02. Monster\05. Hunter\HunterRender</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\ChocoBar.cpp">
+      <Filter>02. GameObject\06. Item\99. Etc\12. ChocoBar</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Lunch.cpp">
+      <Filter>02. GameObject\06. Item\99. Etc\11. Lunch</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
