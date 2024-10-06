@@ -24,8 +24,7 @@ public:
 private:
     HRESULT													Add_Component();
 
-    _bool                                                   Piking_Teleport();
-
+    _bool                                                   m_bRevealed;
 
 private:
     Engine::CTransform*                                     m_pTransformCom;
@@ -33,9 +32,12 @@ private:
     Engine::CObjectTex*                                     m_pBufferCom;
 
 public:
-    static CMiniSpawn* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);
+    static CMiniSpawn*                                      Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);
+    _bool                                                   Piking_Teleport();
+    _bool                                                   Check_PlayerPos(_bool _bRevealed);
 
 private:
     virtual void											Free();
+
 };
 

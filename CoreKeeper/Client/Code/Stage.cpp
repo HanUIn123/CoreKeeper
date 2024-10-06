@@ -260,14 +260,14 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar* pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Malugaz", pGameObject), E_FAIL);*/
 
-	CGameObject* pHunter = CHunter::Create(m_pGraphicDev, _vec3(VTXCNTX / 2, 0, 17.f));
-	NULL_CHECK_RETURN(pHunter, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Hunter", pHunter), E_FAIL);
+	//CGameObject* pHunter = CHunter::Create(m_pGraphicDev, _vec3(VTXCNTX / 2, 0, 17.f));
+	//NULL_CHECK_RETURN(pHunter, E_FAIL);
+	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Hunter", pHunter), E_FAIL);
 
-	pGameObject = CHunterEye::Create(m_pGraphicDev);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	dynamic_cast<CHunterEye*>(pGameObject)->Set_Hunter(pHunter);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"HunterEye", pGameObject), E_FAIL);
+	//pGameObject = CHunterEye::Create(m_pGraphicDev);
+	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	//dynamic_cast<CHunterEye*>(pGameObject)->Set_Hunter(pHunter);
+	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"HunterEye", pGameObject), E_FAIL);
 
 	pGameObject = CTorch::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
