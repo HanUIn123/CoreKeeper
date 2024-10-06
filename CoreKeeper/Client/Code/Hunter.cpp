@@ -199,106 +199,6 @@ void CHunter::Pattern_Idle(const _float& fTimeDelta)
 {
     m_bChaseFirstFrame = true;
     m_bSwingFirstFrame = true;
-    // 현재 설정된 행동의 종료 시점 설정
-    switch (m_eIdleType)
-    {
-    case HUNTER_BUSH:
-    case HUNTER_IDLE:
-        if (m_fIdleTime <= m_fIdleTimeLimit)
-            m_fIdleTime += fTimeDelta;
-        else
-        {
-            m_fIdleTime = 0.f;
-            m_bIdling = false;
-        }
-        break;
-    case HUNTER_PEAK:
-    case HUNTER_GOTOBUSH:
-    case HUNTER_LEAVEBUSH:
-        if (m_pAnimatorCom->Get_MotionEnd())
-            m_bIdling = false;
-        break;
-    case HUNTER_MOVE:
-        if (m_fIdleTime <= m_fIdleTimeLimit)
-        {
-            m_fIdleTime += fTimeDelta;
-            _vec3	vLook, vRight;
-            _float  fLookSpeed = 0, fRightSpeed = 0;
-            m_pTransformCom->Get_Info(INFO_LOOK, &vLook);
-            m_pTransformCom->Get_Info(INFO_RIGHT, &vRight);
-
-            // 실제 이동
-            switch (m_iDir)
-            {
-            case 1:
-                // 상
-                m_eDir = BACK;
-                fLookSpeed = m_fSpeed;
-                break;
-            case 2:
-                // 우상
-                m_eDir = RIGHT;
-                fLookSpeed = m_fDiagSpeed;
-                fRightSpeed = m_fDiagSpeed;
-                break;
-            case 3:
-                // 우
-                m_eDir = RIGHT;
-                fRightSpeed = m_fSpeed;
-                break;
-            case 4:
-                // 우하
-                m_eDir = RIGHT;
-                fLookSpeed = -m_fDiagSpeed;
-                fRightSpeed = m_fDiagSpeed;
-                break;
-            case 5:
-                // 하
-                m_eDir = FRONT;
-                fLookSpeed = m_fSpeed;
-                break;
-            case 6:
-                // 좌하
-                m_eDir = LEFT;
-                fLookSpeed = -m_fDiagSpeed;
-                fRightSpeed = -m_fDiagSpeed;
-                break;
-            case 7:
-                // 좌
-                m_eDir = LEFT;
-                fRightSpeed = -m_fSpeed;
-                break;
-            case 8:
-                // 좌상
-                m_eDir = LEFT;
-                fLookSpeed = m_fDiagSpeed;
-                fRightSpeed = -m_fDiagSpeed;
-                break;
-            }
-
-            Set_Stop(&vLook, fLookSpeed, &vRight, fRightSpeed);
-            if (m_iSpeedWeight == 0)
-            {
-                m_iDir = 0;
-                m_bIdling = false;
-                m_fIdleTime = 0.f;
-            }
-            else if (m_iDir)
-            {
-                _int iWeight = 1;
-                if (m_eDir == LEFT)
-                    iWeight = -1;
-                m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, fLookSpeed * m_iSpeedWeight);
-                m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, fRightSpeed * iWeight * m_iSpeedWeight);
-            }
-            break;
-        }
-        else
-        {
-            m_bIdling = false;
-            m_fIdleTime = 0.f;
-        }
-    }
 
     // 애니메이션 종료 혹은 정해진 시간이 끝났을 경우
     if (!m_bIdling)
@@ -455,6 +355,107 @@ void CHunter::Pattern_Idle(const _float& fTimeDelta)
             break;
         }
         break;
+    }
+
+    // 현재 설정된 행동의 종료 시점 설정
+    switch (m_eIdleType)
+    {
+    case HUNTER_BUSH:
+    case HUNTER_IDLE:
+        if (m_fIdleTime <= m_fIdleTimeLimit)
+            m_fIdleTime += fTimeDelta;
+        else
+        {
+            m_fIdleTime = 0.f;
+            m_bIdling = false;
+        }
+        break;
+    case HUNTER_PEAK:
+    case HUNTER_GOTOBUSH:
+    case HUNTER_LEAVEBUSH:
+        if (m_pAnimatorCom->Get_MotionEnd())
+            m_bIdling = false;
+        break;
+    case HUNTER_MOVE:
+        if (m_fIdleTime <= m_fIdleTimeLimit)
+        {
+            m_fIdleTime += fTimeDelta;
+            _vec3	vLook, vRight;
+            _float  fLookSpeed = 0, fRightSpeed = 0;
+            m_pTransformCom->Get_Info(INFO_LOOK, &vLook);
+            m_pTransformCom->Get_Info(INFO_RIGHT, &vRight);
+
+            // 실제 이동
+            switch (m_iDir)
+            {
+            case 1:
+                // 상
+                m_eDir = BACK;
+                fLookSpeed = m_fSpeed;
+                break;
+            case 2:
+                // 우상
+                m_eDir = RIGHT;
+                fLookSpeed = m_fDiagSpeed;
+                fRightSpeed = m_fDiagSpeed;
+                break;
+            case 3:
+                // 우
+                m_eDir = RIGHT;
+                fRightSpeed = m_fSpeed;
+                break;
+            case 4:
+                // 우하
+                m_eDir = RIGHT;
+                fLookSpeed = -m_fDiagSpeed;
+                fRightSpeed = m_fDiagSpeed;
+                break;
+            case 5:
+                // 하
+                m_eDir = FRONT;
+                fLookSpeed = m_fSpeed;
+                break;
+            case 6:
+                // 좌하
+                m_eDir = LEFT;
+                fLookSpeed = -m_fDiagSpeed;
+                fRightSpeed = -m_fDiagSpeed;
+                break;
+            case 7:
+                // 좌
+                m_eDir = LEFT;
+                fRightSpeed = -m_fSpeed;
+                break;
+            case 8:
+                // 좌상
+                m_eDir = LEFT;
+                fLookSpeed = m_fDiagSpeed;
+                fRightSpeed = -m_fDiagSpeed;
+                break;
+            }
+
+            Set_Stop(&vLook, fLookSpeed, &vRight, fRightSpeed);
+            if (m_iSpeedWeight == 0)
+            {
+                m_iDir = 0;
+                m_bIdling = false;
+                m_fIdleTime = 0.f;
+            }
+            else if (m_iDir)
+            {
+                _int iWeight = 1;
+                if (m_eDir == LEFT)
+                    iWeight = -1;
+                m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, fLookSpeed * m_iSpeedWeight);
+                m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, fRightSpeed * iWeight * m_iSpeedWeight);
+            }
+            break;
+        }
+        else
+        {
+            m_bIdling = false;
+            m_fIdleTime = 0.f;
+        }
     }
 }
 
