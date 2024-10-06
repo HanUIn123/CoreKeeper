@@ -29,7 +29,6 @@
 #include "Pickaxe.h"
 #include "Hoe.h"
 #include "WateringCan.h"
-#include "Seed.h"
 
 #include "Sword.h"
 #include "Bow.h"
@@ -58,19 +57,26 @@
 #include "Furnace.h"
 #include "CookingPot.h"
 #include "Torch.h"
+#include "WallPiece.h"
 #include "Box.h"
+#include "Gravestone.h"
 #include "Sprinkler.h"
 
 #include "Potion.h"
+#include "Ingredient.h"
 #include "Food.h"
+#include "Seed.h"
 #include "Spawner.h"
-
+#include "StatueCore.h"
 #include "Ore.h"
 #include "Bar.h"
-
 #include "Wood.h"
+#include "Mucus.h"
+#include "Piece.h"
+#include "Diary.h"
+#include "Lunch.h"
+#include "ChocoBar.h"
 
-#include "Ingredient.h"
 
 
 // Etc

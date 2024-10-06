@@ -13,32 +13,29 @@ CWallPiece::~CWallPiece()
 {
 }
 
-HRESULT CWallPiece::Ready_GameObject(MATERIAL _eMaterial, _vec3 vPos)
+HRESULT CWallPiece::Ready_GameObject(ITEMNUM _eItemNum, _vec3 vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_eMaterial = _eMaterial;
-	m_iTextureNumber = m_eMaterial;
+	m_eItemNum = _eItemNum;
+	m_iTextureNumber = m_eItemNum - ITEM_DIRTWALL;
+
 
 	switch (m_eMaterial)
 	{
-	case MATERIAL_WOOD:
-		m_eItemNum = ITEM_DIRTWALL;
+	case ITEM_DIRTWALL:
 		m_wItemName = L"진흙 블록";
 		m_wItemExplain[0] = L"단단한 갈색 흙입니다.";
 		break;
-	case MATERIAL_COPPER: 
-		m_eItemNum = ITEM_STONEWALL;
+	case ITEM_STONEWALL:
 		m_wItemName = L"돌 블록";
 		m_wItemExplain[0] = L"튼튼한 돌입니다.";
 		break;
-	case MATERIAL_IRON:
-		m_eItemNum = ITEM_GRASSWALL;
+	case ITEM_GRASSWALL:
 		m_wItemName = L"잔디 블록";
 		m_wItemExplain[0] = L"식물이 수직으로 무성하게 자라난 덩어리입니다.";
 		break;
-	case MATERIAL_END:
-		m_eItemNum = ITEM_PASTUREWALL;
+	case ITEM_PASTUREWALL:
 		m_wItemName = L"초원 블록";
 		m_wItemExplain[0] = L"작은 여름 꽃이 자라나는 그윽한 느낌의 흙 덩어리입니다.";
 		break;
@@ -69,7 +66,7 @@ _int CWallPiece::Update_GameObject(const _float& fTimeDelta)
 	{
 		m_bActive = true;
 		m_bDrop = false;
-		m_pTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
+		m_pTransformCom->Set_Scale(0.3f, 0.3f, 0.3f);
 	}
 
 	if (m_bDrop)
@@ -151,7 +148,7 @@ HRESULT CWallPiece::Add_Component()
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Buffer", pComponent });
 
-	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_WoodTexture"));
+	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_WallPieceTexture"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Texture", pComponent });
 
@@ -182,11 +179,11 @@ HRESULT CWallPiece::Add_Component()
 	return S_OK;
 }
 
-CWallPiece* CWallPiece::Create(LPDIRECT3DDEVICE9 pGraphicDev, MATERIAL _eMaterial, _vec3 vPos)
+CWallPiece* CWallPiece::Create(LPDIRECT3DDEVICE9 pGraphicDev, ITEMNUM _eItemNum, _vec3 vPos)
 {
 	CWallPiece* pWallPiece = new CWallPiece(pGraphicDev);
 
-	if (FAILED(pWallPiece->Ready_GameObject(_eMaterial, vPos)))
+	if (FAILED(pWallPiece->Ready_GameObject(_eItemNum, vPos)))
 	{
 		Safe_Release(pWallPiece);
 		MSG_BOX("pWallPiece Create Failed");

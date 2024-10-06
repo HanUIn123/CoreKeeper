@@ -4,6 +4,7 @@
 #include "Export_Utility.h"
 
 #include "..\Header\PlayerInclude.h"
+#include "..\Header\DynamicCamera.h"
 
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CGameObject(pGraphicDev), m_fLightRange(0.f)
@@ -148,6 +149,7 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 
 	Flip();
 	Dash(fTimeDelta);
+	Lantern();
 	Set_ImmuneByToggle();
 
 	// 시간제 무적용
@@ -541,6 +543,32 @@ void CPlayer::Dash(const _float& fTimeDelta)
 	}
 }
 
+void CPlayer::Lantern()
+{
+	// 보조장비에 깃털 장착 시
+	CItem* pLantern;
+	wstring	strObjectTag = L"UIItemSlot_" + std::to_wstring(CUIItemSlot::SLOT_LANTERN);;
+	pLantern = dynamic_cast<CUIItemSlot*>(Engine::Get_GameObject(L"Layer_UI", strObjectTag.c_str()))->Get_Item();
+	if (!pLantern)
+		return;
+
+	if (pLantern->Get_ItemNum() == ITEM_LANTERN)
+	{
+		switch (pLantern->Get_ItemMaterial())
+		{
+		case MATERIAL_WOOD:
+			m_fLightRange = 3.f;
+			break;
+		case MATERIAL_COPPER:
+			m_fLightRange = 5.f;
+			break;
+		case MATERIAL_IRON:
+			m_fLightRange = 7.f;
+			break;
+		}
+	}
+}
+
 void CPlayer::Set_ImmuneByTime(_float fImmuneTime)
 {
 	if (m_bImmune || m_bImmuneByTime)
@@ -553,6 +581,9 @@ void CPlayer::Set_ImmuneByToggle()
 {
 	if (Engine::Key_Down(DIK_F1))
 		m_bImmune = m_bImmune ? false : true;
+
+	if (Engine::Key_Down(DIK_F2))
+		dynamic_cast<CDynamicCamera*>(Engine::Get_GameObject(L"Layer_Environment", L"DynamicCamera"))->Set_ShakeInfo(3.f, 5.f);
 }
 
 

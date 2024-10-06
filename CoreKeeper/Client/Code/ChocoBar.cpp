@@ -1,70 +1,49 @@
 #include "pch.h"
-#include "..\Header\WateringCan.h"
+#include "..\Header\ChocoBar.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
 
-CWateringCan::CWateringCan(LPDIRECT3DDEVICE9 pGraphicDev)
+CChocoBar::CChocoBar(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CItem(pGraphicDev)
 {
-	m_eItemNum = ITEM_WATERINGCAN;
+	m_eItemNum = ITEM_CHOCOBAR;
 }
 
-CWateringCan::~CWateringCan()
+CChocoBar::~CChocoBar()
 {
 }
 
-HRESULT CWateringCan::Ready_GameObject(MATERIAL _eMaterial, _vec3 vPos)
+HRESULT CChocoBar::Ready_GameObject(_vec3 vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_eMaterial = _eMaterial;
-
-	switch (m_eMaterial)
-	{
-	case MATERIAL_COPPER:
-		m_iTextureNumber = 0;
-		m_wItemName = L"물뿌리개";
-		m_wItemExplain[0] = L"씨앗과 토양에 물을 줄 때 사용합니다.";
-		break;
-	case MATERIAL_IRON:
-		m_iTextureNumber = 1;
-		m_wItemName = L"거대 물뿌리개";
-		m_wItemExplain[0] = L"씨앗과 토양에 물을 줄 때 사용합니다.";
-		m_wItemExplain[1] = L"물뿌리개보다 더 많은 양의 물을 담으며";
-		m_wItemExplain[2] = L"3x3 타일의 영역을 아우릅니다.";
-		break;
-	}
-
-	m_pTransformCom->Set_Scale(1.2f, 1.2f, 1.2f);
+	m_pTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
 	m_pShadowTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
 
 	m_pTransformCom->Set_Pos(vPos.x, vPos.y, vPos.z);
 	m_pShadowTransformCom->Set_Pos(vPos.x, 0.1f, vPos.z);
 
+	m_wItemName = L"초코바";
+	m_wItemExplain[0] = L"챙길까 말까 고민했던 초코바.";
+	m_wItemExplain[1] = L"챙겨오길 잘한 거 같네요!";
+
 	// 원래의 Y 위치 저장
 	m_fFirstY = vPos.y;
-
-	m_pAnimatorCom->Set_CurState(IDLE, 0, 0, 3);
 
 	return S_OK;
 }
 
-_int CWateringCan::Update_GameObject(const _float& fTimeDelta)
+_int CChocoBar::Update_GameObject(const _float& fTimeDelta)
 {
-	m_pAnimatorCom->Update_Animation();
-
 	_vec3 vPos;
 	m_pTransformCom->Get_Info(INFO_POS, &vPos);
 	m_pShadowTransformCom->Set_Pos(vPos.x, 0.1f, vPos.z);
 
 	if (m_bUse)
 	{
-		m_pColliderCubeCom->Set_Offset(_vec3(0, 0, 0));
-		Swing(0, 5, 2);
-
 		m_bActive = true;
 		m_bDrop = false;
-		m_pTransformCom->Set_Scale(0.3f, 0.3f, 0.3f);
+		m_pTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
 	}
 
 	if (m_bDrop)
@@ -78,7 +57,15 @@ _int CWateringCan::Update_GameObject(const _float& fTimeDelta)
 		// 플레이어와 충돌
 		if (m_pColliderCom->Check_Collision(pPlayerCollider))
 		{
-			In_Inventory();
+			Engine::CInventory* pPlayerInventory = dynamic_cast<Engine::CInventory*>
+				(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
+		
+			// 인벤토리에 들어갔다
+			if (pPlayerInventory->Add_Item(this))
+			{
+				m_bActive = false;
+				m_bDrop = false;
+			}
 		}
 	}
 	
@@ -87,16 +74,13 @@ _int CWateringCan::Update_GameObject(const _float& fTimeDelta)
 	return Engine::CGameObject::Update_GameObject(fTimeDelta);
 }
 
-void CWateringCan::LateUpdate_GameObject()
+void CChocoBar::LateUpdate_GameObject()
 {
 	Engine::CGameObject::LateUpdate_GameObject();
 }
 
-void CWateringCan::Render_GameObject()
+void CChocoBar::Render_GameObject()
 {
-	// 카메라를 바라보게 하면서 스케일 유지
-	//CItem::Apply_Billboard();  
-
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
@@ -104,11 +88,10 @@ void CWateringCan::Render_GameObject()
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
 	m_pColliderCom->Update_Collider(m_pTransformCom->Get_WorldMatrix());
-	m_pColliderCubeCom->Update_Collider(m_pTransformCom->Get_WorldMatrix());
 
-	m_pTextureCom->Set_Texture(m_iTextureNumber);
+	m_pTextureCom->Set_Texture();
 
-	m_pBufferCom->Set_Index(m_pAnimatorCom->Get_MotionIndex());
+	m_pBufferCom->Set_Index(0);
 
 	if (m_bActive)
 	{
@@ -119,7 +102,6 @@ void CWateringCan::Render_GameObject()
 	if (m_bActive)
 	{
 		m_pColliderCom->Render_Collider();
-		m_pColliderCubeCom->Render_Collider();
 	}
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pShadowTransformCom->Get_WorldMatrix());
@@ -135,7 +117,7 @@ void CWateringCan::Render_GameObject()
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
-HRESULT CWateringCan::Add_Component()
+HRESULT CChocoBar::Add_Component()
 {
 	CComponent* pComponent = NULL;
 
@@ -143,7 +125,7 @@ HRESULT CWateringCan::Add_Component()
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Buffer", pComponent });
 
-	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_WateringCanTexture"));
+	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_ChocoBarTexture"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Texture", pComponent });
 
@@ -154,10 +136,6 @@ HRESULT CWateringCan::Add_Component()
 	pComponent = m_pColliderCom = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Proto_ItemCollider"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_DYNAMIC].insert({ L"Com_Collider", pComponent });
-
-	pComponent = m_pColliderCubeCom = dynamic_cast<CColliderCube*>(Engine::Clone_Proto(L"Proto_SwingCubeCollider"));
-	NULL_CHECK_RETURN(pComponent, E_FAIL);
-	m_mapComponent[ID_DYNAMIC].insert({ L"Com_ColliderCube", pComponent });
 
 	pComponent = m_pAnimatorCom = dynamic_cast<CAnimator*>(Engine::Clone_Proto(L"Proto_Animator"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
@@ -178,21 +156,21 @@ HRESULT CWateringCan::Add_Component()
 	return S_OK;
 }
 
-CWateringCan* CWateringCan::Create(LPDIRECT3DDEVICE9 pGraphicDev, MATERIAL _eMaterial, _vec3 vPos)
+CChocoBar* CChocoBar::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 {
-	CWateringCan* pWateringCan = new CWateringCan(pGraphicDev);
+	CChocoBar* pChocoBar = new CChocoBar(pGraphicDev);
 
-	if (FAILED(pWateringCan->Ready_GameObject(_eMaterial, vPos)))
+	if (FAILED(pChocoBar->Ready_GameObject(vPos)))
 	{
-		Safe_Release(pWateringCan);
-		MSG_BOX("pWateringCan Create Failed");
+		Safe_Release(pChocoBar);
+		MSG_BOX("pChocoBar Create Failed");
 		return nullptr;
 	}
 
-	return pWateringCan;
+	return pChocoBar;
 }
 
-void CWateringCan::Free()
+void CChocoBar::Free()
 {
 	Engine::CGameObject::Free();
 }

@@ -11,14 +11,14 @@ class CShadowTex;
 
 END
 
-class CWallPiece : public CItem
+class CLunch : public CItem
 {
 private:
-	explicit CWallPiece(LPDIRECT3DDEVICE9 pGraphicDev);
-	virtual ~CWallPiece();
+	explicit CLunch(LPDIRECT3DDEVICE9 pGraphicDev);
+	virtual ~CLunch();
 
 public:
-	virtual			HRESULT			Ready_GameObject(ITEMNUM _eItemNum, _vec3 vPos);
+	virtual			HRESULT			Ready_GameObject(_vec3 vPos);
 	virtual			_int			Update_GameObject(const _float& fTimeDelta);
 	virtual			void			LateUpdate_GameObject();
 	virtual			void			Render_GameObject();
@@ -27,7 +27,7 @@ private:
 	HRESULT			Add_Component();
 
 public:
-	static CWallPiece* Create(LPDIRECT3DDEVICE9 pGraphicDev, ITEMNUM _eItemNum, _vec3 vPos = { 0.f, 0.f, 0.f });
+	static CLunch* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos = { 0.f, 0.f, 0.f });
 
 private:
 	virtual void		Free();

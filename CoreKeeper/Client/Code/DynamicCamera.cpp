@@ -7,6 +7,11 @@
 CDynamicCamera::CDynamicCamera(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CCamera(pGraphicDev), m_bFix(false), m_bIsWorldMap(false), m_pTargetTransform(nullptr), m_bTargetPlayer(true)
 {
+	m_bShaking = false;
+	m_vOffset = { 0, 0, 0 };
+	m_fDuration = 0.f;
+	m_fPower = 0.f;
+	m_fAccTime = 0.f;
 }
 
 
@@ -36,6 +41,7 @@ _int CDynamicCamera::Update_GameObject(const _float& fTimeDelta)
 	if(!m_pTargetTransform)
 		m_pTargetTransform = dynamic_cast<CTransform*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Transform"));
 
+	Shaking(fTimeDelta);
 	return iExit;
 }
 
@@ -51,7 +57,7 @@ void CDynamicCamera::LateUpdate_GameObject()
 			_vec3 vTargetPos;
 			m_pTargetTransform->Get_Info(INFO_POS, &vTargetPos);
 
-			m_vAt = vTargetPos;
+			m_vAt = vTargetPos + m_vOffset;
 			m_vAt.y = 0.f;
 			vTargetPos.z -= 10.f;
 			m_vEye = vTargetPos;
@@ -124,6 +130,22 @@ void CDynamicCamera::Free()
 	CCamera::Free();
 }
 
+void CDynamicCamera::Set_ShakeInfo(_float fDuration, _float fPower)
+{
+	if (m_bShaking) 
+	{
+		m_fAccTime = 0.f;
+		m_fDuration = fDuration;
+		m_fPower = m_fPower > fPower ? m_fPower : fPower;
+	}
+	else
+	{
+		m_bShaking = true;
+		m_fDuration = fDuration;
+		m_fPower = fPower;
+	}
+}
+
 void CDynamicCamera::Key_Input()
 {
 	if (!m_bIsWorldMap)
@@ -181,9 +203,9 @@ void CDynamicCamera::Mouse_Move()
 	_vec3	vLook;
 	memcpy(&vLook, &matTargetWorld.m[INFO_LOOK][0], sizeof(_vec3));
 
-	m_vAt.x = vTargetPos.x + vLook.x * 2;
-	m_vAt.y = 0.8f;
-	m_vAt.z = vTargetPos.z + vLook.z * 2;
+	m_vAt.x = vTargetPos.x + vLook.x * 2 + m_vOffset.x;
+	m_vAt.y = 0.8f + m_vOffset.y;
+	m_vAt.z = vTargetPos.z + vLook.z * 2 + m_vOffset.z;
 
 	m_vEye.x = vTargetPos.x - vLook.x * 3;
 	m_vEye.y = 3.f;
@@ -219,5 +241,37 @@ void CDynamicCamera::Zoom_Out()
 
 		D3DXMatrixPerspectiveFovLH(&m_matProj, m_fFov, m_fAspect, m_fNear, m_fFar);
 		m_pGraphicDev->SetTransform(D3DTS_PROJECTION, &m_matProj);
+	}
+}
+
+void CDynamicCamera::Shaking(const _float& fTimeDelta)
+{
+	if (m_bShaking)
+	{
+		if (g_bIsTopCamera)
+		{
+			m_vOffset.x = (rand() % 5 - 2) * m_fPower * 0.01f;
+			m_vOffset.z = (rand() % 5 - 2) * m_fPower * 0.01f;
+		}
+		else
+		{
+			_vec3 vRight, vUp;
+			m_pTargetTransform->Get_Info(INFO_RIGHT, &vRight);
+			m_pTargetTransform->Get_Info(INFO_UP, &vUp);
+			m_vOffset.x = (rand() % 5 - 2) * m_fPower * 0.01f * (vRight.x + vUp.x);
+			m_vOffset.y = (rand() % 5 - 2) * m_fPower * 0.01f * (vRight.y + vUp.y);
+			m_vOffset.z = (rand() % 5 - 2) * m_fPower * 0.01f * (vRight.z + vUp.z);
+		}
+
+		m_fAccTime += fTimeDelta;
+		if (m_fAccTime >= m_fDuration)
+			m_bShaking = false;
+	}
+	else 
+	{
+		m_fDuration = 0.f;
+		m_fAccTime = 0.f;
+		m_fPower = 0.f;
+		m_vOffset = { 0, 0, 0 };
 	}
 }
