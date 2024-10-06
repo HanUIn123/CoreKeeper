@@ -258,45 +258,31 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar* pLayerTag)
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Malugaz", pGameObject), E_FAIL);*/
 
-	//pGameObject = CTorch::Create(m_pGraphicDev);
-	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	//dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
-	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Torch", pGameObject), E_FAIL);
+#pragma region TEST ITEM
 
-	pGameObject = CLantern::Create(m_pGraphicDev, MATERIAL_WOOD);
+	/*pGameObject = CPickaxe::Create(m_pGraphicDev, MATERIAL_COPPER);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Lantern_Wood", pGameObject), E_FAIL);
-
-	pGameObject = CLantern::Create(m_pGraphicDev, MATERIAL_COPPER);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Lantern_Copper", pGameObject), E_FAIL);
-
-	pGameObject = CLantern::Create(m_pGraphicDev, MATERIAL_IRON);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Lantern_Iron", pGameObject), E_FAIL);
-
-	pGameObject = CPickaxe::Create(m_pGraphicDev, MATERIAL_COPPER);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Pickaxe", pGameObject), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Pickaxe_Test", pGameObject), E_FAIL);
 
 	pGameObject = CHoe::Create(m_pGraphicDev, MATERIAL_COPPER);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Hoe", pGameObject), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Hoe_Test", pGameObject), E_FAIL);
+	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
+
+	pGameObject = CWateringCan::Create(m_pGraphicDev, MATERIAL_COPPER);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"WateringCan_Test", pGameObject), E_FAIL);
 	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
 
 	pGameObject = CSword::Create(m_pGraphicDev, MATERIAL_COPPER);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Sword", pGameObject), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Sword_Test", pGameObject), E_FAIL);
 	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
-
 
 	pGameObject = CBow::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Bow1", pGameObject), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Bow", pGameObject), E_FAIL);
 	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
 
 	pGameObject = CArrow::Create(m_pGraphicDev);
@@ -309,100 +295,180 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar* pLayerTag)
 
 	pGameObject = CStaff::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Staff1", pGameObject), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Staff", pGameObject), E_FAIL);
 	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
 
 	pGameObject = CHelmet::Create(m_pGraphicDev, MATERIAL_COPPER);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Helmet", pGameObject), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Helmet_Test", pGameObject), E_FAIL);
 	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
 
 	pGameObject = CChest::Create(m_pGraphicDev, MATERIAL_COPPER);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Chest", pGameObject), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Chest_Test", pGameObject), E_FAIL);
 	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
 
 	pGameObject = CLeg::Create(m_pGraphicDev, MATERIAL_COPPER);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Leg", pGameObject), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Leg_Test", pGameObject), E_FAIL);
 	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
 
-	pGameObject = CBar::Create(m_pGraphicDev, MATERIAL_COPPER);
+	pGameObject = CNecklace::Create(m_pGraphicDev, MATERIAL_COPPER);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"CopperBar", pGameObject), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Necklace_Test", pGameObject), E_FAIL);
 	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
 
-	pGameObject = COre::Create(m_pGraphicDev, MATERIAL_COPPER);
+	pGameObject = CRing::Create(m_pGraphicDev, MATERIAL_COPPER);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"CopperOre", pGameObject), E_FAIL);
-	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
-
-	pGameObject = COre::Create(m_pGraphicDev, MATERIAL_COPPER);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"CopperOre2", pGameObject), E_FAIL);
-	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
-
-	pGameObject = COre::Create(m_pGraphicDev, MATERIAL_IRON);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"IronOre", pGameObject), E_FAIL);
-	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
-
-	pGameObject = COre::Create(m_pGraphicDev, MATERIAL_SCARLET);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"ScarletOre", pGameObject), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Ring_Test", pGameObject), E_FAIL);
 	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
 
 	pGameObject = CAssistance::Create(m_pGraphicDev, ASSISTANCE_FEATHER);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Feather", pGameObject), E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Feather_Test", pGameObject), E_FAIL);
 	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
 
-	pGameObject = CWateringCan::Create(m_pGraphicDev, MATERIAL_COPPER);
+	pGameObject = CBag::Create(m_pGraphicDev, MATERIAL_COPPER);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"WateringCan", pGameObject), E_FAIL);
-	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Bag_Test", pGameObject), E_FAIL);
+	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);*/
 
-	pGameObject = CSeed::Create(m_pGraphicDev, ITEM_PEPPER_SEED);
+	pGameObject = CLantern::Create(m_pGraphicDev, MATERIAL_IRON);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Seed", pGameObject), E_FAIL);
 	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
-
-	pGameObject = CSeed::Create(m_pGraphicDev, ITEM_PEPPER_SEED);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Seed1", pGameObject), E_FAIL);
-	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
-
-	pGameObject = CSeed::Create(m_pGraphicDev, ITEM_PEPPER_SEED);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Seed2", pGameObject), E_FAIL);
-	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
-
-	pGameObject = CIngredient::Create(m_pGraphicDev, ITEM_BERRY_SEED);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Berry", pGameObject), E_FAIL);
-	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
-
-
-	pGameObject = CIngredient::Create(m_pGraphicDev, ITEM_PEPPER_SEED);
-	NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Pepper", pGameObject), E_FAIL);
-	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Lantern_Iron_Test", pGameObject), E_FAIL);
 
 	pGameObject = CTable::Create(m_pGraphicDev, MATERIAL_WOOD);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Table_Test", pGameObject), E_FAIL);
 	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
 
+	pGameObject = CPotionTable::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"PotionTable_Test", pGameObject), E_FAIL);
+	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
+
+	pGameObject = CAccessoryTable::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"AccessoryTable_Test", pGameObject), E_FAIL);
+	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
 
 	pGameObject = CMusicTable::Create(m_pGraphicDev);
 	NULL_CHECK_RETURN(pGameObject, E_FAIL);
 	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"MusicTable_Test", pGameObject), E_FAIL);
 	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
 
+	pGameObject = CAnvil::Create(m_pGraphicDev, MATERIAL_COPPER);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Anvil_Test", pGameObject), E_FAIL);
+	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
 
-	//pGameObject = CCore::Create(m_pGraphicDev);
-	//NULL_CHECK_RETURN(pGameObject, E_FAIL);
-	//FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Core", pGameObject), E_FAIL);
+	pGameObject = CFurnace::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Furnace_Test", pGameObject), E_FAIL);
+	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
+
+	pGameObject = CCookingPot::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"CookingPot_Test", pGameObject), E_FAIL);
+	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
+
+	pGameObject = CWallPiece::Create(m_pGraphicDev, ITEM_DIRTWALL);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"WallPiece_Test", pGameObject), E_FAIL);
+	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
+
+	pGameObject = CTorch::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Torch", pGameObject), E_FAIL);
+
+	/*pGameObject = CBox::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Box_Test", pGameObject), E_FAIL);
+	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
+
+	pGameObject = CGravestone::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Gravestone_Test", pGameObject), E_FAIL);
+	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
+
+	pGameObject = CSprinkler::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Sprinkler_Test", pGameObject), E_FAIL);
+	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
+
+	pGameObject = CPotion::Create(m_pGraphicDev, ITEM_POTION_HP);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Potion_Test", pGameObject), E_FAIL);
+	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
+
+	pGameObject = CIngredient::Create(m_pGraphicDev, ITEM_BERRY_SEED);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Berry_Test", pGameObject), E_FAIL);
+	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
+
+	pGameObject = CFood::Create(m_pGraphicDev, ITEM_BERRY, ITEM_BERRY);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Food_Test", pGameObject), E_FAIL);
+	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
+
+	pGameObject = CSeed::Create(m_pGraphicDev, ITEM_PEPPER_SEED);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Seed_Test", pGameObject), E_FAIL);
+	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
+
+	pGameObject = CSpawner::Create(m_pGraphicDev, ITEM_PLAYER_SPAWNER);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Spawner_Test", pGameObject), E_FAIL);
+	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
+
+	pGameObject = CStatueCore::Create(m_pGraphicDev, ITEM_SLIME_CORE);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"StatueCore_Test", pGameObject), E_FAIL);
+	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
+
+	pGameObject = COre::Create(m_pGraphicDev, MATERIAL_COPPER);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"CopperOre_Test", pGameObject), E_FAIL);
+	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
+
+	pGameObject = CBar::Create(m_pGraphicDev, MATERIAL_COPPER);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"CopperBar_Test", pGameObject), E_FAIL);
+	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
+
+	pGameObject = CWood::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Wood_Test", pGameObject), E_FAIL);
+	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
+
+	pGameObject = CMucus::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Mucus_Test", pGameObject), E_FAIL);
+	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
+
+	pGameObject = CPiece::Create(m_pGraphicDev, ITEM_SKULL_PIECE);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Piece_Test", pGameObject), E_FAIL);
+	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
+
+	pGameObject = CDiary::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Diary_Test", pGameObject), E_FAIL);
+	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
+
+	pGameObject = CLunch::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Lunch_Test", pGameObject), E_FAIL);
+	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
+
+	pGameObject = CChocoBar::Create(m_pGraphicDev);
+	NULL_CHECK_RETURN(pGameObject, E_FAIL);
+	FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"ChocoBar_Test", pGameObject), E_FAIL);
+	dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);*/
+
+#pragma endregion
 
 	m_mapLayer.insert({ pLayerTag , pLayer });
 

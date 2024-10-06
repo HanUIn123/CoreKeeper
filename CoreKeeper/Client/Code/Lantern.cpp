@@ -53,13 +53,13 @@ HRESULT CLantern::Ready_GameObject(MATERIAL _eMaterial, _vec3 vPos)
 
 	m_pAnimatorCom->Set_CurState(IDLE, 0, 5, 3);
 
-	m_wItemExplain[0] = L"횃불";
-	m_wItemExplain[1] = L"주변에 불을 밝힙니다.땅에 설치하거나 ";
-	m_wItemExplain[2] = L"벽에 부착할 수도 있습니다.";
-	
-	m_wItemMetrial = L"소재 : 나무 1";
+	//m_wItemExplain[0] = L"횃불";
+	//m_wItemExplain[1] = L"주변에 불을 밝힙니다.땅에 설치하거나 ";
+	//m_wItemExplain[2] = L"벽에 부착할 수도 있습니다.";
+	//
+	//m_wItemMetrial = L"소재 : 나무 1";
 
-	m_bMeterial = true;
+	//m_bMeterial = true;
 
 	return S_OK;
 }
@@ -76,7 +76,7 @@ _int CLantern::Update_GameObject(const _float& fTimeDelta)
 	{
 		m_bActive = true;
 		m_bDrop = false;
-		m_pTransformCom->Set_Scale(1.5f, 1.5f, 1.5f);
+		m_pTransformCom->Set_Scale(0.3f, 0.3f, 0.3f);
 	}
 
 	if (m_bDrop)
