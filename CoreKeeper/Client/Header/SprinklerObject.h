@@ -9,6 +9,8 @@ class CCalculator;
 class CTexture;
 class CColliderCube;
 class CInventory;
+class CAnimTex;
+class CAnimator;
 
 END
 
@@ -31,6 +33,10 @@ public:
 
 private:
 	HRESULT							Add_Component();
+
+private:
+	Engine::CAnimTex* m_pAnimBufferCom;
+	Engine::CAnimator* m_pAnimatorCom;
 
 public:
 	static CSprinklerObject* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);
