@@ -26,6 +26,11 @@
 #include "ShroomManRender.h"
 #include "HunterRender.h"
 
+// Place Object in MapTool
+#include "SlimeFloor.h"
+#include "Mushroom.h"
+#include "AzeosPoop.h"
+
 // Item
 #include "Pickaxe.h"
 #include "Hoe.h"

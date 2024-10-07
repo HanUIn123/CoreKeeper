@@ -108,6 +108,12 @@ _uint CLoading::Loading_Stage()
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TileTex", Engine::CObjectTex::Create(m_pGraphicDev, 0.5f, 0.0f, 0.5f)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_CrystalObjectTex", Engine::CObjectTex::Create(m_pGraphicDev, 0.5f, 0.0f, 0.5f)), E_FAIL);
 
+    // Place Object Tex
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SlimeFloorTex", Engine::CObjectTex::Create(m_pGraphicDev, 0.5f, 0.0f, 0.5f)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MushroomTex", Engine::CObjectTex::Create(m_pGraphicDev, 0.5f, 0.5f, 0.0f)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_AzeosPoopTex", Engine::CObjectTex::Create(m_pGraphicDev, 0.5f, 0.0f, 0.5f)), E_FAIL);
+
+
     // Mini_Object Render Tex
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MiniPlayerTex", Engine::CObjectTex::Create(m_pGraphicDev, 0.5f, 0.0f, 0.5f)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MiniCoreTex", Engine::CObjectTex::Create(m_pGraphicDev, 0.5f, 0.0f, 0.5f)), E_FAIL);
@@ -165,6 +171,7 @@ _uint CLoading::Loading_Stage()
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_GrassTileTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Tile/GrassTile/Grass_Tile_%d.png", TEX_NORMAL, 9)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_DustTileTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Tile/DustTile/Dust_Tile_%d.png", TEX_NORMAL, 9)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MapToolTerrainTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/MapTerrain/Terrain_%d.png", TEX_NORMAL, 30)), E_FAIL);
+
 
 #pragma region Item TEXTURE
 
@@ -252,6 +259,12 @@ _uint CLoading::Loading_Stage()
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_FireTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Monster/Fire.png", TEX_NORMAL)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ThunderTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Effect/ThunderEffects.png", TEX_NORMAL)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ElectricTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Effect/Electricity_Emissive.png", TEX_NORMAL)), E_FAIL);
+
+
+    // Place Object Texture
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SlimeFloorTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/ImguiImage/Object/Slime_Floor/slime_tile_%d.png", TEX_NORMAL, 9)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MushroomTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/PlaceObject/mushroom_%d.png", TEX_NORMAL, 3)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_AzeosPoopTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/PlaceObject/bird_poop_%d.png", TEX_NORMAL, 3)), E_FAIL);
 
 #pragma endregion
 
