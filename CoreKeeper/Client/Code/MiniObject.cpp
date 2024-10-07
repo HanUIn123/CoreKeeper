@@ -23,7 +23,7 @@ HRESULT CMiniObject::Ready_GameObject(_vec3 vPos)
 
     m_pTransformCom->Set_Pos(vPos.x, vPos.y, vPos.z);
 
-    m_pTransformCom->Set_Scale(4.0f, 0.0f, 4.0f);
+    m_pTransformCom->Set_Scale(4.0f, 1.0f, 4.0f);
 
     return S_OK;
 }
@@ -42,7 +42,7 @@ _int CMiniObject::Update_GameObject(const _float& fTimeDelta)
             _vec3 vPlayerPos;
             pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
 
-            m_pTransformCom->Set_Scale(7.5f, 0.0f, 7.5f);
+            m_pTransformCom->Set_Scale(5.0f, 1.0f, 5.0f);
 
             m_pTransformCom->Set_Pos((vPlayerPos.x),0,((vPlayerPos.z)));
         }
@@ -54,7 +54,7 @@ _int CMiniObject::Update_GameObject(const _float& fTimeDelta)
             _vec3 vPlayerPos;
             pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
 
-            m_pTransformCom->Set_Scale(4.0f, 0.0f, 4.0f);
+            m_pTransformCom->Set_Scale(4.0f, 1.0f, 4.0f);
             m_pTransformCom->Set_Pos((vPlayerPos.x), 0, ((vPlayerPos.z)));
         }
     }
@@ -70,6 +70,8 @@ void CMiniObject::LateUpdate_GameObject()
 
 void CMiniObject::Render_GameObject()
 {
+    m_pGraphicDev->SetRenderState(D3DRS_ZENABLE, FALSE);
+
     m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
@@ -78,6 +80,8 @@ void CMiniObject::Render_GameObject()
     m_pBufferCom->Render_Buffer();
 
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
+    m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
+    m_pGraphicDev->SetRenderState(D3DRS_ZENABLE, TRUE);
 }
 
 HRESULT CMiniObject::Add_Component()
