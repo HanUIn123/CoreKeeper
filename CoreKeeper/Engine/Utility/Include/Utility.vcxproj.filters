@@ -261,9 +261,6 @@
     <ClCompile Include="..\Code\Smog.cpp">
       <Filter>04. Component\08. Particles\05. BIgSmog</Filter>
     </ClCompile>
-    <ClCompile Include="..\Code\Dash.cpp">
-      <Filter>04. Component\08. Particles\06. Dash</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Header\Scene.h">

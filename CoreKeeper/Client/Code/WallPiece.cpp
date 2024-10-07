@@ -42,7 +42,7 @@ HRESULT CWallPiece::Ready_GameObject(ITEMNUM _eItemNum, _vec3 vPos)
 	}
 	
 
-	m_pTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
+	m_pTransformCom->Set_Scale(0.3f, 0.3f, 0.3f);
 	m_pShadowTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
 
 	m_pTransformCom->Set_Pos(vPos.x, vPos.y, vPos.z);
