@@ -33,6 +33,7 @@ public:
 
 private:
 	HRESULT							Add_Component();
+	void							Sprinkler_Watering();
 
 private:
 	Engine::CAnimTex* m_pAnimBufferCom;
