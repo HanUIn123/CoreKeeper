@@ -487,7 +487,6 @@
     <Filter Include="02. GameObject\08. Object\00. BaseCamp\05. Tile">
       <UniqueIdentifier>{eeddca41-a8c4-46b9-9ce3-de13819c2c14}</UniqueIdentifier>
     </Filter>
-<<<<<<< HEAD
     <Filter Include="02. GameObject\08. Object\90.SlimeFloor">
       <UniqueIdentifier>{c7db4723-f917-44ec-bbe5-817413ecd274}</UniqueIdentifier>
     </Filter>
@@ -496,10 +495,9 @@
     </Filter>
     <Filter Include="02. GameObject\08. Object\92.AzeosPoop">
       <UniqueIdentifier>{f21e6d94-b341-4527-8cc4-b51c4ea05c85}</UniqueIdentifier>
-=======
+    </Filter>
     <Filter Include="03. Manager\02. BuffMgr">
       <UniqueIdentifier>{eb57dd3e-66d3-467c-8e78-bb9c8a57835f}</UniqueIdentifier>
->>>>>>> origin/main
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -965,7 +963,6 @@
     <ClInclude Include="..\Header\Tile.h">
       <Filter>02. GameObject\08. Object\00. BaseCamp\05. Tile</Filter>
     </ClInclude>
-<<<<<<< HEAD
     <ClInclude Include="..\Header\SlimeFloor.h">
       <Filter>02. GameObject\08. Object\90.SlimeFloor</Filter>
     </ClInclude>
@@ -974,10 +971,9 @@
     </ClInclude>
     <ClInclude Include="..\Header\AzeosPoop.h">
       <Filter>02. GameObject\08. Object\92.AzeosPoop</Filter>
-=======
+    </ClInclude>
     <ClInclude Include="..\Header\BuffMgr.h">
       <Filter>03. Manager\02. BuffMgr</Filter>
->>>>>>> origin/main
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1422,7 +1418,6 @@
     <ClCompile Include="..\Code\Tile.cpp">
       <Filter>02. GameObject\08. Object\00. BaseCamp\05. Tile</Filter>
     </ClCompile>
-<<<<<<< HEAD
     <ClCompile Include="..\Code\SlimeFloor.cpp">
       <Filter>02. GameObject\08. Object\90.SlimeFloor</Filter>
     </ClCompile>
@@ -1431,10 +1426,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\AzeosPoop.cpp">
       <Filter>02. GameObject\08. Object\92.AzeosPoop</Filter>
-=======
+    </ClCompile>
     <ClCompile Include="..\Code\BuffMgr.cpp">
       <Filter>03. Manager\02. BuffMgr</Filter>
->>>>>>> origin/main
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
