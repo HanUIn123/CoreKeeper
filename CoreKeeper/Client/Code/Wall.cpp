@@ -3,6 +3,7 @@
 #include "Export_Utility.h"
 #include "../Header/Ore.h"
 #include "../Header/WallPiece.h"
+#include "../Header/Stage.h"
 
 _long CWall::m_iItemNumber = 0;
 
@@ -19,7 +20,6 @@ CWall::CWall(LPDIRECT3DDEVICE9 pGraphicDev)
     , m_iDurability(0)
 {
     m_vecAroundWall.resize(8);
-    m_vecItemName.reserve(100);
 }
 
 CWall::~CWall()
@@ -469,6 +469,7 @@ void CWall::Drop_Item()
     m_pTransformCom->Get_Info(INFO_POS, &vPos);
 
     CScene* pScene = Engine::Get_Scene();
+    CStage* pStage = dynamic_cast<CStage*>(pScene);
     CItem* pGameObject = nullptr;
 
     if (m_iWallImageNum < 15)
@@ -477,11 +478,45 @@ void CWall::Drop_Item()
         vPos.z += rand() % 3 * 0.1f;
         pGameObject = CWallPiece::Create(m_pGraphicDev, ITEM_DIRTWALL, vPos);
         NULL_CHECK(pGameObject);
-        m_vecItemName.push_back(L"Wall_Created_WallPiece" + std::to_wstring(m_iItemNumber++));
+        pStage->Set_WallDropItemName(L"Wall_Created_WallPiece" + std::to_wstring(m_iItemNumber++));
 
         if (pGameObject)
         {
-            FAILED_CHECK_RETURN(pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, m_vecItemName.back().c_str()), );
+            FAILED_CHECK_RETURN(pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, pStage->Get_WallDropItemName()->back().c_str()),);
+            vector<wstring>* wsWallDropItem = pStage->Get_WallDropItemName();
+            pGameObject->Set_Active(true);
+            pGameObject->Set_Drop(true);
+
+        }
+
+        if (rand() % 2)
+        {
+            vPos.x -= rand() % 3 * 0.2f;
+            vPos.z -= rand() % 3 * 0.2f;
+            pGameObject = COre::Create(m_pGraphicDev, MATERIAL_COPPER, vPos);
+            NULL_CHECK(pGameObject);
+            pStage->Set_WallDropItemName(L"Wall_Created_Ore" + std::to_wstring(m_iItemNumber++));
+
+            if (pGameObject)
+            {
+                FAILED_CHECK_RETURN(pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, pStage->Get_WallDropItemName()->back().c_str()), );
+                pGameObject->Set_Active(true);
+                pGameObject->Set_Drop(true);
+            }
+        }
+    }
+    else if (m_iWallImageNum < 30)
+    {
+        vPos.x += rand() % 3 * 0.1f;
+        vPos.z += rand() % 3 * 0.1f;
+        pGameObject = CWallPiece::Create(m_pGraphicDev, ITEM_DIRTWALL, vPos);
+        NULL_CHECK(pGameObject);
+        pStage->Set_WallDropItemName(L"Wall_Created_WallPiece" + std::to_wstring(m_iItemNumber++));
+
+        if (pGameObject)
+        {
+            FAILED_CHECK_RETURN(pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, pStage->Get_WallDropItemName()->back().c_str()), );
+            vector<wstring>* wsWallDropItem = pStage->Get_WallDropItemName();
             pGameObject->Set_Active(true);
             pGameObject->Set_Drop(true);
         }
@@ -492,41 +527,11 @@ void CWall::Drop_Item()
             vPos.z -= rand() % 3 * 0.2f;
             pGameObject = COre::Create(m_pGraphicDev, MATERIAL_COPPER, vPos);
             NULL_CHECK(pGameObject);
-            m_vecItemName.push_back(L"Wall_Created_Ore" + std::to_wstring(m_iItemNumber++));
+            pStage->Set_WallDropItemName(L"Wall_Created_Ore" + std::to_wstring(m_iItemNumber++));
 
             if (pGameObject)
             {
-                FAILED_CHECK_RETURN(pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, m_vecItemName.back().c_str()), );
-                pGameObject->Set_Active(true);
-                pGameObject->Set_Drop(true);
-            }
-        }
-    }
-    else if (m_iWallImageNum < 30)
-    {
-        vPos.x += rand() % 3 * 0.1f;
-        vPos.z += rand() % 3 * 0.1f;
-        pGameObject = CWallPiece::Create(m_pGraphicDev, ITEM_STONEWALL, vPos);
-        NULL_CHECK(pGameObject);
-        m_vecItemName.push_back(L"Wall_Created_WallPiece" + std::to_wstring(m_iItemNumber++));
-
-        if (pGameObject)
-        {
-            FAILED_CHECK_RETURN(pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, m_vecItemName.back().c_str()), );
-            pGameObject->Set_Active(true);
-            pGameObject->Set_Drop(true);
-        }
-        if (rand() % 2)
-        {
-            vPos.x -= rand() % 3 * 0.2f;
-            vPos.z -= rand() % 3 * 0.2f;
-            pGameObject = COre::Create(m_pGraphicDev, MATERIAL_IRON, vPos);
-            NULL_CHECK(pGameObject);
-            m_vecItemName.push_back(L"Wall_Created_Ore" + std::to_wstring(m_iItemNumber++));
-
-            if (pGameObject)
-            {
-                FAILED_CHECK_RETURN(pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, m_vecItemName.back().c_str()), );
+                FAILED_CHECK_RETURN(pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, pStage->Get_WallDropItemName()->back().c_str()), );
                 pGameObject->Set_Active(true);
                 pGameObject->Set_Drop(true);
             }
@@ -536,13 +541,14 @@ void CWall::Drop_Item()
     {
         vPos.x += rand() % 3 * 0.1f;
         vPos.z += rand() % 3 * 0.1f;
-        pGameObject = CWallPiece::Create(m_pGraphicDev, ITEM_GRASSWALL, vPos);
+        pGameObject = CWallPiece::Create(m_pGraphicDev, ITEM_DIRTWALL, vPos);
         NULL_CHECK(pGameObject);
-        m_vecItemName.push_back(L"Wall_Created_WallPiece" + std::to_wstring(m_iItemNumber++));
+        pStage->Set_WallDropItemName(L"Wall_Created_WallPiece" + std::to_wstring(m_iItemNumber++));
 
         if (pGameObject)
         {
-            FAILED_CHECK_RETURN(pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, m_vecItemName.back().c_str()), );
+            FAILED_CHECK_RETURN(pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, pStage->Get_WallDropItemName()->back().c_str()), );
+            vector<wstring>* wsWallDropItem = pStage->Get_WallDropItemName();
             pGameObject->Set_Active(true);
             pGameObject->Set_Drop(true);
         }
@@ -551,13 +557,13 @@ void CWall::Drop_Item()
         {
             vPos.x -= rand() % 3 * 0.2f;
             vPos.z -= rand() % 3 * 0.2f;
-            pGameObject = COre::Create(m_pGraphicDev, MATERIAL_SCARLET, vPos);
+            pGameObject = COre::Create(m_pGraphicDev, MATERIAL_COPPER, vPos);
             NULL_CHECK(pGameObject);
-            m_vecItemName.push_back(L"Wall_Created_Ore" + std::to_wstring(m_iItemNumber++));
+            pStage->Set_WallDropItemName(L"Wall_Created_Ore" + std::to_wstring(m_iItemNumber++));
 
             if (pGameObject)
             {
-                FAILED_CHECK_RETURN(pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, m_vecItemName.back().c_str()), );
+                FAILED_CHECK_RETURN(pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, pStage->Get_WallDropItemName()->back().c_str()), );
                 pGameObject->Set_Active(true);
                 pGameObject->Set_Drop(true);
             }

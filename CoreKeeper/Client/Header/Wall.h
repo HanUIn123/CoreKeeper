@@ -95,7 +95,7 @@ private:
     bool    m_bActive;
     int     m_iCurImgNum;
     _int    m_iDurability;
-    vector<wstring>			                                m_vecItemName;
+
     static _long                                            m_iItemNumber;
 };
 

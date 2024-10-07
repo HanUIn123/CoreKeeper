@@ -45,6 +45,8 @@ public:
 	HRESULT							Load_ObjectData();
 
 	wstring*						Get_BuffName() { return m_wsBuffNameString; }
+	void							Set_WallDropItemName(wstring wStr) { m_wsWallDropItemNameString.push_back(wStr); }
+	vector<wstring>*				Get_WallDropItemName() { return &m_wsWallDropItemNameString; }
 
 private:
 	virtual void					Free();
@@ -67,6 +69,7 @@ private:
 	wstring							m_wsWallNameString[VTXCNTX * VTXCNTZ];
 	wstring							m_wsObjectNameString[VTXCNTX * VTXCNTZ];
 	wstring							m_wsMonsterNameString[VTXCNTX * VTXCNTZ];
+	vector<wstring>					m_wsWallDropItemNameString;
 	wstring							m_wsBuffNameString[BUFFTYPE_END];
 	_int							m_iLoadTileCount;
 	_int							m_iLoadWallCount;

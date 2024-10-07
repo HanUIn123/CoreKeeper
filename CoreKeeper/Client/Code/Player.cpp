@@ -1552,7 +1552,7 @@ void CPlayer::Set_UI()
 		(Engine::Get_GameObject(L"Layer_UI", L"UI_Hunger"));
 	NULL_CHECK_RETURN(pMp);
 
-	pHunger->Set_InfoH(m_pStateCom->Get_Stat()->iMp, m_pStateCom->Get_Stat()->iMaxMp); // (배고??, 최�?배고??
+	pHunger->Set_InfoH(m_pStateCom->Get_Hunger(), m_pStateCom->Get_MaxHunger()); // (배고??, 최�?배고??
 
 	if (Engine::Get_DIMouseMove(DIMS_Z) && !m_bInventory)
 	{
