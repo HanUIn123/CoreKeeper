@@ -1115,16 +1115,16 @@ void CPlayer::PickAxe()
 		switch (m_eDir)
 		{
 		case FRONT:
-			vCheckPos -= vLook * 1.5f;
+			vCheckPos -= vLook * 1.2f;
 			break;
 		case BACK:
-			vCheckPos += vLook * 1.5f;
+			vCheckPos += vLook * 1.2f;
 			break;
 		case RIGHT:
-			vCheckPos += vRight * 1.5f;
+			vCheckPos += vRight * 1.2f;
 			break;
 		case LEFT:
-			vCheckPos += vRight * 1.5f;
+			vCheckPos += vRight * 1.2f;
 			break;
 		}
 		_int iIndex = _int(vCheckPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (vCheckPos.x + 0.5f * VTXITV);
@@ -1175,7 +1175,7 @@ void CPlayer::PickAxe()
 		m_pTransformCom->Get_Info(INFO_POS, &vCheckPos);
 		m_pTransformCom->Get_Info(INFO_LOOK, &vLook);
 
-		vCheckPos += vLook * 1.5f;
+		vCheckPos += vLook * 1.2f;
 
 		_int iIndex = _int(vCheckPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (vCheckPos.x + 0.5f * VTXITV);
 		CTerrain* pTerrain = dynamic_cast<CTerrain*>(Engine::Get_GameObject(L"Layer_Environment", L"Terrain"));
