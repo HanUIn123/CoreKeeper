@@ -65,6 +65,8 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 
 	m_bBleed = false;
 	m_fBleedTime = 0.f;
+	m_bFire = false;
+	m_fFireTickTime = 0.f;
 
 	m_bShootOnce = false;
 	m_vMouseWorldPos = { 0, 0, 0 };
@@ -128,7 +130,7 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 
 	// 버프 스탯 처리
 	Set_Hungry(fTimeDelta);
-	Set_Buff();
+	Set_Buff(fTimeDelta);
 
 
 	if (!m_bNoMove && !m_bInventory && !m_bCraft && !m_bMap) // m_bNoMove -> UICursor에서 적용
@@ -224,10 +226,12 @@ void CPlayer::Render_GameObject()
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 
+
 	if(m_bBleed)
 	   m_pFireParticleCom->render(); // 파티클 렌더
 
-	m_pFollowParticleCom->render();
+	if(m_bFire)
+		m_pFollowParticleCom->render();
 }
 
 HRESULT CPlayer::Add_Component()
@@ -939,7 +943,6 @@ void CPlayer::Show_Equipment()
 					break;
 				}
 			}
-
 		}
 		else
 		{
@@ -1100,6 +1103,8 @@ void CPlayer::Shoot_Equipment()
 
 void CPlayer::PickAxe()
 {
+	MATERIAL eAxeMaterial = m_pHandedItem->Get_ItemMaterial();
+
 	if (g_bIsTopCamera)
 	{
 		_vec3 vCheckPos, vLook, vRight;
@@ -1134,9 +1139,30 @@ void CPlayer::PickAxe()
 				CWall* pWall = dynamic_cast<CWall*>(Get_GameObject(L"Layer_Environment", dynamic_cast<CStage*>(pCurScene)->Get_WallNameByIndex(iIndex)->c_str()));
 				if (pWall)
 				{
-					pWall->Set_Destroy();
-					pCurScene->Delete_GameObject(L"Layer_Environment", pWall, dynamic_cast<CStage*>(pCurScene)->Get_WallNameByIndex(iIndex)->c_str());
-					pTerrain->Set_Unreachable(iIndex, false);
+					_bool bIsBreakable = false;
+					switch (eAxeMaterial)
+					{
+					case MATERIAL_WOOD:
+						if (pWall->Get_WallNumber() < 15)
+							bIsBreakable = true;
+						break;
+					case MATERIAL_COPPER:
+						if (pWall->Get_WallNumber() < 30)
+							bIsBreakable = true;
+						break;
+					case MATERIAL_IRON:
+						if (pWall->Get_WallNumber() < 45)
+							bIsBreakable = true;
+						break;
+					}
+					if(bIsBreakable)
+						pWall->Set_DurabiliryMinus(eAxeMaterial + 1);
+					if (pWall->Get_Durability() <= 0)
+					{
+						pWall->Set_Destroy();
+						pCurScene->Delete_GameObject(L"Layer_Environment", pWall, dynamic_cast<CStage*>(pCurScene)->Get_WallNameByIndex(iIndex)->c_str());
+						pTerrain->Set_Unreachable(iIndex, false);
+					}
 				}
 			}
 		}
@@ -1354,7 +1380,7 @@ void CPlayer::Eat(ITEMNUM eHandedNum)
 	switch (eHandedNum)
 	{
 	case ITEM_BERRY:
-		m_pStateCom->Set_Recover(20);
+		m_pStateCom->Set_Recover(28);
 		m_pStateCom->Set_HungerPlus(9);
 		break;
 	case ITEM_PEPPER:
@@ -1362,42 +1388,74 @@ void CPlayer::Eat(ITEMNUM eHandedNum)
 		m_pStateCom->Set_HungerPlus(5);
 		break;
 	case ITEM_CARROT:
-		m_pStateCom->Set_Recover(20);
+		m_pStateCom->Set_Recover(41);
 		m_pStateCom->Set_HungerPlus(7);
 		break;
 	case ITEM_MUSHROOM:
-		m_pStateCom->Set_Recover(20);
+		m_pStateCom->Set_Recover(21);
 		m_pStateCom->Set_HungerPlus(9);
 		break;
 	case ITEM_BERRY_BERRY_FOOD:
-		m_pStateCom->Set_Recover(40);
+		m_pStateCom->Set_Recover(28);
 		m_pStateCom->Set_HungerPlus(19);
 		CBuffMgr::GetInstance()->Set_BuffStart(BUFF_HP, 60);
 		break;
 	case ITEM_BERRY_PEPPER_FOOD:
-		m_pStateCom->Set_Recover(40);
+		m_pStateCom->Set_Recover(28);
 		m_pStateCom->Set_HungerPlus(19);
 		CBuffMgr::GetInstance()->Set_BuffStart(BUFF_SPEED, 60);
 		CBuffMgr::GetInstance()->Set_BuffStart(BUFF_HP, 60);
 		break;
 	case ITEM_BERRY_CARROT_FOOD:
-		m_pStateCom->Set_Recover(40);
+		m_pStateCom->Set_Recover(42);
 		m_pStateCom->Set_HungerPlus(19);
 		CBuffMgr::GetInstance()->Set_BuffStart(BUFF_SPEED, 60);
-		CBuffMgr::GetInstance()->Set_BuffStart(BUFF_HP, 60);
+		CBuffMgr::GetInstance()->Set_BuffStart(BUFF_DEF, 60);
 		break;
 	case ITEM_BERRY_MUSHROOM_FOOD:
+		m_pStateCom->Set_Recover(42);
+		m_pStateCom->Set_HungerPlus(19);
+		CBuffMgr::GetInstance()->Set_BuffStart(BUFF_HP, 60);
+		break;
 	case ITEM_PEPPER_PEPPER_FOOD:
+		m_pStateCom->Set_HungerPlus(15);
+		CBuffMgr::GetInstance()->Set_BuffStart(BUFF_SPEED, 60);
+		break;
 	case ITEM_PEPPER_CARROT_FOOD:
+		m_pStateCom->Set_HungerPlus(15);
+		CBuffMgr::GetInstance()->Set_BuffStart(BUFF_SPEED, 60);
+		CBuffMgr::GetInstance()->Set_BuffStart(BUFF_DEF, 60);
+		break;
 	case ITEM_PEPPER_MUSHROOM_FOOD:
+		m_pStateCom->Set_Recover(42);
+		m_pStateCom->Set_HungerPlus(19);
+		CBuffMgr::GetInstance()->Set_BuffStart(BUFF_SPEED, 60);
+		break;
 	case ITEM_CARROT_CARROT_FOOD:
+		m_pStateCom->Set_HungerPlus(15);
+		CBuffMgr::GetInstance()->Set_BuffStart(BUFF_DEF, 60);
+		break;
 	case ITEM_CARROT_MUSHROOM_FOOD:
+		m_pStateCom->Set_Recover(42);
+		m_pStateCom->Set_HungerPlus(20);
+		CBuffMgr::GetInstance()->Set_BuffStart(BUFF_DEF, 60);
+		break;
 	case ITEM_MUSHROOM_MUSHROOM_FOOD:
+		m_pStateCom->Set_Recover(42);
+		m_pStateCom->Set_HungerPlus(20);
+		break;
 	case ITEM_LUNCH:
+		m_pStateCom->Set_Recover(28);
+		m_pStateCom->Set_HungerPlus(12);
 		break;
 	case ITEM_CHOCOBAR:
+		m_pStateCom->Set_HungerPlus(19);
 		break;
 	}
+	m_pHandedItem->Set_Use(false);
+	m_pHandedItem->Set_Active(false);
+	m_pHandedItem->Set_Drop(false);
+	m_pInventoryCom->Minus_Item(eHandedNum);
 }
 
 
@@ -1520,7 +1578,7 @@ void CPlayer::Set_UI()
 		UI_Disable();
 }
 
-void CPlayer::Set_Buff()
+void CPlayer::Set_Buff(const _float& fTimeDelta)
 {
 	ZeroMemory(&m_tBuffStat, sizeof(STAT));
 	Set_Speed(m_fNormalSpeed);
@@ -1546,6 +1604,13 @@ void CPlayer::Set_Buff()
 				m_tBuffStat.iDefense = m_pStateCom->Get_Stat()->iDefense * 0.05f;
 				break;
 			case DEBUFF_FIRE:
+				m_bFire = true;
+				m_fFireTickTime += fTimeDelta;
+				if (m_fFireTickTime >= 1.f)
+				{
+					m_fFireTickTime = 0.f;
+					m_pStateCom->Set_Damaged(10);
+				}
 				break;
 			case DEBUFF_SLOW:
 				if(m_arrBuffState[BUFF_SPEED])
@@ -1555,6 +1620,32 @@ void CPlayer::Set_Buff()
 				break;
 			case DEBUFF_STUN:
 				m_iSpeedWeight = 0;
+				break;
+			default:
+				break;
+			}
+		}
+		else
+		{
+			switch (i)
+			{
+			case BUFF_SPEED:
+				Set_Speed(m_fNormalSpeed);
+				break;
+			case BUFF_HP:
+			case BUFF_ATT:
+			case BUFF_DEF:
+			case DEBUFF_SLOW:
+				break;
+			case DEBUFF_FIRE:
+				if (m_bFire)
+				{
+					m_bFire = false;
+					m_fFireTickTime = false;
+				}
+				break;
+			case DEBUFF_STUN:
+				m_iSpeedWeight = 1;
 				break;
 			default:
 				break;
@@ -1579,7 +1670,7 @@ void CPlayer::Set_Hungry(const _float& fTimeDelta)
 	if (m_pStateCom->Get_Hunger() >= 75)
 	{
 		if(!m_arrBuffState[BUFF_FULL])
-			CBuffMgr::GetInstance()->Set_BuffStart(BUFF_FULL, 5);
+			CBuffMgr::GetInstance()->Set_BuffStart(BUFF_FULL, 999);
 	}
 	else
 	{
@@ -2098,8 +2189,9 @@ void CPlayer::Particle_Update(_float fTimeDelta)
 
 		m_pFireParticleCom->reset();
 	}
-
 	m_pFollowParticleCom->update(fTimeDelta);
+
+
 }
 
 void CPlayer::Set_KnockBack(_vec3 vEnemyPos, _int iDamage, _float fDist, PLAYERHITTYPE eHit)
@@ -2123,8 +2215,10 @@ void CPlayer::Set_KnockBack(_vec3 vEnemyPos, _int iDamage, _float fDist, PLAYERH
 		switch (eHit)
 		{
 		case HIT_NORMAL:
+			m_bBleed = true;
 			break;
 		case HIT_FIRE:
+			CBuffMgr::GetInstance()->Set_BuffStart(DEBUFF_FIRE, 5.f);
 			break;
 		case HIT_ELECTRIC:
 			break;

@@ -227,6 +227,9 @@ HRESULT CMapEditorScene::Ready_Prototype()
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MushroomTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/PlaceObject/mushroom_%d.png", TEX_NORMAL, 3)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_AzeosPoopTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/PlaceObject/bird_poop_%d.png", TEX_NORMAL, 3)), E_FAIL);
 
+    // Particle
+    _vec3 vPPos = { 0.f, 0.f, 0.f };
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_DirtFall", Engine::CFall::Create(m_pGraphicDev, &vPPos, 50, 0.01f)), E_FAIL);
 
     return S_OK;
 }

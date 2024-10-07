@@ -10,6 +10,7 @@ class CTexture;
 class CCalculator;
 class CWallTex;
 class CColliderCube;
+class CFall;
 
 END
 
@@ -33,6 +34,9 @@ public:
     _int													Get_WallNumber() { return m_iWallImageNum; }
     void													Set_WallNumber(_int _iWallNum) { m_iWallImageNum = _iWallNum; }
 
+    _int                                                    Get_Durability() { return m_iDurability; }
+    void                                                    Set_DurabiliryMinus(_int iMinus) { m_iDurability -= iMinus; }
+
     void													Set_SpecialWallNumber(_int _iWallNum) { m_iCurImgNum = _iWallNum; }
 
     // Delete_GameObject 함수를 사용하려면, 키값이 필요한데, 그 키값(이름)을 받아올 함수
@@ -52,6 +56,8 @@ public:
     void                                                    Set_Destroy();
     void                                                    Set_DestoryWall(int _iIndex) { m_vecAroundWall[_iIndex] = nullptr; }
 
+    _bool                                                   Get_Destroyed() { return m_bWallDestroyed; }
+
 private:
     HRESULT													Add_Component();
     HRESULT                                                 Setup_Material();
@@ -63,6 +69,8 @@ private:
     Engine::CCalculator*                                    m_pCalculatorCom;
     Engine::CWallTex*                                       m_pBufferCom;
     Engine::CColliderCube*                                  m_pColliderCom;
+
+    Engine::CFall*                                          m_pDustParticlesCom;
 public:
     static CWall* Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _fWallX, _float _fWallZ, _int iWallImageNum, const wstring _pickedWallName);
 
@@ -78,8 +86,12 @@ private:
     _bool                                                   m_bIsUpWall;
 
     vector<CWall*>                                          m_vecAroundWall;
+
+    _bool                                                   m_bWallDestroyed;
+ 
 private:
     bool    m_bActive;
     int     m_iCurImgNum;
+    _int    m_iDurability;
 };
 
