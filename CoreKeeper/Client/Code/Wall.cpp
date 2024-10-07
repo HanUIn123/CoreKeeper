@@ -63,9 +63,12 @@ _int CWall::Update_GameObject(const _float& fTimeDelta)
 
     Update_Texture();
 
-    Engine::Add_RenderGroup(RENDER_PRIORITY, this);
-
-    return Engine::CGameObject::Update_GameObject(fTimeDelta);
+    if (m_pCalculatorCom->In_Frustum(m_pTransformCom))
+    {
+        Engine::Add_RenderGroup(RENDER_PRIORITY, this);
+        return Engine::CGameObject::Update_GameObject(fTimeDelta);
+    }
+    return 0;
 }
 
 void CWall::LateUpdate_GameObject()
@@ -81,9 +84,6 @@ void CWall::LateUpdate_GameObject()
 
 void CWall::Render_GameObject()
 {
-    if (!m_pCalculatorCom->In_Frustum(m_pTransformCom))
-        return;
-
     if (m_bWallDestroyed)
         return;
 
@@ -509,7 +509,7 @@ void CWall::Drop_Item()
     {
         vPos.x += rand() % 3 * 0.1f;
         vPos.z += rand() % 3 * 0.1f;
-        pGameObject = CWallPiece::Create(m_pGraphicDev, ITEM_DIRTWALL, vPos);
+        pGameObject = CWallPiece::Create(m_pGraphicDev, ITEM_STONEWALL, vPos);
         NULL_CHECK(pGameObject);
         pStage->Set_WallDropItemName(L"Wall_Created_WallPiece" + std::to_wstring(m_iItemNumber++));
 
@@ -525,7 +525,7 @@ void CWall::Drop_Item()
         {
             vPos.x -= rand() % 3 * 0.2f;
             vPos.z -= rand() % 3 * 0.2f;
-            pGameObject = COre::Create(m_pGraphicDev, MATERIAL_COPPER, vPos);
+            pGameObject = COre::Create(m_pGraphicDev, MATERIAL_IRON, vPos);
             NULL_CHECK(pGameObject);
             pStage->Set_WallDropItemName(L"Wall_Created_Ore" + std::to_wstring(m_iItemNumber++));
 
@@ -541,7 +541,7 @@ void CWall::Drop_Item()
     {
         vPos.x += rand() % 3 * 0.1f;
         vPos.z += rand() % 3 * 0.1f;
-        pGameObject = CWallPiece::Create(m_pGraphicDev, ITEM_DIRTWALL, vPos);
+        pGameObject = CWallPiece::Create(m_pGraphicDev, ITEM_GRASSWALL, vPos);
         NULL_CHECK(pGameObject);
         pStage->Set_WallDropItemName(L"Wall_Created_WallPiece" + std::to_wstring(m_iItemNumber++));
 
@@ -557,7 +557,7 @@ void CWall::Drop_Item()
         {
             vPos.x -= rand() % 3 * 0.2f;
             vPos.z -= rand() % 3 * 0.2f;
-            pGameObject = COre::Create(m_pGraphicDev, MATERIAL_COPPER, vPos);
+            pGameObject = COre::Create(m_pGraphicDev, MATERIAL_SCARLET, vPos);
             NULL_CHECK(pGameObject);
             pStage->Set_WallDropItemName(L"Wall_Created_Ore" + std::to_wstring(m_iItemNumber++));
 

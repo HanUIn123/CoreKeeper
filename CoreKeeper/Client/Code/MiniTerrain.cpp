@@ -62,7 +62,7 @@ void CMiniTerrain::Render_GameObject()
     backGroundMaterial.Emissive = { 0.f, 0.f, 0.f, 1.f };
     backGroundMaterial.Power = 0.f;
 
-    /*
+    
     for (int iIndex = 0; iIndex < m_vecIlluminated.size(); ++iIndex)
     {
         if (!m_vecIlluminated[iIndex])
@@ -71,7 +71,7 @@ void CMiniTerrain::Render_GameObject()
             m_pGraphicDev->SetTexture(0, nullptr);
             m_pBufferCom->Render_Texture(iIndex * 6);
         }
-    }*/
+    }
 
     m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
