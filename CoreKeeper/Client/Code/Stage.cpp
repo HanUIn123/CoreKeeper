@@ -328,9 +328,9 @@ HRESULT CStage::Ready_Layer_Environment(const _tchar* pLayerTag)
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"CookingPot", pGameObject), E_FAIL);
 
-    pGameObject = CAzeos::Create(m_pGraphicDev, { 75.f, 1.f, 16.f });
-    NULL_CHECK_RETURN(pGameObject, E_FAIL);
-    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Azeos", pGameObject), E_FAIL);
+    //pGameObject = CAzeos::Create(m_pGraphicDev, { 75.f, 1.f, 16.f });
+    //NULL_CHECK_RETURN(pGameObject, E_FAIL);
+    //FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Azeos", pGameObject), E_FAIL);
 
     m_mapLayer.insert({ pLayerTag , pLayer });
 
@@ -394,6 +394,11 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar* pLayerTag)
     dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Pickaxe_IRON_Test", pGameObject), E_FAIL);
 
+    pGameObject = CSprinkler::Create(m_pGraphicDev);
+    NULL_CHECK_RETURN(pGameObject, E_FAIL);
+    dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
+    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Sprinkler_Test", pGameObject), E_FAIL);
+
     /*
     pGameObject = CHoe::Create(m_pGraphicDev, MATERIAL_COPPER);
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
@@ -453,15 +458,15 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar* pLayerTag)
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Ring_Test", pGameObject), E_FAIL);
     dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
 
-    pGameObject = CAssistance::Create(m_pGraphicDev, ASSISTANCE_FEATHER);
-    NULL_CHECK_RETURN(pGameObject, E_FAIL);
-    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Feather_Test", pGameObject), E_FAIL);
-    dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
-
     pGameObject = CBag::Create(m_pGraphicDev, MATERIAL_COPPER);
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Bag_Test", pGameObject), E_FAIL);
     dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);*/
+    
+    pGameObject = CAssistance::Create(m_pGraphicDev, ASSISTANCE_FEATHER);
+    NULL_CHECK_RETURN(pGameObject, E_FAIL);
+    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Feather_Test", pGameObject), E_FAIL);
+    dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
 
     pGameObject = CLantern::Create(m_pGraphicDev, MATERIAL_IRON);
     NULL_CHECK_RETURN(pGameObject, E_FAIL);

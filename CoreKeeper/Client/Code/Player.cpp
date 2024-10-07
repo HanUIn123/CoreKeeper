@@ -616,12 +616,15 @@ void CPlayer::Dash(const _float& fTimeDelta)
 
 void CPlayer::Lantern()
 {
-	// º¸Á¶Àåºñ¿¡ ±êÅÐ ÀåÂø ½Ã
+
 	CItem* pLantern;
 	wstring	strObjectTag = L"UIItemSlot_" + std::to_wstring(CUIItemSlot::SLOT_LANTERN);;
 	pLantern = dynamic_cast<CUIItemSlot*>(Engine::Get_GameObject(L"Layer_UI", strObjectTag.c_str()))->Get_Item();
 	if (!pLantern)
+	{
+		m_fLightRange = 0.f;
 		return;
+	}
 
 	if (pLantern->Get_ItemNum() == ITEM_LANTERN)
 	{
@@ -1552,7 +1555,7 @@ void CPlayer::Set_UI()
 		(Engine::Get_GameObject(L"Layer_UI", L"UI_Hunger"));
 	NULL_CHECK_RETURN(pMp);
 
-	pHunger->Set_InfoH(m_pStateCom->Get_Stat()->iMp, m_pStateCom->Get_Stat()->iMaxMp); // (ë°°ê³ ??, ìµœë?ë°°ê³ ??
+	pHunger->Set_InfoH(m_pStateCom->Get_Hunger(), m_pStateCom->Get_MaxHunger()); // (ë°°ê³ ??, ìµœë?ë°°ê³ ??
 
 	if (Engine::Get_DIMouseMove(DIMS_Z) && !m_bInventory)
 	{
@@ -1682,7 +1685,8 @@ void CPlayer::Set_Buff(const _float& fTimeDelta)
 					Set_Speed(m_fNormalSpeed * 0.8f);
 				break;
 			case DEBUFF_STUN:
-				m_iSpeedWeight = 0;
+				if (!m_bDash)
+					m_iSpeedWeight = 0;
 				break;
 			default:
 				break;
@@ -1708,7 +1712,8 @@ void CPlayer::Set_Buff(const _float& fTimeDelta)
 				}
 				break;
 			case DEBUFF_STUN:
-				m_iSpeedWeight = 1;
+				if (!m_bDash)
+					m_iSpeedWeight = 1;
 				break;
 			default:
 				break;
