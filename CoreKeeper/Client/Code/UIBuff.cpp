@@ -4,7 +4,7 @@
 #include "Export_Utility.h"
 
 CUIBuff::CUIBuff(LPDIRECT3DDEVICE9 pGraphicDev)
-	: Engine::CGameObject(pGraphicDev), m_bWindow(false), m_eBuffIndex(BUFF), m_eBuffType(BUFF_HEAL), m_fCurTime(0.f), m_fBuffTime(50.f), m_fTime(0.f)
+	: Engine::CGameObject(pGraphicDev), m_bWindow(false), m_eBuffIndex(BUFF), m_eBuffType(BUFF_ICON_END), m_fCurTime(0.f), m_fBuffTime(50.f), m_bAllocated(false)
 
 {
 }
@@ -29,13 +29,6 @@ HRESULT CUIBuff::Ready_GameObject(_vec2 vPos, _vec2 vSize)
 	m_pTransformCom->Set_Scale(vSize.x, vSize.y , 1.f);
 	m_pTransformCom->Set_Pos(x, y, 0);
 
-	m_BRect.left = vPos.x - vSize.x;
-	m_BRect.right = vPos.x + vSize.x;
-	m_BRect.top = vPos.y - vSize.y;
-	m_BRect.bottom = vPos.y + vSize.y;
-
-	m_Rect = m_BRect;
-
 	m_pRangeBufferCom->Set_Height(100);
 	m_pRangeBufferCom->Set_Width(200);
 
@@ -46,31 +39,21 @@ _int CUIBuff::Update_GameObject(const _float& fTimeDelta)
 {
 	_int iExit = Engine::CGameObject::Update_GameObject(fTimeDelta);
 
-	if (m_bWindow)
+	if (m_bAllocated)
 	{
+		m_pTransformCom->Set_Pos(m_vPos.x, m_vPos.y, 0);
+
 		POINT pt;
 		GetCursorPos(&pt);
 		ScreenToClient(g_hWnd, &pt);
 
 		if (Map_Picked(pt))
-		{
 			m_bCollapse = true;
-		}
 		else
 			m_bCollapse = false;
 
-		if (m_fCurTime >= 0)
-		{
-			m_fCurTime -= fTimeDelta * 5.f;
+		m_Rect.top = (_float)m_BRect.top + ((_float)(m_BRect.bottom - m_BRect.top) - (_float(m_BRect.bottom - m_BRect.top) * m_fCurTime / m_fBuffTime));
 
-			m_Rect.top = m_fTime + ((_float)(m_BRect.bottom - m_BRect.top) -(_float(m_BRect.bottom - m_BRect.top) * m_fCurTime / m_fBuffTime));
-
-			//m_BRect.top = m_fTime;
-		}
-		else
-		{
-			m_bWindow = false;
-		}
 		Add_RenderGroup(RENDER_UI, this);
 	}
 
@@ -127,24 +110,52 @@ void CUIBuff::Render_GameObject()
 	m_pAnimBufferCom->Render_Buffer();
 }
 
-void CUIBuff::Set_Window(BUFFTYPE _eType, BUFFSLOTTYPE _eSlotType, _float _fTime) 
+void CUIBuff::Set_Window(BUFFTYPE _eType) 
 {
-	if (m_bWindow)
+	switch (_eType)
 	{
-		m_bWindow = false;
-	}
-	else
-	{
-		m_bWindow = true;
-
-		m_eBuffType = _eType;
-		m_eBuffIndex = _eSlotType;
-
-		m_fBuffTime = _fTime;
-
-		m_fTime = (_float)m_BRect.top;
-
-		m_fCurTime = m_fBuffTime;
+	case BUFF_SPEED:
+		m_eBuffType = BUFF_ICON_SPEED;
+		m_eBuffIndex = BUFF;
+		break;
+	case BUFF_HP:
+		m_eBuffType = BUFF_ICON_HP;
+		m_eBuffIndex = BUFF;
+		break;
+	case BUFF_ATT:
+		m_eBuffType = BUFF_ICON_ATT;
+		m_eBuffIndex = BUFF;
+		break;
+	case BUFF_DEF:
+		m_eBuffType = BUFF_ICON_DEF;
+		m_eBuffIndex = BUFF;
+		break;
+	case BUFF_FULL:
+		m_eBuffType = BUFF_ICON_FULL;
+		m_eBuffIndex = BUFF;
+		break;
+	case BUFF_IMMUNE:
+		m_eBuffType = BUFF_ICON_IMMUNE;
+		m_eBuffIndex = BUFF;
+		break;
+	case DEBUFF_HUNGER:
+		m_eBuffType = DEBUFF_ICON_HUNGER;
+		m_eBuffIndex = DEBUFF;
+		break;
+	case DEBUFF_FIRE:
+		m_eBuffType = DEBUFF_ICON_FIRE;
+		m_eBuffIndex = DEBUFF;
+		break;
+	case DEBUFF_SLOW:
+		m_eBuffType = DEBUFF_ICON_SLOW;
+		m_eBuffIndex = DEBUFF;
+		break;
+	case DEBUFF_STUN:
+		m_eBuffType = DEBUFF_ICON_STUN;
+		m_eBuffIndex = DEBUFF;
+		break;
+	default:
+		break;
 	}
 }
 
