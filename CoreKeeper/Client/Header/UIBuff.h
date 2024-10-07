@@ -53,10 +53,10 @@ public:
 		_D3DVIEWPORT9 Viewport;	m_pGraphicDev->GetViewport(&Viewport);
 		m_vPos.x = vPos.x - (_float)Viewport.Width * 0.5f; m_vPos.y = (_float)Viewport.Height * 0.5f - vPos.y;
 
-		m_BRect.left = m_vPos.x - 20.f;
-		m_BRect.right = m_vPos.x + 20.f;
-		m_BRect.top = m_vPos.y - 20.f;
-		m_BRect.bottom = m_vPos.y + 20.f;
+		m_BRect.left = vPos.x - 20.f;
+		m_BRect.right = vPos.x + 20.f;
+		m_BRect.top = vPos.y - 20.f;
+		m_BRect.bottom = vPos.y + 20.f;
 
 		m_Rect = m_BRect;
 	}

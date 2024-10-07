@@ -11,6 +11,7 @@ CWall::CWall(LPDIRECT3DDEVICE9 pGraphicDev)
     , m_bIsUpWall(false)
     , m_bActive(true)
     , m_iCurImgNum(0)
+    , m_bWallDestroyed(false)
 {
     m_vecAroundWall.resize(8);
 }
@@ -42,9 +43,14 @@ HRESULT CWall::Ready_GameObject(_float _fWallX, _float _fWallZ, _int iWallImageN
 
 _int CWall::Update_GameObject(const _float& fTimeDelta)
 {
+    if (m_bWallDestroyed)
+    {
+
+    }
+
     Update_Texture();
 
-    Add_RenderGroup(RENDER_PRIORITY, this);
+    Engine::Add_RenderGroup(RENDER_PRIORITY, this);
 
     return Engine::CGameObject::Update_GameObject(fTimeDelta);
 }
@@ -129,7 +135,7 @@ HRESULT CWall::Add_Component()
 
     pComponent = m_pDustParticlesCom = dynamic_cast<CFall*>(Engine::Clone_Proto(L"Proto_DirtFall"));
     NULL_CHECK_RETURN(pComponent, E_FAIL);
-    m_mapComponent[ID_STATIC].insert({ L"Com_ParticleCollider", pComponent });
+    m_mapComponent[ID_STATIC].insert({ L"Com_Particle", pComponent });
 
     return S_OK;
 }
@@ -426,7 +432,7 @@ void CWall::Update_Texture()
 
 void CWall::Set_Destroy()
 {
-    m_bWallDestroyed = true;
+   // m_bWallDestroyed = true;
 
     for (int i = 0; i < 8; i++)
     {

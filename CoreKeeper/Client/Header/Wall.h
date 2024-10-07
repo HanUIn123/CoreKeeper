@@ -85,6 +85,7 @@ private:
     vector<CWall*>                                          m_vecAroundWall;
 
     _bool                                                   m_bWallDestroyed;
+ 
 private:
     bool    m_bActive;
     int     m_iCurImgNum;
