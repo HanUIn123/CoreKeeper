@@ -4,6 +4,8 @@
 #include "../Header/Ore.h"
 #include "../Header/WallPiece.h"
 
+_long CWall::m_iItemNumber = 0;
+
 CWall::CWall(LPDIRECT3DDEVICE9 pGraphicDev)
     : Engine::CGameObject(pGraphicDev)
     , m_pCalculatorCom(nullptr)
@@ -15,7 +17,6 @@ CWall::CWall(LPDIRECT3DDEVICE9 pGraphicDev)
     , m_iCurImgNum(0)
     , m_bWallDestroyed(false)
     , m_iDurability(0)
-    , m_iItemNumber(0)
 {
     m_vecAroundWall.resize(8);
     m_vecItemName.reserve(100);

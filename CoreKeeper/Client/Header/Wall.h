@@ -63,8 +63,8 @@ public:
 private:
     HRESULT													Add_Component();
     HRESULT                                                 Setup_Material();
-
     void                                                    Update_Texture();
+
 private:
     Engine::CTransform*                                     m_pTransformCom;
     Engine::CTexture*                                       m_pTextureCom;
@@ -96,6 +96,6 @@ private:
     int     m_iCurImgNum;
     _int    m_iDurability;
     vector<wstring>			                                m_vecItemName;
-    _long                                                   m_iItemNumber;
+    static _long                                            m_iItemNumber;
 };
 
