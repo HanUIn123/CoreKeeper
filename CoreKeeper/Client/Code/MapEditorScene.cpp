@@ -778,6 +778,7 @@ HRESULT CMapEditorScene::Piking_Object()
                 {
                     m_pObjectCom = CSlimeFloor::Create(m_pGraphicDev, _vec3(m_vPickPos.x + 0.5f * VTXITV, m_vPickPos.y, m_vPickPos.z + 0.5f * VTXITV), m_iObjectNumber);
                     m_vecPlaceObject[iIndex] = dynamic_cast<CSlimeFloor*>(m_pObjectCom);
+                    dynamic_cast<CSlimeFloor*>(m_vecPlaceObject[iIndex])->Set_PickedObjectName(m_wsObjectNameString[iIndex]);
                     NULL_CHECK_RETURN(m_pObjectCom, E_FAIL);
                     FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsObjectNameString[iIndex].c_str(), m_pObjectCom), E_FAIL);
                     dynamic_cast<CSlimeFloor*>(m_vecPlaceObject[iIndex])->Set_TileTypeIndex(m_iObjectNumber);
@@ -786,6 +787,7 @@ HRESULT CMapEditorScene::Piking_Object()
                 {
                     m_pObjectCom = CMushroom::Create(m_pGraphicDev, _vec3(m_vPickPos.x + 0.5f * VTXITV, m_vPickPos.y + 0.5f, m_vPickPos.z + 0.5f * VTXITV), m_iObjectNumber);
                     m_vecPlaceObject[iIndex] = dynamic_cast<CMushroom*>(m_pObjectCom);
+                    dynamic_cast<CMushroom*>(m_vecPlaceObject[iIndex])->Set_PickedObjectName(m_wsObjectNameString[iIndex]);
                     NULL_CHECK_RETURN(m_pObjectCom, E_FAIL);
                     FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsObjectNameString[iIndex].c_str(), m_pObjectCom), E_FAIL);
                     dynamic_cast<CMushroom*>(m_vecPlaceObject[iIndex])->Set_TileTypeIndex(m_iObjectNumber - 9);
@@ -794,6 +796,7 @@ HRESULT CMapEditorScene::Piking_Object()
                 {
                     m_pObjectCom = CAzeosPoop::Create(m_pGraphicDev, _vec3(m_vPickPos.x + 0.5f * VTXITV, m_vPickPos.y, m_vPickPos.z + 0.5f * VTXITV), m_iObjectNumber);
                     m_vecPlaceObject[iIndex] = dynamic_cast<CAzeosPoop*>(m_pObjectCom);
+                    dynamic_cast<CAzeosPoop*>(m_vecPlaceObject[iIndex])->Set_PickedObjectName(m_wsObjectNameString[iIndex]);
                     NULL_CHECK_RETURN(m_pObjectCom, E_FAIL);
                     FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsObjectNameString[iIndex].c_str(), m_pObjectCom), E_FAIL);
                     dynamic_cast<CAzeosPoop*>(m_vecPlaceObject[iIndex])->Set_TileTypeIndex(m_iObjectNumber - 12);
@@ -802,6 +805,36 @@ HRESULT CMapEditorScene::Piking_Object()
                 pTerrain->Set_Unreachable(iIndex, false);
 
                 m_vCheckPos = m_vPickPos;
+            }
+        }
+
+        if (Engine::Get_DIMouseState(DIM_RB) & 0x80)
+        {
+            CMapToolTerrain* pTerrain = dynamic_cast<CMapToolTerrain*>(Engine::Get_GameObject(L"Layer_GameLogic", L"MapToolTerrain"));
+            CCalculator* pPickPos = dynamic_cast<CCalculator*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"MapToolTerrain", L"Com_Calculator"));
+            CMapToolTex* pMapToolBufferCom = dynamic_cast<CMapToolTex*>(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"MapToolTerrain", L"Com_Buffer"));
+            CTransform* pMapToolTransformCom = dynamic_cast<CTransform*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"MapToolTerrain", L"Com_Transform"));
+
+            m_vPickPos = pPickPos->Picking_OnTerrain(g_hWnd, pMapToolBufferCom, pMapToolTransformCom);
+
+            _int iIndex = _int(m_vPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vPickPos.x + 0.5f * VTXITV;
+
+            if (m_vecPlaceObject[iIndex])
+            {
+                if (auto pSlimeFloor = dynamic_cast<CSlimeFloor*>(m_vecPlaceObject[iIndex]))
+                {
+                    Delete_Object(L"Layer_GameLogic", pSlimeFloor->Get_PickedObjectName().c_str());
+                }
+                else if (auto pMushroom = dynamic_cast<CMushroom*>(m_vecPlaceObject[iIndex]))
+                {
+                    Delete_Object(L"Layer_GameLogic", pMushroom->Get_PickedObjectName().c_str());
+                }
+                else if (auto pAzeosPoop = dynamic_cast<CAzeosPoop*>(m_vecPlaceObject[iIndex]))
+                {
+                    Delete_Object(L"Layer_GameLogic", pAzeosPoop->Get_PickedObjectName().c_str());
+                }
+                m_vecPlaceObject[iIndex] = nullptr;
+                pTerrain->Set_Unreachable(iIndex, false);
             }
         }
     }
@@ -1347,6 +1380,8 @@ HRESULT CMapEditorScene::MapFile_Load()
         FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsWallNameString[vTempIndex].c_str(), pWall), E_FAIL);
     }
 
+    //==========================================================
+
     const _tchar* strFileName = L"../../Data/TileData.txt";
     m_hFile = CreateFile(strFileName, GENERIC_READ, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
 
@@ -1383,6 +1418,65 @@ HRESULT CMapEditorScene::MapFile_Load()
     CloseHandle(m_hFile);
     CloseHandle(m_hWallFile);
     MSG_BOX("Success Load File");
+
+    //==========================================================
+
+    auto	iter2 = find_if(m_mapLayer.begin(), m_mapLayer.end(), CTag_Finder(L"Layer_GameLogic"));
+
+    if (iter2 == m_mapLayer.end())
+        return E_FAIL;
+
+    const _tchar* strFObjectileName = L"../../Data/ObjectData.txt";
+
+    m_hObjectFile = CreateFile(strFObjectileName, GENERIC_READ, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+
+    if (INVALID_HANDLE_VALUE == m_hObjectFile)
+    {
+        MSG_BOX("Fail Open Object file");
+        return E_FAIL;
+    }
+
+    Engine::CGameObject* pGameObject2 = nullptr;
+    _vec3	vObjectPos(0, 0, 0);
+    _int	iType(0);
+    _int	iTypeNumber(0);
+    _int	iIndex(0);
+    DWORD	dwByte3 = 0;
+
+    while (true)
+    {
+        ReadFile(m_hObjectFile, &vObjectPos, sizeof(_vec3), &dwByte3, nullptr);
+        ReadFile(m_hObjectFile, &iTypeNumber, sizeof(_int), &dwByte3, nullptr);
+        ReadFile(m_hObjectFile, &iIndex, sizeof(_int), &dwByte3, nullptr);
+        ReadFile(m_hObjectFile, &iType, sizeof(_int), &dwByte3, nullptr);
+
+        if (dwByte3 == 0)
+            break;
+
+        switch (iType)
+        {
+        case SLIME_FLOOR:
+            m_wsObjectNameString[iIndex] = L"SlimeFloor_" + std::to_wstring(iIndex);
+            pGameObject2 = CSlimeFloor::Create(m_pGraphicDev, _vec3(vObjectPos.x, vObjectPos.y, vObjectPos.z), iTypeNumber);
+            NULL_CHECK_RETURN(pGameObject2, E_FAIL);
+            FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsObjectNameString[iIndex].c_str(), pGameObject2), E_FAIL);
+            break;
+        case MUSHROOM:
+            m_wsObjectNameString[iIndex] = L"Mushroom_" + std::to_wstring(iIndex);
+            pGameObject2 = CMushroom::Create(m_pGraphicDev, _vec3(vObjectPos.x, vObjectPos.y, vObjectPos.z), iTypeNumber);
+            NULL_CHECK_RETURN(pGameObject2, E_FAIL);
+            FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsObjectNameString[iIndex].c_str(), pGameObject2), E_FAIL);
+            break;
+        case AZEOS_POOP:
+            m_wsObjectNameString[iIndex] = L"AzeosPoop_" + std::to_wstring(iIndex);
+            pGameObject2 = CAzeosPoop::Create(m_pGraphicDev, _vec3(vObjectPos.x, vObjectPos.y, vObjectPos.z), iTypeNumber);
+            NULL_CHECK_RETURN(pGameObject2, E_FAIL);
+            FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsObjectNameString[iIndex].c_str(), pGameObject2), E_FAIL);
+            break;
+        }
+    }
+
+    CloseHandle(m_hObjectFile);
 
     return S_OK;
 }

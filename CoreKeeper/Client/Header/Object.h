@@ -43,6 +43,10 @@ public:
 	virtual			_vec3			Get_ObjectPos() { return m_vBuildPosition; }
 	virtual			void			Set_ObjectPos(_vec3 _iBuildingPos) { m_vBuildPosition = _iBuildingPos; }
 
+	// Delete_GameObject 함수를 사용하려면, 키값이 필요한데, 그 키값(이름)을 받아올 함수
+	virtual wstring					Get_PickedObjectName() { return m_strPickedObjectName; }
+	virtual void					Set_PickedObjectName(wstring _pickObjectName) { m_strPickedObjectName = _pickObjectName; }
+
 protected:
 	Engine::CObjectTex*				m_pBufferCom;
 	Engine::CTransform*				m_pTransformCom;
@@ -65,5 +69,8 @@ protected:
 
 
 	_bool                           m_bCollision; // 플레이어와 충돌 체크
+
+	wstring							m_strPickedObjectName;
+
 };
 
