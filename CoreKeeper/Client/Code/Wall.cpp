@@ -13,7 +13,6 @@ CWall::CWall(LPDIRECT3DDEVICE9 pGraphicDev)
     , m_iCurImgNum(0)
     , m_bWallDestroyed(false)
     , m_iDurability(0)
->>>>>>> origin/main
 {
     m_vecAroundWall.resize(8);
 }
