@@ -72,7 +72,7 @@ private:
 	void			Install(ITEMNUM eHandedNum);
 	void			Eat(ITEMNUM eHandedNum);
 
-	void			Set_Buff();
+	void			Set_Buff(const _float& fTimeDelta);
 	void			Set_Hungry(const _float& fTimeDelta);
 	void			Respawn_Progress(const _float& fTimeDelta);
 
@@ -182,6 +182,8 @@ private:
 
 	_bool                   m_bBleed;
 	_float                  m_fBleedTime;
+	_bool					m_bFire;
+	_float					m_fFireTickTime;
 
 	_vec3					m_vStartPoint;
 	_vec3					m_vKnockBackDir;

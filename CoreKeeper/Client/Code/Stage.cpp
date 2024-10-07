@@ -359,6 +359,10 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar* pLayerTag)
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Malugaz", pGameObject), E_FAIL);*/
 
+    pGameObject = CShaman::Create(m_pGraphicDev, _vec3(VTXCNTX / 2, 0, 17.f));
+    NULL_CHECK_RETURN(pGameObject, E_FAIL);
+    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Shaman", pGameObject), E_FAIL);
+
 #pragma region TEST ITEM
 
     /*pGameObject = CPickaxe::Create(m_pGraphicDev, MATERIAL_COPPER);
@@ -570,7 +574,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar* pLayerTag)
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"ChocoBar_Test", pGameObject), E_FAIL);
     dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);*/
-    pGameObject = CFood::Create(m_pGraphicDev, ITEM_BERRY, ITEM_BERRY);
+    pGameObject = CFood::Create(m_pGraphicDev, ITEM_BERRY, ITEM_PEPPER);
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Food_Test", pGameObject), E_FAIL);
     dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);

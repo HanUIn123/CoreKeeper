@@ -65,6 +65,8 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 
 	m_bBleed = false;
 	m_fBleedTime = 0.f;
+	m_bFire = false;
+	m_fFireTickTime = 0.f;
 
 	m_bShootOnce = false;
 	m_vMouseWorldPos = { 0, 0, 0 };
@@ -128,7 +130,7 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 
 	// 버프 스탯 처리
 	Set_Hungry(fTimeDelta);
-	Set_Buff();
+	Set_Buff(fTimeDelta);
 
 
 	if (!m_bNoMove && !m_bInventory && !m_bCraft && !m_bMap) // m_bNoMove -> UICursor에서 적용
@@ -227,7 +229,8 @@ void CPlayer::Render_GameObject()
 	if(m_bBleed)
 	   m_pFireParticleCom->render(); // 파티클 렌더
 
-	m_pFollowParticleCom->render();
+	if(m_bFire)
+		m_pFollowParticleCom->render();
 }
 
 HRESULT CPlayer::Add_Component()
@@ -1552,7 +1555,7 @@ void CPlayer::Set_UI()
 		UI_Disable();
 }
 
-void CPlayer::Set_Buff()
+void CPlayer::Set_Buff(const _float& fTimeDelta)
 {
 	ZeroMemory(&m_tBuffStat, sizeof(STAT));
 	Set_Speed(m_fNormalSpeed);
@@ -1578,6 +1581,13 @@ void CPlayer::Set_Buff()
 				m_tBuffStat.iDefense = m_pStateCom->Get_Stat()->iDefense * 0.05f;
 				break;
 			case DEBUFF_FIRE:
+				m_bFire = true;
+				m_fFireTickTime += fTimeDelta;
+				if (m_fFireTickTime >= 1.f)
+				{
+					m_fFireTickTime = 0.f;
+					m_pStateCom->Set_Damaged(10);
+				}
 				break;
 			case DEBUFF_SLOW:
 				if(m_arrBuffState[BUFF_SPEED])
@@ -1587,6 +1597,32 @@ void CPlayer::Set_Buff()
 				break;
 			case DEBUFF_STUN:
 				m_iSpeedWeight = 0;
+				break;
+			default:
+				break;
+			}
+		}
+		else
+		{
+			switch (i)
+			{
+			case BUFF_SPEED:
+				Set_Speed(m_fNormalSpeed);
+				break;
+			case BUFF_HP:
+			case BUFF_ATT:
+			case BUFF_DEF:
+			case DEBUFF_SLOW:
+				break;
+			case DEBUFF_FIRE:
+				if (m_bFire)
+				{
+					m_bFire = false;
+					m_fFireTickTime = false;
+				}
+				break;
+			case DEBUFF_STUN:
+				m_iSpeedWeight = 1;
 				break;
 			default:
 				break;
@@ -1611,7 +1647,7 @@ void CPlayer::Set_Hungry(const _float& fTimeDelta)
 	if (m_pStateCom->Get_Hunger() >= 75)
 	{
 		if(!m_arrBuffState[BUFF_FULL])
-			CBuffMgr::GetInstance()->Set_BuffStart(BUFF_FULL, 5);
+			CBuffMgr::GetInstance()->Set_BuffStart(BUFF_FULL, 999);
 	}
 	else
 	{
@@ -2130,7 +2166,6 @@ void CPlayer::Particle_Update(_float fTimeDelta)
 
 		m_pFireParticleCom->reset();
 	}
-
 	m_pFollowParticleCom->update(fTimeDelta);
 }
 
@@ -2157,6 +2192,7 @@ void CPlayer::Set_KnockBack(_vec3 vEnemyPos, _int iDamage, _float fDist, PLAYERH
 		case HIT_NORMAL:
 			break;
 		case HIT_FIRE:
+			CBuffMgr::GetInstance()->Set_BuffStart(DEBUFF_FIRE, 5.f);
 			break;
 		case HIT_ELECTRIC:
 			break;
