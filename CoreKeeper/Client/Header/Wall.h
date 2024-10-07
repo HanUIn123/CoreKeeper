@@ -10,6 +10,7 @@ class CTexture;
 class CCalculator;
 class CWallTex;
 class CColliderCube;
+class CFall;
 
 END
 
@@ -52,6 +53,8 @@ public:
     void                                                    Set_Destroy();
     void                                                    Set_DestoryWall(int _iIndex) { m_vecAroundWall[_iIndex] = nullptr; }
 
+    _bool                                                   Get_Destroyed() { return m_bWallDestroyed; }
+
 private:
     HRESULT													Add_Component();
     HRESULT                                                 Setup_Material();
@@ -63,6 +66,8 @@ private:
     Engine::CCalculator*                                    m_pCalculatorCom;
     Engine::CWallTex*                                       m_pBufferCom;
     Engine::CColliderCube*                                  m_pColliderCom;
+
+    Engine::CFall*                                          m_pDustParticlesCom;
 public:
     static CWall* Create(LPDIRECT3DDEVICE9 pGraphicDev, _float _fWallX, _float _fWallZ, _int iWallImageNum, const wstring _pickedWallName);
 
@@ -78,6 +83,8 @@ private:
     _bool                                                   m_bIsUpWall;
 
     vector<CWall*>                                          m_vecAroundWall;
+
+    _bool                                                   m_bWallDestroyed;
 private:
     bool    m_bActive;
     int     m_iCurImgNum;

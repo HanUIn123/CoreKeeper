@@ -2,6 +2,7 @@
 #include "../Header/AnvilObject.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
+#include "../Header/Player.h"
 
 CAnvilObject::CAnvilObject(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CObject(pGraphicDev), m_eMaterial(MATERIAL_END), m_iTextureNum(0)
@@ -26,6 +27,26 @@ HRESULT CAnvilObject::Ready_GameObject(_vec3 vPos, MATERIAL _eMaterial)
 
 _int CAnvilObject::Update_GameObject(const _float& fTimeDelta)
 {
+	if (Check_Interaction())
+	{
+		Interaction();
+	}
+	else if (!Check_Interaction())
+	{
+		if (m_bCollision)
+		{
+			CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
+
+			if (pPlayer->Get_CraftUI())
+			{
+				pPlayer->Set_Craft();
+
+				pPlayer->Set_Inventory();
+
+				m_bCollision = false;
+			}
+		}
+	}
 	Add_RenderGroup(RENDER_ALPHA, this);
 
 	return Engine::CGameObject::Update_GameObject(fTimeDelta);
@@ -42,6 +63,8 @@ void CAnvilObject::Render_GameObject()
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
 
+	m_pColliderCom->Update_Collider(m_pTransformCom->Get_WorldMatrix());
+
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
 	FAILED_CHECK_RETURN(Setup_Material(), );
@@ -53,6 +76,20 @@ void CAnvilObject::Render_GameObject()
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
+}
+
+void CAnvilObject::Interaction()
+{
+	if (Engine::Key_Down(DIK_E))
+	{
+		CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
+
+		pPlayer->Set_Craft(TABLE_ANVIL, m_eMaterial);
+
+		pPlayer->Set_Inventory();
+
+		m_bCollision = true;
+	}
 }
 
 HRESULT CAnvilObject::Add_Component()
@@ -74,6 +111,11 @@ HRESULT CAnvilObject::Add_Component()
 	pComponent = m_pCalculCom = dynamic_cast<CCalculator*>(Engine::Clone_Proto(L"Proto_Calculator"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Calculator", pComponent });
+
+	pComponent = m_pColliderCom = dynamic_cast<CColliderCube*>(Engine::Clone_Proto(L"Proto_NormalCubeCollider"));
+	NULL_CHECK_RETURN(pComponent, E_FAIL);
+	m_mapComponent[ID_STATIC].insert({ L"Com_Collider", pComponent });
+
 
 	return S_OK;
 }

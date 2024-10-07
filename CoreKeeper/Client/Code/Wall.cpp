@@ -35,6 +35,8 @@ HRESULT CWall::Ready_GameObject(_float _fWallX, _float _fWallZ, _int iWallImageN
 
     m_pTransformCom->Set_Scale(1.0f, 2.0f, 1.0f);
 
+    m_pDustParticlesCom->init(L"./Bin/Resource/Texture/Particle/Basic_Particle.png");
+
     return S_OK;
 }
 
@@ -63,6 +65,8 @@ void CWall::Render_GameObject()
     if (!m_pCalculatorCom->In_Frustum(m_pTransformCom))
         return;
 
+    if (m_bWallDestroyed)
+        return;
 
     m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
 
@@ -122,6 +126,10 @@ HRESULT CWall::Add_Component()
     pComponent = m_pColliderCom = dynamic_cast<CColliderCube*>(Engine::Clone_Proto(L"Proto_WallCollider"));
     NULL_CHECK_RETURN(pComponent, E_FAIL);
     m_mapComponent[ID_STATIC].insert({ L"Com_Collider", pComponent });
+
+    pComponent = m_pDustParticlesCom = dynamic_cast<CFall*>(Engine::Clone_Proto(L"Proto_DirtFall"));
+    NULL_CHECK_RETURN(pComponent, E_FAIL);
+    m_mapComponent[ID_STATIC].insert({ L"Com_ParticleCollider", pComponent });
 
     return S_OK;
 }
@@ -418,6 +426,8 @@ void CWall::Update_Texture()
 
 void CWall::Set_Destroy()
 {
+    m_bWallDestroyed = true;
+
     for (int i = 0; i < 8; i++)
     {
         if (!m_vecAroundWall[i])
