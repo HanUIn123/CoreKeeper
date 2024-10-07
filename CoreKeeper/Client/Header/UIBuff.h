@@ -15,7 +15,20 @@ END
 class CUIBuff : public Engine::CGameObject
 {
 public:
-	enum BUFFTYPE { BUFF_HEAL = 17, DEBUFF_BURN = 24, DEBUFF_HUNGER = 31, BUFF_END };
+	enum BUFFICONTYPE 
+	{
+		BUFF_ICON_HP = 0,
+		BUFF_ICON_ATT = 1,
+		BUFF_ICON_DEF = 15,
+		BUFF_ICON_FULL = 17,
+		DEBUFF_ICON_FIRE = 24,
+		BUFF_ICON_SPEED = 29,
+		DEBUFF_ICON_SLOW = 30,
+		DEBUFF_ICON_HUNGER = 31,
+		DEBUFF_ICON_STUN = 38,
+		BUFF_ICON_IMMUNE = 40,
+		BUFF_ICON_END
+	 };
 	enum BUFFSLOTTYPE { BUFF, DEBUFF};
 
 private:
@@ -29,20 +42,34 @@ public:
 	virtual			void			Render_GameObject();
 
 public:
-	void            Set_Window(BUFFTYPE _eType, BUFFSLOTTYPE _eSlotType, _float _fTime);
+	void            Set_Window(BUFFTYPE _eType);
 
-	_bool           Map_Picked(POINT _screenPos) {
-		return  ::PtInRect(&m_BRect, _screenPos);
+	_bool           Map_Picked(POINT _screenPos) { return  ::PtInRect(&m_BRect, _screenPos); }
+
+	void            Set_BuffTime(_float _fCurTime, _float _fBuffTime) { m_fCurTime = _fCurTime; m_fBuffTime = _fBuffTime; }
+
+	void			Set_Position(_vec2 vPos) 
+	{ 
+		_D3DVIEWPORT9 Viewport;	m_pGraphicDev->GetViewport(&Viewport);
+		m_vPos.x = vPos.x - (_float)Viewport.Width * 0.5f; m_vPos.y = (_float)Viewport.Height * 0.5f - vPos.y;
+
+		m_BRect.left = m_vPos.x - 20.f;
+		m_BRect.right = m_vPos.x + 20.f;
+		m_BRect.top = m_vPos.y - 20.f;
+		m_BRect.bottom = m_vPos.y + 20.f;
+
+		m_Rect = m_BRect;
 	}
 
-	void            Set_BuffType(BUFFTYPE _eType)     { m_eBuffType = _eType; }
-	void            Set_BuffSlot(BUFFSLOTTYPE _eType) { m_eBuffIndex = _eType; }
-	void            Set_BuffTime(_float _fTime)       { m_fBuffTime = _fTime; }
+	void			Set_Allocate(_bool bAlloc) { m_bAllocated = bAlloc; }
+	_bool			Get_Allocate() { return m_bAllocated; }
 
 private:
 	HRESULT			Add_Component();
 
 private:
+	_bool	m_bAllocated;
+
 	_vec2 m_vPos;
 	_bool m_bWindow;
 	_bool m_bCollapse;
@@ -50,13 +77,12 @@ private:
 	RECT m_BRect;
 	RECT m_Rect;
 
+	BUFFICONTYPE m_eBuffType;
 	BUFFSLOTTYPE m_eBuffIndex;
 
-	BUFFTYPE m_eBuffType;
-
-	_float   m_fTime;
 	_float   m_fBuffTime;
 	_float   m_fCurTime;
+
 private:
 	Engine::CRcTex* m_pBufferCom;
 	Engine::CRangeTex* m_pRangeBufferCom;
