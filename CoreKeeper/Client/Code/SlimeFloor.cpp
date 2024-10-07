@@ -14,7 +14,7 @@ CSlimeFloor::~CSlimeFloor()
 {
 }
 
-HRESULT CSlimeFloor::Ready_GameObject(_vec3 _vPos)
+HRESULT CSlimeFloor::Ready_GameObject(_vec3 _vPos, _int _iTypeNum)
 {
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
@@ -22,6 +22,8 @@ HRESULT CSlimeFloor::Ready_GameObject(_vec3 _vPos)
     m_vFloorPos.x = _vPos.x;
     m_vFloorPos.y = 0.1f;
     m_vFloorPos.z = _vPos.z;
+
+    m_iTileTypeIndex = _iTypeNum;
 
     m_pTransformCom->Set_Pos(_vPos.x, 0.1f, _vPos.z);
 
@@ -84,11 +86,11 @@ HRESULT CSlimeFloor::Add_Component()
     return S_OK;
 }
 
-CSlimeFloor* CSlimeFloor::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 _vPos)
+CSlimeFloor* CSlimeFloor::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 _vPos, _int _iTypeNum)
 {
     CSlimeFloor* pSlimeFloor = new CSlimeFloor(pGraphicDev);
 
-    if (FAILED(pSlimeFloor->Ready_GameObject(_vPos)))
+    if (FAILED(pSlimeFloor->Ready_GameObject(_vPos, _iTypeNum)))
     {
         Safe_Release(pSlimeFloor);
         MSG_BOX("pSlimeFloor Create Failed");
