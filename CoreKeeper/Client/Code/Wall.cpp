@@ -12,6 +12,8 @@ CWall::CWall(LPDIRECT3DDEVICE9 pGraphicDev)
     , m_bActive(true)
     , m_iCurImgNum(0)
     , m_bWallDestroyed(false)
+    , m_iDurability(0)
+>>>>>>> origin/main
 {
     m_vecAroundWall.resize(8);
 }
@@ -31,6 +33,13 @@ HRESULT CWall::Ready_GameObject(_float _fWallX, _float _fWallZ, _int iWallImageN
     m_vWallPosition.x = _fWallX;
     m_vWallPosition.y = 1.0f;
     m_vWallPosition.z = _fWallZ;
+
+    if (m_iWallImageNum <= 14)
+        m_iDurability = 3;
+    else if (m_iWallImageNum <= 29)
+        m_iDurability = 6;
+    else
+        m_iDurability = 9;
 
     m_pTransformCom->Set_Pos(_fWallX, 1.0f, _fWallZ);
 

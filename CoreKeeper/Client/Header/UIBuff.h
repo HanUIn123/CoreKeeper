@@ -48,8 +48,8 @@ public:
 
 	void            Set_BuffTime(_float _fCurTime, _float _fBuffTime) { m_fCurTime = _fCurTime; m_fBuffTime = _fBuffTime; }
 
-	void			Set_Position(_vec2 vPos) 
-	{ 
+	void			Set_Position(_vec2 vPos)
+	{
 		_D3DVIEWPORT9 Viewport;	m_pGraphicDev->GetViewport(&Viewport);
 		m_vPos.x = vPos.x - (_float)Viewport.Width * 0.5f; m_vPos.y = (_float)Viewport.Height * 0.5f - vPos.y;
 
@@ -60,6 +60,7 @@ public:
 
 		m_Rect = m_BRect;
 	}
+
 
 	void			Set_Allocate(_bool bAlloc) { m_bAllocated = bAlloc; }
 	_bool			Get_Allocate() { return m_bAllocated; }
