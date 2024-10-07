@@ -29,6 +29,9 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	ZeroMemory(&m_tBasicStat, sizeof(STAT));
 	ZeroMemory(&m_tEquipmentStat, sizeof(STAT));
 
+	for (_int i = 0; i < BUFFTYPE_END; i++)
+		m_arrBuffState[i] = false;
+
 	for (int i = 0; i < 5; i++)
 		m_pClothes[i] = nullptr;
 
@@ -77,7 +80,8 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	m_vecInstallObjectName.reserve(16);
 	m_iInstallNumber = 0;
 	m_iLightNum = g_iLightNum++;
-	m_iDebuff = 0;
+
+	m_fHungerTime = 0.f;
 }
 
 CPlayer::~CPlayer()
@@ -90,6 +94,7 @@ HRESULT CPlayer::Ready_GameObject()
 
 	m_tBasicStat = STAT( 400, 100, 20, 0 );
 	m_pStateCom->Set_Stat(m_tBasicStat.iMaxHp, m_tBasicStat.iMaxMp, m_tBasicStat.iAttack, m_tBasicStat.iDefense);
+	m_pStateCom->Set_MaxHunger(100);
 	m_pEquipInventoryCom->Set_SlotCount(10);
 
 	m_pFireParticleCom->init(L"../Bin/Resource/Texture/Particle/Basic_Particle.png", 1, 0.1f); // 파티클 시작
@@ -99,9 +104,9 @@ HRESULT CPlayer::Ready_GameObject()
 
 _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 {
-	Set_UI();
 	if (m_pStateCom->Get_Dead())
 	{
+		Set_UI();
 		Respawn_Progress(fTimeDelta);
 		return 0;
 	}
@@ -118,6 +123,9 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 	if (m_eState != SWING)
 		Show_Equipment();
 	Set_EquippedStatus();
+
+	// 버프 스탯 처리
+	Set_Hungry(fTimeDelta);
 
 	if (!m_bNoMove && !m_bInventory && !m_bCraft && !m_bMap) // m_bNoMove -> UICursor에서 적용
 		Mouse_Click(fTimeDelta);
@@ -180,8 +188,8 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 	m_pAnimatorCom->Update_Animation();
 	m_pColliderCom->Update_Collider(m_pTransformCom->Get_WorldMatrix());
 
+	Set_UI();
 	Particle_Update(fTimeDelta);
-
 	Add_RenderGroup(RENDER_ALPHA, this);
 	return Engine::CGameObject::Update_GameObject(fTimeDelta);
 }
@@ -451,6 +459,26 @@ void CPlayer::Mouse_Click(const _float& fTimeDelta)
 				case ITEM_SPRINKLER:
 					Install(eHandedNum);
 					break;
+
+				case ITEM_BERRY:
+				case ITEM_PEPPER:
+				case ITEM_CARROT:
+				case ITEM_MUSHROOM:
+				case ITEM_BERRY_BERRY_FOOD:
+				case ITEM_BERRY_PEPPER_FOOD:
+				case ITEM_BERRY_CARROT_FOOD:
+				case ITEM_BERRY_MUSHROOM_FOOD:
+				case ITEM_PEPPER_PEPPER_FOOD:
+				case ITEM_PEPPER_CARROT_FOOD:
+				case ITEM_PEPPER_MUSHROOM_FOOD:
+				case ITEM_CARROT_CARROT_FOOD:
+				case ITEM_CARROT_MUSHROOM_FOOD:
+				case ITEM_MUSHROOM_MUSHROOM_FOOD:
+				case ITEM_LUNCH:
+				case ITEM_CHOCOBAR:
+					Eat(eHandedNum);
+					break;
+
 				default:
 					break;
 				}
@@ -1282,6 +1310,31 @@ void CPlayer::Install(ITEMNUM eHandedNum)
 	}
 }
 
+void CPlayer::Eat(ITEMNUM eHandedNum)
+{
+	switch (eHandedNum)
+	{
+	case ITEM_BERRY:
+	case ITEM_PEPPER:
+	case ITEM_CARROT:
+	case ITEM_MUSHROOM:
+	case ITEM_BERRY_BERRY_FOOD:
+	case ITEM_BERRY_PEPPER_FOOD:
+	case ITEM_BERRY_CARROT_FOOD:
+	case ITEM_BERRY_MUSHROOM_FOOD:
+	case ITEM_PEPPER_PEPPER_FOOD:
+	case ITEM_PEPPER_CARROT_FOOD:
+	case ITEM_PEPPER_MUSHROOM_FOOD:
+	case ITEM_CARROT_CARROT_FOOD:
+	case ITEM_CARROT_MUSHROOM_FOOD:
+	case ITEM_MUSHROOM_MUSHROOM_FOOD:
+	case ITEM_LUNCH:
+	case ITEM_CHOCOBAR:
+		break;
+	}
+}
+
+
 void CPlayer::Set_EquippedStatus()
 {
 	m_pStateCom->Set_BasicStat(&m_tBasicStat);
@@ -1411,6 +1464,25 @@ void CPlayer::Set_UI()
 		pDeBuff->Set_Window(CUIBuff::DEBUFF_BURN, CUIBuff::DEBUFF, 100.f);
 		
 		//Set_Statue();
+	}
+}
+
+void CPlayer::Set_Hungry(const _float& fTimeDelta)
+{
+	if (m_eState != IDLE)
+	{
+		m_fHungerTime += fTimeDelta;
+		if (m_fHungerTime >= 5.f)
+		{
+			m_fHungerTime = 0.f;
+			m_pStateCom->Set_HungerMinus(1);
+		}
+	}
+
+	if (m_pStateCom->Get_Hunger() >= 75)
+	{
+		//CBuffMgr::GetInstance()->Set_BuffStart(BUFF_ATT, fTimeDelta);
+		//CBuffMgr::GetInstance()->Set_BuffStart(BUFF_HP, fTimeDelta);
 	}
 }
 
@@ -1951,19 +2023,10 @@ void CPlayer::Set_KnockBack(_vec3 vEnemyPos, _int iDamage, _float fDist, PLAYERH
 		case HIT_NORMAL:
 			break;
 		case HIT_FIRE:
-			m_iDebuff += pow(2, (_int)DEBUFF_FIRE);
 			break;
 		case HIT_ELECTRIC:
-			if ((m_iDebuff & DEBUFF_SLOW) == DEBUFF_SLOW)
-			{
-				m_iDebuff += pow(2, (_int)DEBUFF_STUN);
-				m_iDebuff -= pow(2, (_int)DEBUFF_SLOW);
-			}
-			else
-				m_iDebuff += pow(2, (_int)DEBUFF_SLOW);			
 			break;
 		case HIT_BULLET:
-			m_iDebuff += pow(2, (_int)DEBUFF_BLEED);
 			break;
 		default:
 			break;
