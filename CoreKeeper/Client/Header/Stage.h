@@ -6,6 +6,7 @@
 #include "Include.h"
 #include "CraftMgr.h"
 #include "FarmMgr.h"
+#include "BuffMgr.h"
 
 #include "MapToolTerrain.h"
 #include "../Header/MiniMapCamera.h"

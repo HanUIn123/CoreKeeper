@@ -34,6 +34,7 @@ public:
 		m_tStat.iDefense += pStat->iDefense;
 		m_tStat.iMaxHp += pStat->iMaxHp;
 	}
+
 	void				Set_MaxHP(int iMaxHp) { m_tStat.iMaxHp = iMaxHp; }
 	void				Set_Damaged(int iDamage) { m_tStat.iHp -= iDamage; }
 	void				Set_UseMP(int iMP) { m_tStat.iMp -= iMP; }
@@ -45,10 +46,14 @@ public:
 	void				Set_MaxHpPlus(_int iMaxHp) { m_tStat.iMaxHp += iMaxHp; m_tStat.iHp += iMaxHp; }
 	void				Set_DefPlus(_int iDef) { m_tStat.iDefense += iDef; }
 
+	void				Set_MaxHunger(_int iMax) { m_iMaxHunger = iMax; m_iHunger = m_iMaxHunger; }
+	_int				Get_Hunger() { return m_iHunger; }
+	_int				Get_MaxHunger() { return m_iMaxHunger; }
+	void				Set_HungerMinus(_int iMinus) { m_iHunger -= iMinus; }
+	void				Set_HungerPlus(_int iPlus) { m_iHunger += iPlus; if (m_iHunger > m_iMaxHunger) m_iHunger = m_iMaxHunger; }
+
 	const STAT*			Get_Stat() { return &m_tStat; }
 	const bool			Get_Dead() { if (m_tStat.iHp <= 0) m_bDead = true; return m_bDead; }
-
-
 
 public:
 	static	CState*		Create(LPDIRECT3DDEVICE9 pGraphicDev);
@@ -57,6 +62,8 @@ public:
 private:
 	bool				m_bDead;
 	STAT				m_tStat;
+	_int				m_iHunger;
+	_int				m_iMaxHunger;
 
 private:
 	virtual void		Free();
