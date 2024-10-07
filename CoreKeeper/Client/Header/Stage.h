@@ -44,7 +44,7 @@ public:
 	HRESULT							Load_MonsterData();
 	HRESULT							Load_ObjectData();
 
-
+	wstring*						Get_BuffName() { return m_wsBuffNameString; }
 
 private:
 	virtual void					Free();
@@ -67,6 +67,7 @@ private:
 	wstring							m_wsWallNameString[VTXCNTX * VTXCNTZ];
 	wstring							m_wsObjectNameString[VTXCNTX * VTXCNTZ];
 	wstring							m_wsMonsterNameString[VTXCNTX * VTXCNTZ];
+	wstring							m_wsBuffNameString[BUFFTYPE_END];
 	_int							m_iLoadTileCount;
 	_int							m_iLoadWallCount;
 

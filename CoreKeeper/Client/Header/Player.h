@@ -24,9 +24,6 @@ class CTerrain;
 class CPlayer : public Engine::CGameObject
 {
 private:
-	enum PLAYERDEBUFFTYPE { DEBUFF_STUN, DEBUFF_FIRE, DEBUFF_SLOW, DEBUFF_BLEED, DEBUFF_NONE };
-
-private:
 	explicit CPlayer(LPDIRECT3DDEVICE9 pGraphicDev);
 	virtual ~CPlayer();
 
@@ -121,7 +118,7 @@ public:
 	void			Set_Respawn() { m_bRespawned = false; }
 	void			Set_BuffState(BUFFTYPE eType, _bool bBuff) { m_arrBuffState[eType] = bBuff; };
 	_bool			Get_BuffState(BUFFTYPE eType) { return m_arrBuffState[eType]; }
-
+	void			Set_Speed(_float fSpeed) { m_fSpeed = fSpeed; m_fDiagSpeed = sqrt(pow(m_fSpeed, 2) / 2); }
 
 private:
 	void			KnockBack(const _float& fTimeDelta);
@@ -143,6 +140,7 @@ private:
 
 	Engine::DIRECTION		m_eDir;
 	Engine::STATE			m_eState;
+	_float					m_fNormalSpeed;
 	_float					m_fSpeed;
 	_float					m_fDiagSpeed;
 	_int					m_iSpeedWeight;
@@ -161,6 +159,7 @@ private:
 	_int                    m_iHandNum; // 선택된 아이템 번호
 	STAT					m_tBasicStat;
 	STAT					m_tEquipmentStat;
+	STAT					m_tBuffStat;
 	_bool					m_arrBuffState[BUFFTYPE_END];
 
 	_float					m_fFirstY;
