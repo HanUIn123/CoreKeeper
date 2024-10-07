@@ -1115,27 +1115,27 @@ void CPlayer::PickAxe()
 		switch (m_eDir)
 		{
 		case FRONT:
-			vCheckPos -= vLook;
+			vCheckPos -= vLook * 1.5f;
 			break;
 		case BACK:
-			vCheckPos += vLook;
+			vCheckPos += vLook * 1.5f;
 			break;
 		case RIGHT:
-			vCheckPos += vRight;
+			vCheckPos += vRight * 1.5f;
 			break;
 		case LEFT:
-			vCheckPos += vRight;
+			vCheckPos += vRight * 1.5f;
 			break;
 		}
 		_int iIndex = _int(vCheckPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (vCheckPos.x + 0.5f * VTXITV);
 		CTerrain* pTerrain = dynamic_cast<CTerrain*>(Engine::Get_GameObject(L"Layer_Environment", L"Terrain"));
-		if (0 <= iIndex && iIndex < VTXCNTX * VTXCNTZ)
+		if (0 <= iIndex && iIndex < (VTXCNTX - 1) * (VTXCNTZ - 1))
 		{
 			if (pTerrain->Get_UnreachableByIndex(iIndex))
 			{
 				CScene* pCurScene = Engine::Get_Scene();
 				dynamic_cast<CStage*>(pCurScene)->Get_WallNameByIndex(iIndex);
-				
+
 				CWall* pWall = dynamic_cast<CWall*>(Get_GameObject(L"Layer_Environment", dynamic_cast<CStage*>(pCurScene)->Get_WallNameByIndex(iIndex)->c_str()));
 				if (pWall)
 				{
@@ -1155,13 +1155,15 @@ void CPlayer::PickAxe()
 							bIsBreakable = true;
 						break;
 					}
-					if(bIsBreakable)
+					if (bIsBreakable)
 						pWall->Set_DurabiliryMinus(eAxeMaterial + 1);
 					if (pWall->Get_Durability() <= 0)
 					{
+						pWall->Drop_Item();
 						pWall->Set_Destroy();
 						pCurScene->Delete_GameObject(L"Layer_Environment", pWall, dynamic_cast<CStage*>(pCurScene)->Get_WallNameByIndex(iIndex)->c_str());
 						pTerrain->Set_Unreachable(iIndex, false);
+
 					}
 				}
 			}
@@ -1173,8 +1175,8 @@ void CPlayer::PickAxe()
 		m_pTransformCom->Get_Info(INFO_POS, &vCheckPos);
 		m_pTransformCom->Get_Info(INFO_LOOK, &vLook);
 
-		vCheckPos += vLook;
-		
+		vCheckPos += vLook * 1.5f;
+
 		_int iIndex = _int(vCheckPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (vCheckPos.x + 0.5f * VTXITV);
 		CTerrain* pTerrain = dynamic_cast<CTerrain*>(Engine::Get_GameObject(L"Layer_Environment", L"Terrain"));
 		if (0 <= iIndex && iIndex < VTXCNTX * VTXCNTZ)
@@ -1184,13 +1186,34 @@ void CPlayer::PickAxe()
 				CScene* pCurScene = Engine::Get_Scene();
 				dynamic_cast<CStage*>(pCurScene)->Get_WallNameByIndex(iIndex);
 
-				CGameObject* pWall = Get_GameObject(L"Layer_Environment", dynamic_cast<CStage*>(pCurScene)->Get_WallNameByIndex(iIndex)->c_str());
+				CWall* pWall = dynamic_cast<CWall*>(Get_GameObject(L"Layer_Environment", dynamic_cast<CStage*>(pCurScene)->Get_WallNameByIndex(iIndex)->c_str()));
 				if (pWall)
 				{
-					dynamic_cast<CWall*>(pWall)->Set_Destroy();
-					pCurScene->Delete_GameObject(L"Layer_Environment", pWall, dynamic_cast<CStage*>(pCurScene)->Get_WallNameByIndex(iIndex)->c_str());
-					Engine::Delete_Renderer(RENDER_PRIORITY, pWall);
-					pTerrain->Set_Unreachable(iIndex, false);
+					_bool bIsBreakable = false;
+					switch (eAxeMaterial)
+					{
+					case MATERIAL_WOOD:
+						if (pWall->Get_WallNumber() < 15)
+							bIsBreakable = true;
+						break;
+					case MATERIAL_COPPER:
+						if (pWall->Get_WallNumber() < 30)
+							bIsBreakable = true;
+						break;
+					case MATERIAL_IRON:
+						if (pWall->Get_WallNumber() < 45)
+							bIsBreakable = true;
+						break;
+					}
+					if (bIsBreakable)
+						pWall->Set_DurabiliryMinus(eAxeMaterial + 1);
+					if (pWall->Get_Durability() <= 0)
+					{
+						pWall->Drop_Item();
+						pWall->Set_Destroy();
+						pCurScene->Delete_GameObject(L"Layer_Environment", pWall, dynamic_cast<CStage*>(pCurScene)->Get_WallNameByIndex(iIndex)->c_str());
+						pTerrain->Set_Unreachable(iIndex, false);
+					}
 				}
 			}
 		}
@@ -1576,6 +1599,46 @@ void CPlayer::Set_UI()
 
 	if ((m_bMap || m_bChestInventory || m_bCraft || m_bStatue || m_bGraveInventory || m_bFurnace || m_bCookingPot) && (Engine::Key_Down(DIK_E)))
 		UI_Disable();
+}
+
+void CPlayer::Set_WallProjection()
+{
+	_vec3 vPos;
+	m_pTransformCom->Get_Info(INFO_POS, &vPos);
+	_int iCurIndex = _int(vPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (vPos.x + 0.5f * VTXITV);
+	_int iIndex, iNextIndex;
+
+	// 다음 프레임 벽과 현재 프레임 벽이 똑같으면 알파값 0.5, 아니면 다시 1
+	if (g_bIsTopCamera)
+	{
+		// 현재 프레임 벽 = 플레이어 위치 + z축으로 -1의 방향
+		iIndex = iCurIndex - (VTXCNTX - 1);
+		// 다음 프레임 벽 = 현재 프레임 벽 + 이동 방향
+		// iNextIndex = 
+		CTerrain* pTerrain = dynamic_cast<CTerrain*>(Engine::Get_GameObject(L"Layer_Environment", L"Terrain"));
+		if (0 <= iIndex && iIndex < (VTXCNTX - 1) * (VTXCNTZ - 1))
+		{
+			if (pTerrain->Get_UnreachableByIndex(iIndex))
+			{
+				CScene* pCurScene = Engine::Get_Scene();
+				dynamic_cast<CStage*>(pCurScene)->Get_WallNameByIndex(iIndex);
+
+				CWall* pWall = dynamic_cast<CWall*>(Get_GameObject(L"Layer_Environment", dynamic_cast<CStage*>(pCurScene)->Get_WallNameByIndex(iIndex)->c_str()));
+				if (pWall)
+				{
+					// 플레이어, 벽 둘 다 알파값 0.5
+
+				}
+			}
+		}
+	}
+	else
+	{
+		// 현재 프레임 벽 = 플레이어 위치 + Look 반대 방향
+		// 다음 프레임 벽 = 플레이어 위치 + Look 방향(m_eState == WALK)
+
+	}
+
 }
 
 void CPlayer::Set_Buff(const _float& fTimeDelta)

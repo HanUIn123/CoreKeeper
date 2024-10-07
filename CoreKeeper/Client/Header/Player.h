@@ -79,6 +79,7 @@ private:
 	void			Set_MouseWorldPos();
 	void            Set_UI();
 
+	void			Set_WallProjection();
 
 public:
 	CItem*			Get_HandedItem()		{ return m_pHandedItem; }
