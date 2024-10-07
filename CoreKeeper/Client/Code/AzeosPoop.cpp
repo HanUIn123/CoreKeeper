@@ -5,7 +5,7 @@
 
 CAzeosPoop::CAzeosPoop(LPDIRECT3DDEVICE9 _pGraphicDev)
     : CObject(_pGraphicDev)
-    , m_iTileTypeIndex(0)
+    , m_iPoopTypeIndex(0)
 {
     m_eObjType = Engine::AZEOS_POOP;
 }
@@ -14,13 +14,15 @@ CAzeosPoop::~CAzeosPoop()
 {
 }
 
-HRESULT CAzeosPoop::Ready_GameObject(_vec3 _vPos)
+HRESULT CAzeosPoop::Ready_GameObject(_vec3 _vPos, _int _iTypeNum)
 {
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
     m_vPoopPos.x = _vPos.x;
     m_vPoopPos.y = 0.1f;
     m_vPoopPos.z = _vPos.z;
+
+    m_iPoopTypeIndex = _iTypeNum;
 
     m_pTransformCom->Set_Pos(_vPos.x, 0.1f, _vPos.z);
 
@@ -47,7 +49,7 @@ void CAzeosPoop::Render_GameObject()
 
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
-    m_pTextureCom->Set_Texture(m_iTileTypeIndex);
+    m_pTextureCom->Set_Texture(m_iPoopTypeIndex);
 
     m_pBufferCom->Render_Buffer();
 
@@ -77,11 +79,11 @@ HRESULT CAzeosPoop::Add_Component()
     m_mapComponent[ID_STATIC].insert({ L"Com_Collider", pComponent });
 }
 
-CAzeosPoop* CAzeosPoop::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 _vPos)
+CAzeosPoop* CAzeosPoop::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 _vPos, _int _iTypeNum)
 {
     CAzeosPoop* pAzeosPoop = new CAzeosPoop(pGraphicDev);
 
-    if (FAILED(pAzeosPoop->Ready_GameObject(_vPos)))
+    if (FAILED(pAzeosPoop->Ready_GameObject(_vPos, _iTypeNum)))
     {
         Safe_Release(pAzeosPoop);
         MSG_BOX("pAzeosPoop Create Failed");

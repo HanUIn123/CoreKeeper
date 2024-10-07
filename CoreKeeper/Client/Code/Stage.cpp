@@ -1315,19 +1315,19 @@ HRESULT CStage::Load_ObjectData()
         {
         case SLIME_FLOOR:
             m_wsObjectNameString[iIndex] = L"SlimeFloor_" + std::to_wstring(iIndex);
-            pGameObject = CSlimeFloor::Create(m_pGraphicDev, _vec3(vObjectPos.x, vObjectPos.y, vObjectPos.z));
+            pGameObject = CSlimeFloor::Create(m_pGraphicDev, _vec3(vObjectPos.x, vObjectPos.y, vObjectPos.z), iTypeNumber);
             NULL_CHECK_RETURN(pGameObject, E_FAIL);
             FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsObjectNameString[iIndex].c_str(), pGameObject), E_FAIL);
             break;
         case MUSHROOM:
             m_wsObjectNameString[iIndex] = L"Mushroom_" + std::to_wstring(iIndex);
-            pGameObject = CMushroom::Create(m_pGraphicDev, _vec3(vObjectPos.x, vObjectPos.y, vObjectPos.z));
+            pGameObject = CMushroom::Create(m_pGraphicDev, _vec3(vObjectPos.x, vObjectPos.y, vObjectPos.z), iTypeNumber);
             NULL_CHECK_RETURN(pGameObject, E_FAIL);
             FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsObjectNameString[iIndex].c_str(), pGameObject), E_FAIL);
             break;
         case AZEOS_POOP:
             m_wsObjectNameString[iIndex] = L"AzeosPoop_" + std::to_wstring(iIndex);
-            pGameObject = CAzeosPoop::Create(m_pGraphicDev, _vec3(vObjectPos.x, vObjectPos.y, vObjectPos.z));
+            pGameObject = CAzeosPoop::Create(m_pGraphicDev, _vec3(vObjectPos.x, vObjectPos.y, vObjectPos.z), iTypeNumber);
             NULL_CHECK_RETURN(pGameObject, E_FAIL);
             FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsObjectNameString[iIndex].c_str(), pGameObject), E_FAIL);
             break;
