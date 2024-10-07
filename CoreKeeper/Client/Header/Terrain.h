@@ -37,6 +37,8 @@ public:
 	void												Set_Unreachable(int _iIndex, bool _bUnreachable) { m_vecUnreachable[_iIndex] = _bUnreachable; }
 	void                                                Set_Unreachable(vector<bool> _vecUnreachable) { copy(_vecUnreachable.begin(), _vecUnreachable.end(), m_vecUnreachable.begin()); }
 	_vec3*												Get_PickPos();
+
+	void												Set_Mini(bool _bMini) { m_bMini = _bMini; }
 private:
 	Engine::CTerrainTex* m_pBufferCom;
 	Engine::CTransform* m_pTransformCom;
@@ -53,4 +55,6 @@ private:
 	vector<int>											m_vecTextureNumber;
 	vector<bool>										m_vecUnreachable;
 	_vec3												m_vPickPos;
+
+	bool												m_bMini;
 };

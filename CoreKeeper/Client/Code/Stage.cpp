@@ -151,6 +151,10 @@ HRESULT CStage::Ready_Layer_Environment(const _tchar* pLayerTag)
 
 #pragma region BASECAMP
 
+    /*pGameObject = CSpotlite::Create(m_pGraphicDev, 5.0f, { VTXCNTX / 2 + 10.f, 12.3f, 21.f });
+    NULL_CHECK_RETURN(pGameObject, E_FAIL);
+    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Spotlite", pGameObject), E_FAIL);*/
+
     pGameObject = CCore::Create(m_pGraphicDev, { VTXCNTX / 2, 2.3f, 21.f });
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Core", pGameObject), E_FAIL);
@@ -849,20 +853,6 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_MiniMap", pGameObject), E_FAIL);
     */
 
-    vPos = { 60.f, 130.f };
-    vSize = { 20.f, 20.f };
-
-    pGameObject = CUIBuff::Create(m_pGraphicDev, vPos, vSize);
-    NULL_CHECK_RETURN(pGameObject, E_FAIL);
-    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Buff0", pGameObject), E_FAIL);
-
-    vPos = { 110.f, 130.f };
-    vSize = { 20.f, 20.f };
-
-    pGameObject = CUIBuff::Create(m_pGraphicDev, vPos, vSize);
-    NULL_CHECK_RETURN(pGameObject, E_FAIL);
-    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_DeBuff0", pGameObject), E_FAIL);
-
     pGameObject = CMiniMapFrame::Create(m_pGraphicDev);
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"MiniFrame", pGameObject), E_FAIL);
@@ -945,6 +935,15 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
     pGameObject = CUICookingPot::Create(m_pGraphicDev, vPos, vSize);
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_CookingPot", pGameObject), E_FAIL);
+
+    for (_int i = 0; i < BUFFTYPE_END; i++)
+    {
+        pGameObject = CUIBuff::Create(m_pGraphicDev, _vec2(0, 0), _vec2(20, 20));
+        NULL_CHECK_RETURN(pGameObject, E_FAIL);
+        m_wsBuffNameString[i] = L"UI_Buff" + std::to_wstring(i);
+        FAILED_CHECK_RETURN(pLayer->Add_GameObject(m_wsBuffNameString[i].c_str(), pGameObject), E_FAIL);
+        CBuffMgr::GetInstance()->Set_UIBuff((BUFFTYPE)i, dynamic_cast<CUIBuff*>(pGameObject));
+    }
 
     m_mapLayer.insert({ pLayerTag , pLayer });
 

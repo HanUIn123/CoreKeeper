@@ -106,6 +106,7 @@
 #include "TableObject.h"
 #include "FurnaceObject.h"
 #include "CookingPotObject.h"
+#include "Spotlite.h"
 
 // UI
 #include "UIPlayerStatus.h"

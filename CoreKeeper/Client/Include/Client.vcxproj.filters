@@ -55,9 +55,6 @@
     <Filter Include="98.ImguiMgr">
       <UniqueIdentifier>{72fb9d2b-55eb-4956-b943-c0153718c855}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. Scene\99.MapEditorScene">
-      <UniqueIdentifier>{6edbe3c5-5cf7-4aa5-be52-c214f5f762cb}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\02. Monster\00. Slime">
       <UniqueIdentifier>{51933e60-7d91-4ce4-a7ed-3da061167b5b}</UniqueIdentifier>
     </Filter>
@@ -481,9 +478,6 @@
     <Filter Include="02. GameObject\08. Object\14. Crystal">
       <UniqueIdentifier>{f79a2805-c1ec-4d8f-b951-4429be5cd7e1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\08. Object\13. Wall">
-      <UniqueIdentifier>{9e769398-2d95-40c2-9c55-b97bbdf6ec0e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\08. Object\00. BaseCamp\05. Tile">
       <UniqueIdentifier>{eeddca41-a8c4-46b9-9ce3-de13819c2c14}</UniqueIdentifier>
     </Filter>
@@ -498,6 +492,15 @@
     </Filter>
     <Filter Include="03. Manager\02. BuffMgr">
       <UniqueIdentifier>{eb57dd3e-66d3-467c-8e78-bb9c8a57835f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\08. Object\99. Wall">
+      <UniqueIdentifier>{9e769398-2d95-40c2-9c55-b97bbdf6ec0e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\08. Object\15. Spotlite">
+      <UniqueIdentifier>{6672f020-b77e-4036-93c6-b0183c4c14fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\99.MapEditorScene">
+      <UniqueIdentifier>{6edbe3c5-5cf7-4aa5-be52-c214f5f762cb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -583,7 +586,7 @@
       <Filter>99.Imgui</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\MapEditorScene.h">
-      <Filter>01. Scene\99.MapEditorScene</Filter>
+      <Filter>02. GameObject\99.MapEditorScene</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\Slime.h">
       <Filter>02. GameObject\02. Monster\00. Slime</Filter>
@@ -619,7 +622,7 @@
       <Filter>02. GameObject\07. UI\06. UICraft</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\Wall.h">
-      <Filter>02. GameObject\08. Object\13. Wall</Filter>
+      <Filter>02. GameObject\08. Object\99. Wall</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\Eye.h">
       <Filter>02. GameObject\01. Player\00. Eyes</Filter>
@@ -975,6 +978,9 @@
     <ClInclude Include="..\Header\BuffMgr.h">
       <Filter>03. Manager\02. BuffMgr</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\Spotlite.h">
+      <Filter>02. GameObject\08. Object\15. Spotlite</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1047,7 +1053,7 @@
       <Filter>98.ImguiMgr</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\MapEditorScene.cpp">
-      <Filter>01. Scene\99.MapEditorScene</Filter>
+      <Filter>02. GameObject\99.MapEditorScene</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\Slime.cpp">
       <Filter>02. GameObject\02. Monster\00. Slime</Filter>
@@ -1077,7 +1083,7 @@
       <Filter>02. GameObject\07. UI\00. UIPlayerStatus\01. PlayerStat</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\Wall.cpp">
-      <Filter>02. GameObject\08. Object\13. Wall</Filter>
+      <Filter>02. GameObject\08. Object\99. Wall</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\Eye.cpp">
       <Filter>02. GameObject\01. Player\00. Eyes</Filter>
@@ -1429,6 +1435,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\BuffMgr.cpp">
       <Filter>03. Manager\02. BuffMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Spotlite.cpp">
+      <Filter>02. GameObject\08. Object\15. Spotlite</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
