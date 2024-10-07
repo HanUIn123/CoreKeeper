@@ -57,40 +57,43 @@ _int CUIJemSlot::Update_GameObject(const _float& fTimeDelta)
 				CUIStatue* pUIStatue = dynamic_cast<CUIStatue*>(Engine::Get_GameObject(L"Layer_UI", L"UI_Statue"));
 				CInventory* pCursor = dynamic_cast<CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_UI", L"UI_Cursor", L"Com_Inventory"));
 
-				CItem* pItem = pCursor->Get_Item(0);
-
-				Engine::ITEMNUM eNum = pItem->Get_ItemNum();
-
-				_int i = pUIStatue->Get_StatueType();
-
-				if (i == 0 && eNum == ITEM_SLIME_CORE || i == 2 && eNum == ITEM_LARVA_CORE || i == 4 && eNum == ITEM_MAL_CORE)
+				if (!pCursor->Check_Empty(0))
 				{
-					switch (i)
+					CItem* pItem = pCursor->Get_Item(0);
+
+					Engine::ITEMNUM eNum = pItem->Get_ItemNum();
+
+					_int i = pUIStatue->Get_StatueType();
+
+					if (i == 0 && eNum == ITEM_SLIME_CORE || i == 2 && eNum == ITEM_LARVA_CORE || i == 4 && eNum == ITEM_MAL_CORE)
 					{
-					case 0:
-					{
-						CStatue* pStatue = dynamic_cast<CStatue*>(Engine::Get_GameObject(L"Layer_Environment", L"SlimeStatue"));
-						pStatue->Set_Active();
-						pCursor->Minus_Item(ITEM_SLIME_CORE, 1);
-						pUIStatue->Set_eType(1);
-						break;
-					}
-					case 2:
-					{
-						CStatue* pStatue = dynamic_cast<CStatue*>(Engine::Get_GameObject(L"Layer_Environment", L"LarvaStatue"));
-						pStatue->Set_Active();
-						pCursor->Minus_Item(ITEM_LARVA_CORE, 1);
-						pUIStatue->Set_eType(3);
-						break;
-					}
-					case 4:
-					{
-						CStatue* pStatue = dynamic_cast<CStatue*>(Engine::Get_GameObject(L"Layer_Environment", L"MalugazStatue"));
-						pStatue->Set_Active();
-						pCursor->Minus_Item(ITEM_MAL_CORE, 1);
-						pUIStatue->Set_eType(5);
-						break;
-					}
+						switch (i)
+						{
+						case 0:
+						{
+							CStatue* pStatue = dynamic_cast<CStatue*>(Engine::Get_GameObject(L"Layer_Environment", L"SlimeStatue"));
+							pStatue->Set_Active();
+							pCursor->Minus_Item(ITEM_SLIME_CORE, 1);
+							pUIStatue->Set_eType(1);
+							break;
+						}
+						case 2:
+						{
+							CStatue* pStatue = dynamic_cast<CStatue*>(Engine::Get_GameObject(L"Layer_Environment", L"LarvaStatue"));
+							pStatue->Set_Active();
+							pCursor->Minus_Item(ITEM_LARVA_CORE, 1);
+							pUIStatue->Set_eType(3);
+							break;
+						}
+						case 4:
+						{
+							CStatue* pStatue = dynamic_cast<CStatue*>(Engine::Get_GameObject(L"Layer_Environment", L"MalugazStatue"));
+							pStatue->Set_Active();
+							pCursor->Minus_Item(ITEM_MAL_CORE, 1);
+							pUIStatue->Set_eType(5);
+							break;
+						}
+						}
 					}
 				}
 			}

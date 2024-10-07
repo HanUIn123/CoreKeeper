@@ -128,6 +128,11 @@ void CUIStatueCraft::Render_GameObject()
 		matWorld._42 -= 8.f;
 	}
 
+	if (m_iIndex == 1)
+	{
+		matWorld._42 -= 8.f;
+	}
+
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
 
 	if (m_iIndex != 0 && m_iIndex != 2 && m_iIndex != 4)
