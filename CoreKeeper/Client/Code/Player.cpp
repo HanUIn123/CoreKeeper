@@ -1354,7 +1354,7 @@ void CPlayer::Eat(ITEMNUM eHandedNum)
 	switch (eHandedNum)
 	{
 	case ITEM_BERRY:
-		m_pStateCom->Set_Recover(20);
+		m_pStateCom->Set_Recover(28);
 		m_pStateCom->Set_HungerPlus(9);
 		break;
 	case ITEM_PEPPER:
@@ -1362,42 +1362,74 @@ void CPlayer::Eat(ITEMNUM eHandedNum)
 		m_pStateCom->Set_HungerPlus(5);
 		break;
 	case ITEM_CARROT:
-		m_pStateCom->Set_Recover(20);
+		m_pStateCom->Set_Recover(41);
 		m_pStateCom->Set_HungerPlus(7);
 		break;
 	case ITEM_MUSHROOM:
-		m_pStateCom->Set_Recover(20);
+		m_pStateCom->Set_Recover(21);
 		m_pStateCom->Set_HungerPlus(9);
 		break;
 	case ITEM_BERRY_BERRY_FOOD:
-		m_pStateCom->Set_Recover(40);
+		m_pStateCom->Set_Recover(28);
 		m_pStateCom->Set_HungerPlus(19);
 		CBuffMgr::GetInstance()->Set_BuffStart(BUFF_HP, 60);
 		break;
 	case ITEM_BERRY_PEPPER_FOOD:
-		m_pStateCom->Set_Recover(40);
+		m_pStateCom->Set_Recover(28);
 		m_pStateCom->Set_HungerPlus(19);
 		CBuffMgr::GetInstance()->Set_BuffStart(BUFF_SPEED, 60);
 		CBuffMgr::GetInstance()->Set_BuffStart(BUFF_HP, 60);
 		break;
 	case ITEM_BERRY_CARROT_FOOD:
-		m_pStateCom->Set_Recover(40);
+		m_pStateCom->Set_Recover(42);
 		m_pStateCom->Set_HungerPlus(19);
 		CBuffMgr::GetInstance()->Set_BuffStart(BUFF_SPEED, 60);
-		CBuffMgr::GetInstance()->Set_BuffStart(BUFF_HP, 60);
+		CBuffMgr::GetInstance()->Set_BuffStart(BUFF_DEF, 60);
 		break;
 	case ITEM_BERRY_MUSHROOM_FOOD:
+		m_pStateCom->Set_Recover(42);
+		m_pStateCom->Set_HungerPlus(19);
+		CBuffMgr::GetInstance()->Set_BuffStart(BUFF_HP, 60);
+		break;
 	case ITEM_PEPPER_PEPPER_FOOD:
+		m_pStateCom->Set_HungerPlus(15);
+		CBuffMgr::GetInstance()->Set_BuffStart(BUFF_SPEED, 60);
+		break;
 	case ITEM_PEPPER_CARROT_FOOD:
+		m_pStateCom->Set_HungerPlus(15);
+		CBuffMgr::GetInstance()->Set_BuffStart(BUFF_SPEED, 60);
+		CBuffMgr::GetInstance()->Set_BuffStart(BUFF_DEF, 60);
+		break;
 	case ITEM_PEPPER_MUSHROOM_FOOD:
+		m_pStateCom->Set_Recover(42);
+		m_pStateCom->Set_HungerPlus(19);
+		CBuffMgr::GetInstance()->Set_BuffStart(BUFF_SPEED, 60);
+		break;
 	case ITEM_CARROT_CARROT_FOOD:
+		m_pStateCom->Set_HungerPlus(15);
+		CBuffMgr::GetInstance()->Set_BuffStart(BUFF_DEF, 60);
+		break;
 	case ITEM_CARROT_MUSHROOM_FOOD:
+		m_pStateCom->Set_Recover(42);
+		m_pStateCom->Set_HungerPlus(20);
+		CBuffMgr::GetInstance()->Set_BuffStart(BUFF_DEF, 60);
+		break;
 	case ITEM_MUSHROOM_MUSHROOM_FOOD:
+		m_pStateCom->Set_Recover(42);
+		m_pStateCom->Set_HungerPlus(20);
+		break;
 	case ITEM_LUNCH:
+		m_pStateCom->Set_Recover(28);
+		m_pStateCom->Set_HungerPlus(12);
 		break;
 	case ITEM_CHOCOBAR:
+		m_pStateCom->Set_HungerPlus(19);
 		break;
 	}
+	m_pHandedItem->Set_Use(false);
+	m_pHandedItem->Set_Active(false);
+	m_pHandedItem->Set_Drop(false);
+	m_pInventoryCom->Minus_Item(eHandedNum);
 }
 
 
