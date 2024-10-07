@@ -51,6 +51,9 @@ protected:
 	Engine::CColliderCube*			m_pColliderCom;
 	Engine::CInventory*				m_pInventoryCom;
 
+	Engine::PLACEOBJECT				m_eObjType;
+
+
 public:
 	static CObject* Create(LPDIRECT3DDEVICE9 pGraphicDev);
 private:

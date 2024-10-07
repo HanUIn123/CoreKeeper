@@ -480,12 +480,21 @@
     </Filter>
     <Filter Include="02. GameObject\08. Object\14. Crystal">
       <UniqueIdentifier>{f79a2805-c1ec-4d8f-b951-4429be5cd7e1}</UniqueIdentifier>
-	</Filter>
+    </Filter>
     <Filter Include="02. GameObject\08. Object\13. Wall">
       <UniqueIdentifier>{9e769398-2d95-40c2-9c55-b97bbdf6ec0e}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameObject\08. Object\00. BaseCamp\05. Tile">
       <UniqueIdentifier>{eeddca41-a8c4-46b9-9ce3-de13819c2c14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\08. Object\90.SlimeFloor">
+      <UniqueIdentifier>{c7db4723-f917-44ec-bbe5-817413ecd274}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\08. Object\91.Mushroom">
+      <UniqueIdentifier>{0cb02698-22eb-4fb1-b0e1-274ed648c80c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\08. Object\92.AzeosPoop">
+      <UniqueIdentifier>{f21e6d94-b341-4527-8cc4-b51c4ea05c85}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -951,6 +960,15 @@
     <ClInclude Include="..\Header\Tile.h">
       <Filter>02. GameObject\08. Object\00. BaseCamp\05. Tile</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\SlimeFloor.h">
+      <Filter>02. GameObject\08. Object\90.SlimeFloor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\Mushroom.h">
+      <Filter>02. GameObject\08. Object\91.Mushroom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\AzeosPoop.h">
+      <Filter>02. GameObject\08. Object\92.AzeosPoop</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1393,6 +1411,15 @@
     </ClCompile>
     <ClCompile Include="..\Code\Tile.cpp">
       <Filter>02. GameObject\08. Object\00. BaseCamp\05. Tile</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\SlimeFloor.cpp">
+      <Filter>02. GameObject\08. Object\90.SlimeFloor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Mushroom.cpp">
+      <Filter>02. GameObject\08. Object\91.Mushroom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\AzeosPoop.cpp">
+      <Filter>02. GameObject\08. Object\92.AzeosPoop</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -16,7 +16,7 @@ CMapEditorScene::CMapEditorScene(LPDIRECT3DDEVICE9 _pGraphicDevice)
     , m_pMTWGemeObjectCom(nullptr)
     , m_bPushed(false)
     , m_bWallClickPushed(false)
-    , m_bBuildingClick(false)
+    , m_bObjectClickPushed(false)
     , m_bMonsterClickPushed(false)
     , m_bSwitch(false)
     , m_bReachable(false)
@@ -68,6 +68,7 @@ CMapEditorScene::CMapEditorScene(LPDIRECT3DDEVICE9 _pGraphicDevice)
     m_vecWallObject.resize((VTXCNTX - 1) * (VTXCNTZ - 1));
     //m_vecBuildingObject.resize((VTXCNTX - 1) * (VTXCNTZ - 1));
     m_vecMonsterRenderObject.resize((VTXCNTX - 1) * (VTXCNTZ - 1));
+    m_vecPlaceObject.resize((VTXCNTX - 1) * (VTXCNTZ - 1));
 }
 
 CMapEditorScene::~CMapEditorScene()
@@ -191,15 +192,16 @@ HRESULT CMapEditorScene::Ready_Prototype()
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_DarkBox", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/SkyBox/DarkSky.dds", TEX_CUBE, 1)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_WallCube", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Wall/Wall_%d.dds", TEX_CUBE, 3)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_DarkWallCube", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/DarkWall/Brick_Cube_%d.dds", TEX_CUBE, 48)), E_FAIL);
-    //FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MapToolWallCube", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/MapToolWall/BigWall_%d.dds", TEX_CUBE, 3)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MapToolWallCube", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/MapToolWall/black.dds", TEX_CUBE, 1)), E_FAIL);
 
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ObjectTex", Engine::CObjectTex::Create(m_pGraphicDev, 0.5f, 0.5f, 0.0f)), E_FAIL);
 
+
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_GrassTileTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Tile/GrassTile/Grass_Tile_%d.png", TEX_NORMAL, 9)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_DustTileTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Tile/DustTile/Dust_Tile_%d.png", TEX_NORMAL, 9)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MapToolTerrainTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/MapTerrain/Terrain_%d.png", TEX_NORMAL, 30)), E_FAIL);
-    
+
+
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_WallCollider", Engine::CColliderCube::Create(m_pGraphicDev, _vec3(-0.5f, -0.5f, -0.5f), _vec3(0.5f, 0.5f, 0.5f))), E_FAIL);
 
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SlimeAnimTex", Engine::CAnimTex::Create(m_pGraphicDev, 12, 4)), E_FAIL);
@@ -207,12 +209,25 @@ HRESULT CMapEditorScene::Ready_Prototype()
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ShamanAnimTex", Engine::CAnimTex::Create(m_pGraphicDev, 8, 9)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_HunterAnimTex", Engine::CAnimTex::Create(m_pGraphicDev, 16, 20)), E_FAIL);
 
+
+    // Place Object BufferTex
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SlimeFloorTex", Engine::CObjectTex::Create(m_pGraphicDev, 0.5f, 0.0f, 0.5f)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MushroomTex", Engine::CObjectTex::Create(m_pGraphicDev, 0.5f, 0.5f, 0.0f)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_AzeosPoopTex", Engine::CObjectTex::Create(m_pGraphicDev, 0.5f, 0.0f, 0.5f)), E_FAIL);
+
+
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SlimeTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Monster/Slime.png", TEX_NORMAL)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ShroomManTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Monster/Mushroom.png", TEX_NORMAL)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ShamanTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Monster/Shaman.png", TEX_NORMAL)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ShamProjectileTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Monster/fireballChargedProjectile_idle.png", TEX_NORMAL)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_HunterTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Monster/Hunter/Hunter_Body.png", TEX_NORMAL)), E_FAIL);
     
+    // Place Object Texture
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SlimeFloorTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/ImguiImage/Object/Slime_Floor/slime_tile_%d.png", TEX_NORMAL, 9)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MushroomTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/PlaceObject/mushroom_%d.png", TEX_NORMAL, 3)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_AzeosPoopTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/PlaceObject/bird_poop_%d.png", TEX_NORMAL, 3)), E_FAIL);
+
+
     return S_OK;
 }
 
@@ -445,6 +460,7 @@ void CMapEditorScene::Setting_TileList()
             {
                 m_bSelectTile = true;
                 m_bSelectWall = false;
+                m_bSelectMonster = false;
                 m_bSelectObject = false;
 
                 m_iTileNumber = textureIndex;
@@ -532,6 +548,7 @@ void CMapEditorScene::Setting_WallList()
                 m_bSelectTile = false;
                 m_bSelectWall = true;
                 m_bSelectObject = false;
+                m_bSelectMonster = false;
 
                 m_iWallImgNumber = textureIndex;
             }
@@ -695,6 +712,7 @@ void CMapEditorScene::Setting_ObjectList()
             {
                 m_bSelectTile = false;
                 m_bSelectWall = false;
+                m_bSelectMonster = false;
                 m_bSelectObject = true;
 
                 //m_iObjectNumber = nCurrentItem;
@@ -713,114 +731,80 @@ void CMapEditorScene::Setting_ObjectList()
 
 HRESULT CMapEditorScene::Piking_Object()
 {
-    //auto	iter = find_if(m_mapLayer.begin(), m_mapLayer.end(), CTag_Finder(L"Layer_Environment"));
+    auto	iter = find_if(m_mapLayer.begin(), m_mapLayer.end(), CTag_Finder(L"Layer_GameLogic"));
 
-    //if (iter == m_mapLayer.end())
-    //    return E_FAIL;
+    if (iter == m_mapLayer.end())
+        return E_FAIL;
 
-    //if (!m_bGuiHovered)
-    //{
-    //    if (Engine::Get_DIMouseState(DIM_LB) & 0x80)
-    //    {
-    //        m_bBuildingClick = true;
-    //    }
-    //    if (!(Engine::Get_DIMouseState(DIM_LB) & 0x80) && m_bSelectBuilding && m_bBuildingClick)
-    //    {
-    //        m_bBuildingClick = false;
+    if (!m_bGuiHovered)
+    {
+        if (Engine::Get_DIMouseState(DIM_LB) & 0x80 && m_bSelectObject)
+        {
+            m_bObjectClickPushed = true;
+        }
+        if (!(Engine::Get_DIMouseState(DIM_LB) & 0x80) && m_bObjectClickPushed)
+        {
+            m_bObjectClickPushed = false;
 
-    //        CMapToolTerrain* pTerrain = dynamic_cast<CMapToolTerrain*>(Engine::Get_GameObject(L"Layer_GameLogic", L"MapToolTerrain"));
-    //        CCalculator* pPickPos = dynamic_cast<CCalculator*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"MapToolTerrain", L"Com_Calculator"));
-    //        CMapToolTex* pMapToolBufferCom = dynamic_cast<CMapToolTex*>(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"MapToolTerrain", L"Com_Buffer"));
-    //        CTransform* pMapToolTransformCom = dynamic_cast<CTransform*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"MapToolTerrain", L"Com_Transform"));
+            CMapToolTerrain* pTerrain = dynamic_cast<CMapToolTerrain*>(Engine::Get_GameObject(L"Layer_GameLogic", L"MapToolTerrain"));
+            CCalculator* pPickPos = dynamic_cast<CCalculator*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"MapToolTerrain", L"Com_Calculator"));
+            CMapToolTex* pMapToolBufferCom = dynamic_cast<CMapToolTex*>(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"MapToolTerrain", L"Com_Buffer"));
+            CTransform* pMapToolTransformCom = dynamic_cast<CTransform*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"MapToolTerrain", L"Com_Transform"));
 
-    //        m_vObPickPos = pPickPos->Picking_OnTerrain(g_hWnd, pMapToolBufferCom, pMapToolTransformCom);
+            m_vPickPos = pPickPos->Picking_OnTerrain(g_hWnd, pMapToolBufferCom, pMapToolTransformCom);
+            
+            if (m_vPickPos.y < 0)
+                return S_OK;
 
-    //        if (m_vObPickPos.y < 0)
-    //            return S_OK;
+            m_bAlreadyInstalled = false;
 
-    //        m_bAlreadyInstalled = false;
+            if (m_vecPlaceObject[unsigned __int64(m_vPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vPickPos.x + 0.5f * VTXITV])
+                m_bAlreadyInstalled = true;
 
-    //        if (m_vecBuildingObject[unsigned __int64(m_vObPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vObPickPos.x + 0.5f * VTXITV])
-    //            m_bAlreadyInstalled = true;
+            if (m_bAlreadyInstalled)
+                m_bCanInstall = false;
+            else if (m_vCheckPos == m_vPickPos)
+                m_bCanInstall = false;
+            else
+                m_bCanInstall = true;
 
-    //        if (m_bAlreadyInstalled)
-    //            m_bCanInstall = false;
-    //        else if (m_vCheckPos == m_vObPickPos)
-    //            m_bCanInstall = false;
-    //        else
-    //            m_bCanInstall = true;
+            if (m_bCanInstall)
+            {
+                _int iIndex = _int(m_vPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vPickPos.x + 0.5f * VTXITV;
 
-    //        if (m_bCanInstall)
-    //        {
-    //            _int iIndex = _int(m_vObPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vObPickPos.x + 0.5f * VTXITV;
+                m_wsObjectNameString[iIndex] = L"Object_" + std::to_wstring(iIndex);
 
-    //            switch (m_iBuildingNumber)
-    //            {
-    //            case 0:
-    //                //m_pObjectCom = nullptr;
-    //                m_wsObjectNameString[iIndex] = L"Object_" + std::to_wstring(iIndex);
-    //                m_pObjectCom = CCore::Create(m_pGraphicDev, m_vObPickPos.x, m_vObPickPos.z, m_bReposed, m_iBuildingNumber, m_wsObjectNameString[iIndex].c_str());
-    //                m_vecBuildingObject[iIndex] = dynamic_cast<CCore*>(m_pObjectCom);
+                if (m_iObjectNumber <= 8)
+                {
+                    m_pObjectCom = CSlimeFloor::Create(m_pGraphicDev, _vec3(m_vPickPos.x + 0.5f * VTXITV, m_vPickPos.y, m_vPickPos.z + 0.5f * VTXITV));
+                    m_vecPlaceObject[iIndex] = dynamic_cast<CSlimeFloor*>(m_pObjectCom);
+                    NULL_CHECK_RETURN(m_pObjectCom, E_FAIL);
+                    FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsObjectNameString[iIndex].c_str(), m_pObjectCom), E_FAIL);
+                    dynamic_cast<CSlimeFloor*>(m_vecPlaceObject[iIndex])->Set_TileTypeIndex(m_iObjectNumber);
+                }
+                else if (m_iObjectNumber > 8 && m_iObjectNumber <= 11)
+                {
+                    m_pObjectCom = CMushroom::Create(m_pGraphicDev, _vec3(m_vPickPos.x + 0.5f * VTXITV, m_vPickPos.y + 0.5f, m_vPickPos.z + 0.5f * VTXITV));
+                    m_vecPlaceObject[iIndex] = dynamic_cast<CMushroom*>(m_pObjectCom);
+                    NULL_CHECK_RETURN(m_pObjectCom, E_FAIL);
+                    FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsObjectNameString[iIndex].c_str(), m_pObjectCom), E_FAIL);
+                    dynamic_cast<CMushroom*>(m_vecPlaceObject[iIndex])->Set_TileTypeIndex(m_iObjectNumber - 9);
+                }
+                else
+                {
+                    m_pObjectCom = CAzeosPoop::Create(m_pGraphicDev, _vec3(m_vPickPos.x + 0.5f * VTXITV, m_vPickPos.y, m_vPickPos.z + 0.5f * VTXITV));
+                    m_vecPlaceObject[iIndex] = dynamic_cast<CAzeosPoop*>(m_pObjectCom);
+                    NULL_CHECK_RETURN(m_pObjectCom, E_FAIL);
+                    FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsObjectNameString[iIndex].c_str(), m_pObjectCom), E_FAIL);
+                    dynamic_cast<CAzeosPoop*>(m_vecPlaceObject[iIndex])->Set_TileTypeIndex(m_iObjectNumber - 12);
+                }
 
-    //                NULL_CHECK_RETURN(m_pObjectCom, E_FAIL);
-    //                FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsObjectNameString[iIndex].c_str(), m_pObjectCom), E_FAIL);
+                pTerrain->Set_Unreachable(iIndex, false);
 
-    //                dynamic_cast<CCore*>(m_vecBuildingObject[iIndex])->Set_BuildImgNum(0);
-    //                m_vCheckPos = m_vObPickPos;
-    //                break;
-    //            case 1:
-    //                //m_pObjectCom = nullptr;
-    //                m_wsObjectNameString[iIndex] = L"Object_" + std::to_wstring(iIndex);
-    //                m_pObjectCom = CCoreBase::Create(m_pGraphicDev, m_vObPickPos.x, m_vObPickPos.z, m_bReposed, m_iBuildingNumber, m_wsObjectNameString[iIndex].c_str());
-    //                m_vecBuildingObject[iIndex] = dynamic_cast<CCoreBase*>(m_pObjectCom);
-
-    //                NULL_CHECK_RETURN(m_pObjectCom, E_FAIL);
-    //                FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsObjectNameString[iIndex].c_str(), m_pObjectCom), E_FAIL);
-
-    //                dynamic_cast<CCoreBase*>(m_vecBuildingObject[iIndex])->Set_BuildImgNum(0);
-    //                m_vCheckPos = m_vObPickPos;
-    //                break;
-    //            case 2:
-    //                //m_pObjectCom = nullptr;
-    //                m_wsObjectNameString[iIndex] = L"Object_" + std::to_wstring(iIndex);
-    //                m_pObjectCom = CSpawnPoint::Create(m_pGraphicDev, m_vObPickPos.x, m_vObPickPos.z, m_bReposed, m_iBuildingNumber, m_wsObjectNameString[iIndex].c_str());
-    //                m_vecBuildingObject[iIndex] = dynamic_cast<CSpawnPoint*>(m_pObjectCom);
-
-    //                NULL_CHECK_RETURN(m_pObjectCom, E_FAIL);
-    //                FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsObjectNameString[iIndex].c_str(), m_pObjectCom), E_FAIL);
-
-    //                dynamic_cast<CSpawnPoint*>(m_vecBuildingObject[iIndex])->Set_BuildImgNum(0);
-    //                m_vCheckPos = m_vObPickPos;
-    //                break;
-    //            }
-    //        }
-    //    }
-
-    //    if (Engine::Get_DIMouseState(DIM_RB) & 0x80)
-    //    {
-    //        CMapToolTerrain* pTerrain = dynamic_cast<CMapToolTerrain*>(Engine::Get_GameObject(L"Layer_GameLogic", L"MapToolTerrain"));
-    //        CCalculator* pPickPos = dynamic_cast<CCalculator*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"MapToolTerrain", L"Com_Calculator"));
-    //        CMapToolTex* pMapToolBufferCom = dynamic_cast<CMapToolTex*>(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"MapToolTerrain", L"Com_Buffer"));
-    //        CTransform* pMapToolTransformCom = dynamic_cast<CTransform*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"MapToolTerrain", L"Com_Transform"));
-
-    //        m_vObPickPos = pPickPos->Picking_OnTerrain(g_hWnd, pMapToolBufferCom, pMapToolTransformCom);
-
-    //        _float fXMin = m_vObPickPos.x - 5.0f;
-    //        _float fXMax = m_vObPickPos.x + 5.0f;
-    //        _float fZMin = m_vObPickPos.z - 5.0f;
-    //        _float fZMax = m_vObPickPos.z + 5.0f;
-
-    //        if (m_vecBuildingObject[unsigned __int64((m_vObPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vObPickPos.x + 0.5f * VTXITV)])
-    //        {
-    //            if ((fXMin < m_vObPickPos.x && fXMax > m_vObPickPos.x) || (fZMin < m_vObPickPos.z && fZMax > m_vObPickPos.z))
-    //            {
-    //                //Delete_Object(L"Layer_Environment", dynamic_cast<CCore*>(m_vecBuildingObject[unsigned __int64(m_vObPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vObPickPos.x + 0.5f *  VTXITV])->Get_PickedBuildingName().c_str());
-    //                Delete_Object(L"Layer_Environment", (m_vecBuildingObject[unsigned __int64(m_vObPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vObPickPos.x + 0.5f * VTXITV])->Get_PickedBuildingName().c_str());
-    //                m_vecBuildingObject[unsigned __int64((m_vObPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vObPickPos.x + 0.5f * VTXITV)] = nullptr;
-    //            }
-    //        }
-    //    }
-    //}
+                m_vCheckPos = m_vPickPos;
+            }
+        }
+    }
 
     return S_OK;
 }
@@ -1226,31 +1210,45 @@ void CMapEditorScene::MapFile_Save()
 
     // ========================================================
 
-    //_vec3 vTempObjectPos(0.0f, 0.0f, 0.0f);
-    //_int  vTempObjectImgNum(0);
-    //_int  vTempObjectIndex(0);
+    _vec3   vTempObjectPos(0.0f, 0.0f, 0.0f);
 
-    //DWORD	dwByte3(0);
+    _int    vTempObjectType = 0;
+    _int    vTempTypeNumber(0);
+    _int    vTempObjectIndex(0);
 
-    //for (auto& iter : m_vecBuildingObject)
-    //{
-    //    if (iter == nullptr)
-    //    {
-    //        vTempObjectIndex++;
-    //        continue;
-    //    }
+    DWORD   dwByte5(0);
 
-    //    vTempObjectPos = (*iter).Get_ObjectPos();
-    //    vTempObjectImgNum = (*iter).Get_BuildImgNum();
+    for (_int i = 0; i < m_vecPlaceObject.size(); ++i)
+    {
+        if (m_vecPlaceObject[i] == nullptr)
+        {
+            continue;
+        }
 
-    //    // 오브젝트 저장.
-    //    WriteFile(m_hObjectFile, &vTempObjectPos, sizeof(_vec3), &dwByte3, nullptr);
-    //    WriteFile(m_hObjectFile, &vTempObjectImgNum, sizeof(_int), &dwByte3, nullptr);
-    //    WriteFile(m_hObjectFile, &vTempObjectIndex, sizeof(_int), &dwByte3, nullptr);
+        if (auto pSlimeFloor = dynamic_cast<CSlimeFloor*>(m_vecPlaceObject[i]))
+        {
+            vTempObjectPos = pSlimeFloor->Get_FloorPos();
+            vTempObjectType = pSlimeFloor->Get_ObjectType();
+        }
+        else if (auto pMushroom = dynamic_cast<CMushroom*>(m_vecPlaceObject[i]))
+        {
+            vTempObjectPos = pMushroom->Get_MushPos();
+            vTempObjectType = pMushroom->Get_ObjectType();
+        }
+        else if (auto pAzeosPoop = dynamic_cast<CAzeosPoop*>(m_vecPlaceObject[i]))
+        {
+            vTempObjectPos = pAzeosPoop->Get_PoopPos();
+            vTempObjectType = pAzeosPoop->Get_ObjectType();
+        }
+        
+        vTempObjectIndex = i;
 
-    //    vTempObjectIndex++;
-    //}
-
+        WriteFile(m_hObjectFile, &vTempObjectPos, sizeof(_vec3), &dwByte5, nullptr);
+        WriteFile(m_hObjectFile, &vTempTypeNumber, sizeof(_int), &dwByte5, nullptr);
+        WriteFile(m_hObjectFile, &vTempObjectIndex, sizeof(_int), &dwByte5, nullptr);
+        WriteFile(m_hObjectFile, &vTempObjectType, sizeof(_int), &dwByte5, nullptr);
+      
+    }
 
     // ========================================================
 
@@ -1290,6 +1288,7 @@ void CMapEditorScene::MapFile_Save()
     CloseHandle(m_hWallFile);
     CloseHandle(m_hObjectFile);
     CloseHandle(m_hMonsterFile);
+    CloseHandle(m_hBigWallFile);
 }
 
 HRESULT CMapEditorScene::MapFile_Load()

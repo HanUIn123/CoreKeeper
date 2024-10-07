@@ -120,14 +120,17 @@ private:
 	int										m_iTileCreateCount;
 	int										m_iWallCreateCount;
 	int										m_iBuildCreateCount;
+
 	bool									m_bPushed;
 	bool									m_bWallClickPushed;
-	bool									m_bBuildingClick;
+	bool									m_bObjectClickPushed;
 	bool									m_bMonsterClickPushed;
+
 	bool									m_bSelectTile;
 	bool									m_bSelectWall;
 	bool									m_bSelectObject;
 	bool									m_bSelectMonster;
+
 	bool									m_bCanInstall;
 	bool									m_bAlreadyInstalled;
 	bool									m_bReposed;
@@ -138,11 +141,13 @@ private:
 	wstring									m_wsObjectNameString[VTXCNTX * VTXCNTZ];
 	wstring									m_wsMonsterNameString[VTXCNTX * VTXCNTZ];
 
+	// 저장 및 로드할 파일.
 	HANDLE									m_hBigWallFile;
 	HANDLE									m_hFile;
 	HANDLE									m_hWallFile;
 	HANDLE									m_hObjectFile;
 	HANDLE									m_hMonsterFile;
+
 
 	vector<CWall*>							m_vecWallObject;
 
@@ -150,6 +155,9 @@ private:
 
 	Engine::MONSTERTYPE						m_eMonsterType;
 	vector<CGameObject*>					m_vecMonsterRenderObject;
+
+	Engine::PLACEOBJECT						m_eObjectPlacetype;
+	vector<CGameObject*>					m_vecPlaceObject;
 
 	_vec3									m_vCheckPos;
 	_vec3                                   m_vPickPos;
