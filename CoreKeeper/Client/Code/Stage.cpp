@@ -514,10 +514,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar* pLayerTag)
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Berry_Test", pGameObject), E_FAIL);
     dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
 
-    pGameObject = CFood::Create(m_pGraphicDev, ITEM_BERRY, ITEM_BERRY);
-    NULL_CHECK_RETURN(pGameObject, E_FAIL);
-    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Food_Test", pGameObject), E_FAIL);
-    dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
+
 
     pGameObject = CSeed::Create(m_pGraphicDev, ITEM_PEPPER_SEED);
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
@@ -573,7 +570,10 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar* pLayerTag)
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"ChocoBar_Test", pGameObject), E_FAIL);
     dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);*/
-
+    pGameObject = CFood::Create(m_pGraphicDev, ITEM_BERRY, ITEM_BERRY);
+    NULL_CHECK_RETURN(pGameObject, E_FAIL);
+    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Food_Test", pGameObject), E_FAIL);
+    dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
 #pragma endregion
 
     m_mapLayer.insert({ pLayerTag , pLayer });
