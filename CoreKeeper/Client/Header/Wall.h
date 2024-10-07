@@ -33,6 +33,9 @@ public:
     _int													Get_WallNumber() { return m_iWallImageNum; }
     void													Set_WallNumber(_int _iWallNum) { m_iWallImageNum = _iWallNum; }
 
+    _int                                                    Get_Durability() { return m_iDurability; }
+    void                                                    Set_DurabiliryMinus(_int iMinus) { m_iDurability -= iMinus; }
+
     void													Set_SpecialWallNumber(_int _iWallNum) { m_iCurImgNum = _iWallNum; }
 
     // Delete_GameObject 함수를 사용하려면, 키값이 필요한데, 그 키값(이름)을 받아올 함수
@@ -81,5 +84,6 @@ private:
 private:
     bool    m_bActive;
     int     m_iCurImgNum;
+    _int    m_iDurability;
 };
 
