@@ -359,17 +359,27 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar* pLayerTag)
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Malugaz", pGameObject), E_FAIL);*/
 
-    pGameObject = CShaman::Create(m_pGraphicDev, _vec3(VTXCNTX / 2, 0, 17.f));
-    NULL_CHECK_RETURN(pGameObject, E_FAIL);
-    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Shaman", pGameObject), E_FAIL);
+    //pGameObject = CShaman::Create(m_pGraphicDev, _vec3(VTXCNTX / 2, 0, 17.f));
+    //NULL_CHECK_RETURN(pGameObject, E_FAIL);
+    //FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Shaman", pGameObject), E_FAIL);
 
 #pragma region TEST ITEM
+    pGameObject = CPickaxe::Create(m_pGraphicDev, MATERIAL_WOOD);
+    NULL_CHECK_RETURN(pGameObject, E_FAIL);
+    dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
+    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Pickaxe_WOOD_Test", pGameObject), E_FAIL);
 
-    /*pGameObject = CPickaxe::Create(m_pGraphicDev, MATERIAL_COPPER);
+    pGameObject = CPickaxe::Create(m_pGraphicDev, MATERIAL_COPPER);
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Pickaxe_Test", pGameObject), E_FAIL);
 
+    pGameObject = CPickaxe::Create(m_pGraphicDev, MATERIAL_IRON);
+    NULL_CHECK_RETURN(pGameObject, E_FAIL);
+    dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
+    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Pickaxe_IRON_Test", pGameObject), E_FAIL);
+
+    /*
     pGameObject = CHoe::Create(m_pGraphicDev, MATERIAL_COPPER);
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Hoe_Test", pGameObject), E_FAIL);
