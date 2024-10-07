@@ -2,7 +2,7 @@
 #include "..\Header\UIJemSlot.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
-#include "../Header/Statue.h"
+#include "../Header/Core.h"
 
 CUIJemSlot::CUIJemSlot(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CGameObject(pGraphicDev), m_bCollapse(false), m_bFirst(false), m_bWindow(false)
@@ -67,28 +67,24 @@ _int CUIJemSlot::Update_GameObject(const _float& fTimeDelta)
 
 					if (i == 0 && eNum == ITEM_SLIME_CORE || i == 2 && eNum == ITEM_LARVA_CORE || i == 4 && eNum == ITEM_MAL_CORE)
 					{
+						CCore* pCore = dynamic_cast<CCore*>(Engine::Get_GameObject(L"Layer_Environment", L"Core"));
+						pCore->Set_ActiveCore(i / 2);
 						switch (i)
 						{
 						case 0:
 						{
-							CStatue* pStatue = dynamic_cast<CStatue*>(Engine::Get_GameObject(L"Layer_Environment", L"SlimeStatue"));
-							pStatue->Set_Active();
 							pCursor->Minus_Item(ITEM_SLIME_CORE, 1);
 							pUIStatue->Set_eType(1);
 							break;
 						}
 						case 2:
 						{
-							CStatue* pStatue = dynamic_cast<CStatue*>(Engine::Get_GameObject(L"Layer_Environment", L"LarvaStatue"));
-							pStatue->Set_Active();
 							pCursor->Minus_Item(ITEM_LARVA_CORE, 1);
 							pUIStatue->Set_eType(3);
 							break;
 						}
 						case 4:
 						{
-							CStatue* pStatue = dynamic_cast<CStatue*>(Engine::Get_GameObject(L"Layer_Environment", L"MalugazStatue"));
-							pStatue->Set_Active();
 							pCursor->Minus_Item(ITEM_MAL_CORE, 1);
 							pUIStatue->Set_eType(5);
 							break;

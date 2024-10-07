@@ -26,14 +26,14 @@ HRESULT CAssistance::Ready_GameObject(ASSISTANCE _eAssistance, _vec3 vPos)
 		m_wItemName = L"나무 방패";
 		m_wItemExplain[0] = L"적의 공격을 막아 주는 유용한 보조장비 아이템입니다.";
 		break;
+	case ASSISTANCE_FEATHER:
+		m_wItemName = L"신속 깃털";
+		m_wItemExplain[0] = L"위험에서 벗어나게 하는 수수께끼의 깃털입니다.";
+		break;
 	case ASSISTANCE_IRON_SHIELD:
 		m_wItemName = L"철 방패";
 		m_wItemExplain[0] = L"문장이 그려진 방패입니다.";
 		m_wItemExplain[1] = L"공격으로부터 상당한 보호를 제공합니다.";
-		break;
-	case ASSISTANCE_FEATHER:
-		m_wItemName = L"신속 깃털";
-		m_wItemExplain[0] = L"위험에서 벗어나게 하는 수수께끼의 깃털입니다.";
 		break;
 	case ASSISTANCE_AZEOS_FEATHER:
 		m_wItemName = L"아제오스의 돌진 깃털";

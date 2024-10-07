@@ -28,9 +28,6 @@ HRESULT CStatue::Ready_GameObject(_vec3 vPos, int iImgNum)
 
 _int CStatue::Update_GameObject(const _float& fTimeDelta)
 {
-	if (m_bActive)
-		SetUp_Light();
-
 	if (Check_Interaction())
 	{
 		Interaction();
@@ -136,31 +133,6 @@ HRESULT CStatue::Add_Component()
 	m_mapComponent[ID_STATIC].insert({ L"Com_Collider", pComponent });
 
 	return S_OK;
-}
-
-void CStatue::SetUp_Light()
-{
-	D3DLIGHT9 light;
-	ZeroMemory(&light, sizeof(D3DLIGHT9));
-
-	light.Type = D3DLIGHT_POINT; // 포인트 조명
-	light.Diffuse = { 0.4f, 0.4f, 0.6f, 1.0f }; // 확산 색상 (연한 파란색)
-	light.Specular = { 0.4f, 0.4f, 0.6f, 1.0f }; // 반사 색상
-	light.Ambient = { 0.4f, 0.4f, 0.6f, 1.0f }; // 주변광 (부드럽고 연한 파란색)
-
-	_vec3 vPos;
-	m_pTransformCom->Get_Info(INFO_POS, &vPos);
-
-	light.Position = vPos; // 횃불의 위치
-	light.Range = 3.0f; // 조명의 범위
-	light.Falloff = 1.f; // 감쇠
-	light.Attenuation0 = 1.0f; // 감쇠 계수
-	light.Attenuation1 = 0.01f;
-	light.Attenuation2 = 0.0f;
-
-	m_pGraphicDev->SetLight(m_iLightNum, &light); // 조명 설정
-
-	m_pGraphicDev->LightEnable(m_iLightNum, TRUE); // 조명 활성화
 }
 
 CStatue* CStatue::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, int iImgNum)
