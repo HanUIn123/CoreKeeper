@@ -1424,6 +1424,26 @@ HRESULT CMapEditorScene::MapFile_Load()
 
     //==========================================================
 
+    for (auto& iter : m_vecPlaceObject)
+    {
+        if (iter == nullptr)
+            continue;
+
+        if (auto pSlimeFloor = dynamic_cast<CSlimeFloor*>(iter))
+        {
+            Delete_Object(L"Layer_GameLogic", pSlimeFloor->Get_PickedObjectName().c_str());
+        }
+        else if (auto pMushroom = dynamic_cast<CMushroom*>(iter))
+        {
+            Delete_Object(L"Layer_GameLogic", pMushroom->Get_PickedObjectName().c_str());
+        }
+        else if (auto pAzeosPoop = dynamic_cast<CAzeosPoop*>(iter))
+        {
+            Delete_Object(L"Layer_GameLogic", pAzeosPoop->Get_PickedObjectName().c_str());
+        }
+        iter = nullptr;
+    }
+
     auto	iter2 = find_if(m_mapLayer.begin(), m_mapLayer.end(), CTag_Finder(L"Layer_GameLogic"));
 
     if (iter2 == m_mapLayer.end())
