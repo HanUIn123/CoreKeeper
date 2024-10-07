@@ -67,6 +67,8 @@ private:
 
 	_int            m_iCrystalNumber;
 
+	_bool           m_bDead;
+
 public:
 	static	CAzeos*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);
 

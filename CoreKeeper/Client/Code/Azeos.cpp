@@ -26,7 +26,11 @@ CAzeos::CAzeos(LPDIRECT3DDEVICE9 pGraphicDev)
 
     m_iCrystalNumber = 0;
 
+    m_fImmuneTimeLimit = 0.5f;
+
     m_bAttack = false;
+
+    m_bDead = false;
 }
 
 CAzeos::~CAzeos()
@@ -312,11 +316,19 @@ void CAzeos::Pattern_Attack(const _float& fTimeDelta)
 
 void CAzeos::Pattern_Dead()
 {  
-    m_pAnimatorCom->Set_CurState(DEAD, 9, 18, 12);
+    if(!m_bDead)
+        m_pAnimatorCom->Set_CurState(DEAD, 9, 18, 12);
 
     m_iEndCount++;
 
-    if (m_pAnimatorCom->Get_MotionIndex() == 18 && m_iEndCount >= 500)
+    if (m_pAnimatorCom->Get_MotionEnd())
+    {
+        m_pAnimatorCom->Set_CurState(DEAD, 18, 18, 12);
+
+        m_bDead = true;
+    }
+
+    if (m_pAnimatorCom->Get_MotionIndex() == 18 && m_iEndCount >= 300)
     {
         m_iEndCount = 0;
        // m_pGraphicDev->LightEnable(m_iLightNum, FALSE); // 조명 비활성화
