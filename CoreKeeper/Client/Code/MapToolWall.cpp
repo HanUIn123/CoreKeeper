@@ -41,6 +41,7 @@ HRESULT CMapToolWall::Ready_GameObject(_float _fWallX, _float _fWallZ, _int _iTy
 _int CMapToolWall::Update_GameObject(const _float& fTimeDelta)
 {
     Add_RenderGroup(RENDER_PRIORITY, this);
+    Add_RenderGroup(RENDER_MAP, this);
 
     return Engine::CGameObject::Update_GameObject(fTimeDelta);
 }
