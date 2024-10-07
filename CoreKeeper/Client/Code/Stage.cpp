@@ -379,6 +379,11 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar* pLayerTag)
     dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Pickaxe_IRON_Test", pGameObject), E_FAIL);
 
+    pGameObject = CSprinkler::Create(m_pGraphicDev);
+    NULL_CHECK_RETURN(pGameObject, E_FAIL);
+    dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
+    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Sprinkler_Test", pGameObject), E_FAIL);
+
     /*
     pGameObject = CHoe::Create(m_pGraphicDev, MATERIAL_COPPER);
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
@@ -438,15 +443,15 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar* pLayerTag)
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Ring_Test", pGameObject), E_FAIL);
     dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
 
-    pGameObject = CAssistance::Create(m_pGraphicDev, ASSISTANCE_FEATHER);
-    NULL_CHECK_RETURN(pGameObject, E_FAIL);
-    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Feather_Test", pGameObject), E_FAIL);
-    dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
-
     pGameObject = CBag::Create(m_pGraphicDev, MATERIAL_COPPER);
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Bag_Test", pGameObject), E_FAIL);
     dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);*/
+    
+    pGameObject = CAssistance::Create(m_pGraphicDev, ASSISTANCE_FEATHER);
+    NULL_CHECK_RETURN(pGameObject, E_FAIL);
+    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Feather_Test", pGameObject), E_FAIL);
+    dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
 
     pGameObject = CLantern::Create(m_pGraphicDev, MATERIAL_IRON);
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
@@ -511,15 +516,14 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar* pLayerTag)
     pGameObject = CGravestone::Create(m_pGraphicDev);
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Gravestone_Test", pGameObject), E_FAIL);
-    dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);*/
-
+    dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
 
     pGameObject = CSprinkler::Create(m_pGraphicDev);
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Sprinkler_Test", pGameObject), E_FAIL);
     dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
 
-    /*pGameObject = CPotion::Create(m_pGraphicDev, ITEM_POTION_HP);
+    pGameObject = CPotion::Create(m_pGraphicDev, ITEM_POTION_HP);
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Potion_Test", pGameObject), E_FAIL);
     dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);

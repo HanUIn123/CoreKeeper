@@ -2,6 +2,7 @@
 #include "../Header/SprinklerObject.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
+#include "../Header/FarmMgr.h"
 
 CSprinklerObject::CSprinklerObject(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CObject(pGraphicDev)
@@ -78,6 +79,17 @@ HRESULT CSprinklerObject::Add_Component()
 	m_mapComponent[ID_STATIC].insert({ L"Com_Animator", pComponent });
 
 	return S_OK;
+}
+
+void CSprinklerObject::Sprinkler_Watering()
+{
+	_vec3 vPos;
+	m_pTransformCom->Get_Info(INFO_POS, &vPos);
+	
+	// 애니메이션 인덱스에 따라 다른 방향의 인덱스에 물주기
+
+	_int iIndex = _int(vPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (vPos.x + 0.5f * VTXITV);
+	CFarmMgr::GetInstance()->Watering_Plant(iIndex);
 }
 
 CSprinklerObject* CSprinklerObject::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
