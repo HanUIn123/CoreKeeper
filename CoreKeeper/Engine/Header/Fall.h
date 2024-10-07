@@ -12,7 +12,7 @@ protected:
 	virtual ~CFall();
 
 public:
-	virtual     HRESULT         Ready_Particles(D3DXVECTOR3* origin, _int numParticles);
+	virtual     HRESULT         Ready_Particles(D3DXVECTOR3* origin, _int numParticles, _float fY);
 	virtual		void			resetParticle(Attribute* attribute);
 	virtual		void			update(float timeDelta, _vec3 vDir = { 0.f, 0.f, 0.f });
 	
@@ -22,9 +22,10 @@ public:
 	virtual     void            reset();
 private:
 	_float fTime;
+	_float m_fY;
 
 public:
-	static		CFall* Create(LPDIRECT3DDEVICE9 pGraphicDev, D3DXVECTOR3* origin, _int numParticles);
+	static		CFall* Create(LPDIRECT3DDEVICE9 pGraphicDev, D3DXVECTOR3* origin, _int numParticles, _float fY = 0.05f);
 	virtual		CComponent* Clone();
 
 public:

@@ -5,16 +5,18 @@
 CFall::CFall()
 {
 	fTime = 0;
+	m_fY = 0.f;
 }
 
 CFall::CFall(LPDIRECT3DDEVICE9 pGraphicDev)
 	: PSystem(pGraphicDev)
 {
 	fTime = 0;
+	m_fY = 0.f;
 }
 
 CFall::CFall(const CFall& rhs)
-	: PSystem(rhs), fTime(0)
+	: PSystem(rhs), fTime(0), m_fY(rhs.m_fY)
 {
 }
 
@@ -22,7 +24,7 @@ CFall::~CFall()
 {
 }
 
-HRESULT CFall::Ready_Particles(D3DXVECTOR3* origin, _int numParticles)
+HRESULT CFall::Ready_Particles(D3DXVECTOR3* origin, _int numParticles, _float fY)
 {
 	_origin = *origin;
 	//_size = 0.2;
@@ -31,6 +33,8 @@ HRESULT CFall::Ready_Particles(D3DXVECTOR3* origin, _int numParticles)
 	_vbBatchSize = 512;
 	//파티클 기본 속성들
 	m_iMaxTexture = 0;
+
+	m_fY = fY;
 
 	for (int i = 0; i < numParticles; i++)
 		addParticle();
@@ -56,7 +60,7 @@ void CFall::resetParticle(Attribute* attribute) // 파티클 리셋
 
 
 	attribute->_velocity.x = d3d::GetRandomFloat(-1.0f, 1.0f) * 0.01f;
-	attribute->_velocity.y = d3d::GetRandomFloat(0.0f, 0.5f) * 0.05f;
+	attribute->_velocity.y = d3d::GetRandomFloat(0.0f, 0.5f) * m_fY;
 	attribute->_velocity.z = d3d::GetRandomFloat(-1.0f, 1.0f) * 0.01f;
 
 	// 구를 만들기 위한 초기화
@@ -135,11 +139,11 @@ void CFall::reset()
 	fTime = 0.f;
 }
 
-CFall* CFall::Create(LPDIRECT3DDEVICE9 pGraphicDev, D3DXVECTOR3* origin, _int numParticles)
+CFall* CFall::Create(LPDIRECT3DDEVICE9 pGraphicDev, D3DXVECTOR3* origin, _int numParticles, _float fY)
 {
 	CFall* pInstance = new CFall(pGraphicDev);
 
-	if (FAILED(pInstance->Ready_Particles(origin, numParticles)))
+	if (FAILED(pInstance->Ready_Particles(origin, numParticles, fY)))
 	{
 		Safe_Release(pInstance);
 		MSG_BOX("Firework Create Failed");

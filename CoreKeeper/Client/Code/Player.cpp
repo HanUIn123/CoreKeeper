@@ -1070,6 +1070,8 @@ void CPlayer::PickAxe()
 					pWall->Set_Destroy();
 					pCurScene->Delete_GameObject(L"Layer_Environment", pWall, dynamic_cast<CStage*>(pCurScene)->Get_WallNameByIndex(iIndex)->c_str());
 					pTerrain->Set_Unreachable(iIndex, false);
+
+
 				}
 			}
 		}
@@ -1949,6 +1951,7 @@ void CPlayer::Set_KnockBack(_vec3 vEnemyPos, _int iDamage, _float fDist, PLAYERH
 		switch (eHit)
 		{
 		case HIT_NORMAL:
+			m_bBleed = true;
 			break;
 		case HIT_FIRE:
 			m_iDebuff += pow(2, (_int)DEBUFF_FIRE);
