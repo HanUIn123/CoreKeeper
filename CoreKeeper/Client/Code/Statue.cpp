@@ -39,8 +39,6 @@ _int CStatue::Update_GameObject(const _float& fTimeDelta)
 	{
 		if (m_bCollision)
 		{
-			
-
 			CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
 
 			if (pPlayer->Get_StatueUI())
@@ -100,7 +98,12 @@ void CStatue::Interaction()
 
 		CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
 
-		pPlayer->Set_Statue(m_iTextureNum/2);
+		if (m_bActive)
+		{
+			pPlayer->Set_Statue(m_iTextureNum, true);
+		}
+		else
+			pPlayer->Set_Statue(m_iTextureNum);
 
 		pPlayer->Set_Inventory();
 	
