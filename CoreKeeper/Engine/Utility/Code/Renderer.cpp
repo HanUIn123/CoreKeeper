@@ -4,6 +4,7 @@
 #include "../../Client/Header/DynamicCamera.h"
 #include "../../Header/Export_System.h"
 #include "../../Header/Export_Utility.h"
+#include "../../Client/Header/Terrain.h"
 
 IMPLEMENT_SINGLETON(CRenderer)
 
@@ -276,7 +277,16 @@ void CRenderer::Render_MiniMap(LPDIRECT3DDEVICE9& pGraphicDev)
 
 	for (auto& pGameObject : m_RenderGroup[RENDER_MAP])
 	{
-		pGameObject->Render_GameObject();
+		if (dynamic_cast<CTerrain*>(pGameObject))
+		{
+			dynamic_cast<CTerrain*>(pGameObject)->Set_Mini(true);
+			pGameObject->Render_GameObject();
+			dynamic_cast<CTerrain*>(pGameObject)->Set_Mini(false);
+		}
+		else
+		{
+			pGameObject->Render_GameObject();
+		}
 	}
 
 	D3DXMATRIX matPerspect;

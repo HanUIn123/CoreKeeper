@@ -167,6 +167,7 @@ call Copy.bat</Command>
     <ClInclude Include="..\Header\MapToolWall.h" />
     <ClInclude Include="..\Header\MiniSpawn.h" />
     <ClInclude Include="..\Header\Mushroom.h" />
+    <ClInclude Include="..\Header\Spotlite.h" />
     <ClInclude Include="..\Header\SlimeFloor.h" />
     <ClInclude Include="..\Header\Story.h" />
     <ClInclude Include="..\Header\StoryBackGround.h" />
@@ -328,6 +329,7 @@ call Copy.bat</Command>
     <ClCompile Include="..\Code\MapToolWall.cpp" />
     <ClCompile Include="..\Code\MiniSpawn.cpp" />
     <ClCompile Include="..\Code\Mushroom.cpp" />
+    <ClCompile Include="..\Code\Spotlite.cpp" />
     <ClCompile Include="..\Code\SlimeFloor.cpp" />
     <ClCompile Include="..\Code\Story.cpp" />
     <ClCompile Include="..\Code\StoryBackGround.cpp" />

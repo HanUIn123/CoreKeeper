@@ -3,7 +3,7 @@
 #include "Export_Utility.h"
 
 CTerrain::CTerrain(LPDIRECT3DDEVICE9 pGraphicDev)
-	: Engine::CGameObject(pGraphicDev)
+	: Engine::CGameObject(pGraphicDev), m_bMini(false)
 {
 	m_vPickPos = { };
 	m_vecTextureNumber.resize((VTXCNTX - 1) * (VTXCNTZ - 1));
@@ -37,11 +37,14 @@ void CTerrain::LateUpdate_GameObject()
 
 void CTerrain::Render_GameObject()
 {
-	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
-	FAILED_CHECK_RETURN(Setup_Material(), );
+	if (!m_bMini)
+	{
+		m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
+		FAILED_CHECK_RETURN(Setup_Material(), );
+	}
 
 	for (int i = 0; i < VTXCNTZ - 1; ++i)
 	{

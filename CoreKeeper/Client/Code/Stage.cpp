@@ -151,6 +151,10 @@ HRESULT CStage::Ready_Layer_Environment(const _tchar* pLayerTag)
 
 #pragma region BASECAMP
 
+    /*pGameObject = CSpotlite::Create(m_pGraphicDev, 5.0f, { VTXCNTX / 2 + 10.f, 12.3f, 21.f });
+    NULL_CHECK_RETURN(pGameObject, E_FAIL);
+    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Spotlite", pGameObject), E_FAIL);*/
+
     pGameObject = CCore::Create(m_pGraphicDev, { VTXCNTX / 2, 2.3f, 21.f });
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Core", pGameObject), E_FAIL);

@@ -53,6 +53,10 @@ void CStoryBackGround::Render_GameObject()
 		{
 			m_iCurrentIndex++;
 			
+			if (m_strMent[m_iTextureNum][m_iCurrentIndex-1] != L' ' && m_strMent[m_iTextureNum][m_iCurrentIndex - 1] != L',' && m_strMent[m_iTextureNum][m_iCurrentIndex - 1] != L'.')
+			{
+				Engine::Play(L"FIXME_menu_select.wav", SOUND_EFFECT, 0.1f);
+			}
 		}
 		else
 		{
@@ -63,10 +67,10 @@ void CStoryBackGround::Render_GameObject()
 			}
 		}
 
-		if (m_iCurrentIndex < m_strMent[m_iTextureNum].length() - 6)
-		{
-			Engine::Play(L"FIXME_menu_select.wav", SOUND_EFFECT, 0.1f);
-		}
+		//if (m_iCurrentIndex < m_strMent[m_iTextureNum].length() - 6)
+		//{
+		//	Engine::Play(L"FIXME_menu_select.wav", SOUND_EFFECT, 0.1f);
+		//}
 	}
 
 	wstring currentText = m_strMent[m_iTextureNum].substr(0, m_iCurrentIndex);
