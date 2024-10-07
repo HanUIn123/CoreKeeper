@@ -2099,11 +2099,11 @@ void CPlayer::Set_GraveInventory(CInventory* pInventory)
 	}
 }
 
-void CPlayer::Set_Statue(_int _StatueNum)
+void CPlayer::Set_Statue(_int _StatueNum, _bool _bInteractioned)
 {
 	CUIStatue* pStatue = dynamic_cast<CUIStatue*>(Engine::Get_GameObject(L"Layer_UI", L"UI_Statue"));
 
-	pStatue->Set_Window(_StatueNum);
+	pStatue->Set_Window(_StatueNum, _bInteractioned);
 
 	CUIJemSlot* pSlot = dynamic_cast<CUIJemSlot*>(Engine::Get_GameObject(L"Layer_UI", L"UI_JemSlot"));
 

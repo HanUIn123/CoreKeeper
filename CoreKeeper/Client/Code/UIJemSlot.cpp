@@ -2,6 +2,7 @@
 #include "..\Header\UIJemSlot.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
+#include "../Header/Statue.h"
 
 CUIJemSlot::CUIJemSlot(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CGameObject(pGraphicDev), m_bCollapse(false), m_bFirst(false), m_bWindow(false)
@@ -53,17 +54,48 @@ _int CUIJemSlot::Update_GameObject(const _float& fTimeDelta)
 
 			if (Engine::Button_Up(DIM_LB))
 			{
-				CUIStatue* pStatue = dynamic_cast<CUIStatue*>(Engine::Get_GameObject(L"Layer_UI", L"UI_Statue"));
-				CInventory* pCursor = dynamic_cast<CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_UI", L"UI_Cursor", L"Proto_MouseInventory"));
+				CUIStatue* pUIStatue = dynamic_cast<CUIStatue*>(Engine::Get_GameObject(L"Layer_UI", L"UI_Statue"));
+				CInventory* pCursor = dynamic_cast<CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_UI", L"UI_Cursor", L"Com_Inventory"));
 
-				CItem* pItem = pCursor->Get_Item(0);
+				if (!pCursor->Check_Empty(0))
+				{
+					CItem* pItem = pCursor->Get_Item(0);
 
-				Engine::ITEMNUM eNum = pItem->Get_ItemNum();
+					Engine::ITEMNUM eNum = pItem->Get_ItemNum();
 
-				_int i = pStatue->Get_StatueType();
+					_int i = pUIStatue->Get_StatueType();
 
-				if (i == 3 && eNum == ITEM_MAL_CORE)
-					pStatue->Set_eType(2);
+					if (i == 0 && eNum == ITEM_SLIME_CORE || i == 2 && eNum == ITEM_LARVA_CORE || i == 4 && eNum == ITEM_MAL_CORE)
+					{
+						switch (i)
+						{
+						case 0:
+						{
+							CStatue* pStatue = dynamic_cast<CStatue*>(Engine::Get_GameObject(L"Layer_Environment", L"SlimeStatue"));
+							pStatue->Set_Active();
+							pCursor->Minus_Item(ITEM_SLIME_CORE, 1);
+							pUIStatue->Set_eType(1);
+							break;
+						}
+						case 2:
+						{
+							CStatue* pStatue = dynamic_cast<CStatue*>(Engine::Get_GameObject(L"Layer_Environment", L"LarvaStatue"));
+							pStatue->Set_Active();
+							pCursor->Minus_Item(ITEM_LARVA_CORE, 1);
+							pUIStatue->Set_eType(3);
+							break;
+						}
+						case 4:
+						{
+							CStatue* pStatue = dynamic_cast<CStatue*>(Engine::Get_GameObject(L"Layer_Environment", L"MalugazStatue"));
+							pStatue->Set_Active();
+							pCursor->Minus_Item(ITEM_MAL_CORE, 1);
+							pUIStatue->Set_eType(5);
+							break;
+						}
+						}
+					}
+				}
 			}
 		}
 		else

@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "..\Header\UIStatueCraft.h"
+#include "..\Header\CraftMgr.h"
 
 CUIStatueCraft::CUIStatueCraft(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CGameObject(pGraphicDev), m_bCollapse(false), m_bFirst(false), m_bWindow(false), m_iIndex(0), m_bEnough(false)
@@ -49,22 +50,25 @@ _int CUIStatueCraft::Update_GameObject(const _float& fTimeDelta)
 
 		switch (m_iIndex)
 		{
-		case 0:
-			//if(pPlayer->Enough_Item())
-			// m_bEnough = true;
-			break;
-
 		case 1:
-			//if(pPlayer->Enough_Item())
-			// m_bEnough = true;
-			break;
-
-		case 2:
+			if (CCraftMgr::GetInstance()->Craftable(pPlayer, ITEM_PLAYER_SPAWNER, MATERIAL_END))
+				m_bEnough = true;
 			//if(pPlayer->Enough_Item())
 			// m_bEnough = true;
 			break;
 
 		case 3:
+			if (CCraftMgr::GetInstance()->Craftable(pPlayer, ITEM_MAL_SPAWNER, MATERIAL_END))
+				m_bEnough = true;
+			//if(pPlayer->Enough_Item())
+			// m_bEnough = true;
+			break;
+
+		case 5:
+			if (CCraftMgr::GetInstance()->Craftable(pPlayer, ITEM_AZEOS_SPAWNER, MATERIAL_END))
+				m_bEnough = true;
+			//if(pPlayer->Enough_Item())
+			// m_bEnough = true;
 			break;
 		}
 
@@ -72,18 +76,31 @@ _int CUIStatueCraft::Update_GameObject(const _float& fTimeDelta)
 		{
 			m_bCollapse = true;
 
-			if (m_iIndex == 3)
-				m_bCollapse = false;
-
 			if (Engine::Button_Down(DIM_LB))
 			{
 				CInventory* pCursor = dynamic_cast<CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_UI", L"UI_Cursor", L"Com_Inventory"));
 
 				if (pCursor->Check_Empty(0))
 				{
-					
+					if (m_bEnough)
+					{
+						ITEMNUM eNum = ITEM_END;
 
+						switch (m_iIndex)
+						{
+						case 1:
+							eNum = ITEM_PLAYER_SPAWNER;
+							break;
+						case 3:
+							eNum = ITEM_MAL_SPAWNER;
+							break;
+						case 5:
+							eNum = ITEM_AZEOS_SPAWNER;
+							break;
+						}
 
+						CCraftMgr::GetInstance()->Craft(pPlayer, eNum, MATERIAL_END);
+					}
 				}
 			}
 		}
@@ -111,23 +128,28 @@ void CUIStatueCraft::Render_GameObject()
 		matWorld._42 -= 8.f;
 	}
 
-	m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
-
-	if (m_bCollapse)
+	if (m_iIndex == 1)
 	{
-		m_pColTextureCom->Set_Texture();
-
-		m_pBufferCom->Render_Buffer();
+		matWorld._42 -= 8.f;
 	}
 
-	if (m_iIndex != 3)
-	{
+	m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
+
+	if (m_iIndex != 0 && m_iIndex != 2 && m_iIndex != 4)
+	{ 
+		if (m_bCollapse)
+		{
+			m_pColTextureCom->Set_Texture();
+
+			m_pBufferCom->Render_Buffer();
+		}
+	
 		matWorld._11 = 25.f;
 		matWorld._22 = 25.f;
 
 		m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
 
-		m_pTextureCom->Set_Texture(m_iIndex);
+		m_pTextureCom->Set_Texture(m_iIndex / 2);
 		if (m_bEnough)
 		{
 			m_pBufferCom->Render_Buffer();

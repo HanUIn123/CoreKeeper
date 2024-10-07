@@ -44,6 +44,8 @@ public:
 		m_iIndex = pStatue->Get_StatueType();
 	}
 
+	void            Set_Index(_int iIndex) { m_iIndex = iIndex; }
+
 private:
 	HRESULT			Add_Component();
 

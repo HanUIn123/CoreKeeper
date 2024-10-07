@@ -2,9 +2,10 @@
 #include "..\Header\UIStatue.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
+#include "../Header/UIStatueCraft.h"
 
 CUIStatue::CUIStatue(LPDIRECT3DDEVICE9 pGraphicDev)
-	: Engine::CGameObject(pGraphicDev), m_bWindow(false), m_iType(0)
+	: Engine::CGameObject(pGraphicDev), m_bWindow(false), m_iType(0), m_bInteractioned(false)
 
 {
 }
@@ -63,14 +64,30 @@ void CUIStatue::Render_GameObject()
 	m_pBufferCom->Render_Buffer();
 }
 
-void CUIStatue::Set_Window(_int StatueNum)
+void CUIStatue::Set_Window(_int StatueNum, _bool _bInteractioned)
 {
-	m_iType = StatueNum;
+	m_bInteractioned = _bInteractioned;
+
+	if (m_bInteractioned)
+	{
+		m_iType = StatueNum + 1;
+	}
+	else
+		m_iType = StatueNum;
 
 	if (m_bWindow)
 		m_bWindow = false;
 	else
 		m_bWindow = true;
+}
+
+void CUIStatue::Set_eType(_int _iType)
+{
+	m_iType = _iType; 
+
+	CUIStatueCraft* pCraft = dynamic_cast<CUIStatueCraft*>(Engine::Get_GameObject(L"Layer_UI", L"UI_StatueCraft"));
+
+	pCraft->Set_Index(m_iType);
 }
 
 HRESULT CUIStatue::Add_Component()

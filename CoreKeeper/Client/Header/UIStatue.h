@@ -25,9 +25,9 @@ public:
 	virtual			void			Render_GameObject();
 
 public:
-	void            Set_Window(_int StatueNum);
+	void            Set_Window(_int StatueNum, _bool _bInteractioned = false);
 	_int            Get_StatueType() { return m_iType; }
-	void            Set_eType(_int _iType) { m_iType = _iType; }
+	void            Set_eType(_int _iType);
 
 private:
 	HRESULT			Add_Component();
@@ -39,6 +39,8 @@ private:
 	RECT m_bRect;
 
 	_int m_iType;
+
+	_bool m_bInteractioned;
 private:
 	Engine::CRcTex* m_pBufferCom;
 	Engine::CTransform* m_pTransformCom;

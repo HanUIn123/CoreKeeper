@@ -289,6 +289,21 @@ HRESULT CStage::Ready_Layer_Environment(const _tchar* pLayerTag)
     dynamic_cast<CGravestoneObject*>(pGameObject)->Add_Item(pItem2);
     dynamic_cast<CGravestoneObject*>(pGameObject)->Add_Item(pItem3);
 
+    pGameObject = CStatueCore::Create(m_pGraphicDev, ITEM_MAL_CORE);
+    NULL_CHECK_RETURN(pGameObject, E_FAIL);
+    dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
+    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"MALUGAZ_Core", pGameObject), E_FAIL);
+
+    pGameObject = CStatueCore::Create(m_pGraphicDev, ITEM_SLIME_CORE);
+    NULL_CHECK_RETURN(pGameObject, E_FAIL);
+    dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
+    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"SLIME_Core", pGameObject), E_FAIL);
+
+    pGameObject = CStatueCore::Create(m_pGraphicDev, ITEM_LARVA_CORE);
+    NULL_CHECK_RETURN(pGameObject, E_FAIL);
+    dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
+    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"LARVA_Core", pGameObject), E_FAIL);
+
     pGameObject = CSkeleton::Create(m_pGraphicDev, { 77.f, 0.5f, 18.f });
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Skeleton", pGameObject), E_FAIL);
