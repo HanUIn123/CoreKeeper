@@ -125,7 +125,8 @@ _uint CLoading::Loading_Stage()
 
     _vec3 vPPos = { 0.f, 0.f, 0.f };
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Firework", Engine::CFirework::Create(m_pGraphicDev, &vPPos, 10)), E_FAIL);
-    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Fall", Engine::CFall::Create(m_pGraphicDev, &vPPos, 8)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Fall", Engine::CFall::Create(m_pGraphicDev, &vPPos, 8, 0.01f)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_DirtFall", Engine::CFall::Create(m_pGraphicDev, &vPPos, 50, 0.01f)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Followers", Engine::CFollow::Create(m_pGraphicDev, &vPPos, 10)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Smoke", Engine::CSmoke::Create(m_pGraphicDev, &vPPos, 12)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Hit", Engine::CHit::Create(m_pGraphicDev, &vPPos, 1)), E_FAIL);
@@ -294,7 +295,7 @@ _uint CLoading::Loading_Stage()
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UIBuffSlot", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/Buff_Slot_%d.png", TEX_NORMAL, 2)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Buff", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/buff_debuff_icons.png", TEX_NORMAL)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MapFrame", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Map/minimapframe.png", TEX_NORMAL)), E_FAIL);
-    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UITable", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/Table/Table_%d.png", TEX_NORMAL, 3)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UITable", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/Table/Table_%d.png", TEX_NORMAL, 5)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UIStatue", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/UI_Statue_Craft_%d.png", TEX_NORMAL, 4)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UIChestSort", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/Chest_Sort_%d.png", TEX_NORMAL, 2)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UIPlayerCraftItem", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/Craft_Item/Craft_Item_%d.png", TEX_NORMAL, 40)), E_FAIL);

@@ -226,6 +226,7 @@ void CPlayer::Render_GameObject()
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 
+
 	if(m_bBleed)
 	   m_pFireParticleCom->render(); // ÆÄÆ¼Å¬ ·»´õ
 
@@ -2189,6 +2190,8 @@ void CPlayer::Particle_Update(_float fTimeDelta)
 		m_pFireParticleCom->reset();
 	}
 	m_pFollowParticleCom->update(fTimeDelta);
+
+
 }
 
 void CPlayer::Set_KnockBack(_vec3 vEnemyPos, _int iDamage, _float fDist, PLAYERHITTYPE eHit)
@@ -2212,6 +2215,7 @@ void CPlayer::Set_KnockBack(_vec3 vEnemyPos, _int iDamage, _float fDist, PLAYERH
 		switch (eHit)
 		{
 		case HIT_NORMAL:
+			m_bBleed = true;
 			break;
 		case HIT_FIRE:
 			CBuffMgr::GetInstance()->Set_BuffStart(DEBUFF_FIRE, 5.f);

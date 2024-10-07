@@ -90,13 +90,36 @@ _int CShroomMan::Update_GameObject(const _float& fTimeDelta)
 
         vDir = vCurPos - vPrePos;
 
-        m_pSmokeParticleCom->update(fTimeDelta, -vDir);
+        if (vDir.x > 0 && vDir.z > 0)
+        {
+            //vDir.x *= -1.f;
+
+            m_pSmokeParticleCom->update(fTimeDelta, -vDir);
+
+        }
+        else if (vDir.x < 0 && vDir.z > 0)
+        {
+            vDir.z *= -1.f;
+            m_pSmokeParticleCom->update(fTimeDelta, vDir);
+        }
+        else if (vDir.x < 0 && vDir.z < 0)
+        {
+            vDir.z *= -1.f;
+            m_pSmokeParticleCom->update(fTimeDelta, vDir);
+        }
+        else 
+             m_pSmokeParticleCom->update(fTimeDelta, -vDir);
 
         vPrePos = vCurPos;
-
-        if (m_pSmokeParticleCom->isDead())
-            m_pSmokeParticleCom->reset();
     }
+    else
+        m_pSmokeParticleCom->update(fTimeDelta);
+    //else if (m_eState != SWING)
+   // {
+
+    if (m_pSmokeParticleCom->isDead())
+        m_pSmokeParticleCom->reset();
+   // }
     
     if (m_bHit)
     {
@@ -139,7 +162,7 @@ void CShroomMan::Render_GameObject()
     m_pBufferCom->Render_Buffer();
     m_pColliderCom->Render_Collider();
 
-    if (m_eState == SWING)
+    if (m_eState != IDLE)
     {
         m_pSmokeParticleCom->render();
     }

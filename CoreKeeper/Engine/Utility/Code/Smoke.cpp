@@ -65,13 +65,13 @@ void CSmoke::resetParticle(Attribute* attribute) // 파티클 리셋
 	attribute->_velocity.y = 0.f;
 	attribute->_velocity.z = 0.f;
 
-	attribute->_color = D3DXCOLOR(1.f, 1.f, 1.f, 1.f); 
+	attribute->_color = D3DXCOLOR(1.f, 1.f, 1.f, d3d::GetRandomFloat(0.f, 1.f));
 	attribute->_colorFade = D3DXCOLOR(1.f, 1.f, 1.f, d3d::GetRandomFloat(0.f, 1.f));
 
 	attribute->_iTextureNum = (_int)d3d::GetRandomFloat(0.f, (_float)m_iMaxTexture);
 
 	attribute->_age = 0.0f;
-	attribute->_lifeTime = 2.0f; // 수명 2초
+	attribute->_lifeTime = 1.f; // 수명 2초
 }
 
 void CSmoke::update(float timeDelta, _vec3 vDir)

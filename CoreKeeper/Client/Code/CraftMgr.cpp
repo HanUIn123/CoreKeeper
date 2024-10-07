@@ -377,7 +377,7 @@ void CCraftMgr::Set_Recipe()
     Recipe woodShieldRecipe;
     woodShieldRecipe.vecIngredients.push_back({ ITEM_WOOD, 10 });
     woodShieldRecipe.vecIngredients.push_back({ ITEM_COPPER_BAR, 5 });
-    m_mapRecipes[make_pair(ITEM_ASSISTANCE, MATERIAL_WOOD)] = woodShieldRecipe;
+    m_mapRecipes[make_pair(ITEM_ASSISTANCE, MATERIAL_COPPER)] = woodShieldRecipe;
 
     // √∂ πÊ∆–
     Recipe ironShieldRecipe;

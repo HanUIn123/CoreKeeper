@@ -65,6 +65,11 @@ public:
 				m_BRect.right -= 48.f;
 
 				break;
+
+			case TABLE_ANVIL:
+				m_BRect.left -= 48.f;
+				m_BRect.right -= 48.f;
+				break;
 			}
 		}
 	}

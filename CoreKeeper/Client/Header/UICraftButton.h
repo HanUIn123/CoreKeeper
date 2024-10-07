@@ -29,9 +29,12 @@ public:
 		
 			m_bWindow = true;
 
-			m_eTableType = _eType;
+			if (_eType == TABLE_ANVIL)
+				eTableMaterial = (MATERIAL)(_eMaterial - 1);
+			else
+				eTableMaterial = _eMaterial;
 
-			eTableMaterial = _eMaterial;
+			m_eTableType = _eType;
 	}
 
 	void            Set_DisableWindow() {

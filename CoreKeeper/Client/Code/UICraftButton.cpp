@@ -51,14 +51,29 @@ _int CUICraftButton::Update_GameObject(const _float& fTimeDelta)
 			{
 				CUICraft* pCraft = dynamic_cast<CUICraft*>(Engine::Get_GameObject(L"Layer_UI", L"UILeftCraft"));
 
-				if (eTableMaterial < pCraft->Get_Material())
+				if (m_eTableType == TABLE_CRAFT)
 				{
-					_int i = eTableMaterial;
-					i++;
+					if (eTableMaterial < pCraft->Get_Material())
+					{
+						_int i = eTableMaterial;
+						i++;
 
-					eTableMaterial = static_cast<MATERIAL>(i);
+						eTableMaterial = static_cast<MATERIAL>(i);
 
-					Set_Slot();
+						Set_Slot();
+					}
+				}
+				else if (m_eTableType == TABLE_ANVIL)
+				{
+					if (eTableMaterial < pCraft->Get_Material() - 1)
+					{
+						_int i = eTableMaterial;
+						i++;
+
+						eTableMaterial = static_cast<MATERIAL>(i);
+
+						Set_Slot();
+					}
 				}
 			}
 		}
@@ -113,7 +128,10 @@ void CUICraftButton::Render_GameObject()
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
 
-	m_pTextureCom->Set_Texture(eTableMaterial);
+	if(m_eTableType == TABLE_CRAFT)
+		m_pTextureCom->Set_Texture(eTableMaterial);
+	else if (m_eTableType == TABLE_ANVIL)
+		m_pTextureCom->Set_Texture(eTableMaterial + 3);
 
 	m_pBufferCom->Render_Buffer();
 
@@ -211,28 +229,57 @@ HRESULT CUICraftButton::Add_Component()
 void CUICraftButton::Set_Slot()
 {
 
-	for (int i = 0; i < 6; i++)
+	if (m_eTableType == TABLE_CRAFT)
 	{
-		wstring string;
+		for (int i = 0; i < 6; i++)
+		{
+			wstring string;
 
-		string = L"UICraftLSlot_" + std::to_wstring(i);
+			string = L"UICraftLSlot_" + std::to_wstring(i);
 
-		CUICraftSlot* pSlot = dynamic_cast<CUICraftSlot*>(Engine::Get_GameObject(L"Layer_UI", string.c_str()));
+			CUICraftSlot* pSlot = dynamic_cast<CUICraftSlot*>(Engine::Get_GameObject(L"Layer_UI", string.c_str()));
 
-		pSlot->Set_DisableWindow();
-		pSlot->Set_Window(m_eTableType, eTableMaterial, true);
+			pSlot->Set_DisableWindow();
+			pSlot->Set_Window(m_eTableType, eTableMaterial, true);
+		}
+
+		for (int i = 0; i < 6; i++)
+		{
+			wstring string;
+
+			string = L"UICraftRSlot_" + std::to_wstring(i);
+
+			CUICraftSlot* pSlot = dynamic_cast<CUICraftSlot*>(Engine::Get_GameObject(L"Layer_UI", string.c_str()));
+
+			pSlot->Set_DisableWindow();
+			pSlot->Set_Window(m_eTableType, eTableMaterial, false);
+		}
 	}
-
-	for (int i = 0; i < 6; i++)
+	else if (m_eTableType == TABLE_ANVIL)
 	{
-		wstring string;
+		for (int i = 0; i < 6; i++)
+		{
+			wstring string;
 
-		string = L"UICraftRSlot_" + std::to_wstring(i);
+			string = L"UICraftLSlot_" + std::to_wstring(i);
 
-		CUICraftSlot* pSlot = dynamic_cast<CUICraftSlot*>(Engine::Get_GameObject(L"Layer_UI", string.c_str()));
+			CUICraftSlot* pSlot = dynamic_cast<CUICraftSlot*>(Engine::Get_GameObject(L"Layer_UI", string.c_str()));
 
-		pSlot->Set_DisableWindow();
-		pSlot->Set_Window(m_eTableType, eTableMaterial, false);
+			pSlot->Set_DisableWindow();
+			pSlot->Set_Window(m_eTableType, (MATERIAL)(eTableMaterial + 1), true);
+		}
+
+		for (int i = 0; i < 6; i++)
+		{
+			wstring string;
+
+			string = L"UICraftRSlot_" + std::to_wstring(i);
+
+			CUICraftSlot* pSlot = dynamic_cast<CUICraftSlot*>(Engine::Get_GameObject(L"Layer_UI", string.c_str()));
+
+			pSlot->Set_DisableWindow();
+			pSlot->Set_Window(m_eTableType, (MATERIAL)(eTableMaterial + 1), false);
+		}
 	}
 }
 
