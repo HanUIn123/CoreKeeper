@@ -13,6 +13,9 @@ class CInventory;
 
 END
 
+class CPlayer;
+class CAzeos;
+class CTerrain;
 class CCrystal : public CObject
 {
 private:
@@ -31,6 +34,9 @@ public:
 	virtual			void			Set_ObjectPos(_vec3 _iBuildingPos) { m_vBuildPosition = _iBuildingPos; }
 
 private:
+	void		Set_Cast();
+
+private:
 	Engine::CCollider* m_pSphereColliderCom;
 
 private:
@@ -43,7 +49,13 @@ private:
 	virtual void					Free();
 
 private:
-	_int m_iHp;
+	CAzeos* m_pAzeos;
+	CTransform* m_pAzeosTransform;
+	CPlayer* m_pPlayer;
+	CTransform* m_pPlayerTransform;
+	CTerrain* m_pTerrain;
 
+	_int m_iHp;
+	_bool m_bDeadFirstFrame;
 };
 

@@ -32,6 +32,8 @@ private:
 	void            Generate_Random();
 	void            Generate_Circle();
 
+	void		    Check_CrystalCollide();
+
 public:
 	_vec3           Get_Pos() { return m_vPos; }
 	_bool           Get_Crystal() { return m_bCrystal; }

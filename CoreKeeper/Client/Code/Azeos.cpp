@@ -578,6 +578,10 @@ void CAzeos::Generate_Circle()
     }
 }
 
+void CAzeos::Check_CrystalCollide()
+{
+}
+
 void CAzeos::Pattern_GenerateCrystal()
 {
     m_bAttackSuccess = false;
@@ -612,6 +616,11 @@ void CAzeos::Pattern_GenerateCrystal()
         NULL_CHECK(pCrystal);
         m_vecProjectileName.push_back(L"Crystal_" + std::to_wstring(m_iCrystalNumber++));
         FAILED_CHECK_RETURN(pScene->Create_GameObject(L"Layer_GameLogic", pCrystal, m_vecProjectileName.back().c_str()), );
+
+        _int iIndex = _int(vFirePos[i].z + 0.5f * VTXITV) * (VTXCNTX - 1) + (vFirePos[i].x + 0.5f * VTXITV);
+        m_pTerrain->Set_Unreachable(iIndex, true);
+        m_pTerrain->Set_Unreachable(iIndex - 1, true);
+        m_pTerrain->Set_Unreachable(iIndex + 1, true);
     }
 }
 
