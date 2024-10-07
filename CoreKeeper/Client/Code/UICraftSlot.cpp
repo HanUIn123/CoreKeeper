@@ -134,6 +134,9 @@ void CUICraftSlot::Render_GameObject()
 		case TABLE_CRAFT:
 			matWorld._41 += 48.f;
 			break;
+		case TABLE_ANVIL:
+			matWorld._41 += 48.f;
+			break;
 		}
 	}
 
@@ -211,6 +214,12 @@ void CUICraftSlot::Set_Window(TABLETYPE _eTableType, MATERIAL _eMaterial, _bool 
 				m_BRect.right -= 48.f;
 				break;
 			}
+			case TABLE_ANVIL:
+			{
+				m_BRect.left -= 48.f;
+				m_BRect.right -= 48.f;
+				break;
+			}
 			}
 		}
 	}
@@ -221,6 +230,12 @@ void CUICraftSlot::Set_Window(TABLETYPE _eTableType, MATERIAL _eMaterial, _bool 
 			switch (_eTableType)
 			{
 			case TABLE_CRAFT:
+			{
+				m_BRect.left += 48.f;
+				m_BRect.right += 48.f;
+				break;
+			}
+			case TABLE_ANVIL:
 			{
 				m_BRect.left += 48.f;
 				m_BRect.right += 48.f;
@@ -313,6 +328,9 @@ void CUICraftSlot::Ready_Table()
 		UIITEM IRONPICKAXE = { m_iIndex, ITEM_PICKAXE, MATERIAL_IRON, 20 };
 		mapItemType.insert({ make_pair(TABLE_CRAFT, TRUE), IRONPICKAXE });
 
+		UIITEM COPPERHELM = { m_iIndex, ITEM_HELMET, MATERIAL_COPPER, 28 };
+		mapItemType.insert({ make_pair(TABLE_ANVIL, TRUE), COPPERHELM });
+
 		// 우측
 
 		UIITEM FURNACE = { m_iIndex, ITEM_FURNACE, MATERIAL_WOOD, 10 };
@@ -323,6 +341,9 @@ void CUICraftSlot::Ready_Table()
 
 		UIITEM MUSICTABLE = { m_iIndex, ITEM_MUSIC_TABLE, MATERIAL_IRON, 24 };
 		mapItemType.insert({ make_pair(TABLE_CRAFT, FALSE), MUSICTABLE });
+
+		UIITEM COPPERSWORD = { m_iIndex, ITEM_SWORD, MATERIAL_COPPER, 32 };
+		mapItemType.insert({ make_pair(TABLE_ANVIL, FALSE), COPPERSWORD });
 
 		break;
 	}
@@ -341,6 +362,9 @@ void CUICraftSlot::Ready_Table()
 		UIITEM IRONHOE = { m_iIndex, ITEM_HOE, MATERIAL_IRON, 21 };
 		mapItemType.insert({ make_pair(TABLE_CRAFT, TRUE), IRONHOE });
 
+		UIITEM COPPERCHEST = { m_iIndex, ITEM_CHEST, MATERIAL_COPPER, 29 };
+		mapItemType.insert({ make_pair(TABLE_ANVIL, TRUE), COPPERCHEST });
+
 		// 우측
 
 		UIITEM COPPERTABLE = { m_iIndex, ITEM_TABLE, MATERIAL_WOOD, 11 };
@@ -352,6 +376,8 @@ void CUICraftSlot::Ready_Table()
 		UIITEM SPRINKLER = { m_iIndex, ITEM_SPRINKLER, MATERIAL_IRON, 25 };
 		mapItemType.insert({ make_pair(TABLE_CRAFT, FALSE), SPRINKLER });
 
+		UIITEM WOODBOW = { m_iIndex, ITEM_BOW, MATERIAL_COPPER, 33 };
+		mapItemType.insert({ make_pair(TABLE_ANVIL, FALSE), WOODBOW });
 		break;
 	}
 	case 2:
@@ -369,6 +395,9 @@ void CUICraftSlot::Ready_Table()
 
 		UIITEM BIGLAMP = { m_iIndex, ITEM_LANTERN, MATERIAL_IRON, 22 };
 		mapItemType.insert({ make_pair(TABLE_CRAFT, TRUE), BIGLAMP });
+
+		UIITEM COPPERLEG = { m_iIndex, ITEM_LEG, MATERIAL_COPPER, 30 };
+		mapItemType.insert({ make_pair(TABLE_ANVIL, TRUE), COPPERLEG });
 
 		// 우측
 
@@ -399,9 +428,13 @@ void CUICraftSlot::Ready_Table()
 		UIITEM BIGBAG = { m_iIndex, ITEM_BAG, MATERIAL_IRON, 23 };
 		mapItemType.insert({ make_pair(TABLE_CRAFT, TRUE), BIGBAG });
 
+		UIITEM WOODSHIELD = { m_iIndex, ITEM_ASSISTANCE, MATERIAL_COPPER, 31 };
+		mapItemType.insert({ make_pair(TABLE_ANVIL, TRUE), WOODSHIELD });
+
 
 		UIITEM IRONANVIL = { m_iIndex, ITEM_ANVIL, MATERIAL_IRON, 26 };
 		mapItemType.insert({ make_pair(TABLE_CRAFT, FALSE), IRONANVIL });
+
 
 		break;
 	}

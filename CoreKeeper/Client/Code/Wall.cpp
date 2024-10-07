@@ -35,7 +35,7 @@ HRESULT CWall::Ready_GameObject(_float _fWallX, _float _fWallZ, _int iWallImageN
 
     m_pTransformCom->Set_Scale(1.0f, 2.0f, 1.0f);
 
-    m_pDustParticlesCom->init(L"./Bin/Resource/Texture/Particle/Basic_Particle.png");
+    m_pDustParticlesCom->init(L"../Bin/Resource/Texture/Particle/Basic_Particle.png");
 
     return S_OK;
 }
