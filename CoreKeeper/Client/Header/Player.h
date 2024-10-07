@@ -61,23 +61,27 @@ private:
 
 	void			Set_Stop(_vec3* vDir1, _float fDirSpeed1, _vec3* vDir2 = nullptr, _float fDirSpeed2 = 0.f);
 
+	void			Set_Clothes();
 	void			Set_Equipment();
 	void			Show_Equipment();
 	void			Swing_Equipment();
 	void			Shoot_Equipment();
+	void			Set_EquippedStatus();
+
 	void			PickAxe();
 	void			Hoe();
 	void			Watering();
 	void			Plant(ITEMNUM eHandedNum);
 	void			Install(ITEMNUM eHandedNum);
+	void			Eat(ITEMNUM eHandedNum);
 
-	void			Set_EquippedStatus();
-	void			Set_Clothes();
+	void			Set_Buff();
+	void			Set_Hungry(const _float& fTimeDelta);
+	void			Respawn_Progress(const _float& fTimeDelta);
+
 	void			Set_MouseWorldPos();
-
 	void            Set_UI();
 
-	void			Respawn_Progress(const _float& fTimeDelta);
 
 public:
 	CItem*			Get_HandedItem()		{ return m_pHandedItem; }
@@ -115,6 +119,9 @@ public:
 
 	void			Set_KnockBack(_vec3 vEnemyPos, _int iDamage, _float fDist = 3.f, PLAYERHITTYPE eHit = HIT_NORMAL);
 	void			Set_Respawn() { m_bRespawned = false; }
+	void			Set_BuffState(BUFFTYPE eType, _bool bBuff) { m_arrBuffState[eType] = bBuff; };
+	_bool			Get_BuffState(BUFFTYPE eType) { return m_arrBuffState[eType]; }
+
 
 private:
 	void			KnockBack(const _float& fTimeDelta);
@@ -154,6 +161,7 @@ private:
 	_int                    m_iHandNum; // 선택된 아이템 번호
 	STAT					m_tBasicStat;
 	STAT					m_tEquipmentStat;
+	_bool					m_arrBuffState[BUFFTYPE_END];
 
 	_float					m_fFirstY;
 	_float					m_fTimeAcc;
@@ -201,7 +209,6 @@ private:
 
 	vector<wstring>			m_vecInstallObjectName;
 	_int					m_iInstallNumber;
-	_int					m_iDebuff;
 
 	// 랜턴
 	_int					m_iLightNum;
@@ -209,6 +216,9 @@ private:
 
 	_bool					m_bRespawnFirstFrame;
 	_float					m_fRespawnProgress;
+
+
+	_float					m_fHungerTime;
 
 public:
 	static CPlayer* Create(LPDIRECT3DDEVICE9 pGraphicDev);
