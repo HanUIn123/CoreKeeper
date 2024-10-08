@@ -53,9 +53,9 @@ void CMyFont::Render_Font(const _tchar * pString, const _vec2 * pPos, D3DXCOLOR 
 	m_pSprite->End();
 }
 
-void CMyFont::Render_Font_Custom(const _tchar* pString, const _vec2* pPos, DWORD format, D3DXCOLOR Color)
+void CMyFont::Render_Font_Custom(const _tchar* pString, const _vec2* pLTPos, const _vec2* pRBPos, DWORD format, D3DXCOLOR Color)
 {
-	RECT	rc{ (_long)pPos->x, (_long)pPos->y };
+	RECT	rc{ (_long)pLTPos->x, (_long)pLTPos->y, (_long)pRBPos->x, (_long)pRBPos->y, };
 
 	m_pSprite->Begin(D3DXSPRITE_ALPHABLEND);
 

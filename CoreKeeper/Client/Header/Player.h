@@ -3,6 +3,7 @@
 #include "Define.h"
 #include "Export_System.h"
 #include "Item.h"
+#include "UIItemSlot.h"
 
 BEGIN(Engine)
 
@@ -20,7 +21,6 @@ class CFollow;
 END
 
 class CTerrain;
-
 class CPlayer : public Engine::CGameObject
 {
 private:
@@ -42,9 +42,15 @@ private:
 	void			Mouse_Click(const _float& fTimeDelta);								// Å¬¸¯ ½Ã ½ºÀ®, ½ºÀ® ³¡ ÆÇ´Ü
 	void			Walk_Y(const _float& fTimeDelta);
 	void			Flip();
-	void			Dash(const _float& fTimeDelta);
+
+	void			Equipment_Function(const _float& fTimeDelta);
+	void			Auxiliary(const _float& fTimeDelta);
 	void			Lantern();
 	void			Bag();
+	void			Necklace();
+	void			Ring();
+	void			Ring_Second();
+
 	void			Set_ImmuneByTime(_float fImmuneTime = 1.f);
 	void			Set_ImmuneByToggle();
 
@@ -75,6 +81,7 @@ private:
 
 	void			Set_Buff(const _float& fTimeDelta);
 	void			Set_Hungry(const _float& fTimeDelta);
+	void			Set_ManaRecover(const _float& fTimeDelta);
 	void			Respawn_Progress(const _float& fTimeDelta);
 
 	void			Set_MouseWorldPos();
@@ -226,8 +233,11 @@ private:
 	_bool					m_bRespawnFirstFrame;
 	_float					m_fRespawnProgress;
 
+	_float					m_fMiningBuff[2];
 
 	_float					m_fHungerTime;
+	_float					m_fManaTime;
+	CUIItemSlot* m_pEtcItems[CUIItemSlot::SLOT_END];
 
 public:
 	static CPlayer* Create(LPDIRECT3DDEVICE9 pGraphicDev);

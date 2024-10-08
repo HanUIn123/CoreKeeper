@@ -627,9 +627,10 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
 
     _vec3	vSpawnPos[3] =
     {
-        { VTXCNTX / 2 + 65.f, 0.1f, 21.5f + 80.f },
-        { VTXCNTX / 2, 0.1f, 17.f},
-        { VTXCNTX / 2 - 40.f, 0.1f, 21.5f + 60.f }
+       // { VTXCNTX / 2 + 65.f, 0.1f, 21.5f + 80.f },
+        { 51.0f, 0.1f, 60.0f},
+        {  VTXCNTX / 2, 0.1f, 7.f + 5.f },
+        {14.0f, 0.1f, 105.0f}
     };
 
     wstring wsMiniSpawnName[3];
@@ -643,7 +644,7 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
         m_vecMiniSpawn.push_back(pMiniSpawn);
     }
 
-    pGameObject = CMiniCore::Create(m_pGraphicDev, { VTXCNTX / 2, 1.5f, 21.5f });
+    pGameObject = CMiniCore::Create(m_pGraphicDev, { VTXCNTX / 2, 2.3f, 11.f + 5.f });
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"MiniCore", pGameObject), E_FAIL);
 

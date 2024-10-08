@@ -7,7 +7,7 @@
 CStaff::CStaff(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CItem(pGraphicDev)
 {
-	m_tStat.iAttack = 50;
+	m_tStat.iAttack = 100;
 
 	m_eItemNum = ITEM_STAFF;
 

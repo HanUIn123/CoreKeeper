@@ -126,6 +126,10 @@ void CUIBuff::Set_Window(BUFFTYPE _eType)
 		m_eBuffType = BUFF_ICON_ATT;
 		m_eBuffIndex = BUFF;
 		break;
+	case BUFF_MINING:
+		m_eBuffType = BUFF_ICON_MINING;
+		m_eBuffIndex = BUFF;
+		break;
 	case BUFF_DEF:
 		m_eBuffType = BUFF_ICON_DEF;
 		m_eBuffIndex = BUFF;

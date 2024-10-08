@@ -20,7 +20,8 @@ public:
 									const _vec2* pPos, 
 									D3DXCOLOR Color);
 	void				Render_Font_Custom(const _tchar* pString,
-										   const _vec2* pPos,
+										   const _vec2* pLTPos,
+										   const _vec2* pRBPos,
 										   DWORD format,
 										   D3DXCOLOR Color);
 

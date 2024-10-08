@@ -86,6 +86,9 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	m_iLightNum = g_iLightNum++;
 
 	m_fHungerTime = 0.f;
+	m_fManaTime = 0.f;
+	m_fMiningBuff[0] = 0.f;
+	m_fMiningBuff[1] = 0.f;
 
 	m_bDestroyWall = false;
 }
@@ -98,7 +101,7 @@ HRESULT CPlayer::Ready_GameObject()
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-	m_tBasicStat = STAT( 400, 100, 20, 0 );
+	m_tBasicStat = STAT(400, 100, 20, 0);
 	m_pStateCom->Set_Stat(m_tBasicStat.iMaxHp, m_tBasicStat.iMaxMp, m_tBasicStat.iAttack, m_tBasicStat.iDefense);
 	m_pStateCom->Set_MaxHunger(100);
 	m_pEquipInventoryCom->Set_SlotCount(10);
@@ -125,12 +128,12 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 	Set_MouseWorldPos();
 
 	KnockBack(fTimeDelta);
-	
-	Set_Equipment();
-	if (m_eState != SWING)
-		Show_Equipment();
-	Set_EquippedStatus();
 
+	Set_Equipment();
+	Show_Equipment();
+	Equipment_Function(fTimeDelta);
+	Set_EquippedStatus();
+	Set_ManaRecover(fTimeDelta);
 	// 버프 스탯 처리
 	Set_Hungry(fTimeDelta);
 	Set_Buff(fTimeDelta);
@@ -173,9 +176,6 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 	}
 
 	Flip();
-	Dash(fTimeDelta);
-	Lantern();
-	Bag();
 	Set_ImmuneByToggle();
 
 	// 시간제 무적용
@@ -231,10 +231,10 @@ void CPlayer::Render_GameObject()
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 
-	if(m_bBleed)
-	   m_pFireParticleCom->render(); // 파티클 렌더
+	if (m_bBleed)
+		m_pFireParticleCom->render(); // 파티클 렌더
 
-	if(m_bFire)
+	if (m_bFire)
 		m_pFollowParticleCom->render();
 
 	if (m_bDestroyWall)
@@ -417,7 +417,7 @@ void CPlayer::Key_Position(const _float& fTimeDelta)
 		fRightSpeed = m_fSpeed;
 	else
 		m_eState = IDLE;
-	
+
 	if (m_eState == WALK)
 	{
 		_int iWeight = 1;
@@ -457,7 +457,7 @@ void CPlayer::Mouse_Click(const _float& fTimeDelta)
 				ITEMNUM eHandedNum = m_pHandedItem->Get_ItemNum();
 				switch (eHandedNum)
 				{
-				// 전투 관련
+					// 전투 관련
 				case ITEM_SWORD:
 					m_eState = SWING;
 					m_bSwing = true;
@@ -470,13 +470,18 @@ void CPlayer::Mouse_Click(const _float& fTimeDelta)
 					PickAxe();
 					break;
 				case ITEM_BOW:
-				case ITEM_STAFF:
 					m_eState = SHOOT;
 					m_bShoot = true;
 					Shoot_Equipment();
 					break;
+				case ITEM_STAFF:
+					m_eState = SHOOT;
+					m_bShoot = true;
+					Shoot_Equipment();
+					m_pStateCom->Set_UseMP(30);
+					break;
 
-				// 농사 관련
+					// 농사 관련
 				case ITEM_HOE:
 					m_eState = SWING;
 					m_bSwing = true;
@@ -496,7 +501,7 @@ void CPlayer::Mouse_Click(const _float& fTimeDelta)
 					m_pHandedItem->Set_Drop(false);
 					break;
 
-				// 설치 관련
+					// 설치 관련
 				case ITEM_TABLE:
 				case ITEM_POTION_TABLE:
 				case ITEM_ACCESSORY_TABLE:
@@ -575,18 +580,26 @@ void CPlayer::Flip()
 	}
 }
 
-void CPlayer::Dash(const _float& fTimeDelta)
+void CPlayer::Equipment_Function(const _float& fTimeDelta)
 {
-	// 보조장비에 깃털 장착 시
-	CItem* pAux;
-	wstring	strObjectTag = L"UIItemSlot_" + std::to_wstring(CUIItemSlot::SLOT_WEAPON);;
-	pAux = dynamic_cast<CUIItemSlot*>(Engine::Get_GameObject(L"Layer_UI", strObjectTag.c_str()))->Get_Item();
+	Auxiliary(fTimeDelta);
+	Lantern();
+	Bag();
+	Necklace();
+	Ring();
+	Ring_Second();
+}
+
+void CPlayer::Auxiliary(const _float& fTimeDelta)
+{
+	CItem* pAux = m_pEtcItems[CUIItemSlot::SLOT_WEAPON]->Get_Item();
 	if (!pAux)
 		return;
 
 	ASSISTANCE assistance = dynamic_cast<CAssistance*>(pAux)->Get_Assistance();
 
-	if (pAux->Get_ItemNum() == ITEM_ASSISTANCE && assistance == ASSISTANCE_FEATHER)
+	// 깃털 장착
+	if (assistance == ASSISTANCE_FEATHER || assistance == ASSISTANCE_AZEOS_FEATHER)
 	{
 		// 스페이스바를 누르면 대쉬
 		if (Engine::Key_Down(DIK_SPACE))
@@ -602,10 +615,20 @@ void CPlayer::Dash(const _float& fTimeDelta)
 			m_pColliderCom->Set_Offset(_vec3(0, -100, 0));
 			// 대쉬 중 스피드 조절
 			_float fProgress = m_fDashTimeAcc / m_fDashTime;
-			if(fProgress < 0.5f)
-				m_iSpeedWeight += 1;
+			if (assistance == ASSISTANCE_FEATHER)
+			{
+				if (fProgress < 0.5f)
+					m_iSpeedWeight += 1;
+				else
+					m_iSpeedWeight -= 1;
+			}
 			else
-				m_iSpeedWeight -= 1;
+			{
+				if (fProgress < 0.5f)
+					m_iSpeedWeight += 2;
+				else
+					m_iSpeedWeight -= 2;
+			}
 
 			if (fProgress >= 1)
 			{
@@ -617,7 +640,7 @@ void CPlayer::Dash(const _float& fTimeDelta)
 		}
 		else
 			m_pColliderCom->Set_Offset(_vec3(0, 0, 0));
-		
+
 		// 대쉬 쿨타임 설정
 		if (m_bDashCool)
 		{
@@ -629,14 +652,23 @@ void CPlayer::Dash(const _float& fTimeDelta)
 			}
 		}
 	}
+	// 책 장착
+	else if (assistance == ASSISTANCE_BOOK)
+		m_tEquipmentStat.iAttack += 50;
+	// 방패 장착
+	else if (assistance == ASSISTANCE_WOOD_SHIELD)
+		m_tEquipmentStat.iDefense += 10;
+	else if (assistance == ASSISTANCE_IRON_SHIELD)
+	{
+		m_tEquipmentStat.iDefense += 20;
+		m_tEquipmentStat.iMaxHp += 20;
+	}
+
 }
 
 void CPlayer::Lantern()
 {
-
-	CItem* pLantern;
-	wstring	strObjectTag = L"UIItemSlot_" + std::to_wstring(CUIItemSlot::SLOT_LANTERN);;
-	pLantern = dynamic_cast<CUIItemSlot*>(Engine::Get_GameObject(L"Layer_UI", strObjectTag.c_str()))->Get_Item();
+	CItem* pLantern = m_pEtcItems[CUIItemSlot::SLOT_LANTERN]->Get_Item();
 	if (!pLantern)
 	{
 		m_fLightRange = 0.f;
@@ -662,10 +694,7 @@ void CPlayer::Lantern()
 
 void CPlayer::Bag()
 {
-	CItem* pBag;
-	wstring	strObjectTag = L"UIItemSlot_" + std::to_wstring(CUIItemSlot::SLOT_BAG);;
-	pBag = dynamic_cast<CUIItemSlot*>(Engine::Get_GameObject(L"Layer_UI", strObjectTag.c_str()))->Get_Item();
-
+	CItem* pBag = m_pEtcItems[CUIItemSlot::SLOT_BAG]->Get_Item();
 	if (!pBag)
 	{
 		m_pInventoryCom->Set_SlotCount(30);
@@ -685,6 +714,84 @@ void CPlayer::Bag()
 			break;
 		}
 		Reset_Inventory();
+	}
+}
+
+void CPlayer::Necklace()
+{
+	CItem* pNeck = m_pEtcItems[CUIItemSlot::SLOT_NECKLACE]->Get_Item();
+	if (!pNeck)
+		return;
+
+	switch (pNeck->Get_ItemMaterial())
+	{
+	case MATERIAL_COPPER:
+		// 치명타 확률 + 4%
+		m_tEquipmentStat.iAttack += 25;
+		break;
+	case MATERIAL_IRON:
+		// 방어력 + 12
+		m_tEquipmentStat.iDefense += 20;
+		break;
+	case MATERIAL_SPECIAL:
+		// 최대 마나 + 32
+		m_tEquipmentStat.iMaxMp += 30;
+		break;
+	}
+}
+
+void CPlayer::Ring()
+{
+	CItem* pRing = m_pEtcItems[CUIItemSlot::SLOT_RING1]->Get_Item();
+	m_fMiningBuff[0] = 0.f;
+	if (!pRing)
+		return;
+
+	switch (pRing->Get_ItemMaterial())
+	{
+	case MATERIAL_COPPER:
+		// 채굴 피해 + 14
+		m_fMiningBuff[0] = 1.f;
+		break;
+	case MATERIAL_IRON:
+		// 이동 속도 + 6.9%
+		if (m_iSpeedWeight == 1)
+			m_iSpeedWeight = 1.4f;
+		break;
+	case MATERIAL_SPECIAL:
+		// 최대 마나 + 14
+		m_fMiningBuff[0] = 0.f;
+		m_tEquipmentStat.iMaxMp += 20;
+		break;
+	}
+}
+
+void CPlayer::Ring_Second()
+{
+	CItem* pRing = m_pEtcItems[CUIItemSlot::SLOT_RING2]->Get_Item();
+	if (!pRing)
+		return;
+
+	switch (pRing->Get_ItemMaterial())
+	{
+	case MATERIAL_COPPER:
+		if (m_fMiningBuff[0] == 1.f)
+			m_fMiningBuff[0] = 2.f;
+		else
+			m_fMiningBuff[0] = 1.f;
+		// 채굴 피해 + 14
+		break;
+	case MATERIAL_IRON:
+		// 이동 속도 + 6.9%
+		if (m_iSpeedWeight == 1.4f)
+			m_iSpeedWeight = 1.8f;
+		else
+			m_iSpeedWeight = 1.4f;
+		break;
+	case MATERIAL_SPECIAL:
+		// 최대 마나 + 14
+		m_tEquipmentStat.iMaxMp += 20;
+		break;
 	}
 }
 
@@ -884,7 +991,7 @@ void CPlayer::ShoulderView_Swing()
 
 void CPlayer::Set_Stop(_vec3* vDir1, _float fDirSpeed1, _vec3* vDir2, _float fDirSpeed2)
 {
-	
+
 	_vec3 vCheckPos{};
 	m_pTransformCom->Get_Info(INFO_POS, &vCheckPos);
 
@@ -899,7 +1006,7 @@ void CPlayer::Set_Stop(_vec3* vDir1, _float fDirSpeed1, _vec3* vDir2, _float fDi
 	if (0 <= iIndex && iIndex < (VTXCNTX - 1) * (VTXCNTZ - 1))
 		if (pTerrain->Get_UnreachableByIndex(iIndex))
 			m_iSpeedWeight = 0;
-		else if(!m_bDash)
+		else if (!m_bDash)
 			m_iSpeedWeight = 1;
 }
 
@@ -928,30 +1035,51 @@ void CPlayer::Show_Equipment()
 		m_tEquipmentStat.iAttack = m_pHandedItem->Get_Stat()->iAttack;
 		m_pHandedItem->Set_Use(true);
 		m_pHandedItem->Set_Active(true);
-		m_pHandedTransformCom->Set_Angle(0, 0, 0);
-		_vec3 vPlayerPos;
-		m_pTransformCom->Get_Info(INFO_POS, &vPlayerPos);
-
-		if (g_bIsTopCamera)
+		if (m_eState != SWING)
 		{
-			if (m_pHandedItem->Get_ItemNum() == ITEM_BOW)
+			m_pHandedTransformCom->Set_Angle(0, 0, 0);
+			_vec3 vPlayerPos;
+			m_pTransformCom->Get_Info(INFO_POS, &vPlayerPos);
+
+			if (g_bIsTopCamera)
 			{
-				if (m_eState == SHOOT)
+				if (m_pHandedItem->Get_ItemNum() == ITEM_BOW)
 				{
-					switch (m_eDir)
+					if (m_eState == SHOOT)
 					{
-					case FRONT:
-						m_pHandedTransformCom->Set_Pos(vPlayerPos.x, vPlayerPos.y, vPlayerPos.z - 0.4f);
-						break;
-					case RIGHT:
-						m_pHandedTransformCom->Set_Pos(vPlayerPos.x + 0.4f, vPlayerPos.y, vPlayerPos.z);
-						break;
-					case BACK:
-						m_pHandedTransformCom->Set_Pos(vPlayerPos.x + 0.4f, vPlayerPos.y, vPlayerPos.z + 0.4f);
-						break;
-					case LEFT:
-						m_pHandedTransformCom->Set_Pos(vPlayerPos.x - 0.4f, vPlayerPos.y, vPlayerPos.z);
-						break;
+						switch (m_eDir)
+						{
+						case FRONT:
+							m_pHandedTransformCom->Set_Pos(vPlayerPos.x, vPlayerPos.y, vPlayerPos.z - 0.4f);
+							break;
+						case RIGHT:
+							m_pHandedTransformCom->Set_Pos(vPlayerPos.x + 0.4f, vPlayerPos.y, vPlayerPos.z);
+							break;
+						case BACK:
+							m_pHandedTransformCom->Set_Pos(vPlayerPos.x + 0.4f, vPlayerPos.y, vPlayerPos.z + 0.4f);
+							break;
+						case LEFT:
+							m_pHandedTransformCom->Set_Pos(vPlayerPos.x - 0.4f, vPlayerPos.y, vPlayerPos.z);
+							break;
+						}
+					}
+					else
+					{
+						switch (m_eDir)
+						{
+						case FRONT:
+							m_pHandedTransformCom->Set_Pos(vPlayerPos.x - 0.3f, vPlayerPos.y, vPlayerPos.z - 0.2f);
+							break;
+						case RIGHT:
+							m_pHandedTransformCom->Set_Pos(vPlayerPos.x - 0.2f, vPlayerPos.y, vPlayerPos.z - 0.2f);
+							break;
+						case BACK:
+							m_pHandedTransformCom->Set_Pos(vPlayerPos.x + 0.3f, vPlayerPos.y, vPlayerPos.z + 0.2f);
+							break;
+						case LEFT:
+							m_pHandedTransformCom->Set_Pos(vPlayerPos.x + 0.2f, vPlayerPos.y, vPlayerPos.z - 0.2f);
+							break;
+						}
 					}
 				}
 				else
@@ -959,61 +1087,43 @@ void CPlayer::Show_Equipment()
 					switch (m_eDir)
 					{
 					case FRONT:
-						m_pHandedTransformCom->Set_Pos(vPlayerPos.x - 0.3f, vPlayerPos.y, vPlayerPos.z - 0.2f);
+						m_pHandedTransformCom->Set_Pos(vPlayerPos.x - 0.5f, 1.f, vPlayerPos.z - 0.2f);
 						break;
 					case RIGHT:
-						m_pHandedTransformCom->Set_Pos(vPlayerPos.x - 0.2f, vPlayerPos.y, vPlayerPos.z - 0.2f);
+						m_pHandedTransformCom->Set_Pos(vPlayerPos.x - 0.4f, 1.f, vPlayerPos.z - 0.2f);
 						break;
 					case BACK:
-						m_pHandedTransformCom->Set_Pos(vPlayerPos.x + 0.3f, vPlayerPos.y, vPlayerPos.z + 0.2f);
+						m_pHandedTransformCom->Set_Pos(vPlayerPos.x + 0.5f, 1.f, vPlayerPos.z + 0.2f);
 						break;
 					case LEFT:
-						m_pHandedTransformCom->Set_Pos(vPlayerPos.x + 0.2f, vPlayerPos.y, vPlayerPos.z - 0.2f);
+						m_pHandedTransformCom->Set_Pos(vPlayerPos.x + 0.4f, 1.f, vPlayerPos.z - 0.2f);
 						break;
 					}
 				}
 			}
 			else
 			{
+				m_pHandedTransformCom->Set_ResetArbit();
+				_vec3 vPlayerAngle = *(m_pTransformCom->Get_Angle());
+				m_pHandedTransformCom->Set_Angle(vPlayerAngle.x, vPlayerAngle.y, vPlayerAngle.z);
+				_vec3 vPlayerLook, vPlayerRight;
+				m_pTransformCom->Get_Info(INFO_LOOK, &vPlayerLook);
+				m_pTransformCom->Get_Info(INFO_RIGHT, &vPlayerRight);
 				switch (m_eDir)
 				{
 				case FRONT:
-					m_pHandedTransformCom->Set_Pos(vPlayerPos.x - 0.5f, 1.f, vPlayerPos.z - 0.2f);
+					m_pHandedTransformCom->Set_Pos(vPlayerPos.x - vPlayerLook.x * 0.4f - vPlayerRight.x * 0.5f, 1.f, vPlayerPos.z - vPlayerLook.z * 0.4f - vPlayerRight.z * 0.5f);
 					break;
 				case RIGHT:
-					m_pHandedTransformCom->Set_Pos(vPlayerPos.x - 0.4f, 1.f, vPlayerPos.z - 0.2f);
+					m_pHandedTransformCom->Set_Pos(vPlayerPos.x - vPlayerLook.x * 0.4f - vPlayerRight.x * 0.2f, 1.f, vPlayerPos.z - vPlayerLook.z * 0.4f - vPlayerRight.z * 0.2f);
 					break;
 				case BACK:
-					m_pHandedTransformCom->Set_Pos(vPlayerPos.x + 0.5f, 1.f, vPlayerPos.z + 0.2f);
+					m_pHandedTransformCom->Set_Pos(vPlayerPos.x + vPlayerLook.x * 0.4f + vPlayerRight.x * 0.5f, 1.f, vPlayerPos.z + vPlayerLook.z * 0.4f + vPlayerRight.z * 0.5f);
 					break;
 				case LEFT:
-					m_pHandedTransformCom->Set_Pos(vPlayerPos.x + 0.4f, 1.f, vPlayerPos.z - 0.2f);
+					m_pHandedTransformCom->Set_Pos(vPlayerPos.x - vPlayerLook.x * 0.4f - vPlayerRight.x * 0.2f, 1.f, vPlayerPos.z - vPlayerLook.z * 0.4f - vPlayerRight.z * 0.2f);
 					break;
 				}
-			}
-		}
-		else
-		{
-			m_pHandedTransformCom->Set_ResetArbit();
-			_vec3 vPlayerAngle = *(m_pTransformCom->Get_Angle());
-			m_pHandedTransformCom->Set_Angle(vPlayerAngle.x, vPlayerAngle.y, vPlayerAngle.z);
-			_vec3 vPlayerLook, vPlayerRight;
-			m_pTransformCom->Get_Info(INFO_LOOK, &vPlayerLook);
-			m_pTransformCom->Get_Info(INFO_RIGHT, &vPlayerRight);
-			switch (m_eDir)
-			{
-			case FRONT:
-				m_pHandedTransformCom->Set_Pos(vPlayerPos.x - vPlayerLook.x * 0.4f - vPlayerRight.x * 0.5f, 1.f, vPlayerPos.z - vPlayerLook.z * 0.4f - vPlayerRight.z * 0.5f);
-				break;
-			case RIGHT:
-				m_pHandedTransformCom->Set_Pos(vPlayerPos.x - vPlayerLook.x * 0.4f - vPlayerRight.x * 0.2f, 1.f, vPlayerPos.z - vPlayerLook.z * 0.4f - vPlayerRight.z * 0.2f);
-				break;
-			case BACK:
-				m_pHandedTransformCom->Set_Pos(vPlayerPos.x + vPlayerLook.x * 0.4f + vPlayerRight.x * 0.5f, 1.f, vPlayerPos.z + vPlayerLook.z * 0.4f + vPlayerRight.z * 0.5f);
-				break;
-			case LEFT:
-				m_pHandedTransformCom->Set_Pos(vPlayerPos.x - vPlayerLook.x * 0.4f - vPlayerRight.x * 0.2f, 1.f, vPlayerPos.z - vPlayerLook.z * 0.4f - vPlayerRight.z * 0.2f);
-				break;
 			}
 		}
 	}
@@ -1204,7 +1314,7 @@ void CPlayer::PickAxe()
 						break;
 					}
 					if (bIsBreakable)
-						pWall->Set_DurabiliryMinus(eAxeMaterial + 1);
+						pWall->Set_DurabiliryMinus((eAxeMaterial + 1) * (m_fMiningBuff[0] + m_fMiningBuff[1]));
 					if (pWall->Get_Durability() <= 0)
 					{
 						/*
@@ -1285,7 +1395,7 @@ void CPlayer::PickAxe()
 						break;
 					}
 					if (bIsBreakable)
-						pWall->Set_DurabiliryMinus(eAxeMaterial + 1);
+						pWall->Set_DurabiliryMinus((eAxeMaterial + 1) * (m_fMiningBuff[0] + m_fMiningBuff[1]));
 					if (pWall->Get_Durability() <= 0)
 					{
 						m_pTransformCom->Get_WorldMatrix(&m_bPickaxeMatrix);
@@ -1443,7 +1553,7 @@ void CPlayer::Install(ITEMNUM eHandedNum)
 			{
 				CScene* pScene = Engine::Get_Scene();
 				CGameObject* pInstallObject = nullptr;
-				_vec3 vInstallPos = { _float((iIndex % (VTXCNTX - 1)) * VTXITV), 0.5f, _float((iIndex / (VTXCNTX - 1)) * VTXITV)};
+				_vec3 vInstallPos = { _float((iIndex % (VTXCNTX - 1)) * VTXITV), 0.5f, _float((iIndex / (VTXCNTX - 1)) * VTXITV) };
 				MATERIAL mat;
 				switch (eHandedNum)
 				{
@@ -1487,8 +1597,8 @@ void CPlayer::Install(ITEMNUM eHandedNum)
 				}
 				m_vecInstallObjectName.push_back(L"Install_Object" + std::to_wstring(m_iInstallNumber++));
 				FAILED_CHECK_RETURN(pScene->Create_GameObject(L"Layer_GameLogic", pInstallObject, m_vecInstallObjectName.back().c_str()));
-				
-				if(eHandedNum != ITEM_TORCH)
+
+				if (eHandedNum != ITEM_TORCH)
 					m_pTerrain->Set_Unreachable(iIndex, true);
 
 				m_pHandedItem->Set_Use(false);
@@ -1575,6 +1685,7 @@ void CPlayer::Eat(ITEMNUM eHandedNum)
 		break;
 	case ITEM_CHOCOBAR:
 		m_pStateCom->Set_HungerPlus(19);
+		CBuffMgr::GetInstance()->Set_BuffStart(BUFF_MINING, 120);
 		break;
 	case ITEM_POTION_HP:
 		m_pStateCom->Set_Recover(200);
@@ -1608,6 +1719,12 @@ void CPlayer::Set_Clothes()
 	m_pClothes[3] = dynamic_cast<CItem*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player_Shirt"));
 	m_pClothes[4] = dynamic_cast<CItem*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player_Pants"));
 	m_pTerrain = dynamic_cast<CTerrain*>(Engine::Get_GameObject(L"Layer_Environment", L"Terrain"));
+
+	for (_int i = 0; i < CUIItemSlot::SLOT_END; i++)
+	{
+		wstring	strObjectTag = L"UIItemSlot_" + std::to_wstring(i);;
+		m_pEtcItems[i] = dynamic_cast<CUIItemSlot*>(Engine::Get_GameObject(L"Layer_UI", strObjectTag.c_str()));
+	}
 }
 void CPlayer::Set_MouseWorldPos()
 {
@@ -1702,8 +1819,8 @@ void CPlayer::Set_UI()
 			Set_Status();
 		}
 	}
-	
-	if(m_bInventory && (Engine::Key_Down(DIK_E)))
+
+	if (m_bInventory && (Engine::Key_Down(DIK_E)))
 	{
 		UI_Disable();
 	}
@@ -1891,6 +2008,9 @@ void CPlayer::Set_Buff(const _float& fTimeDelta)
 			case BUFF_DEF:
 				m_tBuffStat.iDefense = m_pStateCom->Get_Stat()->iDefense * 0.05f;
 				break;
+			case BUFF_MINING:
+				m_fMiningBuff[1] = 2.f;
+				break;
 			case DEBUFF_FIRE:
 				m_bFire = true;
 				m_fFireTickTime += fTimeDelta;
@@ -1901,7 +2021,7 @@ void CPlayer::Set_Buff(const _float& fTimeDelta)
 				}
 				break;
 			case DEBUFF_SLOW:
-				if(m_arrBuffState[BUFF_SPEED])
+				if (m_arrBuffState[BUFF_SPEED])
 					Set_Speed(m_fNormalSpeed);
 				else
 					Set_Speed(m_fNormalSpeed * 0.8f);
@@ -1925,6 +2045,9 @@ void CPlayer::Set_Buff(const _float& fTimeDelta)
 			case BUFF_ATT:
 			case BUFF_DEF:
 			case DEBUFF_SLOW:
+				break;
+			case BUFF_MINING:
+				m_fMiningBuff[1] = 1.f;
 				break;
 			case DEBUFF_FIRE:
 				if (m_bFire)
@@ -1959,7 +2082,7 @@ void CPlayer::Set_Hungry(const _float& fTimeDelta)
 
 	if (m_pStateCom->Get_Hunger() >= 75)
 	{
-		if(!m_arrBuffState[BUFF_FULL])
+		if (!m_arrBuffState[BUFF_FULL])
 			CBuffMgr::GetInstance()->Set_BuffStart(BUFF_FULL, 999);
 	}
 	else
@@ -1967,6 +2090,21 @@ void CPlayer::Set_Hungry(const _float& fTimeDelta)
 		if (m_arrBuffState[BUFF_FULL])
 			CBuffMgr::GetInstance()->Set_BuffEnd(BUFF_FULL);
 	}
+}
+
+void CPlayer::Set_ManaRecover(const _float& fTimeDelta)
+{
+	if (m_pStateCom->Get_Stat()->iMp < m_pStateCom->Get_Stat()->iMaxMp)
+	{
+		m_fManaTime += fTimeDelta;
+		if (m_fManaTime >= 2)
+		{
+			m_fManaTime = 0.f;
+			m_pStateCom->Set_UseMP(-5);
+		}
+	}
+	else
+		m_pStateCom->Set_MP();
 }
 
 void CPlayer::Respawn_Progress(const _float& fTimeDelta)
@@ -2186,7 +2324,7 @@ void CPlayer::Set_Inventory()
 	//CInventory* pPlayer = dynamic_cast<CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
 
 	for (int i = 10; i < m_pInventoryCom->Get_SlotCount(); i++)
-	{	
+	{
 		wstring string;
 
 		string = L"UI_Inventory_" + std::to_wstring(i);
@@ -2204,7 +2342,7 @@ void CPlayer::Set_Inventory()
 
 	CUISort* pSort = dynamic_cast<CUISort*>(Engine::Get_GameObject(L"Layer_UI", L"UI_Sort"));
 	pSort->Set_Window();
-	
+
 	if (m_bInventory)
 		m_bInventory = false;
 	else
@@ -2309,7 +2447,7 @@ void CPlayer::Set_GraveInventory(CInventory* pInventory)
 			pChestInventory->Set_Disable();
 		}
 
-		if(m_bInventory)
+		if (m_bInventory)
 			Set_Inventory();
 
 		m_bGraveInventory = false;
@@ -2472,7 +2610,7 @@ void CPlayer::UI_Disable()
 	{
 		Set_Inventory();
 
-		m_bInventory = false;	
+		m_bInventory = false;
 	}
 
 }

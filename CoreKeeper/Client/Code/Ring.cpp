@@ -23,18 +23,18 @@ HRESULT CRing::Ready_GameObject(MATERIAL _eMaterial, _vec3 vPos)
 	{
 	case MATERIAL_COPPER:
 		m_iTextureNumber = 0;
-		m_wItemName = L"구리 십자가 목걸이";
-		m_wItemExplain[0] = L"";
+		m_wItemName = L"돌 반지";
+		m_wItemExplain[0] = L"돌을 조각해 만든 단순한 반지입니다.";
 		break;
 	case MATERIAL_IRON:
 		m_iTextureNumber = 1;
-		m_wItemName = L"구리 십자가 목걸이";
-		m_wItemExplain[0] = L"";
+		m_wItemName = L"신속 반지";
+		m_wItemExplain[0] = L"이 날개 달린 반지를 착용하면 착용자를 앞으로 나아가게 하는 미풍이 생겨납니다.";
 		break;
 	case MATERIAL_SPECIAL:
 		m_iTextureNumber = 2;
-		m_wItemName = L"구리 십자가 목걸이";
-		m_wItemExplain[0] = L"";
+		m_wItemName = L"초승달 반지";
+		m_wItemExplain[0] = L"착용자가 더 깊은 곳으로부터 지혜를 끌어낼 수 있게 해줍니다.";
 		break;
 	default:
 		return E_FAIL;
