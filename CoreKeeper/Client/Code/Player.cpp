@@ -206,7 +206,7 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 
 void CPlayer::LateUpdate_GameObject()
 {
-	
+	Set_WallProjection();
 	Engine::CGameObject::LateUpdate_GameObject();
 }
 
@@ -214,6 +214,7 @@ void CPlayer::Render_GameObject()
 {
 	if (m_pStateCom->Get_Dead())
 		return;
+
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
@@ -229,7 +230,6 @@ void CPlayer::Render_GameObject()
 
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
-
 
 	if(m_bBleed)
 	   m_pFireParticleCom->render(); // 파티클 렌더
@@ -527,6 +527,9 @@ void CPlayer::Mouse_Click(const _float& fTimeDelta)
 				case ITEM_MUSHROOM_MUSHROOM_FOOD:
 				case ITEM_LUNCH:
 				case ITEM_CHOCOBAR:
+				case ITEM_POTION_HP:
+				case ITEM_POTION_ATT:
+				case ITEM_POTION_DEF:
 					Eat(eHandedNum);
 					break;
 
@@ -1181,7 +1184,7 @@ void CPlayer::PickAxe()
 				CScene* pCurScene = Engine::Get_Scene();
 				dynamic_cast<CStage*>(pCurScene)->Get_WallNameByIndex(iIndex);
 
-				CWall* pWall = dynamic_cast<CWall*>(Get_GameObject(L"Layer_Environment", dynamic_cast<CStage*>(pCurScene)->Get_WallNameByIndex(iIndex)->c_str()));
+				CWall* pWall = dynamic_cast<CWall*>(Engine::Get_GameObject(L"Layer_Environment", dynamic_cast<CStage*>(pCurScene)->Get_WallNameByIndex(iIndex)->c_str()));
 				if (pWall)
 				{
 					_bool bIsBreakable = false;
@@ -1262,7 +1265,7 @@ void CPlayer::PickAxe()
 				CScene* pCurScene = Engine::Get_Scene();
 				dynamic_cast<CStage*>(pCurScene)->Get_WallNameByIndex(iIndex);
 
-				CWall* pWall = dynamic_cast<CWall*>(Get_GameObject(L"Layer_Environment", dynamic_cast<CStage*>(pCurScene)->Get_WallNameByIndex(iIndex)->c_str()));
+				CWall* pWall = dynamic_cast<CWall*>(Engine::Get_GameObject(L"Layer_Environment", dynamic_cast<CStage*>(pCurScene)->Get_WallNameByIndex(iIndex)->c_str()));
 				if (pWall)
 				{
 					_bool bIsBreakable = false;
@@ -1573,6 +1576,15 @@ void CPlayer::Eat(ITEMNUM eHandedNum)
 	case ITEM_CHOCOBAR:
 		m_pStateCom->Set_HungerPlus(19);
 		break;
+	case ITEM_POTION_HP:
+		m_pStateCom->Set_Recover(200);
+		break;
+	case ITEM_POTION_ATT:
+		CBuffMgr::GetInstance()->Set_BuffStart(BUFF_ATT, 300);
+		break;
+	case ITEM_POTION_DEF:
+		CBuffMgr::GetInstance()->Set_BuffStart(BUFF_DEF, 300);
+		break;
 	}
 	m_pHandedItem->Set_Use(false);
 	m_pHandedItem->Set_Active(false);
@@ -1702,42 +1714,156 @@ void CPlayer::Set_UI()
 
 void CPlayer::Set_WallProjection()
 {
-	_vec3 vPos;
+	_vec3 vPos, vLook, vRight;
 	m_pTransformCom->Get_Info(INFO_POS, &vPos);
+	m_pTransformCom->Get_Info(INFO_LOOK, &vLook);
+	m_pTransformCom->Get_Info(INFO_RIGHT, &vRight);
 	_int iCurIndex = _int(vPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (vPos.x + 0.5f * VTXITV);
-	_int iIndex, iNextIndex;
-
+	_int iIndex;
 	// 다음 프레임 벽과 현재 프레임 벽이 똑같으면 알파값 0.5, 아니면 다시 1
 	if (g_bIsTopCamera)
 	{
-		// 현재 프레임 벽 = 플레이어 위치 + z축으로 -1의 방향
+		// 현재 프레임 벽 = 플레이어 위치 + z축으로 -1의 방향, -2의 방향
 		iIndex = iCurIndex - (VTXCNTX - 1);
-		// 다음 프레임 벽 = 현재 프레임 벽 + 이동 방향
-		// iNextIndex = 
-		CTerrain* pTerrain = dynamic_cast<CTerrain*>(Engine::Get_GameObject(L"Layer_Environment", L"Terrain"));
 		if (0 <= iIndex && iIndex < (VTXCNTX - 1) * (VTXCNTZ - 1))
 		{
-			if (pTerrain->Get_UnreachableByIndex(iIndex))
+			if (m_pTerrain->Get_UnreachableByIndex(iIndex))
 			{
 				CScene* pCurScene = Engine::Get_Scene();
-				dynamic_cast<CStage*>(pCurScene)->Get_WallNameByIndex(iIndex);
-
-				CWall* pWall = dynamic_cast<CWall*>(Get_GameObject(L"Layer_Environment", dynamic_cast<CStage*>(pCurScene)->Get_WallNameByIndex(iIndex)->c_str()));
+				CStage* pCurStage = dynamic_cast<CStage*>(pCurScene);
+				CWall* pWall = dynamic_cast<CWall*>(Engine::Get_GameObject(L"Layer_Environment", pCurStage->Get_WallNameByIndex(iIndex)->c_str()));
 				if (pWall)
 				{
-					// 플레이어, 벽 둘 다 알파값 0.5
+					pWall->Set_RenderAlpha(true);
+					iIndex = iCurIndex - (VTXCNTX - 1) * 2;
+					if (0 <= iIndex && iIndex < (VTXCNTX - 1) * (VTXCNTZ - 1))
+					{
+						if (m_pTerrain->Get_UnreachableByIndex(iIndex))
+						{
+							pWall = dynamic_cast<CWall*>(Engine::Get_GameObject(L"Layer_Environment", pCurStage->Get_WallNameByIndex(iIndex)->c_str()));
+							if (pWall)
+								pWall->Set_RenderAlpha(true);
+						}
+					}
+				}
+			}
+		}
+		// 플레이어 왼쪽에 벽이 없으면 그 아래를 투명하게
+		iIndex = iCurIndex - 1;
+		if (0 <= iIndex && iIndex < (VTXCNTX - 1) * (VTXCNTZ - 1))
+		{
+			if (!m_pTerrain->Get_UnreachableByIndex(iIndex))
+			{
+				iIndex = iCurIndex - (VTXCNTX - 1) - 1;
+				CScene* pCurScene = Engine::Get_Scene();
+				CStage* pCurStage = dynamic_cast<CStage*>(pCurScene);
+				CWall* pWall = dynamic_cast<CWall*>(Engine::Get_GameObject(L"Layer_Environment", pCurStage->Get_WallNameByIndex(iIndex)->c_str()));
+				if (pWall)
+				{
+					pWall->Set_RenderAlpha(true);
+					iIndex = iCurIndex - (VTXCNTX - 1) * 2 - 1;
+					if (0 <= iIndex && iIndex < (VTXCNTX - 1) * (VTXCNTZ - 1))
+					{
+						if (m_pTerrain->Get_UnreachableByIndex(iIndex))
+						{
+							pWall = dynamic_cast<CWall*>(Engine::Get_GameObject(L"Layer_Environment", pCurStage->Get_WallNameByIndex(iIndex)->c_str()));
+							if (pWall)
+								pWall->Set_RenderAlpha(true);
+						}
+					}
+				}
+			}
+		}
 
+		// 플레이어 오른쪽에 벽이 없으면 그 아래를 투명하게
+		if (vPos.x != 0)
+		{
+			iIndex = iCurIndex + 1;
+			if (0 <= iIndex && iIndex < (VTXCNTX - 1) * (VTXCNTZ - 1))
+			{
+				if (!m_pTerrain->Get_UnreachableByIndex(iIndex))
+				{
+					iIndex = iCurIndex - (VTXCNTX - 1) + 1;
+					CScene* pCurScene = Engine::Get_Scene();
+					CStage* pCurStage = dynamic_cast<CStage*>(pCurScene);
+					CWall* pWall = dynamic_cast<CWall*>(Engine::Get_GameObject(L"Layer_Environment", pCurStage->Get_WallNameByIndex(iIndex)->c_str()));
+					if (pWall)
+					{
+						pWall->Set_RenderAlpha(true);
+						iIndex = iCurIndex - (VTXCNTX - 1) * 2 + 1;
+						if (0 <= iIndex && iIndex < (VTXCNTX - 1) * (VTXCNTZ - 1))
+						{
+							if (m_pTerrain->Get_UnreachableByIndex(iIndex))
+							{
+								pWall = dynamic_cast<CWall*>(Engine::Get_GameObject(L"Layer_Environment", pCurStage->Get_WallNameByIndex(iIndex)->c_str()));
+								if (pWall)
+									pWall->Set_RenderAlpha(true);
+							}
+						}
+					}
 				}
 			}
 		}
 	}
 	else
 	{
-		// 현재 프레임 벽 = 플레이어 위치 + Look 반대 방향
-		// 다음 프레임 벽 = 플레이어 위치 + Look 방향(m_eState == WALK)
+		_vec3 vCheckPos;
 
+		for (_int i = 0; i < 20; i++)
+		{
+			vCheckPos = vPos - vLook * 0.1f * i;
+			iIndex = _int(vCheckPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (vCheckPos.x + 0.5f * VTXITV);
+
+			// 현재 프레임 벽 = 플레이어 위치 + Look 반대 방향
+			if (0 <= iIndex && iIndex < (VTXCNTX - 1) * (VTXCNTZ - 1))
+			{
+				if (m_pTerrain->Get_UnreachableByIndex(iIndex))
+				{
+					CScene* pCurScene = Engine::Get_Scene();
+					dynamic_cast<CStage*>(pCurScene)->Get_WallNameByIndex(iIndex);
+
+					CWall* pWall = dynamic_cast<CWall*>(Engine::Get_GameObject(L"Layer_Environment", dynamic_cast<CStage*>(pCurScene)->Get_WallNameByIndex(iIndex)->c_str()));
+					if (pWall)
+						pWall->Set_RenderAlpha(true);
+				}
+			}
+
+			vCheckPos += vRight;
+			iIndex = _int(vCheckPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (vCheckPos.x + 0.5f * VTXITV);
+
+			// 현재 프레임 벽 = 플레이어 위치 + Look 반대 방향
+			if (0 <= iIndex && iIndex < (VTXCNTX - 1) * (VTXCNTZ - 1))
+			{
+				if (m_pTerrain->Get_UnreachableByIndex(iIndex))
+				{
+					CScene* pCurScene = Engine::Get_Scene();
+					dynamic_cast<CStage*>(pCurScene)->Get_WallNameByIndex(iIndex);
+
+					CWall* pWall = dynamic_cast<CWall*>(Engine::Get_GameObject(L"Layer_Environment", dynamic_cast<CStage*>(pCurScene)->Get_WallNameByIndex(iIndex)->c_str()));
+					if (pWall)
+						pWall->Set_RenderAlpha(true);
+				}
+			}
+
+			vCheckPos -= vRight * 2;
+			iIndex = _int(vCheckPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (vCheckPos.x + 0.5f * VTXITV);
+
+			// 현재 프레임 벽 = 플레이어 위치 + Look 반대 방향
+
+			if (0 <= iIndex && iIndex < (VTXCNTX - 1) * (VTXCNTZ - 1))
+			{
+				if (m_pTerrain->Get_UnreachableByIndex(iIndex))
+				{
+					CScene* pCurScene = Engine::Get_Scene();
+					dynamic_cast<CStage*>(pCurScene)->Get_WallNameByIndex(iIndex);
+
+					CWall* pWall = dynamic_cast<CWall*>(Engine::Get_GameObject(L"Layer_Environment", dynamic_cast<CStage*>(pCurScene)->Get_WallNameByIndex(iIndex)->c_str()));
+					if (pWall)
+						pWall->Set_RenderAlpha(true);
+				}
+			}
+		}
 	}
-
 }
 
 void CPlayer::Set_Buff(const _float& fTimeDelta)

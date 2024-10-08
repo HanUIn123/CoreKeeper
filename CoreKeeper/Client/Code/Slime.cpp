@@ -22,10 +22,12 @@ HRESULT CSlime::Ready_GameObject(_vec3 vPos)
 {
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-    m_pTransformCom->Set_Pos(vPos.x, m_fIdleY, vPos.z);
+    m_vRespawnPoint = { vPos.x, m_fIdleY, vPos.z };
+    m_pTransformCom->Set_Pos(m_vRespawnPoint.x, m_vRespawnPoint.y, m_vRespawnPoint.z);
     m_pStateCom->Set_Stat(100, 0, 10, 0);
     m_vecDropItem.push_back(ITEM_MUCUS);
     m_vecDropItem.push_back(ITEM_WOOD);
+    m_vecDropItem.push_back(ITEM_BERRY_SEED);
     Set_Speed(0.8f);
 
     m_pHitParticleCom->init(L"../Bin/Resource/Texture/Effect/Hit_%d.png", 5, 1.0f);
@@ -36,7 +38,10 @@ HRESULT CSlime::Ready_GameObject(_vec3 vPos)
 _int CSlime::Update_GameObject(const _float& fTimeDelta)
 {
     if (m_bStopDraw)
+    {
+        Set_RespawnTimer(fTimeDelta);
         return 0;
+    }
 
     Set_Cast();
 

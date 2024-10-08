@@ -53,6 +53,7 @@ void CRenderer::Render_GameObject(LPDIRECT3DDEVICE9 & pGraphicDev)
 	Render_Priority(pGraphicDev);
 	Render_NonAlpha(pGraphicDev);
 	Render_Alpha(pGraphicDev);
+	Render_Wall(pGraphicDev);
 
 	// 미니맵 출력
 	if (pCamera)
@@ -172,6 +173,12 @@ void CRenderer::Render_Alpha(LPDIRECT3DDEVICE9 & pGraphicDev)
 	pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 }
 
+void CRenderer::Render_Wall(LPDIRECT3DDEVICE9& pGraphicDev)
+{
+	for (auto& pGameObject : m_RenderGroup[RENDER_WALL])
+		pGameObject->Render_GameObject();
+}
+
 
 void CRenderer::Render_UIALPHA(LPDIRECT3DDEVICE9& pGraphicDev)
 {
@@ -232,35 +239,24 @@ void CRenderer::Render_MiniMap(LPDIRECT3DDEVICE9& pGraphicDev)
 		}
 		else
 		{
-			vEye = { 128.5f, 350.0f, 128.499f };
-			vAt = { 128.5f,0,128.5f };
-			playerPos.z -= 0.01f;
+			//  현재 우리 터레인 65 / 129 x건드리면 맵 보여주는게 좌 우 로 이동함
+			float terrainCenterX = 65.0f / 2.0f + 15.0f;
+			float terrainCenterZ = 129.0f / 2.0f + 30.0f;
+
+			vEye = { terrainCenterX, 350.0f, terrainCenterZ };
+			vAt = { terrainCenterX, 0.0f, terrainCenterZ };
 			vUp = _vec3(0.0f, 0.0f, 1.0f);
-
-		/*	if (pDynamicCamera)
-			{
-				_long dwMouseWheel = Engine::Get_DIMouseMove(DIMS_Z);
-
-				if (dwMouseWheel > 0)
-				{
-					m_fZoomRatio -= 10.0f;
-					if (m_fZoomRatio < 100.0f)
-						m_fZoomRatio = 100.0f;
-				}
-				else if (dwMouseWheel < 0)
-				{
-					m_fZoomRatio += 10.0f;
-					if (m_fZoomRatio > 260.0f)
-						m_fZoomRatio = 260.0f;
-				}
-			}*/
 
 			D3DXMATRIX matView;
 			D3DXMatrixLookAtLH(&matView, &vEye, &vAt, &vUp);
 			pGraphicDev->SetTransform(D3DTS_VIEW, &matView);
 
+			// 카메라가 보여주는 영역 zoomratio로 너비 설정해주는 느낌. 직사각형으로 나오면 이상하니 그냥
+			// 정사각형 비슷하게 해서 나오게함.
 			D3DXMATRIX matOrtho;
-			D3DXMatrixOrthoLH(&matOrtho, m_fZoomRatio, m_fZoomRatio, 0.1f, 1000.0f);
+			float newOrthoWidth = m_fZoomRatio / 2.5f;
+			float newOrthoHeight = m_fZoomRatio * (129.0f / 65.0f) / 2.5f;
+			D3DXMatrixOrthoLH(&matOrtho, newOrthoWidth, newOrthoHeight, 0.1f, 1000.0f);
 			pGraphicDev->SetTransform(D3DTS_PROJECTION, &matOrtho);
 		}
 	}

@@ -18,6 +18,7 @@ CWall::CWall(LPDIRECT3DDEVICE9 pGraphicDev)
     , m_iCurImgNum(0)
     , m_bWallDestroyed(false)
     , m_iDurability(0)
+    , m_bRenderAlpha(false)
 {
     m_vecAroundWall.resize(8);
 }
@@ -60,12 +61,12 @@ _int CWall::Update_GameObject(const _float& fTimeDelta)
     {
 
     }
-
+    m_bRenderAlpha = false;
     Update_Texture();
 
     if (m_pCalculatorCom->In_Frustum(m_pTransformCom))
     {
-        Engine::Add_RenderGroup(RENDER_PRIORITY, this);
+        Engine::Add_RenderGroup(RENDER_WALL, this);
         return Engine::CGameObject::Update_GameObject(fTimeDelta);
     }
     return 0;
@@ -86,6 +87,15 @@ void CWall::Render_GameObject()
 {
     if (m_bWallDestroyed)
         return;
+
+    if (m_bRenderAlpha)
+    {
+        m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
+        m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_SELECTARG1);
+        m_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCCOLOR);
+        m_pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCCOLOR);
+        m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+    }
 
     m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
 
@@ -120,6 +130,11 @@ void CWall::Render_GameObject()
     m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
+
+    if (m_bRenderAlpha)
+    {
+        m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
+    }
 }
 
 HRESULT CWall::Add_Component()
@@ -299,11 +314,12 @@ void CWall::Update_Texture()
         else if ((wallMask & 0b01011100) == 0b01011100)
         {
             m_iCurImgNum = m_iWallImageNum + 6;
-            m_pTransformCom->Set_Angle(0.f, D3DXToRadian(90.f), 0.f);
+            m_pTransformCom->Set_Angle(0.f, D3DXToRadian(180.f), 0.f);
         }
         else if ((wallMask & 0b01110100) == 0b01110100)
         {
             m_iCurImgNum = m_iWallImageNum + 8;
+            m_pTransformCom->Set_Angle(0.f, D3DXToRadian(-90.f), 0.f);
         }
         else
         {
@@ -348,7 +364,7 @@ void CWall::Update_Texture()
         else if ((wallMask & 0b11000101) == 0b11000101)
         {
             m_iCurImgNum = m_iWallImageNum + 6;
-            m_pTransformCom->Set_Angle(0.f, D3DXToRadian(180.f), 0.f);
+            //m_pTransformCom->Set_Angle(0.f, D3DXToRadian(180.f), 0.f);
         }
         else
         {
