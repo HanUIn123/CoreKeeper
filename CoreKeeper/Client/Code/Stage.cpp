@@ -261,6 +261,15 @@ HRESULT CStage::Ready_Layer_Environment(const _tchar* pLayerTag)
     pGameObject = CSkeleton::Create(m_pGraphicDev, { VTXCNTX / 2 - 3.f, 0.1f, 13.f });
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Skeleton", pGameObject), E_FAIL);
+
+    pGameObject = CFurnaceObject::Create(m_pGraphicDev, { VTXCNTX / 2 - 3.f, 0.6f, 11.f });
+    NULL_CHECK_RETURN(pGameObject, E_FAIL);
+    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"FurnaceObject", pGameObject), E_FAIL);
+
+
+    pGameObject = CCookingPotObject::Create(m_pGraphicDev, { VTXCNTX / 2 - 3.f, 0.6f, 10.f });
+    NULL_CHECK_RETURN(pGameObject, E_FAIL);
+    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"CookingPotObject", pGameObject), E_FAIL);
 #pragma endregion
 
     m_mapLayer.insert({ pLayerTag , pLayer });
@@ -298,6 +307,26 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar* pLayerTag)
     pGameObject = CHairShade::Create(m_pGraphicDev);
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Player_HairShade", pGameObject), E_FAIL);
+
+    pGameObject = CIngredient::Create(m_pGraphicDev, ITEM_BERRY_SEED);
+    NULL_CHECK_RETURN(pGameObject, E_FAIL);
+    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Berry", pGameObject), E_FAIL);
+    dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
+
+    pGameObject = CIngredient::Create(m_pGraphicDev, ITEM_PEPPER_SEED);
+    NULL_CHECK_RETURN(pGameObject, E_FAIL);
+    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Pepper", pGameObject), E_FAIL);
+    dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
+
+    pGameObject = COre::Create(m_pGraphicDev, MATERIAL_COPPER);
+    NULL_CHECK_RETURN(pGameObject, E_FAIL);
+    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"CopperOre", pGameObject), E_FAIL);
+    dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
+
+    pGameObject = COre::Create(m_pGraphicDev, MATERIAL_SCARLET);
+    NULL_CHECK_RETURN(pGameObject, E_FAIL);
+    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"ScarletOre", pGameObject), E_FAIL);
+    dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
 
     pGameObject = CLantern::Create(m_pGraphicDev, MATERIAL_WOOD);
     NULL_CHECK_RETURN(pGameObject, E_FAIL);

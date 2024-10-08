@@ -73,9 +73,9 @@ _int CUICookingPot::Update_GameObject(const _float& fTimeDelta)
 					if (pCursorInv->Get_Item(0)->Get_ItemNum() == ITEM_BERRY || pCursorInv->Get_Item(0)->Get_ItemNum() == ITEM_MUSHROOM || pCursorInv->Get_Item(0)->Get_ItemNum() == ITEM_PEPPER || pCursorInv->Get_Item(0)->Get_ItemNum() == ITEM_CARROT)
 					{
 						vector<CItem*>* pCvecItem = pCursorInv->Get_VecItemP();
-						vector<CItem*>* pFvecItem = m_pUSlotInventoryCom->Get_VecItemP();
+						vector<CItem*>* pFvecItem = m_pInventoryCom->Get_VecItemP();
 
-						if (!m_pUSlotInventoryCom->Check_Empty(0) && !pCursorInv->Check_Empty(0))
+						if (!m_pInventoryCom->Check_Empty(0) && !pCursorInv->Check_Empty(0))
 						{
 							if ((*pFvecItem)[0]->Get_ItemNum() > ITEM_ETC && (*pFvecItem)[0]->Get_ItemNum() == (*pCvecItem)[0]->Get_ItemNum())
 							{
@@ -83,18 +83,18 @@ _int CUICookingPot::Update_GameObject(const _float& fTimeDelta)
 								pCursorInv->Remove_Item(0);
 							}
 							else if ((*pFvecItem)[0]->Get_ItemNum() != (*pCvecItem)[0]->Get_ItemNum())
-								m_pUSlotInventoryCom->Swap_Item(&(*pCvecItem)[0], &(*pFvecItem)[0]);
+								m_pInventoryCom->Swap_Item(&(*pCvecItem)[0], &(*pFvecItem)[0]);
 						}
 						else
-							m_pUSlotInventoryCom->Swap_Item(&(*pCvecItem)[0], &(*pFvecItem)[0]);
+							m_pInventoryCom->Swap_Item(&(*pCvecItem)[0], &(*pFvecItem)[0]);
 					}
 				}
 				else if (pCursorInv->Check_Empty(0))
 				{
 					vector<CItem*>* pCvecItem = pCursorInv->Get_VecItemP();
-					vector<CItem*>* pFvecItem = m_pUSlotInventoryCom->Get_VecItemP();
+					vector<CItem*>* pFvecItem = m_pInventoryCom->Get_VecItemP();
 
-					if (!m_pUSlotInventoryCom->Check_Empty(0) && !pCursorInv->Check_Empty(0))
+					if (!m_pInventoryCom->Check_Empty(0) && !pCursorInv->Check_Empty(0))
 					{
 						if ((*pFvecItem)[0]->Get_ItemNum() > ITEM_ETC && (*pFvecItem)[0]->Get_ItemNum() == (*pCvecItem)[0]->Get_ItemNum())
 						{
@@ -102,10 +102,10 @@ _int CUICookingPot::Update_GameObject(const _float& fTimeDelta)
 							pCursorInv->Remove_Item(0);
 						}
 						else if ((*pFvecItem)[0]->Get_ItemNum() != (*pCvecItem)[0]->Get_ItemNum())
-							m_pUSlotInventoryCom->Swap_Item(&(*pCvecItem)[0], &(*pFvecItem)[0]);
+							m_pInventoryCom->Swap_Item(&(*pCvecItem)[0], &(*pFvecItem)[0]);
 					}
 					else
-						m_pUSlotInventoryCom->Swap_Item(&(*pCvecItem)[0], &(*pFvecItem)[0]);
+						m_pInventoryCom->Swap_Item(&(*pCvecItem)[0], &(*pFvecItem)[0]);
 				}
 			}
 		}
@@ -125,39 +125,39 @@ _int CUICookingPot::Update_GameObject(const _float& fTimeDelta)
 					if (pCursorInv->Get_Item(0)->Get_ItemNum() == ITEM_BERRY || pCursorInv->Get_Item(0)->Get_ItemNum() == ITEM_MUSHROOM || pCursorInv->Get_Item(0)->Get_ItemNum() == ITEM_PEPPER || pCursorInv->Get_Item(0)->Get_ItemNum() == ITEM_CARROT)
 					{
 						vector<CItem*>* pCvecItem = pCursorInv->Get_VecItemP();
-						vector<CItem*>* pFvecItem = m_pDSlotInventoryCom->Get_VecItemP();
+						vector<CItem*>* pFvecItem = m_pInventoryCom->Get_VecItemP();
 
-						if (!m_pDSlotInventoryCom->Check_Empty(0) && !pCursorInv->Check_Empty(0))
+						if (!m_pInventoryCom->Check_Empty(1) && !pCursorInv->Check_Empty(0))
 						{
-							if ((*pFvecItem)[0]->Get_ItemNum() > ITEM_ETC && (*pFvecItem)[0]->Get_ItemNum() == (*pCvecItem)[0]->Get_ItemNum())
+							if ((*pFvecItem)[1]->Get_ItemNum() > ITEM_ETC && (*pFvecItem)[1]->Get_ItemNum() == (*pCvecItem)[0]->Get_ItemNum())
 							{
-								(*pFvecItem)[0]->Add_Count((*pCvecItem)[0]->Get_Count());
+								(*pFvecItem)[1]->Add_Count((*pCvecItem)[0]->Get_Count());
 								pCursorInv->Remove_Item(0);
 							}
-							else if ((*pFvecItem)[0]->Get_ItemNum() != (*pCvecItem)[0]->Get_ItemNum())
-								m_pDSlotInventoryCom->Swap_Item(&(*pCvecItem)[0], &(*pFvecItem)[0]);
+							else if ((*pFvecItem)[1]->Get_ItemNum() != (*pCvecItem)[0]->Get_ItemNum())
+								m_pInventoryCom->Swap_Item(&(*pCvecItem)[0], &(*pFvecItem)[1]);
 						}
 						else
-							m_pDSlotInventoryCom->Swap_Item(&(*pCvecItem)[0], &(*pFvecItem)[0]);
+							m_pInventoryCom->Swap_Item(&(*pCvecItem)[0], &(*pFvecItem)[1]);
 					}
 				}
 				else if (pCursorInv->Check_Empty(0))
 				{
 					vector<CItem*>* pCvecItem = pCursorInv->Get_VecItemP();
-					vector<CItem*>* pFvecItem = m_pDSlotInventoryCom->Get_VecItemP();
+					vector<CItem*>* pFvecItem = m_pInventoryCom->Get_VecItemP();
 
-					if (!m_pDSlotInventoryCom->Check_Empty(0) && !pCursorInv->Check_Empty(0))
+					if (!m_pInventoryCom->Check_Empty(1) && !pCursorInv->Check_Empty(0))
 					{
-						if ((*pFvecItem)[0]->Get_ItemNum() > ITEM_ETC && (*pFvecItem)[0]->Get_ItemNum() == (*pCvecItem)[0]->Get_ItemNum())
+						if ((*pFvecItem)[1]->Get_ItemNum() > ITEM_ETC && (*pFvecItem)[1]->Get_ItemNum() == (*pCvecItem)[0]->Get_ItemNum())
 						{
-							(*pFvecItem)[0]->Add_Count((*pCvecItem)[0]->Get_Count());
+							(*pFvecItem)[1]->Add_Count((*pCvecItem)[0]->Get_Count());
 							pCursorInv->Remove_Item(0);
 						}
-						else if ((*pFvecItem)[0]->Get_ItemNum() != (*pCvecItem)[0]->Get_ItemNum())
-							m_pDSlotInventoryCom->Swap_Item(&(*pCvecItem)[0], &(*pFvecItem)[0]);
+						else if ((*pFvecItem)[1]->Get_ItemNum() != (*pCvecItem)[0]->Get_ItemNum())
+							m_pInventoryCom->Swap_Item(&(*pCvecItem)[0], &(*pFvecItem)[0]);
 					}
 					else
-						m_pDSlotInventoryCom->Swap_Item(&(*pCvecItem)[0], &(*pFvecItem)[0]);
+						m_pInventoryCom->Swap_Item(&(*pCvecItem)[0], &(*pFvecItem)[1]);
 				}
 			}
 		}
@@ -175,20 +175,20 @@ _int CUICookingPot::Update_GameObject(const _float& fTimeDelta)
 				if (pCursorInv->Check_Empty(0))
 				{
 					vector<CItem*>* pCvecItem = pCursorInv->Get_VecItemP();
-					vector<CItem*>* pFvecItem = m_pRSlotInventoryCom->Get_VecItemP();
+					vector<CItem*>* pFvecItem = m_pSecondInventoryCom->Get_VecItemP();
 
-					if (!m_pRSlotInventoryCom->Check_Empty(0) && !pCursorInv->Check_Empty(0))
+					if (!m_pSecondInventoryCom->Check_Empty(0) && !pCursorInv->Check_Empty(0))
 					{
 						if ((*pFvecItem)[0]->Get_ItemNum() > ITEM_ETC && (*pFvecItem)[0]->Get_ItemNum() == (*pCvecItem)[0]->Get_ItemNum())
 						{
 							(*pFvecItem)[0]->Add_Count((*pCvecItem)[0]->Get_Count());
 							pCursorInv->Remove_Item(0);
 						}
-						else if ((*pFvecItem)[0]->Get_ItemNum() != (*pCvecItem)[0]->Get_ItemNum())
-							m_pRSlotInventoryCom->Swap_Item(&(*pCvecItem)[0], &(*pFvecItem)[0]);
+						else if ((*pFvecItem)[2]->Get_ItemNum() != (*pCvecItem)[0]->Get_ItemNum())
+							m_pSecondInventoryCom->Swap_Item(&(*pCvecItem)[0], &(*pFvecItem)[0]);
 					}
 					else
-						m_pRSlotInventoryCom->Swap_Item(&(*pCvecItem)[0], &(*pFvecItem)[0]);
+						m_pSecondInventoryCom->Swap_Item(&(*pCvecItem)[0], &(*pFvecItem)[0]);
 				}
 			}
 		}
@@ -199,7 +199,7 @@ _int CUICookingPot::Update_GameObject(const _float& fTimeDelta)
 		Add_RenderGroup(RENDER_UI, this);
 	}
 
-	if (!m_pUSlotInventoryCom->Check_Empty(0) && !m_pDSlotInventoryCom->Check_Empty(0))
+	if (!m_pInventoryCom->Check_Empty(0) && !m_pInventoryCom->Check_Empty(1))
 	{
 		m_fTime -= fTimeDelta * 5.f;
 
@@ -209,20 +209,20 @@ _int CUICookingPot::Update_GameObject(const _float& fTimeDelta)
 		{
 			m_fTime = 80.f;
 
-			ITEMNUM eUNum = m_pUSlotInventoryCom->Get_Item(0)->Get_ItemNum();
+			ITEMNUM eUNum = m_pInventoryCom->Get_Item(0)->Get_ItemNum();
 
-			ITEMNUM eDNum = m_pDSlotInventoryCom->Get_Item(0)->Get_ItemNum();
+			ITEMNUM eDNum = m_pInventoryCom->Get_Item(1)->Get_ItemNum();
 
 			CItem* pCraftItem = CCraftMgr::GetInstance()->Cook(eUNum, eDNum);
 
-			m_pRSlotInventoryCom->Add_Item(pCraftItem);
+			m_pSecondInventoryCom->Add_Item(pCraftItem);
 
-			m_pUSlotInventoryCom->Minus_Item(m_pUSlotInventoryCom->Get_Item(0)->Get_ItemNum(), 1);
+			m_pInventoryCom->Minus_Item(m_pInventoryCom->Get_Item(0)->Get_ItemNum(), 1);
 
-			m_pDSlotInventoryCom->Minus_Item(m_pDSlotInventoryCom->Get_Item(0)->Get_ItemNum(), 1);
+			m_pInventoryCom->Minus_Item(m_pInventoryCom->Get_Item(1)->Get_ItemNum(), 1);
 		}
 	}
-	else if (m_pUSlotInventoryCom->Check_Empty(0) && !m_pDSlotInventoryCom->Check_Empty(0) || m_pUSlotInventoryCom->Check_Empty(0) && !m_pDSlotInventoryCom->Check_Empty(0))
+	else if (m_pInventoryCom->Check_Empty(1) && !m_pInventoryCom->Check_Empty(0) || m_pInventoryCom->Check_Empty(0) && !m_pInventoryCom->Check_Empty(1))
 	{
 		m_fTime = 80.f;
 	}
@@ -259,9 +259,9 @@ void CUICookingPot::Render_GameObject()
 
 	m_pUSlotBufferCom->Render_Buffer();
 
-	if (!m_pUSlotInventoryCom->Check_Empty(0))
+	if (!m_pInventoryCom->Check_Empty(0))
 	{
-		CItem* pItem = m_pUSlotInventoryCom->Get_Item(0);
+		CItem* pItem = m_pInventoryCom->Get_Item(0);
 
 		_int iNum = pItem->Get_TextureNumber();
 
@@ -288,9 +288,9 @@ void CUICookingPot::Render_GameObject()
 
 	m_pDSlotBufferCom->Render_Buffer();
 
-	if (!m_pDSlotInventoryCom->Check_Empty(0))
+	if (!m_pInventoryCom->Check_Empty(1))
 	{
-		CItem* pItem = m_pDSlotInventoryCom->Get_Item(0);
+		CItem* pItem = m_pInventoryCom->Get_Item(1);
 
 		_int iNum = pItem->Get_TextureNumber();
 
@@ -320,7 +320,7 @@ void CUICookingPot::Render_GameObject()
 
 	m_pRSlotBufferCom->Render_Buffer();
 
-	if (!m_pUSlotInventoryCom->Check_Empty(0) && !m_pDSlotInventoryCom->Check_Empty(0))
+	if (!m_pInventoryCom->Check_Empty(0) && !m_pInventoryCom->Check_Empty(1))
 	{
 		m_pGraphicDev->SetScissorRect(&m_Rect);
 
@@ -333,9 +333,9 @@ void CUICookingPot::Render_GameObject()
 		m_pGraphicDev->SetRenderState(D3DRS_SCISSORTESTENABLE, FALSE);
 	}
 
-	if (!m_pRSlotInventoryCom->Check_Empty(0))
+	if (!m_pSecondInventoryCom->Check_Empty(0))
 	{
-		CItem* pItem = m_pRSlotInventoryCom->Get_Item(0);
+		CItem* pItem = m_pSecondInventoryCom->Get_Item(0);
 
 		_int iNum = pItem->Get_TextureNumber();
 
@@ -343,11 +343,11 @@ void CUICookingPot::Render_GameObject()
 
 		pItem->Get_Buffer()->Render_First();
 	}
-	else if (!m_pUSlotInventoryCom->Check_Empty(0) && !m_pDSlotInventoryCom->Check_Empty(0) && m_pRSlotInventoryCom->Check_Empty(0))
+	else if (!m_pInventoryCom->Check_Empty(0) && !m_pInventoryCom->Check_Empty(1) && m_pSecondInventoryCom->Check_Empty(0))
 	{
-		ITEMNUM eUNum = m_pUSlotInventoryCom->Get_Item(0)->Get_ItemNum();
+		ITEMNUM eUNum = m_pInventoryCom->Get_Item(0)->Get_ItemNum();
 
-		ITEMNUM eDNum = m_pDSlotInventoryCom->Get_Item(0)->Get_ItemNum();
+		ITEMNUM eDNum = m_pInventoryCom->Get_Item(1)->Get_ItemNum();
 
 		ITEMNUM eRNum = ITEM_END;
 
@@ -479,6 +479,15 @@ HRESULT CUICookingPot::Add_Component()
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_FoodTexture", pComponent });
 
+	pComponent = m_pInventoryCom = dynamic_cast<CInventory*>(Engine::Clone_Proto(L"Proto_CookingPotInventory"));
+	NULL_CHECK_RETURN(pComponent, E_FAIL);
+	m_mapComponent[ID_STATIC].insert({ L"Com_Inventory", pComponent });
+
+	pComponent = m_pSecondInventoryCom = dynamic_cast<CInventory*>(Engine::Clone_Proto(L"Proto_OneSlotInventory"));
+	NULL_CHECK_RETURN(pComponent, E_FAIL);
+	m_mapComponent[ID_STATIC].insert({ L"Com_SecondInventory", pComponent });
+
+	/*
 	pComponent = m_pUSlotInventoryCom = dynamic_cast<CInventory*>(Engine::Clone_Proto(L"Proto_FurnaceInventory"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_USlotInventory", pComponent });
@@ -490,6 +499,7 @@ HRESULT CUICookingPot::Add_Component()
 	pComponent = m_pRSlotInventoryCom = dynamic_cast<CInventory*>(Engine::Clone_Proto(L"Proto_FurnaceInventory"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_RSlotInventory", pComponent });
+	*/
 
 	return S_OK;
 }
