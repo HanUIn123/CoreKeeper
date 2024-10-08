@@ -513,6 +513,9 @@ void CPlayer::Mouse_Click(const _float& fTimeDelta)
 				case ITEM_MUSHROOM_MUSHROOM_FOOD:
 				case ITEM_LUNCH:
 				case ITEM_CHOCOBAR:
+				case ITEM_POTION_HP:
+				case ITEM_POTION_ATT:
+				case ITEM_POTION_DEF:
 					Eat(eHandedNum);
 					break;
 
@@ -1473,6 +1476,15 @@ void CPlayer::Eat(ITEMNUM eHandedNum)
 		break;
 	case ITEM_CHOCOBAR:
 		m_pStateCom->Set_HungerPlus(19);
+		break;
+	case ITEM_POTION_HP:
+		m_pStateCom->Set_Recover(200);
+		break;
+	case ITEM_POTION_ATT:
+		CBuffMgr::GetInstance()->Set_BuffStart(BUFF_ATT, 300);
+		break;
+	case ITEM_POTION_DEF:
+		CBuffMgr::GetInstance()->Set_BuffStart(BUFF_DEF, 300);
 		break;
 	}
 	m_pHandedItem->Set_Use(false);
