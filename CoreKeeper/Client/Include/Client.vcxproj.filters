@@ -502,6 +502,9 @@
     <Filter Include="02. GameObject\99.MapEditorScene">
       <UniqueIdentifier>{6edbe3c5-5cf7-4aa5-be52-c214f5f762cb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\08. Object\93.AzeosFeather">
+      <UniqueIdentifier>{0cd28877-9762-4d63-bb93-7fe3e2fd023e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -981,6 +984,9 @@
     <ClInclude Include="..\Header\Spotlite.h">
       <Filter>02. GameObject\08. Object\15. Spotlite</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\AzeosFeather.h">
+      <Filter>02. GameObject\08. Object\93.AzeosFeather</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1438,6 +1444,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\Spotlite.cpp">
       <Filter>02. GameObject\08. Object\15. Spotlite</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\AzeosFeather.cpp">
+      <Filter>02. GameObject\08. Object\93.AzeosFeather</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

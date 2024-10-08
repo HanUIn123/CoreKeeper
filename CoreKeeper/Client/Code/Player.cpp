@@ -851,7 +851,7 @@ void CPlayer::Set_Stop(_vec3* vDir1, _float fDirSpeed1, _vec3* vDir2, _float fDi
 	// 미래 중점 좌표 기준 인덱스 값
 	_int iIndex = _int(vCheckPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (vCheckPos.x + 0.5f * VTXITV);
 	CTerrain* pTerrain = dynamic_cast<CTerrain*>(Engine::Get_GameObject(L"Layer_Environment", L"Terrain"));
-	if (0 <= iIndex && iIndex < VTXCNTX * VTXCNTZ)
+	if (0 <= iIndex && iIndex < (VTXCNTX - 1) * (VTXCNTZ - 1))
 		if (pTerrain->Get_UnreachableByIndex(iIndex))
 			m_iSpeedWeight = 0;
 		else if(!m_bDash)
@@ -1182,7 +1182,7 @@ void CPlayer::PickAxe()
 
 		_int iIndex = _int(vCheckPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (vCheckPos.x + 0.5f * VTXITV);
 		CTerrain* pTerrain = dynamic_cast<CTerrain*>(Engine::Get_GameObject(L"Layer_Environment", L"Terrain"));
-		if (0 <= iIndex && iIndex < VTXCNTX * VTXCNTZ)
+		if (0 <= iIndex && iIndex < (VTXCNTX - 1) * (VTXCNTZ - 1))
 		{
 			if (pTerrain->Get_UnreachableByIndex(iIndex))
 			{
@@ -1356,9 +1356,6 @@ void CPlayer::Install(ITEMNUM eHandedNum)
 					pInstallObject = CAccessoryTableObject::Create(m_pGraphicDev, vInstallPos);
 					break;
 				case ITEM_MUSIC_TABLE:
-					if (m_pTerrain->Get_UnreachableByIndex(iIndex + 1))
-						return;
-					m_pTerrain->Set_Unreachable(iIndex + 1, true);
 					pInstallObject = CMusicTableObject::Create(m_pGraphicDev, vInstallPos);
 					break;
 				case ITEM_ANVIL:

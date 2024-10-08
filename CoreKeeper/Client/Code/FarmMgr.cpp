@@ -143,17 +143,20 @@ _bool CFarmMgr::Harvest_Plant(_int iIndex)
 void CFarmMgr::Watering_Plant(_int iIndex)
 {
     // 타일이 27이면 28로 변경
-    if (m_pTerrain->Get_TextureNumber(iIndex) == 27)
-        m_pTerrain->Set_TextureNumber(iIndex, 28);
+    if (0 <= iIndex && iIndex < (VTXCNTX - 1) * (VTXCNTZ - 1))
+    {
+        if (m_pTerrain->Get_TextureNumber(iIndex) == 27)
+            m_pTerrain->Set_TextureNumber(iIndex, 28);
     
-    wstring strBuffer = std::to_wstring(iIndex);
-    if (m_mapPlant.find(strBuffer) == m_mapPlant.end())
-        return;
-    // 작물이 씨앗 상태로(애니메이션 인덱스 0) 심어져 있을 경우 애니메이션 인덱스 1로 변경
-    CGameObject* pPlant = m_mapPlant.find(strBuffer)->second;
-    CAnimator* pPlantAnimator = dynamic_cast<CAnimator*>(pPlant->Get_Component(ID_STATIC, L"Com_Animator"));
-    if (pPlantAnimator->Get_MotionIndex() == 0)
-        pPlantAnimator->Set_CurState(IDLE, 1, 1, 20);
+        wstring strBuffer = std::to_wstring(iIndex);
+        if (m_mapPlant.find(strBuffer) == m_mapPlant.end())
+            return;
+        // 작물이 씨앗 상태로(애니메이션 인덱스 0) 심어져 있을 경우 애니메이션 인덱스 1로 변경
+        CGameObject* pPlant = m_mapPlant.find(strBuffer)->second;
+        CAnimator* pPlantAnimator = dynamic_cast<CAnimator*>(pPlant->Get_Component(ID_STATIC, L"Com_Animator"));
+        if (pPlantAnimator->Get_MotionIndex() == 0)
+            pPlantAnimator->Set_CurState(IDLE, 1, 1, 20);
+    }
 }
 
 _bool CFarmMgr::Get_GrownUp(_int iIndex)

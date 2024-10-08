@@ -1342,7 +1342,12 @@ HRESULT CStage::Load_ObjectData()
             NULL_CHECK_RETURN(pGameObject, E_FAIL);
             FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsObjectNameString[iIndex].c_str(), pGameObject), E_FAIL);
             break;
-
+        case AZEOS_FEATHER:
+            m_wsObjectNameString[iIndex] = L"AzeosFeather_" + std::to_wstring(iIndex);
+            pGameObject = CAzeosFeather::Create(m_pGraphicDev, _vec3(vObjectPos.x, vObjectPos.y, vObjectPos.z), iTypeNumber);
+            NULL_CHECK_RETURN(pGameObject, E_FAIL);
+            FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsObjectNameString[iIndex].c_str(), pGameObject), E_FAIL);
+            break;
 
         }
     }
