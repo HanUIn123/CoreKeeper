@@ -21,7 +21,7 @@ HRESULT CMiniCore::Ready_GameObject(_vec3 vPos)
 
     m_pTransformCom->Set_Pos(vPos.x, vPos.y, vPos.z);
 
-    m_pTransformCom->Set_Scale(5.0f, 0.0f, 5.0f);
+    m_pTransformCom->Set_Scale(4.0f, 0.0f, 4.0f);
 
     return S_OK;
 }
@@ -34,7 +34,7 @@ _int CMiniCore::Update_GameObject(const _float& fTimeDelta)
     {
         if (pCoreTransform)
         {
-            m_pTransformCom->Set_Scale(7.5f, 0.0f, 7.5f);
+            m_pTransformCom->Set_Scale(4.0f, 0.0f, 4.0f);
         }
     }
     else

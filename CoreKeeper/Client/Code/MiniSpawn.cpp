@@ -21,7 +21,7 @@ HRESULT CMiniSpawn::Ready_GameObject(_vec3 vPos)
 
     m_pTransformCom->Set_Pos(vPos.x, vPos.y, vPos.z);
 
-    m_pTransformCom->Set_Scale(5.0f, 0.0f, 5.0f);
+    m_pTransformCom->Set_Scale(3.5f, 0.0f, 3.5f);
 
     return S_OK;
 }
@@ -154,7 +154,7 @@ _bool CMiniSpawn::Piking_Teleport()
             return true;
         }
     }
-    m_pTransformCom->Set_Scale(5.0f, 0.0f, 5.0f);
+    m_pTransformCom->Set_Scale(3.5f, 0.0f, 3.5f);
 
     return false;
 }
