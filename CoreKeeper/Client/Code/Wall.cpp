@@ -299,11 +299,12 @@ void CWall::Update_Texture()
         else if ((wallMask & 0b01011100) == 0b01011100)
         {
             m_iCurImgNum = m_iWallImageNum + 6;
-            m_pTransformCom->Set_Angle(0.f, D3DXToRadian(90.f), 0.f);
+            m_pTransformCom->Set_Angle(0.f, D3DXToRadian(180.f), 0.f);
         }
         else if ((wallMask & 0b01110100) == 0b01110100)
         {
             m_iCurImgNum = m_iWallImageNum + 8;
+            m_pTransformCom->Set_Angle(0.f, D3DXToRadian(-90.f), 0.f);
         }
         else
         {
@@ -348,7 +349,7 @@ void CWall::Update_Texture()
         else if ((wallMask & 0b11000101) == 0b11000101)
         {
             m_iCurImgNum = m_iWallImageNum + 6;
-            m_pTransformCom->Set_Angle(0.f, D3DXToRadian(180.f), 0.f);
+            //m_pTransformCom->Set_Angle(0.f, D3DXToRadian(180.f), 0.f);
         }
         else
         {
