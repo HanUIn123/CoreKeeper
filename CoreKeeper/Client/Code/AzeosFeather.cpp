@@ -1,20 +1,19 @@
 #include "pch.h"
-#include "../Header/AzeosPoop.h"
+#include "../Header/AzeosFeather.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
 
-CAzeosPoop::CAzeosPoop(LPDIRECT3DDEVICE9 _pGraphicDev)
+CAzeosFeather::CAzeosFeather(LPDIRECT3DDEVICE9 _pGraphicDev)
     : CObject(_pGraphicDev)
-    , m_iPoopTypeIndex(0)
-{
-    m_eObjType = Engine::AZEOS_POOP;
-}
-
-CAzeosPoop::~CAzeosPoop()
+    , m_iFeatherTypeIndex(0)
 {
 }
 
-HRESULT CAzeosPoop::Ready_GameObject(_vec3 _vPos, _int _iTypeNum)
+CAzeosFeather::~CAzeosFeather()
+{
+}
+
+HRESULT CAzeosFeather::Ready_GameObject(_vec3 _vPos, _int _iTypeNum)
 {
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
@@ -22,7 +21,7 @@ HRESULT CAzeosPoop::Ready_GameObject(_vec3 _vPos, _int _iTypeNum)
     m_vPoopPos.y = 0.1f;
     m_vPoopPos.z = _vPos.z;
 
-    m_iPoopTypeIndex = _iTypeNum;
+    m_iFeatherTypeIndex = _iTypeNum;
 
     m_pTransformCom->Set_Pos(_vPos.x, 0.1f, _vPos.z);
 
@@ -31,25 +30,25 @@ HRESULT CAzeosPoop::Ready_GameObject(_vec3 _vPos, _int _iTypeNum)
     return S_OK;
 }
 
-_int CAzeosPoop::Update_GameObject(const _float& fTimeDelta)
+_int CAzeosFeather::Update_GameObject(const _float& fTimeDelta)
 {
     Add_RenderGroup(RENDER_ALPHA, this);
 
     return Engine::CGameObject::Update_GameObject(fTimeDelta);
 }
 
-void CAzeosPoop::LateUpdate_GameObject()
+void CAzeosFeather::LateUpdate_GameObject()
 {
     Engine::CGameObject::LateUpdate_GameObject();
 }
 
-void CAzeosPoop::Render_GameObject()
+void CAzeosFeather::Render_GameObject()
 {
     m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
 
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
-    m_pTextureCom->Set_Texture(m_iPoopTypeIndex);
+    m_pTextureCom->Set_Texture(m_iFeatherTypeIndex);
 
     m_pBufferCom->Render_Buffer();
 
@@ -58,15 +57,15 @@ void CAzeosPoop::Render_GameObject()
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
-HRESULT CAzeosPoop::Add_Component()
+HRESULT CAzeosFeather::Add_Component()
 {
     CComponent* pComponent = NULL;
 
-    pComponent = m_pBufferCom = dynamic_cast<CObjectTex*>(Engine::Clone_Proto(L"Proto_AzeosPoopTex"));
+    pComponent = m_pBufferCom = dynamic_cast<CObjectTex*>(Engine::Clone_Proto(L"Proto_AzeosFeatherTex"));
     NULL_CHECK_RETURN(pComponent, E_FAIL);
     m_mapComponent[ID_STATIC].insert({ L"Com_Buffer", pComponent });
 
-    pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_AzeosPoopTexture"));
+    pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_AzeosFeatherTexture"));
     NULL_CHECK_RETURN(pComponent, E_FAIL);
     m_mapComponent[ID_STATIC].insert({ L"Com_Texture", pComponent });
 
@@ -81,21 +80,21 @@ HRESULT CAzeosPoop::Add_Component()
     return S_OK;
 }
 
-CAzeosPoop* CAzeosPoop::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 _vPos, _int _iTypeNum)
+CAzeosFeather* CAzeosFeather::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 _vPos, _int _iTypeNum)
 {
-    CAzeosPoop* pAzeosPoop = new CAzeosPoop(pGraphicDev);
+    CAzeosFeather* pAzeosFeather = new CAzeosFeather(pGraphicDev);
 
-    if (FAILED(pAzeosPoop->Ready_GameObject(_vPos, _iTypeNum)))
+    if (FAILED(pAzeosFeather->Ready_GameObject(_vPos, _iTypeNum)))
     {
-        Safe_Release(pAzeosPoop);
-        MSG_BOX("pAzeosPoop Create Failed");
+        Safe_Release(pAzeosFeather);
+        MSG_BOX("pAzeosFeather Create Failed");
         return nullptr;
     }
 
-    return pAzeosPoop;
+    return pAzeosFeather;
 }
 
-void CAzeosPoop::Free()
+void CAzeosFeather::Free()
 {
     Engine::CGameObject::Free();
 }

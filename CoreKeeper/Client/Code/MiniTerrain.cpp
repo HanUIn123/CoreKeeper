@@ -24,6 +24,17 @@ HRESULT CMiniTerrain::Ready_GameObject()
 
 _int CMiniTerrain::Update_GameObject(const _float& fTimeDelta)
 {
+    Add_RenderGroup(RENDER_MAP, this);
+    return Engine::CGameObject::Update_GameObject(fTimeDelta);
+}
+
+void CMiniTerrain::LateUpdate_GameObject()
+{
+    Engine::CGameObject::LateUpdate_GameObject();
+}
+
+void CMiniTerrain::Render_GameObject()
+{
     CTransform* pPlayerTransform = dynamic_cast<CTransform*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Transform"));
 
     if (pPlayerTransform)
@@ -37,18 +48,6 @@ _int CMiniTerrain::Update_GameObject(const _float& fTimeDelta)
         Illuminate_TerrainIndex(m_iMiniTerrainIndex);
     }
 
-
-    Add_RenderGroup(RENDER_MAP, this);
-    return Engine::CGameObject::Update_GameObject(fTimeDelta);
-}
-
-void CMiniTerrain::LateUpdate_GameObject()
-{
-    Engine::CGameObject::LateUpdate_GameObject();
-}
-
-void CMiniTerrain::Render_GameObject()
-{
     m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
     m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());

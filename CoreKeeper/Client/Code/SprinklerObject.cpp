@@ -22,7 +22,7 @@ HRESULT CSprinklerObject::Ready_GameObject(_vec3 vPos)
 
 	m_pTransformCom->Set_Angle(D3DXToRadian(90.f), 0.f, 0.f);
 
-	m_pAnimatorCom->Set_CurState(IDLE, 0, 7, 3);
+	m_pAnimatorCom->Set_CurState(IDLE, 0, 7, 10);
 
 	return S_OK;
 }
@@ -32,6 +32,7 @@ _int CSprinklerObject::Update_GameObject(const _float& fTimeDelta)
 	m_pAnimatorCom->Update_Animation();
 
 	Add_RenderGroup(RENDER_ALPHA, this);
+	Sprinkler_Watering();
 
 	return Engine::CGameObject::Update_GameObject(fTimeDelta);
 }
@@ -85,11 +86,44 @@ void CSprinklerObject::Sprinkler_Watering()
 {
 	_vec3 vPos;
 	m_pTransformCom->Get_Info(INFO_POS, &vPos);
-	
-	// 애니메이션 인덱스에 따라 다른 방향의 인덱스에 물주기
-
 	_int iIndex = _int(vPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (vPos.x + 0.5f * VTXITV);
-	CFarmMgr::GetInstance()->Watering_Plant(iIndex);
+
+	if (m_pAnimatorCom->Get_MotionIndex() == 0)
+	{
+		CFarmMgr::GetInstance()->Watering_Plant(iIndex + (VTXCNTX - 1));
+		CFarmMgr::GetInstance()->Watering_Plant(iIndex + (VTXCNTX - 1) * 2);
+		CFarmMgr::GetInstance()->Watering_Plant(iIndex + (VTXCNTX - 1) * 2 + 1);
+		CFarmMgr::GetInstance()->Watering_Plant(iIndex - (VTXCNTX - 1));
+		CFarmMgr::GetInstance()->Watering_Plant(iIndex - (VTXCNTX - 1) * 2);
+		CFarmMgr::GetInstance()->Watering_Plant(iIndex - (VTXCNTX - 1) * 2 - 1);
+	}
+	else if (m_pAnimatorCom->Get_MotionIndex() == 2)
+	{
+		CFarmMgr::GetInstance()->Watering_Plant(iIndex + (VTXCNTX - 1) + 1);
+		CFarmMgr::GetInstance()->Watering_Plant(iIndex + (VTXCNTX - 1) + 2);
+		CFarmMgr::GetInstance()->Watering_Plant(iIndex + (VTXCNTX - 1) * 2 + 2);
+		CFarmMgr::GetInstance()->Watering_Plant(iIndex - (VTXCNTX - 1) - 1);
+		CFarmMgr::GetInstance()->Watering_Plant(iIndex - (VTXCNTX - 1) - 2);
+		CFarmMgr::GetInstance()->Watering_Plant(iIndex - (VTXCNTX - 1) * 2 - 2);
+	}
+	else if (m_pAnimatorCom->Get_MotionIndex() == 4)
+	{
+		CFarmMgr::GetInstance()->Watering_Plant(iIndex + 1);
+		CFarmMgr::GetInstance()->Watering_Plant(iIndex + 2);
+		CFarmMgr::GetInstance()->Watering_Plant(iIndex - (VTXCNTX - 1) + 2);
+		CFarmMgr::GetInstance()->Watering_Plant(iIndex - 1);
+		CFarmMgr::GetInstance()->Watering_Plant(iIndex - 2);
+		CFarmMgr::GetInstance()->Watering_Plant(iIndex + (VTXCNTX - 1) - 2);
+	}
+	else if (m_pAnimatorCom->Get_MotionIndex() == 6)
+	{
+		CFarmMgr::GetInstance()->Watering_Plant(iIndex - (VTXCNTX - 1) + 1);
+		CFarmMgr::GetInstance()->Watering_Plant(iIndex - (VTXCNTX - 1) * 2 + 1);
+		CFarmMgr::GetInstance()->Watering_Plant(iIndex - (VTXCNTX - 1) * 2 + 2);
+		CFarmMgr::GetInstance()->Watering_Plant(iIndex + (VTXCNTX - 1) - 1);
+		CFarmMgr::GetInstance()->Watering_Plant(iIndex + (VTXCNTX - 1) * 2 - 1);
+		CFarmMgr::GetInstance()->Watering_Plant(iIndex + (VTXCNTX - 1) * 2 - 2);
+	}
 }
 
 CSprinklerObject* CSprinklerObject::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
