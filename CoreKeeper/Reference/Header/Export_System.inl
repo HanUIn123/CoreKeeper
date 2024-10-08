@@ -53,11 +53,12 @@ inline void				Render_Font(const _tchar* pFontTag,
 
 inline void				Render_Font_Custom(const _tchar* pFontTag,
 	const _tchar* pString,
-	const _vec2* pPos,
+	const _vec2* pLTPos,
+	const _vec2* pRBPos,
 	DWORD format,
 	D3DXCOLOR Color)
 {
-	CFontMgr::GetInstance()->Render_Font_Custom(pFontTag, pString, pPos, format, Color);
+	CFontMgr::GetInstance()->Render_Font_Custom(pFontTag, pString, pLTPos, pRBPos, format, Color);
 }
 
 _byte	Get_DIKeyState(_ubyte byKeyID)

@@ -28,6 +28,9 @@ HRESULT CStatue::Ready_GameObject(_vec3 vPos, int iImgNum)
 
 _int CStatue::Update_GameObject(const _float& fTimeDelta)
 {
+	CCore* pCore = dynamic_cast<CCore*>(Engine::Get_GameObject(L"Layer_Environment", L"Core"));
+	m_bActive = pCore->Get_ActiveCore(m_iTextureNum / 2);
+
 	if (Check_Interaction())
 	{
 		Interaction();
@@ -73,7 +76,10 @@ void CStatue::Render_GameObject()
 		FAILED_CHECK_RETURN(Setup_Material(), );
 	}
 
-	m_pTextureCom->Set_Texture(m_iTextureNum);
+	if (m_bActive)
+		m_pTextureCom->Set_Texture(m_iTextureNum + 1);
+	else
+		m_pTextureCom->Set_Texture(m_iTextureNum);
 
 	m_pBufferCom->Render_Buffer();
 

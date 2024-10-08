@@ -5,7 +5,7 @@
 #include "..\Header\Core.h"
 
 CBossSpawnPoint::CBossSpawnPoint(LPDIRECT3DDEVICE9 pGraphicDev)
-	: CObject(pGraphicDev), m_iTextureNum(0), m_iStatueNum(0), m_bActive(true)
+	: CObject(pGraphicDev), m_iTextureNum(0)
 {
 }
 
@@ -13,12 +13,9 @@ CBossSpawnPoint::~CBossSpawnPoint()
 {
 }
 
-HRESULT CBossSpawnPoint::Ready_GameObject(int _iStatueNum, int _iTextureNum, _vec3 vPos)
+HRESULT CBossSpawnPoint::Ready_GameObject(_vec3 vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
-
-	m_iStatueNum = _iStatueNum;
-	m_iTextureNum = _iTextureNum;
 
 	m_pTransformCom->Set_Pos(vPos.x, vPos.y, vPos.z);
 
@@ -27,9 +24,6 @@ HRESULT CBossSpawnPoint::Ready_GameObject(int _iStatueNum, int _iTextureNum, _ve
 
 _int CBossSpawnPoint::Update_GameObject(const _float& fTimeDelta)
 {
-	CCore* pCore = dynamic_cast<CCore*>(Engine::Get_GameObject(L"Layer_Environment", L"Core"));
-	m_bActive = pCore->Get_ActiveCore(m_iStatueNum);
-
 	Add_RenderGroup(RENDER_ALPHA, this);
 
 	return Engine::CGameObject::Update_GameObject(fTimeDelta);
@@ -96,11 +90,11 @@ HRESULT CBossSpawnPoint::Add_Component()
 	return S_OK;
 }
 
-CBossSpawnPoint* CBossSpawnPoint::Create(LPDIRECT3DDEVICE9 pGraphicDev, int _iStatueNum, int _iTextureNum, _vec3 vPos)
+CBossSpawnPoint* CBossSpawnPoint::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 {
 	CBossSpawnPoint* pCore = new CBossSpawnPoint(pGraphicDev);
 
-	if (FAILED(pCore->Ready_GameObject(_iStatueNum, _iTextureNum, vPos)))
+	if (FAILED(pCore->Ready_GameObject(vPos)))
 	{
 		Safe_Release(pCore);
 		MSG_BOX("pCore Create Failed");

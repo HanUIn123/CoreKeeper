@@ -36,12 +36,12 @@ void CFontMgr::Render_Font(const _tchar * pFontTag, const _tchar * pString, cons
 	pMyFont->Render_Font(pString, pPos, Color);
 }
 
-void CFontMgr::Render_Font_Custom(const _tchar* pFontTag, const _tchar* pString, const _vec2* pPos, DWORD format, D3DXCOLOR Color)
+void CFontMgr::Render_Font_Custom(const _tchar* pFontTag, const _tchar* pString, const _vec2* pLTPos, const _vec2* pRBPos, DWORD format, D3DXCOLOR Color)
 {
 	CMyFont* pMyFont = Find_Font(pFontTag);
 	NULL_CHECK(pMyFont);
 
-	pMyFont->Render_Font_Custom(pString, pPos, format, Color);
+	pMyFont->Render_Font_Custom(pString, pLTPos, pRBPos, format, Color);
 }
 
 CMyFont * CFontMgr::Find_Font(const _tchar * pFontTag)
