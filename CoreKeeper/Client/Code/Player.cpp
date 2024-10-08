@@ -475,10 +475,13 @@ void CPlayer::Mouse_Click(const _float& fTimeDelta)
 					Shoot_Equipment();
 					break;
 				case ITEM_STAFF:
-					m_eState = SHOOT;
-					m_bShoot = true;
-					Shoot_Equipment();
-					m_pStateCom->Set_UseMP(30);
+					if (m_pStateCom->Get_Stat()->iMp >= 20)
+					{
+						m_eState = SHOOT;
+						m_bShoot = true;
+						Shoot_Equipment();
+						m_pStateCom->Set_UseMP(20);
+					}
 					break;
 
 					// ณ๓ป็ ฐüทร
@@ -816,6 +819,10 @@ void CPlayer::Set_ImmuneByToggle()
 
 	if (Engine::Key_Down(DIK_F2))
 		dynamic_cast<CDynamicCamera*>(Engine::Get_GameObject(L"Layer_Environment", L"DynamicCamera"))->Set_ShakeInfo(3.f, 5.f);
+	if (Engine::Key_Down(DIK_F3))
+		CBuffMgr::GetInstance()->Set_BuffStart(DEBUFF_FIRE, 5.f);
+	if (Engine::Key_Down(DIK_F4))
+		CBuffMgr::GetInstance()->Set_BuffStart(DEBUFF_SLOW, 5.f);
 }
 
 
@@ -1997,7 +2004,7 @@ void CPlayer::Set_Buff(const _float& fTimeDelta)
 			switch (i)
 			{
 			case BUFF_SPEED:
-				Set_Speed(m_fNormalSpeed * 1.2f);
+				Set_Speed(m_fNormalSpeed * 1.4f);
 				break;
 			case BUFF_HP:
 				m_tBuffStat.iMaxHp = m_pStateCom->Get_Stat()->iMaxHp * 0.05f;
@@ -2017,14 +2024,15 @@ void CPlayer::Set_Buff(const _float& fTimeDelta)
 				if (m_fFireTickTime >= 1.f)
 				{
 					m_fFireTickTime = 0.f;
-					m_pStateCom->Set_Damaged(10);
+					if(!m_bImmune)
+						m_pStateCom->Set_Damaged(10);
 				}
 				break;
 			case DEBUFF_SLOW:
 				if (m_arrBuffState[BUFF_SPEED])
 					Set_Speed(m_fNormalSpeed);
 				else
-					Set_Speed(m_fNormalSpeed * 0.8f);
+					Set_Speed(m_fNormalSpeed * 0.6f);
 				break;
 			case DEBUFF_STUN:
 				if (!m_bDash)

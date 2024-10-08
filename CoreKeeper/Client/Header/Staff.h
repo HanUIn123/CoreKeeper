@@ -34,6 +34,8 @@ private:
 	CTransform* m_pTransformMagic;
 	_bool			m_bShot;
 
+	static			_int		m_iMagicNum;
+
 public:
 	static CStaff* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos = { 0.f, 0.f, 0.f });
 
