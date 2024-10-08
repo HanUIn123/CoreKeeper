@@ -37,7 +37,7 @@ _int CMiniSpawn::Update_GameObject(const _float& fTimeDelta)
 
 void CMiniSpawn::LateUpdate_GameObject()
 {
-    Piking_Teleport();
+   // Piking_Teleport();
 
     Engine::CGameObject::LateUpdate_GameObject();
 }
@@ -87,6 +87,9 @@ _bool CMiniSpawn::Piking_Teleport()
     _vec3 vTeleportPos;
     m_pTransformCom->Get_Info(INFO_POS, &vTeleportPos);
 
+    _vec3 vPlayerPos;
+    pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
+
     POINT ptMouse;
     GetCursorPos(&ptMouse);
 
@@ -96,28 +99,28 @@ _bool CMiniSpawn::Piking_Teleport()
     ptMouse.x -= windowRect.left;
     ptMouse.y -= windowRect.top;
 
-    _vec2 spawnInMapnPos[3] =
+    _vec2 spawnInMapPos[3] =
     {
-       { 533, 425 },
-       { 649, 570 },
-       { 839, 381 }
+       { 817, 419 },
+       { 678, 558 },
+       { 547, 289 }
     };
 
-    _vec3 spawnInGamedPos[3] =
+    _vec3 spawnInGamePos[3] =
     {
-        { VTXCNTX / 2 + 65.f, 0.1f, 21.5f + 80.f },
-        { VTXCNTX / 2, 0.1f, 17.f },
-        { VTXCNTX / 2 - 40.f, 0.1f, 21.5f + 60.f }
+        { 51.0f, 0.1f, 60.0f},
+        {  VTXCNTX / 2, 0.1f, 7.f + 5.f },
+        {14.0f, 0.1f, 105.0f}
     };
 
     for (int i = 0; i < 3; ++i)
     {
-        if (abs(ptMouse.x - spawnInMapnPos[i].x) <= 5 && abs(ptMouse.y - spawnInMapnPos[i].y) <= 5)
+        if (abs(ptMouse.x - spawnInMapPos[i].x) <= 5 && abs(ptMouse.y - spawnInMapPos[i].y) <= 5)
         {
             if (CRenderer::GetInstance()->Get_ExpandMap())
-                m_pTransformCom->Set_Scale(10.0f, 0.0f, 10.0f);
-            else
                 m_pTransformCom->Set_Scale(5.0f, 0.0f, 5.0f);
+            else
+                m_pTransformCom->Set_Scale(3.5f, 0.0f, 3.5f);
 
             if (Engine::Get_DIMouseState(DIM_RB) & 0x80 && !bClicked)
             {
@@ -126,21 +129,21 @@ _bool CMiniSpawn::Piking_Teleport()
 
                 if (i == 0)
                 {
-                    matWorld._41 = spawnInGamedPos[2].x;
-                    matWorld._42 = spawnInGamedPos[2].y;
-                    matWorld._43 = spawnInGamedPos[2].z;
+                    matWorld._41 = spawnInGamePos[0].x;
+                    matWorld._42 = spawnInGamePos[0].y;
+                    matWorld._43 = spawnInGamePos[0].z;
                 }
-                else if (i == 1)
+                else if(i == 1)
                 {
-                    matWorld._41 = spawnInGamedPos[1].x;
-                    matWorld._42 = spawnInGamedPos[1].y;
-                    matWorld._43 = spawnInGamedPos[1].z;
+                    matWorld._41 = spawnInGamePos[1].x;
+                    matWorld._42 = spawnInGamePos[1].y;
+                    matWorld._43 = spawnInGamePos[1].z;
                 }
                 else
                 {
-                    matWorld._41 = spawnInGamedPos[0].x;
-                    matWorld._42 = spawnInGamedPos[0].y;
-                    matWorld._43 = spawnInGamedPos[0].z;
+                    matWorld._41 = spawnInGamePos[2].x;
+                    matWorld._42 = spawnInGamePos[2].y;
+                    matWorld._43 = spawnInGamePos[2].z;
                 }
 
                 pPlayerTransform->Set_WorldMatrix(&matWorld);
@@ -174,10 +177,13 @@ _bool CMiniSpawn::Check_PlayerPos(_bool _bRevealed)
         _vec3 vResult = vPlayerPos - vSpawnPos;
         _float fDistance = D3DXVec3Length(&(vResult));
 
-        if (fDistance <= 10.0f)
+        if (fDistance <= 3.0f)
         {
             m_bRevealed = true;
+            Piking_Teleport();
         }
+        else
+            m_pTransformCom->Set_Scale(3.5f, 0.0f, 3.5f);
     }
 
     return m_bRevealed;

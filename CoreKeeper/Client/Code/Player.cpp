@@ -11,7 +11,7 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 {
 	m_eDir = DIRECTION_END;
 	m_eState = STATE_END;
-	m_fSpeed = 5.f;
+	m_fSpeed = 35.f;
 	m_fDiagSpeed = sqrt(pow(m_fSpeed, 2) / 2);
 	m_fNormalSpeed = m_fSpeed;
 
