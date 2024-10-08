@@ -3,6 +3,7 @@
 #include "Export_System.h"
 #include "Export_Utility.h"
 #include "..\Header\Player.h"
+#include "../Header/BuffMgr.h"
 
 CFire::CFire(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CObject(pGraphicDev), m_bCollision(false), m_eState(IDLE), m_fBurnTime(0.f), m_bBurn(false), m_bActive(true)
@@ -102,6 +103,7 @@ void CFire::Render_GameObject()
 void CFire::Interaction()
 {
 	// 플레이어쉒 화상입히기!!!!
+	CBuffMgr::GetInstance()->Set_BuffStart(DEBUFF_FIRE, 5.f);
 }
 
 void CFire::Set_Burn()

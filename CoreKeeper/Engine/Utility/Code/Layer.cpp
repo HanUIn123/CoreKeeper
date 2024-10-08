@@ -48,6 +48,7 @@ HRESULT CLayer::Delete_GameObject(const _tchar* pObjTag, CGameObject* pGameObjec
 
 	CRenderer::GetInstance()->Delete_Renderer(RENDER_PRIORITY, iter->second);
 	CRenderer::GetInstance()->Delete_Renderer(RENDER_ALPHA, iter->second);
+	CRenderer::GetInstance()->Delete_Renderer(RENDER_WALL, iter->second);
 
 	iter->second->Free_Component();
 	Safe_Delete(iter->second);

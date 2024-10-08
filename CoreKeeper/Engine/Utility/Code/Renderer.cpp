@@ -53,6 +53,7 @@ void CRenderer::Render_GameObject(LPDIRECT3DDEVICE9 & pGraphicDev)
 	Render_Priority(pGraphicDev);
 	Render_NonAlpha(pGraphicDev);
 	Render_Alpha(pGraphicDev);
+	Render_Wall(pGraphicDev);
 
 	// ¹Ì´Ï¸Ê Ãâ·Â
 	if (pCamera)
@@ -170,6 +171,12 @@ void CRenderer::Render_Alpha(LPDIRECT3DDEVICE9 & pGraphicDev)
 
 
 	pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+}
+
+void CRenderer::Render_Wall(LPDIRECT3DDEVICE9& pGraphicDev)
+{
+	for (auto& pGameObject : m_RenderGroup[RENDER_WALL])
+		pGameObject->Render_GameObject();
 }
 
 
