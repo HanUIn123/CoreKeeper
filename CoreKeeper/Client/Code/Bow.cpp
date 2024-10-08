@@ -4,6 +4,8 @@
 #include "Export_Utility.h"
 #include "..\Header\Arrow.h"
 
+_int	CBow::m_iArrowNum = 0;
+
 CBow::CBow(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CItem(pGraphicDev)
 {
@@ -44,7 +46,15 @@ _int CBow::Update_GameObject(const _float& fTimeDelta)
 {
 	if (!m_pArrow)
 	{
-		m_pArrow = dynamic_cast<CArrow*>(Get_GameObject(L"Layer_GameLogic", L"Arrow"));
+		CScene* pScene = Engine::Get_Scene();
+		_vec3 vPos;
+		m_pTransformCom->Get_Info(INFO_POS, &vPos);
+		vPos.y += 2.f;
+		CGameObject* pProjectile = CArrow::Create(m_pGraphicDev);
+		NULL_CHECK_RETURN(pProjectile, 0);
+		m_pArrow = dynamic_cast<CArrow*>(pProjectile);
+		m_strArrow = L"Arrow_" + std::to_wstring(m_iArrowNum++);
+		FAILED_CHECK_RETURN(pScene->Create_GameObject(L"Layer_GameLogic", pProjectile, m_strArrow.c_str()), 0);
 		m_pTransformArrow = dynamic_cast<CTransform*>(m_pArrow->Get_Component(ID_DYNAMIC, L"Com_Transform"));
 	}
 	else

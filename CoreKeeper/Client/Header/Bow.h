@@ -24,6 +24,7 @@ private:
 	CTransform*		m_pTransformArrow;
 	_bool			m_bShot;
 
+	static			_int		m_iArrowNum;
 public:
 	static CBow* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos = { 0.f, 0.f, 0.f });
 
