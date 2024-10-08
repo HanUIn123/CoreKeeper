@@ -7,7 +7,7 @@
 CBow::CBow(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CItem(pGraphicDev)
 {
-	m_tStat.iAttack = 10;
+	m_tStat.iAttack = 20;
 	m_eItemNum = ITEM_BOW;
 	m_bShot = false;
 	m_pArrow = nullptr;

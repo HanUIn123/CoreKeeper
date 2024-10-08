@@ -27,23 +27,27 @@ public:
 		m_tStat.iAttack = pStat->iAttack;
 		m_tStat.iDefense = pStat->iDefense;
 		m_tStat.iMaxHp = pStat->iMaxHp;
+		m_tStat.iMaxMp = pStat->iMaxMp;
 	}
 	void				Set_EquippedStat(STAT* pStat) 
 	{ 
 		m_tStat.iAttack += pStat->iAttack;
 		m_tStat.iDefense += pStat->iDefense;
 		m_tStat.iMaxHp += pStat->iMaxHp;
+		m_tStat.iMaxMp += pStat->iMaxMp;
 	}
 	void				Set_BuffStat(STAT* pStat)
 	{
 		m_tStat.iAttack += pStat->iAttack;
 		m_tStat.iDefense += pStat->iDefense;
 		m_tStat.iMaxHp += pStat->iMaxHp;
+		m_tStat.iMaxMp += pStat->iMaxMp;
 	}
 
 	void				Set_MaxHP(int iMaxHp) { m_tStat.iMaxHp = iMaxHp; }
 	void				Set_Damaged(int iDamage) { m_tStat.iHp -= iDamage; }
 	void				Set_UseMP(int iMP) { m_tStat.iMp -= iMP; }
+	void				Set_MP() { m_tStat.iMp = m_tStat.iMaxMp; }
 	void				Set_Recover(int iHeal) { m_tStat.iHp += iHeal; if (m_tStat.iHp > m_tStat.iMaxHp) m_tStat.iHp = m_tStat.iMaxHp; }
 	void				Set_Dead() { m_bDead = true; }
 	void				Set_Revive() { m_tStat.iHp = m_tStat.iMaxHp; m_bDead = false; }
