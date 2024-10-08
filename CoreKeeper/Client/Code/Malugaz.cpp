@@ -44,8 +44,14 @@ HRESULT CMalugaz::Ready_GameObject(_vec3 vPos)
     m_pTransformCom->Set_Scale(3.2f, 3.2f, 3.2f);
     m_pColliderCom->Set_Offset(_vec3(-0.25f, -0.5f, 0));
     m_pStateCom->Set_Stat(1000, 0, 25, 0);
-    //m_vecDropItem.push_back(ITEM_STAFF);
-    //m_vecDropItem.push_back(ITEM_WOOD);
+    m_vecDropItem.push_back(ITEM_STAFF);
+    m_vecDropItem.push_back(ITEM_HELMET);
+    m_vecDropItem.push_back(ITEM_CHEST);
+    m_vecDropItem.push_back(ITEM_LEG); // SPECIAL
+    m_vecDropItem.push_back(ITEM_ASSISTANCE); // BOOK
+    m_vecDropItem.push_back(ITEM_NECKLACE); // SPECIAL
+    m_vecDropItem.push_back(ITEM_RING); // SPECIAL
+
     Set_Speed(6.0f);
 
     m_pHitParticleCom->init(L"../Bin/Resource/Texture/Effect/Hit_%d.png", 5, 2.0f);

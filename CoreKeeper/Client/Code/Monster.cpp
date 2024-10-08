@@ -268,29 +268,21 @@ void CMonster::Drop_Item()
 	switch (eItem)
 	{
 	case ITEM_MUSHROOM:
-		pGameObject = CMucus::Create(m_pGraphicDev, vPos);
+		pGameObject = CIngredient::Create(m_pGraphicDev, ITEM_MUSHROOM, vPos);
 		NULL_CHECK(pGameObject);
-		m_vecItemName.push_back(L"Monster_Created_Mucus" + std::to_wstring(m_iTagNumber++));
+		m_vecItemName.push_back(L"Monster_Created_Mushroom" + std::to_wstring(m_iTagNumber++));
 		break;
 	case ITEM_BERRY_SEED:
-		pGameObject = CMucus::Create(m_pGraphicDev, vPos);
-		NULL_CHECK(pGameObject);
-		m_vecItemName.push_back(L"Monster_Created_Mucus" + std::to_wstring(m_iTagNumber++));
-		break;
 	case ITEM_PEPPER_SEED:
-		pGameObject = CMucus::Create(m_pGraphicDev, vPos);
-		NULL_CHECK(pGameObject);
-		m_vecItemName.push_back(L"Monster_Created_Mucus" + std::to_wstring(m_iTagNumber++));
-		break;
 	case ITEM_CARROT_SEED:
-		pGameObject = CMucus::Create(m_pGraphicDev, vPos);
+		pGameObject = CSeed::Create(m_pGraphicDev, eItem, vPos);
 		NULL_CHECK(pGameObject);
-		m_vecItemName.push_back(L"Monster_Created_Mucus" + std::to_wstring(m_iTagNumber++));
+		m_vecItemName.push_back(L"Monster_Created_Ingredients" + std::to_wstring(m_iTagNumber++));
 		break;
 	case ITEM_SCARLET:
-		pGameObject = CMucus::Create(m_pGraphicDev, vPos);
+		pGameObject = COre::Create(m_pGraphicDev, MATERIAL_SCARLET, vPos);
 		NULL_CHECK(pGameObject);
-		m_vecItemName.push_back(L"Monster_Created_Mucus" + std::to_wstring(m_iTagNumber++));
+		m_vecItemName.push_back(L"Monster_Created_Ore" + std::to_wstring(m_iTagNumber++));
 		break;
 	case ITEM_WOOD:
 		pGameObject = CWood::Create(m_pGraphicDev, vPos);
@@ -303,14 +295,34 @@ void CMonster::Drop_Item()
 		m_vecItemName.push_back(L"Monster_Created_Mucus" + std::to_wstring(m_iTagNumber++));
 		break;
 	case ITEM_SKULL_PIECE:
-		pGameObject = CMucus::Create(m_pGraphicDev, vPos);
-		NULL_CHECK(pGameObject);
-		m_vecItemName.push_back(L"Monster_Created_Mucus" + std::to_wstring(m_iTagNumber++));
-		break;
 	case ITEM_FEATHER_PIECE:
-		pGameObject = CMucus::Create(m_pGraphicDev, vPos);
+		pGameObject = CPiece::Create(m_pGraphicDev, eItem, vPos);
 		NULL_CHECK(pGameObject);
-		m_vecItemName.push_back(L"Monster_Created_Mucus" + std::to_wstring(m_iTagNumber++));
+		m_vecItemName.push_back(L"Monster_Created_Piece" + std::to_wstring(m_iTagNumber++));
+		break;
+	case ITEM_ASSISTANCE:
+		if (m_eType == MON_MALUGAZ)
+		{
+			pGameObject = CAssistance::Create(m_pGraphicDev, ASSISTANCE_BOOK, vPos);
+			NULL_CHECK(pGameObject);
+			m_vecItemName.push_back(L"Monster_Created_Book" + std::to_wstring(m_iTagNumber++));
+		}
+		else if(m_eType == MON_AZEOS)
+		{
+			pGameObject = CAssistance::Create(m_pGraphicDev, ASSISTANCE_AZEOS_FEATHER, vPos);
+			NULL_CHECK(pGameObject);
+			m_vecItemName.push_back(L"Monster_Created_Feather" + std::to_wstring(m_iTagNumber++));
+		}
+		break;
+	case ITEM_NECKLACE:
+		pGameObject = CNecklace::Create(m_pGraphicDev, MATERIAL_SPECIAL, vPos);
+		NULL_CHECK(pGameObject);
+		m_vecItemName.push_back(L"Monster_Created_Necklace" + std::to_wstring(m_iTagNumber++));
+		break;
+	case ITEM_RING:
+		pGameObject = CRing::Create(m_pGraphicDev, MATERIAL_SPECIAL, vPos);
+		NULL_CHECK(pGameObject);
+		m_vecItemName.push_back(L"Monster_Created_Ring" + std::to_wstring(m_iTagNumber++));
 		break;
 	default:
 		break;
@@ -425,6 +437,7 @@ void CMonster::Set_RespawnTimer(const _float& fTimeDelta)
 				m_pTransformCom->Set_Pos(m_vRespawnPoint.x, m_vRespawnPoint.y, m_vRespawnPoint.z);
 				m_pStateCom->Set_Revive();
 				m_bStopDraw = false;
+				m_eState = IDLE;
 			}
 		}
 	}
