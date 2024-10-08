@@ -42,7 +42,7 @@ _int CMiniObject::Update_GameObject(const _float& fTimeDelta)
             _vec3 vPlayerPos;
             pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
 
-            m_pTransformCom->Set_Scale(5.0f, 1.0f, 5.0f);
+            m_pTransformCom->Set_Scale(3.5f, 1.0f, 3.5f);
 
             m_pTransformCom->Set_Pos((vPlayerPos.x),0,((vPlayerPos.z)));
         }
