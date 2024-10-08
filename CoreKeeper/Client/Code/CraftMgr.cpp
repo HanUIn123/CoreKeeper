@@ -337,10 +337,11 @@ void CCraftMgr::Set_Recipe()
     ironNecklaceRecipe.vecIngredients.push_back({ ITEM_IRON_BAR, 10 });
     m_mapRecipes[make_pair(ITEM_NECKLACE, MATERIAL_IRON)] = ironNecklaceRecipe;
 
-    // 자석 반지
+    // 돌 반지
     Recipe magnetRingRecipe;
-    magnetRingRecipe.vecIngredients.push_back({ ITEM_COPPER_BAR, 5 });
-    magnetRingRecipe.vecIngredients.push_back({ ITEM_IRON_BAR, 5 });
+    magnetRingRecipe.vecIngredients.push_back({ ITEM_DIRTWALL, 5 });
+    magnetRingRecipe.vecIngredients.push_back({ ITEM_STONEWALL, 5 });
+    magnetRingRecipe.vecIngredients.push_back({ ITEM_COPPER_BAR, 2 });
     m_mapRecipes[make_pair(ITEM_RING, MATERIAL_COPPER)] = magnetRingRecipe;
 
     // 신속 반지

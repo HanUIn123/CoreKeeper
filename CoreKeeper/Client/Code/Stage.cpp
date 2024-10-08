@@ -230,11 +230,20 @@ HRESULT CStage::Ready_Layer_Environment(const _tchar* pLayerTag)
 
     pGameObject = CSpawnPoint::Create(m_pGraphicDev, { VTXCNTX / 2, 0.1f, 7.f + 5.f });
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
-    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"SpawnPoint", pGameObject), E_FAIL);
+    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"BaseSpawnPoint", pGameObject), E_FAIL);
+
+    pGameObject = CSpawnPoint::Create(m_pGraphicDev, { 51.f, 0.1f, 60.f });
+    NULL_CHECK_RETURN(pGameObject, E_FAIL);
+    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"StoneSpawnPoint", pGameObject), E_FAIL);
+
+    pGameObject = CSpawnPoint::Create(m_pGraphicDev, { 14.f, 0.1f, 105.f });
+    NULL_CHECK_RETURN(pGameObject, E_FAIL);
+    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"GrassSpawnPoint", pGameObject), E_FAIL);
 
     pGameObject = CSkeleton::Create(m_pGraphicDev, { VTXCNTX / 2 - 3.f, 0.1f, 13.f });
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Skeleton", pGameObject), E_FAIL);
+
 #pragma endregion
 
     m_mapLayer.insert({ pLayerTag , pLayer });
