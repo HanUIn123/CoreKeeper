@@ -12,7 +12,7 @@ protected:
 	virtual ~CFall();
 
 public:
-	virtual     HRESULT         Ready_Particles(D3DXVECTOR3* origin, _int numParticles, _float fY);
+	virtual     HRESULT         Ready_Particles(D3DXVECTOR3* origin, _int numParticles, _float fY, _float fXZ = 0.01f, D3DXCOLOR color = D3DCOLOR_ARGB(255, 255, 0, 0));
 	virtual		void			resetParticle(Attribute* attribute);
 	virtual		void			update(float timeDelta, _vec3 vDir = { 0.f, 0.f, 0.f });
 	
@@ -23,9 +23,12 @@ public:
 private:
 	_float fTime;
 	_float m_fY;
+	_float m_fXZ;
+
+	D3DXCOLOR m_Color;
 
 public:
-	static		CFall* Create(LPDIRECT3DDEVICE9 pGraphicDev, D3DXVECTOR3* origin, _int numParticles, _float fY = 0.05f);
+	static		CFall* Create(LPDIRECT3DDEVICE9 pGraphicDev, D3DXVECTOR3* origin, _int numParticles, _float fY = 0.05f, _float fXZ = 0.01f, D3DXCOLOR color = D3DCOLOR_ARGB(255, 255, 0, 0));
 	virtual		CComponent* Clone();
 
 public:

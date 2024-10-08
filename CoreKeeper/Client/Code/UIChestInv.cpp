@@ -133,11 +133,6 @@ void CUIChestInv::Render_GameObject()
 
 		switch (eNum)
 		{
-		//case ITEM_SEED:
-		//	matWorld._11 = 10.f;
-		//	matWorld._22 = 10.f;
-		//	break;
-
 		case ITEM_SWORD:
 			matWorld._11 = 40.f;
 			matWorld._22 = 40.f;
@@ -171,12 +166,12 @@ void CUIChestInv::Render_GameObject()
 			matWorld._42 -= 8.f;
 			break;
 
-		//case ITEM_SHOVEL:
-		//	matWorld._11 = 60.f;
-		//	matWorld._22 = 60.f;
+			//case ITEM_SHOVEL:
+			//	matWorld._11 = 60.f;
+			//	matWorld._22 = 60.f;
 
-		//	matWorld._42 -= 8.f;
-		//	break;
+			//	matWorld._42 -= 8.f;
+			//	break;
 
 		case ITEM_STAFF:
 			matWorld._11 = 35.f;
@@ -204,12 +199,51 @@ void CUIChestInv::Render_GameObject()
 			matWorld._42 += 15.f;
 			break;
 
-		dafault:
+		case ITEM_COPPER:
+			matWorld._11 = 20.f;
+			matWorld._22 = 20.f;
+			break;
+
+		case ITEM_IRON:
+			matWorld._11 = 20.f;
+			matWorld._22 = 20.f;
+			break;
+
+		case ITEM_SCARLET:
+			matWorld._11 = 20.f;
+			matWorld._22 = 20.f;
+			break;
+
+		case ITEM_COPPER_BAR:
+			matWorld._11 = 20.f;
+			matWorld._22 = 20.f;
+			break;
+
+		case ITEM_IRON_BAR:
+			matWorld._11 = 20.f;
+			matWorld._22 = 20.f;
+			break;
+
+		case ITEM_SCARLET_BAR:
+			matWorld._11 = 20.f;
+			matWorld._22 = 20.f;
+			break;
+
+		case ITEM_TORCH:
+			matWorld._11 = 30.f;
+			matWorld._22 = 30.f;
+			break;
+
+		default:
 			matWorld._11 = 20.f;
 			matWorld._22 = 20.f;
 			break;
 		}
 
+
+		m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
+
+		pItem->Get_Buffer()->Render_First();
 
 		if (iCount != 1)
 		{
@@ -217,14 +251,10 @@ void CUIChestInv::Render_GameObject()
 
 			const _tchar* tFont = sFont.c_str();
 
-			_vec2 pos(m_BRect.right - 1.f, m_BRect.top + 12.f);
+			_vec2 pos(m_BRect.right - 20.f, m_BRect.top + 25.f);
 
 			Engine::Render_Font(L"Font_Item", tFont, &pos, D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
 		}
-
-		m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
-
-		pItem->Get_Buffer()->Render_First();
 	}
 }
 

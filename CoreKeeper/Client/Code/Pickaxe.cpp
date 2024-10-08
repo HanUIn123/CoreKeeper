@@ -146,6 +146,11 @@ void CPickaxe::Render_GameObject()
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
+_vec3 CPickaxe::Get_PickaxePos()
+{
+	return 	m_pColliderCubeCom->Get_CenterPos();
+}
+
 HRESULT CPickaxe::Add_Component()
 {
 	CComponent* pComponent = NULL;

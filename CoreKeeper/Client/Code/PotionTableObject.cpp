@@ -34,10 +34,9 @@ _int CPotionTableObject::Update_GameObject(const _float& fTimeDelta)
 		{
 			CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
 
-			pPlayer->Set_Craft();
-
 			if (!pPlayer->Get_CraftUI())
 			{
+				pPlayer->Set_Craft();
 				pPlayer->Set_Inventory();
 
 				m_bCollision = false;
@@ -78,16 +77,16 @@ void CPotionTableObject::Render_GameObject()
 
 void CPotionTableObject::Interaction()
 {
-	/*if (Engine::Key_Down(DIK_E))
+	if (Engine::Key_Down(DIK_E))
 	{
 		CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
 
-		pPlayer->Set_Craft(TABLE_CRAFT);
+		pPlayer->Set_Craft(TABLE_ALCHEMY);
 
 		pPlayer->Set_Inventory();
 
 		m_bCollision = true;
-	}*/
+	}
 }
 
 HRESULT CPotionTableObject::Add_Component()

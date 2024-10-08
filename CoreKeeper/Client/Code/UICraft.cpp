@@ -114,6 +114,13 @@ void CUICraft::Set_Window(TABLETYPE _eType, MATERIAL _eMaterial)
 
 			pButton->Set_Window(_eType, _eMaterial);
 		}
+
+		if (_eType == TABLE_ALCHEMY || _eType == TABLE_MUSIC || _eType == TABLE_ACCESSORY)
+		{
+			_vec3 vPos;
+			m_pTransformCom->Get_Info(INFO_POS, &vPos);
+			m_pTransformCom->Set_Pos(0.f, vPos.y, 0.f);
+		}
 	}
 }
 

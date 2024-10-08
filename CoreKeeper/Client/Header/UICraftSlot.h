@@ -70,7 +70,26 @@ public:
 				m_BRect.left -= 48.f;
 				m_BRect.right -= 48.f;
 				break;
+			case TABLE_ALCHEMY:
+			{
+				m_BRect.left -= 172.f;
+				m_BRect.right -= 172.f;
+				break;
 			}
+			case TABLE_ACCESSORY:
+			{
+				m_BRect.left -= 172.f;
+				m_BRect.right -= 172.f;
+				break;
+			}
+			case TABLE_MUSIC:
+			{
+				m_BRect.left -= 172.f;
+				m_BRect.right -= 172.f;
+				break;
+			}
+			}
+
 		}
 	}
 	void            Ready_Table();

@@ -470,19 +470,19 @@ void CCraftMgr::Set_Recipe()
     Recipe hpPotionRecipe;
     hpPotionRecipe.vecIngredients.push_back({ ITEM_MUCUS, 3 });
     hpPotionRecipe.vecIngredients.push_back({ ITEM_BERRY, 3 });
-    m_mapRecipes[make_pair(ITEM_POTION_HP, MATERIAL_END)] = hpPotionRecipe;
+    m_mapRecipes[make_pair(ITEM_POTION_HP, MATERIAL_WOOD)] = hpPotionRecipe;
 
     // ATT 포션
     Recipe attPotionRecipe;
     attPotionRecipe.vecIngredients.push_back({ ITEM_MUCUS, 3 });
     attPotionRecipe.vecIngredients.push_back({ ITEM_PEPPER, 2 });
-    m_mapRecipes[make_pair(ITEM_POTION_ATT, MATERIAL_END)] = attPotionRecipe;
+    m_mapRecipes[make_pair(ITEM_POTION_ATT, MATERIAL_WOOD)] = attPotionRecipe;
 
     // DEF 포션
     Recipe defPotionRecipe;
     defPotionRecipe.vecIngredients.push_back({ ITEM_MUCUS, 3 });
     defPotionRecipe.vecIngredients.push_back({ ITEM_CARROT, 3 });
-    m_mapRecipes[make_pair(ITEM_POTION_DEF, MATERIAL_END)] = defPotionRecipe;
+    m_mapRecipes[make_pair(ITEM_POTION_DEF, MATERIAL_WOOD)] = defPotionRecipe;
 
     // 재료 뭐로하지?
     // 플레이어 스포너

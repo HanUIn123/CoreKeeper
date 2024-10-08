@@ -61,18 +61,22 @@ HRESULT CUIItemSlot::Ready_GameObject(_vec2 vPos, _vec2 vSize, SLOTTYPE _eType)
 
 	case SLOT_NECKLACE:
 		m_iIndex = 6;
+		eSlotItemType = ITEM_NECKLACE;
 		break;
 
 	case SLOT_RING1:
 		m_iIndex = 7;
+		eSlotItemType = ITEM_RING;
 		break;
 
 	case SLOT_RING2:
 		m_iIndex = 7;
+		eSlotItemType = ITEM_RING;
 		break;
 
 	case SLOT_BAG:
 		m_iIndex = 3;
+		eSlotItemType = ITEM_BAG;
 		break;
 
 	case SLOT_LANTERN:
@@ -177,10 +181,7 @@ void CUIItemSlot::Render_GameObject()
 	{
 		Engine::MATERIAL material = m_pItem->Get_ItemMaterial();
 
-		if (material != 3)
-			m_pItem->Get_Texture()->Set_Texture(m_pItem->Get_TextureNumber());
-		else
-			m_pItem->Get_Texture()->Set_Texture();
+		m_pItem->Get_Texture()->Set_Texture(m_pItem->Get_TextureNumber());
 
 		Engine::ITEMNUM eNum = m_pItem->Get_ItemNum();
 
