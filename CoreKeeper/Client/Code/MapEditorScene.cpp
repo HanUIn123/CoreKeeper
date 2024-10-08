@@ -58,6 +58,8 @@ CMapEditorScene::CMapEditorScene(LPDIRECT3DDEVICE9 _pGraphicDevice)
         Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/ImGuiImage/Object/Slime_Floor/slime_tile_%d.png", TEX_OBJECT, 9);
         Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/ImGuiImage/Object/Mushroom/mushroom_%d.png", TEX_OBJECT, 3);
         Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/ImGuiImage/Object/Azeos_Poop/bird_poop_%d.png", TEX_OBJECT, 3);
+        Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/ImGuiImage/Object/Azeos_Feather/Azeos_Feather_%d.png", TEX_OBJECT, 6);
+
 
         Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/ImGuiImage/Monster/Slime.png", TEX_MONSTER, 1);
         Resister_ImguiImage_ImGui(_pGraphicDevice, L"../Bin/Resource/Texture/ImGuiImage/Monster/Mushroom.png", TEX_MONSTER, 1);
@@ -214,6 +216,7 @@ HRESULT CMapEditorScene::Ready_Prototype()
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SlimeFloorTex", Engine::CObjectTex::Create(m_pGraphicDev, 0.5f, 0.0f, 0.5f)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MushroomTex", Engine::CObjectTex::Create(m_pGraphicDev, 0.5f, 0.5f, 0.0f)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_AzeosPoopTex", Engine::CObjectTex::Create(m_pGraphicDev, 0.5f, 0.0f, 0.5f)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_AzeosFeatherTex", Engine::CObjectTex::Create(m_pGraphicDev, 0.5f, 0.0f, 0.5f)), E_FAIL);
 
 
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SlimeTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Monster/Slime.png", TEX_NORMAL)), E_FAIL);
@@ -226,6 +229,7 @@ HRESULT CMapEditorScene::Ready_Prototype()
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SlimeFloorTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/ImguiImage/Object/Slime_Floor/slime_tile_%d.png", TEX_NORMAL, 9)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MushroomTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/PlaceObject/mushroom_%d.png", TEX_NORMAL, 3)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_AzeosPoopTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/PlaceObject/bird_poop_%d.png", TEX_NORMAL, 3)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_AzeosFeatherTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/PlaceObject/Azeos_Feather_%d.png", TEX_NORMAL, 6)), E_FAIL);
 
     // Particle
     _vec3 vPPos = { 0.f, 0.f, 0.f };
@@ -688,10 +692,10 @@ void CMapEditorScene::Setting_ObjectList()
 
     const char* items[] =
     {
-      "Slime_Floor", "MushRoom", "Azeos_Poop"
+      "Slime_Floor", "MushRoom", "Azeos_Poop" , "Azeos_Feather"
     };
 
-    int imageCounts[] = { 9, 3, 3 };
+    int imageCounts[] = { 9, 3, 3, 9 };
 
     static int	nCurrentItem = 0;
     ImGui::Combo("##4", &nCurrentItem, items, IM_ARRAYSIZE(items));
@@ -795,7 +799,7 @@ HRESULT CMapEditorScene::Piking_Object()
                     FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsObjectNameString[iIndex].c_str(), m_pObjectCom), E_FAIL);
                     dynamic_cast<CMushroom*>(m_vecPlaceObject[iIndex])->Set_TileTypeIndex(m_iObjectNumber - 9);
                 }
-                else
+                else if(m_iObjectNumber > 11 && m_iObjectNumber <= 14)
                 {
                     m_pObjectCom = CAzeosPoop::Create(m_pGraphicDev, _vec3(m_vPickPos.x + 0.5f * VTXITV, m_vPickPos.y, m_vPickPos.z + 0.5f * VTXITV), m_iObjectNumber);
                     m_vecPlaceObject[iIndex] = dynamic_cast<CAzeosPoop*>(m_pObjectCom);
@@ -803,6 +807,15 @@ HRESULT CMapEditorScene::Piking_Object()
                     NULL_CHECK_RETURN(m_pObjectCom, E_FAIL);
                     FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsObjectNameString[iIndex].c_str(), m_pObjectCom), E_FAIL);
                     dynamic_cast<CAzeosPoop*>(m_vecPlaceObject[iIndex])->Set_TileTypeIndex(m_iObjectNumber - 12);
+                }
+                else
+                {
+                    m_pObjectCom = CAzeosFeather::Create(m_pGraphicDev, _vec3(m_vPickPos.x + 0.5f * VTXITV, m_vPickPos.y, m_vPickPos.z + 0.5f * VTXITV), m_iObjectNumber);
+                    m_vecPlaceObject[iIndex] = dynamic_cast<CAzeosFeather*>(m_pObjectCom);
+                    dynamic_cast<CAzeosFeather*>(m_vecPlaceObject[iIndex])->Set_PickedObjectName(m_wsObjectNameString[iIndex]);
+                    NULL_CHECK_RETURN(m_pObjectCom, E_FAIL);
+                    FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsObjectNameString[iIndex].c_str(), m_pObjectCom), E_FAIL);
+                    dynamic_cast<CAzeosFeather*>(m_vecPlaceObject[iIndex])->Set_TileTypeIndex(m_iObjectNumber - 15);
                 }
 
                 pTerrain->Set_Unreachable(iIndex, false);
@@ -835,6 +848,10 @@ HRESULT CMapEditorScene::Piking_Object()
                 else if (auto pAzeosPoop = dynamic_cast<CAzeosPoop*>(m_vecPlaceObject[iIndex]))
                 {
                     Delete_Object(L"Layer_GameLogic", pAzeosPoop->Get_PickedObjectName().c_str());
+                }
+                else if (auto pAzeosFeather = dynamic_cast<CAzeosFeather*>(m_vecPlaceObject[iIndex]))
+                {
+                    Delete_Object(L"Layer_GameLogic", pAzeosFeather->Get_PickedObjectName().c_str());
                 }
                 m_vecPlaceObject[iIndex] = nullptr;
                 pTerrain->Set_Unreachable(iIndex, false);
@@ -1279,6 +1296,12 @@ void CMapEditorScene::MapFile_Save()
             vTempTypeNumber = pAzeosPoop->Get_TileTypeIndex();
             vTempObjectType = pAzeosPoop->Get_ObjectType();
         }
+        else if (auto pAzeosFeather = dynamic_cast<CAzeosFeather*>(m_vecPlaceObject[i]))
+        {
+            vTempObjectPos = pAzeosFeather->Get_PoopPos();
+            vTempTypeNumber = pAzeosFeather->Get_TileTypeIndex();
+            vTempObjectType = pAzeosFeather->Get_ObjectType();
+        }
         
         vTempObjectIndex = i;
 
@@ -1496,7 +1519,14 @@ HRESULT CMapEditorScene::MapFile_Load()
             NULL_CHECK_RETURN(pGameObject2, E_FAIL);
             FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsObjectNameString[iIndex].c_str(), pGameObject2), E_FAIL);
             break;
+        case AZEOS_FEATHER:
+            m_wsObjectNameString[iIndex] = L"AzeosPoop_" + std::to_wstring(iIndex);
+            pGameObject2 = CAzeosFeather::Create(m_pGraphicDev, _vec3(vObjectPos.x, vObjectPos.y, vObjectPos.z), iTypeNumber);
+            NULL_CHECK_RETURN(pGameObject2, E_FAIL);
+            FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsObjectNameString[iIndex].c_str(), pGameObject2), E_FAIL);
+            break;
         }
+        
     }
 
     CloseHandle(m_hObjectFile);

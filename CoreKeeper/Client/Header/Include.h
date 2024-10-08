@@ -30,6 +30,7 @@
 #include "SlimeFloor.h"
 #include "Mushroom.h"
 #include "AzeosPoop.h"
+#include "AzeosFeather.h"
 
 // Item
 #include "Pickaxe.h"
