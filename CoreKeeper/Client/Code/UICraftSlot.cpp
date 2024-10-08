@@ -84,12 +84,67 @@ _int CUICraftSlot::Update_GameObject(const _float& fTimeDelta)
 		CInventory* pPlayerInv = dynamic_cast<Engine::CInventory*>
 			(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
 
-		if (CCraftMgr::GetInstance()->Craftable(pPlayerInv, m_eItemType.eItemNum, m_eItemType.eItemMat))
+		if (m_eItemType.eItemNum == ITEM_RING || m_eItemType.eItemNum == ITEM_NECKLACE)
 		{
-			m_bEnough = true;
+			MATERIAL eMat = MATERIAL_END;
+
+			switch (m_eItemType.iTextureNum)
+			{
+			case 43:
+				eMat = MATERIAL_COPPER;
+				break;
+
+			case 44:
+				eMat = MATERIAL_IRON;
+				break;
+
+			case 46:
+				eMat = MATERIAL_COPPER;
+				break;
+
+			case 47:
+				eMat = MATERIAL_IRON;
+				break;
+			}
+
+			if (CCraftMgr::GetInstance()->Craftable(pPlayerInv, m_eItemType.eItemNum, eMat))
+			{
+				m_bEnough = true;
+			}
+			else
+				m_bEnough = false;
+		}
+		else if (m_eItemType.eItemNum == ITEM_TABLE)
+		{
+			MATERIAL eMat = MATERIAL_END;
+
+			switch (m_eItemType.iTextureNum)
+			{
+			case 12:
+				eMat = MATERIAL_COPPER;
+				break;
+
+			case 19:
+				eMat = MATERIAL_IRON;
+				break;
+			}
+
+			if (CCraftMgr::GetInstance()->Craftable(pPlayerInv, m_eItemType.eItemNum, eMat))
+			{
+				m_bEnough = true;
+			}
+			else
+				m_bEnough = false;
 		}
 		else
-			m_bEnough = false;
+		{
+			if (CCraftMgr::GetInstance()->Craftable(pPlayerInv, m_eItemType.eItemNum, m_eItemType.eItemMat))
+			{
+				m_bEnough = true;
+			}
+			else
+				m_bEnough = false;
+		}
 
 		if (Map_Picked(pt))
 		{
@@ -99,9 +154,58 @@ _int CUICraftSlot::Update_GameObject(const _float& fTimeDelta)
 			{
 				if (m_bEnough)
 				{
-					CInventory* pCursorInv = dynamic_cast<CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_UI", L"UI_Cursor", L"Com_Inventory"));
+					if (m_eItemType.eItemNum == ITEM_RING || m_eItemType.eItemNum == ITEM_NECKLACE)
+					{
+						MATERIAL eMat = MATERIAL_END;
 
-					pCursorInv->Add_Item(CCraftMgr::GetInstance()->Craft(pPlayerInv, m_eItemType.eItemNum, m_eItemType.eItemMat));
+						switch (m_eItemType.iTextureNum)
+						{
+						case 43:
+							eMat = MATERIAL_COPPER;
+							break;
+
+						case 44:
+							eMat = MATERIAL_IRON;
+							break;
+
+						case 46:
+							eMat = MATERIAL_COPPER;
+							break;
+
+						case 47:
+							eMat = MATERIAL_IRON;
+							break;
+						}
+
+						CInventory* pCursorInv = dynamic_cast<CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_UI", L"UI_Cursor", L"Com_Inventory"));
+
+						pCursorInv->Add_Item(CCraftMgr::GetInstance()->Craft(pPlayerInv, m_eItemType.eItemNum, eMat));
+					}
+					else if (m_eItemType.eItemNum == ITEM_TABLE)
+					{
+						MATERIAL eMat = MATERIAL_END;
+
+						switch (m_eItemType.iTextureNum)
+						{
+						case 12:
+							eMat = MATERIAL_COPPER;
+							break;
+
+						case 19:
+							eMat = MATERIAL_IRON;
+							break;
+						}
+
+						CInventory* pCursorInv = dynamic_cast<CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_UI", L"UI_Cursor", L"Com_Inventory"));
+
+						pCursorInv->Add_Item(CCraftMgr::GetInstance()->Craft(pPlayerInv, m_eItemType.eItemNum, eMat));
+					}
+					else
+					{
+						CInventory* pCursorInv = dynamic_cast<CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_UI", L"UI_Cursor", L"Com_Inventory"));
+
+						pCursorInv->Add_Item(CCraftMgr::GetInstance()->Craft(pPlayerInv, m_eItemType.eItemNum, m_eItemType.eItemMat));
+					}
 				}	
 			}
 
@@ -136,6 +240,15 @@ void CUICraftSlot::Render_GameObject()
 			break;
 		case TABLE_ANVIL:
 			matWorld._41 += 48.f;
+			break;
+		case TABLE_ALCHEMY:
+			matWorld._41 += 172.f;
+			break;
+		case TABLE_ACCESSORY:
+			matWorld._41 += 172.f;
+			break;
+		case TABLE_MUSIC:
+			matWorld._41 += 172.f;
 			break;
 		}
 	}
@@ -220,6 +333,24 @@ void CUICraftSlot::Set_Window(TABLETYPE _eTableType, MATERIAL _eMaterial, _bool 
 				m_BRect.right -= 48.f;
 				break;
 			}
+			case TABLE_ALCHEMY:
+			{
+				m_BRect.left -= 172.f;
+				m_BRect.right -= 172.f;
+				break;
+			}
+			case TABLE_ACCESSORY:
+			{
+				m_BRect.left -= 172.f;
+				m_BRect.right -= 172.f;
+				break;
+			}
+			case TABLE_MUSIC:
+			{
+				m_BRect.left -= 172.f;
+				m_BRect.right -= 172.f;
+				break;
+			}
 			}
 		}
 	}
@@ -239,6 +370,24 @@ void CUICraftSlot::Set_Window(TABLETYPE _eTableType, MATERIAL _eMaterial, _bool 
 			{
 				m_BRect.left += 48.f;
 				m_BRect.right += 48.f;
+				break;
+			}
+			case TABLE_ALCHEMY:
+			{
+				m_BRect.left += 172.f;
+				m_BRect.right += 172.f;
+				break;
+			}
+			case TABLE_ACCESSORY:
+			{
+				m_BRect.left += 172.f;
+				m_BRect.right += 172.f;
+				break;
+			}
+			case TABLE_MUSIC:
+			{
+				m_BRect.left += 172.f;
+				m_BRect.right += 172.f;
 				break;
 			}
 			}
@@ -331,6 +480,15 @@ void CUICraftSlot::Ready_Table()
 		UIITEM COPPERHELM = { m_iIndex, ITEM_HELMET, MATERIAL_COPPER, 28 };
 		mapItemType.insert({ make_pair(TABLE_ANVIL, TRUE), COPPERHELM });
 
+		UIITEM HEALTHPOTION = { m_iIndex, ITEM_POTION_HP, MATERIAL_WOOD, 40 };
+		mapItemType.insert({ make_pair(TABLE_ALCHEMY, TRUE), HEALTHPOTION });
+
+		UIITEM COPPERNECKLACE = { m_iIndex, ITEM_NECKLACE, MATERIAL_WOOD, 43 };
+		mapItemType.insert({ make_pair(TABLE_ACCESSORY, TRUE), COPPERNECKLACE });
+
+		UIITEM IRONHELM = { m_iIndex, ITEM_HELMET, MATERIAL_IRON, 34 };
+		mapItemType.insert({ make_pair(TABLE_ANVIL, TRUE), IRONHELM });
+
 		// 우측
 
 		UIITEM FURNACE = { m_iIndex, ITEM_FURNACE, MATERIAL_WOOD, 10 };
@@ -344,6 +502,9 @@ void CUICraftSlot::Ready_Table()
 
 		UIITEM COPPERSWORD = { m_iIndex, ITEM_SWORD, MATERIAL_COPPER, 32 };
 		mapItemType.insert({ make_pair(TABLE_ANVIL, FALSE), COPPERSWORD });
+
+		UIITEM IRONSWORD = { m_iIndex, ITEM_SWORD, MATERIAL_IRON, 38 };
+		mapItemType.insert({ make_pair(TABLE_ANVIL, FALSE), IRONSWORD });
 
 		break;
 	}
@@ -365,6 +526,15 @@ void CUICraftSlot::Ready_Table()
 		UIITEM COPPERCHEST = { m_iIndex, ITEM_CHEST, MATERIAL_COPPER, 29 };
 		mapItemType.insert({ make_pair(TABLE_ANVIL, TRUE), COPPERCHEST });
 
+		UIITEM ATTPOTION = { m_iIndex, ITEM_POTION_ATT, MATERIAL_WOOD, 41 };
+		mapItemType.insert({ make_pair(TABLE_ALCHEMY, TRUE), ATTPOTION });
+
+		UIITEM IRONNECKLACE = { m_iIndex, ITEM_NECKLACE, MATERIAL_WOOD, 44 };
+		mapItemType.insert({ make_pair(TABLE_ACCESSORY, TRUE), IRONNECKLACE });
+
+		UIITEM IRONCHEST = { m_iIndex, ITEM_CHEST, MATERIAL_IRON, 35 };
+		mapItemType.insert({ make_pair(TABLE_ANVIL, TRUE), IRONCHEST });
+
 		// 우측
 
 		UIITEM COPPERTABLE = { m_iIndex, ITEM_TABLE, MATERIAL_WOOD, 11 };
@@ -376,8 +546,9 @@ void CUICraftSlot::Ready_Table()
 		UIITEM SPRINKLER = { m_iIndex, ITEM_SPRINKLER, MATERIAL_IRON, 25 };
 		mapItemType.insert({ make_pair(TABLE_CRAFT, FALSE), SPRINKLER });
 
-		UIITEM WOODBOW = { m_iIndex, ITEM_BOW, MATERIAL_COPPER, 33 };
-		mapItemType.insert({ make_pair(TABLE_ANVIL, FALSE), WOODBOW });
+		UIITEM IRONBOW = { m_iIndex, ITEM_BOW, MATERIAL_IRON, 39 };
+		mapItemType.insert({ make_pair(TABLE_ANVIL, FALSE), IRONBOW });
+
 		break;
 	}
 	case 2:
@@ -399,13 +570,22 @@ void CUICraftSlot::Ready_Table()
 		UIITEM COPPERLEG = { m_iIndex, ITEM_LEG, MATERIAL_COPPER, 30 };
 		mapItemType.insert({ make_pair(TABLE_ANVIL, TRUE), COPPERLEG });
 
+		UIITEM DEFPOTION = { m_iIndex, ITEM_POTION_DEF, MATERIAL_WOOD, 42 };
+		mapItemType.insert({ make_pair(TABLE_ALCHEMY, TRUE), DEFPOTION });
+
+		UIITEM MAGNETRING = { m_iIndex, ITEM_RING, MATERIAL_WOOD, 46 };
+		mapItemType.insert({ make_pair(TABLE_ACCESSORY, TRUE), MAGNETRING });
+
+		UIITEM IRONLEG = { m_iIndex, ITEM_LEG, MATERIAL_IRON, 36 };
+		mapItemType.insert({ make_pair(TABLE_ANVIL, TRUE), IRONLEG });
+
 		// 우측
 
-		UIITEM ANIMALTABLE = { m_iIndex, ITEM_ANIMAL_TABLE, MATERIAL_WOOD, 12 };
-		mapItemType.insert({ make_pair(TABLE_CRAFT, FALSE), ANIMALTABLE });
+		UIITEM COPPERTABLE = { m_iIndex, ITEM_TABLE, MATERIAL_WOOD, 12 };
+		mapItemType.insert({ make_pair(TABLE_CRAFT, FALSE), COPPERTABLE });
 
-		UIITEM COOKINGPOT = { m_iIndex, ITEM_COOKINGPOT, MATERIAL_COPPER, 19 };
-		mapItemType.insert({ make_pair(TABLE_CRAFT, FALSE), COOKINGPOT });
+		UIITEM IRONTABLE = { m_iIndex, ITEM_TABLE, MATERIAL_COPPER, 19 };
+		mapItemType.insert({ make_pair(TABLE_CRAFT, FALSE), IRONTABLE });
 
 		UIITEM ACCESSORYTABLE = { m_iIndex, ITEM_ACCESSORY_TABLE, MATERIAL_IRON, 27 };
 		mapItemType.insert({ make_pair(TABLE_CRAFT, FALSE), ACCESSORYTABLE });
@@ -430,6 +610,12 @@ void CUICraftSlot::Ready_Table()
 
 		UIITEM WOODSHIELD = { m_iIndex, ITEM_ASSISTANCE, MATERIAL_COPPER, 31 };
 		mapItemType.insert({ make_pair(TABLE_ANVIL, TRUE), WOODSHIELD });
+
+		UIITEM SPEEDRING = { m_iIndex, ITEM_RING, MATERIAL_WOOD, 47 };
+		mapItemType.insert({ make_pair(TABLE_ACCESSORY, TRUE), SPEEDRING });
+
+		UIITEM IRONSHIELD = { m_iIndex, ITEM_ASSISTANCE, MATERIAL_IRON, 37 };
+		mapItemType.insert({ make_pair(TABLE_ANVIL, TRUE), IRONSHIELD });
 
 
 		UIITEM IRONANVIL = { m_iIndex, ITEM_ANVIL, MATERIAL_IRON, 26 };

@@ -180,6 +180,13 @@ bool CInventory::Check_Empty(_int iIndex)
 	return false;
 }
 
+void CInventory::Set_SlotCount(_int iCount)
+{
+	m_iSlotCount = iCount;
+	m_vecItems.resize(m_iSlotCount);
+}
+
+
 CInventory* CInventory::Create(LPDIRECT3DDEVICE9 pGraphicDev, int _iSlotCount)
 {
 	CInventory* pInventory = new CInventory(pGraphicDev);

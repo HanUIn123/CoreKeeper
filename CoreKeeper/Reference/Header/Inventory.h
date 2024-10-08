@@ -30,8 +30,7 @@ public:
 	CItem*				Get_Item(_int iIndex)                { return m_vecItems[iIndex]; }
 
 	_int				Get_SlotCount()              { return m_iSlotCount; }
-	void				Set_SlotCount(_int iCount) { m_iSlotCount = iCount; }
-
+	void				Set_SlotCount(_int iCount);
 public:
 	static	CInventory*		Create(LPDIRECT3DDEVICE9 pGraphicDev, int _iSlotCount);
 	virtual CComponent*		Clone();

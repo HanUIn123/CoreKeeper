@@ -13,10 +13,12 @@ CFall::CFall(LPDIRECT3DDEVICE9 pGraphicDev)
 {
 	fTime = 0;
 	m_fY = 0.f;
+	m_fXZ = 0.f;
+	m_Color = { 1.f, 1.f, 1.f, 1.f };
 }
 
 CFall::CFall(const CFall& rhs)
-	: PSystem(rhs), fTime(0), m_fY(rhs.m_fY)
+	: PSystem(rhs), fTime(0), m_fY(rhs.m_fY), m_fXZ(rhs.m_fXZ), m_Color(rhs.m_Color)
 {
 }
 
@@ -24,7 +26,7 @@ CFall::~CFall()
 {
 }
 
-HRESULT CFall::Ready_Particles(D3DXVECTOR3* origin, _int numParticles, _float fY)
+HRESULT CFall::Ready_Particles(D3DXVECTOR3* origin, _int numParticles, _float fY, _float fXZ, D3DXCOLOR color)
 {
 	_origin = *origin;
 	//_size = 0.2;
@@ -35,6 +37,9 @@ HRESULT CFall::Ready_Particles(D3DXVECTOR3* origin, _int numParticles, _float fY
 	m_iMaxTexture = 0;
 
 	m_fY = fY;
+	m_fXZ = fXZ;
+
+	m_Color = color;
 
 	for (int i = 0; i < numParticles; i++)
 		addParticle();
@@ -59,9 +64,9 @@ void CFall::resetParticle(Attribute* attribute) // 파티클 리셋
 		*/
 
 
-	attribute->_velocity.x = d3d::GetRandomFloat(-1.0f, 1.0f) * 0.01f;
+	attribute->_velocity.x = d3d::GetRandomFloat(-1.0f, 1.0f) * m_fXZ;
 	attribute->_velocity.y = d3d::GetRandomFloat(0.0f, 0.5f) * m_fY;
-	attribute->_velocity.z = d3d::GetRandomFloat(-1.0f, 1.0f) * 0.01f;
+	attribute->_velocity.z = d3d::GetRandomFloat(-1.0f, 1.0f) * m_fXZ;
 
 	// 구를 만들기 위한 초기화
 	D3DXVec3Normalize(
@@ -74,7 +79,7 @@ void CFall::resetParticle(Attribute* attribute) // 파티클 리셋
 
 	//attribute->_acceleration = { 0.f, 0.f, 0.f };
 
-	attribute->_color = D3DCOLOR_ARGB(255, 255, 0, 0); // 랜덤 색 생성 (빨간색 X)
+	attribute->_color = m_Color; // 랜덤 색 생성 (빨간색 X)
 
 	attribute->_age = 0.0f;
 	attribute->_lifeTime = 1.0f; // 수명 1초
@@ -139,11 +144,11 @@ void CFall::reset()
 	fTime = 0.f;
 }
 
-CFall* CFall::Create(LPDIRECT3DDEVICE9 pGraphicDev, D3DXVECTOR3* origin, _int numParticles, _float fY)
+CFall* CFall::Create(LPDIRECT3DDEVICE9 pGraphicDev, D3DXVECTOR3* origin, _int numParticles, _float fY, _float fXZ, D3DXCOLOR color)
 {
 	CFall* pInstance = new CFall(pGraphicDev);
 
-	if (FAILED(pInstance->Ready_Particles(origin, numParticles, fY)))
+	if (FAILED(pInstance->Ready_Particles(origin, numParticles, fY, fXZ, color)))
 	{
 		Safe_Release(pInstance);
 		MSG_BOX("Firework Create Failed");
