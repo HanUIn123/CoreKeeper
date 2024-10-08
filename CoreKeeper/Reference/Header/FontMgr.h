@@ -27,9 +27,10 @@ public:
 									const _vec2* pPos,
 									D3DXCOLOR Color);
 
-	void				Render_Font_Center(const _tchar* pFontTag,
+	void				Render_Font_Custom(const _tchar* pFontTag,
 										   const _tchar* pString,
 										   const _vec2* pPos,
+										   DWORD format,
 										   D3DXCOLOR Color);
 
 private:

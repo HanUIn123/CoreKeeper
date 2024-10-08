@@ -78,32 +78,6 @@ void CStage::Render_Scene()
     //m_pGraphicDev->SetViewport(&miniMapViewport);
 }
 
-HRESULT CStage::Create_Inventory(const _tchar* pLayerTag, const _tchar* pGameObjectTag)
-{
-    auto	iter = find_if(m_mapLayer.begin(), m_mapLayer.end(), CTag_Finder(pLayerTag));
-
-    if (iter == m_mapLayer.end())
-        return E_FAIL;
-
-    iter->second->Delete_GameMap(pGameObjectTag);
-
-    return S_OK;
-}
-
-HRESULT CStage::Create_Item(const _tchar* pLayerTag, CItem* pItem, const _tchar* pItemTag)
-{
-    auto	iter = find_if(m_mapLayer.begin(), m_mapLayer.end(), CTag_Finder(pLayerTag));
-
-    if (iter == m_mapLayer.end())
-        return E_FAIL;
-
-    FAILED_CHECK_RETURN(iter->second->Add_GameObject(pItemTag, pItem), E_FAIL);
-
-    m_mapLayer.insert({ pLayerTag, iter->second });
-
-    return S_OK;
-}
-
 HRESULT CStage::Ready_LightInfo()
 {
 
@@ -256,7 +230,15 @@ HRESULT CStage::Ready_Layer_Environment(const _tchar* pLayerTag)
 
     pGameObject = CSpawnPoint::Create(m_pGraphicDev, { VTXCNTX / 2, 0.1f, 7.f + 5.f });
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
-    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"SpawnPoint", pGameObject), E_FAIL);
+    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"BaseSpawnPoint", pGameObject), E_FAIL);
+
+    pGameObject = CSpawnPoint::Create(m_pGraphicDev, { 51.f, 0.1f, 60.f });
+    NULL_CHECK_RETURN(pGameObject, E_FAIL);
+    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"StoneSpawnPoint", pGameObject), E_FAIL);
+
+    pGameObject = CSpawnPoint::Create(m_pGraphicDev, { 14.f, 0.1f, 105.f });
+    NULL_CHECK_RETURN(pGameObject, E_FAIL);
+    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"GrassSpawnPoint", pGameObject), E_FAIL);
 
     pGameObject = CSkeleton::Create(m_pGraphicDev, { VTXCNTX / 2 - 3.f, 0.1f, 13.f });
     NULL_CHECK_RETURN(pGameObject, E_FAIL);

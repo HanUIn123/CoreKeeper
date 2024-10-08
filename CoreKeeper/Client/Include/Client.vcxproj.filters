@@ -496,14 +496,14 @@
     <Filter Include="02. GameObject\08. Object\99. Wall">
       <UniqueIdentifier>{9e769398-2d95-40c2-9c55-b97bbdf6ec0e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\99.MapEditorScene">
-      <UniqueIdentifier>{6edbe3c5-5cf7-4aa5-be52-c214f5f762cb}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\08. Object\93.AzeosFeather">
       <UniqueIdentifier>{0cd28877-9762-4d63-bb93-7fe3e2fd023e}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameObject\08. Object\15. BossSpawnPoint">
       <UniqueIdentifier>{6672f020-b77e-4036-93c6-b0183c4c14fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Scene\99.MapEditorScene">
+      <UniqueIdentifier>{6edbe3c5-5cf7-4aa5-be52-c214f5f762cb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -589,7 +589,7 @@
       <Filter>99.Imgui</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\MapEditorScene.h">
-      <Filter>02. GameObject\99.MapEditorScene</Filter>
+      <Filter>01. Scene\99.MapEditorScene</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\Slime.h">
       <Filter>02. GameObject\02. Monster\00. Slime</Filter>
@@ -1059,7 +1059,7 @@
       <Filter>98.ImguiMgr</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\MapEditorScene.cpp">
-      <Filter>02. GameObject\99.MapEditorScene</Filter>
+      <Filter>01. Scene\99.MapEditorScene</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\Slime.cpp">
       <Filter>02. GameObject\02. Monster\00. Slime</Filter>
