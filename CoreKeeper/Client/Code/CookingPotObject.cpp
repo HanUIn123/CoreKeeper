@@ -3,9 +3,10 @@
 #include "../Header/Player.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
+#include "../Header/CraftMgr.h"
 
 CCookingPotObject::CCookingPotObject(LPDIRECT3DDEVICE9 pGraphicDev)
-	: CObject(pGraphicDev)
+	: CObject(pGraphicDev), m_fTime(80.f)
 {
 }
 
@@ -59,6 +60,35 @@ _int CCookingPotObject::Update_GameObject(const _float& fTimeDelta)
 		m_pAnimatorCom->Set_CurState(IDLE, 0, 0, 100);
 	m_pAnimatorCom->Update_Animation();
 
+
+	if (!m_pInventoryCom->Check_Empty(0) && !m_pInventoryCom->Check_Empty(1))
+	{
+		m_fTime -= fTimeDelta * 5.f;
+
+		//m_Rect.top = (_long)(m_rFirstRect.top + ((_float)(m_rFirstRect.bottom - m_rFirstRect.top) - ((_float)(m_rFirstRect.bottom - m_rFirstRect.top) * (m_fTime / 80.f))));
+
+		if (m_fTime <= 0)
+		{
+			m_fTime = 80.f;
+
+			ITEMNUM eUNum = m_pInventoryCom->Get_Item(0)->Get_ItemNum();
+
+			ITEMNUM eDNum = m_pInventoryCom->Get_Item(1)->Get_ItemNum();
+
+			CItem* pCraftItem = CCraftMgr::GetInstance()->Cook(eUNum, eDNum);
+
+			m_pSecondInventoryCom->Add_Item(pCraftItem);
+
+			m_pInventoryCom->Minus_Item(m_pInventoryCom->Get_Item(0)->Get_ItemNum(), 1);
+
+			m_pInventoryCom->Minus_Item(m_pInventoryCom->Get_Item(1)->Get_ItemNum(), 1);
+		}
+	}
+	else if (m_pInventoryCom->Check_Empty(1) && !m_pInventoryCom->Check_Empty(0) || m_pInventoryCom->Check_Empty(0) && !m_pInventoryCom->Check_Empty(1))
+	{
+		m_fTime = 80.f;
+	}
+
 	Add_RenderGroup(RENDER_ALPHA, this);
 
 	return Engine::CGameObject::Update_GameObject(fTimeDelta);
@@ -96,7 +126,7 @@ void CCookingPotObject::Interaction()
 	{
 		CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
 
-		pPlayer->Set_CookingPot(m_pInventoryCom, m_pSecondInventoryCom);
+		pPlayer->Set_CookingPot(m_pInventoryCom, m_pSecondInventoryCom, &m_fTime);
 
 		m_bCollision = true;
 	}

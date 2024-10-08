@@ -249,9 +249,18 @@ HRESULT CStage::Ready_Layer_Environment(const _tchar* pLayerTag)
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"FurnaceObject", pGameObject), E_FAIL);
 
 
+    pGameObject = CFurnaceObject::Create(m_pGraphicDev, { VTXCNTX / 2 - 3.f - 1.f, 0.6f, 11.f });
+    NULL_CHECK_RETURN(pGameObject, E_FAIL);
+    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"FurnaceObject2", pGameObject), E_FAIL);
+
+
     pGameObject = CCookingPotObject::Create(m_pGraphicDev, { VTXCNTX / 2 - 3.f, 0.6f, 10.f });
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"CookingPotObject", pGameObject), E_FAIL);
+
+    pGameObject = CCookingPotObject::Create(m_pGraphicDev, { VTXCNTX / 2 - 3.f - 1.f, 0.6f, 10.f });
+    NULL_CHECK_RETURN(pGameObject, E_FAIL);
+    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"CookingPotObject2", pGameObject), E_FAIL);
 #pragma endregion
 
     m_mapLayer.insert({ pLayerTag , pLayer });
