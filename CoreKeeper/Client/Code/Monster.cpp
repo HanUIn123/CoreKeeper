@@ -65,6 +65,7 @@ CMonster::CMonster(LPDIRECT3DDEVICE9 pGraphicDev)
 
 	m_bRespawned = false;
 	m_vRespawnPoint = { 0, 0, 0 };
+	m_fRespawnTimer = 0.f;
 
 	m_vecDropItem.reserve(3);
 }
@@ -266,58 +267,50 @@ void CMonster::Drop_Item()
 
 	switch (eItem)
 	{
-	case ITEM_PICKAXE:
-		pGameObject = CPickaxe::Create(m_pGraphicDev, MATERIAL_WOOD, vPos);
+	case ITEM_MUSHROOM:
+		pGameObject = CMucus::Create(m_pGraphicDev, vPos);
 		NULL_CHECK(pGameObject);
-		m_vecItemName.push_back(L"Monster_Created_Pickaxe" + std::to_wstring(m_iTagNumber++));
+		m_vecItemName.push_back(L"Monster_Created_Mucus" + std::to_wstring(m_iTagNumber++));
 		break;
-	case ITEM_HOE:
-		pGameObject = CHoe::Create(m_pGraphicDev, MATERIAL_WOOD, vPos);
+	case ITEM_BERRY_SEED:
+		pGameObject = CMucus::Create(m_pGraphicDev, vPos);
 		NULL_CHECK(pGameObject);
-		m_vecItemName.push_back(L"Monster_Created_Hoe" + std::to_wstring(m_iTagNumber++));
+		m_vecItemName.push_back(L"Monster_Created_Mucus" + std::to_wstring(m_iTagNumber++));
 		break;
-
-	case ITEM_SWORD:
-		pGameObject = CSword::Create(m_pGraphicDev, MATERIAL_WOOD, vPos);
+	case ITEM_PEPPER_SEED:
+		pGameObject = CMucus::Create(m_pGraphicDev, vPos);
 		NULL_CHECK(pGameObject);
-		m_vecItemName.push_back(L"Monster_Created_Sword" + std::to_wstring(m_iTagNumber++));
+		m_vecItemName.push_back(L"Monster_Created_Mucus" + std::to_wstring(m_iTagNumber++));
 		break;
-	case ITEM_BOW:
-		pGameObject = CBow::Create(m_pGraphicDev, vPos);
+	case ITEM_CARROT_SEED:
+		pGameObject = CMucus::Create(m_pGraphicDev, vPos);
 		NULL_CHECK(pGameObject);
-		m_vecItemName.push_back(L"Monster_Created_Bow" + std::to_wstring(m_iTagNumber++));
+		m_vecItemName.push_back(L"Monster_Created_Mucus" + std::to_wstring(m_iTagNumber++));
 		break;
-	case ITEM_STAFF:
-		pGameObject = CStaff::Create(m_pGraphicDev, vPos);
+	case ITEM_SCARLET:
+		pGameObject = CMucus::Create(m_pGraphicDev, vPos);
 		NULL_CHECK(pGameObject);
-		m_vecItemName.push_back(L"Monster_Created_Staff" + std::to_wstring(m_iTagNumber++));
+		m_vecItemName.push_back(L"Monster_Created_Mucus" + std::to_wstring(m_iTagNumber++));
 		break;
-
-	case ITEM_NECKLACE:
-		break;
-	case ITEM_RING:
-		break;
-	case ITEM_BAG:
-		break;
-	case ITEM_LANTERN:
-		break;
-
 	case ITEM_WOOD:
 		pGameObject = CWood::Create(m_pGraphicDev, vPos);
 		NULL_CHECK(pGameObject);
 		m_vecItemName.push_back(L"Monster_Created_Wood" + std::to_wstring(m_iTagNumber++));
-		break;
-	case ITEM_TORCH:
-		pGameObject = CTorch::Create(m_pGraphicDev, vPos);
-		NULL_CHECK(pGameObject);
-		m_vecItemName.push_back(L"Monster_Created_Torch" + std::to_wstring(m_iTagNumber++));
 		break;
 	case ITEM_MUCUS:
 		pGameObject = CMucus::Create(m_pGraphicDev, vPos);
 		NULL_CHECK(pGameObject);
 		m_vecItemName.push_back(L"Monster_Created_Mucus" + std::to_wstring(m_iTagNumber++));
 		break;
-	case ITEM_END:
+	case ITEM_SKULL_PIECE:
+		pGameObject = CMucus::Create(m_pGraphicDev, vPos);
+		NULL_CHECK(pGameObject);
+		m_vecItemName.push_back(L"Monster_Created_Mucus" + std::to_wstring(m_iTagNumber++));
+		break;
+	case ITEM_FEATHER_PIECE:
+		pGameObject = CMucus::Create(m_pGraphicDev, vPos);
+		NULL_CHECK(pGameObject);
+		m_vecItemName.push_back(L"Monster_Created_Mucus" + std::to_wstring(m_iTagNumber++));
 		break;
 	default:
 		break;
@@ -413,6 +406,27 @@ void CMonster::Respawn(const _float& fTimeDelta)
 	{
 		m_bRespawned = true;
 		m_pTransformCom->Set_Pos(m_vRespawnPoint.x, m_vRespawnPoint.y, m_vRespawnPoint.z);
+	}
+}
+
+void CMonster::Set_RespawnTimer(const _float& fTimeDelta)
+{
+	if (m_bStopDraw)
+	{
+		m_fRespawnTimer += fTimeDelta;
+		if (m_fRespawnTimer >= 20.f)
+		{
+			_vec3 vPos, vPlayerPos, vPlayerDir;
+			m_pPlayerTransform->Get_Info(INFO_POS, &vPos);
+			m_pTransformCom->Get_Info(INFO_POS, &vPlayerPos);
+			if (!m_pCalculatorCom->Check_Distance2D(&vPos, &vPlayerPos, 40.f))
+			{
+				m_fRespawnTimer = 0.f;
+				m_pTransformCom->Set_Pos(m_vRespawnPoint.x, m_vRespawnPoint.y, m_vRespawnPoint.z);
+				m_pStateCom->Set_Revive();
+				m_bStopDraw = false;
+			}
+		}
 	}
 }
 
