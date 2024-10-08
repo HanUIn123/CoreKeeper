@@ -155,6 +155,7 @@ call Copy.bat</Command>
   <ItemGroup>
     <ClInclude Include="..\Header\Arrow.h" />
     <ClInclude Include="..\Header\Assistance.h" />
+    <ClInclude Include="..\Header\AzeosFeather.h" />
     <ClInclude Include="..\Header\AzeosPoop.h" />
     <ClInclude Include="..\Header\BuffMgr.h" />
     <ClInclude Include="..\Header\Bullet.h" />
@@ -317,6 +318,7 @@ call Copy.bat</Command>
     <ClCompile Include="..\Code\Arrow.cpp" />
     <ClCompile Include="..\Code\Azeos.cpp" />
     <ClCompile Include="..\Code\Assistance.cpp" />
+    <ClCompile Include="..\Code\AzeosFeather.cpp" />
     <ClCompile Include="..\Code\AzeosPoop.cpp" />
     <ClCompile Include="..\Code\BuffMgr.cpp" />
     <ClCompile Include="..\Code\Bullet.cpp" />
