@@ -39,7 +39,7 @@ private:
 	RECT m_Rect;
 	RECT m_rFirstRect;
 
-	_float m_fTime;
+	_float* m_fTime;
 
 	_bool m_bRectPicked[3];
 
@@ -77,7 +77,7 @@ private:
 	*/
 
 public:
-	void Set_Render(Engine::CInventory* _pInventory1, Engine::CInventory* _pInventory2) {
+	void Set_Render(Engine::CInventory* _pInventory1, Engine::CInventory* _pInventory2, _float* _fTime) {
 		if (m_bRender)
 			m_bRender = false;
 		else
@@ -87,6 +87,8 @@ public:
 			m_pInventoryCom = _pInventory1;
 
 			m_pSecondInventoryCom = _pInventory2;
+
+			m_fTime = _fTime;
 		}
 
 	}

@@ -3,9 +3,10 @@
 #include "../Header/Player.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
+#include "../Header/CraftMgr.h"
 
 CFurnaceObject::CFurnaceObject(LPDIRECT3DDEVICE9 pGraphicDev)
-	: CObject(pGraphicDev)
+	: CObject(pGraphicDev), m_fTime(80.f)
 {
 }
 
@@ -57,6 +58,51 @@ _int CFurnaceObject::Update_GameObject(const _float& fTimeDelta)
 
 	m_pAnimatorCom->Update_Animation();
 
+
+	if (!m_pInventoryCom->Check_Empty(0))
+	{
+		m_fTime -= fTimeDelta * 5.f;
+
+		//m_Rect.top = (_long)(m_FirstRect.top + ((_float)(m_FirstRect.bottom - m_FirstRect.top) - ((_float)(m_FirstRect.bottom - m_FirstRect.top) * (m_fTime / 80.f))));
+
+		if (m_fTime <= 0)
+		{
+			m_fTime = 80.f;
+
+			CItem* pItem = m_pInventoryCom->Get_Item(0);
+
+			ITEMNUM eBarNum = ITEM_END;
+			MATERIAL eBarMat = MATERIAL_END;
+
+			switch (pItem->Get_ItemNum())
+			{
+			case ITEM_COPPER:
+				eBarNum = ITEM_COPPER_BAR;
+				eBarMat = MATERIAL_COPPER;
+				break;
+
+			case ITEM_IRON:
+				eBarNum = ITEM_IRON_BAR;
+				eBarMat = MATERIAL_IRON;
+				break;
+
+			case ITEM_SCARLET:
+				eBarNum = ITEM_SCARLET_BAR;
+				eBarMat = MATERIAL_SCARLET;
+				break;
+
+			}
+
+			CItem* pCraftItem = CCraftMgr::GetInstance()->Craft(m_pInventoryCom, eBarNum, eBarMat);
+
+			m_pInventoryCom2->Add_Item(pCraftItem);
+		}
+	}
+	else
+	{
+		m_fTime = 80.f;
+	}
+
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 
 	return Engine::CGameObject::Update_GameObject(fTimeDelta);
@@ -94,7 +140,7 @@ void CFurnaceObject::Interaction()
 	{
 		CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
 
-		pPlayer->Set_Furnace(m_pInventoryCom, m_pInventoryCom2);
+		pPlayer->Set_Furnace(m_pInventoryCom, m_pInventoryCom2, &m_fTime);
 
 		m_bCollision = true;
 	}

@@ -26,7 +26,7 @@ public:
 	virtual			void			Render_GameObject();
 
 public:
-	void            Set_Window(CInventory* pInventory1, CInventory* pInventory2) {
+	void            Set_Window(CInventory* pInventory1, CInventory* pInventory2, _float* fTime) {
 		if (m_bWindow)
 			m_bWindow = false;
 		else
@@ -35,6 +35,8 @@ public:
 
 			m_pInventoryCom = pInventory1;
 			m_pSecondInventoryCom = pInventory2;
+
+			m_fTime = fTime;
 		}
 	}
 
@@ -62,7 +64,7 @@ private:
 
 	RECT m_Rect;
 
-	_float m_fTime;
+	_float* m_fTime;
 
 	RECT m_FirstRect;
 

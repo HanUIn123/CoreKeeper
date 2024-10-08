@@ -41,6 +41,8 @@ private:
 	Engine::CAnimator* m_pAnimatorCom;
 	Engine::CInventory* m_pInventoryCom2;
 
+	_float m_fTime;
+
 public:
 	static CFurnaceObject* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);
 

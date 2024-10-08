@@ -6,7 +6,7 @@
 #include "..\Header\Food.h"
 
 CUICookingPot::CUICookingPot(LPDIRECT3DDEVICE9 pGraphicDev)
-	: Engine::CGameObject(pGraphicDev), m_bRender(false), m_fTime(80.f)
+	: Engine::CGameObject(pGraphicDev), m_bRender(false), m_fTime(nullptr)
 
 {
 
@@ -201,30 +201,7 @@ _int CUICookingPot::Update_GameObject(const _float& fTimeDelta)
 
 	if (!m_pInventoryCom->Check_Empty(0) && !m_pInventoryCom->Check_Empty(1))
 	{
-		m_fTime -= fTimeDelta * 5.f;
-
-		m_Rect.top = (_long)(m_rFirstRect.top + ((_float)(m_rFirstRect.bottom - m_rFirstRect.top) - ((_float)(m_rFirstRect.bottom - m_rFirstRect.top) * (m_fTime / 80.f))));
-
-		if (m_fTime <= 0)
-		{
-			m_fTime = 80.f;
-
-			ITEMNUM eUNum = m_pInventoryCom->Get_Item(0)->Get_ItemNum();
-
-			ITEMNUM eDNum = m_pInventoryCom->Get_Item(1)->Get_ItemNum();
-
-			CItem* pCraftItem = CCraftMgr::GetInstance()->Cook(eUNum, eDNum);
-
-			m_pSecondInventoryCom->Add_Item(pCraftItem);
-
-			m_pInventoryCom->Minus_Item(m_pInventoryCom->Get_Item(0)->Get_ItemNum(), 1);
-
-			m_pInventoryCom->Minus_Item(m_pInventoryCom->Get_Item(1)->Get_ItemNum(), 1);
-		}
-	}
-	else if (m_pInventoryCom->Check_Empty(1) && !m_pInventoryCom->Check_Empty(0) || m_pInventoryCom->Check_Empty(0) && !m_pInventoryCom->Check_Empty(1))
-	{
-		m_fTime = 80.f;
+		m_Rect.top = (_long)(m_rFirstRect.top + ((_float)(m_rFirstRect.bottom - m_rFirstRect.top) - ((_float)(m_rFirstRect.bottom - m_rFirstRect.top) * (*m_fTime / 80.f))));
 	}
 
 	return iExit;

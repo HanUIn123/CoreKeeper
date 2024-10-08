@@ -41,6 +41,8 @@ private:
 	Engine::CAnimator* m_pAnimatorCom;
 	Engine::CInventory* m_pSecondInventoryCom;
 
+	_float m_fTime;
+
 public:
 	static CCookingPotObject* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);
 
