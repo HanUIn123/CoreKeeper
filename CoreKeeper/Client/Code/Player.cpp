@@ -59,7 +59,7 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	m_bNude = true;
 
 	m_bRespawned = false;
-	m_vRespawnPoint = { VTXCNTX / 2, 0, 17.f };
+	m_vRespawnPoint = { VTXCNTX / 2, 0, 12.f };
 	m_bRespawnFirstFrame = true;
 	m_fRespawnProgress = 0.f;
 

@@ -1030,7 +1030,7 @@ void CMapEditorScene::Setting_BaseCamp()
     CMapToolTerrain* pTerrain = dynamic_cast<CMapToolTerrain*>(m_pMTGameObjectCom);
 
     // CORE
-    _int iIndex = _int(21.f * (VTXCNTX - 1) + VTXCNTX / 2);
+    _int iIndex = _int(16.f * (VTXCNTX - 1) + VTXCNTX / 2);
     pTerrain->Set_Unreachable(iIndex, true);
     pTerrain->Set_Unreachable(iIndex - 1, true);
     pTerrain->Set_Unreachable(iIndex - 2, true);
@@ -1061,7 +1061,7 @@ void CMapEditorScene::Setting_BaseCamp()
     pTerrain->Set_Unreachable(iIndex + (VTXCNTX-1) * 2 + 2, true);
 
     // SLIMESTATUE
-    iIndex = _int(27.f * (VTXCNTX - 1) + VTXCNTX / 2);
+    iIndex = _int(22.f * (VTXCNTX - 1) + VTXCNTX / 2);
     pTerrain->Set_Unreachable(iIndex, true);
     pTerrain->Set_Unreachable(iIndex - 1, true);
     pTerrain->Set_Unreachable(iIndex + 1, true);
@@ -1074,7 +1074,7 @@ void CMapEditorScene::Setting_BaseCamp()
     pTerrain->Set_Unreachable(iIndex - (VTXCNTX - 1) + 1, true);
 
     // LARVASTATUE
-    iIndex = _int(23.f * (VTXCNTX - 1) + VTXCNTX / 2 - 8.f);
+    iIndex = _int(18.f * (VTXCNTX - 1) + VTXCNTX / 2 - 8.f);
     pTerrain->Set_Unreachable(iIndex, true);
     pTerrain->Set_Unreachable(iIndex - 1, true);
     pTerrain->Set_Unreachable(iIndex + 1, true);
@@ -1087,7 +1087,7 @@ void CMapEditorScene::Setting_BaseCamp()
     pTerrain->Set_Unreachable(iIndex - (VTXCNTX - 1) + 1, true);
 
     // MALUGAZSTATUE
-    iIndex = _int(23.f * (VTXCNTX - 1) + VTXCNTX / 2 + 8.f);
+    iIndex = _int(18.f * (VTXCNTX - 1) + VTXCNTX / 2 + 8.f);
     pTerrain->Set_Unreachable(iIndex, true);
     pTerrain->Set_Unreachable(iIndex - 1, true);
     pTerrain->Set_Unreachable(iIndex + 1, true);

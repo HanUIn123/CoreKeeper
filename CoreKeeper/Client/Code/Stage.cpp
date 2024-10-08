@@ -151,111 +151,107 @@ HRESULT CStage::Ready_Layer_Environment(const _tchar* pLayerTag)
 
 #pragma region BASECAMP
 
-    /*pGameObject = CSpotlite::Create(m_pGraphicDev, 5.0f, { VTXCNTX / 2 + 10.f, 12.3f, 21.f });
-    NULL_CHECK_RETURN(pGameObject, E_FAIL);
-    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Spotlite", pGameObject), E_FAIL);*/
-
-    pGameObject = CCore::Create(m_pGraphicDev, { VTXCNTX / 2, 2.3f, 21.f });
+    pGameObject = CCore::Create(m_pGraphicDev, { VTXCNTX / 2, 2.3f, 11.f + 5.f });
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Core", pGameObject), E_FAIL);
 
-    pGameObject = CCoreBase::Create(m_pGraphicDev, { VTXCNTX / 2, 0.1f, 21.f });
+    pGameObject = CCoreBase::Create(m_pGraphicDev, { VTXCNTX / 2, 0.1f, 11.f + 5.f });
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"CoreBase", pGameObject), E_FAIL);
 
-    pGameObject = CStatue::Create(m_pGraphicDev, { VTXCNTX / 2, 1.3f, 27.f }, 0);
+    pGameObject = CStatue::Create(m_pGraphicDev, { VTXCNTX / 2, 1.3f, 17.f + 5.f }, 0);
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"SlimeStatue", pGameObject), E_FAIL);
 
-    pGameObject = CStatueBase::Create(m_pGraphicDev, { VTXCNTX / 2, 0.1f, 27.f }, 0);
+    pGameObject = CStatueBase::Create(m_pGraphicDev, { VTXCNTX / 2, 0.1f, 17.f + 5.f }, 0);
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"SlimeStatueBase", pGameObject), E_FAIL);
 
     // 슬라임 밑 세로 타일
-    pGameObject = CTile::Create(m_pGraphicDev, 0, 3, { VTXCNTX / 2, 0.1f, 25.f });
+    pGameObject = CTile::Create(m_pGraphicDev, 0, 3, { VTXCNTX / 2, 0.1f, 15.f + 5.f });
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Tile0", pGameObject), E_FAIL);
 
-    pGameObject = CTile::Create(m_pGraphicDev, 0, 3, { VTXCNTX / 2, 0.1f, 24.f });
+    pGameObject = CTile::Create(m_pGraphicDev, 0, 3, { VTXCNTX / 2, 0.1f, 14.f + 5.f });
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Tile1", pGameObject), E_FAIL);
 
-    pGameObject = CStatue::Create(m_pGraphicDev, { VTXCNTX / 2 - 8.f, 1.3f, 23.f }, 1);
+    pGameObject = CStatue::Create(m_pGraphicDev, { VTXCNTX / 2 - 8.f, 1.3f, 13.f + 5.f }, 1);
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"LarvaStatue", pGameObject), E_FAIL);
 
-    pGameObject = CStatueBase::Create(m_pGraphicDev, { VTXCNTX / 2 - 8.f, 0.1f, 23.f }, 1);
+    pGameObject = CStatueBase::Create(m_pGraphicDev, { VTXCNTX / 2 - 8.f, 0.1f, 13.f + 5.f }, 1);
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"LarvaStatueBase", pGameObject), E_FAIL);
 
     // 벌레 밑 가로 타일
-    pGameObject = CTile::Create(m_pGraphicDev, 1, 0, { VTXCNTX / 2 - 9.f, 0.1f, 21.f });
+    pGameObject = CTile::Create(m_pGraphicDev, 1, 0, { VTXCNTX / 2 - 9.f, 0.1f, 11.f + 5.f });
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Tile2", pGameObject), E_FAIL);
 
-    pGameObject = CTile::Create(m_pGraphicDev, 1, 1, { VTXCNTX / 2 - 8.f, 0.1f, 21.f });
+    pGameObject = CTile::Create(m_pGraphicDev, 1, 1, { VTXCNTX / 2 - 8.f, 0.1f, 11.f + 5.f });
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Tile3", pGameObject), E_FAIL);
 
-    pGameObject = CTile::Create(m_pGraphicDev, 1, 2, { VTXCNTX / 2 - 7.f, 0.1f, 21.f });
+    pGameObject = CTile::Create(m_pGraphicDev, 1, 2, { VTXCNTX / 2 - 7.f, 0.1f, 11.f + 5.f });
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Tile4", pGameObject), E_FAIL);
 
-    pGameObject = CTile::Create(m_pGraphicDev, 1, 2, { VTXCNTX / 2 - 6.f, 0.1f, 21.f });
+    pGameObject = CTile::Create(m_pGraphicDev, 1, 2, { VTXCNTX / 2 - 6.f, 0.1f, 11.f + 5.f });
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Tile5", pGameObject), E_FAIL);
 
-    pGameObject = CTile::Create(m_pGraphicDev, 1, 2, { VTXCNTX / 2 - 5.f, 0.1f, 21.f });
+    pGameObject = CTile::Create(m_pGraphicDev, 1, 2, { VTXCNTX / 2 - 5.f, 0.1f, 11.f + 5.f });
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Tile6", pGameObject), E_FAIL);
 
-    pGameObject = CTile::Create(m_pGraphicDev, 1, 2, { VTXCNTX / 2 - 4.f, 0.1f, 21.f });
+    pGameObject = CTile::Create(m_pGraphicDev, 1, 2, { VTXCNTX / 2 - 4.f, 0.1f, 11.f + 5.f });
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Tile7", pGameObject), E_FAIL);
 
-    pGameObject = CTile::Create(m_pGraphicDev, 1, 2, { VTXCNTX / 2 - 3.f, 0.1f, 21.f });
+    pGameObject = CTile::Create(m_pGraphicDev, 1, 2, { VTXCNTX / 2 - 3.f, 0.1f, 11.f + 5.f });
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Tile8", pGameObject), E_FAIL);
 
-    pGameObject = CStatue::Create(m_pGraphicDev, { VTXCNTX / 2 + 8.f, 1.3f, 23.f }, 2);
+    pGameObject = CStatue::Create(m_pGraphicDev, { VTXCNTX / 2 + 8.f, 1.3f, 13.f + 5.f }, 2);
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"MalugazStatue", pGameObject), E_FAIL);
 
-    pGameObject = CStatueBase::Create(m_pGraphicDev, { VTXCNTX / 2 + 8.f, 0.1f, 23.f }, 2);
+    pGameObject = CStatueBase::Create(m_pGraphicDev, { VTXCNTX / 2 + 8.f, 0.1f, 13.f + 5.f }, 2);
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"MalugazStatueBase", pGameObject), E_FAIL);
 
     // 말루가즈 밑 가로 타일
-    pGameObject = CTile::Create(m_pGraphicDev, 2, 4, { VTXCNTX / 2 + 9.f, 0.1f, 21.f });
+    pGameObject = CTile::Create(m_pGraphicDev, 2, 4, { VTXCNTX / 2 + 9.f, 0.1f, 11.f + 5.f });
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Tile9", pGameObject), E_FAIL);
 
-    pGameObject = CTile::Create(m_pGraphicDev, 2, 1, { VTXCNTX / 2 + 8.f, 0.1f, 21.f });
+    pGameObject = CTile::Create(m_pGraphicDev, 2, 1, { VTXCNTX / 2 + 8.f, 0.1f, 11.f + 5.f });
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Tile10", pGameObject), E_FAIL);
 
-    pGameObject = CTile::Create(m_pGraphicDev, 2, 2, { VTXCNTX / 2 + 7.f, 0.1f, 21.f });
+    pGameObject = CTile::Create(m_pGraphicDev, 2, 2, { VTXCNTX / 2 + 7.f, 0.1f, 11.f + 5.f });
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Tile11", pGameObject), E_FAIL);
 
-    pGameObject = CTile::Create(m_pGraphicDev, 2, 2, { VTXCNTX / 2 + 6.f, 0.1f, 21.f });
+    pGameObject = CTile::Create(m_pGraphicDev, 2, 2, { VTXCNTX / 2 + 6.f, 0.1f, 11.f + 5.f });
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Tile12", pGameObject), E_FAIL);
 
-    pGameObject = CTile::Create(m_pGraphicDev, 2, 2, { VTXCNTX / 2 + 5.f, 0.1f, 21.f });
+    pGameObject = CTile::Create(m_pGraphicDev, 2, 2, { VTXCNTX / 2 + 5.f, 0.1f, 11.f + 5.f });
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Tile13", pGameObject), E_FAIL);
 
-    pGameObject = CTile::Create(m_pGraphicDev, 2, 2, { VTXCNTX / 2 + 4.f, 0.1f, 21.f });
+    pGameObject = CTile::Create(m_pGraphicDev, 2, 2, { VTXCNTX / 2 + 4.f, 0.1f, 11.f + 5.f });
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Tile14", pGameObject), E_FAIL);
 
-    pGameObject = CTile::Create(m_pGraphicDev, 2, 2, { VTXCNTX / 2 + 3.f, 0.1f, 21.f });
+    pGameObject = CTile::Create(m_pGraphicDev, 2, 2, { VTXCNTX / 2 + 3.f, 0.1f, 11.f + 5.f });
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Tile15", pGameObject), E_FAIL);
 
 
-    pGameObject = CSpawnPoint::Create(m_pGraphicDev, { VTXCNTX / 2, 0.1f, 17.f });
+    pGameObject = CSpawnPoint::Create(m_pGraphicDev, { VTXCNTX / 2, 0.1f, 7.f + 5.f });
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"SpawnPoint", pGameObject), E_FAIL);
 
@@ -289,6 +285,10 @@ HRESULT CStage::Ready_Layer_Environment(const _tchar* pLayerTag)
     dynamic_cast<CGravestoneObject*>(pGameObject)->Add_Item(pItem2);
     dynamic_cast<CGravestoneObject*>(pGameObject)->Add_Item(pItem3);
 
+    pGameObject = CSkeleton::Create(m_pGraphicDev, { 77.f, 0.5f, 18.f });
+    NULL_CHECK_RETURN(pGameObject, E_FAIL);
+    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Skeleton", pGameObject), E_FAIL);
+
     pGameObject = CStatueCore::Create(m_pGraphicDev, ITEM_MAL_CORE);
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
@@ -304,29 +304,7 @@ HRESULT CStage::Ready_Layer_Environment(const _tchar* pLayerTag)
     dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"LARVA_Core", pGameObject), E_FAIL);
 
-    pGameObject = CSkeleton::Create(m_pGraphicDev, { 77.f, 0.5f, 18.f });
-    NULL_CHECK_RETURN(pGameObject, E_FAIL);
-    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Skeleton", pGameObject), E_FAIL);
-
-    pGameObject = CTableObject::Create(m_pGraphicDev, { 83.f, 0.5f, 16.f }, MATERIAL_WOOD);
-    NULL_CHECK_RETURN(pGameObject, E_FAIL);
-    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"WoodCraftTable", pGameObject), E_FAIL);
-
-    pGameObject = CTableObject::Create(m_pGraphicDev, { 81.f, 0.5f, 16.f }, MATERIAL_COPPER);
-    NULL_CHECK_RETURN(pGameObject, E_FAIL);
-    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"CopperCraftTable", pGameObject), E_FAIL);
-
-    pGameObject = CTableObject::Create(m_pGraphicDev, { 79.f, 0.5f, 16.f }, MATERIAL_IRON);
-    NULL_CHECK_RETURN(pGameObject, E_FAIL);
-    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"IronCraftTable", pGameObject), E_FAIL);
-
-    pGameObject = CFurnaceObject::Create(m_pGraphicDev, { 77.f, .5f, 16.f });
-    NULL_CHECK_RETURN(pGameObject, E_FAIL);
-    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Furnace", pGameObject), E_FAIL);
-
-    pGameObject = CCookingPotObject::Create(m_pGraphicDev, { 75.f, .5f, 16.f });
-    NULL_CHECK_RETURN(pGameObject, E_FAIL);
-    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"CookingPot", pGameObject), E_FAIL);
+    
 
     //pGameObject = CAzeos::Create(m_pGraphicDev, { 75.f, 1.f, 16.f });
     //NULL_CHECK_RETURN(pGameObject, E_FAIL);
