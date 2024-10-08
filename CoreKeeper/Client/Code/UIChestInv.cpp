@@ -253,7 +253,7 @@ void CUIChestInv::Render_GameObject()
 
 			_vec2 pos(m_BRect.right - 20.f, m_BRect.top + 25.f);
 
-			Engine::Render_Font_Custom(L"Font_Item", tFont, &pos, DT_RIGHT,	 D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
+			Engine::Render_Font(L"Font_Item", tFont, &pos, D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
 		}
 	}
 }

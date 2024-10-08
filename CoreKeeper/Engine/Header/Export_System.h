@@ -40,6 +40,7 @@ inline void				Render_Font(const _tchar* pFontTag,
 inline void				Render_Font_Center(const _tchar* pFontTag,
 	const _tchar* pString,
 	const _vec2* pPos,
+	const _float fSize,
 	D3DXCOLOR Color);
 
 // inputDev
