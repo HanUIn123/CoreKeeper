@@ -268,17 +268,6 @@ void CUIScreenInv::Render_GameObject()
 		m_pItem = pPlayerInv->Get_Item(iIndex);
 
 		_int iCount = m_pItem->Get_Count();
-		
-		if (iCount != 1)
-		{
-			wstring sFont = std::to_wstring(iCount);
-
-			const _tchar* tFont = sFont.c_str();
-
-			_vec2 pos(m_BRect.right - 15.f, m_BRect.top + 30.f);
-
-			Engine::Render_Font(L"Font_Item", tFont, &pos, D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
-		}
 
 		Engine::MATERIAL material = m_pItem->Get_ItemMaterial();
 
@@ -406,6 +395,16 @@ void CUIScreenInv::Render_GameObject()
 
 		m_pItem->Get_Buffer()->Render_First();
 
+		if (iCount != 1)
+		{
+			wstring sFont = std::to_wstring(iCount);
+
+			const _tchar* tFont = sFont.c_str();
+
+			_vec2 pos(m_BRect.right - 25.f, m_BRect.top + 30.f);
+
+			Engine::Render_Font(L"Font_Item", tFont, &pos, D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
+		}
 
 	}
 

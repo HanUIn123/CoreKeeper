@@ -123,11 +123,10 @@ _uint CLoading::Loading_Stage()
 
 
     // 파티클
-
     _vec3 vPPos = { 0.f, 0.f, 0.f };
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Firework", Engine::CFirework::Create(m_pGraphicDev, &vPPos, 10)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Fall", Engine::CFall::Create(m_pGraphicDev, &vPPos, 8, 0.01f)), E_FAIL);
-    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_DirtFall", Engine::CFall::Create(m_pGraphicDev, &vPPos, 50, 0.01f)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_DirtFall", Engine::CFall::Create(m_pGraphicDev, &vPPos, 80, 0.0001f, 0.00001f, D3DCOLOR_ARGB(255, 108, 60, 12))), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Followers", Engine::CFollow::Create(m_pGraphicDev, &vPPos, 10)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Smoke", Engine::CSmoke::Create(m_pGraphicDev, &vPPos, 12)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Hit", Engine::CHit::Create(m_pGraphicDev, &vPPos, 1)), E_FAIL);

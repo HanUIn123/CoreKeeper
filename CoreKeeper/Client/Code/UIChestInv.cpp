@@ -204,12 +204,29 @@ void CUIChestInv::Render_GameObject()
 			matWorld._42 += 15.f;
 			break;
 
+		case ITEM_IRON_BAR:
+			matWorld._11 = 15.f;
+			matWorld._22 = 15.f;
+			break;
+
+		case ITEM_COPPER_BAR:
+			matWorld._11 = 15.f;
+			matWorld._22 = 15.f;
+			break;
+
+		case ITEM_SCARLET_BAR:
+			matWorld._11 = 15.f;
+			matWorld._22 = 15.f;
+			break;
 		dafault:
 			matWorld._11 = 20.f;
 			matWorld._22 = 20.f;
 			break;
 		}
 
+		m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
+
+		pItem->Get_Buffer()->Render_First();
 
 		if (iCount != 1)
 		{
@@ -217,14 +234,10 @@ void CUIChestInv::Render_GameObject()
 
 			const _tchar* tFont = sFont.c_str();
 
-			_vec2 pos(m_BRect.right - 1.f, m_BRect.top + 12.f);
+			_vec2 pos(m_BRect.right - 20.f, m_BRect.top + 25.f);
 
 			Engine::Render_Font(L"Font_Item", tFont, &pos, D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
 		}
-
-		m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
-
-		pItem->Get_Buffer()->Render_First();
 	}
 }
 

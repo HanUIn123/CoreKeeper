@@ -86,6 +86,8 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 	m_iLightNum = g_iLightNum++;
 
 	m_fHungerTime = 0.f;
+
+	m_bDestroyWall = false;
 }
 
 CPlayer::~CPlayer()
@@ -103,6 +105,7 @@ HRESULT CPlayer::Ready_GameObject()
 
 	m_pFireParticleCom->init(L"../Bin/Resource/Texture/Particle/Basic_Particle.png", 1, 0.1f); // 파티클 시작
 	m_pFollowParticleCom->init(L"../Bin/Resource/Texture/Particle/Fire_Particle/Fire_Particle_%d.png", 5); // 파티클 시작
+	m_pDirtParticleCom->init(L"../Bin/Resource/Texture/Particle/Basic_Particle.png", 1, 0.1f);
 	return S_OK;
 }
 
@@ -232,6 +235,12 @@ void CPlayer::Render_GameObject()
 
 	if(m_bFire)
 		m_pFollowParticleCom->render();
+
+	if (m_bDestroyWall)
+	{
+		m_pGraphicDev->SetTransform(D3DTS_WORLD, &m_bPickaxeMatrix);
+		m_pDirtParticleCom->render();
+	}
 }
 
 HRESULT CPlayer::Add_Component()
@@ -281,6 +290,10 @@ HRESULT CPlayer::Add_Component()
 	pComponent = m_pFollowParticleCom = dynamic_cast<CFollow*>(Engine::Clone_Proto(L"Proto_Followers"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_DYNAMIC].insert({ L"Com_Follow", pComponent });
+
+	pComponent = m_pDirtParticleCom = dynamic_cast<CFall*>(Engine::Clone_Proto(L"Proto_DirtFall"));
+	NULL_CHECK_RETURN(pComponent, E_FAIL);
+	m_mapComponent[ID_DYNAMIC].insert({ L"Com_DirtFall", pComponent });
 	///m_pFireParticleCom
 	return S_OK;
 }
@@ -1162,8 +1175,39 @@ void CPlayer::PickAxe()
 						pWall->Set_DurabiliryMinus(eAxeMaterial + 1);
 					if (pWall->Get_Durability() <= 0)
 					{
+						/*
+						m_pHandedItem = m_pInventoryCom->Get_HandedItem(m_iHandNum);
+
+						_vec3 vPos = dynamic_cast<CPickaxe*>(m_pHandedItem)->Get_PickaxePos();
+						*/
+						m_pTransformCom->Get_WorldMatrix(&m_bPickaxeMatrix);
+
+						_vec3 vAxePos, vAxeRight;
+						m_pTransformCom->Get_Info(INFO_POS, &vAxePos);
+						m_pTransformCom->Get_Info(INFO_RIGHT, &vAxeRight);
+						switch (m_eDir)
+						{
+						case FRONT:
+							vAxePos -= vLook * 1.4f;
+							break;
+						case BACK:
+							vAxePos += vLook * 1.4f;
+							break;
+						case RIGHT:
+							vAxePos += vAxeRight * 1.4f;
+							break;
+						case LEFT:
+							vAxePos += vAxeRight * 1.4f;
+							break;
+						}
+						m_bPickaxeMatrix._41 = vAxePos.x;
+						//m_bPickaxeMatrix._42 = vAxePos.y;
+						m_bPickaxeMatrix._43 = vAxePos.z;
+
+						m_pDirtParticleCom->reset();
 						pWall->Drop_Item();
 						pWall->Set_Destroy();
+						m_bDestroyWall = true;
 						pCurScene->Delete_GameObject(L"Layer_Environment", pWall, dynamic_cast<CStage*>(pCurScene)->Get_WallNameByIndex(iIndex)->c_str());
 						pTerrain->Set_Unreachable(iIndex, false);
 
@@ -1212,6 +1256,32 @@ void CPlayer::PickAxe()
 						pWall->Set_DurabiliryMinus(eAxeMaterial + 1);
 					if (pWall->Get_Durability() <= 0)
 					{
+						m_pTransformCom->Get_WorldMatrix(&m_bPickaxeMatrix);
+
+						_vec3 vAxePos, vAxeRight;
+						m_pTransformCom->Get_Info(INFO_POS, &vAxePos);
+						m_pTransformCom->Get_Info(INFO_RIGHT, &vAxeRight);
+						switch (m_eDir)
+						{
+						case FRONT:
+							vAxePos -= vLook * 1.4f;
+							break;
+						case BACK:
+							vAxePos += vLook * 1.4f;
+							break;
+						case RIGHT:
+							vAxePos += vAxeRight * 1.4f;
+							break;
+						case LEFT:
+							vAxePos += vAxeRight * 1.4f;
+							break;
+						}
+						m_bPickaxeMatrix._41 = vAxePos.x;
+						m_bPickaxeMatrix._42 = vAxePos.y;
+						m_bPickaxeMatrix._43 = vAxePos.z;
+
+						m_pDirtParticleCom->reset();
+						m_bDestroyWall = true;
 						pWall->Drop_Item();
 						pWall->Set_Destroy();
 						pCurScene->Delete_GameObject(L"Layer_Environment", pWall, dynamic_cast<CStage*>(pCurScene)->Get_WallNameByIndex(iIndex)->c_str());
@@ -2259,7 +2329,16 @@ void CPlayer::Particle_Update(_float fTimeDelta)
 	}
 	m_pFollowParticleCom->update(fTimeDelta);
 
+	if (m_bDestroyWall)
+	{
+		m_pDirtParticleCom->update(fTimeDelta);
 
+		if (m_pDirtParticleCom->isDead())
+		{
+			m_pDirtParticleCom->reset();
+			m_bDestroyWall = false;
+		}
+	}
 }
 
 void CPlayer::Set_KnockBack(_vec3 vEnemyPos, _int iDamage, _float fDist, PLAYERHITTYPE eHit)

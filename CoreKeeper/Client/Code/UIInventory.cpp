@@ -244,12 +244,20 @@ void CUIInventory::Render_GameObject()
 			matWorld._22 = 20.f;
 			break;
 
+		case ITEM_TORCH:
+			matWorld._11 = 30.f;
+			matWorld._22 = 30.f;
+			break;
+
 		default:
-			matWorld._11 = 10.f;
-			matWorld._22 = 10.f;
+			matWorld._11 = 20.f;
+			matWorld._22 = 20.f;
 			break;
 		}
 
+		m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
+
+		pItem->Get_Buffer()->Render_First();
 
 		if (iCount != 1)
 		{
@@ -257,14 +265,10 @@ void CUIInventory::Render_GameObject()
 
 			const _tchar* tFont = sFont.c_str();
 
-			_vec2 pos(m_BRect.right - 1.f, m_BRect.top + 12.f);
+			_vec2 pos(m_BRect.right - 25.f, m_BRect.top + 30.f);
 
 			Engine::Render_Font(L"Font_Item", tFont, &pos, D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
 		}
-
-		m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
-
-		pItem->Get_Buffer()->Render_First();
 	}
 }
 

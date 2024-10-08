@@ -23,6 +23,8 @@ public:
 	virtual			void			LateUpdate_GameObject();
 	virtual			void			Render_GameObject();
 
+	_vec3                           Get_PickaxePos();
+
 private:
 	HRESULT			Add_Component();
 

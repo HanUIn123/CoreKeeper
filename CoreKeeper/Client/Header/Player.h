@@ -137,6 +137,7 @@ private:
 	Engine::CInventory*     m_pEquipInventoryCom; // 장비 인벤토리
 	Engine::CFall*			m_pFireParticleCom; // 파티클 컴퍼넌트
 	Engine::CFollow*        m_pFollowParticleCom; // 파티클 컴퍼넌트
+	Engine::CFall*          m_pDirtParticleCom;
 
 
 	Engine::DIRECTION		m_eDir;
@@ -179,7 +180,11 @@ private:
 	_bool                   m_bFurnace;
 	_bool                   m_bCookingPot;
 
+	_matrix                 m_bPickaxeMatrix;
+
 	_bool                   m_bNoMove;    // UI건드릴때 캐릭터 움직이지 않게하는 용도
+
+	_bool                   m_bDestroyWall;
 
 	_bool                   m_bBleed;
 	_float                  m_fBleedTime;
