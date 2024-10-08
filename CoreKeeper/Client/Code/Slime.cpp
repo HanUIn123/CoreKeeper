@@ -26,6 +26,7 @@ HRESULT CSlime::Ready_GameObject(_vec3 vPos)
     m_pStateCom->Set_Stat(100, 0, 10, 0);
     m_vecDropItem.push_back(ITEM_MUCUS);
     m_vecDropItem.push_back(ITEM_WOOD);
+    m_vecDropItem.push_back(ITEM_BERRY_SEED);
     Set_Speed(0.8f);
 
     m_pHitParticleCom->init(L"../Bin/Resource/Texture/Effect/Hit_%d.png", 5, 1.0f);

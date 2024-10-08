@@ -195,6 +195,7 @@ HRESULT CMapEditorScene::Ready_Prototype()
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_WallCube", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Wall/Wall_%d.dds", TEX_CUBE, 3)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_DarkWallCube", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/DarkWall/Brick_Cube_%d.dds", TEX_CUBE, 48)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MapToolWallCube", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/MapToolWall/black.dds", TEX_CUBE, 1)), E_FAIL);
+    //FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MapToolWallCube", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/MapToolWall/DarkSky.dds", TEX_CUBE, 1)), E_FAIL);
 
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ObjectTex", Engine::CObjectTex::Create(m_pGraphicDev, 0.5f, 0.5f, 0.0f)), E_FAIL);
 
@@ -273,24 +274,24 @@ HRESULT CMapEditorScene::Ready_Layer_GameLogic(const _tchar* pLayerTag)
 
     _vec2 vBigWallPos[4] =
     {
-        // 아래쪽 큰 벽
-        {79.5f, -12.5f},
-        // 왼쪽 큰 벽
-        {-12.5f, 99.5f},
-        //오른쪽 큰 벽
-        {171.5f, 99.5f},
-        // 위쪽 큰 벽
-        {79.5f, 171.5f}
+        { 65.0f / 2.0f, -12.5f }, 
+        {-12.5f, 129.0f / 2.0f}, 
+        {65.0f + 10.5f, 129.0f / 2.0f},
+        {65.0f / 2.0f, 129.0f + 10.5f}  
     };
 
     wstring wsBigWallName[4];
     for (_int i = 0; i < 4; ++i)
     {
         wsBigWallName[i] = L"MapToolWall_" + std::to_wstring(i);
-        if(i == 0 || i == 3)
+        if(i == 0)
             m_pMTWGemeObjectCom = CMapToolWall::Create(m_pGraphicDev, vBigWallPos[i].x, vBigWallPos[i].y, 1);
-        else if(i == 1 || i == 2)
+        else if(i == 1)
             m_pMTWGemeObjectCom = CMapToolWall::Create(m_pGraphicDev, vBigWallPos[i].x, vBigWallPos[i].y, 2);
+        else if(i == 2)
+            m_pMTWGemeObjectCom = CMapToolWall::Create(m_pGraphicDev, vBigWallPos[i].x, vBigWallPos[i].y, 2);
+        else if(i == 3)
+            m_pMTWGemeObjectCom = CMapToolWall::Create(m_pGraphicDev, vBigWallPos[i].x, vBigWallPos[i].y, 1);
         NULL_CHECK_RETURN(m_pMTWGemeObjectCom, E_FAIL);
         FAILED_CHECK_RETURN(pLayer->Add_GameObject(wsBigWallName[i].c_str(), m_pMTWGemeObjectCom), E_FAIL);
     }
@@ -1179,37 +1180,37 @@ void CMapEditorScene::MapFile_Save()
     DWORD	dwByte4(0);
 
     /*
-          // 아래쪽 큰 벽
-        {79.5f, -12.5f},
-        // 왼쪽 큰 벽
-        {-12.5f, 99.5f},
-        //오른쪽 큰 벽
-        {171.5f, 99.5f},
-        // 위쪽 큰 벽
-        {79.5f, 171.5f}
+        // 아래쪽 큰 벽: 
+        { 65.0f / 2.0f, -12.5f }, 
+        // 왼쪽 큰 벽:
+        {-12.5f, 129.0f / 2.0f}, 
+        // 오른쪽 큰 벽: 
+        {65.0f + 10.5f, 129.0f / 2.0f}, 
+        // 위쪽 큰 벽: 
+        {65.0f / 2.0f, 129.0f + 10.5f}  
     */
 
     for (_int i = 0; i < 4; ++i)
     {
         if (i == 0)
         {
-            vTempBigWallPos = _vec3(79, 0.0f, -12.5f);
+            vTempBigWallPos = _vec3(65.0f / 2.0f, 0.0f, -12.5f);
             vTempBigWallType = 1;
         }
         else if (i == 1)
         {
-            vTempBigWallPos = _vec3(-12.5f, 0.0f, 99.5f);
+            vTempBigWallPos = _vec3(-12.5f, 0.0f, 129.0f / 2.0f);
             vTempBigWallType = 2; 
         }
         else if (i == 2)
         {
-            vTempBigWallPos = _vec3(79.f, 0.0f, 171.f);
-            vTempBigWallType = 1;
+            vTempBigWallPos = _vec3(65.0f + 10.5f, 0.0f, 129.0f / 2.0f);
+            vTempBigWallType = 2;
         }
         else if (i == 3)
         {
-            vTempBigWallPos = _vec3(171.f, 0.0f, 99.5f);
-            vTempBigWallType = 2; 
+            vTempBigWallPos = _vec3(65.0f / 2.0f,0.0f, 129.0f + 10.5f);
+            vTempBigWallType = 1; 
         }
 
         WriteFile(m_hBigWallFile, &vTempBigWallPos, sizeof(_vec3), &dwByte4, nullptr);

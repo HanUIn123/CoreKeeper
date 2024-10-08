@@ -1,6 +1,7 @@
 #pragma once
 #include "Object.h"
 #include "Item.h"
+#include "Scene.h"
 
 BEGIN(Engine)
 
@@ -34,7 +35,7 @@ public:
 	virtual			void			Set_ObjectPos(_vec3 _iBuildingPos) { m_vBuildPosition = _iBuildingPos; }
 
 public:
-	void							Add_Item(CItem* _pItem);
+	void							SetUp_Item(CScene* _pScene);
 
 private:
 	HRESULT							Add_Component();
@@ -44,5 +45,9 @@ public:
 
 private:
 	virtual void					Free();
+
+private:
+	vector<wstring>					m_vecItemName;
+	int								m_iItemNameNum;
 };
 

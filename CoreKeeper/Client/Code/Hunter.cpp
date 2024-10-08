@@ -51,8 +51,9 @@ HRESULT CHunter::Ready_GameObject(_vec3 vPos)
     m_pTransformCom->Set_Pos(m_vRespawnPoint.x, m_vRespawnPoint.y, m_vRespawnPoint.z);
     m_pTransformCom->Set_Scale(1.2f, 1.2f, 1.2f);
     m_pStateCom->Set_Stat(100, 0, 10, 0);
-    m_vecDropItem.push_back(ITEM_SWORD);
+    m_vecDropItem.push_back(ITEM_FEATHER_PIECE);
     m_vecDropItem.push_back(ITEM_WOOD);
+    m_vecDropItem.push_back(ITEM_SCARLET);
     Set_Speed(1.5f);
 
     m_pHitParticleCom->init(L"../Bin/Resource/Texture/Effect/Hit_%d.png", 5, 1.0f);

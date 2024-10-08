@@ -9,17 +9,16 @@ class CCalculator;
 class CTexture;
 class CColliderCube;
 class CInventory;
-class CLightBuffer;
 
 END
 
-class CSpotlite : public CObject
+class CBossSpawnPoint : public CObject
 {
 private:
-	explicit						CSpotlite(LPDIRECT3DDEVICE9 pGraphicDev);
-	virtual							~CSpotlite();
+	explicit						CBossSpawnPoint(LPDIRECT3DDEVICE9 pGraphicDev);
+	virtual							~CBossSpawnPoint();
 public:
-	virtual			HRESULT			Ready_GameObject(float m_fRange, _vec3 vPos);
+	virtual			HRESULT			Ready_GameObject(int _iStatueNum, int _iTextureNum, _vec3 vPos);
 	virtual			_int			Update_GameObject(const _float& fTimeDelta);
 	virtual			void			LateUpdate_GameObject();
 	virtual			void			Render_GameObject();
@@ -32,19 +31,20 @@ public:
 
 private:
 	HRESULT							Add_Component();
-	void							SetUp_Light();
 
-private:
-	Engine::CLightBuffer* m_pLightBufferCom;
+protected:
+	Engine::CObjectTex* m_pEmissiveBufferCom;
+	Engine::CTexture* m_pEmissiveTextureCom;
 
 public:
-	static CSpotlite* Create(LPDIRECT3DDEVICE9 pGraphicDev, float m_fRange, _vec3 vPos);
+	static CBossSpawnPoint* Create(LPDIRECT3DDEVICE9 pGraphicDev, int _iStatueNum, int _iTextureNum, _vec3 vPos);
 
 private:
 	virtual void					Free();
 
 private:
-	int								m_iLightNum;
-	float							m_fRange;
+	int								m_iTextureNum;
+	int								m_iStatueNum;
+	bool							m_bActive;
 };
 
