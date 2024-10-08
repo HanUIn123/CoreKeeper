@@ -26,6 +26,7 @@ private:
 	void			Render_Priority(LPDIRECT3DDEVICE9& pGraphicDev);
 	void			Render_NonAlpha(LPDIRECT3DDEVICE9& pGraphicDev);
 	void			Render_Alpha(LPDIRECT3DDEVICE9& pGraphicDev);
+	void			Render_Wall(LPDIRECT3DDEVICE9& pGraphicDev);
 	void			Render_UI(LPDIRECT3DDEVICE9& pGraphicDev);
 	void			Render_UIALPHA(LPDIRECT3DDEVICE9& pGraphicDev);
 	void            Render_Window(LPDIRECT3DDEVICE9& pGraphicDev);

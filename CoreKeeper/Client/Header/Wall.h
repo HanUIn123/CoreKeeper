@@ -59,6 +59,7 @@ public:
     _bool                                                   Get_Destroyed() { return m_bWallDestroyed; }
 
     void                                                    Drop_Item();
+    void                                                    Set_RenderAlpha(_bool bAlpha) { m_bRenderAlpha = bAlpha; }
 
 private:
     HRESULT													Add_Component();
@@ -90,7 +91,8 @@ private:
     vector<CWall*>                                          m_vecAroundWall;
 
     _bool                                                   m_bWallDestroyed;
- 
+    _bool                                                   m_bRenderAlpha;
+
 private:
     bool    m_bActive;
     int     m_iCurImgNum;
