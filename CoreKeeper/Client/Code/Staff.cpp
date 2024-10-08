@@ -4,6 +4,8 @@
 #include "Export_Utility.h"
 #include "..\Header\Magic.h"
 
+_int	CStaff::m_iMagicNum = 0;
+
 CStaff::CStaff(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CItem(pGraphicDev)
 {
@@ -44,7 +46,16 @@ _int CStaff::Update_GameObject(const _float& fTimeDelta)
 {
 	if (!m_pMagic)
 	{
-		m_pMagic = dynamic_cast<CMagic*>(Get_GameObject(L"Layer_GameLogic", L"Magic"));
+
+		CScene* pScene = Engine::Get_Scene();
+		_vec3 vPos;
+		m_pTransformCom->Get_Info(INFO_POS, &vPos);
+		vPos.y += 2.f;
+		CGameObject* pProjectile = CMagic::Create(m_pGraphicDev);
+		NULL_CHECK_RETURN(pProjectile, 0);
+		m_pMagic = dynamic_cast<CMagic*>(pProjectile);
+		m_strMagic = L"Magic_" + std::to_wstring(m_iMagicNum++);
+		FAILED_CHECK_RETURN(pScene->Create_GameObject(L"Layer_GameLogic", pProjectile, m_strMagic.c_str()), 0);
 		m_pTransformMagic = dynamic_cast<CTransform*>(m_pMagic->Get_Component(ID_DYNAMIC, L"Com_Transform"));
 	}
 	else
