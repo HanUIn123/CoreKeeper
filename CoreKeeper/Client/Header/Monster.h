@@ -56,6 +56,7 @@ protected:
 	void			Set_Cast();
 
 	void			Respawn(const _float& fTimeDelta);
+	void			Set_RespawnTimer(const _float& fTimeDelta);
 
 public:
 	_bool			Get_StopDraw() { return m_bStopDraw; }
@@ -136,6 +137,8 @@ protected:
 
 	_vec3					m_vRespawnPoint;
 	_bool					m_bRespawned;
+
+	_float					m_fRespawnTimer;
 
 	static int				m_iTagNumber;
 
