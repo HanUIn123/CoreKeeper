@@ -484,12 +484,13 @@ void CCraftMgr::Set_Recipe()
     defPotionRecipe.vecIngredients.push_back({ ITEM_CARROT, 3 });
     m_mapRecipes[make_pair(ITEM_POTION_DEF, MATERIAL_END)] = defPotionRecipe;
 
-    // 재료 뭐로하지?
     // 플레이어 스포너
-    /*Recipe playerSpawnerRecipe;
-    playerSpawnerRecipe.vecIngredients.push_back({ ITEM_MUCUS, 3 });
-    playerSpawnerRecipe.vecIngredients.push_back({ ITEM_CARROT, 3 });
-    m_mapRecipes[make_pair(ITEM_PLAYER_SPAWNER, MATERIAL_END)] = playerSpawnerRecipe;*/
+    Recipe playerSpawnerRecipe;
+    playerSpawnerRecipe.vecIngredients.push_back({ ITEM_DIRTWALL, 10 });
+    playerSpawnerRecipe.vecIngredients.push_back({ ITEM_COPPER_BAR, 1 });
+    playerSpawnerRecipe.vecIngredients.push_back({ ITEM_STONEWALL, 5 });
+    playerSpawnerRecipe.vecIngredients.push_back({ ITEM_IRON_BAR, 1 });
+    m_mapRecipes[make_pair(ITEM_PLAYER_SPAWNER, MATERIAL_END)] = playerSpawnerRecipe;
 
     // 말루가즈 스포너
     Recipe malugazSpawnerRecipe;

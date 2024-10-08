@@ -19,8 +19,9 @@ public:
 	void				Render_Font(const _tchar* pString,
 									const _vec2* pPos, 
 									D3DXCOLOR Color);
-	void				Render_Font_Center(const _tchar* pString,
+	void				Render_Font_Custom(const _tchar* pString,
 										   const _vec2* pPos,
+										   DWORD format,
 										   D3DXCOLOR Color);
 
 
