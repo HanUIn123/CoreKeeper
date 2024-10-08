@@ -46,7 +46,17 @@ _int CCookingPotObject::Update_GameObject(const _float& fTimeDelta)
 			}
 		}
 	}
-
+	if (!m_pInventoryCom->Check_Empty(0) && !m_pInventoryCom->Check_Empty(1))
+	{
+		m_pAnimatorCom->Set_CurState(WALK, 1, 4, 10);
+	}
+	else if ((m_pInventoryCom->Check_Empty(0) && m_pInventoryCom->Check_Empty(1) && !m_pSecondInventoryCom->Check_Empty(0))
+		|| (!m_pInventoryCom->Check_Empty(0) && m_pInventoryCom->Check_Empty(1) && !m_pSecondInventoryCom->Check_Empty(0))
+		|| (m_pInventoryCom->Check_Empty(0) && !m_pInventoryCom->Check_Empty(1) && !m_pSecondInventoryCom->Check_Empty(0))
+		)
+		m_pAnimatorCom->Set_CurState(SWING, 5, 5, 100);
+	else
+		m_pAnimatorCom->Set_CurState(IDLE, 0, 0, 100);
 	m_pAnimatorCom->Update_Animation();
 
 	Add_RenderGroup(RENDER_ALPHA, this);
@@ -86,7 +96,7 @@ void CCookingPotObject::Interaction()
 	{
 		CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
 
-		pPlayer->Set_CookingPot();
+		pPlayer->Set_CookingPot(m_pInventoryCom, m_pSecondInventoryCom);
 
 		m_bCollision = true;
 	}
@@ -119,6 +129,10 @@ HRESULT CCookingPotObject::Add_Component()
 	pComponent = m_pInventoryCom = dynamic_cast<CInventory*>(Engine::Clone_Proto(L"Proto_CookingPotInventory"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Inventory", pComponent });
+
+	pComponent = m_pSecondInventoryCom = dynamic_cast<CInventory*>(Engine::Clone_Proto(L"Proto_OneSlotInventory"));
+	NULL_CHECK_RETURN(pComponent, E_FAIL);
+	m_mapComponent[ID_STATIC].insert({ L"Com_SecondInventory", pComponent });
 
 	return S_OK;
 }

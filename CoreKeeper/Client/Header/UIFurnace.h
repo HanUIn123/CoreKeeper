@@ -26,11 +26,16 @@ public:
 	virtual			void			Render_GameObject();
 
 public:
-	void            Set_Window() {
+	void            Set_Window(CInventory* pInventory1, CInventory* pInventory2) {
 		if (m_bWindow)
 			m_bWindow = false;
 		else
+		{
 			m_bWindow = true;
+
+			m_pInventoryCom = pInventory1;
+			m_pSecondInventoryCom = pInventory2;
+		}
 	}
 
 	void            Set_Diable() { m_bWindow = false; }

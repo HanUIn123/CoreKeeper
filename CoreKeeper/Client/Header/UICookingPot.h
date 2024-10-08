@@ -68,16 +68,28 @@ private:
 	Engine::CTexture* m_pTextureCom;
 	Engine::CTexture* m_pColTextureCom;
 	Engine::CTexture* m_pFoodTextureCom;
+	Engine::CInventory* m_pInventoryCom;
+	Engine::CInventory* m_pSecondInventoryCom;
+	/*
 	Engine::CInventory* m_pUSlotInventoryCom;
 	Engine::CInventory* m_pDSlotInventoryCom;
 	Engine::CInventory* m_pRSlotInventoryCom;
+	*/
 
 public:
-	void Set_Render() { 
+	void Set_Render(Engine::CInventory* _pInventory1, Engine::CInventory* _pInventory2) {
 		if (m_bRender)
 			m_bRender = false;
 		else
-			m_bRender = true; }
+		{
+			m_bRender = true;
+
+			m_pInventoryCom = _pInventory1;
+
+			m_pSecondInventoryCom = _pInventory2;
+		}
+
+	}
 
 	void Set_Disable() { m_bRender = false; }
 

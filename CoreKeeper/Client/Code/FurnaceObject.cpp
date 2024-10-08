@@ -46,6 +46,14 @@ _int CFurnaceObject::Update_GameObject(const _float& fTimeDelta)
 			}
 		}
 	}
+	if (!m_pInventoryCom->Check_Empty(0))
+	{
+		m_pAnimatorCom->Set_CurState(WALK, 1, 4, 10);
+	}
+	else if(m_pInventoryCom->Check_Empty(0) && !m_pInventoryCom2->Check_Empty(0))
+		m_pAnimatorCom->Set_CurState(SWING, 5, 5, 100);
+	else
+		m_pAnimatorCom->Set_CurState(IDLE, 0, 0, 100);
 
 	m_pAnimatorCom->Update_Animation();
 
@@ -86,7 +94,7 @@ void CFurnaceObject::Interaction()
 	{
 		CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
 
-		pPlayer->Set_Furnace();
+		pPlayer->Set_Furnace(m_pInventoryCom, m_pInventoryCom2);
 
 		m_bCollision = true;
 	}
@@ -119,6 +127,10 @@ HRESULT CFurnaceObject::Add_Component()
 	pComponent = m_pInventoryCom = dynamic_cast<CInventory*>(Engine::Clone_Proto(L"Proto_FurnaceInventory"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Inventory", pComponent });
+
+	pComponent = m_pInventoryCom2 = dynamic_cast<CInventory*>(Engine::Clone_Proto(L"Proto_OneSlotInventory"));
+	NULL_CHECK_RETURN(pComponent, E_FAIL);
+	m_mapComponent[ID_STATIC].insert({ L"Com_SecondInventory", pComponent });
 	
 	return S_OK;
 }

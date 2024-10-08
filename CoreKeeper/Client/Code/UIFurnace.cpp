@@ -251,7 +251,7 @@ void CUIFurnace::Render_GameObject()
 
 		CItem* pItem = m_pInventoryCom->Get_Item(0);
 
-		_int iMatNum = pItem->Get_ItemMaterial();
+		_int iMatNum = pItem->Get_TextureNumber();
 
 		pItem->Get_Texture()->Set_Texture(iMatNum);
 
@@ -320,15 +320,15 @@ void CUIFurnace::Render_GameObject()
 
 		switch (eMat)
 		{
-		case MATERIAL_WOOD:
+		case MATERIAL_COPPER:
 			m_pBarTextureCom->Set_Texture(0);
 			break;
 
-		case MATERIAL_COPPER:
+		case MATERIAL_IRON:
 			m_pBarTextureCom->Set_Texture(1);
 			break;
 
-		case MATERIAL_IRON:
+		case MATERIAL_SCARLET:
 			m_pBarTextureCom->Set_Texture(2);
 			break;
 		}
@@ -360,7 +360,7 @@ void CUIFurnace::Render_GameObject()
 
 		CItem* pItem = m_pSecondInventoryCom->Get_Item(0);
 
-		_int iMatNum = pItem->Get_ItemMaterial();
+		_int iMatNum = pItem->Get_TextureNumber();
 
 		m_pBarTextureCom->Set_Texture(iMatNum);
 

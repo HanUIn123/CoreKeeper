@@ -39,6 +39,7 @@ private:
 private:
 	Engine::CAnimTex* m_pAnimBufferCom;
 	Engine::CAnimator* m_pAnimatorCom;
+	Engine::CInventory* m_pSecondInventoryCom;
 
 public:
 	static CCookingPotObject* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);
