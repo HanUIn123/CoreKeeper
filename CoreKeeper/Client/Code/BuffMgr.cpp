@@ -46,12 +46,14 @@ void CBuffMgr::Set_BuffStart(BUFFTYPE _eType, _float fTime)
 		m_pPlayer->Set_BuffState(_eType, true);
 		m_arrBuffState[iType].x += fTime;
 		m_arrBuffState[iType].y += fTime;
-		m_vecUIBuff[iType]->Set_Position(_vec2(60 + 50 * m_vecCurOrder.size(), 130.f));
 		m_vecUIBuff[iType]->Set_Window(_eType);
 		m_vecUIBuff[iType]->Set_BuffTime(m_arrBuffState[iType].x, m_arrBuffState[iType].y);
-		if(!m_vecUIBuff[iType]->Get_Allocate())
+		if (!m_vecUIBuff[iType]->Get_Allocate())
+		{
+			m_vecUIBuff[iType]->Set_Position(_vec2(60 + 50 * m_vecCurOrder.size(), 130.f));
 			m_vecCurOrder.push_back(_eType);
-		m_vecUIBuff[iType]->Set_Allocate(true);
+			m_vecUIBuff[iType]->Set_Allocate(true);
+		}
 	}
 }
 
