@@ -19,6 +19,10 @@ HRESULT CFurnaceObject::Ready_GameObject(_vec3 vPos)
 
 	m_pTransformCom->Set_Pos(vPos.x, vPos.y, vPos.z);
 
+	m_pTransformCom->Set_Scale(0.5f, 0.5f, 0.5f);
+
+	m_pAnimatorCom->Set_CurState(IDLE, 0, 0, 100);
+
 	return S_OK;
 }
 
@@ -43,6 +47,8 @@ _int CFurnaceObject::Update_GameObject(const _float& fTimeDelta)
 		}
 	}
 
+	m_pAnimatorCom->Update_Animation();
+
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 
 	return Engine::CGameObject::Update_GameObject(fTimeDelta);
@@ -66,8 +72,8 @@ void CFurnaceObject::Render_GameObject()
 	FAILED_CHECK_RETURN(Setup_Material(), );
 
 	m_pTextureCom->Set_Texture();
-
-	m_pBufferCom->Render_Buffer();
+	m_pAnimBufferCom->Set_Index(m_pAnimatorCom->Get_MotionIndex());
+	m_pAnimBufferCom->Render_Buffer();
 
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 
@@ -90,10 +96,6 @@ HRESULT CFurnaceObject::Add_Component()
 {
 	CComponent* pComponent = NULL;
 
-	pComponent = m_pBufferCom = dynamic_cast<CObjectTex*>(Engine::Clone_Proto(L"Proto_ObjectTex"));
-	NULL_CHECK_RETURN(pComponent, E_FAIL);
-	m_mapComponent[ID_STATIC].insert({ L"Com_Buffer", pComponent });
-
 	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_FurnaceTexture"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Texture", pComponent });
@@ -102,14 +104,22 @@ HRESULT CFurnaceObject::Add_Component()
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_DYNAMIC].insert({ L"Com_Transform", pComponent });
 
-	pComponent = m_pCalculCom = dynamic_cast<CCalculator*>(Engine::Clone_Proto(L"Proto_Calculator"));
+	pComponent = m_pAnimBufferCom = dynamic_cast<CAnimTex*>(Engine::Clone_Proto(L"Proto_ObjectAnimTex"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
-	m_mapComponent[ID_STATIC].insert({ L"Com_Calculator", pComponent });
+	m_mapComponent[ID_STATIC].insert({ L"Com_Buffer", pComponent });
+
+	pComponent = m_pAnimatorCom = dynamic_cast<CAnimator*>(Engine::Clone_Proto(L"Proto_Animator"));
+	NULL_CHECK_RETURN(pComponent, E_FAIL);
+	m_mapComponent[ID_STATIC].insert({ L"Com_Animator", pComponent });
 
 	pComponent = m_pColliderCom = dynamic_cast<CColliderCube*>(Engine::Clone_Proto(L"Proto_NormalCubeCollider"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Collider", pComponent });
 
+	pComponent = m_pInventoryCom = dynamic_cast<CInventory*>(Engine::Clone_Proto(L"Proto_FurnaceInventory"));
+	NULL_CHECK_RETURN(pComponent, E_FAIL);
+	m_mapComponent[ID_STATIC].insert({ L"Com_Inventory", pComponent });
+	
 	return S_OK;
 }
 
