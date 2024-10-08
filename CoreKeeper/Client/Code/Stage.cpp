@@ -278,7 +278,7 @@ HRESULT CStage::Ready_Layer_Environment(const _tchar* pLayerTag)
 
     CItem* pItem3 = dynamic_cast<CItem*>(pGameObject);
 
-    pGameObject = CGravestoneObject::Create(m_pGraphicDev, { 78.f, 0.5f, 18.f });
+    pGameObject = CGravestoneObject::Create(m_pGraphicDev, { 5.f, 0.5f, 5.f });
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"AheadGrave", pGameObject), E_FAIL);
     dynamic_cast<CGravestoneObject*>(pGameObject)->Add_Item(pItem);
@@ -760,7 +760,7 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
     }
 
     // ÁÂÇ¥ ¼öÁ¤
-    for (int i = 10; i < 30; i++)
+    for (int i = 10; i < 40; i++)
     {
         if (i % 10 == 0)
             vPos = { 393.f + (63.f * (_float)(i - (i / 10) * 10)), 413.f + (_float)(i / 10) * 63.f };

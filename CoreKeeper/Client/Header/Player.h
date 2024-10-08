@@ -44,6 +44,7 @@ private:
 	void			Flip();
 	void			Dash(const _float& fTimeDelta);
 	void			Lantern();
+	void			Bag();
 	void			Set_ImmuneByTime(_float fImmuneTime = 1.f);
 	void			Set_ImmuneByToggle();
 
@@ -92,6 +93,7 @@ public:
 	void            Set_CraftWindow(); 
 	void            Set_MapWindow();
 
+	void            Reset_Inventory();
 	void            Set_Craft(TABLETYPE eTableType = TABLE_PLAYER, MATERIAL _eMaterial = MATERIAL_WOOD);
 	void            Set_Inventory();
 	void            Set_Map();

@@ -162,6 +162,11 @@ _int CUIScreenInv::Update_GameObject(const _float& fTimeDelta)
 				}
 				else if ((*pPvecItem)[iIndex]->Get_ItemNum() != (*pCvecItem)[0]->Get_ItemNum())
 					pPlayerInv->Swap_Item(&(*pCvecItem)[0], &(*pPvecItem)[iIndex]);
+
+				else if (((*pPvecItem)[iIndex]->Get_ItemNum() == (*pCvecItem)[0]->Get_ItemNum()) && ((*pPvecItem)[iIndex]->Get_ItemMaterial() != (*pCvecItem)[0]->Get_ItemMaterial()))
+				{
+					pPlayerInv->Swap_Item(&(*pCvecItem)[0], &(*pPvecItem)[iIndex]);
+				}
 			}
 			else
 			{

@@ -175,6 +175,7 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 	Flip();
 	Dash(fTimeDelta);
 	Lantern();
+	Bag();
 	Set_ImmuneByToggle();
 
 	// 시간제 무적용
@@ -653,6 +654,34 @@ void CPlayer::Lantern()
 			m_fLightRange = 7.f;
 			break;
 		}
+	}
+}
+
+void CPlayer::Bag()
+{
+	CItem* pBag;
+	wstring	strObjectTag = L"UIItemSlot_" + std::to_wstring(CUIItemSlot::SLOT_BAG);;
+	pBag = dynamic_cast<CUIItemSlot*>(Engine::Get_GameObject(L"Layer_UI", strObjectTag.c_str()))->Get_Item();
+
+	if (!pBag)
+	{
+		m_pInventoryCom->Set_SlotCount(30);
+		return;
+	}
+
+	if (pBag->Get_ItemNum() == ITEM_BAG)
+	{
+		Reset_Inventory();
+		switch (pBag->Get_ItemMaterial())
+		{
+		case MATERIAL_COPPER:
+			m_pInventoryCom->Set_SlotCount(35);
+			break;
+		case MATERIAL_IRON:
+			m_pInventoryCom->Set_SlotCount(40);
+			break;
+		}
+		Reset_Inventory();
 	}
 }
 
@@ -1917,6 +1946,20 @@ void CPlayer::Set_MapWindow()
 		m_bMap = true;
 }
 
+void CPlayer::Reset_Inventory()
+{
+	for (int i = 10; i < m_pInventoryCom->Get_SlotCount(); i++)
+	{
+		wstring string;
+
+		string = L"UI_Inventory_" + std::to_wstring(i);
+
+		CUIInventory* pInventory = dynamic_cast<CUIInventory*>(Engine::Get_GameObject(L"Layer_UI", string.c_str()));
+
+		pInventory->Set_Show();
+	}
+}
+
 void CPlayer::Set_Craft(TABLETYPE eTableType, MATERIAL _eMaterial)
 {
 	if (m_bMap || m_bStatue || m_bCookingPot || m_bFurnace || m_bGraveInventory || m_bChestInventory)
@@ -2014,9 +2057,9 @@ void CPlayer::Set_Inventory()
 		pInv->Move_Pos();
 	}
 
-	CInventory* pPlayer = dynamic_cast<CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
+	//CInventory* pPlayer = dynamic_cast<CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
 
-	for (int i = 10; i < pPlayer->Get_SlotCount(); i++)
+	for (int i = 10; i < m_pInventoryCom->Get_SlotCount(); i++)
 	{	
 		wstring string;
 
