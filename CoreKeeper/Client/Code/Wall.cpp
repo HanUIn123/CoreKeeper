@@ -8,7 +8,7 @@
 _long CWall::m_iItemNumber = 0;
 
 CWall::CWall(LPDIRECT3DDEVICE9 pGraphicDev)
-    : Engine::CGameObject(pGraphicDev)
+    : Engine::CGameObject(pGraphicDev), m_bInFrustum(true)
     , m_pCalculatorCom(nullptr)
     , m_pTransformCom(nullptr)
     , m_pTextureCom(nullptr)
@@ -57,30 +57,27 @@ HRESULT CWall::Ready_GameObject(_float _fWallX, _float _fWallZ, _int iWallImageN
 
 _int CWall::Update_GameObject(const _float& fTimeDelta)
 {
-    if (m_bWallDestroyed)
-    {
-
-    }
-    m_bRenderAlpha = false;
     Update_Texture();
 
-    if (m_pCalculatorCom->In_Frustum(m_pTransformCom))
+    int Exit = Engine::CGameObject::Update_GameObject(fTimeDelta);
+
+    m_bInFrustum = m_pCalculatorCom->In_Frustum(m_pTransformCom);
+
+    if (!m_bInFrustum)
     {
-        Engine::Add_RenderGroup(RENDER_WALL, this);
-        return Engine::CGameObject::Update_GameObject(fTimeDelta);
+        return 0;
     }
-    return 0;
+
+
+    m_bRenderAlpha = false;
+
+    Engine::Add_RenderGroup(RENDER_WALL, this);
+    return Exit;
 }
 
 void CWall::LateUpdate_GameObject()
 {
     Engine::CGameObject::LateUpdate_GameObject();
-
-    _matrix		matCamWorld;
-    m_pGraphicDev->GetTransform(D3DTS_VIEW, &matCamWorld);
-    D3DXMatrixInverse(&matCamWorld, NULL, &matCamWorld);
-
-    //m_pTransformCom->Set_Pos(matCamWorld._41, matCamWorld._42 + 3.f, matCamWorld._43);
 }
 
 void CWall::Render_GameObject()
@@ -134,6 +131,89 @@ void CWall::Render_GameObject()
     if (m_bRenderAlpha)
     {
         m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
+    }
+}
+
+void CWall::Build(int _iIndex)
+{
+    CScene* pScene = Engine::Get_Scene();
+    CStage* pStage = dynamic_cast<CStage*>(pScene);
+
+    auto& vecWall = pStage->Get_WallVector();
+    int totalWalls = vecWall.size();
+
+    vecWall[_iIndex] = this;
+
+    // 하단
+    if (_iIndex - (VTXCNTX - 1) >= 0 && _iIndex - (VTXCNTX - 1) < totalWalls)
+    {
+        vecWall[_iIndex]->Add_WallArray(0, vecWall[_iIndex - (VTXCNTX - 1)]);
+
+        if (vecWall[_iIndex - (VTXCNTX - 1)])
+            vecWall[_iIndex - (VTXCNTX - 1)]->Set_Wall(4, this);
+    }
+
+    // 하단 우측
+    if (_iIndex - (VTXCNTX - 1) + 1 >= 0 && _iIndex - (VTXCNTX - 1) + 1 < totalWalls)
+    {
+        vecWall[_iIndex]->Add_WallArray(1, vecWall[_iIndex - (VTXCNTX - 1) + 1]);
+
+        if (vecWall[_iIndex - (VTXCNTX - 1) + 1])
+            vecWall[_iIndex - (VTXCNTX - 1) + 1]->Set_Wall(5, this);
+    }
+
+    // 우측
+    if (_iIndex + 1 < totalWalls)
+    {
+        vecWall[_iIndex]->Add_WallArray(2, vecWall[_iIndex + 1]);
+
+        if (vecWall[_iIndex + 1])
+            vecWall[_iIndex + 1]->Set_Wall(6, this);
+    }
+
+    // 상단 우측
+    if (_iIndex + (VTXCNTX - 1) + 1 < totalWalls)
+    {
+        vecWall[_iIndex]->Add_WallArray(3, vecWall[_iIndex + (VTXCNTX - 1) + 1]);
+
+        if (vecWall[_iIndex + (VTXCNTX - 1) + 1])
+            vecWall[_iIndex + (VTXCNTX - 1) + 1]->Set_Wall(7, this);
+    }
+
+    // 상단
+    if (_iIndex + (VTXCNTX - 1) < totalWalls)
+    {
+        vecWall[_iIndex]->Add_WallArray(4, vecWall[_iIndex + (VTXCNTX - 1)]);
+
+        if (vecWall[_iIndex + (VTXCNTX - 1)])
+            vecWall[_iIndex + (VTXCNTX - 1)]->Set_Wall(0, this);
+    }
+
+    // 상단 좌측
+    if (_iIndex + (VTXCNTX - 1) - 1 >= 0 && _iIndex + (VTXCNTX - 1) - 1 < totalWalls)
+    {
+        vecWall[_iIndex]->Add_WallArray(5, vecWall[_iIndex + (VTXCNTX - 1) - 1]);
+        
+        if (vecWall[_iIndex + (VTXCNTX - 1) - 1])
+            vecWall[_iIndex + (VTXCNTX - 1) - 1]->Set_Wall(1, this);
+    }
+
+    // 좌측
+    if (_iIndex - 1 >= 0)
+    {
+        vecWall[_iIndex]->Add_WallArray(6, vecWall[_iIndex - 1]);
+
+        if (vecWall[_iIndex - 1])
+            vecWall[_iIndex - 1]->Set_Wall(2, this);
+    }
+
+    // 하단 좌측
+    if (_iIndex - (VTXCNTX - 1) - 1 >= 0 && _iIndex - (VTXCNTX - 1) - 1 < totalWalls)
+    {
+        vecWall[_iIndex]->Add_WallArray(7, vecWall[_iIndex - (VTXCNTX - 1) - 1]);
+
+        if (vecWall[_iIndex - (VTXCNTX - 1) - 1])
+            vecWall[_iIndex - (VTXCNTX - 1) - 1]->Set_Wall(3, this);
     }
 }
 
@@ -470,11 +550,11 @@ void CWall::Set_Destroy()
 
         if (i < 4)
         {
-            m_vecAroundWall[i]->Set_DestoryWall(i + 4);
+            m_vecAroundWall[i]->Set_Wall(i + 4, nullptr);
         }
         else
         {
-            m_vecAroundWall[i]->Set_DestoryWall(i - 4);
+            m_vecAroundWall[i]->Set_Wall(i - 4, nullptr);
         }
     }
 }
