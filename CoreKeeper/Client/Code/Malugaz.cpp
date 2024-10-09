@@ -65,7 +65,6 @@ _int CMalugaz::Update_GameObject(const _float& fTimeDelta)
         return 0;
 
     Set_Cast();
-    //Set_Light();
 
     if (m_eState != DEAD)
         m_eState = State_Change();
@@ -448,33 +447,6 @@ void CMalugaz::Set_Direction(_vec3* vPlayerPos)
     // 플레이어가 하단에 있을 경우
     else if (diagLBtoRT >= 0 && diagLTtoRB >= 0)
         m_eDir = FRONT;
-}
-
-void CMalugaz::Set_Light()
-{
-    D3DLIGHT9 light;
-    ZeroMemory(&light, sizeof(D3DLIGHT9));
-
-    light.Type = D3DLIGHT_POINT; // 포인트 조명
-    light.Diffuse = { 1.f, 1.f, 1.f, 1.f }; // 확산 색상
-    light.Specular = { 1.f, 1.f, 1.f, 1.f }; // 반사 색상
-    light.Ambient = { 1.f, 1.f, 1.f, 1.f }; // 주변광
-
-    _vec3 vPos;
-    m_pTransformCom->Get_Info(INFO_POS, &vPos);
-
-    light.Position = vPos; // 횃불의 위치
-    light.Range = 3.0f; // 조명의 범위
-    light.Falloff = 1.f; // 감쇠
-    light.Attenuation0 = 1.0f; // 감쇠 계수
-    light.Attenuation1 = 0.01f;
-    light.Attenuation2 = 0.0f;
-
-    m_pGraphicDev->SetLight(m_iLightNum, &light); // 조명 설정
-    //if (m_bLightEnable)
-    //    m_pGraphicDev->LightEnable(m_iLightNum, TRUE);
-    //else
-    //    m_pGraphicDev->LightEnable(m_iLightNum, FALSE);
 }
 
 void CMalugaz::Pattern_Shoot(const _float& fTimeDelta)
