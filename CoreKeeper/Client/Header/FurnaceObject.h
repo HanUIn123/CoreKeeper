@@ -11,6 +11,7 @@ class CColliderCube;
 class CInventory;
 class CAnimTex;
 class CAnimator;
+class CFume;
 
 END
 
@@ -40,6 +41,7 @@ private:
 	Engine::CAnimTex* m_pAnimBufferCom;
 	Engine::CAnimator* m_pAnimatorCom;
 	Engine::CInventory* m_pInventoryCom2;
+	Engine::CFume* m_pFumeParticleCom;
 
 	_float m_fTime;
 

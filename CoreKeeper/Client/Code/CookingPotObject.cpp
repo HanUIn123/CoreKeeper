@@ -24,6 +24,8 @@ HRESULT CCookingPotObject::Ready_GameObject(_vec3 vPos)
 
 	m_pAnimatorCom->Set_CurState(IDLE, 0, 0, 100);
 
+	m_pFumeParticleCom->init(L"../Bin/Resource/Texture/Particle/Puff_Particle/Puff_Particle_%d.png", 3, 0.2f);
+
 	return S_OK;
 }
 
@@ -83,6 +85,8 @@ _int CCookingPotObject::Update_GameObject(const _float& fTimeDelta)
 
 			m_pInventoryCom->Minus_Item(m_pInventoryCom->Get_Item(1)->Get_ItemNum(), 1);
 		}
+
+		m_pFumeParticleCom->update(fTimeDelta);
 	}
 	else if (m_pInventoryCom->Check_Empty(1) && !m_pInventoryCom->Check_Empty(0) || m_pInventoryCom->Check_Empty(0) && !m_pInventoryCom->Check_Empty(1))
 	{
@@ -114,6 +118,11 @@ void CCookingPotObject::Render_GameObject()
 	m_pTextureCom->Set_Texture();
 	m_pAnimBufferCom->Set_Index(m_pAnimatorCom->Get_MotionIndex());
 	m_pAnimBufferCom->Render_Buffer();
+
+	if (!m_pInventoryCom->Check_Empty(0))
+	{
+		m_pFumeParticleCom->render();
+	}
 
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 
@@ -163,6 +172,10 @@ HRESULT CCookingPotObject::Add_Component()
 	pComponent = m_pSecondInventoryCom = dynamic_cast<CInventory*>(Engine::Clone_Proto(L"Proto_OneSlotInventory"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_SecondInventory", pComponent });
+
+	pComponent = m_pFumeParticleCom = dynamic_cast<CFume*>(Engine::Clone_Proto(L"Proto_Fume"));
+	NULL_CHECK_RETURN(pComponent, E_FAIL);
+	m_mapComponent[ID_STATIC].insert({ L"Com_Fume", pComponent });
 
 	return S_OK;
 }

@@ -23,6 +23,8 @@ public:
 	virtual			void			LateUpdate_GameObject();
 	virtual			void			Render_GameObject();
 
+	CTexture* Get_EyeTexture()      { return m_pTextureCom; }
+	CAnimTex* Get_EyeBuffer()       { return m_pBufferCom; }
 private:
 	HRESULT			Add_Component();
 	void			Follow_Player();

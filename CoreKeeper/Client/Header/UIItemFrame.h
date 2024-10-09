@@ -27,7 +27,7 @@ public:
 	virtual			void			Render_GameObject();
 
 public:
-	void            Set_Window(CItem* _pItem);
+	void            Set_Window(CItem* _pItem, POINT _pt);
 	void            Set_WindowDis() { m_bWindow = false; }
 
 	_bool           Map_Picked(POINT _screenPos) {

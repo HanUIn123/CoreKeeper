@@ -64,14 +64,16 @@ _int CUIStatusFrame::Update_GameObject(const _float& fTimeDelta)
 		}
 		else
 			m_bCollapse = false;
-
-		Add_RenderGroup(RENDER_UI, this);
 	}
 	return iExit;
 }
 
 void CUIStatusFrame::LateUpdate_GameObject()
 {
+	if (m_bWindow)
+	{
+		Add_RenderGroup(RENDER_UI, this);
+	}
 	Engine::CGameObject::LateUpdate_GameObject();
 }
 

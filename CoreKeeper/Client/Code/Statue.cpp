@@ -4,6 +4,7 @@
 #include "Export_Utility.h"
 #include "..\Header\Player.h"
 #include "..\Header\Core.h"
+#include "..\Header\UIScreenIcon.h"
 
 CStatue::CStatue(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CObject(pGraphicDev), m_iTextureNum(0), m_bActive(false)
@@ -33,10 +34,18 @@ _int CStatue::Update_GameObject(const _float& fTimeDelta)
 
 	if (Check_Interaction())
 	{
+		CUIScreenIcon* pIcon = dynamic_cast<CUIScreenIcon*>(Engine::Get_GameObject(L"Layer_UI", L"UIScreenicon_Hand"));
+
+		pIcon->Set_Collision();
+
 		Interaction();
 	}
 	else if (!Check_Interaction())
-	{
+	{	
+		CUIScreenIcon* pIcon = dynamic_cast<CUIScreenIcon*>(Engine::Get_GameObject(L"Layer_UI", L"UIScreenicon_Hand"));
+
+		pIcon->Set_DisCollision();
+		
 		if (m_bCollision)
 		{
 			CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
@@ -51,7 +60,8 @@ _int CStatue::Update_GameObject(const _float& fTimeDelta)
 			}
 		}
 	}
-	Add_RenderGroup(RENDER_ALPHA, this);
+
+	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 
 	return Engine::CGameObject::Update_GameObject(fTimeDelta);
 }

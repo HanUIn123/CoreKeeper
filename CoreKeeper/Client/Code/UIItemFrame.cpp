@@ -80,34 +80,20 @@ void CUIItemFrame::Render_GameObject()
 
 		m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
 
-		
-		m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
-		m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
-
-		m_pGraphicDev->SetRenderState(D3DRS_TEXTUREFACTOR, D3DCOLOR_ARGB(200, 255, 255, 255));
-		m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
-		m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
-		m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_TFACTOR);
-		m_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
-		m_pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
-
 		m_pSelTextureCom->Set_Texture();
 
 		m_pBufferCom->Render_Buffer();
 
-		m_pGraphicDev->SetRenderState(D3DRS_TEXTUREFACTOR, 0xffffffff);
-
-		m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
-
-		m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
-
-		m_pGraphicDev->SetRenderState(D3DRS_SCISSORTESTENABLE, TRUE);
-
 		_vec2 vFPos = m_vPos;
 		wstring wsEmpty = L"";
-		const wstring* sFont= m_pItem->Get_Explain();
+
+		const wstring  sName = m_pItem->Get_Name();
+		const wstring* sFont = m_pItem->Get_Explain();
 
 		const _tchar* tFont[30];
+
+		Engine::Render_Font(L"Font_Status", sName.c_str(), &vFPos, D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
+		vFPos.y += 40.f;
 
 		for (int i = 0; i < 30; i++)
 		{
@@ -234,11 +220,24 @@ void CUIItemFrame::Render_GameObject()
 	}
 }
 
-void CUIItemFrame::Set_Window(CItem* _pItem)
+void CUIItemFrame::Set_Window(CItem* _pItem, POINT _pt)
 {
 	m_bWindow = true;
 
 	m_pItem = _pItem;
+
+	if ((_float)_pt.x > WINCX / 2.f)
+	{
+		m_pTransformCom->Set_Pos(280.f - WINCX / 2, WINCY / 2 - 510.f, 0.f);
+
+		m_vPos = { 280.f - 240.f, 510.f - 150.f };
+	}
+	else
+	{
+		m_pTransformCom->Set_Pos(1000.f - WINCX / 2, WINCY / 2 - 510.f,  0.f);
+
+		m_vPos = { 1000.f - 240.f, 510.f - 150.f };
+	}
 }
 
 HRESULT CUIItemFrame::Add_Component()

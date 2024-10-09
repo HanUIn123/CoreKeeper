@@ -58,6 +58,8 @@ private:
 
 	CItem* pItem;
 
+	_bool m_bStay;
+
 private:
 	Engine::CAnimTex* m_pBufferCom;
 	Engine::CTransform* m_pTransformCom;

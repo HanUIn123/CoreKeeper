@@ -59,6 +59,8 @@ private:
 
 	_bool m_bShow;
 
+	_bool m_bStay;
+
 	CItem* pItem;
 
 	CInventory* m_pChestInv;
