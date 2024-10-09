@@ -4,7 +4,7 @@
 #include "Export_Utility.h"
 
 CTorchObject::CTorchObject(LPDIRECT3DDEVICE9 pGraphicDev)
-	: CObject(pGraphicDev)
+	: CObject(pGraphicDev), m_bInFrustum(true)
 {
 	m_iLightNum = g_iLightNum++;
 }
@@ -26,16 +26,22 @@ HRESULT CTorchObject::Ready_GameObject(_vec3 vPos)
 
 _int CTorchObject::Update_GameObject(const _float& fTimeDelta)
 {
-	if (m_pCalculCom->In_Frustum(m_pTransformCom))
+	int iExit = Engine::CGameObject::Update_GameObject(fTimeDelta);
+
+	m_bInFrustum = m_pCalculCom->In_Frustum(m_pTransformCom);
+
+	SetUp_Light(); // 조명 설정
+
+	if (!m_bInFrustum)
 	{
-		SetUp_Light(); // 조명 설정
+		return 0;
 	}
 
 	m_pAnimatorCom->Update_Animation();
 	
 	Add_RenderGroup(RENDER_ALPHA, this);
 
-	return Engine::CGameObject::Update_GameObject(fTimeDelta);
+	return iExit;
 }
 
 void CTorchObject::LateUpdate_GameObject()
@@ -136,7 +142,7 @@ void CTorchObject::SetUp_Light()
 	light.Phi = D3DXToRadian(40.0f); // 외부 각도 (큰 값일수록 퍼지는 조명)
 
 	m_pGraphicDev->SetLight(m_iLightNum, &light);
-	m_pGraphicDev->LightEnable(m_iLightNum, TRUE);
+	m_pGraphicDev->LightEnable(m_iLightNum, m_bInFrustum);
 }
 
 CTorchObject* CTorchObject::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)

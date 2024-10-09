@@ -47,5 +47,6 @@ private:
 
 private:
 	_int			m_iLightNum;
+	bool			m_bInFrustum;
 };
 

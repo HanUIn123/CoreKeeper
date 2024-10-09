@@ -2,6 +2,7 @@
 #include "../Header/Core.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
+#include "..\Header\Player.h"
 
 CCore::CCore(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CObject(pGraphicDev), m_iRange(0)
@@ -29,6 +30,11 @@ HRESULT CCore::Ready_GameObject(_vec3 vPos)
 
 _int CCore::Update_GameObject(const _float& fTimeDelta)
 {
+	if (Check_Interaction())
+	{
+		Interaction();
+	}
+
 	m_iRange = (m_bActiveCore[0] + m_bActiveCore[1] + m_bActiveCore[2]) * 10.f;
 
 	SetUp_Light(); // 조명 설정
@@ -49,6 +55,8 @@ void CCore::Render_GameObject()
 {
 	//m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
 
+	m_pColliderCom->Update_Collider(m_pTransformCom->Get_WorldMatrix());
+
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
 
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
@@ -57,9 +65,36 @@ void CCore::Render_GameObject()
 
 	m_pBufferCom->Render_Buffer();
 
+	m_pColliderCom->Render_Collider();
+
 	//m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
+}
+
+void CCore::Interaction()
+{
+	if (Engine::Key_Down(DIK_E))
+	{
+		if (m_bActiveCore[0] && m_bActiveCore[1] && m_bActiveCore[2])
+		{
+			//_vec2 LTpos(0, 570);
+			//_vec2 RBpos(WINCX, 570);
+
+			//Engine::Render_Font_Custom(L"Font_Default", L"에너지가 필요한 것 같아", &LTpos, &RBpos, DT_CENTER, D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
+		}
+		else
+		{
+			//_vec3 vPos;
+			//m_pTransformCom->Get_Info(INFO_POS, &vPos);
+
+			//_vec2 LTpos(0, 300);
+			//_vec2 RBpos(WINCX, 400);
+
+			//Engine::Render_Font_Custom(L"Font_Default", L"에너지가 필요한 것 같아", &LTpos, &RBpos, DT_CENTER, D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
+			//Engine::Render_Font_Custom(L"Font_Default", L"전원이 차단된 것 같아", &LTpos, &RBpos, DT_CENTER, D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
+		}
+	}
 }
 
 HRESULT CCore::Add_Component()
@@ -81,6 +116,10 @@ HRESULT CCore::Add_Component()
 	pComponent = m_pCalculCom = dynamic_cast<CCalculator*>(Engine::Clone_Proto(L"Proto_Calculator"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Calculator", pComponent });
+
+	pComponent = m_pColliderCom = dynamic_cast<CColliderCube*>(Engine::Clone_Proto(L"Proto_CoreCubeCollider"));
+	NULL_CHECK_RETURN(pComponent, E_FAIL);
+	m_mapComponent[ID_STATIC].insert({ L"Com_Collider", pComponent });
 
 	return S_OK;
 }

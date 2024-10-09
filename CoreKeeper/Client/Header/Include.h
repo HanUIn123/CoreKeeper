@@ -83,7 +83,7 @@
 #include "Diary.h"
 #include "Lunch.h"
 #include "ChocoBar.h"
-
+#include "Instrument.h"
 
 
 // Etc
@@ -91,7 +91,6 @@
 #include "SkyBox.h"
 #include "Wall.h"
 #include "MapToolWall.h"
-
 
 
 // Object

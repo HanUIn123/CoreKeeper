@@ -23,7 +23,6 @@ private:
 	STATE			State_Change() override;
 
 	void			Set_Direction(_vec3* vPlayerPos);
-	void			Set_Light();
 
 	// ∆‰¿Ã¡Ó 1
 	void			Pattern_Shoot(const _float& fTimeDelta);

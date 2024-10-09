@@ -23,6 +23,8 @@ public:
 	virtual			void			LateUpdate_GameObject();
 	virtual			void			Render_GameObject();
 
+	virtual         void            Interaction();
+
 	virtual			_int			Get_BuildImgNum() { return m_iBuildingImgNum; }
 	virtual			void			Set_BuildImgNum(_int _iBuildingNum) { m_iBuildingImgNum = _iBuildingNum; }
 
