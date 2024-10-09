@@ -1875,12 +1875,14 @@ void CPlayer::Set_UI()
 		if (m_bMap || m_bChestInventory || m_bCraft || m_bInventory || m_bStatue || m_bGraveInventory || m_bFurnace || m_bCookingPot)
 		{
 			UI_Disable();
+			CRenderer::GetInstance()->Set_CloseMap(false);
 		}
 		else if (!m_bMap && !m_bChestInventory && !m_bCraft && !m_bInventory && !m_bStatue && !m_bGraveInventory && !m_bFurnace && !m_bCookingPot)
 		{
 			Set_Inventory();
 			Set_Craft();
 			Set_Status();
+			CRenderer::GetInstance()->Set_CloseMap(true);
 		}
 	}
 
