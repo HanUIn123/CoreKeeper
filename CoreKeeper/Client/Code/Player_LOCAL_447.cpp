@@ -106,8 +106,8 @@ HRESULT CPlayer::Ready_GameObject()
     m_pStateCom->Set_MaxHunger(100);
     m_pEquipInventoryCom->Set_SlotCount(10);
 
-    m_pFireParticleCom->init(L"../Bin/Resource/Texture/Particle/Basic_Particle.png", 1, 0.1f); // íŒŒí‹°í´ ì‹œì‘
-    m_pFollowParticleCom->init(L"../Bin/Resource/Texture/Particle/Fire_Particle/Fire_Particle_%d.png", 5); // íŒŒí‹°í´ ì‹œì‘
+    m_pFireParticleCom->init(L"../Bin/Resource/Texture/Particle/Basic_Particle.png", 1, 0.1f); // ÆÄÆ¼Å¬ ½ÃÀÛ
+    m_pFollowParticleCom->init(L"../Bin/Resource/Texture/Particle/Fire_Particle/Fire_Particle_%d.png", 5); // ÆÄÆ¼Å¬ ½ÃÀÛ
     m_pDirtParticleCom->init(L"../Bin/Resource/Texture/Particle/Basic_Particle.png", 1, 0.1f);
     return S_OK;
 }
@@ -121,7 +121,7 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
         return 0;
     }
 
-    // ëœí„´
+    // ·£ÅÏ
     SetUp_Light();
 
     if (m_bNude)
@@ -135,12 +135,12 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
     Equipment_Function(fTimeDelta);
     Set_EquippedStatus();
     Set_ManaRecover(fTimeDelta);
-    // ë²„í”„ ìŠ¤íƒ¯ ì²˜ë¦¬
+    // ¹öÇÁ ½ºÅÈ Ã³¸®
     Set_Hungry(fTimeDelta);
     Set_Buff(fTimeDelta);
 
 
-    if (!m_bNoMove && !m_bInventory && !m_bCraft && !m_bMap) // m_bNoMove -> UICursorì—ì„œ ì ìš©
+    if (!m_bNoMove && !m_bInventory && !m_bCraft && !m_bMap) // m_bNoMove -> UICursor¿¡¼­ Àû¿ë
         Mouse_Click(fTimeDelta);
     else
     {
@@ -179,7 +179,7 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
     Flip();
     Set_ImmuneByToggle();
 
-    // ì‹œê°„ì œ ë¬´ì ìš©
+    // ½Ã°£Á¦ ¹«Àû¿ë
     if (m_bImmuneByTime)
     {
         m_fImmuneTimeAcc += fTimeDelta;
@@ -233,7 +233,7 @@ void CPlayer::Render_GameObject()
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 
     if (m_bBleed)
-        m_pFireParticleCom->render(); // íŒŒí‹°í´ ë Œë”
+        m_pFireParticleCom->render(); // ÆÄÆ¼Å¬ ·»´õ
 
     if (m_bFire)
         m_pFollowParticleCom->render();
@@ -328,27 +328,27 @@ void CPlayer::SetUp_Light()
     ZeroMemory(&light, sizeof(D3DLIGHT9));
 
     light.Type = D3DLIGHT_SPOT;
-    light.Diffuse = { 1.f + m_fRange * 0.1f, 1.f + m_fRange * 0.1f, 1.f + m_fRange * 0.1f, 1.f }; // í™•ì‚° ìƒ‰ìƒ
-    light.Specular = { 1.f + m_fRange * 0.1f, 1.f + m_fRange * 0.1f, 1.f + m_fRange * 0.1f, 1.f }; // ë°˜ì‚¬ ìƒ‰ìƒ
-    light.Ambient = { 1.f + m_fRange * 0.1f, 1.f + m_fRange * 0.1f, 1.f + m_fRange * 0.1f, 1.f }; // ì£¼ë³€ê´‘
+    light.Diffuse = { 1.f + m_fRange * 0.1f, 1.f + m_fRange * 0.1f, 1.f + m_fRange * 0.1f, 1.f }; // È®»ê »ö»ó
+    light.Specular = { 1.f + m_fRange * 0.1f, 1.f + m_fRange * 0.1f, 1.f + m_fRange * 0.1f, 1.f }; // ¹İ»ç »ö»ó
+    light.Ambient = { 1.f + m_fRange * 0.1f, 1.f + m_fRange * 0.1f, 1.f + m_fRange * 0.1f, 1.f }; // ÁÖº¯±¤
 
     _vec3 vPos;
     m_pTransformCom->Get_Info(INFO_POS, &vPos);
     light.Position = { vPos.x, vPos.y + 10.f, vPos.z };
 
-    // ì•„ë˜ìª½ì„ í–¥í•˜ëŠ” ìŠ¤í¬íŠ¸ë¼ì´íŠ¸
+    // ¾Æ·¡ÂÊÀ» ÇâÇÏ´Â ½ºÆ÷Æ®¶óÀÌÆ®
     _vec3 vDir = { 0.0f, -1.0f, 0.0f };
     light.Direction = vDir;
 
-    light.Range = m_fRange * 10.f; // ì¡°ëª…ì˜ ë²”ìœ„
-    light.Falloff = 1.0f; // ê°ì‡ 
-    light.Attenuation0 = 1.0f; // ê°ì‡  ê³„ìˆ˜
+    light.Range = m_fRange * 10.f; // Á¶¸íÀÇ ¹üÀ§
+    light.Falloff = 1.0f; // °¨¼è
+    light.Attenuation0 = 1.0f; // °¨¼è °è¼ö
     light.Attenuation1 = 0.01f;
     light.Attenuation2 = 0.0f;
 
-    // ìŠ¤í¬íŠ¸ë¼ì´íŠ¸ì˜ ë‚´ë¶€ ë° ì™¸ë¶€ ê°ë„ ì„¤ì •
-    light.Theta = D3DXToRadian(20.0f); // ë‚´ë¶€ ê°ë„ (ì‘ì€ ê°’ì¼ìˆ˜ë¡ ì§‘ì¤‘ëœ ì¡°ëª…)
-    light.Phi = D3DXToRadian(50.0f + m_fRange); // ì™¸ë¶€ ê°ë„ (í° ê°’ì¼ìˆ˜ë¡ í¼ì§€ëŠ” ì¡°ëª…)
+    // ½ºÆ÷Æ®¶óÀÌÆ®ÀÇ ³»ºÎ ¹× ¿ÜºÎ °¢µµ ¼³Á¤
+    light.Theta = D3DXToRadian(20.0f); // ³»ºÎ °¢µµ (ÀÛÀº °ªÀÏ¼ö·Ï ÁıÁßµÈ Á¶¸í)
+    light.Phi = D3DXToRadian(50.0f + m_fRange); // ¿ÜºÎ °¢µµ (Å« °ªÀÏ¼ö·Ï ÆÛÁö´Â Á¶¸í)
 
     m_pGraphicDev->SetLight(m_iLightNum, &light);
     m_pGraphicDev->LightEnable(m_iLightNum, TRUE);
@@ -442,7 +442,7 @@ void CPlayer::Mouse_Click(const _float& fTimeDelta)
                 ITEMNUM eHandedNum = m_pHandedItem->Get_ItemNum();
                 switch (eHandedNum)
                 {
-                    // ì „íˆ¬ ê´€ë ¨
+                    // ÀüÅõ °ü·Ã
                 case ITEM_SWORD:
                     m_eState = SWING;
                     m_bSwing = true;
@@ -469,7 +469,7 @@ void CPlayer::Mouse_Click(const _float& fTimeDelta)
                     }
                     break;
 
-                    // ë†ì‚¬ ê´€ë ¨
+                    // ³ó»ç °ü·Ã
                 case ITEM_HOE:
                     m_eState = SWING;
                     m_bSwing = true;
@@ -489,7 +489,7 @@ void CPlayer::Mouse_Click(const _float& fTimeDelta)
                     m_pHandedItem->Set_Drop(false);
                     break;
 
-                    // ì„¤ì¹˜ ê´€ë ¨
+                    // ¼³Ä¡ °ü·Ã
                 case ITEM_TABLE:
                 case ITEM_POTION_TABLE:
                 case ITEM_ACCESSORY_TABLE:
@@ -593,22 +593,22 @@ void CPlayer::Auxiliary(const _float& fTimeDelta)
 
     ASSISTANCE assistance = dynamic_cast<CAssistance*>(pAux)->Get_Assistance();
 
-    // ê¹ƒí„¸ ì¥ì°©
+    // ±êÅĞ ÀåÂø
     if (assistance == ASSISTANCE_FEATHER || assistance == ASSISTANCE_AZEOS_FEATHER)
     {
-        // ìŠ¤í˜ì´ìŠ¤ë°”ë¥¼ ëˆ„ë¥´ë©´ ëŒ€ì‰¬
+        // ½ºÆäÀÌ½º¹Ù¸¦ ´©¸£¸é ´ë½¬
         if (Engine::Key_Down(DIK_SPACE))
         {
             if (!m_bDash && !m_bDashCool)
                 m_bDash = true;
         }
 
-        // ëŒ€ì‰¬í•˜ëŠ” ë™ì•ˆ í”Œë ˆì´ì–´ ì½œë¼ì´ë” ë„ê¸°
+        // ´ë½¬ÇÏ´Â µ¿¾È ÇÃ·¹ÀÌ¾î Äİ¶óÀÌ´õ ²ô±â
         if (m_bDash)
         {
             m_fDashTimeAcc += fTimeDelta;
             m_pColliderCom->Set_Offset(_vec3(0, -100, 0));
-            // ëŒ€ì‰¬ ì¤‘ ìŠ¤í”¼ë“œ ì¡°ì ˆ
+            // ´ë½¬ Áß ½ºÇÇµå Á¶Àı
             _float fProgress = m_fDashTimeAcc / m_fDashTime;
             if (assistance == ASSISTANCE_FEATHER)
             {
@@ -636,7 +636,7 @@ void CPlayer::Auxiliary(const _float& fTimeDelta)
         else
             m_pColliderCom->Set_Offset(_vec3(0, 0, 0));
 
-        // ëŒ€ì‰¬ ì¿¨íƒ€ì„ ì„¤ì •
+        // ´ë½¬ ÄğÅ¸ÀÓ ¼³Á¤
         if (m_bDashCool)
         {
             m_fDashTimeAcc += fTimeDelta;
@@ -647,10 +647,10 @@ void CPlayer::Auxiliary(const _float& fTimeDelta)
             }
         }
     }
-    // ì±… ì¥ì°©
+    // Ã¥ ÀåÂø
     else if (assistance == ASSISTANCE_BOOK)
         m_tEquipmentStat.iAttack += 50;
-    // ë°©íŒ¨ ì¥ì°©
+    // ¹æÆĞ ÀåÂø
     else if (assistance == ASSISTANCE_WOOD_SHIELD)
         m_tEquipmentStat.iDefense += 10;
     else if (assistance == ASSISTANCE_IRON_SHIELD)
@@ -721,15 +721,15 @@ void CPlayer::Necklace()
     switch (pNeck->Get_ItemMaterial())
     {
     case MATERIAL_COPPER:
-        // ì¹˜ëª…íƒ€ í™•ë¥  + 4%
+        // Ä¡¸íÅ¸ È®·ü + 4%
         m_tEquipmentStat.iAttack += 25;
         break;
     case MATERIAL_IRON:
-        // ë°©ì–´ë ¥ + 12
+        // ¹æ¾î·Â + 12
         m_tEquipmentStat.iDefense += 20;
         break;
     case MATERIAL_SPECIAL:
-        // ìµœëŒ€ ë§ˆë‚˜ + 32
+        // ÃÖ´ë ¸¶³ª + 32
         m_tEquipmentStat.iMaxMp += 30;
         break;
     }
@@ -745,16 +745,16 @@ void CPlayer::Ring()
     switch (pRing->Get_ItemMaterial())
     {
     case MATERIAL_COPPER:
-        // ì±„êµ´ í”¼í•´ + 14
+        // Ã¤±¼ ÇÇÇØ + 14
         m_fMiningBuff[0] = 1.f;
         break;
     case MATERIAL_IRON:
-        // ì´ë™ ì†ë„ + 6.9%
+        // ÀÌµ¿ ¼Óµµ + 6.9%
         if (m_iSpeedWeight == 1)
             m_iSpeedWeight = 1.4f;
         break;
     case MATERIAL_SPECIAL:
-        // ìµœëŒ€ ë§ˆë‚˜ + 14
+        // ÃÖ´ë ¸¶³ª + 14
         m_fMiningBuff[0] = 0.f;
         m_tEquipmentStat.iMaxMp += 20;
         break;
@@ -774,17 +774,17 @@ void CPlayer::Ring_Second()
             m_fMiningBuff[0] = 2.f;
         else
             m_fMiningBuff[0] = 1.f;
-        // ì±„êµ´ í”¼í•´ + 14
+        // Ã¤±¼ ÇÇÇØ + 14
         break;
     case MATERIAL_IRON:
-        // ì´ë™ ì†ë„ + 6.9%
+        // ÀÌµ¿ ¼Óµµ + 6.9%
         if (m_iSpeedWeight == 1.4f)
             m_iSpeedWeight = 1.8f;
         else
             m_iSpeedWeight = 1.4f;
         break;
     case MATERIAL_SPECIAL:
-        // ìµœëŒ€ ë§ˆë‚˜ + 14
+        // ÃÖ´ë ¸¶³ª + 14
         m_tEquipmentStat.iMaxMp += 20;
         break;
     }
@@ -827,16 +827,16 @@ void CPlayer::Mouse_Direction()
     float diagLBtoRT = -((float)WINCY / WINCX * ptMouse.x) + WINCY - ptMouse.y;
     float diagLTtoRB = ((float)WINCY / WINCX * ptMouse.x) - ptMouse.y;
 
-    // ìš°ì¸¡
+    // ¿ìÃø
     if (diagLBtoRT < 0 && diagLTtoRB > 0)
         m_eDir = RIGHT;
-    // í•˜ë‹¨
+    // ÇÏ´Ü
     else if (diagLBtoRT <= 0 && diagLTtoRB <= 0)
         m_eDir = FRONT;
-    // ì¢Œì¸¡
+    // ÁÂÃø
     else if (diagLBtoRT >= 0 && diagLTtoRB <= 0)
         m_eDir = LEFT;
-    // ìƒë‹¨
+    // »ó´Ü
     else if (diagLBtoRT >= 0 && diagLTtoRB >= 0)
         m_eDir = BACK;
 }
@@ -994,12 +994,12 @@ void CPlayer::Set_Stop(_vec3* vDir1, _float fDirSpeed1, _vec3* vDir2, _float fDi
     _vec3 vCheckPos{};
     m_pTransformCom->Get_Info(INFO_POS, &vCheckPos);
 
-    // ë¯¸ë˜ì˜ ìºë¦­í„° ì¤‘ì  ì¢Œí‘œ
+    // ¹Ì·¡ÀÇ Ä³¸¯ÅÍ ÁßÁ¡ ÁÂÇ¥
     vCheckPos += *vDir1 * fDirSpeed1 * 0.1f;
     if (vDir2)
         vCheckPos += *vDir2 * fDirSpeed2 * 0.1f;
 
-    // ë¯¸ë˜ ì¤‘ì  ì¢Œí‘œ ê¸°ì¤€ ì¸ë±ìŠ¤ ê°’
+    // ¹Ì·¡ ÁßÁ¡ ÁÂÇ¥ ±âÁØ ÀÎµ¦½º °ª
     _int iIndex = _int(vCheckPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (vCheckPos.x + 0.5f * VTXITV);
     CTerrain* pTerrain = dynamic_cast<CTerrain*>(Engine::Get_GameObject(L"Layer_Environment", L"Terrain"));
     if (0 <= iIndex && iIndex < (VTXCNTX - 1) * (VTXCNTZ - 1))
@@ -1028,7 +1028,7 @@ void CPlayer::Show_Equipment()
         }
     }
     ZeroMemory(&m_tEquipmentStat, sizeof(STAT));
-    // ë¬´ê¸°(ì†)
+    // ¹«±â(¼Õ)
     if (m_pHandedItem)
     {
         m_tEquipmentStat.iAttack = m_pHandedItem->Get_Stat()->iAttack;
@@ -1127,7 +1127,7 @@ void CPlayer::Show_Equipment()
         }
     }
 
-    // ë°©ì–´êµ¬
+    // ¹æ¾î±¸
     CItem* pArmor;
     for (_int i = 0; i < CUIItemSlot::SLOT_END; i++)
     {
@@ -1356,10 +1356,6 @@ void CPlayer::PickAxe()
                         pCurScene->Delete_GameObject(L"Layer_Environment", pWall, dynamic_cast<CStage*>(pCurScene)->Get_WallNameByIndex(iIndex)->c_str());
                         pTerrain->Set_Unreachable(iIndex, false);
 
-                        CStage* pStage = dynamic_cast<CStage*>(pCurScene);
-                        auto& vecWall = pStage->Get_WallVector();
-                        vecWall[iIndex] = nullptr;
-
                     }
                 }
             }
@@ -1448,11 +1444,11 @@ void CPlayer::Hoe()
     {
         _vec3 vPos;
         m_pTransformCom->Get_Info(INFO_POS, &vPos);
-        // ì”¨ì•— ì‹¬ì€ ë•… or ëœ ìë€ ì‹ë¬¼ì´ë©´ í•´ë‹¹ ì”¨ì•— ì•„ì´í…œ ìƒì„±
-        // ì”¨ì•— ì•ˆì‹¬ì€ ë•…ì´ë©´ ë‹¤ì‹œ ì›ë˜ íƒ€ì¼ë¡œ ë˜ëŒë¦¬ê¸°
-        // ë‹¤ ìë€ ì‹ë¬¼ì´ë©´ í•´ë‹¹ ë†ì‚¬ ê²°ê³¼ë¬¼(Ingredient) ì•„ì´í…œ ìƒì„±
-        // 0 ~ 8ë²ˆ : 27ë²ˆ
-        // 9 ~ 17ë²ˆ : 29ë²ˆ
+        // ¾¾¾Ñ ½ÉÀº ¶¥ or ´ú ÀÚ¶õ ½Ä¹°ÀÌ¸é ÇØ´ç ¾¾¾Ñ ¾ÆÀÌÅÛ »ı¼º
+        // ¾¾¾Ñ ¾È½ÉÀº ¶¥ÀÌ¸é ´Ù½Ã ¿ø·¡ Å¸ÀÏ·Î µÇµ¹¸®±â
+        // ´Ù ÀÚ¶õ ½Ä¹°ÀÌ¸é ÇØ´ç ³ó»ç °á°ú¹°(Ingredient) ¾ÆÀÌÅÛ »ı¼º
+        // 0 ~ 8¹ø : 27¹ø
+        // 9 ~ 17¹ø : 29¹ø
         if (m_pCalculatorCom->Check_Distance2D(&vPos, &m_vMouseWorldPos, 5.f))
         {
             _int iIndex = _int(m_vMouseWorldPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (m_vMouseWorldPos.x + 0.5f * VTXITV);
@@ -1502,8 +1498,8 @@ void CPlayer::Watering()
     {
         _vec3 vPos;
         m_pTransformCom->Get_Info(INFO_POS, &vPos);
-        // ì”¨ì•—ì´ ì‹¬ì–´ì ¸ ìˆëŠ”ì§€ í™•ì¸ ì¶”ê°€
-        // ì”¨ì•—ì´ ì‹¬ì–´ì ¸ ìˆì„ ê²½ìš° íƒ€ì¼ ë³€ê²½ê³¼ ë™ì‹œì— í•´ë‹¹ íƒ€ì¼ì— ì‹¬ê²¨ì§„ ì”¨ì•— ë¬¼ì— ì –ì€ ìƒíƒœë¡œ ë³€ê²½(ì„±ì¥ ì‹œì‘)
+        // ¾¾¾ÑÀÌ ½É¾îÁ® ÀÖ´ÂÁö È®ÀÎ Ãß°¡
+        // ¾¾¾ÑÀÌ ½É¾îÁ® ÀÖÀ» °æ¿ì Å¸ÀÏ º¯°æ°ú µ¿½Ã¿¡ ÇØ´ç Å¸ÀÏ¿¡ ½É°ÜÁø ¾¾¾Ñ ¹°¿¡ Á¥Àº »óÅÂ·Î º¯°æ(¼ºÀå ½ÃÀÛ)
         if (m_pCalculatorCom->Check_Distance2D(&vPos, &m_vMouseWorldPos, 5.f))
         {
             _int iIndex = _int(m_vMouseWorldPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (m_vMouseWorldPos.x + 0.5f * VTXITV);
@@ -1744,7 +1740,6 @@ void CPlayer::Build(ITEMNUM eHandedNum)
                     return;
                 }
                 pWall->Set_PickedWallName(pStage->Get_WallNameByIndex(iIndex)->c_str());
-                pWall->Build(iIndex);
                 NULL_CHECK(pWall);
                 pStage->Set_WallVectorByIndex(iIndex, pWall);
                 pStage->Set_WallUnreachableByIndex(iIndex);
@@ -1807,7 +1802,7 @@ void CPlayer::Set_MouseWorldPos()
     //ZeroMemory(&ViewPort, sizeof(D3DVIEWPORT9));
     //m_pGraphicDev->GetViewport(&ViewPort);
 
-    //// ë·° í¬íŠ¸ -> íˆ¬ì˜
+    //// ºä Æ÷Æ® -> Åõ¿µ
     //vMousePos.x = ptMouse.x / (ViewPort.Width * 0.5f) - 1.f;
     //vMousePos.y = ptMouse.y / -(ViewPort.Height * 0.5f) + 1.f;
     //vMousePos.z = 0.f;
@@ -1831,19 +1826,19 @@ void CPlayer::Set_UI()
         (Engine::Get_GameObject(L"Layer_UI", L"UI_Health"));
     NULL_CHECK_RETURN(pHp);
 
-    pHp->Set_InfoH(m_pStateCom->Get_Stat()->iHp, m_pStateCom->Get_Stat()->iMaxHp); 
+    pHp->Set_InfoH(m_pStateCom->Get_Stat()->iHp, m_pStateCom->Get_Stat()->iMaxHp); // (ì²´ë ¥ , ìµœë?ì²´ë ¥)
 
     CUIStatusBar* pMp = dynamic_cast<CUIStatusBar*>
         (Engine::Get_GameObject(L"Layer_UI", L"UI_Mp"));
     NULL_CHECK_RETURN(pMp);
 
-    pMp->Set_InfoH(m_pStateCom->Get_Stat()->iMp, m_pStateCom->Get_Stat()->iMaxMp); 
+    pMp->Set_InfoH(m_pStateCom->Get_Stat()->iMp, m_pStateCom->Get_Stat()->iMaxMp); // (ë§ˆë‚˜ , ìµœë?ë§ˆë‚˜)
 
     CUIStatusBar* pHunger = dynamic_cast<CUIStatusBar*>
         (Engine::Get_GameObject(L"Layer_UI", L"UI_Hunger"));
     NULL_CHECK_RETURN(pMp);
 
-    pHunger->Set_InfoH(m_pStateCom->Get_Hunger(), m_pStateCom->Get_MaxHunger()); 
+    pHunger->Set_InfoH(m_pStateCom->Get_Hunger(), m_pStateCom->Get_MaxHunger()); // (ë°°ê³ ??, ìµœë?ë°°ê³ ??
 
     if (Engine::Get_DIMouseMove(DIMS_Z) && !m_bInventory)
     {
@@ -1901,10 +1896,10 @@ void CPlayer::Set_WallProjection()
     m_pTransformCom->Get_Info(INFO_RIGHT, &vRight);
     _int iCurIndex = _int(vPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (vPos.x + 0.5f * VTXITV);
     _int iIndex;
-    // ë‹¤ìŒ í”„ë ˆì„ ë²½ê³¼ í˜„ì¬ í”„ë ˆì„ ë²½ì´ ë˜‘ê°™ìœ¼ë©´ ì•ŒíŒŒê°’ 0.5, ì•„ë‹ˆë©´ ë‹¤ì‹œ 1
+    // ´ÙÀ½ ÇÁ·¹ÀÓ º®°ú ÇöÀç ÇÁ·¹ÀÓ º®ÀÌ ¶È°°À¸¸é ¾ËÆÄ°ª 0.5, ¾Æ´Ï¸é ´Ù½Ã 1
     if (g_bIsTopCamera)
     {
-        // í˜„ì¬ í”„ë ˆì„ ë²½ = í”Œë ˆì´ì–´ ìœ„ì¹˜ + zì¶•ìœ¼ë¡œ -1ì˜ ë°©í–¥, -2ì˜ ë°©í–¥
+        // ÇöÀç ÇÁ·¹ÀÓ º® = ÇÃ·¹ÀÌ¾î À§Ä¡ + zÃàÀ¸·Î -1ÀÇ ¹æÇâ, -2ÀÇ ¹æÇâ
         iIndex = iCurIndex - (VTXCNTX - 1);
         if (0 <= iIndex && iIndex < (VTXCNTX - 1) * (VTXCNTZ - 1))
         {
@@ -1929,7 +1924,7 @@ void CPlayer::Set_WallProjection()
                 }
             }
         }
-        // í”Œë ˆì´ì–´ ì™¼ìª½ì— ë²½ì´ ì—†ìœ¼ë©´ ê·¸ ì•„ë˜ë¥¼ íˆ¬ëª…í•˜ê²Œ
+        // ÇÃ·¹ÀÌ¾î ¿ŞÂÊ¿¡ º®ÀÌ ¾øÀ¸¸é ±× ¾Æ·¡¸¦ Åõ¸íÇÏ°Ô
         iIndex = iCurIndex - 1;
         if (0 <= iIndex && iIndex < (VTXCNTX - 1) * (VTXCNTZ - 1))
         {
@@ -1956,7 +1951,7 @@ void CPlayer::Set_WallProjection()
             }
         }
 
-        // í”Œë ˆì´ì–´ ì˜¤ë¥¸ìª½ì— ë²½ì´ ì—†ìœ¼ë©´ ê·¸ ì•„ë˜ë¥¼ íˆ¬ëª…í•˜ê²Œ
+        // ÇÃ·¹ÀÌ¾î ¿À¸¥ÂÊ¿¡ º®ÀÌ ¾øÀ¸¸é ±× ¾Æ·¡¸¦ Åõ¸íÇÏ°Ô
         if (vPos.x != 0)
         {
             iIndex = iCurIndex + 1;
@@ -1995,7 +1990,7 @@ void CPlayer::Set_WallProjection()
             vCheckPos = vPos - vLook * 0.1f * i;
             iIndex = _int(vCheckPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (vCheckPos.x + 0.5f * VTXITV);
 
-            // í˜„ì¬ í”„ë ˆì„ ë²½ = í”Œë ˆì´ì–´ ìœ„ì¹˜ + Look ë°˜ëŒ€ ë°©í–¥
+            // ÇöÀç ÇÁ·¹ÀÓ º® = ÇÃ·¹ÀÌ¾î À§Ä¡ + Look ¹İ´ë ¹æÇâ
             if (0 <= iIndex && iIndex < (VTXCNTX - 1) * (VTXCNTZ - 1))
             {
                 if (m_pTerrain->Get_UnreachableByIndex(iIndex))
@@ -2012,7 +2007,7 @@ void CPlayer::Set_WallProjection()
             vCheckPos += vRight;
             iIndex = _int(vCheckPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (vCheckPos.x + 0.5f * VTXITV);
 
-            // í˜„ì¬ í”„ë ˆì„ ë²½ = í”Œë ˆì´ì–´ ìœ„ì¹˜ + Look ë°˜ëŒ€ ë°©í–¥
+            // ÇöÀç ÇÁ·¹ÀÓ º® = ÇÃ·¹ÀÌ¾î À§Ä¡ + Look ¹İ´ë ¹æÇâ
             if (0 <= iIndex && iIndex < (VTXCNTX - 1) * (VTXCNTZ - 1))
             {
                 if (m_pTerrain->Get_UnreachableByIndex(iIndex))
@@ -2029,7 +2024,7 @@ void CPlayer::Set_WallProjection()
             vCheckPos -= vRight * 2;
             iIndex = _int(vCheckPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (vCheckPos.x + 0.5f * VTXITV);
 
-            // í˜„ì¬ í”„ë ˆì„ ë²½ = í”Œë ˆì´ì–´ ìœ„ì¹˜ + Look ë°˜ëŒ€ ë°©í–¥
+            // ÇöÀç ÇÁ·¹ÀÓ º® = ÇÃ·¹ÀÌ¾î À§Ä¡ + Look ¹İ´ë ¹æÇâ
 
             if (0 <= iIndex && iIndex < (VTXCNTX - 1) * (VTXCNTZ - 1))
             {
@@ -2185,7 +2180,7 @@ void CPlayer::Respawn_Progress(const _float& fTimeDelta)
         {
             m_bRespawnFirstFrame = false;
 
-            // ì¥ì°© ì¥ë¹„ off
+            // ÀåÂø Àåºñ off
             m_pHandedItem->Set_Use(false);
             m_pHandedItem->Set_Active(false);
             CItem* pArmor;
@@ -2219,12 +2214,12 @@ void CPlayer::Respawn_Progress(const _float& fTimeDelta)
                     break;
                 }
             }
-            // ë¬˜ë¹„ ìƒì„± ë° ë¯¸ë‹ˆë§µ í‘œì‹œ
+            // ¹¦ºñ »ı¼º ¹× ¹Ì´Ï¸Ê Ç¥½Ã
             CScene* pScene = Engine::Get_Scene();
             CGameObject* pGraveStone = CGravestoneObject::Create(m_pGraphicDev, vPos);
             m_vecInstallObjectName.push_back(L"Player_Created_Gravestone_" + std::to_wstring(m_iInstallNumber));
             pScene->Create_GameObject(L"Layer_GameLogic", pGraveStone, m_vecInstallObjectName.back().c_str());
-            // ì¸ë²¤í† ë¦¬ ì•„ì´í…œ ì „ë¶€ ë¬˜ë¹„ë¡œ ì˜®ê¸°ê¸°
+            // ÀÎº¥Åä¸® ¾ÆÀÌÅÛ ÀüºÎ ¹¦ºñ·Î ¿Å±â±â
         }
     }
     else if (m_fRespawnProgress <= 5.f)
@@ -2232,14 +2227,14 @@ void CPlayer::Respawn_Progress(const _float& fTimeDelta)
         if (!m_bRespawnFirstFrame)
         {
             m_bRespawnFirstFrame = true;
-            // ë¦¬ìŠ¤í° í¬ì¸íŠ¸ë¡œ ì´ë™ í›„ ì´í™íŠ¸ ìƒì„±
+            // ¸®½ºÆù Æ÷ÀÎÆ®·Î ÀÌµ¿ ÈÄ ÀÌÆåÆ® »ı¼º
 
         }
         m_pTransformCom->Set_Pos(m_vRespawnPoint.x, m_vRespawnPoint.y, m_vRespawnPoint.z);
     }
     else if (m_fRespawnProgress <= 6.f)
     {
-        // ë¦¬ìŠ¤í° ì™„ë£Œ
+        // ¸®½ºÆù ¿Ï·á
         m_pStateCom->Set_Revive();
         m_fRespawnProgress = 0.f;
     }
@@ -2679,7 +2674,7 @@ void CPlayer::Particle_Update(_float fTimeDelta)
 {
     if (m_bBleed)
     {
-        m_pFireParticleCom->update(fTimeDelta); // íŒŒí‹°í´ ì—…ë°ì´íŠ¸
+        m_pFireParticleCom->update(fTimeDelta); // ÆÄÆ¼Å¬ ¾÷µ¥ÀÌÆ®
 
         m_fBleedTime += fTimeDelta;
     }
@@ -2722,7 +2717,7 @@ void CPlayer::Set_KnockBack(_vec3 vEnemyPos, _int iDamage, _float fDist, PLAYERH
         m_pStateCom->Set_Damaged(iDamage);
         Set_ImmuneByTime();
 
-        // ì—¬ê¸°ì— ì´í™íŠ¸ ì¶”ê°€
+        // ¿©±â¿¡ ÀÌÆåÆ® Ãß°¡
         switch (eHit)
         {
         case HIT_NORMAL:

@@ -131,6 +131,8 @@ public:
 	_bool			Get_BuffState(BUFFTYPE eType) { return m_arrBuffState[eType]; }
 	void			Set_Speed(_float fSpeed) { m_fSpeed = fSpeed; m_fDiagSpeed = sqrt(pow(m_fSpeed, 2) / 2); }
 
+	_int			Get_LightRange() { return m_fLightRange; }
+
 private:
 	void			KnockBack(const _float& fTimeDelta);
 

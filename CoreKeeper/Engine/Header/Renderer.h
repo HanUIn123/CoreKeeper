@@ -21,6 +21,12 @@ public:
 	void			Expand_MiniMap(LPDIRECT3DDEVICE9& pGraphicDev);
 	_float			Get_ZoomRatio();
 	_bool			Get_ExpandMap();
+	void			Set_ExpandMap(_bool _bExpandMap);
+
+	_bool			Get_CloseMap();
+	void			Set_CloseMap(_bool _bCloseMap);
+
+	void			OpenClose_MiniMap();
 
 private:
 	void			Render_Priority(LPDIRECT3DDEVICE9& pGraphicDev);
@@ -43,6 +49,7 @@ private:
 private:
 	_bool						m_bExpandMinimap;
 	_float						m_fZoomRatio;
+	_bool						m_bCloseMinimap;
 private:
 	virtual void		Free();
 

@@ -54,13 +54,14 @@ public:
     vector<CWall*>                                          Get_Around() { return m_vecAroundWall; }
 
     void                                                    Set_Destroy();
-    void                                                    Set_DestoryWall(int _iIndex) { m_vecAroundWall[_iIndex] = nullptr; }
+    void                                                    Set_Wall(int _iIndex, CWall* _pWall) { m_vecAroundWall[_iIndex] = _pWall; }
 
     _bool                                                   Get_Destroyed() { return m_bWallDestroyed; }
 
     void                                                    Drop_Item();
     void                                                    Set_RenderAlpha(_bool bAlpha) { m_bRenderAlpha = bAlpha; }
 
+    void                                                    Build(int _iIndex);
 private:
     HRESULT													Add_Component();
     HRESULT                                                 Setup_Material();
@@ -97,7 +98,7 @@ private:
     bool    m_bActive;
     int     m_iCurImgNum;
     _int    m_iDurability;
-
+    bool    m_bInFrustum;
     static _long                                            m_iItemNumber;
 };
 
