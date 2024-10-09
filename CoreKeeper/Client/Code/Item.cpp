@@ -283,7 +283,7 @@ void CItem::Shoot(PROJECTILETYPE _type)
 				break;
 			}
 
-			if (m_iFrameCount++ > 2)
+			if (m_iFrameCount++ > 3)
 			{
 				m_iFrameCount = 0;
 				if (++m_iAttackAnimProgress >= 4)

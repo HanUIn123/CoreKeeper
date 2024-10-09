@@ -76,6 +76,7 @@ public:
 	void				Set_Direction(DIRECTION eDir) { m_eDir = eDir; }
 	void				Set_Swing(DIRECTION eDir, bool bSwing) { m_eDir = eDir; m_bSwing = bSwing; }
 	void				Set_Shoot(DIRECTION eDir, bool bShoot) { m_eDir = eDir; m_bShoot = bShoot; }
+	_bool				Get_Shoot() {return m_bShoot;}
 	void				Set_Follow(bool bFollow = true) { m_bFollow = bFollow; }
 	void				Set_Stop(_vec3* vDir, _float fDirSpeed);
 	void				Set_ProjectileDir(_vec3 vDir) { m_vProjectileDir = vDir; }
