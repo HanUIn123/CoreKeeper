@@ -86,6 +86,26 @@ inline _bool		Get_ExpandMap()
 	CRenderer::GetInstance()->Get_ExpandMap();
 }
 
+inline void			Set_ExpandMap(_bool _bExpandMap)
+{
+	CRenderer::GetInstance()->Set_ExpandMap(_bExpandMap);
+}
+
+inline _bool		Get_CloseMap()
+{
+	CRenderer::GetInstance()->Get_CloseMap();
+}
+
+inline void			Set_CloseMap(_bool _bCloseMap)
+{
+	CRenderer::GetInstance()->Set_CloseMap(_bCloseMap);
+}
+
+inline void			OpenClose_MiniMap()
+{
+	CRenderer::GetInstance()->OpenClose_MiniMap();
+}
+
 inline HRESULT			Ready_Light(LPDIRECT3DDEVICE9 pGraphicDev,
 	const D3DLIGHT9* pLightInfo,
 	const _uint& iIndex)
