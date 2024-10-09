@@ -4,7 +4,7 @@
 #include "Export_Utility.h"
 
 CUIPlayerStatus::CUIPlayerStatus(LPDIRECT3DDEVICE9 pGraphicDev)
-	: Engine::CGameObject(pGraphicDev), m_bWindow(false)
+	: Engine::CGameObject(pGraphicDev), m_bWindow(false), m_bFirst(true)
 
 {
 }
@@ -41,10 +41,30 @@ _int CUIPlayerStatus::Update_GameObject(const _float& fTimeDelta)
 {
 	_int iExit = Engine::CGameObject::Update_GameObject(fTimeDelta);
 
+	if (m_bFirst)
+	{
+		m_pEye = dynamic_cast<CEye*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player_Eye"));
+
+		m_pShirt = dynamic_cast<CShirt*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player_Shirt"));
+
+		m_pPants = dynamic_cast<CPants*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player_Pants"));
+
+		m_pHair = dynamic_cast<CHair*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player_Hair"));
+
+		m_pEquipInv = dynamic_cast<Engine::CInventory*>
+			(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_EquipInventory"));
+
+		m_bFirst = false;
+	}
+
 	if (m_bWindow)
 	{
-		Add_RenderGroup(RENDER_UI, this);
+		Engine::Add_RenderGroup(RENDER_UI, this);
 	}
+
+	m_pAnimatorCom->Set_CurState(IDLE, 0, 0, 100);
+
+	m_pAnimatorCom->Update_Animation();
 
 	return iExit;
 }
@@ -55,21 +75,80 @@ void CUIPlayerStatus::LateUpdate_GameObject()
 }
 
 void CUIPlayerStatus::Render_GameObject()
-{
+{	
+	_matrix matWorld;
+	m_pTransformCom->Get_WorldMatrix(&matWorld);
 
-//	m_pGraphicDev->SetScissorRect(&m_bRect); // 출력할 사각형 크기 정함
-//
-	//m_pGraphicDev->SetRenderState(D3DRS_SCISSORTESTENABLE, TRUE); // scissortest 시작
-
-	
-	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
+	m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
 
 	m_pTextureCom->Set_Texture();
 
 	m_pBufferCom->Render_Buffer();
 
-	//m_pGraphicDev->SetRenderState(D3DRS_SCISSORTESTENABLE, FALSE); // scissortest 끝
+	matWorld._11 = 45.f;
+	matWorld._22 = 60.f;
+	matWorld._41 -= 10.f;
 
+	m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
+
+	m_pSkinTextureCom->Set_Texture();
+
+	m_pAnimBufferCom->Set_Index(m_pAnimatorCom->Get_MotionIndex());
+	m_pAnimBufferCom->Render_Buffer();
+
+	m_pEye->Get_EyeTexture()->Set_Texture();
+
+	m_pEye->Get_EyeBuffer()->Render_First();
+
+	m_pShirt->Get_ShirtTexture()->Set_Texture();
+
+	m_pShirt->Get_ShirtBuffer()->Render_First();
+
+	m_pPants->Get_PantsTexture()->Set_Texture();
+
+	m_pPants->Get_PantsBuffer()->Render_First();
+
+	m_pHair->Get_HairTexture()->Set_Texture();
+
+	m_pHair->Get_HairBuffer()->Render_First();
+
+	if (!m_pEquipInv->Check_Empty(0))
+	{
+		m_pItem[0] = m_pEquipInv->Get_Item(0);
+
+		m_pItem[0]->Get_Texture()->Set_Texture();
+
+		m_pItem[0]->Get_Buffer()->Render_First();
+
+	}
+
+	if (!m_pEquipInv->Check_Empty(0))
+	{
+		m_pItem[0] = m_pEquipInv->Get_Item(0);
+
+		m_pItem[0]->Get_Texture()->Set_Texture();
+
+		m_pItem[0]->Get_Buffer()->Render_First();
+
+	}
+
+	if (!m_pEquipInv->Check_Empty(3))
+	{
+		m_pItem[1] = m_pEquipInv->Get_Item(3);
+
+		m_pItem[1]->Get_Texture()->Set_Texture();
+
+		m_pItem[1]->Get_Buffer()->Render_First();
+	}
+
+	if (!m_pEquipInv->Check_Empty(5))
+	{
+		m_pItem[2] = m_pEquipInv->Get_Item(5);
+
+		m_pItem[2]->Get_Texture()->Set_Texture();
+
+		m_pItem[2]->Get_Buffer()->Render_First();
+	}
 
 }
 
@@ -88,6 +167,18 @@ HRESULT CUIPlayerStatus::Add_Component()
 	pComponent = m_pTransformCom = dynamic_cast<CTransform*>(Engine::Clone_Proto(L"Proto_Transform"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_DYNAMIC].insert({ L"Com_UITransform", pComponent });
+
+	pComponent = m_pSkinTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_PlayerTex"));
+	NULL_CHECK_RETURN(pComponent, E_FAIL);
+	m_mapComponent[ID_STATIC].insert({ L"Com_SkinTexture", pComponent });
+
+	pComponent = m_pAnimBufferCom = dynamic_cast<CAnimTex*>(Engine::Clone_Proto(L"Proto_AnimTex"));
+	NULL_CHECK_RETURN(pComponent, E_FAIL);
+	m_mapComponent[ID_STATIC].insert({ L"Com_AnimBuffer", pComponent });
+
+	pComponent = m_pAnimatorCom = dynamic_cast<CAnimator*>(Engine::Clone_Proto(L"Proto_Animator"));
+	NULL_CHECK_RETURN(pComponent, E_FAIL);
+	m_mapComponent[ID_DYNAMIC].insert({ L"Com_Animator", pComponent });
 
 	return S_OK;
 }

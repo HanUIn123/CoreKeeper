@@ -48,6 +48,8 @@ public:
 	void           Set_Map();
 	void           Set_Craft();
 
+	void           Set_Collision() { m_bCollision = true; }
+	void           Set_DisCollision() { m_bCollision = false; }
 private:
 	HRESULT			Add_Component();
 
@@ -62,6 +64,8 @@ private:
 	_bool m_bExit;
 
 	_bool m_bFirst;
+
+	_bool m_bCollision;
 
 	vector<CItem*> m_vecItem;
 

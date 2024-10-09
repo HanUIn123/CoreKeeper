@@ -24,6 +24,8 @@ HRESULT CFurnaceObject::Ready_GameObject(_vec3 vPos)
 
 	m_pAnimatorCom->Set_CurState(IDLE, 0, 0, 100);
 
+	m_pFumeParticleCom->init(L"../Bin/Resource/Texture/Particle/Puff_Particle/Puff_Particle_%d.png", 3, 0.2f);
+
 	return S_OK;
 }
 
@@ -97,6 +99,8 @@ _int CFurnaceObject::Update_GameObject(const _float& fTimeDelta)
 
 			m_pInventoryCom2->Add_Item(pCraftItem);
 		}
+
+		m_pFumeParticleCom->update(fTimeDelta);
 	}
 	else
 	{
@@ -129,6 +133,11 @@ void CFurnaceObject::Render_GameObject()
 	m_pAnimBufferCom->Set_Index(m_pAnimatorCom->Get_MotionIndex());
 	m_pAnimBufferCom->Render_Buffer();
 
+
+	if (!m_pInventoryCom->Check_Empty(0))
+	{
+		m_pFumeParticleCom->render();
+	}
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
@@ -177,6 +186,10 @@ HRESULT CFurnaceObject::Add_Component()
 	pComponent = m_pInventoryCom2 = dynamic_cast<CInventory*>(Engine::Clone_Proto(L"Proto_OneSlotInventory"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_SecondInventory", pComponent });
+
+	pComponent = m_pFumeParticleCom = dynamic_cast<CFume*>(Engine::Clone_Proto(L"Proto_Fume"));
+	NULL_CHECK_RETURN(pComponent, E_FAIL);
+	m_mapComponent[ID_STATIC].insert({ L"Com_Fume", pComponent });
 	
 	return S_OK;
 }

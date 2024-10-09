@@ -121,6 +121,8 @@ private:
 
 	multimap<pair<TABLETYPE, _bool>, UIITEM> mapItemType;
 
+	_bool       m_bStay;
+
 private:
 	Engine::CAnimTex* m_pSlotBufferCom;
 	Engine::CRcTex* m_pBufferCom;
@@ -130,6 +132,7 @@ private:
 	Engine::CTexture* m_pColTextureCom;
 	Engine::CTexture* m_pSlotTextureCom;
 	Engine::CAnimator* m_pAnimatorCom;
+	Engine::CInventory* m_pInventoryCom;
 
 public:
 	static CUICraftSlot* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec2 vPos, _vec2 vSize, _int iIndex, _bool bDirection);
