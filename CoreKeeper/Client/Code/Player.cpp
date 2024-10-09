@@ -542,10 +542,11 @@ void CPlayer::Walk_Y(const _float& fTimeDelta)
 		m_fWalkYSpeed *= -1;
 		m_fTimeAcc = 0.0f;
 	}
-	_vec3 vUp;
+	_vec3 vUp, vPos;
 	m_pTransformCom->Get_Info(INFO_UP, &vUp);
-
-	m_pTransformCom->Move_Pos(&vUp, fTimeDelta, m_fWalkYSpeed);
+	m_pTransformCom->Get_Info(INFO_POS, &vPos);
+	if(vPos.y - vUp.y * fTimeDelta * m_fWalkYSpeed >= 0)
+		m_pTransformCom->Move_Pos(&vUp, fTimeDelta, m_fWalkYSpeed);
 	if (m_pHandedItem)
 		m_pHandedItem->Walk_Equipped(fTimeDelta);
 }
@@ -1135,16 +1136,20 @@ void CPlayer::Show_Equipment()
 				m_tEquipmentStat.iMaxHp += pArmor->Get_Stat()->iMaxHp;
 				m_tEquipmentStat.iDefense += pArmor->Get_Stat()->iDefense;
 				pArmor->Set_Active(true);
-				m_pClothes[0]->Set_Active(false);
-				m_pClothes[1]->Set_Active(false);
-				m_pClothes[2]->Set_Active(false);
 				pArmor->Set_Follow();
+				if (pArmor->Get_ItemMaterial() != MATERIAL_WOOD)
+				{
+					m_pClothes[0]->Set_Active(false);
+					m_pClothes[1]->Set_Active(false);
+				}
+				else
+					m_pClothes[1]->Set_TextureNumber((MATERIAL)1);
 			}
 			else
 			{
 				m_pClothes[0]->Set_Active(true);
 				m_pClothes[1]->Set_Active(true);
-				m_pClothes[2]->Set_Active(true);
+				m_pClothes[1]->Set_TextureNumber((MATERIAL)0);
 			}
 			break;
 		case CUIItemSlot::SLOT_CHEST:
@@ -1155,8 +1160,8 @@ void CPlayer::Show_Equipment()
 				m_tEquipmentStat.iMaxHp += pArmor->Get_Stat()->iMaxHp;
 				m_tEquipmentStat.iDefense += pArmor->Get_Stat()->iDefense;
 				pArmor->Set_Active(true);
-				m_pClothes[3]->Set_Active(false);
 				pArmor->Set_Follow();
+				m_pClothes[3]->Set_Active(false);
 			}
 			else
 				m_pClothes[3]->Set_Active(true);
@@ -1709,6 +1714,7 @@ void CPlayer::Set_Clothes()
 	m_pClothes[0] = dynamic_cast<CItem*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player_Eye"));
 	m_pClothes[1] = dynamic_cast<CItem*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player_Hair"));
 	m_pClothes[2] = dynamic_cast<CItem*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player_HairShade"));
+	m_pClothes[2]->Set_Active(false);
 	m_pClothes[3] = dynamic_cast<CItem*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player_Shirt"));
 	m_pClothes[4] = dynamic_cast<CItem*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player_Pants"));
 	m_pTerrain = dynamic_cast<CTerrain*>(Engine::Get_GameObject(L"Layer_Environment", L"Terrain"));
@@ -2128,28 +2134,23 @@ void CPlayer::Respawn_Progress(const _float& fTimeDelta)
 					pArmor = dynamic_cast<CUIItemSlot*>(Engine::Get_GameObject(L"Layer_UI", strObjectTag.c_str()))->Get_Item();
 					if (pArmor)
 						pArmor->Set_Active(false);
-					else
-					{
-						m_pClothes[0]->Set_Active(false);
-						m_pClothes[1]->Set_Active(false);
-						m_pClothes[2]->Set_Active(false);
-					}
+					m_pClothes[0]->Set_Active(false);
+					m_pClothes[1]->Set_Active(false);
+					m_pClothes[2]->Set_Active(false);
 					break;
 				case CUIItemSlot::SLOT_CHEST:
 					strObjectTag += std::to_wstring(i);
 					pArmor = dynamic_cast<CUIItemSlot*>(Engine::Get_GameObject(L"Layer_UI", strObjectTag.c_str()))->Get_Item();
 					if (pArmor)
 						pArmor->Set_Active(false);
-					else
-						m_pClothes[3]->Set_Active(false);
+					m_pClothes[3]->Set_Active(false);
 					break;
 				case CUIItemSlot::SLOT_LEGGINGS:
 					strObjectTag += std::to_wstring(i);
 					pArmor = dynamic_cast<CUIItemSlot*>(Engine::Get_GameObject(L"Layer_UI", strObjectTag.c_str()))->Get_Item();
 					if (pArmor)
 						pArmor->Set_Active(false);
-					else
-						m_pClothes[4]->Set_Active(false);
+					m_pClothes[4]->Set_Active(false);
 					break;
 				}
 			}
