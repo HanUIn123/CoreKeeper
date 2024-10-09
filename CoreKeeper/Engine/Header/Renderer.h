@@ -43,8 +43,8 @@ private:
 private:
 	list<CGameObject*>			m_RenderGroup[RENDER_END];
 
-	_D3DVIEWPORT9 m_MainViewport;
-	_D3DVIEWPORT9 m_MiniViewport;
+	_D3DVIEWPORT9				m_MainViewport;
+	_D3DVIEWPORT9				m_MiniViewport;
 
 private:
 	_bool						m_bExpandMinimap;

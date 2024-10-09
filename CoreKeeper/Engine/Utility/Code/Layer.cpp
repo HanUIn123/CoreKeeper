@@ -100,12 +100,12 @@ void CLayer::Delete_GameMap(const _tchar* tObjTag)
 
 	CRenderer::GetInstance()->Delete_Renderer(RENDER_PRIORITY, iter->second);
 	CRenderer::GetInstance()->Delete_Renderer(RENDER_ALPHA, iter->second);
+	CRenderer::GetInstance()->Delete_Renderer(RENDER_WALL, iter->second);
 	
 	iter->second->Free_Component();
 	Safe_Delete(iter->second);
 	
 	m_mapObject.erase(iter);
-
 }
 
 CLayer * CLayer::Create()

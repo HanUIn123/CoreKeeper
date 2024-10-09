@@ -68,10 +68,10 @@ _int CWall::Update_GameObject(const _float& fTimeDelta)
         return 0;
     }
 
-
     m_bRenderAlpha = false;
 
     Engine::Add_RenderGroup(RENDER_WALL, this);
+
     return Exit;
 }
 
