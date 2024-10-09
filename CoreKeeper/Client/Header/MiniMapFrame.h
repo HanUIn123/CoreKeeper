@@ -38,9 +38,12 @@ public:
 	void							Frame_Regulate();
 
 private:
-	_bool			m_bIsMinimapExpanded;
-	_bool			m_bKeyPressed;
+	_bool							m_bIsMinimapExpanded;
+	_bool							m_bKeyPressed;
+	_bool							m_bFrameKeyPressed;
+	_bool							m_bCloseFrame;
 	_float							m_fZoomRatio;
+
 private:
 	virtual void		Free();
 };

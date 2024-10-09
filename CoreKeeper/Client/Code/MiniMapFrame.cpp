@@ -6,6 +6,9 @@
 CMiniMapFrame::CMiniMapFrame(LPDIRECT3DDEVICE9 pGraphicDev)
     : Engine::CGameObject(pGraphicDev)
     , m_bIsMinimapExpanded(false)
+    , m_bCloseFrame(false)
+    , m_bKeyPressed(false)
+    , m_bFrameKeyPressed(false)
     , m_fZoomRatio(300.0f)
 {
 }
@@ -23,8 +26,27 @@ HRESULT CMiniMapFrame::Ready_GameObject()
 
 _int CMiniMapFrame::Update_GameObject(const _float& fTimeDelta)
 {
-    if (Engine::Get_DIKeyState(DIK_M) & 0x80)
+    if (Engine::Get_DIKeyState(DIK_TAB) & 0x80)
     {
+        if (!m_bFrameKeyPressed)
+        {
+            m_bCloseFrame = !m_bCloseFrame;
+            m_bFrameKeyPressed = true;
+        }
+    }
+    else
+    {
+        m_bFrameKeyPressed = false;
+    }
+
+    if (m_bCloseFrame)
+    {
+        return 0;  
+    }
+
+    if(CRenderer::GetInstance()->Get_ExpandMap())
+    {
+        m_bIsMinimapExpanded = true;
         if (!m_bKeyPressed)
         {
             m_bIsMinimapExpanded = !m_bIsMinimapExpanded;
@@ -34,6 +56,7 @@ _int CMiniMapFrame::Update_GameObject(const _float& fTimeDelta)
     else
     {
         m_bKeyPressed = false;
+        m_bIsMinimapExpanded = false;
     }
 
     if (m_bIsMinimapExpanded)
