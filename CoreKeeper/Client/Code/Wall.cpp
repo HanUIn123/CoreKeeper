@@ -57,7 +57,10 @@ HRESULT CWall::Ready_GameObject(_float _fWallX, _float _fWallZ, _int iWallImageN
 
 _int CWall::Update_GameObject(const _float& fTimeDelta)
 {
-    m_pTransformCom->Update_Component();
+    Update_Texture();
+
+    int Exit = Engine::CGameObject::Update_GameObject(fTimeDelta);
+
     m_bInFrustum = m_pCalculatorCom->In_Frustum(m_pTransformCom);
 
     if (!m_bInFrustum)
@@ -67,10 +70,9 @@ _int CWall::Update_GameObject(const _float& fTimeDelta)
 
 
     m_bRenderAlpha = false;
-    Update_Texture();
 
     Engine::Add_RenderGroup(RENDER_WALL, this);
-    return Engine::CGameObject::Update_GameObject(fTimeDelta);
+    return Exit;
 }
 
 void CWall::LateUpdate_GameObject()
@@ -137,8 +139,8 @@ void CWall::Build(int _iIndex)
     CScene* pScene = Engine::Get_Scene();
     CStage* pStage = dynamic_cast<CStage*>(pScene);
 
-    auto vecWall = pStage->Get_WallVector();
-    int totalWalls = vecWall.size();  // º®ÀÇ ÃÑ °³¼ö
+    auto& vecWall = pStage->Get_WallVector();
+    int totalWalls = vecWall.size();
 
     vecWall[_iIndex] = this;
 

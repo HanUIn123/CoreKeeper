@@ -1356,6 +1356,11 @@ void CPlayer::PickAxe()
 						pCurScene->Delete_GameObject(L"Layer_Environment", pWall, dynamic_cast<CStage*>(pCurScene)->Get_WallNameByIndex(iIndex)->c_str());
 						pTerrain->Set_Unreachable(iIndex, false);
 
+						CStage* pStage = dynamic_cast<CStage*>(pCurScene);
+
+						auto& vecWall = pStage->Get_WallVector();
+
+						vecWall[iIndex] = nullptr;
 					}
 				}
 			}
