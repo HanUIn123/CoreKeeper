@@ -526,6 +526,12 @@ void CPlayer::Mouse_Click(const _float& fTimeDelta)
 					Eat(eHandedNum);
 					break;
 
+				case ITEM_DIRTWALL:
+				case ITEM_STONEWALL:
+				case ITEM_GRASSWALL:
+					Build(eHandedNum);
+					break;
+
 				default:
 					break;
 				}
@@ -1699,6 +1705,59 @@ void CPlayer::Eat(ITEMNUM eHandedNum)
 	m_pHandedItem->Set_Active(false);
 	m_pHandedItem->Set_Drop(false);
 	m_pInventoryCom->Minus_Item(eHandedNum);
+}
+
+void CPlayer::Build(ITEMNUM eHandedNum)
+{
+	if (g_bIsTopCamera)
+	{
+		_vec3 vPos;
+		m_pTransformCom->Get_Info(INFO_POS, &vPos);
+		if (m_pCalculatorCom->Check_Distance2D(&vPos, &m_vMouseWorldPos, 5.f))
+		{
+			_int iIndex = _int(m_vMouseWorldPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (m_vMouseWorldPos.x + 0.5f * VTXITV);
+			_float	fX, fZ;
+			fX = (iIndex % (VTXCNTX - 1)) * VTXITV;
+			fZ = (iIndex / (VTXCNTX - 1)) * VTXITV;
+			if (!m_pTerrain->Get_UnreachableByIndex(iIndex))
+			{
+				CScene* pScene = Engine::Get_Scene();
+				CStage* pStage = dynamic_cast<CStage*>(pScene);
+				CWall* pWall = nullptr;
+				_vec3 vInstallPos = { _float((iIndex % (VTXCNTX - 1)) * VTXITV), 0.5f, _float((iIndex / (VTXCNTX - 1)) * VTXITV) };
+				switch (eHandedNum)
+				{
+				case ITEM_DIRTWALL:
+					pWall = CWall::Create(m_pGraphicDev, fX, fZ, 0, pStage->Get_WallNameByIndex(iIndex)->c_str());
+					break;
+				case ITEM_STONEWALL:
+					pWall = CWall::Create(m_pGraphicDev, fX, fZ, 15, pStage->Get_WallNameByIndex(iIndex)->c_str());
+					break;
+				case ITEM_GRASSWALL:
+					pWall = CWall::Create(m_pGraphicDev, fX, fZ, 30, pStage->Get_WallNameByIndex(iIndex)->c_str());
+					break;
+				default:
+					return;
+				}
+				pWall->Set_PickedWallName(pStage->Get_WallNameByIndex(iIndex)->c_str());
+				NULL_CHECK(pWall);
+				pStage->Set_WallVectorByIndex(iIndex, pWall);
+				pStage->Set_WallUnreachableByIndex(iIndex);
+				m_pTerrain->Set_Unreachable(iIndex, true);
+				pScene->Create_GameObject(L"Layer_Environment", pWall, pStage->Get_WallNameByIndex(iIndex)->c_str());
+
+				m_pHandedItem->Set_Use(false);
+				m_pHandedItem->Set_Active(false);
+				m_pHandedItem->Set_Drop(false);
+				m_pInventoryCom->Minus_Item(eHandedNum);
+			}
+		}
+	}
+
+	
+
+
+
 }
 
 

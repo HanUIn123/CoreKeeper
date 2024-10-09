@@ -78,6 +78,7 @@ private:
 	void			Plant(ITEMNUM eHandedNum);
 	void			Install(ITEMNUM eHandedNum);
 	void			Eat(ITEMNUM eHandedNum);
+	void			Build(ITEMNUM eHandedNum);
 
 	void			Set_Buff(const _float& fTimeDelta);
 	void			Set_Hungry(const _float& fTimeDelta);
