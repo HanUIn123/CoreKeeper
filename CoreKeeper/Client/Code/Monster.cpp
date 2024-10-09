@@ -324,6 +324,16 @@ void CMonster::Drop_Item()
 		NULL_CHECK(pGameObject);
 		m_vecItemName.push_back(L"Monster_Created_Ring" + std::to_wstring(m_iTagNumber++));
 		break;
+	case ITEM_BOW:
+		pGameObject = CBow::Create(m_pGraphicDev, vPos);
+		NULL_CHECK(pGameObject);
+		m_vecItemName.push_back(L"Monster_Created_Bow" + std::to_wstring(m_iTagNumber++));
+		break;
+	case ITEM_STAFF:
+		pGameObject = CStaff::Create(m_pGraphicDev, vPos);
+		NULL_CHECK(pGameObject);
+		m_vecItemName.push_back(L"Monster_Created_Staff" + std::to_wstring(m_iTagNumber++));
+		break;
 	default:
 		break;
 	}
@@ -431,12 +441,16 @@ void CMonster::Set_RespawnTimer(const _float& fTimeDelta)
 			_vec3 vPos, vPlayerPos, vPlayerDir;
 			m_pPlayerTransform->Get_Info(INFO_POS, &vPos);
 			m_pTransformCom->Get_Info(INFO_POS, &vPlayerPos);
-			if (!m_pCalculatorCom->Check_Distance2D(&vPos, &vPlayerPos, 40.f))
+			if (!m_pCalculatorCom->Check_Distance2D(&vPos, &vPlayerPos, 25.f))
 			{
 				m_fRespawnTimer = 0.f;
 				m_pTransformCom->Set_Pos(m_vRespawnPoint.x, m_vRespawnPoint.y, m_vRespawnPoint.z);
 				m_pStateCom->Set_Revive();
 				m_bStopDraw = false;
+				m_fImmuneTime = 0.f;
+				m_bKnockBackStart = false;
+				m_bKnockBackEnd = true;
+				m_pColliderCom->Set_Offset(_vec3(0, 0, 0));
 				m_eState = IDLE;
 			}
 		}
