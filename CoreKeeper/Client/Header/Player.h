@@ -229,6 +229,7 @@ private:
 	// ∑£≈œ
 	_int					m_iLightNum;
 	_float					m_fLightRange;
+	_float					m_fTorchRange;
 
 	_bool					m_bRespawnFirstFrame;
 	_float					m_fRespawnProgress;
@@ -238,7 +239,6 @@ private:
 	_float					m_fHungerTime;
 	_float					m_fManaTime;
 	CUIItemSlot* m_pEtcItems[CUIItemSlot::SLOT_END];
-
 public:
 	static CPlayer* Create(LPDIRECT3DDEVICE9 pGraphicDev);
 

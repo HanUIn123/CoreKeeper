@@ -36,7 +36,7 @@ public:
 
 public:
 	void							SetUp_Item(CScene* _pScene);
-	void							Set_Mine(bool	_bMine) { m_bMine = _bMine; }
+	void							Set_Self (bool	_bSelf) { m_bSelf = _bSelf; }
 
 private:
 	HRESULT							Add_Component();
@@ -50,6 +50,6 @@ private:
 private:
 	vector<wstring>					m_vecItemName;
 	int								m_iItemNameNum;
-	bool							m_bMine;
+	bool							m_bSelf;
 };
 

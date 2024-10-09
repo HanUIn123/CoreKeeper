@@ -26,7 +26,10 @@ HRESULT CTorchObject::Ready_GameObject(_vec3 vPos)
 
 _int CTorchObject::Update_GameObject(const _float& fTimeDelta)
 {
-	SetUp_Light(); // 조명 설정
+	if (m_pCalculCom->In_Frustum(m_pTransformCom))
+	{
+		SetUp_Light(); // 조명 설정
+	}
 
 	m_pAnimatorCom->Update_Animation();
 	
@@ -75,6 +78,10 @@ HRESULT CTorchObject::Add_Component()
 	pComponent = m_pAnimatorCom = dynamic_cast<CAnimator*>(Engine::Clone_Proto(L"Proto_Animator"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Animator", pComponent });
+
+	pComponent = m_pCalculCom = dynamic_cast<CCalculator*>(Engine::Clone_Proto(L"Proto_Calculator"));
+	NULL_CHECK_RETURN(pComponent, E_FAIL);
+	m_mapComponent[ID_STATIC].insert({ L"Com_Calculator", pComponent });
 
 	return S_OK;
 }

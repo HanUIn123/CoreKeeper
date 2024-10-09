@@ -40,7 +40,7 @@ HRESULT CTorch::Ready_GameObject(_vec3 vPos)
 
 _int CTorch::Update_GameObject(const _float& fTimeDelta)
 {
-	SetUp_Light(); // 조명 설정
+	//SetUp_Light(); // 조명 설정
 
 	m_pAnimatorCom->Update_Animation();
 

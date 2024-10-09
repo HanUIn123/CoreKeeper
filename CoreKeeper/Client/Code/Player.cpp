@@ -7,7 +7,7 @@
 #include "..\Header\DynamicCamera.h"
 
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
-	: Engine::CGameObject(pGraphicDev), m_fLightRange(0.f)
+	: Engine::CGameObject(pGraphicDev), m_fLightRange(0.f), m_fTorchRange(10.f)
 {
 	m_eDir = DIRECTION_END;
 	m_eState = STATE_END;
@@ -120,6 +120,7 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 		Respawn_Progress(fTimeDelta);
 		return 0;
 	}
+
 	// 랜턴
 	SetUp_Light();
 
@@ -318,34 +319,18 @@ HRESULT CPlayer::Setup_Material()
 
 void CPlayer::SetUp_Light()
 {
-	//D3DLIGHT9 light;
-	//ZeroMemory(&light, sizeof(D3DLIGHT9));
-
-	//light.Type = D3DLIGHT_POINT; // 포인트 조명
-	//light.Diffuse = { 1.f, 1.f, 1.f, 1.f }; // 확산 색상
-	//light.Specular = { 1.f, 1.f, 1.f, 1.f }; // 반사 색상
-	//light.Ambient = { 1.f, 1.f, 1.f, 1.f }; // 주변광
-
-	//_vec3 vPos;
-	//m_pTransformCom->Get_Info(INFO_POS, &vPos);
-
-	//light.Position = vPos; // 횃불의 위치
-	//light.Range = m_fLightRange; // 조명의 범위
-	//light.Falloff = 1.f; // 감쇠
-	//light.Attenuation0 = 1.0f; // 감쇠 계수
-	//light.Attenuation1 = 0.01f;
-	//light.Attenuation2 = 0.0f;
-
-	//m_pGraphicDev->SetLight(m_iLightNum, &light); // 조명 설정
-	//m_pGraphicDev->LightEnable(m_iLightNum, TRUE); // 조명 활성화
+	float m_fRange(m_fLightRange);
+	
+	if (m_pHandedItem && m_pHandedItem->Get_ItemNum() == ITEM_TORCH)
+		m_fRange = m_fLightRange + m_fTorchRange;
 
 	D3DLIGHT9 light;
 	ZeroMemory(&light, sizeof(D3DLIGHT9));
 
 	light.Type = D3DLIGHT_SPOT;
-	light.Diffuse = { 1.f, 1.f, 1.f, 1.f }; // 확산 색상
-	light.Specular = { 1.f, 1.f, 1.f, 1.f }; // 반사 색상
-	light.Ambient = { 1.f, 1.f, 1.f, 1.f }; // 주변광
+	light.Diffuse =		{ 1.f + m_fRange * 0.1f, 1.f + m_fRange * 0.1f, 1.f + m_fRange * 0.1f, 1.f }; // 확산 색상
+	light.Specular =	{ 1.f + m_fRange * 0.1f, 1.f + m_fRange * 0.1f, 1.f + m_fRange * 0.1f, 1.f }; // 반사 색상
+	light.Ambient =		{ 1.f + m_fRange * 0.1f, 1.f + m_fRange * 0.1f, 1.f + m_fRange * 0.1f, 1.f }; // 주변광
 
 	_vec3 vPos;
 	m_pTransformCom->Get_Info(INFO_POS, &vPos);
@@ -355,7 +340,7 @@ void CPlayer::SetUp_Light()
 	_vec3 vDir = { 0.0f, -1.0f, 0.0f };
 	light.Direction = vDir;
 
-	light.Range = m_fLightRange * 10.f; // 조명의 범위
+	light.Range = m_fRange * 10.f; // 조명의 범위
 	light.Falloff = 1.0f; // 감쇠
 	light.Attenuation0 = 1.0f; // 감쇠 계수
 	light.Attenuation1 = 0.01f;
@@ -363,7 +348,7 @@ void CPlayer::SetUp_Light()
 
 	// 스포트라이트의 내부 및 외부 각도 설정
 	light.Theta = D3DXToRadian(20.0f); // 내부 각도 (작은 값일수록 집중된 조명)
-	light.Phi = D3DXToRadian(80.0f); // 외부 각도 (큰 값일수록 퍼지는 조명)
+	light.Phi = D3DXToRadian(50.0f + m_fRange); // 외부 각도 (큰 값일수록 퍼지는 조명)
 
 	m_pGraphicDev->SetLight(m_iLightNum, &light);
 	m_pGraphicDev->LightEnable(m_iLightNum, TRUE);
@@ -683,13 +668,13 @@ void CPlayer::Lantern()
 		switch (pLantern->Get_ItemMaterial())
 		{
 		case MATERIAL_WOOD:
-			m_fLightRange = 3.f;
+			m_fLightRange = 10.f;
 			break;
 		case MATERIAL_COPPER:
-			m_fLightRange = 5.f;
+			m_fLightRange = 20.f;
 			break;
 		case MATERIAL_IRON:
-			m_fLightRange = 7.f;
+			m_fLightRange = 30.f;
 			break;
 		}
 	}
@@ -1595,6 +1580,7 @@ void CPlayer::Install(ITEMNUM eHandedNum)
 					break;
 				case ITEM_GRAVESTONE:
 					pInstallObject = CGravestoneObject::Create(m_pGraphicDev, vInstallPos);
+					dynamic_cast<CGravestoneObject*>(pInstallObject)->Set_Self(true);
 					break;
 				case ITEM_SPRINKLER:
 					pInstallObject = CSprinklerObject::Create(m_pGraphicDev, vInstallPos);
