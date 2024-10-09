@@ -22,7 +22,7 @@ public:
 	_float			Get_ZoomRatio();
 	_bool			Get_ExpandMap();
 	void			Set_ExpandMap(_bool _bExpandMap);
-		;
+
 	_bool			Get_CloseMap();
 	void			Set_CloseMap(_bool _bCloseMap);
 

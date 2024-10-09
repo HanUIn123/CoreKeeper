@@ -1356,6 +1356,10 @@ void CPlayer::PickAxe()
                         pCurScene->Delete_GameObject(L"Layer_Environment", pWall, dynamic_cast<CStage*>(pCurScene)->Get_WallNameByIndex(iIndex)->c_str());
                         pTerrain->Set_Unreachable(iIndex, false);
 
+                        CStage* pStage = dynamic_cast<CStage*>(pCurScene);
+                        auto& vecWall = pStage->Get_WallVector();
+                        vecWall[iIndex] = nullptr;
+
                     }
                 }
             }
@@ -1740,6 +1744,7 @@ void CPlayer::Build(ITEMNUM eHandedNum)
                     return;
                 }
                 pWall->Set_PickedWallName(pStage->Get_WallNameByIndex(iIndex)->c_str());
+                pWall->Build(iIndex);
                 NULL_CHECK(pWall);
                 pStage->Set_WallVectorByIndex(iIndex, pWall);
                 pStage->Set_WallUnreachableByIndex(iIndex);
@@ -1826,19 +1831,19 @@ void CPlayer::Set_UI()
         (Engine::Get_GameObject(L"Layer_UI", L"UI_Health"));
     NULL_CHECK_RETURN(pHp);
 
-    pHp->Set_InfoH(m_pStateCom->Get_Stat()->iHp, m_pStateCom->Get_Stat()->iMaxHp); // (泥대 , 理?泥대)
+    pHp->Set_InfoH(m_pStateCom->Get_Stat()->iHp, m_pStateCom->Get_Stat()->iMaxHp); 
 
     CUIStatusBar* pMp = dynamic_cast<CUIStatusBar*>
         (Engine::Get_GameObject(L"Layer_UI", L"UI_Mp"));
     NULL_CHECK_RETURN(pMp);
 
-    pMp->Set_InfoH(m_pStateCom->Get_Stat()->iMp, m_pStateCom->Get_Stat()->iMaxMp); // (留 , 理?留)
+    pMp->Set_InfoH(m_pStateCom->Get_Stat()->iMp, m_pStateCom->Get_Stat()->iMaxMp); 
 
     CUIStatusBar* pHunger = dynamic_cast<CUIStatusBar*>
         (Engine::Get_GameObject(L"Layer_UI", L"UI_Hunger"));
     NULL_CHECK_RETURN(pMp);
 
-    pHunger->Set_InfoH(m_pStateCom->Get_Hunger(), m_pStateCom->Get_MaxHunger()); // (諛곌�??, 理?諛곌�??
+    pHunger->Set_InfoH(m_pStateCom->Get_Hunger(), m_pStateCom->Get_MaxHunger()); 
 
     if (Engine::Get_DIMouseMove(DIMS_Z) && !m_bInventory)
     {
@@ -1886,72 +1891,6 @@ void CPlayer::Set_UI()
 
     if ((m_bMap || m_bChestInventory || m_bCraft || m_bStatue || m_bGraveInventory || m_bFurnace || m_bCookingPot) && (Engine::Key_Down(DIK_E)))
         UI_Disable();
-
-	CUIStatusBar* pHp = dynamic_cast<CUIStatusBar*>
-		(Engine::Get_GameObject(L"Layer_UI", L"UI_Health"));
-	NULL_CHECK_RETURN(pHp);
-
-	pHp->Set_InfoH(m_pStateCom->Get_Stat()->iHp, m_pStateCom->Get_Stat()->iMaxHp); // (泥대 , 理?泥대)
-
-	CUIStatusBar* pMp = dynamic_cast<CUIStatusBar*>
-		(Engine::Get_GameObject(L"Layer_UI", L"UI_Mp"));
-	NULL_CHECK_RETURN(pMp);
-
-	pMp->Set_InfoH(m_pStateCom->Get_Stat()->iMp, m_pStateCom->Get_Stat()->iMaxMp); // (留 , 理?留)
-
-	CUIStatusBar* pHunger = dynamic_cast<CUIStatusBar*>
-		(Engine::Get_GameObject(L"Layer_UI", L"UI_Hunger"));
-	NULL_CHECK_RETURN(pMp);
-
-	pHunger->Set_InfoH(m_pStateCom->Get_Hunger(), m_pStateCom->Get_MaxHunger()); // (諛곌�??, 理?諛곌�??
-
-	if (Engine::Get_DIMouseMove(DIMS_Z) && !m_bInventory)
-	{
-		if (Engine::Get_DIMouseMove(DIMS_Z) < 0)
-			m_iHandNum++;
-		else
-			m_iHandNum--;
-
-
-		if (m_iHandNum > 9)
-		{
-			m_iHandNum = 0;
-		}
-		else if (m_iHandNum < 0)
-		{
-			m_iHandNum = 9;
-		}
-	}
-
-	if (Engine::Key_Down(DIK_M))
-	{
-		//Set_Map();
-
-		CRenderer::GetInstance()->Expand_MiniMap(m_pGraphicDev);
-	}
-	if (Engine::Key_Down(DIK_TAB))
-	{
-		if (m_bMap || m_bChestInventory || m_bCraft || m_bInventory || m_bStatue || m_bGraveInventory || m_bFurnace || m_bCookingPot)
-		{
-			UI_Disable();
-			CRenderer::GetInstance()->Set_CloseMap(false);
-		}
-		else if (!m_bMap && !m_bChestInventory && !m_bCraft && !m_bInventory && !m_bStatue && !m_bGraveInventory && !m_bFurnace && !m_bCookingPot)
-		{
-			Set_Inventory();
-			Set_Craft();
-			Set_Status();
-			CRenderer::GetInstance()->Set_CloseMap(true);
-		}
-	}
-
-	if (m_bInventory && (Engine::Key_Down(DIK_E)))
-	{
-		UI_Disable();
-	}
-
-	if ((m_bMap || m_bChestInventory || m_bCraft || m_bStatue || m_bGraveInventory || m_bFurnace || m_bCookingPot) && (Engine::Key_Down(DIK_E)))
-		UI_Disable();
 }
 
 void CPlayer::Set_WallProjection()
