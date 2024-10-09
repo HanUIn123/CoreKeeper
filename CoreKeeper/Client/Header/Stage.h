@@ -25,6 +25,7 @@ public:
 
 public:
 	wstring*						Get_WallNameByIndex(_int iIndex) { return &m_wsWallNameString[iIndex]; }
+	vector<CWall*>&					Get_WallVector() { return m_vecWall; }
 	void							Set_WallVectorByIndex(_int iIndex, CWall* pWall) { m_vecWall[iIndex] = pWall; }
 	void							Set_WallUnreachableByIndex(_int iIndex) { m_vecUnreachable[iIndex] = true; }
 private:

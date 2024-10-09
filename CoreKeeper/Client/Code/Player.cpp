@@ -1740,6 +1740,7 @@ void CPlayer::Build(ITEMNUM eHandedNum)
 					return;
 				}
 				pWall->Set_PickedWallName(pStage->Get_WallNameByIndex(iIndex)->c_str());
+				pWall->Build(iIndex);
 				NULL_CHECK(pWall);
 				pStage->Set_WallVectorByIndex(iIndex, pWall);
 				pStage->Set_WallUnreachableByIndex(iIndex);
