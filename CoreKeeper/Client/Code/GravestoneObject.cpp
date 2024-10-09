@@ -7,7 +7,7 @@
 #include "..\Header\Include.h"
 
 CGravestoneObject::CGravestoneObject(LPDIRECT3DDEVICE9 pGraphicDev)
-	: CObject(pGraphicDev), m_iItemNameNum(0)
+	: CObject(pGraphicDev), m_iItemNameNum(0), m_bSelf(false)
 {
 }
 
@@ -27,7 +27,7 @@ HRESULT CGravestoneObject::Ready_GameObject(_vec3 vPos)
 _int CGravestoneObject::Update_GameObject(const _float& fTimeDelta)
 {
 	// 플레이어와 충돌했으면 상호작용해라.
-	if (Check_Interaction())
+	if (!m_bSelf && Check_Interaction())
 	{
 		Interaction();
 	}

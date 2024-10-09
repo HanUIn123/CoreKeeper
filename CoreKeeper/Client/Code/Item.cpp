@@ -283,7 +283,7 @@ void CItem::Shoot(PROJECTILETYPE _type)
 				break;
 			}
 
-			if (m_iFrameCount++ > 2)
+			if (m_iFrameCount++ > 3)
 			{
 				m_iFrameCount = 0;
 				if (++m_iAttackAnimProgress >= 4)
@@ -359,22 +359,28 @@ void CItem::Follow_Player()
 	{
 		_vec3 vPlayerPos, vPlayerAngle, vPlayerScale;
 		playerTransform->Get_Info(INFO_POS, &vPlayerPos);
-
+		_float fOffsetY = 0.f, fOffset = 0.001f;
+		if (m_eItemNum == ITEM_LEG)
+			fOffsetY = 0.125f;
+		else if (m_eItemNum == ITEM_CHEST)
+			fOffsetY = 0.08f;
+		if (m_eItemNum == ITEM_HELMET)
+			fOffset = 0.002f;
 		if (g_bIsTopCamera)
 		{
 			m_pTransformCom->Set_Angle(0, 0, 0);
-			m_pTransformCom->Set_Pos(vPlayerPos.x, vPlayerPos.y - 0.04f, vPlayerPos.z - 0.001f);
+			m_pTransformCom->Set_Pos(vPlayerPos.x, vPlayerPos.y + fOffsetY, vPlayerPos.z - fOffset);
 		}
 		else
 		{
 			_vec3 vPlayerLook;
 			playerTransform->Get_Info(INFO_LOOK, &vPlayerLook);
-			m_pTransformCom->Set_Pos(vPlayerPos.x - vPlayerLook.x * 0.02f, vPlayerPos.y - 0.04f, vPlayerPos.z - vPlayerLook.z * 0.02f);
+			m_pTransformCom->Set_Pos(vPlayerPos.x - vPlayerLook.x * fOffset, vPlayerPos.y + fOffsetY, vPlayerPos.z - vPlayerLook.z * fOffset);
 			vPlayerAngle = *(playerTransform->Get_Angle());
 			m_pTransformCom->Set_Angle(vPlayerAngle.x, vPlayerAngle.y, vPlayerAngle.z);
 		}
 
-		vPlayerScale = *(playerTransform->Get_Scale());
+		vPlayerScale = *(playerTransform->Get_Scale()) * 1.2f;
 		m_pTransformCom->Set_Scale(vPlayerScale.x, vPlayerScale.y, vPlayerScale.z);
 
 		CAnimator* playerAnimator = dynamic_cast<CAnimator*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Animator"));

@@ -76,16 +76,8 @@ _int CBow::Update_GameObject(const _float& fTimeDelta)
 		else
 			m_pTransformCom->Set_Scale(1.5f, 1.5f, 1.5f);
 	}
-	if (m_bProjectileAttackSuccess || m_pArrow->Get_ProjectileAttackSuccess())
-	{
-		m_pArrow->Set_ProjectileAttackSuccess(false);
-		m_bProjectileAttackSuccess = false;
-		m_bFired = false;
-		m_bShot = false;
-		m_pArrow->Set_Active(false);
-		m_pArrow->Get_Transform()->Set_Pos(vPos.x, -100.f, vPos.z);
-	}
-	if (m_bFired)
+
+	if (m_bShoot)
 	{
 		if (!m_bShot)
 		{
@@ -97,9 +89,23 @@ _int CBow::Update_GameObject(const _float& fTimeDelta)
 			m_pArrow->Set_TextureNumber((MATERIAL)1);
 			dynamic_cast<CArrow*>(m_pArrow)->Set_Dir(m_vProjectileDir);
 		}
+		else
+		{
+			if (m_bProjectileAttackSuccess || m_pArrow->Get_ProjectileAttackSuccess())
+			{
+				m_pArrow->Set_Active(false);
+				m_pArrow->Get_Transform()->Set_Pos(vPos.x, 100.f, vPos.z);
+			}
+		}
 	}
-	
-
+	else
+	{
+		m_pArrow->Set_ProjectileAttackSuccess(false);
+		m_bProjectileAttackSuccess = false;
+		m_bShot = false;
+		m_pArrow->Set_Active(false);
+		m_pArrow->Get_Transform()->Set_Pos(vPos.x, 100.f, vPos.z);
+	}
 
 	if (m_bDrop)
 	{

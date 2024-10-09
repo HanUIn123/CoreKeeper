@@ -7,7 +7,7 @@
 #include "..\Header\DynamicCamera.h"
 
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
-	: Engine::CGameObject(pGraphicDev), m_fLightRange(0.f)
+	: Engine::CGameObject(pGraphicDev), m_fLightRange(0.f), m_fTorchRange(10.f)
 {
 	m_eDir = DIRECTION_END;
 	m_eState = STATE_END;
@@ -120,6 +120,7 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 		Respawn_Progress(fTimeDelta);
 		return 0;
 	}
+
 	// 랜턴
 	SetUp_Light();
 
@@ -318,34 +319,18 @@ HRESULT CPlayer::Setup_Material()
 
 void CPlayer::SetUp_Light()
 {
-	//D3DLIGHT9 light;
-	//ZeroMemory(&light, sizeof(D3DLIGHT9));
-
-	//light.Type = D3DLIGHT_POINT; // 포인트 조명
-	//light.Diffuse = { 1.f, 1.f, 1.f, 1.f }; // 확산 색상
-	//light.Specular = { 1.f, 1.f, 1.f, 1.f }; // 반사 색상
-	//light.Ambient = { 1.f, 1.f, 1.f, 1.f }; // 주변광
-
-	//_vec3 vPos;
-	//m_pTransformCom->Get_Info(INFO_POS, &vPos);
-
-	//light.Position = vPos; // 횃불의 위치
-	//light.Range = m_fLightRange; // 조명의 범위
-	//light.Falloff = 1.f; // 감쇠
-	//light.Attenuation0 = 1.0f; // 감쇠 계수
-	//light.Attenuation1 = 0.01f;
-	//light.Attenuation2 = 0.0f;
-
-	//m_pGraphicDev->SetLight(m_iLightNum, &light); // 조명 설정
-	//m_pGraphicDev->LightEnable(m_iLightNum, TRUE); // 조명 활성화
+	float m_fRange(m_fLightRange);
+	
+	if (m_pHandedItem && m_pHandedItem->Get_ItemNum() == ITEM_TORCH)
+		m_fRange = m_fLightRange + m_fTorchRange;
 
 	D3DLIGHT9 light;
 	ZeroMemory(&light, sizeof(D3DLIGHT9));
 
 	light.Type = D3DLIGHT_SPOT;
-	light.Diffuse = { 1.f, 1.f, 1.f, 1.f }; // 확산 색상
-	light.Specular = { 1.f, 1.f, 1.f, 1.f }; // 반사 색상
-	light.Ambient = { 1.f, 1.f, 1.f, 1.f }; // 주변광
+	light.Diffuse =		{ 1.f + m_fRange * 0.1f, 1.f + m_fRange * 0.1f, 1.f + m_fRange * 0.1f, 1.f }; // 확산 색상
+	light.Specular =	{ 1.f + m_fRange * 0.1f, 1.f + m_fRange * 0.1f, 1.f + m_fRange * 0.1f, 1.f }; // 반사 색상
+	light.Ambient =		{ 1.f + m_fRange * 0.1f, 1.f + m_fRange * 0.1f, 1.f + m_fRange * 0.1f, 1.f }; // 주변광
 
 	_vec3 vPos;
 	m_pTransformCom->Get_Info(INFO_POS, &vPos);
@@ -355,7 +340,7 @@ void CPlayer::SetUp_Light()
 	_vec3 vDir = { 0.0f, -1.0f, 0.0f };
 	light.Direction = vDir;
 
-	light.Range = m_fLightRange * 10.f; // 조명의 범위
+	light.Range = m_fRange * 10.f; // 조명의 범위
 	light.Falloff = 1.0f; // 감쇠
 	light.Attenuation0 = 1.0f; // 감쇠 계수
 	light.Attenuation1 = 0.01f;
@@ -363,7 +348,7 @@ void CPlayer::SetUp_Light()
 
 	// 스포트라이트의 내부 및 외부 각도 설정
 	light.Theta = D3DXToRadian(20.0f); // 내부 각도 (작은 값일수록 집중된 조명)
-	light.Phi = D3DXToRadian(80.0f); // 외부 각도 (큰 값일수록 퍼지는 조명)
+	light.Phi = D3DXToRadian(50.0f + m_fRange); // 외부 각도 (큰 값일수록 퍼지는 조명)
 
 	m_pGraphicDev->SetLight(m_iLightNum, &light);
 	m_pGraphicDev->LightEnable(m_iLightNum, TRUE);
@@ -541,6 +526,12 @@ void CPlayer::Mouse_Click(const _float& fTimeDelta)
 					Eat(eHandedNum);
 					break;
 
+				case ITEM_DIRTWALL:
+				case ITEM_STONEWALL:
+				case ITEM_GRASSWALL:
+					Build(eHandedNum);
+					break;
+
 				default:
 					break;
 				}
@@ -557,10 +548,11 @@ void CPlayer::Walk_Y(const _float& fTimeDelta)
 		m_fWalkYSpeed *= -1;
 		m_fTimeAcc = 0.0f;
 	}
-	_vec3 vUp;
+	_vec3 vUp, vPos;
 	m_pTransformCom->Get_Info(INFO_UP, &vUp);
-
-	m_pTransformCom->Move_Pos(&vUp, fTimeDelta, m_fWalkYSpeed);
+	m_pTransformCom->Get_Info(INFO_POS, &vPos);
+	if(vPos.y - vUp.y * fTimeDelta * m_fWalkYSpeed >= 0)
+		m_pTransformCom->Move_Pos(&vUp, fTimeDelta, m_fWalkYSpeed);
 	if (m_pHandedItem)
 		m_pHandedItem->Walk_Equipped(fTimeDelta);
 }
@@ -683,13 +675,13 @@ void CPlayer::Lantern()
 		switch (pLantern->Get_ItemMaterial())
 		{
 		case MATERIAL_WOOD:
-			m_fLightRange = 3.f;
+			m_fLightRange = 10.f;
 			break;
 		case MATERIAL_COPPER:
-			m_fLightRange = 5.f;
+			m_fLightRange = 20.f;
 			break;
 		case MATERIAL_IRON:
-			m_fLightRange = 7.f;
+			m_fLightRange = 30.f;
 			break;
 		}
 	}
@@ -1150,16 +1142,20 @@ void CPlayer::Show_Equipment()
 				m_tEquipmentStat.iMaxHp += pArmor->Get_Stat()->iMaxHp;
 				m_tEquipmentStat.iDefense += pArmor->Get_Stat()->iDefense;
 				pArmor->Set_Active(true);
-				m_pClothes[0]->Set_Active(false);
-				m_pClothes[1]->Set_Active(false);
-				m_pClothes[2]->Set_Active(false);
 				pArmor->Set_Follow();
+				if (pArmor->Get_ItemMaterial() != MATERIAL_WOOD)
+				{
+					m_pClothes[0]->Set_Active(false);
+					m_pClothes[1]->Set_Active(false);
+				}
+				else
+					m_pClothes[1]->Set_TextureNumber((MATERIAL)1);
 			}
 			else
 			{
 				m_pClothes[0]->Set_Active(true);
 				m_pClothes[1]->Set_Active(true);
-				m_pClothes[2]->Set_Active(true);
+				m_pClothes[1]->Set_TextureNumber((MATERIAL)0);
 			}
 			break;
 		case CUIItemSlot::SLOT_CHEST:
@@ -1170,8 +1166,8 @@ void CPlayer::Show_Equipment()
 				m_tEquipmentStat.iMaxHp += pArmor->Get_Stat()->iMaxHp;
 				m_tEquipmentStat.iDefense += pArmor->Get_Stat()->iDefense;
 				pArmor->Set_Active(true);
-				m_pClothes[3]->Set_Active(false);
 				pArmor->Set_Follow();
+				m_pClothes[3]->Set_Active(false);
 			}
 			else
 				m_pClothes[3]->Set_Active(true);
@@ -1595,6 +1591,7 @@ void CPlayer::Install(ITEMNUM eHandedNum)
 					break;
 				case ITEM_GRAVESTONE:
 					pInstallObject = CGravestoneObject::Create(m_pGraphicDev, vInstallPos);
+					dynamic_cast<CGravestoneObject*>(pInstallObject)->Set_Self(true);
 					break;
 				case ITEM_SPRINKLER:
 					pInstallObject = CSprinklerObject::Create(m_pGraphicDev, vInstallPos);
@@ -1710,6 +1707,59 @@ void CPlayer::Eat(ITEMNUM eHandedNum)
 	m_pInventoryCom->Minus_Item(eHandedNum);
 }
 
+void CPlayer::Build(ITEMNUM eHandedNum)
+{
+	if (g_bIsTopCamera)
+	{
+		_vec3 vPos;
+		m_pTransformCom->Get_Info(INFO_POS, &vPos);
+		if (m_pCalculatorCom->Check_Distance2D(&vPos, &m_vMouseWorldPos, 5.f))
+		{
+			_int iIndex = _int(m_vMouseWorldPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (m_vMouseWorldPos.x + 0.5f * VTXITV);
+			_float	fX, fZ;
+			fX = (iIndex % (VTXCNTX - 1)) * VTXITV;
+			fZ = (iIndex / (VTXCNTX - 1)) * VTXITV;
+			if (!m_pTerrain->Get_UnreachableByIndex(iIndex))
+			{
+				CScene* pScene = Engine::Get_Scene();
+				CStage* pStage = dynamic_cast<CStage*>(pScene);
+				CWall* pWall = nullptr;
+				_vec3 vInstallPos = { _float((iIndex % (VTXCNTX - 1)) * VTXITV), 0.5f, _float((iIndex / (VTXCNTX - 1)) * VTXITV) };
+				switch (eHandedNum)
+				{
+				case ITEM_DIRTWALL:
+					pWall = CWall::Create(m_pGraphicDev, fX, fZ, 0, pStage->Get_WallNameByIndex(iIndex)->c_str());
+					break;
+				case ITEM_STONEWALL:
+					pWall = CWall::Create(m_pGraphicDev, fX, fZ, 15, pStage->Get_WallNameByIndex(iIndex)->c_str());
+					break;
+				case ITEM_GRASSWALL:
+					pWall = CWall::Create(m_pGraphicDev, fX, fZ, 30, pStage->Get_WallNameByIndex(iIndex)->c_str());
+					break;
+				default:
+					return;
+				}
+				pWall->Set_PickedWallName(pStage->Get_WallNameByIndex(iIndex)->c_str());
+				NULL_CHECK(pWall);
+				pStage->Set_WallVectorByIndex(iIndex, pWall);
+				pStage->Set_WallUnreachableByIndex(iIndex);
+				m_pTerrain->Set_Unreachable(iIndex, true);
+				pScene->Create_GameObject(L"Layer_Environment", pWall, pStage->Get_WallNameByIndex(iIndex)->c_str());
+
+				m_pHandedItem->Set_Use(false);
+				m_pHandedItem->Set_Active(false);
+				m_pHandedItem->Set_Drop(false);
+				m_pInventoryCom->Minus_Item(eHandedNum);
+			}
+		}
+	}
+
+	
+
+
+
+}
+
 
 void CPlayer::Set_EquippedStatus()
 {
@@ -1723,6 +1773,7 @@ void CPlayer::Set_Clothes()
 	m_pClothes[0] = dynamic_cast<CItem*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player_Eye"));
 	m_pClothes[1] = dynamic_cast<CItem*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player_Hair"));
 	m_pClothes[2] = dynamic_cast<CItem*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player_HairShade"));
+	m_pClothes[2]->Set_Active(false);
 	m_pClothes[3] = dynamic_cast<CItem*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player_Shirt"));
 	m_pClothes[4] = dynamic_cast<CItem*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player_Pants"));
 	m_pTerrain = dynamic_cast<CTerrain*>(Engine::Get_GameObject(L"Layer_Environment", L"Terrain"));
@@ -2142,28 +2193,23 @@ void CPlayer::Respawn_Progress(const _float& fTimeDelta)
 					pArmor = dynamic_cast<CUIItemSlot*>(Engine::Get_GameObject(L"Layer_UI", strObjectTag.c_str()))->Get_Item();
 					if (pArmor)
 						pArmor->Set_Active(false);
-					else
-					{
-						m_pClothes[0]->Set_Active(false);
-						m_pClothes[1]->Set_Active(false);
-						m_pClothes[2]->Set_Active(false);
-					}
+					m_pClothes[0]->Set_Active(false);
+					m_pClothes[1]->Set_Active(false);
+					m_pClothes[2]->Set_Active(false);
 					break;
 				case CUIItemSlot::SLOT_CHEST:
 					strObjectTag += std::to_wstring(i);
 					pArmor = dynamic_cast<CUIItemSlot*>(Engine::Get_GameObject(L"Layer_UI", strObjectTag.c_str()))->Get_Item();
 					if (pArmor)
 						pArmor->Set_Active(false);
-					else
-						m_pClothes[3]->Set_Active(false);
+					m_pClothes[3]->Set_Active(false);
 					break;
 				case CUIItemSlot::SLOT_LEGGINGS:
 					strObjectTag += std::to_wstring(i);
 					pArmor = dynamic_cast<CUIItemSlot*>(Engine::Get_GameObject(L"Layer_UI", strObjectTag.c_str()))->Get_Item();
 					if (pArmor)
 						pArmor->Set_Active(false);
-					else
-						m_pClothes[4]->Set_Active(false);
+					m_pClothes[4]->Set_Active(false);
 					break;
 				}
 			}

@@ -46,7 +46,6 @@ _int CStaff::Update_GameObject(const _float& fTimeDelta)
 {
 	if (!m_pMagic)
 	{
-
 		CScene* pScene = Engine::Get_Scene();
 		_vec3 vPos;
 		m_pTransformCom->Get_Info(INFO_POS, &vPos);
@@ -79,26 +78,32 @@ _int CStaff::Update_GameObject(const _float& fTimeDelta)
 			m_pTransformCom->Set_Scale(1.5f, 1.5f, 1.5f);
 	}
 
-	if (m_bProjectileAttackSuccess || m_pMagic->Get_ProjectileAttackSuccess())
-	{
-		m_pMagic->Set_ProjectileAttackSuccess(false);
-		m_bProjectileAttackSuccess = false;
-		m_bFired = false;
-		m_bShot = false;
-		m_pMagic->Set_Active(false);
-		m_pMagic->Get_Transform()->Set_Pos(vPos.x, -100.f, vPos.z);
-	}
-	if (m_bFired)
+	if (m_bShoot)
 	{
 		if (!m_bShot)
 		{
 			m_bShot = true;
 			m_pMagic->Set_Active(true);
 			m_pMagic->Set_Direction(m_eDir);
-			m_pMagic->Get_Transform()->Set_Pos(vPos.x, 0.5f, vPos.z);
-			// m_pMagic->Set_TextureNumber((MATERIAL)(m_eMaterial));
+			m_pMagic->Get_Transform()->Set_Pos(vPos.x, 0.25f, vPos.z);
 			dynamic_cast<CMagic*>(m_pMagic)->Set_Dir(m_vProjectileDir);
 		}
+		else
+		{
+			if (m_bProjectileAttackSuccess || m_pMagic->Get_ProjectileAttackSuccess())
+			{
+				m_pMagic->Set_Active(false);
+				m_pMagic->Get_Transform()->Set_Pos(vPos.x, 100.f, vPos.z);
+			}
+		}
+	}
+	else
+	{
+		m_pMagic->Set_ProjectileAttackSuccess(false);
+		m_bProjectileAttackSuccess = false;
+		m_bShot = false;
+		m_pMagic->Set_Active(false);
+		m_pMagic->Get_Transform()->Set_Pos(vPos.x, 100.f, vPos.z);
 	}
 
 

@@ -7,7 +7,7 @@
 CMagic::CMagic(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CItem(pGraphicDev)
 {
-	m_fSpeed = 32.f;
+	m_fSpeed = 25.f;
 	m_bActive = false;
 	m_fTime = 0.f;
 	m_bHasRotated = false;
@@ -66,14 +66,19 @@ _int CMagic::Update_GameObject(const _float& fTimeDelta)
 			}
 			else
 			{
-				_vec3 vLook;
+				_vec3 vPlayerAngle;
 				CTransform* pPlayerTransformCom = dynamic_cast<Engine::CTransform*>
 					(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Transform"));
-				m_pTransformCom->Set_RotArbit(&vLook, 90.f);
+
+				vPlayerAngle = *(pPlayerTransformCom->Get_Angle());
+				m_pTransformCom->Rotation(ROT_X, D3DXToRadian(90.f));
+				m_pTransformCom->Rotation(ROT_Y, vPlayerAngle.y);
 			}
 			m_bHasRotated = true;
 		}
 
+		Set_Stop(&m_vDir, 0.5f);
+		m_pTransformCom->Move_Pos(&m_vDir, fTimeDelta, m_fSpeed * m_iSpeedWeight);
 		if (m_fTime >= 0.5f || m_iSpeedWeight == 0)
 		{
 			m_fTime = 0;
@@ -92,11 +97,11 @@ _int CMagic::Update_GameObject(const _float& fTimeDelta)
 					m_fAngleX = 0.f;
 					m_fAngleY = 0.f;
 				}
+				else
+					m_pTransformCom->Set_Angle(0, 0, 0);
 			}
 		}
-		Set_Stop(&m_vDir, 1.f);
-		m_pTransformCom->Move_Pos(&m_vDir, fTimeDelta, m_fSpeed * m_iSpeedWeight);
-		
+
 		m_pAnimatorCom->Set_CurState(SHOOT, 0, 6, 4);
 
 		_vec3 vPos;
@@ -105,6 +110,26 @@ _int CMagic::Update_GameObject(const _float& fTimeDelta)
 
 		m_pAnimatorCom->Update_Animation();
 		Add_RenderGroup(RENDER_ALPHA, this);
+	}
+	else
+	{
+		m_fTime = 0;
+		m_iSpeedWeight = 0;
+		if (m_bHasRotated)
+		{
+			m_bHasRotated = false;
+			if (g_bIsTopCamera)
+			{
+				m_pTransformCom->Rotation(ROT_Z, D3DXToRadian(-m_fAngle));
+				m_pTransformCom->Rotation(ROT_X, D3DXToRadian(-m_fAngleX));
+				m_pTransformCom->Rotation(ROT_Y, D3DXToRadian(-m_fAngleY));
+				m_fAngle = 0.f;
+				m_fAngleX = 0.f;
+				m_fAngleY = 0.f;
+			}
+			else
+				m_pTransformCom->Set_Angle(0, 0, 0);
+		}
 	}
 	return Engine::CGameObject::Update_GameObject(fTimeDelta);
 }

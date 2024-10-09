@@ -30,8 +30,8 @@ private:
 
 private:
 	wstring			m_strMagic;
-	CMagic* m_pMagic;
-	CTransform* m_pTransformMagic;
+	CMagic*			m_pMagic;
+	CTransform*		m_pTransformMagic;
 	_bool			m_bShot;
 
 	static			_int		m_iMagicNum;
