@@ -14,7 +14,7 @@ CHair::~CHair()
 HRESULT CHair::Ready_GameObject()
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
-
+	m_iTextureNumber = 0;
 	return S_OK;
 }
 
@@ -41,7 +41,7 @@ void CHair::Render_GameObject()
 
 	FAILED_CHECK_RETURN(Setup_Material(), );
 
-	m_pTextureCom->Set_Texture();
+	m_pTextureCom->Set_Texture(m_iTextureNumber);
 
 	m_pBufferCom->Set_Index(m_pAnimatorCom->Get_MotionIndex());
 	m_pBufferCom->Render_Buffer();
@@ -107,7 +107,7 @@ void CHair::Follow_Player()
 		{
 			_vec3 vPlayerLook;
 			playerTransform->Get_Info(INFO_LOOK, &vPlayerLook);
-			m_pTransformCom->Set_Pos(vPlayerPos.x - vPlayerLook.x * 0.002f, vPlayerPos.y - 0.04f, vPlayerPos.z - vPlayerLook.z * 0.002f);
+			m_pTransformCom->Set_Pos(vPlayerPos.x - vPlayerLook.x * 0.001f, vPlayerPos.y - 0.04f, vPlayerPos.z - vPlayerLook.z * 0.001f);
 			vPlayerAngle = *(playerTransform->Get_Angle());
 			m_pTransformCom->Set_Angle(vPlayerAngle.x, vPlayerAngle.y, vPlayerAngle.z);
 		}
