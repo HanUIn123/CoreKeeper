@@ -25,7 +25,8 @@ public:
 
 public:
 	wstring*						Get_WallNameByIndex(_int iIndex) { return &m_wsWallNameString[iIndex]; }
-
+	void							Set_WallVectorByIndex(_int iIndex, CWall* pWall) { m_vecWall[iIndex] = pWall; }
+	void							Set_WallUnreachableByIndex(_int iIndex) { m_vecUnreachable[iIndex] = true; }
 private:
 	HRESULT							Ready_LightInfo();
 	HRESULT							Ready_Layer_Environment(const _tchar* pLayerTag);

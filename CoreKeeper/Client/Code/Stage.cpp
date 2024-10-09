@@ -13,6 +13,9 @@ CStage::CStage(LPDIRECT3DDEVICE9 pGraphicDev)
     m_vecWall.resize((VTXCNTX - 1) * (VTXCNTZ - 1));
     m_vecCore.resize((VTXCNTX - 1) * (VTXCNTZ - 1));
     m_vecUnreachable.resize((VTXCNTX - 1) * (VTXCNTZ - 1));
+
+    for(_int i = 0; i < ((VTXCNTX - 1) * (VTXCNTZ - 1)); i++)
+        m_wsWallNameString[i] = L"Wall_" + std::to_wstring(i);
 }
 
 
@@ -876,7 +879,6 @@ HRESULT CStage::Load_MapFile()
         if (dwByte2 == 0)
             break;
 
-        m_wsWallNameString[vTempIndex] = L"Wall_" + std::to_wstring(vTempIndex);
         CWall* pWall = CWall::Create(m_pGraphicDev, vTempWallPos.x, vTempWallPos.z, vTempWallImgNum, m_wsWallNameString[vTempIndex].c_str());
         pWall->Set_PickedWallName(m_wsWallNameString[vTempIndex].c_str());
         NULL_CHECK_RETURN(pWall, E_FAIL);
