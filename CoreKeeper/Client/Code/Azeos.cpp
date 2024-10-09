@@ -63,7 +63,6 @@ _int CAzeos::Update_GameObject(const _float& fTimeDelta)
         return 0;
 
     Set_Cast();
-    //Set_Light();
 
     if (m_eState != DEAD)
         m_eState = State_Change();
