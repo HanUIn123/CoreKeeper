@@ -2,10 +2,12 @@
 #include "../Header/MiniTerrain.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
+#include "../../Client/Header/Player.h"
 
 CMiniTerrain::CMiniTerrain(LPDIRECT3DDEVICE9 pGraphicDev)
     : Engine::CGameObject(pGraphicDev)
     , m_iMiniTerrainIndex(0)
+    , m_fLightRange(0)
 {
     m_vecTextureNumber.resize((VTXCNTX - 1) * (VTXCNTZ - 1));
 
@@ -45,7 +47,10 @@ void CMiniTerrain::Render_GameObject()
         //int idx = i * (VTXCNTX - 1) + j;
         m_iMiniTerrainIndex = _int((_int(vPlayerPos.z) * (VTXCNTX - 1) + vPlayerPos.x));
 
-        Illuminate_TerrainIndex(m_iMiniTerrainIndex);
+        _float fPlayerLightRange = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"))->Get_LightRange();
+   
+        // 0.15f 원래 terrain에서 미니맵은 좀 줄은 비율이니 0.15일단 곱해줌
+        Illuminate_TerrainIndex(m_iMiniTerrainIndex, fPlayerLightRange * 0.15f);
     }
 
     m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
@@ -99,8 +104,32 @@ HRESULT CMiniTerrain::Add_Component()
     return S_OK;
 }
 
-void CMiniTerrain::Illuminate_TerrainIndex(_int _iIndex)
+void CMiniTerrain::Illuminate_TerrainIndex(_int _iIndex, _float _fLightRange)
 {
+    int iOriginPlayerX = _iIndex % (VTXCNTX - 1);
+    int iOriginPlayerZ = _iIndex / (VTXCNTX - 1);
+
+    // 원형 꼴로 비춰야하니, -길이 ~ +길이 해서, 위아래좌우 인덱스 검사 
+    for (int i = -_fLightRange; i <= _fLightRange; ++i)
+    {
+        for (int j = -_fLightRange; j <= _fLightRange; ++j)
+        {
+            int iResultPlayerX = iOriginPlayerX + i;
+            int iResultPlayerZ = iOriginPlayerZ + j;
+            if (iResultPlayerX >= 0 && iResultPlayerX < VTXCNTX - 1 && iResultPlayerZ >= 0 && iResultPlayerZ < VTXCNTZ - 1)
+            {
+                int iIndex = iResultPlayerZ * (VTXCNTX - 1) + iResultPlayerX;
+
+                // 조명 범위 안에 있으면 true로 해서 밝히자.
+                if (sqrtf((i * i) + (j * j)) <= _fLightRange)
+                {
+                    m_vecIlluminated[iIndex] = true;
+                }
+            }
+        }
+    }
+
+    // 랜턴 같은거 없이 다닐 때, 
     if (_iIndex >= 0 && _iIndex <= m_vecIlluminated.size())
     {
         m_vecIlluminated[_iIndex] = true;
