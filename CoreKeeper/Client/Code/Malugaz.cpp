@@ -644,7 +644,7 @@ void CMalugaz::Pattern_Run(const _float& fTimeDelta)
         m_pAnimatorCom->Set_CurState(WALK, 30, 35, 8);
         break;
     }
-    Set_Stop(&vDir, m_fSpeed);
+    Set_Stop(fTimeDelta, &vDir, m_fSpeed);
     m_pTransformCom->Move_Pos(&vDir, fTimeDelta, m_fSpeed * m_iSpeedWeight);
 }
 

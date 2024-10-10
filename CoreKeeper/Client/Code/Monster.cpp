@@ -168,7 +168,7 @@ void CMonster::FallDir(const _float& fTimeDelta)
 		D3DXVec3Normalize(&m_vFallDir, &m_vFallDir);
 		m_vFallDir.y = 0;
 	}
-	Set_Stop(&m_vFallDir, m_fSpeedWeight);
+	Set_Stop(fTimeDelta , &m_vFallDir, m_fSpeedWeight);
 	m_pTransformCom->Move_Pos(&m_vFallDir, fTimeDelta, m_fSpeedWeight * m_iSpeedWeight);
 }
 
@@ -210,7 +210,7 @@ void CMonster::KnockBack(const _float& fTimeDelta, const _float& fDist)
 			return;
 		}
 
-		Set_Stop(&m_vFallDir, m_fSpeedWeight);
+		Set_Stop(fTimeDelta, &m_vFallDir, m_fSpeedWeight);
 		m_pTransformCom->Move_Pos(&m_vFallDir, fTimeDelta, m_fSpeedWeight * m_iSpeedWeight);
 	}
 }
@@ -346,17 +346,17 @@ void CMonster::Drop_Item()
 	}
 }
 
-void CMonster::Set_Stop(_vec3* vDir1, _float fDirSpeed1, _vec3* vDir2, _float fDirSpeed2)
+void CMonster::Set_Stop(const _float& fTimeDelta, _vec3* vDir1, _float fDirSpeed1, _vec3* vDir2, _float fDirSpeed2)
 {
 	m_iSpeedWeight = 1;
 	_vec3 vCheckPos{};
 	m_pTransformCom->Get_Info(INFO_POS, &vCheckPos);
 
 	// 미래의 캐릭터 중점 좌표
-	vCheckPos += *vDir1 * fDirSpeed1 * 0.1f;
+	vCheckPos += *vDir1 * fDirSpeed1 * fTimeDelta * 10;
 
 	if (vDir2)
-		vCheckPos += *vDir2 * fDirSpeed2 * 0.1f;
+		vCheckPos += *vDir2 * fDirSpeed2 * fTimeDelta * 10;
 
 	// 미래 중점 좌표 기준 인덱스 값
 	_int iIndex = _int(vCheckPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (vCheckPos.x + 0.5f * VTXITV);
