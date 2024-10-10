@@ -96,7 +96,8 @@ _int CWall::Update_GameObject(const _float& fTimeDelta)
     if (m_iWallImageNum == 45)
     {
         CCore* pCore = dynamic_cast<CCore*>(Engine::Get_GameObject(L"Layer_Environment", L"Core"));
-        m_bOpen = pCore->Get_ActiveCore(0) && pCore->Get_ActiveCore(1) && pCore->Get_ActiveCore(2);
+        if(pCore)
+            m_bOpen = pCore->Get_ActiveCore(0) && pCore->Get_ActiveCore(1) && pCore->Get_ActiveCore(2);
 
         if (Check_Interaction())
         {
