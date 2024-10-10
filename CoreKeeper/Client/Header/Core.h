@@ -47,7 +47,7 @@ private:
 private:
 	_int			m_iLightNum;
 	bool			m_bActiveCore[3];
-
+	bool			m_bInFrustum;
 	int				m_iRange;
 };
 

@@ -14,7 +14,7 @@ CMushroom::~CMushroom()
 {
 }
 
-HRESULT CMushroom::Ready_GameObject(_vec3 _vPos, _int _iTypeNum)
+HRESULT CMushroom::Ready_GameObject(_vec3 _vPos, _int _iTypeNum, const wstring _pickedMushName)
 {
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
@@ -23,6 +23,8 @@ HRESULT CMushroom::Ready_GameObject(_vec3 _vPos, _int _iTypeNum)
    m_vMushroomPos.z = _vPos.z;
 
    m_iMushTypeIndex = _iTypeNum;
+
+   m_strPickedObjectName = _pickedMushName;
 
     m_pTransformCom->Set_Pos(_vPos.x, 0.1f, _vPos.z);
 
@@ -81,11 +83,11 @@ HRESULT CMushroom::Add_Component()
     return S_OK;
 }
 
-CMushroom* CMushroom::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, _int _iTypeNum)
+CMushroom* CMushroom::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, _int _iTypeNum, const wstring _pickedMushName)
 {
     CMushroom* pMushroom = new CMushroom(pGraphicDev);
 
-    if (FAILED(pMushroom->Ready_GameObject(vPos, _iTypeNum)))
+    if (FAILED(pMushroom->Ready_GameObject(vPos, _iTypeNum, _pickedMushName)))
     {
         Safe_Release(pMushroom);
         MSG_BOX("pMushroom Create Failed");

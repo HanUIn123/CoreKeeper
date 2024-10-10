@@ -17,7 +17,7 @@ private:
     virtual     ~CSlimeFloor();
 
 public:
-	virtual			HRESULT			Ready_GameObject(_vec3 _vPos, _int _iTypeNum);
+	virtual			HRESULT			Ready_GameObject(_vec3 _vPos, _int _iTypeNum, const wstring _pickedFeatherName);
 	virtual			_int			Update_GameObject(const _float& fTimeDelta);
 	virtual			void			LateUpdate_GameObject();
 	virtual			void			Render_GameObject();
@@ -32,7 +32,7 @@ public:
 private:
 	HRESULT							Add_Component();
 public:
-	static CSlimeFloor*				Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 _vPos, _int _iTypeNum);
+	static CSlimeFloor*				Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 _vPos, _int _iTypeNum, const wstring _pickedFeatherName);
 
 private:
 	virtual void					Free();

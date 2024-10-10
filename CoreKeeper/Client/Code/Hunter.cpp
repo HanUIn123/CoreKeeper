@@ -63,6 +63,7 @@ HRESULT CHunter::Ready_GameObject(_vec3 vPos)
 
 _int CHunter::Update_GameObject(const _float& fTimeDelta)
 {
+    _int iExit = Engine::CGameObject::Update_GameObject(fTimeDelta);
     if (m_bStopDraw)
     {
         Set_RespawnTimer(fTimeDelta);
@@ -117,10 +118,10 @@ _int CHunter::Update_GameObject(const _float& fTimeDelta)
 
 
     Flip();
-    Set_StuckFree(fTimeDelta);
+    //Set_StuckFree(fTimeDelta);
 
     Add_RenderGroup(RENDER_ALPHA, this);
-    return Engine::CGameObject::Update_GameObject(fTimeDelta);
+    return iExit;
 }
 
 void CHunter::LateUpdate_GameObject()
@@ -438,7 +439,7 @@ void CHunter::Pattern_Idle(const _float& fTimeDelta)
                 break;
             }
 
-            Set_Stop(&vLook, fLookSpeed, &vRight, fRightSpeed);
+            Set_Stop(fTimeDelta, &vLook, fLookSpeed, &vRight, fRightSpeed);
             if (m_iSpeedWeight == 0)
             {
                 m_iDir = 0;
@@ -536,7 +537,7 @@ void CHunter::Pattern_Chase(const _float& fTimeDelta)
             m_pAnimatorCom->Set_CurState(WALK, 208, 213, 8);
             break;
         }
-        Set_Stop(&vDir, m_fSpeed);
+        Set_Stop(fTimeDelta, &vDir, m_fSpeed);
         m_pTransformCom->Move_Pos(&vDir, fTimeDelta, m_fSpeed * m_iSpeedWeight);
     }
 }

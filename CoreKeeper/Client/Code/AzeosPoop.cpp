@@ -14,7 +14,7 @@ CAzeosPoop::~CAzeosPoop()
 {
 }
 
-HRESULT CAzeosPoop::Ready_GameObject(_vec3 _vPos, _int _iTypeNum)
+HRESULT CAzeosPoop::Ready_GameObject(_vec3 _vPos, _int _iTypeNum, const wstring _AzePoopName)
 {
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
@@ -23,6 +23,8 @@ HRESULT CAzeosPoop::Ready_GameObject(_vec3 _vPos, _int _iTypeNum)
     m_vPoopPos.z = _vPos.z;
 
     m_iPoopTypeIndex = _iTypeNum;
+
+    m_strPickedObjectName = _AzePoopName;
 
     m_pTransformCom->Set_Pos(_vPos.x, 0.1f, _vPos.z);
 
@@ -81,11 +83,11 @@ HRESULT CAzeosPoop::Add_Component()
     return S_OK;
 }
 
-CAzeosPoop* CAzeosPoop::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 _vPos, _int _iTypeNum)
+CAzeosPoop* CAzeosPoop::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 _vPos, _int _iTypeNum, const wstring _AzePoopName)
 {
     CAzeosPoop* pAzeosPoop = new CAzeosPoop(pGraphicDev);
 
-    if (FAILED(pAzeosPoop->Ready_GameObject(_vPos, _iTypeNum)))
+    if (FAILED(pAzeosPoop->Ready_GameObject(_vPos, _iTypeNum, _AzePoopName)))
     {
         Safe_Release(pAzeosPoop);
         MSG_BOX("pAzeosPoop Create Failed");

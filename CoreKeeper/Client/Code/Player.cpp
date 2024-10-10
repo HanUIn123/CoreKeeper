@@ -92,6 +92,7 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
     m_fMiningBuff[1] = 0.f;
 
     m_bDestroyWall = false;
+    m_pPet = nullptr;
 }
 
 CPlayer::~CPlayer()
@@ -410,7 +411,7 @@ void CPlayer::Key_Position(const _float& fTimeDelta)
         if (m_eDir == LEFT)
             iWeight = -1;
 
-        Set_Stop(&vLook, fLookSpeed, &vRight, fRightSpeed * iWeight);
+        Set_Stop(fTimeDelta, &vLook, fLookSpeed, &vRight, fRightSpeed * iWeight);
 
         m_pTransformCom->Move_Pos(&vLook, fTimeDelta, fLookSpeed * m_iSpeedWeight);
         m_pTransformCom->Move_Pos(&vRight, fTimeDelta, fRightSpeed * iWeight * m_iSpeedWeight);
@@ -584,6 +585,7 @@ void CPlayer::Equipment_Function(const _float& fTimeDelta)
     Necklace();
     Ring();
     Ring_Second();
+    Pet();
 }
 
 void CPlayer::Auxiliary(const _float& fTimeDelta)
@@ -791,6 +793,15 @@ void CPlayer::Ring_Second()
     }
 }
 
+void CPlayer::Pet()
+{
+    CItem* pPet = m_pEtcItems[CUIItemSlot::SLOT_PET]->Get_Item();
+    if (!pPet)
+        m_pPet->Set_StopDraw(true);
+    else
+        m_pPet->Set_StopDraw(false);
+}
+
 void CPlayer::Set_ImmuneByTime(_float fImmuneTime)
 {
     if (m_bImmune || m_bImmuneByTime)
@@ -970,7 +981,7 @@ void CPlayer::ShoulderView_Control(const _float& fTimeDelta)
             m_pAnimatorCom->Set_CurState(WALK, 27, 32, 6);
             break;
         }
-        Set_Stop(&vLook, fLookSpeed, &vRight, fRightSpeed);
+        Set_Stop(fTimeDelta, &vLook, fLookSpeed, &vRight, fRightSpeed);
 
         m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, fLookSpeed * m_iSpeedWeight);
         m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, fRightSpeed * m_iSpeedWeight);
@@ -989,23 +1000,32 @@ void CPlayer::ShoulderView_Swing()
     }
 }
 
-void CPlayer::Set_Stop(_vec3* vDir1, _float fDirSpeed1, _vec3* vDir2, _float fDirSpeed2)
+void CPlayer::Set_Stop(const _float& fTimeDelta, _vec3* vDir1, _float fDirSpeed1, _vec3* vDir2, _float fDirSpeed2)
 {
 
-    _vec3 vCheckPos{};
+    _vec3 vCheckPos;
     m_pTransformCom->Get_Info(INFO_POS, &vCheckPos);
-
+    _int iCurIndex = _int(vCheckPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (vCheckPos.x + 0.5f * VTXITV);
     // 미래의 캐릭터 중점 좌표
-    vCheckPos += *vDir1 * fDirSpeed1 * 0.1f;
+    vCheckPos += *vDir1 * fDirSpeed1 * fTimeDelta * 2;
     if (vDir2)
-        vCheckPos += *vDir2 * fDirSpeed2 * 0.1f;
+        vCheckPos += *vDir2 * fDirSpeed2 * fTimeDelta * 2;
 
     // 미래 중점 좌표 기준 인덱스 값
     _int iIndex = _int(vCheckPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (vCheckPos.x + 0.5f * VTXITV);
     CTerrain* pTerrain = dynamic_cast<CTerrain*>(Engine::Get_GameObject(L"Layer_Environment", L"Terrain"));
     if (0 <= iIndex && iIndex < (VTXCNTX - 1) * (VTXCNTZ - 1))
         if (pTerrain->Get_UnreachableByIndex(iIndex))
+        {
             m_iSpeedWeight = 0;
+            if (!m_bKnockBackEnd)
+            {
+                m_bKnockBackStart = false;
+                m_bKnockBackEnd = true;
+                m_iSpeedWeight = -1;
+                m_pTransformCom->Move_Pos(&m_vKnockBackDir, fTimeDelta, m_fSpeed * 1.5f * m_iSpeedWeight);
+            }
+        }
         else if (!m_bDash)
             m_iSpeedWeight = 1;
 }
@@ -1277,16 +1297,16 @@ void CPlayer::PickAxe()
         switch (m_eDir)
         {
         case FRONT:
-            vCheckPos -= vLook * 1.2f;
+            vCheckPos -= vLook;
             break;
         case BACK:
-            vCheckPos += vLook * 1.2f;
+            vCheckPos += vLook;
             break;
         case RIGHT:
-            vCheckPos += vRight * 1.2f;
+            vCheckPos += vRight;
             break;
         case LEFT:
-            vCheckPos += vRight * 1.2f;
+            vCheckPos += vRight;
             break;
         }
         _int iIndex = _int(vCheckPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (vCheckPos.x + 0.5f * VTXITV);
@@ -1783,6 +1803,7 @@ void CPlayer::Set_Clothes()
     m_pClothes[3] = dynamic_cast<CItem*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player_Shirt"));
     m_pClothes[4] = dynamic_cast<CItem*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player_Pants"));
     m_pTerrain = dynamic_cast<CTerrain*>(Engine::Get_GameObject(L"Layer_Environment", L"Terrain"));
+    m_pPet = dynamic_cast<CPet*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Pet"));
 
     for (_int i = 0; i < CUIItemSlot::SLOT_END; i++)
     {
@@ -2198,8 +2219,12 @@ void CPlayer::Respawn_Progress(const _float& fTimeDelta)
             m_bRespawnFirstFrame = false;
 
             // 장착 장비 off
-            m_pHandedItem->Set_Use(false);
-            m_pHandedItem->Set_Active(false);
+            if (m_pHandedItem)
+            {
+                m_pHandedItem->Set_Use(false);
+                m_pHandedItem->Set_Active(false);
+            }
+
             CItem* pArmor;
             for (_int i = 0; i < CUIItemSlot::SLOT_END; i++)
             {
@@ -2237,6 +2262,9 @@ void CPlayer::Respawn_Progress(const _float& fTimeDelta)
             m_vecInstallObjectName.push_back(L"Player_Created_Gravestone_" + std::to_wstring(m_iInstallNumber));
             pScene->Create_GameObject(L"Layer_GameLogic", pGraveStone, m_vecInstallObjectName.back().c_str());
             // 인벤토리 아이템 전부 묘비로 옮기기
+
+            m_pInventoryCom->Move_All_Item(dynamic_cast<CGravestoneObject*>(pGraveStone)->Get_Inventory());
+
         }
     }
     else if (m_fRespawnProgress <= 5.f)
@@ -2799,8 +2827,7 @@ void CPlayer::KnockBack(const _float& fTimeDelta)
             return;
         }
 
-        Set_Stop(&m_vKnockBackDir, m_fSpeed * (m_fKnockBackDist / fLength));
-
+        Set_Stop(fTimeDelta, &m_vKnockBackDir, m_fSpeed * (m_fKnockBackDist / fLength));
         m_pTransformCom->Move_Pos(&m_vKnockBackDir, fTimeDelta, m_fSpeed * (m_fKnockBackDist / fLength) * m_iSpeedWeight);
 
         m_bBleed = true;

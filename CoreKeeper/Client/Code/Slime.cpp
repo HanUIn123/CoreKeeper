@@ -37,6 +37,7 @@ HRESULT CSlime::Ready_GameObject(_vec3 vPos)
 
 _int CSlime::Update_GameObject(const _float& fTimeDelta)
 {
+    _int iExit = Engine::CGameObject::Update_GameObject(fTimeDelta);
     if (m_bStopDraw)
     {
         Set_RespawnTimer(fTimeDelta);
@@ -85,10 +86,10 @@ _int CSlime::Update_GameObject(const _float& fTimeDelta)
 
     //Apply_Billboard();
 
-    Set_StuckFree(fTimeDelta);
+    //Set_StuckFree(fTimeDelta);
     m_pAnimatorCom->Update_Animation();
     Add_RenderGroup(RENDER_ALPHA, this);
-    return Engine::CGameObject::Update_GameObject(fTimeDelta);
+    return iExit;
 }
 
 void CSlime::LateUpdate_GameObject()
@@ -233,7 +234,7 @@ void CSlime::Pattern_Idle(const _float& fTimeDelta)
             break;
         }
 
-        Set_Stop(&vLook, fLookSpeed, &vRight, fRightSpeed);
+        Set_Stop(fTimeDelta, &vLook, fLookSpeed, &vRight, fRightSpeed);
 
         if (m_iDir)
         {
@@ -258,7 +259,7 @@ void CSlime::Pattern_Chase(const _float& fTimeDelta)
     D3DXVec3Normalize(&vDir, &vDir);
     m_pAnimatorCom->Set_CurState(WALK, 12, 21, 8);
 
-    Set_Stop(&vDir, m_fSpeed);
+    Set_Stop(fTimeDelta, &vDir, m_fSpeed);
     m_pTransformCom->Move_Pos(&vDir, fTimeDelta, m_fSpeed * m_iSpeedWeight);
 }
 
@@ -303,7 +304,7 @@ void CSlime::Pattern_Attack(const _float& fTimeDelta)
                 if (!m_bAttackSuccess)
                 {
                     m_bAttackSuccess = true;
-                    m_pPlayer->Set_KnockBack(vPos, m_pStateCom->Get_Stat()->iAttack, (1 - (m_fJumpTime / m_fJumpFrame)) * 2.f + 0.5f);
+                    m_pPlayer->Set_KnockBack(vPos, m_pStateCom->Get_Stat()->iAttack, (1 - (m_fJumpTime / m_fJumpFrame)) + 0.5f, HIT_NORMAL);
                 }
             }
         }
@@ -311,7 +312,7 @@ void CSlime::Pattern_Attack(const _float& fTimeDelta)
             FallDir(fTimeDelta);
         else
         {
-            Set_Stop(&m_vAttackPoint, m_fSpeedWeight);
+            Set_Stop(fTimeDelta, &m_vAttackPoint, m_fSpeedWeight);
             m_pTransformCom->Move_Pos(&m_vAttackPoint, fTimeDelta, m_fSpeedWeight * m_iSpeedWeight);
         }
     }

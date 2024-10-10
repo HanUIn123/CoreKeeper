@@ -21,6 +21,7 @@ class CFollow;
 END
 
 class CTerrain;
+class CPet;
 class CPlayer : public Engine::CGameObject
 {
 private:
@@ -50,6 +51,7 @@ private:
 	void			Necklace();
 	void			Ring();
 	void			Ring_Second();
+	void			Pet();
 
 	void			Set_ImmuneByTime(_float fImmuneTime = 1.f);
 	void			Set_ImmuneByToggle();
@@ -63,7 +65,7 @@ private:
 	void			ShoulderView_Control(const _float& fTimeDelta); // 숄더 뷰 시점 플레이어 조작(회전, 스윙 제외)
 	void			ShoulderView_Swing();
 
-	void			Set_Stop(_vec3* vDir1, _float fDirSpeed1, _vec3* vDir2 = nullptr, _float fDirSpeed2 = 0.f);
+	void			Set_Stop(const _float& fTimeDelta, _vec3* vDir1, _float fDirSpeed1, _vec3* vDir2 = nullptr, _float fDirSpeed2 = 0.f);
 
 	void			Set_Clothes();
 	void			Set_Equipment();
@@ -243,6 +245,9 @@ private:
 
 	_float					m_fHungerTime;
 	_float					m_fManaTime;
+
+	CPet*					m_pPet;
+
 	CUIItemSlot* m_pEtcItems[CUIItemSlot::SLOT_END];
 public:
 	static CPlayer* Create(LPDIRECT3DDEVICE9 pGraphicDev);

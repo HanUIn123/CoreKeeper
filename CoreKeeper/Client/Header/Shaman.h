@@ -23,7 +23,7 @@ private:
 	STATE			State_Change() override;
 
 	void			Set_Direction(_vec3* vPlayerPos);
-	void			Set_Light();
+	void			SetUp_Light();
 
 private:
 	_bool			m_bLightEnable;
@@ -36,7 +36,7 @@ private:
 	vector<wstring>			m_vecProjectileName;
 	_int			m_iCurNumber;
 
-
+	_bool			m_bInFrustum;
 public:
 	static CShaman* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);
 

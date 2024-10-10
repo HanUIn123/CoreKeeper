@@ -42,6 +42,7 @@ HRESULT CShroomMan::Ready_GameObject(_vec3 vPos)
 
 _int CShroomMan::Update_GameObject(const _float& fTimeDelta)
 {
+    _int iExit = Engine::CGameObject::Update_GameObject(fTimeDelta);
     if (m_bStopDraw)
     {
         Set_RespawnTimer(fTimeDelta);
@@ -85,7 +86,7 @@ _int CShroomMan::Update_GameObject(const _float& fTimeDelta)
         KnockBack(fTimeDelta, 1.8f);
 
     Flip();
-    Set_StuckFree(fTimeDelta);
+    //Set_StuckFree(fTimeDelta);
     m_pAnimatorCom->Update_Animation();
 
     if (m_eState == SWING)
@@ -138,7 +139,7 @@ _int CShroomMan::Update_GameObject(const _float& fTimeDelta)
     }
 
     Add_RenderGroup(RENDER_ALPHA, this);
-    return Engine::CGameObject::Update_GameObject(fTimeDelta);
+    return iExit;
 }
 
 void CShroomMan::LateUpdate_GameObject()
@@ -296,7 +297,7 @@ void CShroomMan::Pattern_Idle(const _float& fTimeDelta)
             fRightSpeed = -m_fDiagSpeed;
             break;
         }
-        Set_Stop(&vLook, fLookSpeed, &vRight, fRightSpeed);
+        Set_Stop(fTimeDelta, &vLook, fLookSpeed, &vRight, fRightSpeed);
 
         if (m_iDir)
         {
@@ -358,7 +359,7 @@ void CShroomMan::Pattern_Attack(const _float& fTimeDelta)
         if (m_pColliderCom->Check_Collision(m_pPlayerCollider))
         {
             m_bAttackSuccess = true;
-            m_pPlayer->Set_KnockBack(vPos, m_pStateCom->Get_Stat()->iAttack, 1.f);
+            m_pPlayer->Set_KnockBack(vPos, m_pStateCom->Get_Stat()->iAttack, 1.5f, HIT_NORMAL);
         }
         // º® Ãæµ¹
         else if (0 <= iIndex && iIndex < VTXCNTX * VTXCNTZ)

@@ -10,6 +10,9 @@
 #include "Hair.h"
 #include "HairShade.h"
 
+#include "Pet.h"
+#include "PetTail.h"
+
 // Monster
 #include "Monster.h"
 #include "Slime.h"
@@ -31,6 +34,7 @@
 #include "Mushroom.h"
 #include "AzeosPoop.h"
 #include "AzeosFeather.h"
+#include "BossSpawnPoint.h"
 
 // Item
 #include "Pickaxe.h"
@@ -84,7 +88,7 @@
 #include "Lunch.h"
 #include "ChocoBar.h"
 #include "Instrument.h"
-
+#include "PetItem.h"
 
 // Etc
 #include "Terrain.h"
@@ -106,7 +110,6 @@
 #include "TableObject.h"
 #include "FurnaceObject.h"
 #include "CookingPotObject.h"
-#include "BossSpawnPoint.h"
 
 // UI
 #include "UIPlayerStatus.h"

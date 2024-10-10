@@ -49,7 +49,7 @@ protected:
 
 	void			Drop_Item();
 
-	void			Set_Stop(_vec3* vDir1, _float fDirSpeed1, _vec3* vDir2 = nullptr, _float fDirSpeed2 = 0.f);
+	void			Set_Stop(const _float& fTimeDelta, _vec3* vDir1, _float fDirSpeed1, _vec3* vDir2 = nullptr, _float fDirSpeed2 = 0.f);
 	void			Set_StuckFree(const _float& fTimeDelta);
 
 	_bool			Check_Wall();
@@ -60,6 +60,7 @@ protected:
 
 public:
 	_bool			Get_StopDraw() { return m_bStopDraw; }
+	void			Set_StopDraw(_bool bDraw) { m_bStopDraw = bDraw; }
 
 private:
 	void			Check_WallWithPlayer();

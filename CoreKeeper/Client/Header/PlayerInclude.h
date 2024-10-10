@@ -3,6 +3,7 @@
 // 오브젝?트
 #include "..\Header\Stage.h"
 #include "..\Header\Terrain.h"
+#include "..\Header\Pet.h"
 #include "..\Header\Sword.h"
 
 // 설치형

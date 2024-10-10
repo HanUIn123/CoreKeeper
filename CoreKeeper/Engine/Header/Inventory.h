@@ -22,6 +22,8 @@ public:
 	bool				Enough_Item(ITEMNUM _eItemNum, int _iCount);
 	void				Put_Same_Item(CInventory* _playerInventory, CInventory* _chestInventory);
 
+	void				Move_All_Item(CInventory* _pGraveStoneInventory);
+
 	CItem*				Get_HandedItem(_int iHandNum);
 	bool				Check_Empty(_int iIndex);
 

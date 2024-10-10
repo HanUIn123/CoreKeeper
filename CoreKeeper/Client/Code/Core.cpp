@@ -5,7 +5,7 @@
 #include "..\Header\Player.h"
 
 CCore::CCore(LPDIRECT3DDEVICE9 pGraphicDev)
-	: CObject(pGraphicDev), m_iRange(0)
+	: CObject(pGraphicDev), m_iRange(0), m_bInFrustum(true)
 {
 	m_iLightNum = g_iLightNum++;
 	ZeroMemory(&m_bActiveCore, sizeof(bool) * 3);
@@ -30,6 +30,10 @@ HRESULT CCore::Ready_GameObject(_vec3 vPos)
 
 _int CCore::Update_GameObject(const _float& fTimeDelta)
 {
+	int iExit = Engine::CGameObject::Update_GameObject(fTimeDelta);
+
+	m_bInFrustum = m_pCalculCom->In_Frustum(m_pTransformCom);
+
 	if (Check_Interaction())
 	{
 		Interaction();
@@ -43,7 +47,7 @@ _int CCore::Update_GameObject(const _float& fTimeDelta)
 
 	Add_RenderGroup(RENDER_MAP, this);
 
-	return Engine::CGameObject::Update_GameObject(fTimeDelta);
+	return iExit;
 }
 
 void CCore::LateUpdate_GameObject()
@@ -153,7 +157,7 @@ void CCore::SetUp_Light()
 	light.Phi = D3DXToRadian(60.0f + m_iRange); // 외부 각도 (큰 값일수록 퍼지는 조명)
 
 	m_pGraphicDev->SetLight(m_iLightNum, &light);
-	m_pGraphicDev->LightEnable(m_iLightNum, TRUE);
+	m_pGraphicDev->LightEnable(m_iLightNum, m_bInFrustum);
 }
 
 CCore* CCore::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)

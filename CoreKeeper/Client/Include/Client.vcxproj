@@ -159,6 +159,7 @@ call Copy.bat</Command>
     <ClInclude Include="..\Header\AzeosPoop.h" />
     <ClInclude Include="..\Header\BuffMgr.h" />
     <ClInclude Include="..\Header\Bullet.h" />
+    <ClInclude Include="..\Header\PetItem.h" />
     <ClInclude Include="..\Header\ChocoBar.h" />
     <ClInclude Include="..\Header\Lunch.h" />
     <ClInclude Include="..\Header\Crystal.h" />
@@ -170,6 +171,8 @@ call Copy.bat</Command>
     <ClInclude Include="..\Header\Mushroom.h" />
     <ClInclude Include="..\Header\BossSpawnPoint.h" />
     <ClInclude Include="..\Header\Instrument.h" />
+    <ClInclude Include="..\Header\Pet.h" />
+    <ClInclude Include="..\Header\PetTail.h" />
     <ClInclude Include="..\Header\SlimeFloor.h" />
     <ClInclude Include="..\Header\Story.h" />
     <ClInclude Include="..\Header\StoryBackGround.h" />
@@ -323,6 +326,7 @@ call Copy.bat</Command>
     <ClCompile Include="..\Code\AzeosPoop.cpp" />
     <ClCompile Include="..\Code\BuffMgr.cpp" />
     <ClCompile Include="..\Code\Bullet.cpp" />
+    <ClCompile Include="..\Code\PetItem.cpp" />
     <ClCompile Include="..\Code\Crystal.cpp" />
     <ClCompile Include="..\Code\ChocoBar.cpp" />
     <ClCompile Include="..\Code\Lunch.cpp" />
@@ -334,6 +338,8 @@ call Copy.bat</Command>
     <ClCompile Include="..\Code\Mushroom.cpp" />
     <ClCompile Include="..\Code\BossSpawnPoint.cpp" />
     <ClCompile Include="..\Code\Instrument.cpp" />
+    <ClCompile Include="..\Code\Pet.cpp" />
+    <ClCompile Include="..\Code\PetTail.cpp" />
     <ClCompile Include="..\Code\SlimeFloor.cpp" />
     <ClCompile Include="..\Code\Story.cpp" />
     <ClCompile Include="..\Code\StoryBackGround.cpp" />

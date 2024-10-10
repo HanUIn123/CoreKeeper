@@ -4,11 +4,13 @@
 #include "../Header/Ore.h"
 #include "../Header/WallPiece.h"
 #include "../Header/Stage.h"
+#include "../Header/DynamicCamera.h"
 
 _long CWall::m_iItemNumber = 0;
+bool  CWall::m_bDown = false;
 
 CWall::CWall(LPDIRECT3DDEVICE9 pGraphicDev)
-    : Engine::CGameObject(pGraphicDev), m_bInFrustum(true)
+    : Engine::CGameObject(pGraphicDev), m_bInFrustum(true), m_bOpen(false)
     , m_pCalculatorCom(nullptr)
     , m_pTransformCom(nullptr)
     , m_pTextureCom(nullptr)
@@ -57,21 +59,55 @@ HRESULT CWall::Ready_GameObject(_float _fWallX, _float _fWallZ, _int iWallImageN
 
 _int CWall::Update_GameObject(const _float& fTimeDelta)
 {
+    if (m_pTransformCom->Get_WorldMatrix()->_42 < -1.f)
+    {
+        CTerrain* pTerrain = dynamic_cast<CTerrain*>(Engine::Get_GameObject(L"Layer_Environment", L"Terrain"));
+        _int iIndex = _int(m_pTransformCom->Get_WorldMatrix()->_43 * (VTXCNTX - 1) + (m_pTransformCom->Get_WorldMatrix()->_41));
+
+        pTerrain->Set_Unreachable(iIndex, false);
+
+        m_iWallImageNum = 0;
+    }
+    if (m_bDown && m_iWallImageNum == 45)
+    {
+        m_iWallImageNum = 48;
+    }
+
+    if (m_iWallImageNum == 48)
+    {
+        _vec3 vUp;
+        m_pTransformCom->Get_Info(INFO_UP, &vUp);
+        m_pTransformCom->Move_Pos(&vUp, fTimeDelta, -0.5f);
+        dynamic_cast<CDynamicCamera*>(Engine::Get_GameObject(L"Layer_Environment", L"DynamicCamera"))->Set_ShakeInfo(2.f, 5.f);
+    }
+
     Update_Texture();
 
     int Exit = Engine::CGameObject::Update_GameObject(fTimeDelta);
 
     m_bInFrustum = m_pCalculatorCom->In_Frustum(m_pTransformCom);
 
-    if (!m_bInFrustum)
+
+    if (!m_bInFrustum && m_iWallImageNum != 48)
     {
         return 0;
     }
 
+    if (m_iWallImageNum == 45)
+    {
+        CCore* pCore = dynamic_cast<CCore*>(Engine::Get_GameObject(L"Layer_Environment", L"Core"));
+        m_bOpen = pCore->Get_ActiveCore(0) && pCore->Get_ActiveCore(1) && pCore->Get_ActiveCore(2);
+
+        if (Check_Interaction())
+        {
+            Interaction();
+        }
+    }
 
     m_bRenderAlpha = false;
 
     Engine::Add_RenderGroup(RENDER_WALL, this);
+
     return Exit;
 }
 
@@ -100,12 +136,7 @@ void CWall::Render_GameObject()
     m_pTransformCom->Get_WorldMatrix(&matWorld);
     m_pColliderCom->Update_Collider(m_pTransformCom->Get_WorldMatrix());
 
-    matWorld._41 = m_vWallPosition.x;
-    matWorld._42 = m_vWallPosition.y;
-    matWorld._43 = m_vWallPosition.z;
-    m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
-
-    //m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
+    m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
 
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
@@ -536,6 +567,31 @@ void CWall::Update_Texture()
     default:
         m_iWallImageNum = 0;
         break;
+    }
+}
+
+bool CWall::Check_Interaction()
+{
+    Engine::CCollider* pPlayerCollider = dynamic_cast<Engine::CCollider*>
+        (Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Collider"));
+
+    // 플레이어와 충돌
+    if (m_pColliderCom->Check_Sphere_Collision(pPlayerCollider))
+    {
+        return true;
+    }
+
+    return false;
+}
+
+void CWall::Interaction()
+{
+    if (Engine::Key_Down(DIK_E))
+    {
+        if (m_bOpen && m_iWallImageNum == 45)
+        {
+            m_bDown = true;
+        }
     }
 }
 
