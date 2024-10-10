@@ -8,7 +8,7 @@
 CPet::CPet(LPDIRECT3DDEVICE9 pGraphicDev)
     : CMonster(pGraphicDev)
 {
-    m_fIdleY = 1.3f;
+    m_fIdleY = 0.9f;
     m_eState = IDLE;
     m_eDir = RIGHT;
 
@@ -57,7 +57,7 @@ HRESULT CPet::Ready_GameObject(_vec3 vPos)
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
     m_vRespawnPoint = { vPos.x, m_fIdleY, vPos.z };
     m_pTransformCom->Set_Pos(m_vRespawnPoint.x, m_vRespawnPoint.y, m_vRespawnPoint.z);
-    m_pTransformCom->Set_Scale(1.5f, 1.5f, 1.5f);
+    m_pTransformCom->Set_Scale(1.2f, 1.2f, 1.2f);
     Set_Speed(4.5f);
     return S_OK;
 }
@@ -72,6 +72,8 @@ _int CPet::Update_GameObject(const _float& fTimeDelta)
     }
 
     Set_Cast();
+    Set_SoundVolumeByDistance();
+
     if (!m_bRespawned)
     {
         m_bRespawned = true;
@@ -95,6 +97,8 @@ _int CPet::Update_GameObject(const _float& fTimeDelta)
             m_pAnimatorCom->Set_CurState(IDLE, 312, 317, 8);
             break;
         }
+        if(m_pAnimatorCom->Get_MotionIndex() % 12 == 1 && m_pAnimatorCom->Get_CurCount() == 0)
+            Engine::CSoundMgr::GetInstance()->Play(L"catHappy1.wav", SOUND_PET, 0.3f);
         if (m_pAnimatorCom->Get_MotionEnd())
             m_bIsTeleporting = false;
     }
@@ -241,8 +245,11 @@ void CPet::Pattern_Idle(const _float& fTimeDelta)
             iIdleType = rand() % 5;
             if (0 == iIdleType)
                 m_eIdleType = PET_STAND;
-            else if (1 == iIdleType)
+            else if (1 == iIdleType) 
+            {
                 m_eIdleType = PET_GROOM;
+                Engine::CSoundMgr::GetInstance()->Play(L"catLick1.wav", SOUND_PET, 0.3f);
+            }
             else 
                 m_eIdleType = PET_SITTING;
             break;
@@ -578,6 +585,8 @@ void CPet::Pattern_Interact()
         {
             if (!m_bIsInteracting)
             {
+                Engine::CSoundMgr::GetInstance()->Play(L"petting3.wav", SOUND_PLAYER, 0.2f);
+                Engine::CSoundMgr::GetInstance()->Play(L"catPetting.wav", SOUND_PET, 0.3f);
                 m_bIsInteracting = true;
                 m_bIdleFirstFrame = true;
                 m_bChaseFirstFrame = true;
