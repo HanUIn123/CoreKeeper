@@ -221,7 +221,7 @@ void CPet::Pattern_Idle(const _float& fTimeDelta)
         switch (m_eIdleType)
         {
         case PET_IDLE:
-            iIdleType = rand() % 3;
+            iIdleType = rand() % 5;
             if (0 == iIdleType)
                 m_eIdleType = PET_STRETCH;
             else if (1 == iIdleType)
@@ -238,7 +238,7 @@ void CPet::Pattern_Idle(const _float& fTimeDelta)
             m_eIdleType = PET_SITTING;
             break;
         case PET_SITTING:
-            iIdleType = rand() % 3;
+            iIdleType = rand() % 5;
             if (0 == iIdleType)
                 m_eIdleType = PET_STAND;
             else if (1 == iIdleType)

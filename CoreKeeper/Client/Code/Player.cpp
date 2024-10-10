@@ -409,7 +409,7 @@ void CPlayer::Key_Position(const _float& fTimeDelta)
         if (m_eDir == LEFT)
             iWeight = -1;
 
-        Set_Stop(&vLook, fLookSpeed, &vRight, fRightSpeed * iWeight);
+        Set_Stop(fTimeDelta, &vLook, fLookSpeed, &vRight, fRightSpeed * iWeight);
 
         m_pTransformCom->Move_Pos(&vLook, fTimeDelta, fLookSpeed * m_iSpeedWeight);
         m_pTransformCom->Move_Pos(&vRight, fTimeDelta, fRightSpeed * iWeight * m_iSpeedWeight);
@@ -969,7 +969,7 @@ void CPlayer::ShoulderView_Control(const _float& fTimeDelta)
             m_pAnimatorCom->Set_CurState(WALK, 27, 32, 6);
             break;
         }
-        Set_Stop(&vLook, fLookSpeed, &vRight, fRightSpeed);
+        Set_Stop(fTimeDelta, &vLook, fLookSpeed, &vRight, fRightSpeed);
 
         m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, fLookSpeed * m_iSpeedWeight);
         m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, fRightSpeed * m_iSpeedWeight);
@@ -988,23 +988,32 @@ void CPlayer::ShoulderView_Swing()
     }
 }
 
-void CPlayer::Set_Stop(_vec3* vDir1, _float fDirSpeed1, _vec3* vDir2, _float fDirSpeed2)
+void CPlayer::Set_Stop(const _float& fTimeDelta, _vec3* vDir1, _float fDirSpeed1, _vec3* vDir2, _float fDirSpeed2)
 {
 
-    _vec3 vCheckPos{};
+    _vec3 vCheckPos;
     m_pTransformCom->Get_Info(INFO_POS, &vCheckPos);
-
+    _int iCurIndex = _int(vCheckPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (vCheckPos.x + 0.5f * VTXITV);
     // 미래의 캐릭터 중점 좌표
-    vCheckPos += *vDir1 * fDirSpeed1 * 0.1f;
+    vCheckPos += *vDir1 * fDirSpeed1 * fTimeDelta * 2;
     if (vDir2)
-        vCheckPos += *vDir2 * fDirSpeed2 * 0.1f;
+        vCheckPos += *vDir2 * fDirSpeed2 * fTimeDelta * 2;
 
     // 미래 중점 좌표 기준 인덱스 값
     _int iIndex = _int(vCheckPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (vCheckPos.x + 0.5f * VTXITV);
     CTerrain* pTerrain = dynamic_cast<CTerrain*>(Engine::Get_GameObject(L"Layer_Environment", L"Terrain"));
     if (0 <= iIndex && iIndex < (VTXCNTX - 1) * (VTXCNTZ - 1))
         if (pTerrain->Get_UnreachableByIndex(iIndex))
+        {
             m_iSpeedWeight = 0;
+            if (!m_bKnockBackEnd)
+            {
+                m_bKnockBackStart = false;
+                m_bKnockBackEnd = true;
+                m_iSpeedWeight = -1;
+                m_pTransformCom->Move_Pos(&m_vKnockBackDir, fTimeDelta, m_fSpeed * 1.5f * m_iSpeedWeight);
+            }
+        }
         else if (!m_bDash)
             m_iSpeedWeight = 1;
 }
@@ -1276,16 +1285,16 @@ void CPlayer::PickAxe()
         switch (m_eDir)
         {
         case FRONT:
-            vCheckPos -= vLook * 1.2f;
+            vCheckPos -= vLook;
             break;
         case BACK:
-            vCheckPos += vLook * 1.2f;
+            vCheckPos += vLook;
             break;
         case RIGHT:
-            vCheckPos += vRight * 1.2f;
+            vCheckPos += vRight;
             break;
         case LEFT:
-            vCheckPos += vRight * 1.2f;
+            vCheckPos += vRight;
             break;
         }
         _int iIndex = _int(vCheckPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (vCheckPos.x + 0.5f * VTXITV);
@@ -2766,8 +2775,7 @@ void CPlayer::KnockBack(const _float& fTimeDelta)
             return;
         }
 
-        Set_Stop(&m_vKnockBackDir, m_fSpeed * (m_fKnockBackDist / fLength));
-
+        Set_Stop(fTimeDelta, &m_vKnockBackDir, m_fSpeed * (m_fKnockBackDist / fLength));
         m_pTransformCom->Move_Pos(&m_vKnockBackDir, fTimeDelta, m_fSpeed * (m_fKnockBackDist / fLength) * m_iSpeedWeight);
 
         m_bBleed = true;

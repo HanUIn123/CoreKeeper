@@ -49,7 +49,7 @@ protected:
 
 	void			Drop_Item();
 
-	void			Set_Stop(_vec3* vDir1, _float fDirSpeed1, _vec3* vDir2 = nullptr, _float fDirSpeed2 = 0.f);
+	void			Set_Stop(const _float& fTimeDelta, _vec3* vDir1, _float fDirSpeed1, _vec3* vDir2 = nullptr, _float fDirSpeed2 = 0.f);
 	void			Set_StuckFree(const _float& fTimeDelta);
 
 	_bool			Check_Wall();

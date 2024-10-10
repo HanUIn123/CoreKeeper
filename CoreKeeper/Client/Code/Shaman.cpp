@@ -114,7 +114,7 @@ _int CShaman::Update_GameObject(const _float& fTimeDelta)
 
 
     Flip();
-    Set_StuckFree(fTimeDelta);
+    //Set_StuckFree(fTimeDelta);
     m_pAnimatorCom->Update_Animation();
     Add_RenderGroup(RENDER_ALPHA, this);
     return iExit;
@@ -272,12 +272,25 @@ void CShaman::Pattern_Idle(const _float& fTimeDelta)
             break;
         }
 
-        Set_Stop(&vLook, fLookSpeed, &vRight, fRightSpeed);
+        Set_Stop(fTimeDelta, &vLook, fLookSpeed, &vRight, fRightSpeed);
         if (m_iSpeedWeight == 0)
         {
-            m_iDir = 0;
-            m_bIdling = false;
-            m_fIdleTime = 0.f;
+            switch (m_eDir)
+            {
+            case FRONT:
+                m_eDir = BACK;
+                break;
+            case LEFT:
+                m_eDir = RIGHT;
+                break;
+            case RIGHT:
+                m_eDir = LEFT;
+                break;
+            case BACK:
+                m_eDir = FRONT;
+                break;
+            }
+
         }
         else if (m_iDir)
         {
@@ -363,7 +376,7 @@ void CShaman::Pattern_Chase(const _float& fTimeDelta)
         m_pAnimatorCom->Set_CurState(WALK, 40, 45, 8);
         break;
     }
-    Set_Stop(&vDir, m_fSpeed);
+    Set_Stop(fTimeDelta, &vDir, m_fSpeed);
     m_pTransformCom->Move_Pos(&vDir, fTimeDelta, m_fSpeed * m_iSpeedWeight);
 }
 
