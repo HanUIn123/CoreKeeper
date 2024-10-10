@@ -985,16 +985,16 @@ HRESULT CMapEditorScene::Piking_Monster()
                 switch (m_eMonsterType)
                 {
                 case MON_SLIME:
-                    m_pMonsterCom = CSlimeRender::Create(m_pGraphicDev, iIndex);
+                    m_pMonsterCom = CSlimeRender::Create(m_pGraphicDev, iIndex, m_wsMonsterNameString[iIndex].c_str());
                     break;
                 case MON_SHROOMMAN:
-                    m_pMonsterCom = CShroomManRender::Create(m_pGraphicDev, iIndex);
+                    m_pMonsterCom = CShroomManRender::Create(m_pGraphicDev, iIndex, m_wsMonsterNameString[iIndex].c_str());
                     break;
                 case MON_SHAMAN:
-                    m_pMonsterCom = CShamanRender::Create(m_pGraphicDev, iIndex);
+                    m_pMonsterCom = CShamanRender::Create(m_pGraphicDev, iIndex, m_wsMonsterNameString[iIndex].c_str());
                     break;
                 case MON_HUNTER:
-                    m_pMonsterCom = CHunterRender::Create(m_pGraphicDev, iIndex);
+                    m_pMonsterCom = CHunterRender::Create(m_pGraphicDev, iIndex, m_wsMonsterNameString[iIndex].c_str());
                     break;
                 }
 
@@ -1008,6 +1008,40 @@ HRESULT CMapEditorScene::Piking_Monster()
                 m_vCheckPos = m_vPickPos;
             }
 
+        }
+
+        if (Engine::Get_DIMouseState(DIM_RB) & 0x80)
+        {
+            CMapToolTerrain* pTerrain = dynamic_cast<CMapToolTerrain*>(Engine::Get_GameObject(L"Layer_GameLogic", L"MapToolTerrain"));
+            CCalculator* pPickPos = dynamic_cast<CCalculator*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"MapToolTerrain", L"Com_Calculator"));
+            CMapToolTex* pMapToolBufferCom = dynamic_cast<CMapToolTex*>(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"MapToolTerrain", L"Com_Buffer"));
+            CTransform* pMapToolTransformCom = dynamic_cast<CTransform*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"MapToolTerrain", L"Com_Transform"));
+
+            m_vPickPos = pPickPos->Picking_OnTerrain(g_hWnd, pMapToolBufferCom, pMapToolTransformCom);
+
+            _int iIndex = _int(m_vPickPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + m_vPickPos.x + 0.5f * VTXITV;
+
+            if (m_vecMonsterRenderObject[iIndex])
+            {
+                if (auto pSlimeRender = dynamic_cast<CSlimeRender*>(m_vecMonsterRenderObject[iIndex]))
+                {
+                    Delete_Object(L"Layer_GameLogic", pSlimeRender->Get_PickedMonsterName().c_str());
+                }
+                else if (auto pMushroomRender = dynamic_cast<CShroomManRender*>(m_vecMonsterRenderObject[iIndex]))
+                {
+                    Delete_Object(L"Layer_GameLogic", pMushroomRender->Get_PickedMonsterName().c_str());
+                }
+                else if (auto pShamanRender = dynamic_cast<CShamanRender*>(m_vecMonsterRenderObject[iIndex]))
+                {
+                    Delete_Object(L"Layer_GameLogic", pShamanRender->Get_PickedMonsterName().c_str());
+                }
+                else if (auto pHunterRender = dynamic_cast<CHunterRender*>(m_vecMonsterRenderObject[iIndex]))
+                {
+                    Delete_Object(L"Layer_GameLogic", pHunterRender->Get_PickedMonsterName().c_str());
+                }
+                m_vecMonsterRenderObject[iIndex] = nullptr;
+                pTerrain->Set_Unreachable(iIndex, false);
+            }
         }
     }
 
@@ -1526,8 +1560,6 @@ HRESULT CMapEditorScene::MapFile_Load()
             Delete_Object(L"Layer_GameLogic", dynamic_cast<CAzeosSpawnPoint*>(iter2)->Get_PickedObjectName().c_str());
         }
     }
-
-   
 
     const _tchar* strFObjectileName = L"../../Data/ObjectData.txt";
 

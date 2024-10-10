@@ -13,9 +13,11 @@ CShamanRender::~CShamanRender()
 {
 }
 
-HRESULT CShamanRender::Ready_GameObject(_int iIndex)
+HRESULT CShamanRender::Ready_GameObject(_int iIndex, const wstring _pickedSFName)
 {
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
+
+    m_strPickedMonsterName = _pickedSFName;
 
     _float fX = (iIndex % (VTXCNTX - 1)) * VTXITV;
     _float fZ = (iIndex / (VTXCNTX - 1)) * VTXITV;
@@ -69,11 +71,11 @@ HRESULT CShamanRender::Add_Component()
 
 }
 
-CShamanRender* CShamanRender::Create(LPDIRECT3DDEVICE9 pGraphicDev, _int iIndex)
+CShamanRender* CShamanRender::Create(LPDIRECT3DDEVICE9 pGraphicDev, _int iIndex, const wstring _pickedSFName)
 {
     CShamanRender* pShaman = new CShamanRender(pGraphicDev);
 
-    if (FAILED(pShaman->Ready_GameObject(iIndex)))
+    if (FAILED(pShaman->Ready_GameObject(iIndex, _pickedSFName)))
     {
         Safe_Release(pShaman);
         MSG_BOX("Render Shaman Create Failed");

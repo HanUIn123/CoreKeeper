@@ -13,9 +13,11 @@ CHunterRender::~CHunterRender()
 {
 }
 
-HRESULT CHunterRender::Ready_GameObject(_int iIndex)
+HRESULT CHunterRender::Ready_GameObject(_int iIndex, const wstring _pickedSFName)
 {
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
+
+    m_strPickedMonsterName = _pickedSFName;
 
     _float fX = (iIndex % (VTXCNTX - 1)) * VTXITV;
     _float fZ = (iIndex / (VTXCNTX - 1)) * VTXITV;
@@ -69,11 +71,11 @@ HRESULT CHunterRender::Add_Component()
 
 }
 
-CHunterRender* CHunterRender::Create(LPDIRECT3DDEVICE9 pGraphicDev, _int iIndex)
+CHunterRender* CHunterRender::Create(LPDIRECT3DDEVICE9 pGraphicDev, _int iIndex, const wstring _pickedSFName)
 {
     CHunterRender* pHunterRender = new CHunterRender(pGraphicDev);
 
-    if (FAILED(pHunterRender->Ready_GameObject(iIndex)))
+    if (FAILED(pHunterRender->Ready_GameObject(iIndex, _pickedSFName)))
     {
         Safe_Release(pHunterRender);
         MSG_BOX("Render HunterRender Create Failed");
