@@ -29,7 +29,7 @@ private:
 	void			Pattern_Dead() override;
 	STATE			State_Change() override;
 
-	void			Set_Light();
+	void			SetUp_Light();
 
 public:
 	void			Set_Chase(_vec3 vPlayerPos) { m_bCharging = false; m_vAttackPoint = vPlayerPos; }
@@ -63,7 +63,7 @@ private:
 	Engine::CFirework* m_pFlameParticleCom;
 
 	_bool    m_bSmog;
-
+	_bool	 m_bInFrustum;
 	_matrix m_SmogMatrix;
 };
 

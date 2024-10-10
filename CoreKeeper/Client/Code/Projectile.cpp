@@ -5,7 +5,7 @@
 #include "../Header/Player.h"
 
 CProjectile::CProjectile(LPDIRECT3DDEVICE9 pGraphicDev)
-    : CMonster(pGraphicDev), m_bChargeActive(true), m_iChargingTime(45)
+    : CMonster(pGraphicDev), m_bChargeActive(true), m_iChargingTime(45), m_bInFrustum(true)
 {
     m_eType = Engine::MON_PROJECTILE;
     m_fIdleY = 0.2f;
@@ -50,6 +50,10 @@ HRESULT CProjectile::Ready_GameObject(_vec3 vPos)
 
 _int CProjectile::Update_GameObject(const _float& fTimeDelta)
 {
+    int iExit = Engine::CGameObject::Update_GameObject(fTimeDelta);
+
+    m_bInFrustum = m_pCalculatorCom->In_Frustum(m_pTransformCom);
+
     if (m_bSmog)
     {
         m_pSmogParticleCom->update(fTimeDelta);
@@ -78,7 +82,7 @@ _int CProjectile::Update_GameObject(const _float& fTimeDelta)
         return 0;
 
     Set_Cast();
-    Set_Light();
+    SetUp_Light();
 
     if (m_eState != DEAD)
         m_eState = State_Change();
@@ -103,7 +107,7 @@ _int CProjectile::Update_GameObject(const _float& fTimeDelta)
     m_pAnimatorCom->Set_CurState(IDLE, 0, 5, 8);
     m_pAnimatorCom->Update_Animation();
     Add_RenderGroup(RENDER_ALPHA, this);
-    return Engine::CGameObject::Update_GameObject(fTimeDelta);
+    return iExit;
 }
 
 void CProjectile::LateUpdate_GameObject()
@@ -296,28 +300,37 @@ STATE CProjectile::State_Change()
     return m_eState;
 }
 
-void CProjectile::Set_Light()
+void CProjectile::SetUp_Light()
 {
     D3DLIGHT9 light;
     ZeroMemory(&light, sizeof(D3DLIGHT9));
 
-    light.Type = D3DLIGHT_POINT; // 포인트 조명
+    light.Type = D3DLIGHT_SPOT;
     light.Diffuse = { 1.f, 1.f, 1.f, 1.f }; // 확산 색상
     light.Specular = { 1.f, 1.f, 1.f, 1.f }; // 반사 색상
     light.Ambient = { 1.f, 1.f, 1.f, 1.f }; // 주변광
 
     _vec3 vPos;
     m_pTransformCom->Get_Info(INFO_POS, &vPos);
+    light.Position = { vPos.x, vPos.y + 10.f, vPos.z };
 
-    light.Position = vPos; // 횃불의 위치
-    light.Range = 4.0f; // 조명의 범위
-    light.Falloff = 1.f; // 감쇠
+    // 아래쪽을 향하는 스포트라이트
+    _vec3 vDir = { 0.0f, -1.0f, 0.0f };
+    light.Direction = vDir;
+
+    light.Range = 5.f * 10.f; // 조명의 범위
+    light.Falloff = 1.0f; // 감쇠
     light.Attenuation0 = 1.0f; // 감쇠 계수
     light.Attenuation1 = 0.01f;
     light.Attenuation2 = 0.0f;
 
+    // 스포트라이트의 내부 및 외부 각도 설정
+    light.Theta = D3DXToRadian(20.0f); // 내부 각도 (작은 값일수록 집중된 조명)
+    light.Phi = D3DXToRadian(40.0f); // 외부 각도 (큰 값일수록 퍼지는 조명)
+
     m_pGraphicDev->SetLight(m_iLightNum, &light); // 조명 설정
-    if(m_bLightEnable)
+
+    if(m_bLightEnable && m_bInFrustum)
         m_pGraphicDev->LightEnable(m_iLightNum, TRUE);
     else
         m_pGraphicDev->LightEnable(m_iLightNum, FALSE);
