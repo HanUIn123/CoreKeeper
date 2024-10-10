@@ -47,13 +47,14 @@ HRESULT CBullet::Ready_GameObject(_vec3 vPos)
 
 _int CBullet::Update_GameObject(const _float& fTimeDelta)
 {
+    _int iExit = Engine::CGameObject::Update_GameObject(fTimeDelta);
     if (m_bSmog)
     {
         m_pSmogParticleCom->update(fTimeDelta);
 
         m_pFlameParticleCom->update(fTimeDelta);
 
-        Add_RenderGroup(RENDER_ALPHA, this);
+        Engine::Add_RenderGroup(RENDER_ALPHA, this);
 
 
         if (m_pFlameParticleCom->isDead())
@@ -96,8 +97,8 @@ _int CBullet::Update_GameObject(const _float& fTimeDelta)
 
     m_pAnimatorCom->Set_CurState(WALK, 0, 3, 4);
     m_pAnimatorCom->Update_Animation();
-    Add_RenderGroup(RENDER_ALPHA, this);
-    return Engine::CGameObject::Update_GameObject(fTimeDelta);
+    Engine::Add_RenderGroup(RENDER_ALPHA, this);
+    return iExit;
 }
 
 void CBullet::LateUpdate_GameObject()
