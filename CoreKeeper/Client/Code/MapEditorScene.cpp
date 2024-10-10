@@ -702,10 +702,10 @@ void CMapEditorScene::Setting_ObjectList()
 
     const char* items[] =
     {
-      "Slime_Floor", "MushRoom", "Azeos_Poop" , "Azeos_Feather" , "Boss_Spawn"
+      "Slime_Floor", "MushRoom", "Azeos_Poop" , "Azeos_Feather" /*, "Boss_Spawn"*/
     };
 
-    int imageCounts[] = { 9, 3, 3, 6, 2 };
+    int imageCounts[] = { 9, 3, 3, 6 };
 
     static int	nCurrentItem = 0;
     ImGui::Combo("##4", &nCurrentItem, items, IM_ARRAYSIZE(items));
@@ -877,14 +877,14 @@ HRESULT CMapEditorScene::Piking_Object()
                 {
                     Delete_Object(L"Layer_GameLogic", pAzeosFeather->Get_PickedObjectName().c_str());
                 }
-                else if (auto pBossSpawnPoint = dynamic_cast<CBossSpawnPoint*>(m_vecPlaceObject[iIndex]))
-                {
-                    Delete_Object(L"Layer_GameLogic", pBossSpawnPoint->Get_PickedObjectName().c_str());
-                }
-                else if (auto pAzeosSpawnPoint = dynamic_cast<CAzeosSpawnPoint*>(m_vecPlaceObject[iIndex]))
-                {
-                    Delete_Object(L"Layer_GameLogic", pAzeosSpawnPoint->Get_PickedObjectName().c_str());
-                }
+                //else if (auto pBossSpawnPoint = dynamic_cast<CBossSpawnPoint*>(m_vecPlaceObject[iIndex]))
+                //{
+                //    Delete_Object(L"Layer_GameLogic", pBossSpawnPoint->Get_PickedObjectName().c_str());
+                //}
+                //else if (auto pAzeosSpawnPoint = dynamic_cast<CAzeosSpawnPoint*>(m_vecPlaceObject[iIndex]))
+                //{
+                //    Delete_Object(L"Layer_GameLogic", pAzeosSpawnPoint->Get_PickedObjectName().c_str());
+                //}
                 m_vecPlaceObject[iIndex] = nullptr;
                 pTerrain->Set_Unreachable(iIndex, false);
             }
@@ -1368,18 +1368,18 @@ void CMapEditorScene::MapFile_Save()
             vTempTypeNumber = pAzeosFeather->Get_TileTypeIndex();
             vTempObjectType = pAzeosFeather->Get_ObjectType();
         }
-        else if (auto pMaluSummon = dynamic_cast<CBossSpawnPoint*>(m_vecPlaceObject[i]))
-        {
-            vTempObjectPos = pMaluSummon->Get_SpawnPos();
-            vTempTypeNumber = pMaluSummon->Get_TileTypeIndex();
-            vTempObjectType = pMaluSummon->Get_ObjectType();
-        }
-        else if (auto pAzeosSummon = dynamic_cast<CAzeosSpawnPoint*>(m_vecPlaceObject[i]))
-        {
-            vTempObjectPos = pAzeosSummon->Get_SpawnPos();
-            vTempTypeNumber = pAzeosSummon->Get_TileTypeIndex();
-            vTempObjectType = pAzeosSummon->Get_ObjectType();
-        }
+        //else if (auto pMaluSummon = dynamic_cast<CBossSpawnPoint*>(m_vecPlaceObject[i]))
+        //{
+        //    vTempObjectPos = pMaluSummon->Get_SpawnPos();
+        //    vTempTypeNumber = pMaluSummon->Get_TileTypeIndex();
+        //    vTempObjectType = pMaluSummon->Get_ObjectType();
+        //}
+        //else if (auto pAzeosSummon = dynamic_cast<CAzeosSpawnPoint*>(m_vecPlaceObject[i]))
+        //{
+        //    vTempObjectPos = pAzeosSummon->Get_SpawnPos();
+        //    vTempTypeNumber = pAzeosSummon->Get_TileTypeIndex();
+        //    vTempObjectType = pAzeosSummon->Get_ObjectType();
+        //}
 
         vTempObjectIndex = i;
 
@@ -1551,14 +1551,14 @@ HRESULT CMapEditorScene::MapFile_Load()
         {
             Delete_Object(L"Layer_GameLogic", dynamic_cast<CAzeosFeather*>(iter2)->Get_PickedObjectName().c_str());
         }
-        else if (auto pMaluSpawn = dynamic_cast<CBossSpawnPoint*>(iter2))
-        {
-            Delete_Object(L"Layer_GameLogic", dynamic_cast<CBossSpawnPoint*>(iter2)->Get_PickedObjectName().c_str());
-        }
-        else if (auto pAzeosSpawn = dynamic_cast<CAzeosSpawnPoint*>(iter2))
-        {
-            Delete_Object(L"Layer_GameLogic", dynamic_cast<CAzeosSpawnPoint*>(iter2)->Get_PickedObjectName().c_str());
-        }
+        //else if (auto pMaluSpawn = dynamic_cast<CBossSpawnPoint*>(iter2))
+        //{
+        //    Delete_Object(L"Layer_GameLogic", dynamic_cast<CBossSpawnPoint*>(iter2)->Get_PickedObjectName().c_str());
+        //}
+        //else if (auto pAzeosSpawn = dynamic_cast<CAzeosSpawnPoint*>(iter2))
+        //{
+        //    Delete_Object(L"Layer_GameLogic", dynamic_cast<CAzeosSpawnPoint*>(iter2)->Get_PickedObjectName().c_str());
+        //}
     }
 
     const _tchar* strFObjectileName = L"../../Data/ObjectData.txt";
