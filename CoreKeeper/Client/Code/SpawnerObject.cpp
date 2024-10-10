@@ -27,6 +27,8 @@ HRESULT CSpawnerObject::Ready_GameObject(_vec3 vPos, _int _iTypeNum)
 
 _int CSpawnerObject::Update_GameObject(const _float& fTimeDelta)
 {
+    // 말루가즈 스폰포인트와 충돌되고 있는지?
+    // 충돌중이면 말루가즈 활성화
     Add_RenderGroup(RENDER_ALPHA, this);
 
     return Engine::CGameObject::Update_GameObject(fTimeDelta);

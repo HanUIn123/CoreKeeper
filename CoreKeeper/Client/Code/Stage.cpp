@@ -73,12 +73,6 @@ void CStage::LateUpdate_Scene()
 
 void CStage::Render_Scene()
 {
-    ///// 미니맵 뷰포트.. 창 나누기.. 아직 구현중...
-    // 시작 위치 x / 시작 위치 y / 너비 / 높이 / 최소 깊이 / 최대 깊이
-    // 이 위치에 현재 stage의 모습을 그대로 보여주고있음.
-
-    //D3DVIEWPORT9 miniMapViewport = { 1280 - 220, 20, 200, 150, 0.0f, 1.0f };  // 우측 상단
-    //m_pGraphicDev->SetViewport(&miniMapViewport);
 }
 
 HRESULT CStage::Ready_LightInfo()
@@ -347,6 +341,11 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar* pLayerTag)
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Player's_ChocoBar", pGameObject), E_FAIL);
     dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
     dynamic_cast<CItem*>(pGameObject)->Add_Count(1);
+
+    /*pGameObject = CMalugaz::Create(m_pGraphicDev, {0,0,0});
+    NULL_CHECK_RETURN(pGameObject, E_FAIL);
+    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Malugaz", pGameObject), E_FAIL);*/
+
 
     m_mapLayer.insert({ pLayerTag , pLayer });
 
@@ -719,25 +718,6 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
     }
 
     m_mapLayer.insert({ pLayerTag , pLayer });
-
-    return S_OK;
-}
-
-HRESULT CStage::Ready_Layer_MiniMap(const _tchar* pLayerTag)
-{
-    //Engine::CLayer* pLayer = CLayer::Create();
-    //NULL_CHECK_RETURN(pLayer, E_FAIL);
-
-    //_vec3 miniMapEye = { 0.f, 20.f, 0.f };  
-    //_vec3 miniMapAt = { 0.f, 0.f, 0.f };     
-    //_vec3 miniMapUp = { 0.f, 0.f, 1.f };     
-
-    //m_pMiniMapCamera = CMiniMapCamera::Create(m_pGraphicDev, &miniMapEye, &miniMapAt, &miniMapUp);
-    //NULL_CHECK_RETURN(m_pMiniMapCamera, E_FAIL);
-
-    //FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"MiniMapCamera", m_pMiniMapCamera), E_FAIL);
-
-    //m_mapLayer.insert({ pLayerTag, pLayer });
 
     return S_OK;
 }

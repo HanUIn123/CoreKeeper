@@ -506,6 +506,8 @@ void CPlayer::Mouse_Click(const _float& fTimeDelta)
                 case ITEM_BOX:
                 case ITEM_GRAVESTONE:
                 case ITEM_SPRINKLER:
+                case ITEM_MAL_SPAWNER:
+                case ITEM_AZEOS_SPAWNER:
                     Install(eHandedNum);
                     break;
 
@@ -1604,6 +1606,10 @@ void CPlayer::Install(ITEMNUM eHandedNum)
                 CGameObject* pInstallObject = nullptr;
                 _vec3 vInstallPos = { _float((iIndex % (VTXCNTX - 1)) * VTXITV), 0.5f, _float((iIndex / (VTXCNTX - 1)) * VTXITV) };
                 MATERIAL mat;
+
+                // 통과할 수 있게 할건지 없게 할건지 여부
+                _bool   bPassable = true;
+
                 switch (eHandedNum)
                 {
                 case ITEM_TABLE:
@@ -1631,6 +1637,7 @@ void CPlayer::Install(ITEMNUM eHandedNum)
                     break;
                 case ITEM_TORCH:
                     pInstallObject = CTorchObject::Create(m_pGraphicDev, vInstallPos);
+                    bPassable = false;
                     break;
                 case ITEM_BOX:
                     pInstallObject = CBoxObject::Create(m_pGraphicDev, vInstallPos);
@@ -1642,13 +1649,21 @@ void CPlayer::Install(ITEMNUM eHandedNum)
                 case ITEM_SPRINKLER:
                     pInstallObject = CSprinklerObject::Create(m_pGraphicDev, vInstallPos);
                     break;
+                case ITEM_MAL_SPAWNER:
+                    pInstallObject = CSpawnerObject::Create(m_pGraphicDev, vInstallPos, ITEM_MAL_SPAWNER);
+                    bPassable = false;
+                    break;
+                case ITEM_AZEOS_SPAWNER:
+                    pInstallObject = CAzeosSpawner::Create(m_pGraphicDev, vInstallPos);
+                    bPassable = false;
+                    break;
                 default:
                     return;
                 }
                 m_vecInstallObjectName.push_back(L"Install_Object" + std::to_wstring(m_iInstallNumber++));
                 FAILED_CHECK_RETURN(pScene->Create_GameObject(L"Layer_GameLogic", pInstallObject, m_vecInstallObjectName.back().c_str()));
 
-                if (eHandedNum != ITEM_TORCH)
+                if (bPassable)
                     m_pTerrain->Set_Unreachable(iIndex, true);
 
                 m_pHandedItem->Set_Use(false);

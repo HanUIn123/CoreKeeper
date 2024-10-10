@@ -18,6 +18,8 @@
 #include "..\Header\GraveStoneObject.h"
 #include "..\Header\SprinklerObject.h"
 #include "..\Header\TorchObject.h"
+#include "..\Header\SpawnerObject.h"
+#include "..\Header\AzeosSpawner.h"
 
 
 // UI

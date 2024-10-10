@@ -34,9 +34,6 @@ private:
 	HRESULT							Ready_Layer_GameLogic(const _tchar* pLayerTag);
 	HRESULT							Ready_Layer_UI(const _tchar* pLayerTag);
 
-	// 미니맵 띄워서 그 안에 출력해서 보여주려고 아예 레이어 따로 만들어 둠.
-	HRESULT							Ready_Layer_MiniMap(const _tchar* pLayerTag);
-
 public:
 	static	CStage*					Create(LPDIRECT3DDEVICE9 pGraphicDev);
 
