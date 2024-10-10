@@ -2,12 +2,14 @@
 #include "../Header/SlimeFloor.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
+#include "../Header/BuffMgr.h"
 
 CSlimeFloor::CSlimeFloor(LPDIRECT3DDEVICE9 _pGraphicDev)
     : CObject(_pGraphicDev)
     , m_iTileTypeIndex(0)
 {
     m_eObjType = Engine::SLIME_FLOOR;
+    m_pPlayerCollider = nullptr;
 }
 
 CSlimeFloor::~CSlimeFloor()
@@ -36,9 +38,14 @@ HRESULT CSlimeFloor::Ready_GameObject(_vec3 _vPos, _int _iTypeNum, const wstring
 
 _int CSlimeFloor::Update_GameObject(const _float& fTimeDelta)
 {
-    Add_RenderGroup(RENDER_ALPHA, this);
+    _int iExit = Engine::CGameObject::Update_GameObject(fTimeDelta);
+    Set_Cast();
 
-    return Engine::CGameObject::Update_GameObject(fTimeDelta);
+    if (m_pColliderCom->Check_Sphere_Collision(m_pPlayerCollider))
+        CBuffMgr::GetInstance()->Set_BuffStart(DEBUFF_SLOW, fTimeDelta);
+
+    Add_RenderGroup(RENDER_ALPHA, this);
+    return iExit;
 }
 
 void CSlimeFloor::LateUpdate_GameObject()
@@ -51,7 +58,7 @@ void CSlimeFloor::Render_GameObject()
     m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, true);
 
     m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
-
+    m_pColliderCom->Update_Collider(m_pTransformCom->Get_WorldMatrix());
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
     FAILED_CHECK_RETURN(Setup_Material(), );
@@ -90,6 +97,12 @@ HRESULT CSlimeFloor::Add_Component()
     m_mapComponent[ID_STATIC].insert({ L"Com_Collider", pComponent });
 
     return S_OK;
+}
+
+void CSlimeFloor::Set_Cast()
+{
+    if (!m_pPlayerCollider)
+        m_pPlayerCollider = dynamic_cast<Engine::CCollider*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Collider"));
 }
 
 CSlimeFloor* CSlimeFloor::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 _vPos, _int _iTypeNum, const wstring _pickedSFName)
