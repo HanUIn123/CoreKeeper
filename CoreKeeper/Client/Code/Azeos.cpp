@@ -31,6 +31,8 @@ CAzeos::CAzeos(LPDIRECT3DDEVICE9 pGraphicDev)
     m_bAttack = false;
 
     m_bDead = false;
+
+    m_bStopDraw = true;
 }
 
 CAzeos::~CAzeos()

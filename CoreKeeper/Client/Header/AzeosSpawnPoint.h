@@ -18,7 +18,7 @@ private:
 	explicit						CAzeosSpawnPoint(LPDIRECT3DDEVICE9 pGraphicDev);
 	virtual							~CAzeosSpawnPoint();
 public:
-	virtual			HRESULT			Ready_GameObject(_vec3 vPos, _int _iTypeNum, const wstring _pickedASName);
+	virtual			HRESULT			Ready_GameObject(_vec3 vPos);
 	virtual			_int			Update_GameObject(const _float& fTimeDelta);
 	virtual			void			LateUpdate_GameObject();
 	virtual			void			Render_GameObject();
@@ -43,7 +43,7 @@ protected:
 	Engine::CTexture* m_pEmissiveTextureCom;
 
 public:
-	static CAzeosSpawnPoint* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, _int _iTypeNum, const wstring _pickedASName);
+	static CAzeosSpawnPoint* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);
 
 private:
 	virtual void					Free();

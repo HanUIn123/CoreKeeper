@@ -268,6 +268,11 @@ HRESULT CStage::Ready_Layer_Environment(const _tchar* pLayerTag)
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"MalgaSummonPoint", pGameObject), E_FAIL);
 
+    _vec3   AzeosSpawnPos = { 42.0f, 0.0f,105.0f };
+    pGameObject = CAzeosSpawnPoint::Create(m_pGraphicDev, AzeosSpawnPos);
+    NULL_CHECK_RETURN(pGameObject, E_FAIL);
+    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"AzeosSummonPoint", pGameObject), E_FAIL);
+
 
 #pragma endregion
 
@@ -356,6 +361,10 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar* pLayerTag)
     pGameObject = CMalugaz::Create(m_pGraphicDev, {14.0f, 0.0f,71.0f});
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Malugaz", pGameObject), E_FAIL);
+
+    pGameObject = CAzeos::Create(m_pGraphicDev, { 42.0f, 0.0f,105.0f });
+    NULL_CHECK_RETURN(pGameObject, E_FAIL);
+    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Azeos", pGameObject), E_FAIL);
 
 
     m_mapLayer.insert({ pLayerTag , pLayer });
@@ -1095,10 +1104,10 @@ HRESULT CStage::Load_ObjectData()
         //    m_wsObjectNameString[iIndex] = L"MalgaSpawnPoint_" + std::to_wstring(iIndex);
         //    pGameObject = CBossSpawnPoint::Create(m_pGraphicDev, _vec3(vObjectPos.x, vObjectPos.y, vObjectPos.z), iTypeNumber, m_wsObjectNameString[iIndex].c_str());
         //    break;
-        case AZEOS_SUMMON:
-            m_wsObjectNameString[iIndex] = L"AzeosSpawnPoint_" + std::to_wstring(iIndex);
-            pGameObject = CAzeosSpawnPoint::Create(m_pGraphicDev, _vec3(vObjectPos.x, vObjectPos.y, vObjectPos.z), iTypeNumber, m_wsObjectNameString[iIndex].c_str());
-            break;
+        //case AZEOS_SUMMON:
+        //    m_wsObjectNameString[iIndex] = L"AzeosSpawnPoint_" + std::to_wstring(iIndex);
+        //    pGameObject = CAzeosSpawnPoint::Create(m_pGraphicDev, _vec3(vObjectPos.x, vObjectPos.y, vObjectPos.z), iTypeNumber, m_wsObjectNameString[iIndex].c_str());
+        //    break;
 
         }
         NULL_CHECK_RETURN(pGameObject, E_FAIL);
