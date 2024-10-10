@@ -1583,10 +1583,10 @@ HRESULT CMapEditorScene::MapFile_Load()
             pGameObject2 = CAzeosSpawnPoint::Create(m_pGraphicDev, _vec3(vObjectPos.x, vObjectPos.y, vObjectPos.z), iTypeNumber, m_wsObjectNameString[iIndex].c_str());
             break;
         }
+        m_vecPlaceObject[iIndex] = pGameObject2;
+        NULL_CHECK_RETURN(pGameObject2, E_FAIL);
+        FAILED_CHECK_RETURN(iter2->second->Add_GameObject(m_wsObjectNameString[iIndex].c_str(), pGameObject2), E_FAIL);
     }
-    m_vecPlaceObject[iIndex] = pGameObject2;
-    NULL_CHECK_RETURN(pGameObject2, E_FAIL);
-    FAILED_CHECK_RETURN(iter2->second->Add_GameObject(m_wsObjectNameString[iIndex].c_str(), pGameObject2), E_FAIL);
 
     CloseHandle(m_hObjectFile);
 
