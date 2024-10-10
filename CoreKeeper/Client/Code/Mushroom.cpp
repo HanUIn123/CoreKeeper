@@ -17,6 +17,10 @@ CMushroom::~CMushroom()
 HRESULT CMushroom::Ready_GameObject(_vec3 _vPos, _int _iTypeNum, const wstring _pickedMushName)
 {
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
+    
+    m_vMushroomPos.x = _vPos.x;
+    m_vMushroomPos.y = 0.6f;
+    m_vMushroomPos.z = _vPos.z;
 
     m_iMushTypeIndex = _iTypeNum;
 
