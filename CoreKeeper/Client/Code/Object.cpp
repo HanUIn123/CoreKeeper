@@ -3,6 +3,7 @@
 #include "Export_Utility.h"
 #include "Export_System.h"
 
+
 CObject::CObject(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CGameObject(pGraphicDev)
 	, m_pTransformCom(nullptr)
@@ -76,10 +77,6 @@ bool CObject::Check_Interaction()
 
 void CObject::Interaction()
 {
-	if (Engine::Key_Down(DIK_E))
-	{
-
-	}
 }
 
 CObject* CObject::Create(LPDIRECT3DDEVICE9 pGraphicDev)

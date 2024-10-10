@@ -8,6 +8,7 @@ class CTransform;
 class CCalculator;
 class CTexture;
 class CColliderCube;
+class CCollider;
 class CInventory;
 
 END
@@ -36,6 +37,7 @@ private:
 public:
 	bool							Check_Interaction();
 
+
 public:
 	virtual			_int			Get_BuildImgNum() { return m_iBuildingImgNum; }
 	virtual			void			Set_BuildImgNum(_int _iBuildingNum) { m_iBuildingImgNum = _iBuildingNum; }
@@ -52,7 +54,8 @@ protected:
 	Engine::CTransform*				m_pTransformCom;
 	Engine::CCalculator*			m_pCalculCom;
 	Engine::CTexture*				m_pTextureCom;
-	Engine::CColliderCube*			m_pColliderCom;
+	//Engine::CCollider*				m_pColliderCom;
+	Engine::CColliderCube*				m_pColliderCom;
 	Engine::CInventory*				m_pInventoryCom;
 
 	Engine::PLACEOBJECT				m_eObjType;

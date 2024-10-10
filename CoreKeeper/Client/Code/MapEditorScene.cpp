@@ -822,14 +822,14 @@ HRESULT CMapEditorScene::Piking_Object()
 
                     dynamic_cast<CAzeosFeather*>(m_vecPlaceObject[iIndex])->Set_TileTypeIndex(m_iObjectNumber - 15);
                 }
-                else if (m_iObjectNumber > 20 && m_iObjectNumber <= 21)
-                {
-                    m_wsObjectNameString[iIndex] = L"MalgaSpawnPoint_" + std::to_wstring(iIndex);
-                    m_pObjectCom = CBossSpawnPoint::Create(m_pGraphicDev, _vec3(m_vPickPos.x + 0.5f * VTXITV, m_vPickPos.y + 0.1f, m_vPickPos.z + 0.5f * VTXITV), m_iObjectNumber, m_wsObjectNameString[iIndex].c_str());
-                    m_vecPlaceObject[iIndex] = dynamic_cast<CBossSpawnPoint*>(m_pObjectCom);
-                    dynamic_cast<CBossSpawnPoint*>(m_vecPlaceObject[iIndex])->Set_PickedObjectName(m_wsObjectNameString[iIndex]);
-                    dynamic_cast<CBossSpawnPoint*>(m_vecPlaceObject[iIndex])->Set_TileTypeIndex(m_iObjectNumber - 21);
-                }
+                //else if (m_iObjectNumber > 20 && m_iObjectNumber <= 21)
+                //{
+                //    m_wsObjectNameString[iIndex] = L"MalgaSpawnPoint_" + std::to_wstring(iIndex);
+                //    m_pObjectCom = CBossSpawnPoint::Create(m_pGraphicDev, _vec3(m_vPickPos.x + 0.5f * VTXITV, m_vPickPos.y + 0.1f, m_vPickPos.z + 0.5f * VTXITV), m_iObjectNumber, m_wsObjectNameString[iIndex].c_str());
+                //    m_vecPlaceObject[iIndex] = dynamic_cast<CBossSpawnPoint*>(m_pObjectCom);
+                //    dynamic_cast<CBossSpawnPoint*>(m_vecPlaceObject[iIndex])->Set_PickedObjectName(m_wsObjectNameString[iIndex]);
+                //    dynamic_cast<CBossSpawnPoint*>(m_vecPlaceObject[iIndex])->Set_TileTypeIndex(m_iObjectNumber - 21);
+                //}
                 else if (m_iObjectNumber > 21 && m_iObjectNumber <= 22)
                 {
                     m_wsObjectNameString[iIndex] = L"AzeosSpawnPoint_" + std::to_wstring(iIndex);
@@ -1606,10 +1606,10 @@ HRESULT CMapEditorScene::MapFile_Load()
             m_wsObjectNameString[iIndex] = L"AzeosFeather_" + std::to_wstring(iIndex);
             pGameObject2 = CAzeosFeather::Create(m_pGraphicDev, _vec3(vObjectPos.x, vObjectPos.y, vObjectPos.z), iTypeNumber, m_wsObjectNameString[iIndex].c_str());
             break;
-        case MALGA_SUMMON:
-            m_wsObjectNameString[iIndex] = L"MalgaSpawnPoint_" + std::to_wstring(iIndex);
-            pGameObject2 = CBossSpawnPoint::Create(m_pGraphicDev, _vec3(vObjectPos.x, vObjectPos.y, vObjectPos.z), iTypeNumber, m_wsObjectNameString[iIndex].c_str());
-            break;
+        //case MALGA_SUMMON:
+        //    m_wsObjectNameString[iIndex] = L"MalgaSpawnPoint_" + std::to_wstring(iIndex);
+        //    pGameObject2 = CBossSpawnPoint::Create(m_pGraphicDev, _vec3(vObjectPos.x, vObjectPos.y, vObjectPos.z), iTypeNumber, m_wsObjectNameString[iIndex].c_str());
+        //    break;
         case AZEOS_SUMMON:
             m_wsObjectNameString[iIndex] = L"AzeosSpawnPoint_" + std::to_wstring(iIndex);
             pGameObject2 = CAzeosSpawnPoint::Create(m_pGraphicDev, _vec3(vObjectPos.x, vObjectPos.y, vObjectPos.z), iTypeNumber, m_wsObjectNameString[iIndex].c_str());
