@@ -22,6 +22,9 @@ public:
 	virtual			void			LateUpdate_GameObject();
 	virtual			void			Render_GameObject();
 
+	virtual			void			Interaction();
+	_bool							Check_Object_Interaction();
+
 private:
 	HRESULT							Add_Component();
 
@@ -30,5 +33,6 @@ public:
 
 private:
 	virtual void					Free();
+	_bool							m_bIsAlreadySpawn;
 };
 
