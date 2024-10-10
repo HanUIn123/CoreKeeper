@@ -1491,42 +1491,43 @@ HRESULT CMapEditorScene::MapFile_Load()
 
     //==========================================================
 
-    for (auto& iter : m_vecPlaceObject)
-    {
-        if (iter == nullptr)
-            continue;
-
-        if (auto pSlimeFloor = dynamic_cast<CSlimeFloor*>(iter))
-        {
-            Delete_Object(L"Layer_GameLogic", pSlimeFloor->Get_PickedObjectName().c_str());
-        }
-        else if (auto pMushroom = dynamic_cast<CMushroom*>(iter))
-        {
-            Delete_Object(L"Layer_GameLogic", pMushroom->Get_PickedObjectName().c_str());
-        }
-        else if (auto pAzeosPoop = dynamic_cast<CAzeosPoop*>(iter))
-        {
-            Delete_Object(L"Layer_GameLogic", pAzeosPoop->Get_PickedObjectName().c_str());
-        }
-        else if (auto pAzeosFeather = dynamic_cast<CAzeosFeather*>(iter))
-        {
-            Delete_Object(L"Layer_GameLogic", dynamic_cast<CAzeosFeather*>(iter)->Get_PickedObjectName().c_str());
-        }
-        else if (auto pMaluSpawn = dynamic_cast<CBossSpawnPoint*>(iter))
-        {
-            Delete_Object(L"Layer_GameLogic", dynamic_cast<CBossSpawnPoint*>(iter)->Get_PickedObjectName().c_str());
-        }
-        else if (auto pAzeosSpawn = dynamic_cast<CAzeosSpawnPoint*>(iter))
-        {
-            Delete_Object(L"Layer_GameLogic", dynamic_cast<CAzeosSpawnPoint*>(iter)->Get_PickedObjectName().c_str());
-        }
-        //iter = nullptr;
-    }
-
     auto	iter2 = find_if(m_mapLayer.begin(), m_mapLayer.end(), CTag_Finder(L"Layer_GameLogic"));
 
     if (iter2 == m_mapLayer.end())
         return E_FAIL;
+
+    for (auto& iter2 : m_vecPlaceObject)
+    {
+        if (iter2 == nullptr)
+            continue;
+
+        if (auto pSlimeFloor = dynamic_cast<CSlimeFloor*>(iter2))
+        {
+            Delete_Object(L"Layer_GameLogic", pSlimeFloor->Get_PickedObjectName().c_str());
+        }
+        else if (auto pMushroom = dynamic_cast<CMushroom*>(iter2))
+        {
+            Delete_Object(L"Layer_GameLogic", pMushroom->Get_PickedObjectName().c_str());
+        }
+        else if (auto pAzeosPoop = dynamic_cast<CAzeosPoop*>(iter2))
+        {
+            Delete_Object(L"Layer_GameLogic", pAzeosPoop->Get_PickedObjectName().c_str());
+        }
+        else if (auto pAzeosFeather = dynamic_cast<CAzeosFeather*>(iter2))
+        {
+            Delete_Object(L"Layer_GameLogic", dynamic_cast<CAzeosFeather*>(iter2)->Get_PickedObjectName().c_str());
+        }
+        else if (auto pMaluSpawn = dynamic_cast<CBossSpawnPoint*>(iter2))
+        {
+            Delete_Object(L"Layer_GameLogic", dynamic_cast<CBossSpawnPoint*>(iter2)->Get_PickedObjectName().c_str());
+        }
+        else if (auto pAzeosSpawn = dynamic_cast<CAzeosSpawnPoint*>(iter2))
+        {
+            Delete_Object(L"Layer_GameLogic", dynamic_cast<CAzeosSpawnPoint*>(iter2)->Get_PickedObjectName().c_str());
+        }
+    }
+
+   
 
     const _tchar* strFObjectileName = L"../../Data/ObjectData.txt";
 
