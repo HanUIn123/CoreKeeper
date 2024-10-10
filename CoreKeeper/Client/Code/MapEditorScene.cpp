@@ -800,7 +800,7 @@ HRESULT CMapEditorScene::Piking_Object()
                 else if (m_iObjectNumber > 8 && m_iObjectNumber <= 11)
                 {
                     m_wsObjectNameString[iIndex] = L"Mushroom_" + std::to_wstring(iIndex);
-                    m_pObjectCom = CMushroom::Create(m_pGraphicDev, _vec3(m_vPickPos.x + 0.5f * VTXITV, m_vPickPos.y + 0.5f, m_vPickPos.z + 0.5f * VTXITV), m_iObjectNumber, m_wsObjectNameString[iIndex].c_str());
+                    m_pObjectCom = CMushroom::Create(m_pGraphicDev, _vec3(m_vPickPos.x + 0.5f * VTXITV, m_vPickPos.y, m_vPickPos.z + 0.5f * VTXITV), m_iObjectNumber, m_wsObjectNameString[iIndex].c_str());
                     m_vecPlaceObject[iIndex] = dynamic_cast<CMushroom*>(m_pObjectCom);
                     dynamic_cast<CMushroom*>(m_vecPlaceObject[iIndex])->Set_PickedObjectName(m_wsObjectNameString[iIndex]);
                     dynamic_cast<CMushroom*>(m_vecPlaceObject[iIndex])->Set_TileTypeIndex(m_iObjectNumber - 9);
