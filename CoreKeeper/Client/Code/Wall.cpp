@@ -10,7 +10,7 @@ _long CWall::m_iItemNumber = 0;
 bool  CWall::m_bDown = false;
 
 CWall::CWall(LPDIRECT3DDEVICE9 pGraphicDev)
-    : Engine::CGameObject(pGraphicDev), m_bInFrustum(true), m_bOpen(false)
+    : Engine::CGameObject(pGraphicDev), m_bInFrustum(true)
     , m_pCalculatorCom(nullptr)
     , m_pTransformCom(nullptr)
     , m_pTextureCom(nullptr)
@@ -59,15 +59,17 @@ HRESULT CWall::Ready_GameObject(_float _fWallX, _float _fWallZ, _int iWallImageN
 
 _int CWall::Update_GameObject(const _float& fTimeDelta)
 {
-    if (m_pTransformCom->Get_WorldMatrix()->_42 < -1.f)
+    Update_Texture();
+
+    int Exit = Engine::CGameObject::Update_GameObject(fTimeDelta);
+
+    m_bInFrustum = m_pCalculatorCom->In_Frustum(m_pTransformCom);
+
+    if (!m_bInFrustum && m_iWallImageNum != 48)
     {
-        CTerrain* pTerrain = dynamic_cast<CTerrain*>(Engine::Get_GameObject(L"Layer_Environment", L"Terrain"));
-        _int iIndex = _int(m_pTransformCom->Get_WorldMatrix()->_43 * (VTXCNTX - 1) + (m_pTransformCom->Get_WorldMatrix()->_41));
-
-        pTerrain->Set_Unreachable(iIndex, false);
-
-        m_iWallImageNum = 0;
+        return 0;
     }
+
     if (m_bDown && m_iWallImageNum == 45)
     {
         m_iWallImageNum = 48;
@@ -79,26 +81,20 @@ _int CWall::Update_GameObject(const _float& fTimeDelta)
         m_pTransformCom->Get_Info(INFO_UP, &vUp);
         m_pTransformCom->Move_Pos(&vUp, fTimeDelta, -0.5f);
         dynamic_cast<CDynamicCamera*>(Engine::Get_GameObject(L"Layer_Environment", L"DynamicCamera"))->Set_ShakeInfo(2.f, 5.f);
-    }
 
-    Update_Texture();
+        if (m_pTransformCom->Get_WorldMatrix()->_42 < -1.f)
+        {
+            CTerrain* pTerrain = dynamic_cast<CTerrain*>(Engine::Get_GameObject(L"Layer_Environment", L"Terrain"));
+            _int iIndex = _int(m_pTransformCom->Get_WorldMatrix()->_43 * (VTXCNTX - 1) + (m_pTransformCom->Get_WorldMatrix()->_41));
 
-    int Exit = Engine::CGameObject::Update_GameObject(fTimeDelta);
+            pTerrain->Set_Unreachable(iIndex, false);
 
-    m_bInFrustum = m_pCalculatorCom->In_Frustum(m_pTransformCom);
-
-
-    if (!m_bInFrustum && m_iWallImageNum != 48)
-    {
-        return 0;
+            m_iWallImageNum = 0;
+        }
     }
 
     if (m_iWallImageNum == 45)
     {
-        CCore* pCore = dynamic_cast<CCore*>(Engine::Get_GameObject(L"Layer_Environment", L"Core"));
-        if(pCore)
-            m_bOpen = pCore->Get_ActiveCore(0) && pCore->Get_ActiveCore(1) && pCore->Get_ActiveCore(2);
-
         if (Check_Interaction())
         {
             Interaction();
@@ -589,7 +585,7 @@ void CWall::Interaction()
 {
     if (Engine::Key_Down(DIK_E))
     {
-        if (m_bOpen && m_iWallImageNum == 45)
+        if (g_bOpen && m_iWallImageNum == 45)
         {
             m_bDown = true;
         }

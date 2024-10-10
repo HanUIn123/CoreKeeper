@@ -86,7 +86,7 @@ _int CShroomMan::Update_GameObject(const _float& fTimeDelta)
         KnockBack(fTimeDelta, 1.8f);
 
     Flip();
-    //Set_StuckFree(fTimeDelta);
+    Set_StuckFree(fTimeDelta);
     m_pAnimatorCom->Update_Animation();
 
     if (m_eState == SWING)
@@ -213,7 +213,6 @@ HRESULT CShroomMan::Add_Component()
     pComponent = m_pColliderCom = dynamic_cast<CCollider*>(Engine::Clone_Proto(L"Proto_ShroomManCollider"));
     NULL_CHECK_RETURN(pComponent, E_FAIL);
     m_mapComponent[ID_DYNAMIC].insert({ L"Com_Collider", pComponent });
-
 
     pComponent = m_pSmokeParticleCom = dynamic_cast<CSmoke*>(Engine::Clone_Proto(L"Proto_Smoke"));
     NULL_CHECK_RETURN(pComponent, E_FAIL);

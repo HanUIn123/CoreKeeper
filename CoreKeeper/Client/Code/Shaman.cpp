@@ -114,7 +114,7 @@ _int CShaman::Update_GameObject(const _float& fTimeDelta)
 
 
     Flip();
-    //Set_StuckFree(fTimeDelta);
+    Set_StuckFree(fTimeDelta);
     m_pAnimatorCom->Update_Animation();
     Add_RenderGroup(RENDER_ALPHA, this);
     return iExit;
@@ -275,24 +275,11 @@ void CShaman::Pattern_Idle(const _float& fTimeDelta)
         Set_Stop(fTimeDelta, &vLook, fLookSpeed, &vRight, fRightSpeed);
         if (m_iSpeedWeight == 0)
         {
-            switch (m_eDir)
-            {
-            case FRONT:
-                m_eDir = BACK;
-                break;
-            case LEFT:
-                m_eDir = RIGHT;
-                break;
-            case RIGHT:
-                m_eDir = LEFT;
-                break;
-            case BACK:
-                m_eDir = FRONT;
-                break;
-            }
-
+            m_bIdling = false;
+            m_fIdleTime = 0.f;
+            m_fIdleTimeLimit = 0.f;
         }
-        else if (m_iDir)
+        if (m_iDir)
         {
             _int iWeight = 1;
             if (m_eDir == LEFT)
