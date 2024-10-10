@@ -170,6 +170,20 @@ void CInventory::Put_Same_Item(CInventory* _playerInventory, CInventory* _chestI
 	}
 }
 
+void CInventory::Move_All_Item(CInventory* _pGravestoneInventory)
+{
+	// 플레이어 인벤토리의 모든 슬롯을 확인
+	for (int i = 10; i < m_vecItems.size(); i++)
+	{
+		// 빈 슬롯이면 건너뛰기 (혹시 몰라서 카운트 0인것도 확인)
+		if (m_vecItems[i] == nullptr || m_vecItems[i]->Get_Count() == 0)
+			continue;
+
+		_pGravestoneInventory->Add_Item(m_vecItems[i]);
+		Remove_Item(i);
+	}
+}
+
 bool CInventory::Check_Empty(_int iIndex)
 {
 	if (m_vecItems[iIndex] == nullptr || m_vecItems[iIndex]->Get_Count() == 0)

@@ -2186,8 +2186,12 @@ void CPlayer::Respawn_Progress(const _float& fTimeDelta)
             m_bRespawnFirstFrame = false;
 
             // 장착 장비 off
-            m_pHandedItem->Set_Use(false);
-            m_pHandedItem->Set_Active(false);
+            if (m_pHandedItem)
+            {
+                m_pHandedItem->Set_Use(false);
+                m_pHandedItem->Set_Active(false);
+            }
+
             CItem* pArmor;
             for (_int i = 0; i < CUIItemSlot::SLOT_END; i++)
             {
@@ -2225,6 +2229,9 @@ void CPlayer::Respawn_Progress(const _float& fTimeDelta)
             m_vecInstallObjectName.push_back(L"Player_Created_Gravestone_" + std::to_wstring(m_iInstallNumber));
             pScene->Create_GameObject(L"Layer_GameLogic", pGraveStone, m_vecInstallObjectName.back().c_str());
             // 인벤토리 아이템 전부 묘비로 옮기기
+
+            m_pInventoryCom->Move_All_Item(dynamic_cast<CGravestoneObject*>(pGraveStone)->Get_Inventory());
+
         }
     }
     else if (m_fRespawnProgress <= 5.f)

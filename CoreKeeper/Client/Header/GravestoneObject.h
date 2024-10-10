@@ -37,7 +37,7 @@ public:
 public:
 	void							SetUp_Item(CScene* _pScene);
 	void							Set_Self (bool	_bSelf) { m_bSelf = _bSelf; }
-
+	CInventory*						Get_Inventory() { return m_pInventoryCom; }
 private:
 	HRESULT							Add_Component();
 
