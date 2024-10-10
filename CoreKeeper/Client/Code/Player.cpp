@@ -565,7 +565,7 @@ void CPlayer::Walk_Y(const _float& fTimeDelta)
     }
 
     m_fWalkSoundTimeAcc += fTimeDelta;
-    if (m_fWalkSoundTimeAcc > 0.4f)
+    if (m_fWalkSoundTimeAcc > 0.8f)
     {
         m_fWalkSoundTimeAcc = 0.f;
         _int iIndex = _int(vPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (vPos.x + 0.5f * VTXITV);
@@ -2280,8 +2280,10 @@ void CPlayer::Set_Buff(const _float& fTimeDelta)
                 break;
             case DEBUFF_FIRE:
                 m_bFire = true;
+                if (m_fFireTickTime == 0.f)
+                    Engine::CSoundMgr::GetInstance()->Play(L"beamLoop.wav", SOUND_PLAYER, 0.1f);
                 m_fFireTickTime += fTimeDelta;
-                if (m_fFireTickTime >= 1.f)
+                if (m_fFireTickTime >= 3.f)
                 {
                     m_fFireTickTime = 0.f;
                     if (!m_bImmune)
