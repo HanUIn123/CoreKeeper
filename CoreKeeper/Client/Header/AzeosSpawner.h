@@ -1,5 +1,5 @@
 #pragma once
-#include "Item.h"
+#include "Object.h"
 
 BEGIN(Engine)
 
@@ -10,12 +10,11 @@ class CCollider;
 class CShadowTex;
 
 END
-
-class CAzeosSpawner : public CItem
+class CAzeosSpawner : public CObject
 {
 private:
-	explicit CAzeosSpawner(LPDIRECT3DDEVICE9 pGraphicDev);
-	virtual ~CAzeosSpawner();
+	explicit						CAzeosSpawner(LPDIRECT3DDEVICE9 pGraphicDev);
+	virtual							~CAzeosSpawner();
 
 public:
 	virtual			HRESULT			Ready_GameObject(_vec3 vPos);
@@ -24,11 +23,12 @@ public:
 	virtual			void			Render_GameObject();
 
 private:
-	HRESULT			Add_Component();
+	HRESULT							Add_Component();
 
 public:
-	static CAzeosSpawner* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos = { 0.f, 0.f, 0.f });
+	static CAzeosSpawner*			Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos = { 0.f, 0.f, 0.f });
 
 private:
-	virtual void		Free();
+	virtual void					Free();
 };
+

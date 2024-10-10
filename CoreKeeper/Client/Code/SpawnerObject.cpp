@@ -1,39 +1,43 @@
 #include "pch.h"
-#include "../Header/AzeosSpawner.h"
+#include "../Header/SpawnerObject.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
 
-CAzeosSpawner::CAzeosSpawner(LPDIRECT3DDEVICE9 pGraphicDev)
-    : CObject(pGraphicDev)
+CSpawnerObject::CSpawnerObject(LPDIRECT3DDEVICE9 pGraphicDev)
+    : CObject(pGraphicDev), m_iTextureNumber(0)
 {
 }
 
-CAzeosSpawner::~CAzeosSpawner()
+CSpawnerObject::~CSpawnerObject()
 {
 }
 
-HRESULT CAzeosSpawner::Ready_GameObject(_vec3 vPos)
+HRESULT CSpawnerObject::Ready_GameObject(_vec3 vPos, _int _iTypeNum)
 {
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
+
+    m_vMaluSpawnPos = vPos;
+
+    m_iTextureNumber = _iTypeNum;
 
     m_pTransformCom->Set_Pos(vPos.x, vPos.y, vPos.z);
 
     return S_OK;
 }
 
-_int CAzeosSpawner::Update_GameObject(const _float& fTimeDelta)
+_int CSpawnerObject::Update_GameObject(const _float& fTimeDelta)
 {
     Add_RenderGroup(RENDER_ALPHA, this);
 
     return Engine::CGameObject::Update_GameObject(fTimeDelta);
 }
 
-void CAzeosSpawner::LateUpdate_GameObject()
+void CSpawnerObject::LateUpdate_GameObject()
 {
     Engine::CGameObject::LateUpdate_GameObject();
 }
 
-void CAzeosSpawner::Render_GameObject()
+void CSpawnerObject::Render_GameObject()
 {
     m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
 
@@ -43,7 +47,7 @@ void CAzeosSpawner::Render_GameObject()
 
     FAILED_CHECK_RETURN(Setup_Material(), );
 
-    m_pTextureCom->Set_Texture(2);
+    m_pTextureCom->Set_Texture(1);
 
     m_pBufferCom->Render_Buffer();
 
@@ -52,11 +56,11 @@ void CAzeosSpawner::Render_GameObject()
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
-HRESULT CAzeosSpawner::Add_Component()
+HRESULT CSpawnerObject::Add_Component()
 {
     CComponent* pComponent = NULL;
 
-    pComponent = m_pBufferCom = dynamic_cast<CObjectTex*>(Engine::Clone_Proto(L"Proto_AzeosSpawnTex"));
+    pComponent = m_pBufferCom = dynamic_cast<CObjectTex*>(Engine::Clone_Proto(L"Proto_MaluSpawnTex"));
     NULL_CHECK_RETURN(pComponent, E_FAIL);
     m_mapComponent[ID_STATIC].insert({ L"Com_Buffer", pComponent });
 
@@ -75,21 +79,21 @@ HRESULT CAzeosSpawner::Add_Component()
     return S_OK;
 }
 
-CAzeosSpawner* CAzeosSpawner::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
+CSpawnerObject* CSpawnerObject::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, _int _iTypeNum)
 {
-    CAzeosSpawner* pAzeosSpawner = new CAzeosSpawner(pGraphicDev);
+    CSpawnerObject* pSpawner = new CSpawnerObject(pGraphicDev);
 
-    if (FAILED(pAzeosSpawner->Ready_GameObject(vPos)))
+    if (FAILED(pSpawner->Ready_GameObject(vPos, _iTypeNum)))
     {
-        Safe_Release(pAzeosSpawner);
-        MSG_BOX("pAzeosSpawner Create Failed");
+        Safe_Release(pSpawner);
+        MSG_BOX("pSpawner Create Failed");
         return nullptr;
     }
 
-    return pAzeosSpawner;
+    return pSpawner;
 }
 
-void CAzeosSpawner::Free()
+void CSpawnerObject::Free()
 {
     Engine::CGameObject::Free();
 }
