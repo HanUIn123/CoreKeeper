@@ -5,7 +5,7 @@
 #include "..\Header\Core.h"
 
 CBossSpawnPoint::CBossSpawnPoint(LPDIRECT3DDEVICE9 pGraphicDev)
-	: CObject(pGraphicDev), m_iTextureNum(0)
+	: CObject(pGraphicDev), m_iTextureNum(0), m_bActive(false)
 {
 }
 
@@ -13,11 +13,14 @@ CBossSpawnPoint::~CBossSpawnPoint()
 {
 }
 
-HRESULT CBossSpawnPoint::Ready_GameObject(_vec3 vPos)
+HRESULT CBossSpawnPoint::Ready_GameObject(_vec3 vPos, _int _iTypeNum)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
+	m_iSpawnTextureNumber = _iTypeNum;
+
 	m_pTransformCom->Set_Pos(vPos.x, vPos.y, vPos.z);
+
 
 	return S_OK;
 }
@@ -44,7 +47,7 @@ void CBossSpawnPoint::Render_GameObject()
 
 	FAILED_CHECK_RETURN(Setup_Material(), );
 
-	m_pTextureCom->Set_Texture(m_iTextureNum);
+	m_pTextureCom->Set_Texture(m_iSpawnTextureNumber);
 
 	m_pBufferCom->Render_Buffer();
 
@@ -52,7 +55,7 @@ void CBossSpawnPoint::Render_GameObject()
 
 	if (m_bActive)
 	{
-		m_pEmissiveTextureCom->Set_Texture(m_iTextureNum);
+		m_pEmissiveTextureCom->Set_Texture(m_iSpawnTextureNumber);
 		m_pEmissiveBufferCom->Render_Buffer();
 	}
 
@@ -90,11 +93,11 @@ HRESULT CBossSpawnPoint::Add_Component()
 	return S_OK;
 }
 
-CBossSpawnPoint* CBossSpawnPoint::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
+CBossSpawnPoint* CBossSpawnPoint::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, _int _iTypeNum)
 {
 	CBossSpawnPoint* pCore = new CBossSpawnPoint(pGraphicDev);
 
-	if (FAILED(pCore->Ready_GameObject(vPos)))
+	if (FAILED(pCore->Ready_GameObject(vPos, _iTypeNum)))
 	{
 		Safe_Release(pCore);
 		MSG_BOX("pCore Create Failed");

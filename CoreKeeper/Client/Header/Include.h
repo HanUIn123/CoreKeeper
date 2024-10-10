@@ -31,6 +31,7 @@
 #include "Mushroom.h"
 #include "AzeosPoop.h"
 #include "AzeosFeather.h"
+#include "BossSpawnPoint.h"
 
 // Item
 #include "Pickaxe.h"
@@ -106,7 +107,6 @@
 #include "TableObject.h"
 #include "FurnaceObject.h"
 #include "CookingPotObject.h"
-#include "BossSpawnPoint.h"
 
 // UI
 #include "UIPlayerStatus.h"

@@ -13,7 +13,7 @@ CAzeosFeather::~CAzeosFeather()
 {
 }
 
-HRESULT CAzeosFeather::Ready_GameObject(_vec3 _vPos, _int _iTypeNum)
+HRESULT CAzeosFeather::Ready_GameObject(_vec3 _vPos, _int _iTypeNum, const wstring _pickedFeatherName)
 {
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
@@ -22,6 +22,8 @@ HRESULT CAzeosFeather::Ready_GameObject(_vec3 _vPos, _int _iTypeNum)
     m_vPoopPos.z = _vPos.z;
 
     m_iFeatherTypeIndex = _iTypeNum;
+
+    m_strPickedObjectName = _pickedFeatherName;
 
     m_pTransformCom->Set_Pos(_vPos.x, 0.1f, _vPos.z);
 
@@ -80,11 +82,11 @@ HRESULT CAzeosFeather::Add_Component()
     return S_OK;
 }
 
-CAzeosFeather* CAzeosFeather::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 _vPos, _int _iTypeNum)
+CAzeosFeather* CAzeosFeather::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 _vPos, _int _iTypeNum, const wstring _pickedFeatherName)
 {
     CAzeosFeather* pAzeosFeather = new CAzeosFeather(pGraphicDev);
 
-    if (FAILED(pAzeosFeather->Ready_GameObject(_vPos, _iTypeNum)))
+    if (FAILED(pAzeosFeather->Ready_GameObject(_vPos, _iTypeNum, _pickedFeatherName)))
     {
         Safe_Release(pAzeosFeather);
         MSG_BOX("pAzeosFeather Create Failed");
