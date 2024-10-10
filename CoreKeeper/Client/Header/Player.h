@@ -184,6 +184,7 @@ private:
 	_float					m_fFirstY;
 	_float					m_fTimeAcc;
 	_float					m_fWalkYSpeed;
+	_float					m_fWalkSoundTimeAcc;
 
 	_bool                   m_bInventory; // Inventory 창 확인용
 	_bool                   m_bCraft;     // Craft 창 확인용

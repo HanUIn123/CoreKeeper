@@ -70,6 +70,8 @@ _int CArrow::Update_GameObject(const _float& fTimeDelta)
 		m_pTransformCom->Move_Pos(&m_vDir, fTimeDelta, m_fSpeed * m_iSpeedWeight);
 		if (m_fTime >= 0.5f || m_iSpeedWeight == 0)
 		{
+			if(m_iSpeedWeight == 0)
+				Engine::CSoundMgr::GetInstance()->Play(L"cupidBowHit.wav", SOUND_PLAYER, 0.2f);
 			m_fTime = 0;
 			m_iSpeedWeight = 0;
 			m_bProjectileAttackSuccess = true;

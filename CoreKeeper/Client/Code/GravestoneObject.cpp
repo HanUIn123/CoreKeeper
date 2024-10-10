@@ -200,10 +200,7 @@ void CGravestoneObject::SetUp_Item(CScene* _pScene)
     m_vecItemName.push_back(L"Woodcutter's_Item" + std::to_wstring(m_iItemNameNum++));
     FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_Environment", pGameObject, m_vecItemName.back().c_str()), );
 
-    pGameObject = CSword::Create(m_pGraphicDev, MATERIAL_COPPER);
-    m_pInventoryCom->Add_Item(pGameObject);
-    m_vecItemName.push_back(L"Woodcutter's_Item" + std::to_wstring(m_iItemNameNum++));
-    FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_Environment", pGameObject, m_vecItemName.back().c_str()), );
+
 
     pGameObject = CNecklace::Create(m_pGraphicDev, MATERIAL_COPPER);
     m_pInventoryCom->Add_Item(pGameObject);
@@ -294,7 +291,15 @@ void CGravestoneObject::SetUp_Item(CScene* _pScene)
     m_vecItemName.push_back(L"Woodcutter's_Item" + std::to_wstring(m_iItemNameNum++));
     FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_Environment", pGameObject, m_vecItemName.back().c_str()), );
 
+    pGameObject = CHoe::Create(m_pGraphicDev, MATERIAL_IRON);
+    m_pInventoryCom->Add_Item(pGameObject);
+    m_vecItemName.push_back(L"Woodcutter's_Item" + std::to_wstring(m_iItemNameNum++));
+    FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_Environment", pGameObject, m_vecItemName.back().c_str()), );
 
+    pGameObject = CSprinkler::Create(m_pGraphicDev);
+    m_pInventoryCom->Add_Item(pGameObject);
+    m_vecItemName.push_back(L"Woodcutter's_Item" + std::to_wstring(m_iItemNameNum++));
+    FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_Environment", pGameObject, m_vecItemName.back().c_str()), );
 
     /*
     pGameObject = COre::Create(m_pGraphicDev, MATERIAL_COPPER);

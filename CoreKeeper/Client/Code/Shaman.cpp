@@ -69,7 +69,8 @@ _int CShaman::Update_GameObject(const _float& fTimeDelta)
 
     Set_Cast();
     SetUp_Light();
-    
+    Set_SoundVolumeByDistance();
+
     if (m_eState != DEAD && !Check_Wall())
         m_eState = State_Change();
     switch (m_eState)
@@ -88,17 +89,19 @@ _int CShaman::Update_GameObject(const _float& fTimeDelta)
         break;
     }
 
-    if (m_eState != DEAD && m_bKnockBackEnd)
+    if (m_eState != DEAD && m_bImmuneEnd)
         Check_Hitted();
 
-    if (m_bKnockBackStart)
-        m_fImmuneTime += fTimeDelta;
-
-    if (m_fImmuneTime > m_fImmuneTimeLimit)
+    if (!m_bImmuneEnd)
     {
-        m_fImmuneTime = 0.f;
-        m_bKnockBackStart = false;
-        m_bKnockBackEnd = true;
+        m_fImmuneTime += fTimeDelta;
+        if (m_fImmuneTime > m_fImmuneTimeLimit)
+        {
+            m_bImmuneEnd = true;
+            m_fImmuneTime = 0.f;
+            m_bKnockBackStart = false;
+            m_bKnockBackEnd = true;
+        }
     }
 
     if (m_bHit)
@@ -205,6 +208,7 @@ void CShaman::Pattern_Idle(const _float& fTimeDelta)
         {
             m_fIdleTimeLimit = rand() % 3 + 1; // 1 ~ 3초
             m_iDir = 0;
+            Engine::CSoundMgr::GetInstance()->Play(L"cavelingChat5.wav", SOUND_SHAMAN, m_fSoundVolume);
         }
         else
         {
@@ -403,6 +407,7 @@ void CShaman::Pattern_Attack(const _float& fTimeDelta)
         {
             m_bLightEnable = false;
             // 샤먼 차징 시 조명 끄고 실제 불덩이 생성하여 조명 적용
+            Engine::CSoundMgr::GetInstance()->Play(L"cavelingLaugh.wav", SOUND_SHAMAN, m_fSoundVolume);
             CScene* pScene = Engine::Get_Scene();
             _vec3 vPos;
             m_pTransformCom->Get_Info(INFO_POS, &vPos);
@@ -417,7 +422,11 @@ void CShaman::Pattern_Attack(const _float& fTimeDelta)
     }
     // 차징 종료 시
     else
+    {
         iFrameSpeed = 8;
+        if(iFrame % 8 == 4 && m_iFrameCount == 0)
+            Engine::CSoundMgr::GetInstance()->Play(L"CavelingAttack.wav", SOUND_SHAMAN, m_fSoundVolume);
+    }
 
     if (m_iFrameCount++ > iFrameSpeed)
     {
@@ -439,6 +448,8 @@ void CShaman::Pattern_Dead()
     if (m_bKnockBackEnd)
     {
         m_pAnimatorCom->Set_CurState(DEAD, 40, 44, 4);
+        if(m_pAnimatorCom->Get_MotionIndex() == 41 && m_pAnimatorCom->Get_CurCount() == 0)
+            Engine::CSoundMgr::GetInstance()->Play(L"CavelingDeath.wav", SOUND_SHAMAN, m_fSoundVolume);
         if (m_pAnimatorCom->Get_MotionEnd())
         {
             m_pGraphicDev->LightEnable(m_iLightNum, FALSE); // 조명 비활성화

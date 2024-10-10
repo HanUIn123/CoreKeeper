@@ -88,6 +88,7 @@ _int CProjectile::Update_GameObject(const _float& fTimeDelta)
 
     Set_Cast();
     SetUp_Light();
+    Set_SoundVolumeByDistance();
 
     if (m_eState != DEAD)
         m_eState = State_Change();
@@ -252,6 +253,7 @@ void CProjectile::Pattern_Chase(const _float& fTimeDelta)
     if (m_bCharging)
     {
         m_bCharging = false;
+        Engine::CSoundMgr::GetInstance()->Play(L"fireWhoosh.wav", SOUND_SHAMAN, m_fSoundVolume);
         _vec3 vPos, vPlayerPos;
         m_pTransformCom->Get_Info(INFO_POS, &vPos);
         m_pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
@@ -276,7 +278,6 @@ void CProjectile::Pattern_Attack(const _float& fTimeDelta)
             _vec3		vPos;
             m_pTransformCom->Get_Info(INFO_POS, &vPos);
             m_pPlayer->Set_KnockBack(vPos, m_pStateCom->Get_Stat()->iAttack, 2.5f, HIT_FIRE);
-            // 플레이어 화상 상태 이상 추가
         }
     }
 }
@@ -288,7 +289,7 @@ void CProjectile::Pattern_Dead()
     m_pTransformCom->Get_WorldMatrix(&m_SmogMatrix);
 
     m_bSmog = true;
-
+    Engine::CSoundMgr::GetInstance()->Play(L"fireballImpact.wav", SOUND_SHAMAN, m_fSoundVolume);
     m_bStopDraw = true;
     m_pGraphicDev->LightEnable(m_iLightNum, FALSE);
 
