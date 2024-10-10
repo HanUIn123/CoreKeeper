@@ -64,6 +64,8 @@ _uint CLoading::Loading_Stage()
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_StaffAnimTex", Engine::CAnimTex::Create(m_pGraphicDev, 5, 4)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MagicAnimTex", Engine::CAnimTex::Create(m_pGraphicDev, 6, 1)), E_FAIL);
 
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_InstrumentAnimTex", Engine::CAnimTex::Create(m_pGraphicDev, 3, 1)), E_FAIL);
+
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_PetAnimTex", Engine::CAnimTex::Create(m_pGraphicDev, 12, 27)), E_FAIL);
 
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ObjectAnimTex", Engine::CAnimTex::Create(m_pGraphicDev, 6, 1)), E_FAIL);

@@ -18,6 +18,7 @@ HRESULT CInstrument::Ready_GameObject(ITEMNUM _eItemNum, _vec3 vPos)
 
 	m_eItemNum = _eItemNum;
 	m_iTextureNumber = m_eItemNum - ITEM_INSTRUMENT_HARP;
+	m_iFrameCount = 0;
 
 	switch (m_eItemNum)
 	{
@@ -49,7 +50,7 @@ HRESULT CInstrument::Ready_GameObject(ITEMNUM _eItemNum, _vec3 vPos)
 		break;
 	}
 
-	m_pTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
+	m_pTransformCom->Set_Scale(0.5f, 0.5f, 0.5f);
 	m_pShadowTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
 	m_pTransformCom->Set_Pos(vPos.x, vPos.y, vPos.z);
 	m_pShadowTransformCom->Set_Pos(vPos.x, 0.1f, vPos.z);
@@ -73,7 +74,7 @@ _int CInstrument::Update_GameObject(const _float& fTimeDelta)
 	{
 		m_bActive = true;
 		m_bDrop = false;
-		m_pTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
+		// m_pTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);
 	}
 
 	if (m_bDrop)
@@ -121,7 +122,7 @@ void CInstrument::Render_GameObject()
 
 	m_pTextureCom->Set_Texture(m_iTextureNumber);
 
-	m_pBufferCom->Set_Index(0);
+	m_pBufferCom->Set_Index(m_iFrameCount);
 
 	if (m_bActive)
 	{
@@ -151,7 +152,7 @@ HRESULT CInstrument::Add_Component()
 {
 	CComponent* pComponent = NULL;
 
-	pComponent = m_pBufferCom = dynamic_cast<CAnimTex*>(Engine::Clone_Proto(L"Proto_NormalAnimTex"));
+	pComponent = m_pBufferCom = dynamic_cast<CAnimTex*>(Engine::Clone_Proto(L"Proto_InstrumentAnimTex"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Buffer", pComponent });
 

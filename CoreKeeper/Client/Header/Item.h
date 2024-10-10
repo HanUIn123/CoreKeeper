@@ -66,6 +66,7 @@ public:
 	Engine::ITEMNUM		Get_ItemNum() { return m_eItemNum; }
 	int					Get_Count() { return m_iCount; }
 	STAT*				Get_Stat() { return &m_tStat; }
+	void				Set_FrameCount(_int iFrame) { m_iFrameCount = iFrame; }
 
 	void				Add_Count(int _iAddCount) {m_iCount += _iAddCount; }
 	void				Minus_Count(int _iMinusCount) { m_iCount -= _iMinusCount; }
