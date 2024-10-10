@@ -121,9 +121,9 @@ void CCrystal::Render_GameObject()
 void CCrystal::Set_Cast()
 {
 	if(!m_pAzeos)
-		m_pAzeos = dynamic_cast<CAzeos*>(Engine::Get_GameObject(L"Layer_Environment", L"Azeos"));
+		m_pAzeos = dynamic_cast<CAzeos*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Azeos"));
 	if(!m_pAzeosTransform)
-		m_pAzeosTransform = dynamic_cast<CTransform*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_Environment", L"Azeos", L"Com_Transform"));
+		m_pAzeosTransform = dynamic_cast<CTransform*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Azeos", L"Com_Transform"));
 	if(!m_pPlayer)
 		m_pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
 	if(!m_pPlayerTransform)
