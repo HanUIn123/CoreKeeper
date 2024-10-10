@@ -258,6 +258,17 @@ HRESULT CStage::Ready_Layer_Environment(const _tchar* pLayerTag)
     pGameObject = CCookingPotObject::Create(m_pGraphicDev, { VTXCNTX / 2 - 3.f - 1.f, 0.6f, 10.f });
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"CookingPotObject2", pGameObject), E_FAIL);
+
+
+    
+
+
+    _vec3   spawnPos = { 14.0f, 0.1f, 71.0f };
+    pGameObject = CBossSpawnPoint::Create(m_pGraphicDev, spawnPos);
+    NULL_CHECK_RETURN(pGameObject, E_FAIL);
+    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"MalgaSummonPoint", pGameObject), E_FAIL);
+
+
 #pragma endregion
 
     m_mapLayer.insert({ pLayerTag , pLayer });
@@ -342,9 +353,9 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar* pLayerTag)
     dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
     dynamic_cast<CItem*>(pGameObject)->Add_Count(1);
 
-    /*pGameObject = CMalugaz::Create(m_pGraphicDev, {0,0,0});
+    pGameObject = CMalugaz::Create(m_pGraphicDev, {14.0f, 0.0f,71.0f});
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
-    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Malugaz", pGameObject), E_FAIL);*/
+    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Malugaz", pGameObject), E_FAIL);
 
 
     m_mapLayer.insert({ pLayerTag , pLayer });
@@ -1080,10 +1091,10 @@ HRESULT CStage::Load_ObjectData()
             m_wsObjectNameString[iIndex] = L"AzeosFeather_" + std::to_wstring(iIndex);
             pGameObject = CAzeosFeather::Create(m_pGraphicDev, _vec3(vObjectPos.x, vObjectPos.y, vObjectPos.z), iTypeNumber, m_wsObjectNameString[iIndex].c_str());
             break;
-        case MALGA_SUMMON:
-            m_wsObjectNameString[iIndex] = L"MalgaSpawnPoint_" + std::to_wstring(iIndex);
-            pGameObject = CBossSpawnPoint::Create(m_pGraphicDev, _vec3(vObjectPos.x, vObjectPos.y, vObjectPos.z), iTypeNumber, m_wsObjectNameString[iIndex].c_str());
-            break;
+        //case MALGA_SUMMON:
+        //    m_wsObjectNameString[iIndex] = L"MalgaSpawnPoint_" + std::to_wstring(iIndex);
+        //    pGameObject = CBossSpawnPoint::Create(m_pGraphicDev, _vec3(vObjectPos.x, vObjectPos.y, vObjectPos.z), iTypeNumber, m_wsObjectNameString[iIndex].c_str());
+        //    break;
         case AZEOS_SUMMON:
             m_wsObjectNameString[iIndex] = L"AzeosSpawnPoint_" + std::to_wstring(iIndex);
             pGameObject = CAzeosSpawnPoint::Create(m_pGraphicDev, _vec3(vObjectPos.x, vObjectPos.y, vObjectPos.z), iTypeNumber, m_wsObjectNameString[iIndex].c_str());

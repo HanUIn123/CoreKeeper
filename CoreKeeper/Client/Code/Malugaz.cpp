@@ -30,6 +30,9 @@ CMalugaz::CMalugaz(LPDIRECT3DDEVICE9 pGraphicDev)
     m_iLightNum = g_iLightNum++;
 
     m_iCurNumber = 0;
+
+    m_bStopDraw = true;
+
 }
 
 CMalugaz::~CMalugaz()

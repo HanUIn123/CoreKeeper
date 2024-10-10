@@ -18,7 +18,7 @@ private:
 	explicit						CBossSpawnPoint(LPDIRECT3DDEVICE9 pGraphicDev);
 	virtual							~CBossSpawnPoint();
 public:
-	virtual			HRESULT			Ready_GameObject(_vec3 vPos, _int _iTypeNum, const wstring _pickedSPName);
+	virtual			HRESULT			Ready_GameObject(_vec3 vPos);
 	virtual			_int			Update_GameObject(const _float& fTimeDelta);
 	virtual			void			LateUpdate_GameObject();
 	virtual			void			Render_GameObject();
@@ -43,7 +43,7 @@ protected:
 	Engine::CTexture* m_pEmissiveTextureCom;
 
 public:
-	static CBossSpawnPoint* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, _int _iTypeNum, const wstring _pickedSPName);
+	static CBossSpawnPoint* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);
 
 private:
 	virtual void					Free();
