@@ -13,9 +13,11 @@ CSlimeRender::~CSlimeRender()
 {
 }
 
-HRESULT CSlimeRender::Ready_GameObject(_int iIndex)
+HRESULT CSlimeRender::Ready_GameObject(_int iIndex, const wstring _pickedSFName)
 {
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
+
+    m_strPickedMonsterName = _pickedSFName;
 
     _float fX = (iIndex % (VTXCNTX - 1)) * VTXITV;
     _float fZ = (iIndex / (VTXCNTX - 1)) * VTXITV;
@@ -69,11 +71,11 @@ HRESULT CSlimeRender::Add_Component()
 
 }
 
-CSlimeRender* CSlimeRender::Create(LPDIRECT3DDEVICE9 pGraphicDev, _int iIndex)
+CSlimeRender* CSlimeRender::Create(LPDIRECT3DDEVICE9 pGraphicDev, _int iIndex, const wstring _pickedSFName)
 {
     CSlimeRender* pSlime = new CSlimeRender(pGraphicDev);
 
-    if (FAILED(pSlime->Ready_GameObject(iIndex)))
+    if (FAILED(pSlime->Ready_GameObject(iIndex, _pickedSFName)))
     {
         Safe_Release(pSlime);
         MSG_BOX("Render Slime Create Failed");

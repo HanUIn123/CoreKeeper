@@ -62,6 +62,7 @@ public:
 	_bool			Get_StopDraw() { return m_bStopDraw; }
 	void			Set_StopDraw(_bool bDraw) { m_bStopDraw = bDraw; }
 
+
 private:
 	void			Check_WallWithPlayer();
 
