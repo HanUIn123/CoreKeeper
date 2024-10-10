@@ -12,6 +12,7 @@ CSlime::CSlime(LPDIRECT3DDEVICE9 pGraphicDev)
     m_fJumpY = 3.f;
     m_eState = IDLE;
     m_fAggroDistance = 8.f;
+    m_fImmuneTimeLimit = 0.5f;
 }
 
 CSlime::~CSlime()
@@ -45,9 +46,20 @@ _int CSlime::Update_GameObject(const _float& fTimeDelta)
     }
 
     Set_Cast();
-
-    if (m_eState != DEAD && m_iSpeedWeight)
+    Set_SoundVolumeByDistance();
+    if (m_eState != DEAD && m_bImmuneEnd)
         Check_Hitted();
+
+    if (!m_bImmuneEnd)
+    {
+        m_fImmuneTime += fTimeDelta;
+        if (m_fImmuneTime > m_fImmuneTimeLimit)
+        {
+            m_bImmuneEnd = true;
+            m_fImmuneTime = 0.f;
+        }
+    }
+
 
     if (m_bKnockBackEnd)
     {
@@ -177,12 +189,12 @@ void CSlime::Pattern_Idle(const _float& fTimeDelta)
         m_bIdling = true;
         if (m_iDir)
         {
-            m_fIdleTimeLimit = rand() % 3 + 1; // 1 ~ 3ÃÊ
+            m_fIdleTimeLimit = rand() % 2 + 0.5f;
             m_iDir = 0;
         }
         else
         {
-            m_fIdleTimeLimit = rand() % 4 + 2; // 1 ~ 5ÃÊ
+            m_fIdleTimeLimit = rand() % 2 + 1.5f; // 1 ~ 5ÃÊ
             m_iDir = rand() % 8 + 1;
         }
     }
@@ -243,6 +255,8 @@ void CSlime::Pattern_Idle(const _float& fTimeDelta)
         {
             m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, fLookSpeed * m_iSpeedWeight);
             m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, fRightSpeed * m_iSpeedWeight);
+            if(m_pAnimatorCom->Get_MotionIndex() == 4 && m_pAnimatorCom->Get_CurCount() == 0)
+                Engine::CSoundMgr::GetInstance()->Play(L"slimeAnticipation.wav", SOUND_SLIME, m_fSoundVolume);
         }
     }
     else
@@ -261,6 +275,9 @@ void CSlime::Pattern_Chase(const _float& fTimeDelta)
     vDir = vPlayerPos - vPos;
     D3DXVec3Normalize(&vDir, &vDir);
     m_pAnimatorCom->Set_CurState(WALK, 12, 21, 8);
+
+    if (m_pAnimatorCom->Get_MotionIndex() == 16 && m_pAnimatorCom->Get_CurCount() == 0)
+        Engine::CSoundMgr::GetInstance()->Play(L"slimeFootstep.wav", SOUND_SLIME, m_fSoundVolume);
 
     Set_Stop(fTimeDelta, &vDir, m_fSpeed);
     m_pTransformCom->Move_Pos(&vDir, fTimeDelta, m_fSpeed * m_iSpeedWeight);
@@ -286,6 +303,8 @@ void CSlime::Pattern_Attack(const _float& fTimeDelta)
             m_pTransformCom->Set_Pos(vPos.x, m_fIdleY - 0.001f, vPos.z);
         else if (m_pAnimatorCom->Get_MotionIndex() == 35)
         {
+            if(m_pAnimatorCom->Get_CurCount() == 0)
+                Engine::CSoundMgr::GetInstance()->Play(L"slimeProjectileImpact.wav", SOUND_SLIME, m_fSoundVolume);
             m_pTransformCom->Set_Pos(vPos.x, m_fIdleY, vPos.z);
             m_bJumping = false;
             //if (m_pCalculatorCom->Check_Distance2D(&vPlayerPos, &vPos, m_fAggroDistance))
@@ -307,6 +326,7 @@ void CSlime::Pattern_Attack(const _float& fTimeDelta)
                 if (!m_bAttackSuccess)
                 {
                     m_bAttackSuccess = true;
+                    Engine::CSoundMgr::GetInstance()->Play(L"slimeProjectileSpawn.wav", SOUND_SLIME, m_fSoundVolume);
                     m_pPlayer->Set_KnockBack(vPos, m_pStateCom->Get_Stat()->iAttack, (1 - (m_fJumpTime / m_fJumpFrame)) + 0.5f, HIT_NORMAL);
                 }
             }
@@ -324,7 +344,8 @@ void CSlime::Pattern_Attack(const _float& fTimeDelta)
 void CSlime::Pattern_Dead()
 {
     m_pAnimatorCom->Set_CurState(DEAD, 36, 41, 8);
-
+    if(m_pAnimatorCom->Get_MotionIndex() == 37 && m_pAnimatorCom->Get_CurCount() == 0)
+        Engine::CSoundMgr::GetInstance()->Play(L"slimeImpact.wav", SOUND_SLIME, m_fSoundVolume);
     if (m_pAnimatorCom->Get_MotionEnd())
     {
         m_bStopDraw = true;

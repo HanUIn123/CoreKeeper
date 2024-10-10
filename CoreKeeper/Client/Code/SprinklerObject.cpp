@@ -22,7 +22,7 @@ HRESULT CSprinklerObject::Ready_GameObject(_vec3 vPos)
 
 	m_pTransformCom->Set_Angle(D3DXToRadian(90.f), 0.f, 0.f);
 
-	m_pAnimatorCom->Set_CurState(IDLE, 0, 7, 10);
+	m_pAnimatorCom->Set_CurState(IDLE, 0, 7, 20);
 
 	return S_OK;
 }
@@ -90,39 +90,55 @@ void CSprinklerObject::Sprinkler_Watering()
 
 	if (m_pAnimatorCom->Get_MotionIndex() == 0)
 	{
-		CFarmMgr::GetInstance()->Watering_Plant(iIndex + (VTXCNTX - 1));
-		CFarmMgr::GetInstance()->Watering_Plant(iIndex + (VTXCNTX - 1) * 2);
-		CFarmMgr::GetInstance()->Watering_Plant(iIndex + (VTXCNTX - 1) * 2 + 1);
-		CFarmMgr::GetInstance()->Watering_Plant(iIndex - (VTXCNTX - 1));
-		CFarmMgr::GetInstance()->Watering_Plant(iIndex - (VTXCNTX - 1) * 2);
-		CFarmMgr::GetInstance()->Watering_Plant(iIndex - (VTXCNTX - 1) * 2 - 1);
+		if (m_pAnimatorCom->Get_CurCount() == 0)
+		{
+			Engine::CSoundMgr::GetInstance()->Play(L"squish1.wav", SOUND_PLAYER, 0.1f);
+			CFarmMgr::GetInstance()->Watering_Plant(iIndex + (VTXCNTX - 1));
+			CFarmMgr::GetInstance()->Watering_Plant(iIndex + (VTXCNTX - 1) * 2);
+			CFarmMgr::GetInstance()->Watering_Plant(iIndex + (VTXCNTX - 1) * 2 + 1);
+			CFarmMgr::GetInstance()->Watering_Plant(iIndex - (VTXCNTX - 1));
+			CFarmMgr::GetInstance()->Watering_Plant(iIndex - (VTXCNTX - 1) * 2);
+			CFarmMgr::GetInstance()->Watering_Plant(iIndex - (VTXCNTX - 1) * 2 - 1);
+		}
 	}
 	else if (m_pAnimatorCom->Get_MotionIndex() == 2)
 	{
-		CFarmMgr::GetInstance()->Watering_Plant(iIndex + (VTXCNTX - 1) + 1);
-		CFarmMgr::GetInstance()->Watering_Plant(iIndex + (VTXCNTX - 1) + 2);
-		CFarmMgr::GetInstance()->Watering_Plant(iIndex + (VTXCNTX - 1) * 2 + 2);
-		CFarmMgr::GetInstance()->Watering_Plant(iIndex - (VTXCNTX - 1) - 1);
-		CFarmMgr::GetInstance()->Watering_Plant(iIndex - (VTXCNTX - 1) - 2);
-		CFarmMgr::GetInstance()->Watering_Plant(iIndex - (VTXCNTX - 1) * 2 - 2);
+		if (m_pAnimatorCom->Get_CurCount() == 0)
+		{
+			Engine::CSoundMgr::GetInstance()->Play(L"squish1.wav", SOUND_PLAYER, 0.1f);
+			CFarmMgr::GetInstance()->Watering_Plant(iIndex + (VTXCNTX - 1) + 1);
+			CFarmMgr::GetInstance()->Watering_Plant(iIndex + (VTXCNTX - 1) + 2);
+			CFarmMgr::GetInstance()->Watering_Plant(iIndex + (VTXCNTX - 1) * 2 + 2);
+			CFarmMgr::GetInstance()->Watering_Plant(iIndex - (VTXCNTX - 1) - 1);
+			CFarmMgr::GetInstance()->Watering_Plant(iIndex - (VTXCNTX - 1) - 2);
+			CFarmMgr::GetInstance()->Watering_Plant(iIndex - (VTXCNTX - 1) * 2 - 2);
+		}
 	}
 	else if (m_pAnimatorCom->Get_MotionIndex() == 4)
 	{
-		CFarmMgr::GetInstance()->Watering_Plant(iIndex + 1);
-		CFarmMgr::GetInstance()->Watering_Plant(iIndex + 2);
-		CFarmMgr::GetInstance()->Watering_Plant(iIndex - (VTXCNTX - 1) + 2);
-		CFarmMgr::GetInstance()->Watering_Plant(iIndex - 1);
-		CFarmMgr::GetInstance()->Watering_Plant(iIndex - 2);
-		CFarmMgr::GetInstance()->Watering_Plant(iIndex + (VTXCNTX - 1) - 2);
+		if (m_pAnimatorCom->Get_CurCount() == 0)
+		{
+			Engine::CSoundMgr::GetInstance()->Play(L"squish1.wav", SOUND_PLAYER, 0.1f);
+			CFarmMgr::GetInstance()->Watering_Plant(iIndex + 1);
+			CFarmMgr::GetInstance()->Watering_Plant(iIndex + 2);
+			CFarmMgr::GetInstance()->Watering_Plant(iIndex - (VTXCNTX - 1) + 2);
+			CFarmMgr::GetInstance()->Watering_Plant(iIndex - 1);
+			CFarmMgr::GetInstance()->Watering_Plant(iIndex - 2);
+			CFarmMgr::GetInstance()->Watering_Plant(iIndex + (VTXCNTX - 1) - 2);
+		}
 	}
 	else if (m_pAnimatorCom->Get_MotionIndex() == 6)
 	{
-		CFarmMgr::GetInstance()->Watering_Plant(iIndex - (VTXCNTX - 1) + 1);
-		CFarmMgr::GetInstance()->Watering_Plant(iIndex - (VTXCNTX - 1) * 2 + 1);
-		CFarmMgr::GetInstance()->Watering_Plant(iIndex - (VTXCNTX - 1) * 2 + 2);
-		CFarmMgr::GetInstance()->Watering_Plant(iIndex + (VTXCNTX - 1) - 1);
-		CFarmMgr::GetInstance()->Watering_Plant(iIndex + (VTXCNTX - 1) * 2 - 1);
-		CFarmMgr::GetInstance()->Watering_Plant(iIndex + (VTXCNTX - 1) * 2 - 2);
+		if (m_pAnimatorCom->Get_CurCount() == 0)
+		{
+			Engine::CSoundMgr::GetInstance()->Play(L"squish1.wav", SOUND_PLAYER, 0.1f);
+			CFarmMgr::GetInstance()->Watering_Plant(iIndex - (VTXCNTX - 1) + 1);
+			CFarmMgr::GetInstance()->Watering_Plant(iIndex - (VTXCNTX - 1) * 2 + 1);
+			CFarmMgr::GetInstance()->Watering_Plant(iIndex - (VTXCNTX - 1) * 2 + 2);
+			CFarmMgr::GetInstance()->Watering_Plant(iIndex + (VTXCNTX - 1) - 1);
+			CFarmMgr::GetInstance()->Watering_Plant(iIndex + (VTXCNTX - 1) * 2 - 1);
+			CFarmMgr::GetInstance()->Watering_Plant(iIndex + (VTXCNTX - 1) * 2 - 2);
+		}
 	}
 }
 

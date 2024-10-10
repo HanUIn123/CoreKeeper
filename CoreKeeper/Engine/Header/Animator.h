@@ -17,6 +17,7 @@ public:
 	STATE			Get_PreState() { return m_tAnim.ePreState; }
 	int				Get_MotionIndex() { return m_tAnim.iMotion; }
 	bool			Get_MotionEnd() { return m_bMotionEnd; }
+	_int			Get_CurCount() { return m_tAnim.iCurCount; }
 
 public:
 	static CAnimator*		Create(LPDIRECT3DDEVICE9 pGraphicDev);

@@ -58,6 +58,8 @@ protected:
 	void			Respawn(const _float& fTimeDelta);
 	void			Set_RespawnTimer(const _float& fTimeDelta);
 
+	void			Set_SoundVolumeByDistance();
+
 public:
 	_bool			Get_StopDraw() { return m_bStopDraw; }
 	void			Set_StopDraw(_bool bDraw) { m_bStopDraw = bDraw; }
@@ -124,6 +126,7 @@ protected:
 
 	_float					m_fImmuneTime;
 	_float					m_fImmuneTimeLimit;
+	_bool					m_bImmuneEnd;
 
 	vector<ITEMNUM>			m_vecDropItem;
 	vector<wstring>			m_vecItemName;
@@ -141,6 +144,8 @@ protected:
 	_bool					m_bRespawned;
 
 	_float					m_fRespawnTimer;
+
+	_float					m_fSoundVolume;
 
 	static int				m_iTagNumber;
 

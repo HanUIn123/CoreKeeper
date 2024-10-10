@@ -53,6 +53,7 @@ CMonster::CMonster(LPDIRECT3DDEVICE9 pGraphicDev)
 
 	m_fImmuneTime = 0.f;
 	m_fImmuneTimeLimit = 0.f;
+	m_bImmuneEnd = true;
 
 	m_iSpeedWeight = 1;
 
@@ -66,6 +67,8 @@ CMonster::CMonster(LPDIRECT3DDEVICE9 pGraphicDev)
 	m_bRespawned = false;
 	m_vRespawnPoint = { 0, 0, 0 };
 	m_fRespawnTimer = 0.f;
+
+	m_fSoundVolume = 0.f;
 
 	m_vecDropItem.reserve(3);
 }
@@ -129,6 +132,7 @@ void CMonster::JumpY(const _float& fTimeDelta)
 	if (!m_bJumping)
 	{
 		m_bJumping = true;
+		Engine::CSoundMgr::GetInstance()->Play(L"slimeJump1.wav", SOUND_SLIME, m_fSoundVolume);
 		m_fJumpTime = 0;
 		m_fJumpHeight = m_fJumpY - m_fIdleY;
 		// 각 몬스터마다 점프 프레임 계산
@@ -230,9 +234,27 @@ void CMonster::Check_Hitted()
 		{
 
 			m_bHit = true;
-			
+			m_bImmuneEnd = false;
+
+			if(pPlayerHandedItem->Get_ItemNum() == ITEM_STAFF)
+				Engine::CSoundMgr::GetInstance()->Play(L"sunStaffProjectileImpact.wav", SOUND_PLAYER, 0.2f);
 			if (!m_bKnockBackStart)
 			{
+				switch (m_eType)
+				{
+				case MON_SLIME:
+					Engine::CSoundMgr::GetInstance()->Play(L"slimehurt.wav", SOUND_SLIME, m_fSoundVolume);
+					break;
+				case MON_SHROOMMAN:
+					Engine::CSoundMgr::GetInstance()->Play(L"damage.wav", SOUND_MUSHROOM, m_fSoundVolume);
+					break;
+				case MON_SHAMAN:
+					Engine::CSoundMgr::GetInstance()->Play(L"CavelingHurt.wav", SOUND_SHAMAN, m_fSoundVolume);
+					break;
+				case MON_HUNTER:
+					Engine::CSoundMgr::GetInstance()->Play(L"CavelingHurt.wav", SOUND_HUNTER, m_fSoundVolume);
+					break;
+				}
 				pPlayerHandedItem->Set_ProjectileAttackSuccess(true);
 				m_bKnockBackStart = true;
 				m_bKnockBackEnd = false;
@@ -542,6 +564,22 @@ void CMonster::Set_RespawnTimer(const _float& fTimeDelta)
 			}
 		}
 	}
+}
+
+void CMonster::Set_SoundVolumeByDistance()
+{
+	_vec3 vPos, vPlayerPos;
+	m_pPlayerTransform->Get_Info(INFO_POS, &vPos);
+	m_pTransformCom->Get_Info(INFO_POS, &vPlayerPos);
+	_vec3 vLength = vPlayerPos - vPos;
+	_float fLength = D3DXVec3Length(&vLength);
+	
+	if (fLength < 10.f)
+	{
+		m_fSoundVolume = (10 - fLength) * 0.05f;
+	}
+	else
+		m_fSoundVolume = 0.f;
 }
 
 void CMonster::Check_WallWithPlayer()

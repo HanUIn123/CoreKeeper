@@ -23,6 +23,7 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
     m_fTimeAcc = 0.f;
     m_fWalkYSpeed = 1.8f;
     m_iSpeedWeight = 1;
+    m_fWalkSoundTimeAcc = 0.f;
 
     m_pHandedItem = nullptr;
     m_pHandedTransformCom = nullptr;
@@ -452,6 +453,10 @@ void CPlayer::Mouse_Click(const _float& fTimeDelta)
                     m_eState = SWING;
                     m_bSwing = true;
                     Swing_Equipment();
+                    if(m_pHandedItem->Get_ItemMaterial() == MATERIAL_WOOD)
+                        Engine::CSoundMgr::GetInstance()->Play(L"woodSwordAttack2.wav", SOUND_PLAYER, 0.5f);
+                    else
+                        Engine::CSoundMgr::GetInstance()->Play(L"swordAttack.wav", SOUND_PLAYER, 0.5f);
                     break;
                 case ITEM_PICKAXE:
                     m_eState = SWING;
@@ -548,6 +553,9 @@ void CPlayer::Mouse_Click(const _float& fTimeDelta)
 }
 void CPlayer::Walk_Y(const _float& fTimeDelta)
 {
+    _vec3 vUp, vPos;
+    m_pTransformCom->Get_Info(INFO_UP, &vUp);
+    m_pTransformCom->Get_Info(INFO_POS, &vPos);
     m_fTimeAcc += fTimeDelta * 11.f;
 
     if (m_fTimeAcc >= 1.0f)
@@ -555,9 +563,21 @@ void CPlayer::Walk_Y(const _float& fTimeDelta)
         m_fWalkYSpeed *= -1;
         m_fTimeAcc = 0.0f;
     }
-    _vec3 vUp, vPos;
-    m_pTransformCom->Get_Info(INFO_UP, &vUp);
-    m_pTransformCom->Get_Info(INFO_POS, &vPos);
+
+    m_fWalkSoundTimeAcc += fTimeDelta;
+    if (m_fWalkSoundTimeAcc > 0.4f)
+    {
+        m_fWalkSoundTimeAcc = 0.f;
+        _int iIndex = _int(vPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (vPos.x + 0.5f * VTXITV);
+        _int iTileNum = m_pTerrain->Get_TextureNumber(iIndex);
+        if (iTileNum < 9)
+            Engine::CSoundMgr::GetInstance()->Play(L"Footstep_Dirt.wav", SOUND_PLAYER, 0.1f);
+        else if (iTileNum < 18)
+            Engine::CSoundMgr::GetInstance()->Play(L"footstepRock1.wav", SOUND_PLAYER, 0.1f);
+        else
+            Engine::CSoundMgr::GetInstance()->Play(L"Footstep_Grass.wav", SOUND_PLAYER, 0.1f);
+    }
+
     if (vPos.y - vUp.y * fTimeDelta * m_fWalkYSpeed >= 0)
         m_pTransformCom->Move_Pos(&vUp, fTimeDelta, m_fWalkYSpeed);
     if (m_pHandedItem)
@@ -608,7 +628,10 @@ void CPlayer::Auxiliary(const _float& fTimeDelta)
         if (Engine::Key_Down(DIK_SPACE))
         {
             if (!m_bDash && !m_bDashCool)
+            {
                 m_bDash = true;
+                Engine::CSoundMgr::GetInstance()->Play(L"Dash.wav", SOUND_PLAYER, 0.5f);
+            }
         }
 
         // 대쉬하는 동안 플레이어 콜라이더 끄기
@@ -1268,6 +1291,10 @@ void CPlayer::Shoot_Equipment()
         if (!m_bShootOnce)
         {
             m_bShootOnce = true;
+            if(m_pHandedItem->Get_ItemNum() == ITEM_BOW)
+                Engine::CSoundMgr::GetInstance()->Play(L"cupidBowShoot.wav", SOUND_PLAYER, 0.2f);
+            else
+                Engine::CSoundMgr::GetInstance()->Play(L"sunStaffProjectileSpawn.wav", SOUND_PLAYER, 0.2f);
             if (g_bIsTopCamera)
             {
                 _vec3 vDir = m_vMouseWorldPos - vPlayerPos;
@@ -1346,11 +1373,13 @@ void CPlayer::PickAxe()
                         pWall->Set_DurabiliryMinus((eAxeMaterial + 1) * (m_fMiningBuff[0] + m_fMiningBuff[1]));
                     if (pWall->Get_Durability() <= 0)
                     {
-                        /*
-                        m_pHandedItem = m_pInventoryCom->Get_HandedItem(m_iHandNum);
-
-                        _vec3 vPos = dynamic_cast<CPickaxe*>(m_pHandedItem)->Get_PickaxePos();
-                        */
+                        if (pWall->Get_WallNumber() < 15)
+                            Engine::CSoundMgr::GetInstance()->Play(L"Wall_Clay_destroy.wav", SOUND_PLAYER, 0.2f);
+                        else if (pWall->Get_WallNumber() < 30)
+                            Engine::CSoundMgr::GetInstance()->Play(L"Wall_Stone_destroy.wav", SOUND_PLAYER, 0.2f);
+                        else if (pWall->Get_WallNumber() < 45)
+                            Engine::CSoundMgr::GetInstance()->Play(L"Wall_Nature_destroy.wav", SOUND_PLAYER, 0.2f);
+                        
                         m_pTransformCom->Get_WorldMatrix(&m_bPickaxeMatrix);
 
                         _vec3 vAxePos, vAxeRight;
@@ -1385,7 +1414,17 @@ void CPlayer::PickAxe()
                         CStage* pStage = dynamic_cast<CStage*>(pCurScene);
                         auto& vecWall = pStage->Get_WallVector();
                         vecWall[iIndex] = nullptr;
-
+                    }
+                    else
+                    {
+                        if (pWall->Get_WallNumber() < 15)
+                            Engine::CSoundMgr::GetInstance()->Play(L"Wall_Clay_dmg_1.wav", SOUND_PLAYER, 0.2f);
+                        else if (pWall->Get_WallNumber() < 30)
+                            Engine::CSoundMgr::GetInstance()->Play(L"Wall_Stone_dmg_1.wav", SOUND_PLAYER, 0.2f);
+                        else if (pWall->Get_WallNumber() < 45)
+                            Engine::CSoundMgr::GetInstance()->Play(L"Wall_Nature_dmg_1.wav", SOUND_PLAYER, 0.2f);
+                        else
+                            Engine::CSoundMgr::GetInstance()->Play(L"axeAnchorImpact.wav", SOUND_PLAYER, 0.4f);
                     }
                 }
             }
@@ -1431,6 +1470,12 @@ void CPlayer::PickAxe()
                         pWall->Set_DurabiliryMinus((eAxeMaterial + 1) * (m_fMiningBuff[0] + m_fMiningBuff[1]));
                     if (pWall->Get_Durability() <= 0)
                     {
+                        if (pWall->Get_WallNumber() < 15)
+                            Engine::CSoundMgr::GetInstance()->Play(L"Wall_Clay_destroy.wav", SOUND_PLAYER, 0.2f);
+                        else if (pWall->Get_WallNumber() < 30)
+                            Engine::CSoundMgr::GetInstance()->Play(L"Wall_Stone_destroy.wav", SOUND_PLAYER, 0.2f);
+                        else if (pWall->Get_WallNumber() < 45)
+                            Engine::CSoundMgr::GetInstance()->Play(L"Wall_Nature_destroy.wav", SOUND_PLAYER, 0.2f);
                         m_pTransformCom->Get_WorldMatrix(&m_bPickaxeMatrix);
 
                         _vec3 vAxePos, vAxeRight;
@@ -1462,6 +1507,17 @@ void CPlayer::PickAxe()
                         pCurScene->Delete_GameObject(L"Layer_Environment", pWall, dynamic_cast<CStage*>(pCurScene)->Get_WallNameByIndex(iIndex)->c_str());
                         pTerrain->Set_Unreachable(iIndex, false);
                     }
+                    else
+                    {
+                        if (pWall->Get_WallNumber() < 15)
+                            Engine::CSoundMgr::GetInstance()->Play(L"Wall_Clay_dmg_1.wav", SOUND_PLAYER, 0.2f);
+                        else if (pWall->Get_WallNumber() < 30)
+                            Engine::CSoundMgr::GetInstance()->Play(L"Wall_Stone_dmg_1.wav", SOUND_PLAYER, 0.2f);
+                        else if (pWall->Get_WallNumber() < 45)
+                            Engine::CSoundMgr::GetInstance()->Play(L"Wall_Nature_dmg_1.wav", SOUND_PLAYER, 0.2f);
+                        else
+                            Engine::CSoundMgr::GetInstance()->Play(L"axeAnchorImpact.wav", SOUND_PLAYER, 0.4f);
+                    }
                 }
             }
         }
@@ -1482,6 +1538,9 @@ void CPlayer::Hoe()
         if (m_pCalculatorCom->Check_Distance2D(&vPos, &m_vMouseWorldPos, 5.f))
         {
             _int iIndex = _int(m_vMouseWorldPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (m_vMouseWorldPos.x + 0.5f * VTXITV);
+            if (!m_pTerrain->Get_UnreachableByIndex(iIndex))
+                Engine::CSoundMgr::GetInstance()->Play(L"dirtImpact.wav", SOUND_PLAYER, 0.4f);
+            
             switch (m_pHandedItem->Get_ItemMaterial())
             {
             case MATERIAL_WOOD: // 1 x 1
@@ -1551,10 +1610,13 @@ void CPlayer::Watering()
         if (m_pCalculatorCom->Check_Distance2D(&vPos, &m_vMouseWorldPos, 5.f))
         {
             _int iIndex = _int(m_vMouseWorldPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (m_vMouseWorldPos.x + 0.5f * VTXITV);
+            _bool bSoundOnce = false;
             switch (m_pHandedItem->Get_ItemMaterial())
             {
             case MATERIAL_COPPER: // 1 x 1
                 CFarmMgr::GetInstance()->Watering_Plant(iIndex);
+                if(m_pTerrain->Get_TextureNumber(iIndex) == 27 || m_pTerrain->Get_TextureNumber(iIndex) == 29)
+                    Engine::CSoundMgr::GetInstance()->Play(L"squish1.wav", SOUND_PLAYER, 0.4f);
                 break;
             case MATERIAL_IRON: // 3 x 3
                 for (_int i = -1; i <= 1; i++)
@@ -1563,6 +1625,14 @@ void CPlayer::Watering()
                     {
                         if (!m_pTerrain->Get_UnreachableByIndex(iIndex + i + j * (VTXCNTX - 1)))
                         {
+                            if (m_pTerrain->Get_TextureNumber(iIndex + i + j * (VTXCNTX - 1)) == 27 || m_pTerrain->Get_TextureNumber(iIndex + i + j * (VTXCNTX - 1)) == 29)
+                            {
+                                if (!bSoundOnce)
+                                {
+                                    bSoundOnce = true;
+                                    Engine::CSoundMgr::GetInstance()->Play(L"squish1.wav", SOUND_PLAYER, 0.4f);
+                                }
+                            }
                             CFarmMgr::GetInstance()->Watering_Plant(iIndex + i + j * (VTXCNTX - 1));
                         }
                     }
@@ -1606,6 +1676,7 @@ void CPlayer::Install(ITEMNUM eHandedNum)
                 CGameObject* pInstallObject = nullptr;
                 _vec3 vInstallPos = { _float((iIndex % (VTXCNTX - 1)) * VTXITV), 0.5f, _float((iIndex / (VTXCNTX - 1)) * VTXITV) };
                 MATERIAL mat;
+                Engine::CSoundMgr::GetInstance()->Play(L"rugDamage2.wav", SOUND_PLAYER, 0.4f);
 
                 // 통과할 수 있게 할건지 없게 할건지 여부
                 _bool   bPassable = true;
@@ -1766,6 +1837,7 @@ void CPlayer::Eat(ITEMNUM eHandedNum)
     m_pHandedItem->Set_Active(false);
     m_pHandedItem->Set_Drop(false);
     m_pInventoryCom->Minus_Item(eHandedNum);
+    Engine::CSoundMgr::GetInstance()->Play(L"squish2.wav", SOUND_PLAYER, 0.4f);
 }
 
 void CPlayer::Build(ITEMNUM eHandedNum)
@@ -1790,12 +1862,15 @@ void CPlayer::Build(ITEMNUM eHandedNum)
                 {
                 case ITEM_DIRTWALL:
                     pWall = CWall::Create(m_pGraphicDev, fX, fZ, 0, pStage->Get_WallNameByIndex(iIndex)->c_str());
+                    Engine::CSoundMgr::GetInstance()->Play(L"Wall_Clay_dmg_1.wav", SOUND_PLAYER, 0.2f);
                     break;
                 case ITEM_STONEWALL:
                     pWall = CWall::Create(m_pGraphicDev, fX, fZ, 15, pStage->Get_WallNameByIndex(iIndex)->c_str());
+                    Engine::CSoundMgr::GetInstance()->Play(L"Wall_Stone_dmg_1.wav", SOUND_PLAYER, 0.2f);
                     break;
                 case ITEM_GRASSWALL:
                     pWall = CWall::Create(m_pGraphicDev, fX, fZ, 30, pStage->Get_WallNameByIndex(iIndex)->c_str());
+                    Engine::CSoundMgr::GetInstance()->Play(L"Wall_Nature_dmg_1.wav", SOUND_PLAYER, 0.2f);
                     break;
                 default:
                     return;
@@ -1815,11 +1890,6 @@ void CPlayer::Build(ITEMNUM eHandedNum)
             }
         }
     }
-
-
-
-
-
 }
 
 

@@ -71,6 +71,7 @@ _int CHunter::Update_GameObject(const _float& fTimeDelta)
     }
 
     Set_Cast();
+    Set_SoundVolumeByDistance();
     m_pAnimatorCom->Update_Animation();
 
     if (m_eState != DEAD && !Check_Wall())
@@ -92,17 +93,19 @@ _int CHunter::Update_GameObject(const _float& fTimeDelta)
         break;
     }
 
-    if (m_eState != DEAD && m_bKnockBackEnd)
+    if (m_eState != DEAD && m_bImmuneEnd)
         Check_Hitted();
 
-    if (m_bKnockBackStart)
-        m_fImmuneTime += fTimeDelta;
-
-    if (m_fImmuneTime > m_fImmuneTimeLimit)
+    if (!m_bImmuneEnd)
     {
-        m_fImmuneTime = 0.f;
-        m_bKnockBackStart = false;
-        m_bKnockBackEnd = true;
+        m_fImmuneTime += fTimeDelta;
+        if (m_fImmuneTime > m_fImmuneTimeLimit)
+        {
+            m_bImmuneEnd = true;
+            m_fImmuneTime = 0.f;
+            m_bKnockBackStart = false;
+            m_bKnockBackEnd = true;
+        }
     }
 
     if (m_bHit)
@@ -648,6 +651,11 @@ void CHunter::Pattern_Attack(const _float& fTimeDelta)
                 iFrame = 304 + m_iAttackAnimProgress;
                 break;
             }
+
+            if(iFrame % 16 == 1 && m_iFrameCount == 0)
+                Engine::CSoundMgr::GetInstance()->Play(L"cavelingHunterReload.wav", SOUND_HUNTER, m_fSoundVolume);
+                
+
             if (m_iFrameCount++ > iFrameSpeed)
             {
                 m_iFrameCount = 0;
@@ -682,6 +690,9 @@ void CHunter::Pattern_Dead()
             m_pAnimatorCom->Set_CurState(DEAD, 64, 65, 8);
             break;
         }
+
+        if (m_pAnimatorCom->Get_MotionIndex() % 16 == 1 && m_pAnimatorCom->Get_CurCount() == 0)
+            Engine::CSoundMgr::GetInstance()->Play(L"CavelingDeath.wav", SOUND_HUNTER, m_fSoundVolume);
         
         if (m_pAnimatorCom->Get_MotionEnd())
         {
