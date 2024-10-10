@@ -18,15 +18,12 @@ HRESULT CMushroom::Ready_GameObject(_vec3 _vPos, _int _iTypeNum, const wstring _
 {
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-   m_vMushroomPos.x = _vPos.x;
-   m_vMushroomPos.y = 0.1f;
-   m_vMushroomPos.z = _vPos.z;
+    m_iMushTypeIndex = _iTypeNum;
 
-   m_iMushTypeIndex = _iTypeNum;
+    m_strPickedObjectName = _pickedMushName;
 
-   m_strPickedObjectName = _pickedMushName;
+    m_pTransformCom->Set_Pos(_vPos.x, 0.6f, _vPos.z);
 
-    m_pTransformCom->Set_Pos(_vPos.x, 0.1f, _vPos.z);
 
     m_pTransformCom->Set_Scale(1.0f, 1.0f, 1.0f);
 
@@ -47,15 +44,19 @@ void CMushroom::LateUpdate_GameObject()
 
 void CMushroom::Render_GameObject()
 {
+    m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, true);
+
     m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
 
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+
+    FAILED_CHECK_RETURN(Setup_Material(), );
 
     m_pTextureCom->Set_Texture(m_iMushTypeIndex);
 
     m_pBufferCom->Render_Buffer();
 
-    //m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
+    m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }

@@ -157,6 +157,8 @@ call Copy.bat</Command>
     <ClInclude Include="..\Header\Assistance.h" />
     <ClInclude Include="..\Header\AzeosFeather.h" />
     <ClInclude Include="..\Header\AzeosPoop.h" />
+    <ClInclude Include="..\Header\AzeosSpawner.h" />
+    <ClInclude Include="..\Header\AzeosSpawnPoint.h" />
     <ClInclude Include="..\Header\BuffMgr.h" />
     <ClInclude Include="..\Header\Bullet.h" />
     <ClInclude Include="..\Header\PetItem.h" />
@@ -174,6 +176,7 @@ call Copy.bat</Command>
     <ClInclude Include="..\Header\Pet.h" />
     <ClInclude Include="..\Header\PetTail.h" />
     <ClInclude Include="..\Header\SlimeFloor.h" />
+    <ClInclude Include="..\Header\SpawnerObject.h" />
     <ClInclude Include="..\Header\Story.h" />
     <ClInclude Include="..\Header\StoryBackGround.h" />
     <ClInclude Include="..\Header\Tile.h" />
@@ -324,6 +327,8 @@ call Copy.bat</Command>
     <ClCompile Include="..\Code\Assistance.cpp" />
     <ClCompile Include="..\Code\AzeosFeather.cpp" />
     <ClCompile Include="..\Code\AzeosPoop.cpp" />
+    <ClCompile Include="..\Code\AzeosSpawner.cpp" />
+    <ClCompile Include="..\Code\AzeosSpawnPoint.cpp" />
     <ClCompile Include="..\Code\BuffMgr.cpp" />
     <ClCompile Include="..\Code\Bullet.cpp" />
     <ClCompile Include="..\Code\PetItem.cpp" />
@@ -341,6 +346,7 @@ call Copy.bat</Command>
     <ClCompile Include="..\Code\Pet.cpp" />
     <ClCompile Include="..\Code\PetTail.cpp" />
     <ClCompile Include="..\Code\SlimeFloor.cpp" />
+    <ClCompile Include="..\Code\SpawnerObject.cpp" />
     <ClCompile Include="..\Code\Story.cpp" />
     <ClCompile Include="..\Code\StoryBackGround.cpp" />
     <ClCompile Include="..\Code\Thunder.cpp" />

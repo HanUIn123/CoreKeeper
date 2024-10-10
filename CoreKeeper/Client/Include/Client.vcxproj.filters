@@ -507,12 +507,21 @@
     </Filter>
     <Filter Include="02. GameObject\06. Item\99. Etc\13. Pet">
       <UniqueIdentifier>{ab6e8392-5a0e-43ef-9ca1-e96e956d0687}</UniqueIdentifier>
-	</Filter>
-	<Filter Include="02. GameObject\02. Monster\99. Pet">
+    </Filter>
+    <Filter Include="02. GameObject\02. Monster\99. Pet">
       <UniqueIdentifier>{25021f44-6268-45a1-8fd9-fe2b6c1ceed3}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameObject\02. Monster\99. Pet\PetTail">
       <UniqueIdentifier>{c90cf218-c0c7-409a-860d-11df82f360cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\08. Object\16.AzeosSpawnPoint">
+      <UniqueIdentifier>{1c4fd97b-6fa8-41a0-96b5-adefa138e636}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\08. Object\17.MalgaSpawnerObject">
+      <UniqueIdentifier>{e0dc4353-c38e-4773-bf45-5dc52123280a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\08. Object\18.AzeosSpawnerObject">
+      <UniqueIdentifier>{9af3c8c1-52b7-4573-8e66-d1133bac06ee}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -999,15 +1008,23 @@
     <ClInclude Include="..\Header\Instrument.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-
     <ClInclude Include="..\Header\PetItem.h">
       <Filter>02. GameObject\06. Item\99. Etc\13. Pet</Filter>
-	</ClInclude>
-	<ClInclude Include="..\Header\Pet.h">
+    </ClInclude>
+    <ClInclude Include="..\Header\Pet.h">
       <Filter>02. GameObject\02. Monster\99. Pet</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\PetTail.h">
       <Filter>02. GameObject\02. Monster\99. Pet\PetTail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\AzeosSpawnPoint.h">
+      <Filter>02. GameObject\08. Object\16.AzeosSpawnPoint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\SpawnerObject.h">
+      <Filter>02. GameObject\08. Object\17.MalgaSpawnerObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\AzeosSpawner.h">
+      <Filter>02. GameObject\08. Object\18.AzeosSpawnerObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1475,12 +1492,21 @@
     </ClCompile>
     <ClCompile Include="..\Code\PetItem.cpp">
       <Filter>02. GameObject\06. Item\99. Etc\13. Pet</Filter>
-	</ClCompile>
-	<ClCompile Include="..\Code\Pet.cpp">
+    </ClCompile>
+    <ClCompile Include="..\Code\Pet.cpp">
       <Filter>02. GameObject\02. Monster\99. Pet</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\PetTail.cpp">
       <Filter>02. GameObject\02. Monster\99. Pet\PetTail</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\AzeosSpawnPoint.cpp">
+      <Filter>02. GameObject\08. Object\16.AzeosSpawnPoint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\SpawnerObject.cpp">
+      <Filter>02. GameObject\08. Object\17.MalgaSpawnerObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\AzeosSpawner.cpp">
+      <Filter>02. GameObject\08. Object\18.AzeosSpawnerObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

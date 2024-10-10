@@ -13,14 +13,17 @@ CBossSpawnPoint::~CBossSpawnPoint()
 {
 }
 
-HRESULT CBossSpawnPoint::Ready_GameObject(_vec3 vPos, _int _iTypeNum)
+HRESULT CBossSpawnPoint::Ready_GameObject(_vec3 vPos, _int _iTypeNum, const wstring _pickedSPName)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
+	m_vSpawnPos = vPos;
+
 	m_iSpawnTextureNumber = _iTypeNum;
 
-	m_pTransformCom->Set_Pos(vPos.x, vPos.y, vPos.z);
+	m_strPickedObjectName = _pickedSPName;
 
+	m_pTransformCom->Set_Pos(vPos.x, vPos.y, vPos.z);
 
 	return S_OK;
 }
@@ -93,11 +96,11 @@ HRESULT CBossSpawnPoint::Add_Component()
 	return S_OK;
 }
 
-CBossSpawnPoint* CBossSpawnPoint::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, _int _iTypeNum)
+CBossSpawnPoint* CBossSpawnPoint::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, _int _iTypeNum, const wstring _pickedSPName)
 {
 	CBossSpawnPoint* pCore = new CBossSpawnPoint(pGraphicDev);
 
-	if (FAILED(pCore->Ready_GameObject(vPos, _iTypeNum)))
+	if (FAILED(pCore->Ready_GameObject(vPos, _iTypeNum, _pickedSPName)))
 	{
 		Safe_Release(pCore);
 		MSG_BOX("pCore Create Failed");

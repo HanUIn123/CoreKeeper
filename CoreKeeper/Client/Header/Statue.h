@@ -47,5 +47,6 @@ private:
 	bool							m_bActive;
 	int								m_iLightNum;
 
+	static bool						m_bInteraction[3];
 };
 

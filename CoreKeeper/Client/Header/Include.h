@@ -35,6 +35,8 @@
 #include "AzeosPoop.h"
 #include "AzeosFeather.h"
 #include "BossSpawnPoint.h"
+#include "AzeosSpawnPoint.h"
+
 
 // Item
 #include "Pickaxe.h"
