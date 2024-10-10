@@ -48,15 +48,19 @@ void CSlimeFloor::LateUpdate_GameObject()
 
 void CSlimeFloor::Render_GameObject()
 {
+    m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, true);
+
     m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
 
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+
+    FAILED_CHECK_RETURN(Setup_Material(), );
 
     m_pTextureCom->Set_Texture(m_iTileTypeIndex);
 
     m_pBufferCom->Render_Buffer();
 
-    //m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
+    m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
