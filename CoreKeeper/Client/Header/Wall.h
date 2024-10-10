@@ -66,7 +66,9 @@ private:
     HRESULT													Add_Component();
     HRESULT                                                 Setup_Material();
     void                                                    Update_Texture();
+    bool                                                    Check_Interaction();
 
+    void			                                        Interaction();
 private:
     Engine::CTransform*                                     m_pTransformCom;
     Engine::CTexture*                                       m_pTextureCom;
@@ -94,11 +96,12 @@ private:
     _bool                                                   m_bWallDestroyed;
     _bool                                                   m_bRenderAlpha;
 
-private:
     bool    m_bActive;
     int     m_iCurImgNum;
     _int    m_iDurability;
     bool    m_bInFrustum;
+    bool    m_bOpen;
     static _long                                            m_iItemNumber;
+    static  bool                                            m_bDown;
 };
 

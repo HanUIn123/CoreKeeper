@@ -154,6 +154,11 @@ void CGravestoneObject::SetUp_Item(CScene* _pScene)
 	m_vecItemName.push_back(L"Woodcutter's_Item" + std::to_wstring(m_iItemNameNum++));
 	FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_Environment", pGameObject, m_vecItemName.back().c_str()), );
 
+    pGameObject = CStatueCore::Create(m_pGraphicDev, ITEM_MAL_CORE);
+    m_pInventoryCom->Add_Item(pGameObject);
+    m_vecItemName.push_back(L"Woodcutter's_Item" + std::to_wstring(m_iItemNameNum++));
+    FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_Environment", pGameObject, m_vecItemName.back().c_str()), );
+
     pGameObject = CDiary::Create(m_pGraphicDev);
     m_pInventoryCom->Add_Item(pGameObject);
     m_vecItemName.push_back(L"Woodcutter's_Item" + std::to_wstring(m_iItemNameNum++));

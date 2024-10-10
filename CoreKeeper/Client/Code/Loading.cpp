@@ -168,7 +168,7 @@ _uint CLoading::Loading_Stage()
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SkyBox", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/SkyBox/burger%d.dds", TEX_CUBE, 4)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_DarkBox", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/SkyBox/DarkSky.dds", TEX_CUBE, 1)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_WallCube", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Wall/Wall_%d.dds", TEX_CUBE, 3)), E_FAIL);
-    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_DarkWallCube", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/DarkWall/Brick_Cube_%d.dds", TEX_CUBE, 48)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_DarkWallCube", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/DarkWall/Brick_Cube_%d.dds", TEX_CUBE, 49)), E_FAIL);
     //FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MapToolWallCube", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/MapToolWall/BigWall_%d.dds", TEX_CUBE, 3)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MapToolWallCube", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/MapToolWall/black.dds", TEX_CUBE, 1)), E_FAIL);
 
