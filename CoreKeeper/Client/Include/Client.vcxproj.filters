@@ -505,6 +505,12 @@
     <Filter Include="01. Scene\99.MapEditorScene">
       <UniqueIdentifier>{6edbe3c5-5cf7-4aa5-be52-c214f5f762cb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\02. Monster\99. Pet">
+      <UniqueIdentifier>{25021f44-6268-45a1-8fd9-fe2b6c1ceed3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\02. Monster\99. Pet\PetTail">
+      <UniqueIdentifier>{c90cf218-c0c7-409a-860d-11df82f360cc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -987,6 +993,15 @@
     <ClInclude Include="..\Header\AzeosFeather.h">
       <Filter>02. GameObject\08. Object\93.AzeosFeather</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\Instrument.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\Pet.h">
+      <Filter>02. GameObject\02. Monster\99. Pet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\PetTail.h">
+      <Filter>02. GameObject\02. Monster\99. Pet\PetTail</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1447,6 +1462,15 @@
     </ClCompile>
     <ClCompile Include="..\Code\AzeosFeather.cpp">
       <Filter>02. GameObject\08. Object\93.AzeosFeather</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Instrument.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Pet.cpp">
+      <Filter>02. GameObject\02. Monster\99. Pet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\PetTail.cpp">
+      <Filter>02. GameObject\02. Monster\99. Pet\PetTail</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
