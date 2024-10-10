@@ -1,12 +1,19 @@
 #pragma once
 #include "GameObject.h"
 #include "Define.h"
+#include "../Header/Eye.h"
+#include "../Header/Shirt.h"
+#include "../Header/Pants.h"
+#include "../Header/Hair.h"
 
 BEGIN(Engine)
 
 class CRcTex;
 class CTransform;
 class CTexture;
+class CAnimTex;
+class CAnimator;
+class CInventory;
 //class CCalculator;
 //class CAnimator;
 
@@ -40,10 +47,28 @@ private:
 	_bool m_bWindow;
 
 	RECT m_bRect;
+
+	CEye* m_pEye;
+
+	CShirt* m_pShirt;
+
+	CPants* m_pPants;
+
+	CHair* m_pHair;
+
+	CItem* m_pItem[3];
+
+	CInventory* m_pEquipInv;
+
+	_bool m_bFirst;
+
 private:
 	Engine::CRcTex* m_pBufferCom;
+	Engine::CAnimTex* m_pAnimBufferCom;
 	Engine::CTransform* m_pTransformCom;
 	Engine::CTexture* m_pTextureCom;
+	Engine::CTexture* m_pSkinTextureCom;
+	Engine::CAnimator* m_pAnimatorCom;
 
 public:
 	static CUIPlayerStatus* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec2 vPos, _vec2 vSize);

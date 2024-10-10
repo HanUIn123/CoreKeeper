@@ -23,6 +23,8 @@ public:
 	virtual			void			LateUpdate_GameObject();
 	virtual			void			Render_GameObject();
 
+	CTexture* Get_PantsTexture() { return m_pTextureCom; }
+	CAnimTex* Get_PantsBuffer()  { return m_pBufferCom; }
 private:
 	HRESULT			Add_Component();
 	HRESULT			Setup_Material();

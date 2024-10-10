@@ -105,6 +105,8 @@ void PSystem::preRender() // 파티클 출력 전에 정해줘야할 렌더 상태들
 
 void PSystem::postRender()
 {
+	m_pGraphicDev->SetRenderState(D3DRS_TEXTUREFACTOR, 0xffffffff);
+
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, true);
 	m_pGraphicDev->SetRenderState(D3DRS_POINTSPRITEENABLE, false);
 	m_pGraphicDev->SetRenderState(D3DRS_POINTSCALEENABLE, false);

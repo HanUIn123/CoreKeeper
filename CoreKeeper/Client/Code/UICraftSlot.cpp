@@ -5,9 +5,10 @@
 #include "..\Header\Torch.h"
 #include "..\Header\Stage.h"
 #include "..\Header\CraftMgr.h"
+#include "..\Header\UIItemFrame.h"
 
 CUICraftSlot::CUICraftSlot(LPDIRECT3DDEVICE9 pGraphicDev)
-	: Engine::CGameObject(pGraphicDev), m_bCollapse(false), m_bWindow(false), m_iIndex(0), m_bEnough(false)
+	: Engine::CGameObject(pGraphicDev), m_bCollapse(false), m_bWindow(false), m_iIndex(0), m_bEnough(false), m_bStay(false)
 
 {
 }
@@ -37,30 +38,6 @@ HRESULT CUICraftSlot::Ready_GameObject(_vec2 vPos, _vec2 vSize, _int _iIndex, _b
 	m_BRect.right = vPos.x + vSize.x;
 	m_BRect.top = vPos.y - vSize.y;
 	m_BRect.bottom = vPos.y + vSize.y;
-
-	/*
-	switch (_iIndex)
-	{
-	case 0:
-		m_eSlotType = UCITEM_TORCH;
-		break;
-
-	case 1:
-		m_eSlotType = UCITEM_WOODENPICK;
-		break;
-
-	case 2:
-		m_eSlotType = UCITEM_WORKBENCH;
-		break;
-
-	case 3:
-		m_eSlotType = UCITEM_CHEST;
-		break;
-
-	default:
-		m_eSlotType = UCITEM_TORCH;
-		break;
-	}*/
 
 	m_iIndex = _iIndex;
 
@@ -150,6 +127,62 @@ _int CUICraftSlot::Update_GameObject(const _float& fTimeDelta)
 		{
 			m_bCollapse = true;
 
+			if (!m_bStay)
+			{
+				if (m_eItemType.eItemNum == ITEM_RING || m_eItemType.eItemNum == ITEM_NECKLACE)
+				{
+					MATERIAL eMat = MATERIAL_END;
+
+					switch (m_eItemType.iTextureNum)
+					{
+					case 43:
+						eMat = MATERIAL_COPPER;
+						break;
+
+					case 44:
+						eMat = MATERIAL_IRON;
+						break;
+
+					case 46:
+						eMat = MATERIAL_COPPER;
+						break;
+
+					case 47:
+						eMat = MATERIAL_IRON;
+						break;
+					}
+
+					m_pInventoryCom->Add_Item(CCraftMgr::GetInstance()->CraftExp(m_eItemType.eItemNum, m_eItemType.eItemMat));
+				}
+				else if (m_eItemType.eItemNum == ITEM_TABLE)
+				{
+					MATERIAL eMat = MATERIAL_END;
+
+					switch (m_eItemType.iTextureNum)
+					{
+					case 12:
+						eMat = MATERIAL_COPPER;
+						break;
+
+					case 19:
+						eMat = MATERIAL_IRON;
+						break;
+					}
+
+					m_pInventoryCom->Add_Item(CCraftMgr::GetInstance()->CraftExp(m_eItemType.eItemNum, m_eItemType.eItemMat));
+				}
+				else
+				{
+					m_pInventoryCom->Add_Item(CCraftMgr::GetInstance()->CraftExp(m_eItemType.eItemNum, m_eItemType.eItemMat));
+				}
+
+				CUIItemFrame* pFrame = dynamic_cast<CUIItemFrame*>(Engine::Get_GameObject(L"Layer_UI", L"UI_ItemFrame"));
+
+				pFrame->Set_Window(m_pInventoryCom->Get_Item(0), pt);
+
+				m_bStay = true;
+			}
+
 			if (Engine::Button_Down(DIM_LB))
 			{
 				if (m_bEnough)
@@ -211,7 +244,31 @@ _int CUICraftSlot::Update_GameObject(const _float& fTimeDelta)
 
 		}
 		else
+		{
+			if (m_bCollapse)
+			{
+				CUIItemFrame* pItemF = dynamic_cast<CUIItemFrame*>(Engine::Get_GameObject(L"Layer_UI", L"UI_ItemFrame"));
+
+				pItemF->Set_WindowDis();
+
+				m_pInventoryCom->Remove_Item(0);
+
+				m_bStay = false;
+			}
 			m_bCollapse = false;
+		}
+	}
+	else if (!m_bWindow && m_bCollapse)
+	{
+		CUIItemFrame* pItemF = dynamic_cast<CUIItemFrame*>(Engine::Get_GameObject(L"Layer_UI", L"UI_ItemFrame"));
+
+		pItemF->Set_WindowDis();
+
+		m_pInventoryCom->Remove_Item(0);
+
+		m_bStay = false;
+
+		m_bCollapse = false;
 	}
 	return iExit;
 }
@@ -676,6 +733,10 @@ HRESULT CUICraftSlot::Add_Component()
 	pComponent = m_pItemTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_UIPlayerCraftItem"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_ItemTexture", pComponent });
+
+	pComponent = m_pInventoryCom = dynamic_cast<CInventory*>(Engine::Clone_Proto(L"Proto_OneSlotInventory"));
+	NULL_CHECK_RETURN(pComponent, E_FAIL);
+	m_mapComponent[ID_STATIC].insert({ L"Com_Inventory", pComponent });
 
 
 	return S_OK;

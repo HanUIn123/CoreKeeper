@@ -179,6 +179,143 @@ CItem* CCraftMgr::Craft(CInventory* _pInventory, ITEMNUM _eItemNum, MATERIAL _eM
 	return pItem;
 }
 
+CItem* CCraftMgr::CraftExp(ITEMNUM _eItemNum, MATERIAL _eMaterial)
+{
+    /*
+    auto iter = m_mapRecipes.find({ _eItemNum, _eMaterial });
+    if (iter == m_mapRecipes.end())
+        return nullptr; // 해당 아이템의 레시피가 없음
+
+    Recipe& recipe = iter->second;
+    
+    for (const auto& ingredient : recipe.vecIngredients)
+    {
+        _pInventory->Minus_Item(ingredient.eIngredient, ingredient.iQuantity);
+    }*/
+
+    CItem* pItem = nullptr;
+
+    switch (_eItemNum)
+    {
+    case ITEM_PICKAXE:
+        pItem = CPickaxe::Create(m_pGraphicDev, _eMaterial);
+        break;
+    case ITEM_HOE:
+        pItem = CHoe::Create(m_pGraphicDev, _eMaterial);
+        break;
+    case ITEM_WATERINGCAN:
+        pItem = CWateringCan::Create(m_pGraphicDev, _eMaterial);
+        break;
+
+    case ITEM_SWORD:
+        pItem = CSword::Create(m_pGraphicDev, _eMaterial);
+        break;
+    case ITEM_BOW:
+        pItem = CBow::Create(m_pGraphicDev);
+        break;
+    case ITEM_STAFF:
+        pItem = CStaff::Create(m_pGraphicDev);
+        break;
+
+    case ITEM_HELMET:
+        pItem = CHelmet::Create(m_pGraphicDev, _eMaterial);
+        break;
+    case ITEM_CHEST:
+        pItem = CChest::Create(m_pGraphicDev, _eMaterial);
+        break;
+    case ITEM_LEG:
+        pItem = CLeg::Create(m_pGraphicDev, _eMaterial);
+        break;
+
+    case ITEM_NECKLACE:
+        pItem = CNecklace::Create(m_pGraphicDev, _eMaterial);
+        break;
+    case ITEM_RING:
+        pItem = CRing::Create(m_pGraphicDev, _eMaterial);
+        break;
+
+    case ITEM_ASSISTANCE:
+        pItem = CAssistance::Create(m_pGraphicDev, (ASSISTANCE)_eMaterial);
+        break;
+
+    case ITEM_BAG:
+        pItem = CBag::Create(m_pGraphicDev, _eMaterial);
+        break;
+    case ITEM_LANTERN:
+        pItem = CLantern::Create(m_pGraphicDev, _eMaterial);
+        break;
+
+    case ITEM_TABLE:
+        pItem = CTable::Create(m_pGraphicDev, _eMaterial);
+        break;
+
+    case ITEM_POTION_TABLE:
+        pItem = CPotionTable::Create(m_pGraphicDev);
+        break;
+    case ITEM_ACCESSORY_TABLE:
+        pItem = CAccessoryTable::Create(m_pGraphicDev);
+        break;
+    case ITEM_MUSIC_TABLE:
+        pItem = CMusicTable::Create(m_pGraphicDev);
+        break;
+    case ITEM_ANIMAL_TABLE:
+        pItem = CAnimalTable::Create(m_pGraphicDev);
+        break;
+
+    case ITEM_ANVIL:
+        pItem = CAnvil::Create(m_pGraphicDev, _eMaterial);
+        break;
+    case ITEM_FURNACE:
+        pItem = CFurnace::Create(m_pGraphicDev);
+        break;
+    case ITEM_COOKINGPOT:
+        pItem = CCookingPot::Create(m_pGraphicDev);
+        break;
+
+    case ITEM_TORCH:
+        pItem = CTorch::Create(m_pGraphicDev);
+        pItem->Add_Count(2);
+        break;
+    case ITEM_BOX:
+        pItem = CBox::Create(m_pGraphicDev);
+        break;
+    case ITEM_SPRINKLER:
+        pItem = CSprinkler::Create(m_pGraphicDev);
+        break;
+
+
+    case ITEM_POTION_HP:
+    case ITEM_POTION_ATT:
+    case ITEM_POTION_DEF:
+        pItem = CPotion::Create(m_pGraphicDev, _eItemNum);
+        break;
+
+    case ITEM_PLAYER_SPAWNER:
+    case ITEM_MAL_SPAWNER:
+    case ITEM_AZEOS_SPAWNER:
+        pItem = CSpawner::Create(m_pGraphicDev, _eItemNum);
+        break;
+
+    case ITEM_COPPER_BAR:
+        pItem = CBar::Create(m_pGraphicDev, MATERIAL_COPPER);
+        break;
+    case ITEM_IRON_BAR:
+        pItem = CBar::Create(m_pGraphicDev, MATERIAL_IRON);
+        break;
+    case ITEM_SCARLET_BAR:
+        pItem = CBar::Create(m_pGraphicDev, MATERIAL_SCARLET);
+        break;
+    }
+
+    strCraftName[m_iCraftCount] = L"Craft_Item" + to_wstring(m_iCraftCount);
+
+    CScene* pScene = Engine::Get_Scene();
+
+    pScene->Create_GameObject(L"Layer_UI", pItem, strCraftName[m_iCraftCount++].c_str());
+
+    return pItem;
+}
+
 CItem* CCraftMgr::Cook(ITEMNUM _eItemNum1, ITEMNUM _eItemNum2)
 {
     // 요리 재료가 아니면 nullptr 반환

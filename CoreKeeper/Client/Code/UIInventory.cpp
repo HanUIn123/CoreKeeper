@@ -5,9 +5,10 @@
 #include "Engine_Enum.h"
 #include "..\Header\Item.h"
 #include "..\Header\Player.h"
+#include "..\Header\UIItemFrame.h"
 
 CUIInventory::CUIInventory(LPDIRECT3DDEVICE9 pGraphicDev)
-	: Engine::CGameObject(pGraphicDev), m_iCurInv(0), m_bShow(false), m_bCollapse(false)
+	: Engine::CGameObject(pGraphicDev), m_iCurInv(0), m_bShow(false), m_bCollapse(false), m_bStay(false)
 
 {
 }
@@ -57,15 +58,18 @@ _int CUIInventory::Update_GameObject(const _float& fTimeDelta)
 
 		if (Map_Picked(pt))
 		{
+			CInventory* pPlayerInv = dynamic_cast<Engine::CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
+
+			CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
+
+			_int iIndex = m_iIndex - 1;
+
 			if (Engine::Button_Down(DIM_LB))
 			{
 				CInventory* pCursorInv = dynamic_cast<CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_UI", L"UI_Cursor", L"Com_Inventory"));
-				CInventory* pPlayerInv = dynamic_cast<Engine::CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
 
 				vector<CItem*>* pCvecItem = pCursorInv->Get_VecItemP();
 				vector<CItem*>* pPvecItem = pPlayerInv->Get_VecItemP();
-
-				_int iIndex = m_iIndex - 1;
 
 				if (!pPlayerInv->Check_Empty(iIndex) && !pCursorInv->Check_Empty(0))
 				{
@@ -81,10 +85,30 @@ _int CUIInventory::Update_GameObject(const _float& fTimeDelta)
 					pPlayerInv->Swap_Item(&(*pCvecItem)[0], &(*pPvecItem)[iIndex]);
 			}
 
+			if (!pPlayerInv->Check_Empty(iIndex) && !m_bStay && pPlayer->Get_InvWindow())
+			{
+				pItem = pPlayerInv->Get_Item(iIndex);
+
+				CUIItemFrame* pItemF = dynamic_cast<CUIItemFrame*>(Engine::Get_GameObject(L"Layer_UI", L"UI_ItemFrame"));
+
+				pItemF->Set_Window(pItem, pt);
+
+				m_bStay = true;
+			}
+
 			m_bCollapse = true;
 		}
 		else
 		{
+			if (m_bCollapse)
+			{
+				CUIItemFrame* pItemF = dynamic_cast<CUIItemFrame*>(Engine::Get_GameObject(L"Layer_UI", L"UI_ItemFrame"));
+
+				pItemF->Set_WindowDis();
+
+				m_bStay = false;
+			}
+
 			m_bCollapse = false;
 		}
 

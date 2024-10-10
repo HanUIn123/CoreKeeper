@@ -136,6 +136,9 @@
     <Filter Include="04. Component\08. Particles\06. Dash">
       <UniqueIdentifier>{f6aabfec-292a-4b03-88d8-1b7bcd1cd263}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04. Component\08. Particles\07. Fume">
+      <UniqueIdentifier>{017b494e-d092-4bd0-b3dc-7a0f4f469a3a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Code\Scene.cpp">
@@ -260,6 +263,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\Smog.cpp">
       <Filter>04. Component\08. Particles\05. BIgSmog</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Fume.cpp">
+      <Filter>04. Component\08. Particles\07. Fume</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -391,6 +397,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Header\Dash.h">
       <Filter>04. Component\08. Particles\06. Dash</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Header\Fume.h">
+      <Filter>04. Component\08. Particles\07. Fume</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

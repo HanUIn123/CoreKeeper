@@ -89,9 +89,10 @@ public:
 	_int                Get_TextureNumber() { return m_iTextureNumber; }
 
 	//아이템 설명창
-	const wstring*      Get_Explain() { return m_wItemExplain; }
+	const wstring       Get_Name()     { return m_wItemName; }
+	const wstring*      Get_Explain()  { return m_wItemExplain; }
 	const wstring       Get_Meterial() { return m_wItemMetrial; }
-	_bool               Get_UseMet() { return m_bMeterial; }
+	_bool               Get_UseMet()   { return m_bMeterial; }
 
 public: // UI에서 가져갈 Component들
  	CAnimTex*			Get_Buffer() { return m_pBufferCom; }

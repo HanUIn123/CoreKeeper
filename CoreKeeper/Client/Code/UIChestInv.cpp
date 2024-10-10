@@ -5,9 +5,10 @@
 #include "Engine_Enum.h"
 #include "..\Header\Item.h"
 #include "..\Header\Player.h"
+#include "../Header/UIItemFrame.h"
 
 CUIChestInv::CUIChestInv(LPDIRECT3DDEVICE9 pGraphicDev)
-	: Engine::CGameObject(pGraphicDev), m_iCurInv(0), m_bShow(false), m_bCollapse(false)
+	: Engine::CGameObject(pGraphicDev), m_iCurInv(0), m_bShow(false), m_bCollapse(false), m_bStay(false)
 
 {
 }
@@ -79,10 +80,30 @@ _int CUIChestInv::Update_GameObject(const _float& fTimeDelta)
 					m_pChestInv->Swap_Item(&(*pCvecItem)[0], &(*pPvecItem)[m_iIndex]);
 			}
 
+			if (!m_pChestInv->Check_Empty(m_iIndex) && !m_bStay)
+			{
+				pItem = m_pChestInv->Get_Item(m_iIndex);
+
+				CUIItemFrame* pItemF = dynamic_cast<CUIItemFrame*>(Engine::Get_GameObject(L"Layer_UI", L"UI_ItemFrame"));
+
+				pItemF->Set_Window(pItem, pt);
+
+				m_bStay = true;
+			}
+
 			m_bCollapse = true;
 		}
 		else
 		{
+			if (m_bCollapse)
+			{
+				CUIItemFrame* pItemF = dynamic_cast<CUIItemFrame*>(Engine::Get_GameObject(L"Layer_UI", L"UI_ItemFrame"));
+
+				pItemF->Set_WindowDis();
+
+				m_bStay = false;
+			}
+
 			m_bCollapse = false;
 		}
 

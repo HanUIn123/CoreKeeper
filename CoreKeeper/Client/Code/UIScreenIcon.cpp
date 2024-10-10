@@ -14,7 +14,7 @@
 #include "..\Header\UICursor.h"
 
 CUIScreenIcon::CUIScreenIcon(LPDIRECT3DDEVICE9 pGraphicDev)
-	: Engine::CGameObject(pGraphicDev), m_bCollapse(false), m_bExit(false), m_bClicked(false), m_bFirst(true)
+	: Engine::CGameObject(pGraphicDev), m_bCollapse(false), m_bExit(false), m_bClicked(false), m_bFirst(true), m_bCollision(false)
 
 {
 }
@@ -133,7 +133,7 @@ void CUIScreenIcon::Render_GameObject()
 	{
 		m_pTextureCom->Set_Texture(ICON_EXIT);
 	}
-	else if (m_iIndex == ICON_HAND)
+	else if (m_iIndex == ICON_HAND && !m_bCollision)
 	{
 		m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
 		m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
@@ -155,6 +155,12 @@ void CUIScreenIcon::Render_GameObject()
 
 		m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
 		
+	}
+	else if (m_iIndex == ICON_HAND && m_bCollision)
+	{
+		m_pTextureCom->Set_Texture(ICON_HAND_COL);
+
+		m_pBufferCom->Render_Buffer();
 	}
 	else
 	{

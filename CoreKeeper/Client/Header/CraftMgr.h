@@ -35,6 +35,8 @@ public:
 	bool		Craftable(CInventory* _pInventory, ITEMNUM _eItemNum, MATERIAL _eMaterial = MATERIAL_END);
 	CItem*		Craft(CInventory* _pInventory, ITEMNUM _eItemNum, MATERIAL _eMaterial = MATERIAL_END);
 
+	CItem*      CraftExp(ITEMNUM _eItemNum, MATERIAL _eMaterial = MATERIAL_END);
+
 	CItem*		Cook(ITEMNUM _eItemNum1, ITEMNUM _eItemNum2);
 private:
 	void		Set_Recipe();

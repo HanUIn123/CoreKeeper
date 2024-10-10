@@ -195,7 +195,7 @@ _int CUIScreenInv::Update_GameObject(const _float& fTimeDelta)
 
 			CUIItemFrame* pItemF = dynamic_cast<CUIItemFrame*>(Engine::Get_GameObject(L"Layer_UI", L"UI_ItemFrame"));
 
-			pItemF->Set_Window(m_pItem);
+			pItemF->Set_Window(m_pItem, pt);
 
 			m_bStay = true;
 		}
