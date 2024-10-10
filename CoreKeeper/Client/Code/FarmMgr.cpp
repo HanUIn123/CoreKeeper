@@ -44,20 +44,23 @@ _bool CFarmMgr::Create_Plant(_int iIndex, ITEMNUM eIngredient)
     // 돌당근 : 해당 인덱스의 타일이 29일 때 심기 가능
     if (eIngredient == ITEM_CARROT_SEED)
     {
-        if (m_pTerrain->Get_TextureNumber(iIndex) == 29)
+        if (m_pTerrain->Get_TextureNumber(iIndex) == 29 || m_pTerrain->Get_TextureNumber(iIndex) == 30)
         {
             // 해당 인덱스에 오브젝트가 없을 때
-            wstring strBuffer = L"Plant_" + std::to_wstring(iIndex);
-            if (m_mapPlant.find(strBuffer) == m_mapPlant.end())
+            if (m_mapPlant.find(std::to_wstring(iIndex)) == m_mapPlant.end())
             {
                 // 해당 식물 오브젝트 생성
                 CScene* pScene = Engine::Get_Scene();
                 CGameObject* pPlant = CPlant::Create(m_pGraphicDev, eIngredient, iIndex);
-                m_listPlantedName.push_back(L"Plant" + std::to_wstring(iIndex));
+                m_listPlantedName.push_back(L"Plant_" + std::to_wstring(iIndex));
                 pScene->Create_GameObject(L"Layer_GameLogic", pPlant, m_listPlantedName.back().c_str());
                 m_mapPlant.emplace(std::to_wstring(iIndex), pPlant);
                 CAnimator* pPlantAnimator = dynamic_cast<CAnimator*>(pPlant->Get_Component(ID_STATIC, L"Com_Animator"));
-                pPlantAnimator->Set_CurState(IDLE, 0, 0, 20);
+                // 타일이 30이면 바로 애니메이션 + 1
+                if (m_pTerrain->Get_TextureNumber(iIndex) == 29)
+                    pPlantAnimator->Set_CurState(IDLE, 0, 0, 20);
+                else
+                    pPlantAnimator->Set_CurState(IDLE, 1, 1, 20);
                 POINT tState = { iIndex, 0 };
                 m_vecPlantedState.push_back(tState);
                 return true;
@@ -133,7 +136,10 @@ _bool CFarmMgr::Harvest_Plant(_int iIndex)
             // 네임 리스트에서 삭제
             m_listPlantedName.erase(iter);
             // 타일 인덱스값 바꿔주기
-            m_pTerrain->Set_TextureNumber(iIndex, 27);
+            if(m_pTerrain->Get_TextureNumber(iIndex) == 28)
+                m_pTerrain->Set_TextureNumber(iIndex, 27);
+            else if(m_pTerrain->Get_TextureNumber(iIndex) == 30)
+                m_pTerrain->Set_TextureNumber(iIndex, 29);
             break;
         }
     }
@@ -147,6 +153,8 @@ void CFarmMgr::Watering_Plant(_int iIndex)
     {
         if (m_pTerrain->Get_TextureNumber(iIndex) == 27)
             m_pTerrain->Set_TextureNumber(iIndex, 28);
+        else if(m_pTerrain->Get_TextureNumber(iIndex) == 29)
+            m_pTerrain->Set_TextureNumber(iIndex, 30);
     
         wstring strBuffer = std::to_wstring(iIndex);
         if (m_mapPlant.find(strBuffer) == m_mapPlant.end())

@@ -1486,7 +1486,13 @@ void CPlayer::Hoe()
                 if (!m_pTerrain->Get_UnreachableByIndex(iIndex))
                 {
                     if (!CFarmMgr::GetInstance()->Harvest_Plant(iIndex))
-                        m_pTerrain->Set_TextureNumber(iIndex, 27);
+                    {
+                        _int iTileNum = m_pTerrain->Get_TextureNumber(iIndex);
+                        if(iTileNum < 9)
+                            m_pTerrain->Set_TextureNumber(iIndex, 27);
+                        else if(iTileNum < 18)
+                            m_pTerrain->Set_TextureNumber(iIndex, 29);
+                    }
                 }
                 break;
             case MATERIAL_COPPER: // 3 x 3
@@ -1497,7 +1503,13 @@ void CPlayer::Hoe()
                         if (!m_pTerrain->Get_UnreachableByIndex(iIndex + i + j * (VTXCNTX - 1)))
                         {
                             if (!CFarmMgr::GetInstance()->Harvest_Plant(iIndex + i + j * (VTXCNTX - 1)))
-                                m_pTerrain->Set_TextureNumber(iIndex + i + j * (VTXCNTX - 1), 27);
+                            {
+                                _int iTileNum = m_pTerrain->Get_TextureNumber(iIndex + i + j * (VTXCNTX - 1));
+                                if (iTileNum < 9)
+                                    m_pTerrain->Set_TextureNumber(iIndex + i + j * (VTXCNTX - 1), 27);
+                                else if (iTileNum < 18)
+                                    m_pTerrain->Set_TextureNumber(iIndex + i + j * (VTXCNTX - 1), 29);
+                            }
                         }
                     }
                 }
@@ -1510,7 +1522,13 @@ void CPlayer::Hoe()
                         if (!m_pTerrain->Get_UnreachableByIndex(iIndex + i + j * (VTXCNTX - 1)))
                         {
                             if (!CFarmMgr::GetInstance()->Harvest_Plant(iIndex + i + j * (VTXCNTX - 1)))
-                                m_pTerrain->Set_TextureNumber(iIndex + i + j * (VTXCNTX - 1), 27);
+                            {
+                                _int iTileNum = m_pTerrain->Get_TextureNumber(iIndex + i + j * (VTXCNTX - 1));
+                                if (iTileNum < 9)
+                                    m_pTerrain->Set_TextureNumber(iIndex + i + j * (VTXCNTX - 1), 27);
+                                else if (iTileNum < 18)
+                                    m_pTerrain->Set_TextureNumber(iIndex + i + j * (VTXCNTX - 1), 29);
+                            }
                         }
                     }
                 }
@@ -1564,8 +1582,8 @@ void CPlayer::Plant(ITEMNUM eHandedNum)
             _int iIndex = _int(m_vMouseWorldPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (m_vMouseWorldPos.x + 0.5f * VTXITV);
             if (!m_pTerrain->Get_UnreachableByIndex(iIndex))
             {
-                CFarmMgr::GetInstance()->Create_Plant(iIndex, eHandedNum);
-                m_pInventoryCom->Minus_Item(eHandedNum, 1);
+                if(CFarmMgr::GetInstance()->Create_Plant(iIndex, eHandedNum))
+                    m_pInventoryCom->Minus_Item(eHandedNum, 1);
             }
         }
     }
