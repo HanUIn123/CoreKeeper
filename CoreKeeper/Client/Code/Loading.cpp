@@ -111,6 +111,7 @@ _uint CLoading::Loading_Stage()
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TileTex", Engine::CObjectTex::Create(m_pGraphicDev, 0.5f, 0.0f, 0.5f)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_CrystalObjectTex", Engine::CObjectTex::Create(m_pGraphicDev, 0.5f, 0.0f, 0.5f)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_BossSpawnPointTex", Engine::CObjectTex::Create(m_pGraphicDev, 1.0f, 0.0f, 1.0f)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_AzeosSpawnPointTex", Engine::CObjectTex::Create(m_pGraphicDev, 1.0f, 0.0f, 1.0f)), E_FAIL);
 
     // Place Object Tex
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SlimeFloorTex", Engine::CObjectTex::Create(m_pGraphicDev, 0.5f, 0.0f, 0.5f)), E_FAIL);
@@ -281,6 +282,9 @@ _uint CLoading::Loading_Stage()
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_AzeosFeatherTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/PlaceObject/Azeos_Feather_%d.png", TEX_NORMAL, 6)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_BossSpawnPointTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/PlaceObject/Malga_Summon_0.png", TEX_NORMAL, 1)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_BossSpawnPointEmissiveTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/PlaceObject/Emissive_0.png", TEX_NORMAL, 1)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_AzeosSpawnPointTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/PlaceObject/Azeos_Summon.png", TEX_NORMAL, 1)), E_FAIL);
+
+
 
 #pragma endregion
 
