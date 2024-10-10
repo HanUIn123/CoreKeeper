@@ -6,6 +6,8 @@
 #include "..\Header\Core.h"
 #include "..\Header\UIScreenIcon.h"
 
+bool CStatue::m_bInteraction[3] = { false, false, false };
+
 CStatue::CStatue(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CObject(pGraphicDev), m_iTextureNum(0), m_bActive(false)
 {
@@ -34,18 +36,16 @@ _int CStatue::Update_GameObject(const _float& fTimeDelta)
 
 	if (Check_Interaction())
 	{
-		CUIScreenIcon* pIcon = dynamic_cast<CUIScreenIcon*>(Engine::Get_GameObject(L"Layer_UI", L"UIScreenicon_Hand"));
-
-		pIcon->Set_Collision();
+		m_bInteraction[m_iTextureNum / 2] = true;
 
 		Interaction();
 	}
 	else if (!Check_Interaction())
 	{	
+		m_bInteraction[m_iTextureNum / 2] = false;
+
 		CUIScreenIcon* pIcon = dynamic_cast<CUIScreenIcon*>(Engine::Get_GameObject(L"Layer_UI", L"UIScreenicon_Hand"));
 
-		pIcon->Set_DisCollision();
-		
 		if (m_bCollision)
 		{
 			CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
@@ -60,6 +60,13 @@ _int CStatue::Update_GameObject(const _float& fTimeDelta)
 			}
 		}
 	}
+	
+	CUIScreenIcon* pIcon = dynamic_cast<CUIScreenIcon*>(Engine::Get_GameObject(L"Layer_UI", L"UIScreenicon_Hand"));
+
+	if (m_bInteraction[0] || m_bInteraction[1] || m_bInteraction[2])
+		pIcon->Set_Collision();
+	else
+		pIcon->Set_DisCollision();
 
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);
 
@@ -104,11 +111,6 @@ void CStatue::Interaction()
 {
 	if (Engine::Key_Down(DIK_E))
 	{
-		// 아이템 들어가면 코어의 bool을 true로 바꿔주는거
-		/*CCore* pCore = dynamic_cast<CCore*>(Engine::Get_GameObject(L"Layer_Environment", L"Core"));
-		pCore->Set_ActiveCore(m_iTextureNum / 2);
-		m_iTextureNum++;*/
-
 		CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
 
 		if (m_bActive)
