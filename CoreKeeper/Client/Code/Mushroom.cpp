@@ -18,15 +18,12 @@ HRESULT CMushroom::Ready_GameObject(_vec3 _vPos, _int _iTypeNum, const wstring _
 {
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-   m_vMushroomPos.x = _vPos.x;
-   m_vMushroomPos.y = 0.1f;
-   m_vMushroomPos.z = _vPos.z;
+    m_iMushTypeIndex = _iTypeNum;
 
-   m_iMushTypeIndex = _iTypeNum;
-
-   m_strPickedObjectName = _pickedMushName;
+    m_strPickedObjectName = _pickedMushName;
 
     m_pTransformCom->Set_Pos(_vPos.x, 0.6f, _vPos.z);
+
 
     m_pTransformCom->Set_Scale(1.0f, 1.0f, 1.0f);
 
