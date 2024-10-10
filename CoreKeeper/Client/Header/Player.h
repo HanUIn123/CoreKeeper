@@ -74,6 +74,8 @@ private:
 	void			Shoot_Equipment();
 	void			Set_EquippedStatus();
 
+	void			Play_Instruments();
+
 	void			PickAxe();
 	void			Hoe();
 	void			Watering();
@@ -247,6 +249,8 @@ private:
 	_float					m_fManaTime;
 
 	CPet*					m_pPet;
+
+	_bool					m_bPlayToggle;
 
 	CUIItemSlot* m_pEtcItems[CUIItemSlot::SLOT_END];
 public:

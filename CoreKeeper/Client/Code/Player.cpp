@@ -93,6 +93,8 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
 
     m_bDestroyWall = false;
     m_pPet = nullptr;
+
+    m_bPlayToggle = false;
 }
 
 CPlayer::~CPlayer()
@@ -141,6 +143,7 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
     Set_Hungry(fTimeDelta);
     Set_Buff(fTimeDelta);
 
+    Play_Instruments();
 
     if (!m_bNoMove && !m_bInventory && !m_bCraft && !m_bMap) // m_bNoMove -> UICursor에서 적용
         Mouse_Click(fTimeDelta);
@@ -1792,6 +1795,70 @@ void CPlayer::Set_EquippedStatus()
     m_pStateCom->Set_BasicStat(&m_tBasicStat);
     m_pStateCom->Set_EquippedStat(&m_tEquipmentStat);
 }
+
+void CPlayer::Play_Instruments()
+{
+    if (m_pHandedItem)
+    {
+        ITEMNUM eHandedNum = m_pHandedItem->Get_ItemNum();
+        switch (eHandedNum)
+        {
+        case ITEM_INSTRUMENT_HARP:
+        case ITEM_INSTRUMENT_CELLO:
+        case ITEM_INSTRUMENT_FLUTE:
+        case ITEM_INSTRUMENT_OCARINA:
+        case ITEM_INSTRUMENT_DRUM:
+        case ITEM_INSTRUMENT_PIANO:
+            if (Engine::Key_Down(DIK_E))
+            {
+                m_bPlayToggle = m_bPlayToggle ? false : true;
+                if (m_bPlayToggle)
+                    Engine::Play(L"pianoCookServeDelicious3ItsDangerousToGoAlone.wav", SOUND_INSTRUMENTS, 0.1f);
+                else
+                    Engine::StopSound(SOUND_INSTRUMENTS);
+            }
+            if (m_bPlayToggle)
+            {
+                _vec3 vPos;
+                m_pTransformCom->Get_Info(INFO_POS, &vPos);
+                m_pHandedTransformCom->Set_Scale(1.5f, 1.5f, 1.5f);
+                switch (m_eDir)
+                {
+                case FRONT:
+                    m_pHandedTransformCom->Set_Pos(vPos.x, 1.3f, vPos.z - 0.4f);
+                    m_pHandedItem->Set_FrameCount(0);
+                    break;
+                case LEFT:
+                    m_pHandedTransformCom->Set_Pos(vPos.x, 1.3f, vPos.z - 0.4f);
+                    m_pHandedItem->Set_FrameCount(1);
+                    m_pHandedTransformCom->Set_Scale(-1.5f, 1.5f, 1.5f);
+                    break;
+                case RIGHT:
+                    m_pHandedTransformCom->Set_Pos(vPos.x, 1.3f, vPos.z - 0.4f);
+                    m_pHandedItem->Set_FrameCount(1);
+                    break;
+                case BACK:
+                    m_pHandedTransformCom->Set_Pos(vPos.x, 1.3f, vPos.z + 0.2f);
+                    m_pHandedItem->Set_FrameCount(2);
+                    break;
+                }
+            }
+            else
+                m_pHandedTransformCom->Set_Scale(0.5f, 0.5f, 0.5f);
+            break;
+        default:
+            m_bPlayToggle = false;
+            Engine::StopSound(SOUND_INSTRUMENTS);
+            break;
+        }
+    }
+    else
+    {
+        m_bPlayToggle = false;
+        Engine::StopSound(SOUND_INSTRUMENTS);
+    }
+}
+
 
 void CPlayer::Set_Clothes()
 {
