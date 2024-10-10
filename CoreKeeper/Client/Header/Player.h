@@ -111,6 +111,7 @@ public:
 	void            Set_Statue(_int _StatueNum = 0, _bool _bInteractioned = false);
 	void            Set_Furnace(CInventory* pInventory1 = nullptr, CInventory* pInventory2 = nullptr, _float* fTime = nullptr);
 	void            Set_CookingPot(CInventory* pInventory1 = nullptr, CInventory* pInventory2 = nullptr, _float* fTime = nullptr);
+	void            Set_MiniMap();
 
 	_bool           Get_GraveUI() { return m_bGraveInventory; }
 	_bool           Get_FurnaceUI() { return m_bFurnace; }
@@ -191,6 +192,7 @@ private:
 	_bool                   m_bStatue;
 	_bool                   m_bFurnace;
 	_bool                   m_bCookingPot;
+	_bool                   m_bMiniMap;
 
 	_matrix                 m_bPickaxeMatrix;
 

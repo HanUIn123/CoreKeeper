@@ -45,6 +45,8 @@ HRESULT CProjectile::Ready_GameObject(_vec3 vPos)
 
     m_pFlameParticleCom->init(L"../Bin/Resource/Texture/Particle/FirePulse/Fire_Pulse_%d.png", 4, 0.1f);
 
+    m_pSmokeParticleCom->init(L"../Bin/Resource/Texture/Particle/Smog_Particle/Big_Smog_%d.png", 6, 0.5f);
+
     return S_OK;
 }
 
@@ -75,7 +77,10 @@ _int CProjectile::Update_GameObject(const _float& fTimeDelta)
     }
 
     if (m_bStopDraw)
+    {
+        m_pSmokeParticleCom->reset();
         return 0;
+    }
 
     Set_Cast();
     Set_Light();
@@ -98,11 +103,42 @@ _int CProjectile::Update_GameObject(const _float& fTimeDelta)
         break;
     }
 
+    if (m_bCharging == false)
+    {
+        _vec3 vDir, vCurPos;
+        m_pTransformCom->Get_Info(INFO_POS, &vCurPos);
+
+        vDir = vCurPos - vPrePos;
+
+        if (vDir.x > 0 && vDir.z > 0)
+        {
+            //vDir.x *= -1.f;
+
+            m_pSmokeParticleCom->update(fTimeDelta, -vDir);
+
+        }
+        else if (vDir.x < 0 && vDir.z > 0)
+        {
+            vDir.z *= -1.f;
+            m_pSmokeParticleCom->update(fTimeDelta, vDir);
+        }
+        else if (vDir.x < 0 && vDir.z < 0)
+        {
+            vDir.z *= -1.f;
+            m_pSmokeParticleCom->update(fTimeDelta, vDir);
+        }
+        else
+            m_pSmokeParticleCom->update(fTimeDelta, -vDir);
+
+        vPrePos = vCurPos;
+        
+        m_pSmokeParticleCom->update(fTimeDelta, vDir);
+    }
 
     Flip();
     m_pAnimatorCom->Set_CurState(IDLE, 0, 5, 8);
     m_pAnimatorCom->Update_Animation();
-    Add_RenderGroup(RENDER_ALPHA, this);
+    Engine::Add_RenderGroup(RENDER_ALPHA, this);
     return Engine::CGameObject::Update_GameObject(fTimeDelta);
 }
 
@@ -144,6 +180,9 @@ void CProjectile::Render_GameObject()
     m_pBufferCom->Set_Index(m_pAnimatorCom->Get_MotionIndex());
     m_pBufferCom->Render_Buffer();
     m_pColliderCom->Render_Collider();
+
+    if (m_bCharging == false)
+        m_pSmokeParticleCom->render();
 
     m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
@@ -188,6 +227,10 @@ HRESULT CProjectile::Add_Component()
     pComponent = m_pFlameParticleCom = dynamic_cast<CFirework*>(Engine::Clone_Proto(L"Proto_Firework"));
     NULL_CHECK_RETURN(pComponent, E_FAIL);
     m_mapComponent[ID_STATIC].insert({ L"Com_FireParticle", pComponent });
+
+    pComponent = m_pSmokeParticleCom = dynamic_cast<CSmoke*>(Engine::Clone_Proto(L"Proto_ProjectileSmoke"));
+    NULL_CHECK_RETURN(pComponent, E_FAIL);
+    m_mapComponent[ID_STATIC].insert({ L"Com_SmokeParticle", pComponent });
 
     return S_OK;
 

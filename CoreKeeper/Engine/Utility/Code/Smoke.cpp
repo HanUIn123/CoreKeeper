@@ -7,12 +7,12 @@ CSmoke::CSmoke()
 }
 
 CSmoke::CSmoke(LPDIRECT3DDEVICE9 pGraphicDev)
-	: PSystem(pGraphicDev)
+	: PSystem(pGraphicDev), m_bAlpha(false)
 {
 }
 
 CSmoke::CSmoke(const CSmoke& rhs)
-	: PSystem(rhs)
+	: PSystem(rhs), m_bAlpha(rhs.m_bAlpha)
 {
 }
 
@@ -20,7 +20,7 @@ CSmoke::~CSmoke()
 {
 }
 
-HRESULT CSmoke::Ready_Particles(D3DXVECTOR3* origin, _int numParticles, _int _iMaxTexture)
+HRESULT CSmoke::Ready_Particles(D3DXVECTOR3* origin, _int numParticles, _int _iMaxTexture, _float fY, _bool bAlpha)
 {
 	_origin = *origin;
 	//_size = 0.2;
@@ -29,6 +29,8 @@ HRESULT CSmoke::Ready_Particles(D3DXVECTOR3* origin, _int numParticles, _int _iM
 	_vbBatchSize = 512;
 	//파티클 기본 속성들
 	m_iMaxTexture = _iMaxTexture;
+
+	m_bAlpha = bAlpha;
 
 	for (int i = 0; i < numParticles; i++)
 		addParticle();
@@ -68,10 +70,10 @@ void CSmoke::resetParticle(Attribute* attribute) // 파티클 리셋
 	attribute->_color = D3DXCOLOR(1.f, 1.f, 1.f, d3d::GetRandomFloat(0.f, 1.f));
 	attribute->_colorFade = D3DXCOLOR(1.f, 1.f, 1.f, d3d::GetRandomFloat(0.f, 1.f));
 
-	attribute->_iTextureNum = (_int)d3d::GetRandomFloat(0.f, (_float)m_iMaxTexture);
+	attribute->_iTextureNum = (_int)d3d::GetRandomFloat(0.f, (_float)m_iMaxTexture - 1.f);
 
 	attribute->_age = 0.0f;
-	attribute->_lifeTime = 1.f; // 수명 2초
+	attribute->_lifeTime = 0.2f; // 수명 2초
 }
 
 void CSmoke::update(float timeDelta, _vec3 vDir)
@@ -87,9 +89,16 @@ void CSmoke::update(float timeDelta, _vec3 vDir)
 
 			i->_position += vDir;
 
-			if (i->_color.a <= 0.f) // 수명이 끝남
+			i->_age += timeDelta;
+
+			if (i->_age >= i->_lifeTime)
 			{
-				i->_isAlive = false;
+				i->_iTextureNum++;
+				i->_age = 0.f;
+			}
+
+			if (i->_iTextureNum >= m_iMaxTexture) // 수명이 끝남
+			{
 				resetParticle(&(*i));
 			}
 		}
@@ -100,8 +109,11 @@ void CSmoke::preRender()
 {
 	PSystem::preRender();
 
-	m_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_ONE);
-	m_pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
+	if (!m_bAlpha)
+	{
+		m_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_ONE);
+		m_pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
+	}
 
 	// z버퍼 읽기 끔
 	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, false);
@@ -115,11 +127,11 @@ void CSmoke::postRender()
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, false);
 }
 
-CSmoke* CSmoke::Create(LPDIRECT3DDEVICE9 pGraphicDev, D3DXVECTOR3* origin, _int numParticles, _int _iMaxTexture)
+CSmoke* CSmoke::Create(LPDIRECT3DDEVICE9 pGraphicDev, D3DXVECTOR3* origin, _int numParticles, _int _iMaxTexture, _float fY, _bool bAlpha)
 {
 	CSmoke* pInstance = new CSmoke(pGraphicDev);
 
-	if (FAILED(pInstance->Ready_Particles(origin, numParticles, _iMaxTexture)))
+	if (FAILED(pInstance->Ready_Particles(origin, numParticles, _iMaxTexture, fY, bAlpha)))
 	{
 		Safe_Release(pInstance);
 		MSG_BOX("Firework Create Failed");

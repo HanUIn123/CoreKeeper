@@ -2,6 +2,7 @@
 #include "../Header/MiniMapFrame.h"
 #include "../Header/Export_System.h"
 #include "../Header//Export_Utility.h"
+#include "../Header/Renderer.h"
 
 CMiniMapFrame::CMiniMapFrame(LPDIRECT3DDEVICE9 pGraphicDev)
     : Engine::CGameObject(pGraphicDev)
@@ -26,23 +27,13 @@ HRESULT CMiniMapFrame::Ready_GameObject()
 
 _int CMiniMapFrame::Update_GameObject(const _float& fTimeDelta)
 {
-    if (Engine::Get_DIKeyState(DIK_TAB) & 0x80)
-    {
-        if (!m_bFrameKeyPressed)
-        {
-            m_bCloseFrame = !m_bCloseFrame;
-            m_bFrameKeyPressed = true;
-        }
-    }
-    else
-    {
-        m_bFrameKeyPressed = false;
-    }
-
+    /*
     if (m_bCloseFrame)
     {
         return 0;  
-    }
+    }*/
+    if (CRenderer::GetInstance()->Get_CloseMap())
+        return 0;
 
     if(CRenderer::GetInstance()->Get_ExpandMap())
     {
@@ -98,6 +89,14 @@ void CMiniMapFrame::Render_GameObject()
     m_pBufferCom->Render_Buffer();
 
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
+}
+
+void CMiniMapFrame::Set_MapFrame()
+{
+   // if (Engine::Key_Down(DIK_TAB))
+   // {
+        m_bCloseFrame = !m_bCloseFrame;
+   // }
 }
 
 HRESULT CMiniMapFrame::Add_Component()

@@ -44,10 +44,10 @@ HRESULT CUIScreenInv::Ready_GameObject(_vec2 vPos, _int _iIndex)
 	m_BRect.bottom = vPos.y + vSize.y;
 	*/
 	
-	m_BRect.left = vPos.x - (vSize.x - 2.f);
-	m_BRect.right = vPos.x + (vSize.x - 2.f);
-	m_BRect.top = vPos.y - (vSize.y - 2.f);
-	m_BRect.bottom = vPos.y + (vSize.y - 2.f);
+	m_BRect.left = vPos.x - (vSize.x / 2.f);
+	m_BRect.right = vPos.x + (vSize.x / 2.f);
+	m_BRect.top = vPos.y - (vSize.y / 2.f);
+	m_BRect.bottom = vPos.y + (vSize.y / 2.f);
 	
 	m_iIndex = _iIndex;
 	m_fPosX = x;
@@ -406,9 +406,10 @@ void CUIScreenInv::Render_GameObject()
 
 			const _tchar* tFont = sFont.c_str();
 
-			_vec2 pos(m_BRect.right - 25.f, m_BRect.top + 30.f);
+			_vec2 LTPos(m_BRect.right - 20.f, m_BRect.top + 25.f);
+			_vec2 RBPos(m_BRect.right + 10.f, m_BRect.bottom + 5.f);
 
-			//Engine::Render_Font_Custom(L"Font_Item", tFont, &pos, DT_RIGHT, D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
+			Engine::Render_Font_Custom(L"Font_Item", tFont, &LTPos, &RBPos, DT_BOTTOM | DT_RIGHT, D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
 		}
 
 	}
@@ -419,9 +420,10 @@ void CUIScreenInv::Render_GameObject()
 
 		const _tchar* tFont = sFont.c_str();
 
-		_vec2 pos(m_BRect.right - 19.f, m_BRect.top + 4.f);
+		_vec2 LTPos(m_BRect.right - 26.f, m_BRect.top - 8.f);
+		_vec2 RBPos(m_BRect.right + 8.f, m_BRect.bottom - 10.f);
 
-		Engine::Render_Font(L"Font_Inv", tFont, &pos, D3DXCOLOR(0.5f, 0.5f, 0.5f, 1.f));
+		Engine::Render_Font_Custom(L"Font_Inv", tFont, &LTPos, &RBPos, DT_TOP | DT_RIGHT, D3DXCOLOR(0.5f, 0.5f, 0.5f, 1.f));
 	}
 	else
 	{
@@ -429,9 +431,10 @@ void CUIScreenInv::Render_GameObject()
 
 		const _tchar* tFont = sFont.c_str();
 
-		_vec2 pos(m_BRect.right - 19.f, m_BRect.top + 4.f);
+		_vec2 LTPos(m_BRect.right - 26.f, m_BRect.top - 8.f);
+		_vec2 RBPos(m_BRect.right + 8.f, m_BRect.bottom - 10.f);
 
-		Engine::Render_Font(L"Font_Inv", tFont, &pos, D3DXCOLOR(0.5f, 0.5f, 0.5f, 1.f));
+		Engine::Render_Font_Custom(L"Font_Inv", tFont, &LTPos, &RBPos, DT_TOP | DT_RIGHT, D3DXCOLOR(0.5f, 0.5f, 0.5f, 1.f));
 	}
 
 }
@@ -463,8 +466,8 @@ void CUIScreenInv::Move_Pos()
 
 	vSize = { m_pTransformCom->Get_Scale()->x, m_pTransformCom->Get_Scale()->y, m_pTransformCom->Get_Scale()->z };
 
-	m_BRect.top = y - vSize.y;
-	m_BRect.bottom = y + vSize.y;
+	m_BRect.top = y - vSize.y / 2.f;
+	m_BRect.bottom = y + vSize.y / 2.f;
 }
 
 HRESULT CUIScreenInv::Add_Component()
