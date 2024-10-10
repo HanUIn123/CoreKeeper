@@ -171,6 +171,8 @@ call Copy.bat</Command>
     <ClInclude Include="..\Header\Mushroom.h" />
     <ClInclude Include="..\Header\BossSpawnPoint.h" />
     <ClInclude Include="..\Header\Instrument.h" />
+    <ClInclude Include="..\Header\Pet.h" />
+    <ClInclude Include="..\Header\PetTail.h" />
     <ClInclude Include="..\Header\SlimeFloor.h" />
     <ClInclude Include="..\Header\Story.h" />
     <ClInclude Include="..\Header\StoryBackGround.h" />
@@ -336,6 +338,8 @@ call Copy.bat</Command>
     <ClCompile Include="..\Code\Mushroom.cpp" />
     <ClCompile Include="..\Code\BossSpawnPoint.cpp" />
     <ClCompile Include="..\Code\Instrument.cpp" />
+    <ClCompile Include="..\Code\Pet.cpp" />
+    <ClCompile Include="..\Code\PetTail.cpp" />
     <ClCompile Include="..\Code\SlimeFloor.cpp" />
     <ClCompile Include="..\Code\Story.cpp" />
     <ClCompile Include="..\Code\StoryBackGround.cpp" />

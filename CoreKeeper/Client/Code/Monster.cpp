@@ -402,7 +402,10 @@ _bool CMonster::Check_Wall()
 	case MON_MALUGAZ:
 		Check_WallWithPlayer();
 		break;
+	case MON_AZEOS:
+		break;
 	default:
+		Check_WallWithPlayer();
 		break;
 	}
 	return m_bCheckWall;

@@ -302,6 +302,15 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar* pLayerTag)
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Player_HairShade", pGameObject), E_FAIL);
 
+    CPet* pPet = CPet::Create(m_pGraphicDev);
+    NULL_CHECK_RETURN(pPet, E_FAIL);
+    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Pet", pPet), E_FAIL);
+
+    pGameObject = CPetTail::Create(m_pGraphicDev);
+    NULL_CHECK_RETURN(pGameObject, E_FAIL);
+    dynamic_cast<CPetTail*>(pGameObject)->Set_Pet(pPet);
+    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"PetTail", pGameObject), E_FAIL);
+
     pGameObject = CIngredient::Create(m_pGraphicDev, ITEM_BERRY_SEED);
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Berry", pGameObject), E_FAIL);
