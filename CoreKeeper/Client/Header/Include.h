@@ -10,6 +10,9 @@
 #include "Hair.h"
 #include "HairShade.h"
 
+#include "Pet.h"
+#include "PetTail.h"
+
 // Monster
 #include "Monster.h"
 #include "Slime.h"
