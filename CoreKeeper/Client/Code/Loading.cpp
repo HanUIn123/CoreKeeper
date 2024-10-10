@@ -135,6 +135,7 @@ _uint CLoading::Loading_Stage()
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_DirtFall", Engine::CFall::Create(m_pGraphicDev, &vPPos, 80, 0.0001f, 0.00001f, D3DCOLOR_ARGB(255, 108, 60, 12))), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Followers", Engine::CFollow::Create(m_pGraphicDev, &vPPos, 10)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Smoke", Engine::CSmoke::Create(m_pGraphicDev, &vPPos, 12)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ProjectileSmoke", Engine::CSmoke::Create(m_pGraphicDev, &vPPos, 12, 6, 1.f, true)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Hit", Engine::CHit::Create(m_pGraphicDev, &vPPos, 1)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Smog", Engine::CSmog::Create(m_pGraphicDev, &vPPos, 30)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Fume", Engine::CFume::Create(m_pGraphicDev, &vPPos, 20)), E_FAIL);

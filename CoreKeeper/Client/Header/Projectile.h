@@ -5,6 +5,7 @@ BEGIN(Engine)
 
 class CSmog;
 class CFirework;
+class CSmoke;
 
 END
 
@@ -61,9 +62,12 @@ private:
 private:
 	Engine::CSmog* m_pSmogParticleCom;
 	Engine::CFirework* m_pFlameParticleCom;
+	Engine::CSmoke* m_pSmokeParticleCom;
 
 	_bool    m_bSmog;
 	_bool	 m_bInFrustum;
 	_matrix m_SmogMatrix;
+
+	_vec3 vPrePos;
 };
 

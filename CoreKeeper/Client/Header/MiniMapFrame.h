@@ -25,6 +25,8 @@ public:
 	virtual			void			LateUpdate_GameObject();
 	virtual			void			Render_GameObject();
 
+	void            Set_MapFrame();
+
 private:
 	HRESULT			Add_Component();
 

@@ -50,6 +50,7 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
     m_bGraveInventory = false;
     m_bFurnace = false;
     m_bCookingPot = false;
+    m_bMiniMap = true;
 
     m_vStartPoint = { 0, 0, 0 };
     m_vKnockBackDir = { 0, 0, 0 };
@@ -1886,23 +1887,34 @@ void CPlayer::Set_UI()
 
     if (Engine::Key_Down(DIK_M))
     {
-        CRenderer::GetInstance()->Expand_MiniMap(m_pGraphicDev);
+        if(!m_bInventory)
+            Set_Map();
+
+       // Set_MiniMap();
+
     }
 
     if (Engine::Key_Down(DIK_TAB))
     {
+        if (m_bInventory && m_bCraft && m_bStatus && !m_bMiniMap)
+               Set_MiniMap();
         if (m_bMap || m_bChestInventory || m_bCraft || m_bInventory || m_bStatue || m_bGraveInventory || m_bFurnace || m_bCookingPot)
         {
             UI_Disable();
-            CRenderer::GetInstance()->Set_CloseMap(false);
+      
+            //CRenderer::GetInstance()->Set_CloseMap(false);
         }
         else if (!m_bMap && !m_bChestInventory && !m_bCraft && !m_bInventory && !m_bStatue && !m_bGraveInventory && !m_bFurnace && !m_bCookingPot)
         {
             Set_Inventory();
             Set_Craft();
             Set_Status();
-            CRenderer::GetInstance()->Set_CloseMap(true);
+            Set_MiniMap();
+            //CRenderer::GetInstance()->Set_CloseMap(true);
         }
+
+        //if (m_bInventory && m_bCraft && m_bStatus && !m_bMiniMap)
+         //   Set_MiniMap();
     }
 
     if (m_bInventory && (Engine::Key_Down(DIK_E)))
@@ -2314,11 +2326,12 @@ void CPlayer::Reset_Inventory()
 
 void CPlayer::Set_Craft(TABLETYPE eTableType, MATERIAL _eMaterial)
 {
+    /*
     if (m_bMap || m_bStatue || m_bCookingPot || m_bFurnace || m_bGraveInventory || m_bChestInventory)
     {
         UI_Disable();
         return;
-    }
+    }*/
 
     if (m_bCraft)
     {
@@ -2439,6 +2452,8 @@ void CPlayer::Set_Inventory()
 
 void CPlayer::Set_Map()
 {
+    CRenderer::GetInstance()->Expand_MiniMap(m_pGraphicDev);
+
     if (m_bMap)
         m_bMap = false;
     else
@@ -2447,12 +2462,12 @@ void CPlayer::Set_Map()
 
 void CPlayer::Set_Status()
 {
-
+    /*
     if (m_bMap || m_bStatue || m_bCookingPot || m_bFurnace || m_bGraveInventory || m_bChestInventory || !m_bInventory)
     {
         UI_Disable();
         return;
-    }
+    }*/
 
     CUIPlayerStatus* pStatus = dynamic_cast<CUIPlayerStatus*>(Engine::Get_GameObject(L"Layer_UI", L"UIPlayerStatus"));
     pStatus->Set_Window();
@@ -2647,6 +2662,24 @@ void CPlayer::Set_CookingPot(CInventory* pInventory1, CInventory* pInventory2, _
     }
 }
 
+void CPlayer::Set_MiniMap()
+{
+    if (m_bMiniMap)
+    {
+        CRenderer::GetInstance()->Set_CloseMap(true);
+       // CMiniMapFrame* pFrame = dynamic_cast<CMiniMapFrame*>(Engine::Get_GameObject(L"Layer_UI", L"MiniFrame"));
+        //pFrame->Set_MapFrame();
+        m_bMiniMap = false;
+    }
+    else if (!m_bMiniMap)
+    {
+        CRenderer::GetInstance()->Set_CloseMap(false);
+        //CMiniMapFrame* pFrame = dynamic_cast<CMiniMapFrame*>(Engine::Get_GameObject(L"Layer_UI", L"MiniFrame"));
+        //pFrame->Set_MapFrame();
+        m_bMiniMap = true;
+    }
+}
+
 void CPlayer::UI_Disable()
 {
     if (m_bCraft)
@@ -2701,6 +2734,13 @@ void CPlayer::UI_Disable()
         m_bInventory = false;
     }
 
+    /*
+    if (m_bMiniMap)
+    {
+        Set_MiniMap();
+
+        m_bMiniMap = false;
+    }*/
 }
 
 void CPlayer::Particle_Update(_float fTimeDelta)

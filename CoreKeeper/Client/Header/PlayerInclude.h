@@ -42,3 +42,5 @@
 #include "..\Header\UIChestSort.h"
 #include "..\Header\UIFurnace.h"
 #include "..\Header\UICookingPot.h"
+
+#include "..\Header\MiniMapFrame.h"

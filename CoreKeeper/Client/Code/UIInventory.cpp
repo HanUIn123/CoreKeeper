@@ -289,9 +289,10 @@ void CUIInventory::Render_GameObject()
 
 			const _tchar* tFont = sFont.c_str();
 
-			_vec2 pos(m_BRect.right - 25.f, m_BRect.top + 30.f);
+			_vec2 LTPos(m_BRect.right - 20.f, m_BRect.top + 25.f);
+			_vec2 RBPos(m_BRect.right + 10.f, m_BRect.bottom + 5.f);
 
-			//Engine::Render_Font_Custom(L"Font_Item", tFont, &pos, DT_RIGHT, D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
+			Engine::Render_Font_Custom(L"Font_Item", tFont, &LTPos, &RBPos, DT_RIGHT | DT_BOTTOM, D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
 		}
 	}
 }
