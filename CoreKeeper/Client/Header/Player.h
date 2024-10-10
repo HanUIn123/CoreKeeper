@@ -21,6 +21,7 @@ class CFollow;
 END
 
 class CTerrain;
+class CPet;
 class CPlayer : public Engine::CGameObject
 {
 private:
@@ -50,6 +51,7 @@ private:
 	void			Necklace();
 	void			Ring();
 	void			Ring_Second();
+	void			Pet();
 
 	void			Set_ImmuneByTime(_float fImmuneTime = 1.f);
 	void			Set_ImmuneByToggle();
@@ -241,6 +243,9 @@ private:
 
 	_float					m_fHungerTime;
 	_float					m_fManaTime;
+
+	CPet*					m_pPet;
+
 	CUIItemSlot* m_pEtcItems[CUIItemSlot::SLOT_END];
 public:
 	static CPlayer* Create(LPDIRECT3DDEVICE9 pGraphicDev);

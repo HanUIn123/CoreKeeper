@@ -91,6 +91,7 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
     m_fMiningBuff[1] = 0.f;
 
     m_bDestroyWall = false;
+    m_pPet = nullptr;
 }
 
 CPlayer::~CPlayer()
@@ -583,6 +584,7 @@ void CPlayer::Equipment_Function(const _float& fTimeDelta)
     Necklace();
     Ring();
     Ring_Second();
+    Pet();
 }
 
 void CPlayer::Auxiliary(const _float& fTimeDelta)
@@ -788,6 +790,15 @@ void CPlayer::Ring_Second()
         m_tEquipmentStat.iMaxMp += 20;
         break;
     }
+}
+
+void CPlayer::Pet()
+{
+    CItem* pPet = m_pEtcItems[CUIItemSlot::SLOT_PET]->Get_Item();
+    if (!pPet)
+        m_pPet->Set_StopDraw(true);
+    else
+        m_pPet->Set_StopDraw(false);
 }
 
 void CPlayer::Set_ImmuneByTime(_float fImmuneTime)
@@ -1791,6 +1802,7 @@ void CPlayer::Set_Clothes()
     m_pClothes[3] = dynamic_cast<CItem*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player_Shirt"));
     m_pClothes[4] = dynamic_cast<CItem*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player_Pants"));
     m_pTerrain = dynamic_cast<CTerrain*>(Engine::Get_GameObject(L"Layer_Environment", L"Terrain"));
+    m_pPet = dynamic_cast<CPet*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Pet"));
 
     for (_int i = 0; i < CUIItemSlot::SLOT_END; i++)
     {

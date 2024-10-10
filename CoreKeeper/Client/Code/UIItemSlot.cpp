@@ -86,6 +86,7 @@ HRESULT CUIItemSlot::Ready_GameObject(_vec2 vPos, _vec2 vSize, SLOTTYPE _eType)
 
 	case SLOT_PET:
 		m_iIndex = 8;
+		eSlotItemType = ITEM_PET;
 		break;
 
 	default:
