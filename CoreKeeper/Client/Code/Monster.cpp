@@ -375,11 +375,95 @@ void CMonster::Set_StuckFree(const _float& fTimeDelta)
 	{
 		if (m_pTerrain->Get_UnreachableByIndex(iIndex))
 		{
-			vDir = vCheckPos - _vec3(_int(vCheckPos.x + 0.5f * VTXITV), 0, _int(vCheckPos.z + 0.5f * VTXITV) * (VTXCNTX - 1));
-			D3DXVec3Normalize(&vDir, &vDir);
-			vDir.y = 0;
-			m_iSpeedWeight = 1;
-			m_pTransformCom->Move_Pos(&vDir, fTimeDelta, m_fSpeed * 10);
+
+			_int iLeft = iIndex - 1;
+			_int iRight = iIndex + 1;
+			_int iBottom = iIndex - (VTXCNTX - 1);
+			_int iTop = iIndex + (VTXCNTX - 1);
+			_int iTopLeft = iIndex - 1 + (VTXCNTX - 1);
+			_int iTopRight = iIndex + 1 + (VTXCNTX - 1);
+			_int iBottomLeft = iIndex - 1 - (VTXCNTX - 1);
+			_int iBottomRight = iIndex + 1 - (VTXCNTX - 1);
+			_float fX = 0.f, fZ = 0.f;
+			_vec3 vDestPoint;
+			if (0 <= iLeft && iLeft < (VTXCNTX - 1) * (VTXCNTZ - 1))
+			{
+				if (!m_pTerrain->Get_UnreachableByIndex(iLeft))
+				{
+					fX = (iLeft % (VTXCNTX - 1)) * VTXITV;
+					fZ = (iLeft / (VTXCNTX - 1)) * VTXITV;
+				}
+			}
+			if (0 <= iRight && iRight < (VTXCNTX - 1) * (VTXCNTZ - 1))
+			{
+				if (!m_pTerrain->Get_UnreachableByIndex(iRight))
+				{
+					fX = (iRight % (VTXCNTX - 1)) * VTXITV;
+					fZ = (iRight / (VTXCNTX - 1)) * VTXITV;
+				}
+			}
+			if (0 <= iBottom && iBottom < (VTXCNTX - 1) * (VTXCNTZ - 1))
+			{
+				if (!m_pTerrain->Get_UnreachableByIndex(iBottom))
+				{
+					fX = (iBottom % (VTXCNTX - 1)) * VTXITV;
+					fZ = (iBottom / (VTXCNTX - 1)) * VTXITV;
+				}
+			}
+			if (0 <= iTop && iTop < (VTXCNTX - 1) * (VTXCNTZ - 1))
+			{
+				if (!m_pTerrain->Get_UnreachableByIndex(iTop))
+				{
+					fX = (iTop % (VTXCNTX - 1)) * VTXITV;
+					fZ = (iTop / (VTXCNTX - 1)) * VTXITV;
+				}
+			}
+			if (0 <= iTopLeft && iTopLeft < (VTXCNTX - 1) * (VTXCNTZ - 1))
+			{
+				if (!m_pTerrain->Get_UnreachableByIndex(iTopLeft))
+				{
+					fX = (iTopLeft % (VTXCNTX - 1)) * VTXITV;
+					fZ = (iTopLeft / (VTXCNTX - 1)) * VTXITV;
+				}
+			}
+			if (0 <= iTopRight && iTopRight < (VTXCNTX - 1) * (VTXCNTZ - 1))
+			{
+				if (!m_pTerrain->Get_UnreachableByIndex(iTopRight))
+				{
+					fX = (iTopRight % (VTXCNTX - 1)) * VTXITV;
+					fZ = (iTopRight / (VTXCNTX - 1)) * VTXITV;
+				}
+			}
+			if (0 <= iBottomLeft && iBottomLeft < (VTXCNTX - 1) * (VTXCNTZ - 1))
+			{
+				if (!m_pTerrain->Get_UnreachableByIndex(iBottomLeft))
+				{
+					fX = (iBottomLeft % (VTXCNTX - 1)) * VTXITV;
+					fZ = (iBottomLeft / (VTXCNTX - 1)) * VTXITV;
+				}
+			}
+			if (0 <= iBottomRight && iBottomRight < (VTXCNTX - 1) * (VTXCNTZ - 1))
+			{
+				if (!m_pTerrain->Get_UnreachableByIndex(iBottomRight))
+				{
+					fX = (iBottomRight % (VTXCNTX - 1)) * VTXITV;
+					fZ = (iBottomRight / (VTXCNTX - 1)) * VTXITV;
+				}
+			}
+			if (fX == 0.f && fZ == 0.f)
+			{
+				m_pTransformCom->Set_Pos(m_vRespawnPoint.x, m_vRespawnPoint.y, m_vRespawnPoint.z);
+			}
+			else
+			{
+				vDestPoint = { fX, 0, fZ };
+				vDir = vDestPoint - vCheckPos;
+				D3DXVec3Normalize(&vDir, &vDir);
+				vDir.y = 0;
+				m_iSpeedWeight = 1;
+				m_pTransformCom->Move_Pos(&vDir, fTimeDelta, m_fSpeed * 2);
+			}
+			
 		}
 	}
 }

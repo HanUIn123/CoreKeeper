@@ -86,7 +86,7 @@ _int CSlime::Update_GameObject(const _float& fTimeDelta)
 
     //Apply_Billboard();
 
-    //Set_StuckFree(fTimeDelta);
+    Set_StuckFree(fTimeDelta);
     m_pAnimatorCom->Update_Animation();
     Add_RenderGroup(RENDER_ALPHA, this);
     return iExit;

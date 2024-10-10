@@ -118,7 +118,7 @@ _int CHunter::Update_GameObject(const _float& fTimeDelta)
 
 
     Flip();
-    //Set_StuckFree(fTimeDelta);
+    Set_StuckFree(fTimeDelta);
 
     Add_RenderGroup(RENDER_ALPHA, this);
     return iExit;
@@ -259,7 +259,7 @@ void CHunter::Pattern_Idle(const _float& fTimeDelta)
             m_fIdleTimeLimit = 2.f;
             break;
         case HUNTER_MOVE:
-            m_fIdleTimeLimit = rand() % 2 + 1.5f;
+            m_fIdleTimeLimit = rand() % 2 + 0.5f;
             m_iDir = rand() % 8 + 1;
             break;
         case HUNTER_IDLE:
@@ -442,11 +442,10 @@ void CHunter::Pattern_Idle(const _float& fTimeDelta)
             Set_Stop(fTimeDelta, &vLook, fLookSpeed, &vRight, fRightSpeed);
             if (m_iSpeedWeight == 0)
             {
-                m_iDir = 0;
                 m_bIdling = false;
                 m_fIdleTime = 0.f;
             }
-            else if (m_iDir)
+            if (m_iDir)
             {
                 _int iWeight = 1;
                 if (m_eDir == LEFT)
@@ -454,13 +453,13 @@ void CHunter::Pattern_Idle(const _float& fTimeDelta)
                 m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vLook, &vLook), fTimeDelta, fLookSpeed * m_iSpeedWeight);
                 m_pTransformCom->Move_Pos(D3DXVec3Normalize(&vRight, &vRight), fTimeDelta, fRightSpeed * iWeight * m_iSpeedWeight);
             }
-            break;
         }
         else
         {
             m_bIdling = false;
             m_fIdleTime = 0.f;
         }
+        break;
     }
 }
 
