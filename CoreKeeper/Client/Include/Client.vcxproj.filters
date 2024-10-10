@@ -514,7 +514,7 @@
     <Filter Include="02. GameObject\02. Monster\99. Pet\PetTail">
       <UniqueIdentifier>{c90cf218-c0c7-409a-860d-11df82f360cc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\08. Object\16.AzeosSpawnPoint">
+    <Filter Include="02. GameObject\08. Object\16. AzeosSpawnPoint">
       <UniqueIdentifier>{1c4fd97b-6fa8-41a0-96b5-adefa138e636}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -1012,7 +1012,7 @@
       <Filter>02. GameObject\02. Monster\99. Pet\PetTail</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\AzeosSpawnPoint.h">
-      <Filter>02. GameObject\08. Object\16.AzeosSpawnPoint</Filter>
+      <Filter>02. GameObject\08. Object\16. AzeosSpawnPoint</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1488,7 +1488,7 @@
       <Filter>02. GameObject\02. Monster\99. Pet\PetTail</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\AzeosSpawnPoint.cpp">
-      <Filter>02. GameObject\08. Object\16.AzeosSpawnPoint</Filter>
+      <Filter>02. GameObject\08. Object\16. AzeosSpawnPoint</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
