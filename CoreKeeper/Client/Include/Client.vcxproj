@@ -159,6 +159,7 @@ call Copy.bat</Command>
     <ClInclude Include="..\Header\AzeosPoop.h" />
     <ClInclude Include="..\Header\BuffMgr.h" />
     <ClInclude Include="..\Header\Bullet.h" />
+    <ClInclude Include="..\Header\PetItem.h" />
     <ClInclude Include="..\Header\ChocoBar.h" />
     <ClInclude Include="..\Header\Lunch.h" />
     <ClInclude Include="..\Header\Crystal.h" />
@@ -323,6 +324,7 @@ call Copy.bat</Command>
     <ClCompile Include="..\Code\AzeosPoop.cpp" />
     <ClCompile Include="..\Code\BuffMgr.cpp" />
     <ClCompile Include="..\Code\Bullet.cpp" />
+    <ClCompile Include="..\Code\PetItem.cpp" />
     <ClCompile Include="..\Code\Crystal.cpp" />
     <ClCompile Include="..\Code\ChocoBar.cpp" />
     <ClCompile Include="..\Code\Lunch.cpp" />

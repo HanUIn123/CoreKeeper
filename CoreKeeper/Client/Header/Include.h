@@ -85,7 +85,7 @@
 #include "Lunch.h"
 #include "ChocoBar.h"
 #include "Instrument.h"
-
+#include "PetItem.h"
 
 // Etc
 #include "Terrain.h"
