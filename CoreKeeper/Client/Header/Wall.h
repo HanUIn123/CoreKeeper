@@ -100,7 +100,6 @@ private:
     int     m_iCurImgNum;
     _int    m_iDurability;
     bool    m_bInFrustum;
-    bool    m_bOpen;
     static _long                                            m_iItemNumber;
     static  bool                                            m_bDown;
 };
