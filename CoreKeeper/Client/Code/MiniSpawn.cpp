@@ -2,12 +2,14 @@
 #include "../Header/MiniSpawn.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
+#include "../Header/BlackPlaneMgr.h"
+#include "../Header/Player.h"
 
 CMiniSpawn::CMiniSpawn(LPDIRECT3DDEVICE9 pGraphicDev)
     :Engine::CGameObject(pGraphicDev)
     , m_pTransformCom(nullptr)
     , m_pTextureCom(nullptr)
-    , m_bRevealed(false)
+    , m_bRevealed(true)
 {
 }
 
@@ -28,6 +30,10 @@ HRESULT CMiniSpawn::Ready_GameObject(_vec3 vPos)
 
 _int CMiniSpawn::Update_GameObject(const _float& fTimeDelta)
 {
+    if (CBlackPlaneMgr::GetInstance()->Is_FadeOutComplete())
+    {
+    }
+
     Check_PlayerPos(m_bRevealed);
 
     Add_RenderGroup(RENDER_MAP, this);
@@ -37,8 +43,6 @@ _int CMiniSpawn::Update_GameObject(const _float& fTimeDelta)
 
 void CMiniSpawn::LateUpdate_GameObject()
 {
-   // Piking_Teleport();
-
     Engine::CGameObject::LateUpdate_GameObject();
 }
 
@@ -84,6 +88,8 @@ _bool CMiniSpawn::Piking_Teleport()
 
     CTransform* pPlayerTransform = dynamic_cast<CTransform*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Transform"));
 
+    CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
+
     _vec3 vTeleportPos;
     m_pTransformCom->Get_Info(INFO_POS, &vTeleportPos);
 
@@ -124,6 +130,9 @@ _bool CMiniSpawn::Piking_Teleport()
 
             if (Engine::Get_DIMouseState(DIM_RB) & 0x80 && !bClicked)
             {
+                CBlackPlaneMgr::GetInstance()->StartFadeOut();
+                pPlayer->Check_MapOff();
+
                 _matrix matWorld;
                 pPlayerTransform->Get_WorldMatrix(&matWorld);
 

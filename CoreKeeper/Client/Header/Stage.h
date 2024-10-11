@@ -7,6 +7,7 @@
 #include "CraftMgr.h"
 #include "FarmMgr.h"
 #include "BuffMgr.h"
+#include "BlackPlaneMgr.h"
 
 #include "MapToolTerrain.h"
 #include "../Header/MiniMapCamera.h"
