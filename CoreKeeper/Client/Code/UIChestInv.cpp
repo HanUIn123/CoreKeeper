@@ -131,7 +131,7 @@ void CUIChestInv::Render_GameObject()
 
 	m_pRcTextureCom->Render_Buffer();
 
-	if (m_bCollapse && (m_iCurInv != m_iIndex))
+	if (m_bCollapse)
 	{
 		m_pColTextureCom->Set_Texture();
 

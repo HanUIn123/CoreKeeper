@@ -718,6 +718,10 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
         CBuffMgr::GetInstance()->Set_UIBuff((BUFFTYPE)i, dynamic_cast<CUIBuff*>(pGameObject));
     }
 
+    pGameObject = CUIFont::Create(m_pGraphicDev);
+    NULL_CHECK_RETURN(pGameObject, E_FAIL);
+    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Font", pGameObject), E_FAIL);
+
     m_mapLayer.insert({ pLayerTag , pLayer });
 
     return S_OK;
