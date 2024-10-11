@@ -484,7 +484,7 @@ void CPlayer::Mouse_Click(const _float& fTimeDelta)
                     m_eState = SWING;
                     m_bSwing = true;
                     Swing_Equipment();
-                    if(m_pHandedItem->Get_ItemMaterial() == MATERIAL_WOOD)
+                    if (m_pHandedItem->Get_ItemMaterial() == MATERIAL_WOOD)
                         Engine::CSoundMgr::GetInstance()->Play(L"woodSwordAttack2.wav", SOUND_PLAYER, 0.5f);
                     else
                         Engine::CSoundMgr::GetInstance()->Play(L"swordAttack.wav", SOUND_PLAYER, 0.5f);
@@ -1322,7 +1322,7 @@ void CPlayer::Shoot_Equipment()
         if (!m_bShootOnce)
         {
             m_bShootOnce = true;
-            if(m_pHandedItem->Get_ItemNum() == ITEM_BOW)
+            if (m_pHandedItem->Get_ItemNum() == ITEM_BOW)
                 Engine::CSoundMgr::GetInstance()->Play(L"cupidBowShoot.wav", SOUND_PLAYER, 0.2f);
             else
                 Engine::CSoundMgr::GetInstance()->Play(L"sunStaffProjectileSpawn.wav", SOUND_PLAYER, 0.2f);
@@ -1410,7 +1410,7 @@ void CPlayer::PickAxe()
                             Engine::CSoundMgr::GetInstance()->Play(L"Wall_Stone_destroy.wav", SOUND_PLAYER, 0.2f);
                         else if (pWall->Get_WallNumber() < 45)
                             Engine::CSoundMgr::GetInstance()->Play(L"Wall_Nature_destroy.wav", SOUND_PLAYER, 0.2f);
-                        
+
                         m_pTransformCom->Get_WorldMatrix(&m_bPickaxeMatrix);
 
                         _vec3 vAxePos, vAxeRight;
@@ -1571,7 +1571,7 @@ void CPlayer::Hoe()
             _int iIndex = _int(m_vMouseWorldPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (m_vMouseWorldPos.x + 0.5f * VTXITV);
             if (!m_pTerrain->Get_UnreachableByIndex(iIndex))
                 Engine::CSoundMgr::GetInstance()->Play(L"dirtImpact.wav", SOUND_PLAYER, 0.4f);
-            
+
             switch (m_pHandedItem->Get_ItemMaterial())
             {
             case MATERIAL_WOOD: // 1 x 1
@@ -1580,9 +1580,9 @@ void CPlayer::Hoe()
                     if (!CFarmMgr::GetInstance()->Harvest_Plant(iIndex))
                     {
                         _int iTileNum = m_pTerrain->Get_TextureNumber(iIndex);
-                        if(iTileNum < 9)
+                        if (iTileNum < 9)
                             m_pTerrain->Set_TextureNumber(iIndex, 27);
-                        else if(iTileNum < 18)
+                        else if (iTileNum < 18)
                             m_pTerrain->Set_TextureNumber(iIndex, 29);
                     }
                 }
@@ -1646,7 +1646,7 @@ void CPlayer::Watering()
             {
             case MATERIAL_COPPER: // 1 x 1
                 CFarmMgr::GetInstance()->Watering_Plant(iIndex);
-                if(m_pTerrain->Get_TextureNumber(iIndex) == 27 || m_pTerrain->Get_TextureNumber(iIndex) == 29)
+                if (m_pTerrain->Get_TextureNumber(iIndex) == 27 || m_pTerrain->Get_TextureNumber(iIndex) == 29)
                     Engine::CSoundMgr::GetInstance()->Play(L"squish1.wav", SOUND_PLAYER, 0.4f);
                 break;
             case MATERIAL_IRON: // 3 x 3
@@ -1685,7 +1685,7 @@ void CPlayer::Plant(ITEMNUM eHandedNum)
             _int iIndex = _int(m_vMouseWorldPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (m_vMouseWorldPos.x + 0.5f * VTXITV);
             if (!m_pTerrain->Get_UnreachableByIndex(iIndex))
             {
-                if(CFarmMgr::GetInstance()->Create_Plant(iIndex, eHandedNum))
+                if (CFarmMgr::GetInstance()->Create_Plant(iIndex, eHandedNum))
                     m_pInventoryCom->Minus_Item(eHandedNum, 1);
             }
         }
@@ -2077,19 +2077,19 @@ void CPlayer::Set_UI()
         (Engine::Get_GameObject(L"Layer_UI", L"UI_Health"));
     NULL_CHECK_RETURN(pHp);
 
-    pHp->Set_InfoH(m_pStateCom->Get_Stat()->iHp, m_pStateCom->Get_Stat()->iMaxHp); 
+    pHp->Set_InfoH(m_pStateCom->Get_Stat()->iHp, m_pStateCom->Get_Stat()->iMaxHp);
 
     CUIStatusBar* pMp = dynamic_cast<CUIStatusBar*>
         (Engine::Get_GameObject(L"Layer_UI", L"UI_Mp"));
     NULL_CHECK_RETURN(pMp);
 
-    pMp->Set_InfoH(m_pStateCom->Get_Stat()->iMp, m_pStateCom->Get_Stat()->iMaxMp); 
+    pMp->Set_InfoH(m_pStateCom->Get_Stat()->iMp, m_pStateCom->Get_Stat()->iMaxMp);
 
     CUIStatusBar* pHunger = dynamic_cast<CUIStatusBar*>
         (Engine::Get_GameObject(L"Layer_UI", L"UI_Hunger"));
     NULL_CHECK_RETURN(pMp);
 
-    pHunger->Set_InfoH(m_pStateCom->Get_Hunger(), m_pStateCom->Get_MaxHunger()); 
+    pHunger->Set_InfoH(m_pStateCom->Get_Hunger(), m_pStateCom->Get_MaxHunger());
 
     if (Engine::Get_DIMouseMove(DIMS_Z) && !m_bInventory)
     {
@@ -2111,21 +2111,23 @@ void CPlayer::Set_UI()
 
     if (Engine::Key_Down(DIK_M))
     {
-        if(!m_bInventory)
+        if (!m_bInventory)
             Set_Map();
 
-       // Set_MiniMap();
+        // Set_MiniMap();
 
     }
+
+    //Check_MapOff();
 
     if (Engine::Key_Down(DIK_TAB))
     {
         if (m_bInventory && m_bCraft && m_bStatus && !m_bMiniMap)
-               Set_MiniMap();
+            Set_MiniMap();
         if (m_bMap || m_bChestInventory || m_bCraft || m_bInventory || m_bStatue || m_bGraveInventory || m_bFurnace || m_bCookingPot)
         {
             UI_Disable();
-      
+
             //CRenderer::GetInstance()->Set_CloseMap(false);
         }
         else if (!m_bMap && !m_bChestInventory && !m_bCraft && !m_bInventory && !m_bStatue && !m_bGraveInventory && !m_bFurnace && !m_bCookingPot)
@@ -2919,8 +2921,8 @@ void CPlayer::Set_MiniMap()
     if (m_bMiniMap)
     {
         CRenderer::GetInstance()->Set_CloseMap(true);
-       // CMiniMapFrame* pFrame = dynamic_cast<CMiniMapFrame*>(Engine::Get_GameObject(L"Layer_UI", L"MiniFrame"));
-        //pFrame->Set_MapFrame();
+        // CMiniMapFrame* pFrame = dynamic_cast<CMiniMapFrame*>(Engine::Get_GameObject(L"Layer_UI", L"MiniFrame"));
+         //pFrame->Set_MapFrame();
         m_bMiniMap = false;
     }
     else if (!m_bMiniMap)
@@ -3059,6 +3061,11 @@ void CPlayer::Set_KnockBack(_vec3 vEnemyPos, _int iDamage, _float fDist, PLAYERH
             break;
         }
     }
+}
+
+void CPlayer::Check_MapOff()
+{
+    Set_Map();
 }
 
 void CPlayer::KnockBack(const _float& fTimeDelta)
