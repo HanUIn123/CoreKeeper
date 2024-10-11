@@ -135,7 +135,7 @@ void CUIBuff::Set_Window(BUFFTYPE _eType)
 		m_eBuffIndex = BUFF;
 		break;
 	case BUFF_FULL:
-		m_eBuffType = BUFF_ICON_FULL;
+		m_eBuffType = DEBUFF_ICON_HUNGER;
 		m_eBuffIndex = BUFF;
 		break;
 	case BUFF_IMMUNE:
