@@ -309,7 +309,7 @@ void CMonster::Drop_Item()
 	switch (eItem)
 	{
 	case ITEM_MUSHROOM:
-		pGameObject = CIngredient::Create(m_pGraphicDev, ITEM_MUSHROOM, vPos);
+		pGameObject = CIngredient::Create(m_pGraphicDev, ITEM_END, vPos);
 		NULL_CHECK(pGameObject);
 		m_vecItemName.push_back(L"Monster_Created_Mushroom" + std::to_wstring(m_iTagNumber++));
 		break;
@@ -325,11 +325,6 @@ void CMonster::Drop_Item()
 		NULL_CHECK(pGameObject);
 		m_vecItemName.push_back(L"Monster_Created_Ore" + std::to_wstring(m_iTagNumber++));
 		break;
-	case ITEM_WOOD:
-		pGameObject = CWood::Create(m_pGraphicDev, vPos);
-		NULL_CHECK(pGameObject);
-		m_vecItemName.push_back(L"Monster_Created_Wood" + std::to_wstring(m_iTagNumber++));
-		break;
 	case ITEM_MUCUS:
 		pGameObject = CMucus::Create(m_pGraphicDev, vPos);
 		NULL_CHECK(pGameObject);
@@ -341,6 +336,10 @@ void CMonster::Drop_Item()
 		NULL_CHECK(pGameObject);
 		m_vecItemName.push_back(L"Monster_Created_Piece" + std::to_wstring(m_iTagNumber++));
 		break;
+	case ITEM_ASSISTANCE:
+		pGameObject = CAssistance::Create(m_pGraphicDev, ASSISTANCE_FEATHER, vPos);
+		NULL_CHECK(pGameObject);
+		m_vecItemName.push_back(L"Monster_Created_Feather" + std::to_wstring(m_iTagNumber++));
 	default:
 		break;
 	}

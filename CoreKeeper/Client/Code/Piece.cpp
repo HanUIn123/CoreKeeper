@@ -17,6 +17,7 @@ HRESULT CPiece::Ready_GameObject(ITEMNUM _eItemNum, _vec3 vPos)
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
 	m_eItemNum = _eItemNum;
+	m_iTextureNumber = m_eItemNum - ITEM_SKULL_PIECE;
 
 	switch (m_eItemNum)
 	{
