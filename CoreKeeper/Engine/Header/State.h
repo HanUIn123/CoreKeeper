@@ -42,6 +42,8 @@ public:
 		m_tStat.iDefense += pStat->iDefense;
 		m_tStat.iMaxHp += pStat->iMaxHp;
 		m_tStat.iMaxMp += pStat->iMaxMp;
+		if (m_tStat.iMaxHp < m_tStat.iHp)
+			m_tStat.iHp = m_tStat.iMaxHp;
 	}
 
 	void				Set_MaxHP(int iMaxHp) { m_tStat.iMaxHp = iMaxHp; }

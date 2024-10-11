@@ -2296,6 +2296,18 @@ void CPlayer::Set_Buff(const _float& fTimeDelta)
                 else
                     Set_Speed(m_fNormalSpeed * 0.6f);
                 break;
+            case DEBUFF_HUNGER:
+                if (m_arrBuffState[BUFF_HP])
+                    m_tBuffStat.iMaxHp = 0;
+                else
+                    m_tBuffStat.iMaxHp = m_pStateCom->Get_Stat()->iMaxHp * -0.05f;
+
+                if (m_arrBuffState[BUFF_ATT])
+                    m_tBuffStat.iAttack = 0;
+                else
+                    m_tBuffStat.iAttack = m_pStateCom->Get_Stat()->iAttack * -0.05f;
+
+                break;
             case DEBUFF_STUN:
                 if (!m_bDash)
                     m_iSpeedWeight = 0;
@@ -2346,7 +2358,10 @@ void CPlayer::Set_Hungry(const _float& fTimeDelta)
         if (m_fHungerTime >= 5.f)
         {
             m_fHungerTime = 0.f;
-            m_pStateCom->Set_HungerMinus(1);
+            if (m_pStateCom->Get_Hunger() <= 0)
+                m_pStateCom->Set_Damaged(5);
+            else
+                m_pStateCom->Set_HungerMinus(5);
         }
     }
 
@@ -2359,6 +2374,17 @@ void CPlayer::Set_Hungry(const _float& fTimeDelta)
     {
         if (m_arrBuffState[BUFF_FULL])
             CBuffMgr::GetInstance()->Set_BuffEnd(BUFF_FULL);
+    }
+
+    if (m_pStateCom->Get_Hunger() < 25)
+    {
+        if (!m_arrBuffState[DEBUFF_HUNGER])
+            CBuffMgr::GetInstance()->Set_BuffStart(DEBUFF_HUNGER, 999);
+    }
+    else
+    {
+        if (m_arrBuffState[DEBUFF_HUNGER])
+            CBuffMgr::GetInstance()->Set_BuffEnd(DEBUFF_HUNGER);
     }
 }
 
@@ -2959,7 +2985,7 @@ void CPlayer::Set_KnockBack(_vec3 vEnemyPos, _int iDamage, _float fDist, PLAYERH
         m_vStartPoint = vEnemyPos;
         m_fKnockBackDist = fDist;
 
-        m_pStateCom->Set_Damaged(iDamage);
+        m_pStateCom->Set_Damaged(iDamage * (1 - (m_pStateCom->Get_Stat()->iDefense / 200)));
         Set_ImmuneByTime();
 
         // 여기에 이펙트 추가
