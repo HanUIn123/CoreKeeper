@@ -59,16 +59,10 @@ _int CItem::Update_GameObject(const _float& fTimeDelta)
 	if (m_bDrop)
 	{
 		// 아이템 움직임
-		CItem::Wave(fTimeDelta);
-
-		Engine::CCollider* pPlayerCollider = dynamic_cast<Engine::CCollider*>
-			(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Collider"));
+		Wave(fTimeDelta);
 
 		// 플레이어와 충돌
-		if (m_pColliderCom->Check_Collision(pPlayerCollider))
-		{
-			In_Inventory();
-		}
+		Check_Collision();
 	}
 	
 	Add_RenderGroup(RENDER_ALPHA, this);
@@ -397,8 +391,20 @@ void CItem::In_Inventory()
 	// 인벤토리에 들어갔다
 	if (pPlayerInventory->Add_Item(this))
 	{
+		//Engine::CSoundMgr::GetInstance()->Play(L"cupidBowHit.wav", SOUND_ITEM_PICKUP, 0.2f);
 		m_bActive = false;
 		m_bDrop = false;
+	}
+}
+
+void CItem::Check_Collision()
+{
+	Engine::CCollider* pPlayerCollider = dynamic_cast<Engine::CCollider*>
+		(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Collider"));
+
+	if (m_pColliderCom->Check_Collision(pPlayerCollider))
+	{
+		In_Inventory();
 	}
 }
 

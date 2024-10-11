@@ -106,22 +106,15 @@ _int CStaff::Update_GameObject(const _float& fTimeDelta)
 		m_pMagic->Get_Transform()->Set_Pos(vPos.x, 100.f, vPos.z);
 	}
 
-
-
 	if (m_bDrop)
 	{
 		// 아이템 움직임
-		CItem::Wave(fTimeDelta);
-
-		Engine::CCollider* pPlayerCollider = dynamic_cast<Engine::CCollider*>
-			(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Collider"));
+		Wave(fTimeDelta);
 
 		// 플레이어와 충돌
-		if (m_pColliderCom->Check_Collision(pPlayerCollider))
-		{
-			In_Inventory();
-		}
+		Check_Collision();
 	}
+
 	Add_RenderGroup(RENDER_ALPHA, this);
 
 	return Engine::CGameObject::Update_GameObject(fTimeDelta);

@@ -362,10 +362,6 @@ void CCraftMgr::Set_Recipe()
     woodHoeRecipe.vecIngredients.push_back({ ITEM_WOOD, 4 });
     m_mapRecipes[make_pair(ITEM_HOE, MATERIAL_WOOD)] = woodHoeRecipe;
 
-    Recipe wateringcan;
-    woodHoeRecipe.vecIngredients.push_back({ ITEM_WOOD, 3 });
-    m_mapRecipes[make_pair(ITEM_WATERINGCAN, MATERIAL_WOOD)] = wateringcan;
-
     // 구리 호미
     Recipe copperHoeRecipe;
     copperHoeRecipe.vecIngredients.push_back({ ITEM_WOOD, 4 });

@@ -19,10 +19,29 @@ HRESULT CInventory::Ready_Inventory(int _iSlotCount)
 	return S_OK;
 }
 
-void CInventory::Sort_Item(_int i)
+void CInventory::Sort_Item(_int iIndex)
 {
+	// 인덱스부터 끝까지 중복 아이템 합치기
+	for (int i = iIndex; i < m_vecItems.size() - 1; i++)
+	{
+		if (m_vecItems[i] == nullptr)
+			continue;
+
+		for (int j = i + 1; j < m_vecItems.size(); j++)
+		{
+			if (!m_vecItems[j])
+				continue;
+
+			if (m_vecItems[i]->Get_ItemNum() == m_vecItems[j]->Get_ItemNum() && m_vecItems[i]->Get_ItemNum() > ITEM_ETC)
+			{
+				m_vecItems[i]->Add_Count(m_vecItems[j]->Get_Count());
+				Remove_Item(j);
+			}
+		}
+	}
+
 	// 10번째 인덱스부터 끝까지 정렬
-	sort(m_vecItems.begin() + i, m_vecItems.end(),
+	sort(m_vecItems.begin() + iIndex, m_vecItems.end(),
 		[](CItem* a, CItem* b) {
 			// 둘 다 nullptr인 경우
 			if (a == nullptr && b == nullptr) return false;
@@ -143,43 +162,43 @@ bool CInventory::Enough_Item(ITEMNUM _eItemNum, int _iCount)
 	return false;
 }
 
-void CInventory::Put_Same_Item(CInventory* _playerInventory, CInventory* _chestInventory)
+void CInventory::Put_Same_Item(CInventory* _Inventory)
 {
-	// 플레이어 인벤토리의 모든 슬롯을 확인
-	for (int i = 0; i < _playerInventory->m_vecItems.size(); i++)
+	// 옮길 아이템이 있는 인벤토리의 모든 슬롯을 확인
+	for (int i = 0; i < m_vecItems.size(); i++)
 	{
-		CItem* pPlayerItem = _playerInventory->m_vecItems[i];
+		CItem* pItem = m_vecItems[i];
 
 		// 빈 슬롯이면 건너뛰기 (혹시 몰라서 카운트 0인것도 확인)
-		if (pPlayerItem == nullptr || pPlayerItem->Get_Count() == 0)
+		if (pItem == nullptr || pItem->Get_Count() == 0)
 			continue;
 
-		// 상자 인벤토리에서 같은 아이템을 찾음
-		for (int j = 0; j < _chestInventory->m_vecItems.size(); j++)
+		// 옮겨 담을 인벤토리에서 같은 아이템을 찾음
+		for (int j = 0; j < _Inventory->m_vecItems.size(); j++)
 		{
-			CItem* pChestItem = _chestInventory->m_vecItems[j];
+			CItem* pChestItem = _Inventory->m_vecItems[j];
 
 			// 상자에 같은 아이템이 있는 경우, 수량을 더해줌
-			if (pChestItem != nullptr && pChestItem->Get_ItemNum() == pPlayerItem->Get_ItemNum())
+			if (pChestItem != nullptr && pChestItem->Get_ItemNum() == pItem->Get_ItemNum())
 			{
-				pChestItem->Add_Count(pPlayerItem->Get_Count());
-				_playerInventory->Remove_Item(i);  // 플레이어 인벤토리에서 아이템 제거
+				pChestItem->Add_Count(pItem->Get_Count());
+				Remove_Item(i);  // 플레이어 인벤토리에서 아이템 제거
 				break;
 			}
 		}
 	}
 }
 
-void CInventory::Move_All_Item(CInventory* _pGravestoneInventory)
+void CInventory::Move_All_Item(CInventory* _pInventory, _int iIndex)
 {
-	// 플레이어 인벤토리의 모든 슬롯을 확인
-	for (int i = 10; i < m_vecItems.size(); i++)
+	// 인벤토리의 모든 슬롯을 확인
+	for (int i = iIndex; i < m_vecItems.size(); i++)
 	{
 		// 빈 슬롯이면 건너뛰기 (혹시 몰라서 카운트 0인것도 확인)
 		if (m_vecItems[i] == nullptr || m_vecItems[i]->Get_Count() == 0)
 			continue;
 
-		_pGravestoneInventory->Add_Item(m_vecItems[i]);
+		_pInventory->Add_Item(m_vecItems[i]);
 		Remove_Item(i);
 	}
 }

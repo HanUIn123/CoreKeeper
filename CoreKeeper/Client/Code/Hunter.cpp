@@ -52,7 +52,6 @@ HRESULT CHunter::Ready_GameObject(_vec3 vPos)
     m_pTransformCom->Set_Scale(1.2f, 1.2f, 1.2f);
     m_pStateCom->Set_Stat(400, 0, 100, 0);
     m_vecDropItem.push_back(ITEM_FEATHER_PIECE);
-    m_vecDropItem.push_back(ITEM_WOOD);
     m_vecDropItem.push_back(ITEM_SCARLET);
     Set_Speed(2.5f);
 
