@@ -305,7 +305,6 @@ void CMonster::Drop_Item()
 	_int iRand = rand() % iSize;
 
 	ITEMNUM eItem = m_vecDropItem[iRand];
-	wstring tagName;
 
 	switch (eItem)
 	{
@@ -342,40 +341,6 @@ void CMonster::Drop_Item()
 		NULL_CHECK(pGameObject);
 		m_vecItemName.push_back(L"Monster_Created_Piece" + std::to_wstring(m_iTagNumber++));
 		break;
-	case ITEM_ASSISTANCE:
-		if (m_eType == MON_MALUGAZ)
-		{
-			pGameObject = CAssistance::Create(m_pGraphicDev, ASSISTANCE_BOOK, vPos);
-			NULL_CHECK(pGameObject);
-			m_vecItemName.push_back(L"Monster_Created_Book" + std::to_wstring(m_iTagNumber++));
-		}
-		else if(m_eType == MON_AZEOS)
-		{
-			pGameObject = CAssistance::Create(m_pGraphicDev, ASSISTANCE_AZEOS_FEATHER, vPos);
-			NULL_CHECK(pGameObject);
-			m_vecItemName.push_back(L"Monster_Created_Feather" + std::to_wstring(m_iTagNumber++));
-		}
-		break;
-	case ITEM_NECKLACE:
-		pGameObject = CNecklace::Create(m_pGraphicDev, MATERIAL_SPECIAL, vPos);
-		NULL_CHECK(pGameObject);
-		m_vecItemName.push_back(L"Monster_Created_Necklace" + std::to_wstring(m_iTagNumber++));
-		break;
-	case ITEM_RING:
-		pGameObject = CRing::Create(m_pGraphicDev, MATERIAL_SPECIAL, vPos);
-		NULL_CHECK(pGameObject);
-		m_vecItemName.push_back(L"Monster_Created_Ring" + std::to_wstring(m_iTagNumber++));
-		break;
-	case ITEM_BOW:
-		pGameObject = CBow::Create(m_pGraphicDev, vPos);
-		NULL_CHECK(pGameObject);
-		m_vecItemName.push_back(L"Monster_Created_Bow" + std::to_wstring(m_iTagNumber++));
-		break;
-	case ITEM_STAFF:
-		pGameObject = CStaff::Create(m_pGraphicDev, vPos);
-		NULL_CHECK(pGameObject);
-		m_vecItemName.push_back(L"Monster_Created_Staff" + std::to_wstring(m_iTagNumber++));
-		break;
 	default:
 		break;
 	}
@@ -385,6 +350,90 @@ void CMonster::Drop_Item()
 		FAILED_CHECK_RETURN(pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, m_vecItemName.back().c_str()), );
 		pGameObject->Set_Active(true);
 		pGameObject->Set_Drop(true);
+	}
+}
+
+void CMonster::Drop_All_Item()
+{
+	_vec3 vPos;
+	m_pTransformCom->Get_Info(INFO_POS, &vPos);
+	// x와 z좌표를 조금씩 밀어서 안겹치게 할까나
+	vPos.y = 0.6f;
+
+	CScene* pScene = Engine::Get_Scene();
+	CItem* pGameObject = nullptr;
+	_int iSize = m_vecDropItem.size();
+
+	for (int i = 0; i < iSize; i++)
+	{
+		ITEMNUM eItem = m_vecDropItem[i];
+
+		switch (eItem)
+		{
+		case ITEM_HELMET:
+			pGameObject = CHelmet::Create(m_pGraphicDev, MATERIAL_SPECIAL, vPos);
+			NULL_CHECK(pGameObject);
+			m_vecItemName.push_back(L"Monster_Created_Helmet" + std::to_wstring(m_iTagNumber++));
+			break;
+		case ITEM_CHEST:
+			pGameObject = CChest::Create(m_pGraphicDev, MATERIAL_SPECIAL, vPos);
+			NULL_CHECK(pGameObject);
+			m_vecItemName.push_back(L"Monster_Created_Chest" + std::to_wstring(m_iTagNumber++));
+			break;
+		case ITEM_LEG:
+			pGameObject = CLeg::Create(m_pGraphicDev, MATERIAL_SPECIAL, vPos);
+			NULL_CHECK(pGameObject);
+			m_vecItemName.push_back(L"Monster_Created_Chest" + std::to_wstring(m_iTagNumber++));
+			break;
+		case ITEM_NECKLACE:
+			pGameObject = CNecklace::Create(m_pGraphicDev, MATERIAL_SPECIAL, vPos);
+			NULL_CHECK(pGameObject);
+			m_vecItemName.push_back(L"Monster_Created_Necklace" + std::to_wstring(m_iTagNumber++));
+			break;
+		case ITEM_RING:
+			pGameObject = CRing::Create(m_pGraphicDev, MATERIAL_SPECIAL, vPos);
+			NULL_CHECK(pGameObject);
+			m_vecItemName.push_back(L"Monster_Created_Ring" + std::to_wstring(m_iTagNumber++));
+			break;
+		case ITEM_STAFF:
+			pGameObject = CStaff::Create(m_pGraphicDev, vPos);
+			NULL_CHECK(pGameObject);
+			m_vecItemName.push_back(L"Monster_Created_Staff" + std::to_wstring(m_iTagNumber++));
+			break;
+		case ITEM_ASSISTANCE:
+			if (m_eType == MON_MALUGAZ)
+			{
+				pGameObject = CAssistance::Create(m_pGraphicDev, ASSISTANCE_BOOK, vPos);
+				NULL_CHECK(pGameObject);
+				m_vecItemName.push_back(L"Monster_Created_Book" + std::to_wstring(m_iTagNumber++));
+			}
+			else if (m_eType == MON_AZEOS)
+			{
+				pGameObject = CAssistance::Create(m_pGraphicDev, ASSISTANCE_AZEOS_FEATHER, vPos);
+				NULL_CHECK(pGameObject);
+				m_vecItemName.push_back(L"Monster_Created_Feather" + std::to_wstring(m_iTagNumber++));
+			}
+			break;
+		case ITEM_INSTRUMENT_HARP:
+		case ITEM_INSTRUMENT_CELLO:
+		case ITEM_INSTRUMENT_FLUTE:
+		case ITEM_INSTRUMENT_OCARINA:
+		case ITEM_INSTRUMENT_DRUM:
+		case ITEM_INSTRUMENT_PIANO:
+			pGameObject = CInstrument::Create(m_pGraphicDev, eItem, vPos);
+			NULL_CHECK(pGameObject);
+			m_vecItemName.push_back(L"Monster_Created_Instrument" + std::to_wstring(m_iTagNumber++));
+			break;
+		default:
+			break;
+		}
+
+		if (pGameObject)
+		{
+			FAILED_CHECK_RETURN(pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, m_vecItemName.back().c_str()), );
+			pGameObject->Set_Active(true);
+			pGameObject->Set_Drop(true);
+		}
 	}
 }
 

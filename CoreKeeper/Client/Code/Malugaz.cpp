@@ -334,26 +334,13 @@ void CMalugaz::Pattern_Dead()
             m_pGraphicDev->LightEnable(m_iLightNum, FALSE); // 조명 비활성화
             m_bLightEnable = false;
             m_bStopDraw = true;
-            Drop_Item();
+            Drop_All_Item();
         }
     }
 }
 
 STATE CMalugaz::State_Change()
 {
-   /* m_iPatternNum %= 6;
-
-    switch (m_iPatternNum)
-    {
-    case 1:
-    case 6:
-        return SWING;
-    case 3:
-        return WALK;
-    default :
-        return IDLE;
-    }*/
-    
     _vec3 vPlayerPos, vPos;
     CGameObject* pWeapon;
     m_pTransformCom->Get_Info(INFO_POS, &vPos);

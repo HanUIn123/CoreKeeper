@@ -335,7 +335,7 @@ void CAzeos::Pattern_Dead()
        // m_pGraphicDev->LightEnable(m_iLightNum, FALSE); // 조명 비활성화
         m_bLightEnable = false;
         m_bStopDraw = true;
-        Drop_Item();
+        Drop_All_Item();
     }
 }
 

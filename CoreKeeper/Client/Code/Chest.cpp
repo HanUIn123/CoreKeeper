@@ -39,6 +39,7 @@ HRESULT CChest::Ready_GameObject(MATERIAL _eMaterial, _vec3 vPos)
 		m_wItemExplain[0] = L"이 영웅적인 갑옷을 입고 전투에 뛰어들어 보세요.";
 		break;
 	case MATERIAL_SPECIAL:
+		m_iTextureNumber--;
 		m_wItemName = L"마술사 로브";
 		m_wItemExplain[0] = L"직물이 공격을 견딜 수 있게 해주는 마법이 부여된 튼튼한 로브입니다.";
 		break;

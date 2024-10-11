@@ -1,7 +1,5 @@
 #pragma once
 // 무기
-#include "..\Header\Sword.h"
-#include "..\Header\Bow.h"
 #include "..\Header\Staff.h"
 
 // 방어구
@@ -13,6 +11,9 @@
 #include "..\Header\Necklace.h"
 #include "..\Header\Ring.h"
 #include "..\Header\Assistance.h"
+
+// 악기
+#include "..\Header\Instrument.h"
 
 // 기타
 #include "..\Header\Seed.h"

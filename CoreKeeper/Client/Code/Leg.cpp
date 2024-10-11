@@ -38,6 +38,7 @@ HRESULT CLeg::Ready_GameObject(MATERIAL _eMaterial, _vec3 vPos)
 		m_wItemExplain[0] = L"강철 다리의 소유자이시네요!";
 		break;
 	case MATERIAL_SPECIAL:
+		m_iTextureNumber--;
 		m_wItemName = L"마술사 바지";
 		m_wItemExplain[0] = L"마법 장신구를 넣을 주머니가 많이 달린 튼튼한 바지입니다.";
 		break;

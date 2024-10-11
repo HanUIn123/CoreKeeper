@@ -38,6 +38,7 @@ HRESULT CHelmet::Ready_GameObject(MATERIAL _eMaterial, _vec3 vPos)
 		m_wItemExplain[0] = L"기사에게 어울리는 튼튼한 투구입니다. 얼굴 가리개와 화려한 깃털이 붙어 있습니다.";
 		break;
 	case MATERIAL_SPECIAL:
+		m_iTextureNumber--;
 		m_wItemName = L"마술사 후드";
 		m_wItemExplain[0] = L"시험을 통과한 마술사가 걸치는 후드입니다.";
 		break;
