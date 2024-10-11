@@ -252,6 +252,8 @@ private:
 	CPet*					m_pPet;
 
 	_bool					m_bPlayToggle;
+	_bool					m_bLookAround;
+	_float					m_fLookAroundTime;
 
 	CUIItemSlot* m_pEtcItems[CUIItemSlot::SLOT_END];
 public:

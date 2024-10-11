@@ -96,6 +96,8 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
     m_pPet = nullptr;
 
     m_bPlayToggle = false;
+    m_bLookAround = false;
+    m_fLookAroundTime = 0.f;
 }
 
 CPlayer::~CPlayer()
@@ -131,79 +133,108 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 
     if (m_bNude)
         Set_Clothes();
-    Set_MouseWorldPos();
 
-    KnockBack(fTimeDelta);
+    if (!m_bLookAround)
+    {
+        m_fLookAroundTime += fTimeDelta;
 
-    Set_Equipment();
-    Show_Equipment();
-    Equipment_Function(fTimeDelta);
-    Set_EquippedStatus();
-    Set_ManaRecover(fTimeDelta);
-    // 버프 스탯 처리
-    Set_Hungry(fTimeDelta);
-    Set_Buff(fTimeDelta);
+        if (m_fLookAroundTime < 2.f)
+            m_eDir = LEFT;
+        else if (m_fLookAroundTime < 4.f)
+            m_eDir = RIGHT;
+        else if (m_fLookAroundTime < 5.5f)
+            m_eDir = LEFT;
+        else if (m_fLookAroundTime < 7.f)
+            m_eDir = RIGHT;
+        else
+            m_bLookAround = true;
 
-    Play_Instruments();
+        if (!m_bRespawned)
+        {
+            m_bRespawned = true;
+            m_pTransformCom->Set_Pos(m_vRespawnPoint.x, m_fFirstY, m_vRespawnPoint.z);
+        }
 
-    if (!m_bNoMove && !m_bInventory && !m_bCraft && !m_bMap) // m_bNoMove -> UICursor에서 적용
-        Mouse_Click(fTimeDelta);
+        Flip();
+        Animation_SetUp(IDLE, m_eDir);
+    }
     else
     {
-        m_bSwing = false;
-        m_bShoot = false;
-    }
+        Set_MouseWorldPos();
 
-    if (m_bKnockBackEnd)
-    {
-        if (g_bIsTopCamera)
+        KnockBack(fTimeDelta);
+
+        Set_Equipment();
+        Show_Equipment();
+        Equipment_Function(fTimeDelta);
+        Set_EquippedStatus();
+        Set_ManaRecover(fTimeDelta);
+        // 버프 스탯 처리
+        Set_Hungry(fTimeDelta);
+        Set_Buff(fTimeDelta);
+
+        Play_Instruments();
+
+        if (!m_bNoMove && !m_bInventory && !m_bCraft && !m_bMap) // m_bNoMove -> UICursor에서 적용
+            Mouse_Click(fTimeDelta);
+        else
         {
-            if (!m_bSwing && !m_bShoot)
+            m_bSwing = false;
+            m_bShoot = false;
+        }
+
+        if (m_bKnockBackEnd)
+        {
+            if (g_bIsTopCamera)
             {
-                Key_Position(fTimeDelta);
-                Mouse_Direction();
+                if (!m_bSwing && !m_bShoot)
+                {
+                    Key_Position(fTimeDelta);
+                    Mouse_Direction();
+                }
+                Animation_SetUp(m_eState, m_eDir);
             }
-            Animation_SetUp(m_eState, m_eDir);
-        }
-        else
-        {
-            if (!m_bSwing && !m_bShoot)
-                ShoulderView_Control(fTimeDelta);
             else
-                ShoulderView_Swing();
+            {
+                if (!m_bSwing && !m_bShoot)
+                    ShoulderView_Control(fTimeDelta);
+                else
+                    ShoulderView_Swing();
+            }
+            if (m_eState == WALK)
+                Walk_Y(fTimeDelta);
+            else
+            {
+                _vec3 vPos;
+                m_pTransformCom->Get_Info(INFO_POS, &vPos);
+                m_pTransformCom->Set_Pos(vPos.x, m_fFirstY, vPos.z);
+            }
         }
-        if (m_eState == WALK)
-            Walk_Y(fTimeDelta);
-        else
+
+        Flip();
+        Set_ImmuneByToggle();
+
+        // 시간제 무적용
+        if (m_bImmuneByTime)
         {
-            _vec3 vPos;
-            m_pTransformCom->Get_Info(INFO_POS, &vPos);
-            m_pTransformCom->Set_Pos(vPos.x, m_fFirstY, vPos.z);
+            m_fImmuneTimeAcc += fTimeDelta;
+            if (m_fImmuneTimeAcc >= m_fImmuneTime)
+            {
+                m_bImmuneByTime = false;
+                m_fImmuneTimeAcc = 0.f;
+            }
         }
-    }
 
-    Flip();
-    Set_ImmuneByToggle();
-
-    // 시간제 무적용
-    if (m_bImmuneByTime)
-    {
-        m_fImmuneTimeAcc += fTimeDelta;
-        if (m_fImmuneTimeAcc >= m_fImmuneTime)
+        if (!m_bRespawned)
         {
-            m_bImmuneByTime = false;
-            m_fImmuneTimeAcc = 0.f;
+            m_bRespawned = true;
+            m_pTransformCom->Set_Pos(m_vRespawnPoint.x, m_fFirstY, m_vRespawnPoint.z);
         }
-    }
-
-    if (!m_bRespawned)
-    {
-        m_bRespawned = true;
-        m_pTransformCom->Set_Pos(m_vRespawnPoint.x, m_fFirstY, m_vRespawnPoint.z);
     }
 
     m_pAnimatorCom->Update_Animation();
     m_pColliderCom->Update_Collider(m_pTransformCom->Get_WorldMatrix());
+
 
     Set_UI();
     Particle_Update(fTimeDelta);

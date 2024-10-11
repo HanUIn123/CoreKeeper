@@ -43,7 +43,7 @@ CPet::CPet(LPDIRECT3DDEVICE9 pGraphicDev)
     m_fTeleportTimer = 0.f;
 
     // 플레이어에서 관리할 것
-    m_bStopDraw = false;
+    m_bStopDraw = true;
     m_bRespawned = false;
     m_bJustRespawned = true;
 }
