@@ -67,6 +67,7 @@ _int CMalugaz::Update_GameObject(const _float& fTimeDelta)
     if (m_bStopDraw)
         return 0;
 
+    int iExit = Engine::CGameObject::Update_GameObject(fTimeDelta);
     Set_Cast();
 
     if (m_eState != DEAD)
@@ -115,7 +116,7 @@ _int CMalugaz::Update_GameObject(const _float& fTimeDelta)
     Set_StuckFree(fTimeDelta);
     m_pAnimatorCom->Update_Animation();
     Add_RenderGroup(RENDER_ALPHA, this);
-    return Engine::CGameObject::Update_GameObject(fTimeDelta);
+    return iExit;
 }
 
 void CMalugaz::LateUpdate_GameObject()
