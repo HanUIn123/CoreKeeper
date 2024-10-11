@@ -189,10 +189,10 @@ void CInventory::Put_Same_Item(CInventory* _Inventory)
 	}
 }
 
-void CInventory::Move_All_Item(CInventory* _pInventory)
+void CInventory::Move_All_Item(CInventory* _pInventory, _int iIndex)
 {
 	// 인벤토리의 모든 슬롯을 확인
-	for (int i = 10; i < m_vecItems.size(); i++)
+	for (int i = iIndex; i < m_vecItems.size(); i++)
 	{
 		// 빈 슬롯이면 건너뛰기 (혹시 몰라서 카운트 0인것도 확인)
 		if (m_vecItems[i] == nullptr || m_vecItems[i]->Get_Count() == 0)

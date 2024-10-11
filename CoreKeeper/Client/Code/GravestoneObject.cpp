@@ -127,34 +127,41 @@ void CGravestoneObject::SetUp_Item(CScene* _pScene)
 	CItem* pGameObject(nullptr);
 
     pGameObject = CWood::Create(m_pGraphicDev);
-    pGameObject->Add_Count(99);
+    pGameObject->Add_Count(128);
+    m_pInventoryCom->Add_Item(pGameObject);
+    m_vecItemName.push_back(L"Woodcutter's_Item" + std::to_wstring(m_iItemNameNum++));
+    FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_Environment", pGameObject, m_vecItemName.back().c_str()), );
+
+    pGameObject = CStatueCore::Create(m_pGraphicDev, ITEM_SLIME_CORE);
+    m_pInventoryCom->Add_Item(pGameObject);
+    m_vecItemName.push_back(L"Woodcutter's_Item" + std::to_wstring(m_iItemNameNum++));
+    FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_Environment", pGameObject, m_vecItemName.back().c_str()), );
+
+    pGameObject = CStatueCore::Create(m_pGraphicDev, ITEM_LARVA_CORE);
     m_pInventoryCom->Add_Item(pGameObject);
     m_vecItemName.push_back(L"Woodcutter's_Item" + std::to_wstring(m_iItemNameNum++));
     FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_Environment", pGameObject, m_vecItemName.back().c_str()), );
 
     pGameObject = CMucus::Create(m_pGraphicDev);
-    pGameObject->Add_Count(7);
+    pGameObject->Add_Count(56);
     m_pInventoryCom->Add_Item(pGameObject);
     m_vecItemName.push_back(L"Woodcutter's_Item" + std::to_wstring(m_iItemNameNum++));
     FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_Environment", pGameObject, m_vecItemName.back().c_str()), );
 
     pGameObject = CIngredient::Create(m_pGraphicDev, ITEM_BERRY_SEED);
-    pGameObject->Add_Count(3);
+    pGameObject->Add_Count(10);
     m_pInventoryCom->Add_Item(pGameObject);
     m_vecItemName.push_back(L"Woodcutter's_Item" + std::to_wstring(m_iItemNameNum++));
     FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_Environment", pGameObject, m_vecItemName.back().c_str()), );
 
-	pGameObject = CStatueCore::Create(m_pGraphicDev, ITEM_SLIME_CORE);
-	m_pInventoryCom->Add_Item(pGameObject);
-	m_vecItemName.push_back(L"Woodcutter's_Item" + std::to_wstring(m_iItemNameNum++));
-	FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_Environment", pGameObject, m_vecItemName.back().c_str()), );
+    pGameObject = CIngredient::Create(m_pGraphicDev, ITEM_PEPPER_SEED);
+    pGameObject->Add_Count(19);
+    m_pInventoryCom->Add_Item(pGameObject);
+    m_vecItemName.push_back(L"Woodcutter's_Item" + std::to_wstring(m_iItemNameNum++));
+    FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_Environment", pGameObject, m_vecItemName.back().c_str()), );
 
-	pGameObject = CStatueCore::Create(m_pGraphicDev, ITEM_LARVA_CORE);
-	m_pInventoryCom->Add_Item(pGameObject);
-	m_vecItemName.push_back(L"Woodcutter's_Item" + std::to_wstring(m_iItemNameNum++));
-	FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_Environment", pGameObject, m_vecItemName.back().c_str()), );
-
-    pGameObject = CStatueCore::Create(m_pGraphicDev, ITEM_MAL_CORE);
+    pGameObject = CIngredient::Create(m_pGraphicDev, ITEM_END);
+    pGameObject->Add_Count(14);
     m_pInventoryCom->Add_Item(pGameObject);
     m_vecItemName.push_back(L"Woodcutter's_Item" + std::to_wstring(m_iItemNameNum++));
     FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_Environment", pGameObject, m_vecItemName.back().c_str()), );
@@ -165,6 +172,11 @@ void CGravestoneObject::SetUp_Item(CScene* _pScene)
     FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_Environment", pGameObject, m_vecItemName.back().c_str()), );
 
 #pragma region TEST ITEM
+    pGameObject = CStatueCore::Create(m_pGraphicDev, ITEM_MAL_CORE);
+    m_pInventoryCom->Add_Item(pGameObject);
+    m_vecItemName.push_back(L"Woodcutter's_Item" + std::to_wstring(m_iItemNameNum++));
+    FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_Environment", pGameObject, m_vecItemName.back().c_str()), );
+
     pGameObject = CPetItem::Create(m_pGraphicDev);
     m_pInventoryCom->Add_Item(pGameObject);
     m_vecItemName.push_back(L"Woodcutter's_Item" + std::to_wstring(m_iItemNameNum++));

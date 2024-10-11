@@ -40,6 +40,7 @@ protected:
 	void			Shoot(PROJECTILETYPE _type);
 	void			Follow_Player();
 	void			In_Inventory();
+	void			Check_Collision();
 public:
 	void			Walk_Equipped(const _float& fTimeDelta);
 

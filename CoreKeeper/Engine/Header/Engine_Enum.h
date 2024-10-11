@@ -32,6 +32,8 @@ namespace Engine
         SOUND_PLAYER, SOUND_EAT, SOUND_FIRE, SOUND_PET,
         SOUND_SHAMAN, SOUND_MUSHROOM, SOUND_SLIME, SOUND_HUNTER,
         SOUND_PLANT, 
+
+        SOUND_ITEM_PICKUP, 
         
         MAXCHANNEL 
     };

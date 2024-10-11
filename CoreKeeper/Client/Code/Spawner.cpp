@@ -67,24 +67,10 @@ _int CSpawner::Update_GameObject(const _float& fTimeDelta)
 	if (m_bDrop)
 	{
 		// 아이템 움직임
-		CItem::Wave(fTimeDelta);
-
-		Engine::CCollider* pCollider = dynamic_cast<Engine::CCollider*>
-			(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"", L"Com_Collider"));
+		Wave(fTimeDelta);
 
 		// 플레이어와 충돌
-		if (m_pColliderCom->Check_Collision(pCollider))
-		{
-			Engine::CInventory* pInventory = dynamic_cast<Engine::CInventory*>
-				(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"", L"Com_Inventory"));
-
-			// 인벤토리에 들어갔다
-			if (pInventory->Add_Item(this))
-			{
-				m_bActive = false;
-				m_bDrop = false;
-			}
-		}
+		Check_Collision();
 	}
 
 	Add_RenderGroup(RENDER_ALPHA, this);

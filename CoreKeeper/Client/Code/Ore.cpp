@@ -71,24 +71,10 @@ _int COre::Update_GameObject(const _float& fTimeDelta)
 	if (m_bDrop)
 	{
 		// 아이템 움직임
-		CItem::Wave(fTimeDelta);
-
-		Engine::CCollider* pPlayerCollider = dynamic_cast<Engine::CCollider*>
-			(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Collider"));
+		Wave(fTimeDelta);
 
 		// 플레이어와 충돌
-		if (m_pColliderCom->Check_Collision(pPlayerCollider))
-		{
-			Engine::CInventory* pPlayerInventory = dynamic_cast<Engine::CInventory*>
-				(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
-
-			// 인벤토리에 들어갔다
-			if (pPlayerInventory->Add_Item(this))
-			{
-				m_bActive = false;
-				m_bDrop = false;
-			}
-		}
+		Check_Collision();
 	}
 
 	Add_RenderGroup(RENDER_ALPHA, this);

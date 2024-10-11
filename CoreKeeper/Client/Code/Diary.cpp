@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "..\Header\Diary.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
@@ -23,11 +23,12 @@ HRESULT CDiary::Ready_GameObject(_vec3 vPos)
 	m_pTransformCom->Set_Pos(vPos.x, vPos.y, vPos.z);
 	m_pShadowTransformCom->Set_Pos(vPos.x, 0.1f, vPos.z);
 
-	m_wItemName = L"ÀÏ±âÀå";
-	m_wItemExplain[0] = L"³²ÀÇ ÀÏ±âÀåÀ» ÈÉÃÄº¸´Â °Ç ¾ÈÁÁÀº ÀÏÀÌ¿¹¿ä.";
-	m_wItemExplain[1] = L"±Ã±İÇÏ±ä ÇÏÁö¸¸¿ä.";
+	m_wItemName = L"ë‚¡ì€ ì¼ê¸°ì¥ ì¡°ê°";
+	m_wItemExplain[0] = L"'ë‘ ë…€ì„ì„ í•´ì¹˜ì› ë‹¤. ì´ì œ ë‚¨ì€ ê±´ ë‹¨ ë‘˜.'";
+	m_wItemExplain[1] = L"		â€” ë‚˜ë¬´ê¾¼ì´ ë‚¨ê¸´ ê¸°ë¡";
+	m_wItemExplain[2] = L"ì˜¤ë˜ëœ ì¢…ì´ì—ì„œ ë‚˜ë¬´ ëƒ„ìƒˆê°€ ë‚©ë‹ˆë‹¤.";
 
-	// ¿ø·¡ÀÇ Y À§Ä¡ ÀúÀå
+	// ì›ë˜ì˜ Y ìœ„ì¹˜ ì €ì¥
 	m_fFirstY = vPos.y;
 
 	return S_OK;
@@ -48,25 +49,11 @@ _int CDiary::Update_GameObject(const _float& fTimeDelta)
 
 	if (m_bDrop)
 	{
-		// ¾ÆÀÌÅÛ ¿òÁ÷ÀÓ
-		CItem::Wave(fTimeDelta);
+		// ì•„ì´í…œ ì›€ì§ì„
+		Wave(fTimeDelta);
 
-		Engine::CCollider* pPlayerCollider = dynamic_cast<Engine::CCollider*>
-			(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Collider"));
-
-		// ÇÃ·¹ÀÌ¾î¿Í Ãæµ¹
-		if (m_pColliderCom->Check_Collision(pPlayerCollider))
-		{
-			Engine::CInventory* pPlayerInventory = dynamic_cast<Engine::CInventory*>
-				(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
-		
-			// ÀÎº¥Åä¸®¿¡ µé¾î°¬´Ù
-			if (pPlayerInventory->Add_Item(this))
-			{
-				m_bActive = false;
-				m_bDrop = false;
-			}
-		}
+		// í”Œë ˆì´ì–´ì™€ ì¶©ëŒ
+		Check_Collision();
 	}
 	
 	Add_RenderGroup(RENDER_ALPHA, this);
@@ -98,7 +85,7 @@ void CDiary::Render_GameObject()
 		m_pBufferCom->Render_Buffer();
 	}
 
-	// Äİ¶óÀÌ´õ ·»´õ¸µ Ãß°¡
+	// ì½œë¼ì´ë” ë Œë”ë§ ì¶”ê°€
 	if (m_bActive)
 	{
 		m_pColliderCom->Render_Collider();
