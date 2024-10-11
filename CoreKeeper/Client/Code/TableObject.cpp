@@ -37,14 +37,12 @@ _int CTableObject::Update_GameObject(const _float& fTimeDelta)
 		{
 			CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
 
-			if (pPlayer->Get_CraftUI())
+			if (pPlayer->Get_CraftUI() && pPlayer->Get_Inventory())
 			{
-				pPlayer->Set_Craft();
-
-				pPlayer->Set_Inventory();
-
-				m_bCollision = false;
+				pPlayer->UI_Disable();
 			}
+
+			m_bCollision = false;
 		}
 	}
 

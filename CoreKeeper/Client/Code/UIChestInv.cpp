@@ -109,6 +109,17 @@ _int CUIChestInv::Update_GameObject(const _float& fTimeDelta)
 
 		Engine::Add_RenderGroup(RENDER_UI, this);
 	}
+	else if (!m_bShow && m_bCollapse)
+	{
+		CUIItemFrame* pItemF = dynamic_cast<CUIItemFrame*>(Engine::Get_GameObject(L"Layer_UI", L"UI_ItemFrame"));
+
+		pItemF->Set_WindowDis();
+
+		m_bStay = false;
+
+		m_bCollapse = false;
+	}
+
 	return iExit;
 }
 

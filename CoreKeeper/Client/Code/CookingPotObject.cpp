@@ -41,12 +41,12 @@ _int CCookingPotObject::Update_GameObject(const _float& fTimeDelta)
 		{
 			CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
 
-			if (pPlayer->Get_CookingUI())
+			if (pPlayer->Get_CookingUI() && pPlayer->Get_Inventory())
 			{
-				pPlayer->Set_CookingPot();
-
-				m_bCollision = false;
+				pPlayer->UI_Disable();
 			}
+
+			m_bCollision = false;
 		}
 	}
 	if (!m_pInventoryCom->Check_Empty(0) && !m_pInventoryCom->Check_Empty(1))

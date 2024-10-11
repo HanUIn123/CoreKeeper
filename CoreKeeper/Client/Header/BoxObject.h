@@ -29,6 +29,7 @@ public:
 	virtual			_vec3			Get_ObjectPos() { return m_vBuildPosition; }
 	virtual			void			Set_ObjectPos(_vec3 _iBuildingPos) { m_vBuildPosition = _iBuildingPos; }
 
+	virtual         void            Interaction();
 private:
 	HRESULT							Add_Component();
 

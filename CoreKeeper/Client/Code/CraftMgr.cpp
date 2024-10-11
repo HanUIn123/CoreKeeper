@@ -511,7 +511,7 @@ void CCraftMgr::Set_Recipe()
     Recipe woodShieldRecipe;
     woodShieldRecipe.vecIngredients.push_back({ ITEM_WOOD, 10 });
     woodShieldRecipe.vecIngredients.push_back({ ITEM_COPPER_BAR, 5 });
-    m_mapRecipes[make_pair(ITEM_ASSISTANCE, MATERIAL_COPPER)] = woodShieldRecipe;
+    m_mapRecipes[make_pair(ITEM_ASSISTANCE, MATERIAL_WOOD)] = woodShieldRecipe;
 
     // Ã¶ ¹æÆÐ
     Recipe ironShieldRecipe;
@@ -567,7 +567,7 @@ void CCraftMgr::Set_Recipe()
     Recipe copperAnvilRecipe;
     copperAnvilRecipe.vecIngredients.push_back({ ITEM_COPPER_BAR, 8 });
     m_mapRecipes[make_pair(ITEM_ANVIL, MATERIAL_COPPER)] = copperAnvilRecipe;
-
+    
     // Ã¶Á¦ ¸ð·ç
     Recipe ironAnvilRecipe;
     ironAnvilRecipe.vecIngredients.push_back({ ITEM_IRON_BAR, 10 });
@@ -582,7 +582,7 @@ void CCraftMgr::Set_Recipe()
     Recipe cookingPotRecipe;
     cookingPotRecipe.vecIngredients.push_back({ ITEM_WOOD, 2 });
     cookingPotRecipe.vecIngredients.push_back({ ITEM_COPPER_BAR, 4 });
-    m_mapRecipes[make_pair(ITEM_COOKINGPOT, MATERIAL_WOOD)] = cookingPotRecipe;
+    m_mapRecipes[make_pair(ITEM_COOKINGPOT, MATERIAL_COPPER)] = cookingPotRecipe;
 
     // È¶ºÒ
     Recipe torchRecipe;
@@ -682,6 +682,29 @@ void CCraftMgr::Set_Name()
     m_mapName[ITEM_FIBER] = L"¼¶À¯Áú";
     m_mapName[ITEM_SKULL_PIECE] = L"Å©¸®½ºÅ» ÇØ°ñ Á¶°¢";
     m_mapName[ITEM_FEATHER_PIECE] = L"°í´ë ±êÅÐ";
+
+    strCraftName[ITEM_BERRY] = L"¿ø±â º£¸®";
+    strCraftName[ITEM_PEPPER] = L"ÆøÅº ÈÄÃß";
+    strCraftName[ITEM_CARROT] = L"µ¹´ç±Ù";
+    strCraftName[ITEM_MUSHROOM] = L"¹ö¼¸";
+
+    strCraftName[ITEM_COPPER] = L"±¸¸®±¤¼®";
+    strCraftName[ITEM_IRON] = L"Ã¶±¤¼®";
+    strCraftName[ITEM_SCARLET] = L"ÁøÈ«¼®";
+
+    strCraftName[ITEM_COPPER_BAR] = L"±¸¸® ÁÖ±«";
+    strCraftName[ITEM_IRON_BAR] = L"Ã¶ ÁÖ±«";
+    strCraftName[ITEM_SCARLET_BAR] = L"ÁøÈ« ¹Ù";
+
+    strCraftName[ITEM_DIRTWALL] = L"ÁøÈë ºí·Ï";
+    strCraftName[ITEM_STONEWALL] = L"µ¹ ºí·Ï";
+    strCraftName[ITEM_GRASSWALL] = L"ÀÜµð ºí·Ï";
+
+    strCraftName[ITEM_WOOD] = L"³ª¹«";
+    strCraftName[ITEM_MUCUS] = L"½½¶óÀÓ";
+    strCraftName[ITEM_FIBER] = L"¼¶À¯Áú";
+    strCraftName[ITEM_SKULL_PIECE] = L"Å©¸®½ºÅ» ÇØ°ñ Á¶°¢";
+    strCraftName[ITEM_FEATHER_PIECE] = L"°í´ë ±êÅÐ";
 }
 
 void CCraftMgr::Free()

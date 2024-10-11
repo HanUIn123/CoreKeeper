@@ -131,6 +131,7 @@
 #include "MiniMap.h"
 #include "UIStatusFrame.h"
 #include "UIItemFrame.h"
+#include "UIBuffFrame.h"
 #include "UIBuff.h"
 #include "UICraftButton.h"
 #include "UIBuff.h"

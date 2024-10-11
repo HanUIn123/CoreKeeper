@@ -526,6 +526,9 @@
     <Filter Include="02. GameObject\07. UI\15. UIFont">
       <UniqueIdentifier>{f8b9612a-a236-441c-98ba-608dc197b348}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\07. UI\10. UIBuff\00. UIBuffFrame">
+      <UniqueIdentifier>{6c5e9487-9488-4db8-b079-37fe79eb2913}</UniqueIdentifier>
+	</Filter>
     <Filter Include="03. Manager\03.BlackPlaneMgr">
       <UniqueIdentifier>{28fb5f3b-4997-405f-bbda-6801585a2650}</UniqueIdentifier>
     </Filter>
@@ -1038,6 +1041,9 @@
     <ClInclude Include="..\Header\UIFont.h">
       <Filter>02. GameObject\07. UI\15. UIFont</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\UIBuffFrame.h">
+      <Filter>02. GameObject\07. UI\10. UIBuff\00. UIBuffFrame</Filter>
+	</ClInclude>
     <ClInclude Include="..\Header\BlackPlaneMgr.h">
       <Filter>03. Manager\03.BlackPlaneMgr</Filter>
     </ClInclude>
@@ -1529,6 +1535,9 @@
     <ClCompile Include="..\Code\UIFont.cpp">
       <Filter>02. GameObject\07. UI\15. UIFont</Filter>
     </ClCompile>
+    <ClCompile Include="..\Code\UIBuffFrame.cpp">
+      <Filter>02. GameObject\07. UI\10. UIBuff\00. UIBuffFrame</Filter>
+	</ClCompile>
     <ClCompile Include="..\Code\BlackPlaneMgr.cpp">
       <Filter>03. Manager\03.BlackPlaneMgr</Filter>
     </ClCompile>

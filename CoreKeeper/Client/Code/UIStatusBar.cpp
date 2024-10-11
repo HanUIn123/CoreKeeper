@@ -32,8 +32,8 @@ HRESULT CUIStatusBar::Ready_GameObject(_vec2 vPos, _vec2 vSize, const _uint iInd
 	m_pTransformCom->Set_Scale(vSize.x, vSize.y , 1.f);
 	m_pTransformCom->Set_Pos(x, y, 0);
 
-	m_BRect.left = _long(vPos.x - vSize.x / 2);
-	m_BRect.right = _long(vPos.x + vSize.x / 2);
+	m_BRect.left = _long(vPos.x - vSize.x / 2 - 180.f);
+	m_BRect.right = _long(vPos.x + vSize.x / 2 - 180.f);
 	m_BRect.top = _long(vPos.y - vSize.y);
 	m_BRect.bottom = _long(vPos.y + vSize.y);
 
@@ -185,7 +185,7 @@ void CUIStatusBar::Render_GameObject()
 
 		const _tchar* tTotal = sTotal.c_str();
 
-		_vec2 pos(m_BRect.left - 160.f, m_BRect.top);
+		_vec2 pos(m_BRect.left + 20.f, m_BRect.top);
 
 		Engine::Render_Font(L"Font_HP", tTotal, &pos, D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
 	}
@@ -199,7 +199,21 @@ void CUIStatusBar::Render_GameObject()
 
 		const _tchar* tTotal = sTotal.c_str();
 
-		_vec2 pos(m_BRect.left - 160.f, m_BRect.top);
+		_vec2 pos(m_BRect.left + 20.f, m_BRect.top);
+
+		Engine::Render_Font(L"Font_HP", tTotal, &pos, D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
+	}
+	else if (m_bCollapse && (m_iIndex - 1) == 6) // 마나 표시용
+	{
+		std::wstring sFront = L"배고픔                    " + std::to_wstring(m_iHp);
+
+		wstring sBack = L"/" + std::to_wstring(m_iMaxHp);
+
+		wstring sTotal = sFront + sBack;
+
+		const _tchar* tTotal = sTotal.c_str();
+
+		_vec2 pos(m_BRect.left + 20.f, m_BRect.top);
 
 		Engine::Render_Font(L"Font_HP", tTotal, &pos, D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
 	}

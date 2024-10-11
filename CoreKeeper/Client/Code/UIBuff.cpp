@@ -2,6 +2,7 @@
 #include "..\Header\UIBuff.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
+#include "../Header/UIBuffFrame.h"
 
 CUIBuff::CUIBuff(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CGameObject(pGraphicDev), m_bWindow(false), m_eBuffIndex(BUFF), m_eBuffType(BUFF_ICON_END), m_fCurTime(0.f), m_fBuffTime(50.f), m_bAllocated(false)
@@ -48,9 +49,19 @@ _int CUIBuff::Update_GameObject(const _float& fTimeDelta)
 		ScreenToClient(g_hWnd, &pt);
 
 		if (Map_Picked(pt))
+		{
+			CUIBuffFrame* pFrame = dynamic_cast<CUIBuffFrame*>(Engine::Get_GameObject(L"Layer_UI", L"UI_BuffFrame"));
+			pFrame->Set_Window(m_eBuffType, pt);
+
 			m_bCollapse = true;
+		}
 		else
+		{
+			CUIBuffFrame* pFrame = dynamic_cast<CUIBuffFrame*>(Engine::Get_GameObject(L"Layer_UI", L"UI_BuffFrame"));
+			pFrame->Set_WindowDis();
+
 			m_bCollapse = false;
+		}
 
 		m_Rect.top = (_float)m_BRect.top + ((_float)(m_BRect.bottom - m_BRect.top) - (_float(m_BRect.bottom - m_BRect.top) * m_fCurTime / m_fBuffTime));
 

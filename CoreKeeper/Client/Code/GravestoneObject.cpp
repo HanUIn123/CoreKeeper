@@ -37,12 +37,12 @@ _int CGravestoneObject::Update_GameObject(const _float& fTimeDelta)
 		{
 			CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
 
-			if (pPlayer->Get_GraveUI())
+			if (pPlayer->Get_GraveUI() && pPlayer->Get_Inventory())
 			{
 				pPlayer->Set_GraveInventory();
-
-				m_bCollision = false;
 			}
+
+            m_bCollision = false;
 		}
 	}
 
@@ -138,6 +138,25 @@ void CGravestoneObject::SetUp_Item(CScene* _pScene)
     FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_Environment", pGameObject, m_vecItemName.back().c_str()), );
 
     pGameObject = CStatueCore::Create(m_pGraphicDev, ITEM_LARVA_CORE);
+    m_pInventoryCom->Add_Item(pGameObject);
+    m_vecItemName.push_back(L"Woodcutter's_Item" + std::to_wstring(m_iItemNameNum++));
+    FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_Environment", pGameObject, m_vecItemName.back().c_str()), );
+
+    pGameObject = CBar::Create(m_pGraphicDev, MATERIAL_COPPER);
+    pGameObject->Add_Count(99);
+    m_pInventoryCom->Add_Item(pGameObject);
+    m_vecItemName.push_back(L"Woodcutter's_Item" + std::to_wstring(m_iItemNameNum++));
+    FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_Environment", pGameObject, m_vecItemName.back().c_str()), );
+
+    pGameObject = CBar::Create(m_pGraphicDev, MATERIAL_IRON);
+    pGameObject->Add_Count(99);
+    m_pInventoryCom->Add_Item(pGameObject);
+    m_vecItemName.push_back(L"Woodcutter's_Item" + std::to_wstring(m_iItemNameNum++));
+    FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_Environment", pGameObject, m_vecItemName.back().c_str()), );
+
+
+    pGameObject = CPiece::Create(m_pGraphicDev, ITEM_SKULL_PIECE);
+    pGameObject->Add_Count(5);
     m_pInventoryCom->Add_Item(pGameObject);
     m_vecItemName.push_back(L"Woodcutter's_Item" + std::to_wstring(m_iItemNameNum++));
     FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_Environment", pGameObject, m_vecItemName.back().c_str()), );

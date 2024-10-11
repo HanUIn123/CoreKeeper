@@ -1,9 +1,10 @@
 #include "pch.h"
 #include "..\Header\UIStatueCraft.h"
 #include "..\Header\CraftMgr.h"
+#include "../Header/UIItemFrame.h"
 
 CUIStatueCraft::CUIStatueCraft(LPDIRECT3DDEVICE9 pGraphicDev)
-	: Engine::CGameObject(pGraphicDev), m_bCollapse(false), m_bFirst(false), m_bWindow(false), m_iIndex(0), m_bEnough(false)
+	: Engine::CGameObject(pGraphicDev), m_bCollapse(false), m_bFirst(false), m_bWindow(false), m_iIndex(0), m_bEnough(false), m_bStay(false)
 
 {
 }
@@ -53,28 +54,49 @@ _int CUIStatueCraft::Update_GameObject(const _float& fTimeDelta)
 		case 1:
 			if (CCraftMgr::GetInstance()->Craftable(pPlayer, ITEM_PLAYER_SPAWNER, MATERIAL_END))
 				m_bEnough = true;
-			//if(pPlayer->Enough_Item())
-			// m_bEnough = true;
 			break;
 
 		case 3:
 			if (CCraftMgr::GetInstance()->Craftable(pPlayer, ITEM_MAL_SPAWNER, MATERIAL_END))
 				m_bEnough = true;
-			//if(pPlayer->Enough_Item())
-			// m_bEnough = true;
 			break;
 
 		case 5:
 			if (CCraftMgr::GetInstance()->Craftable(pPlayer, ITEM_AZEOS_SPAWNER, MATERIAL_END))
 				m_bEnough = true;
-			//if(pPlayer->Enough_Item())
-			// m_bEnough = true;
 			break;
 		}
 
 		if (Map_Picked(pt))
 		{
 			m_bCollapse = true;
+
+			if (!m_bStay)
+			{
+				switch (m_iIndex)
+				{
+				case 1:
+					if (m_pInventoryCom->Add_Item(CCraftMgr::GetInstance()->CraftExp(ITEM_PLAYER_SPAWNER, MATERIAL_END)))
+						m_bEnough = true;
+					break;
+
+				case 3:
+					if (m_pInventoryCom->Add_Item(CCraftMgr::GetInstance()->CraftExp(ITEM_MAL_SPAWNER, MATERIAL_END)))
+						m_bEnough = true;
+					break;
+
+				case 5:
+					if (m_pInventoryCom->Add_Item(CCraftMgr::GetInstance()->CraftExp(ITEM_AZEOS_SPAWNER, MATERIAL_END)))
+						m_bEnough = true;
+					break;
+				}
+
+				CUIItemFrame* pFrame = dynamic_cast<CUIItemFrame*>(Engine::Get_GameObject(L"Layer_UI", L"UI_ItemFrame"));
+
+				pFrame->Set_Window(m_pInventoryCom->Get_Item(0), pt, true);
+
+				m_bStay = true;
+			}
 
 			if (Engine::Button_Down(DIM_LB))
 			{
@@ -99,14 +121,39 @@ _int CUIStatueCraft::Update_GameObject(const _float& fTimeDelta)
 							break;
 						}
 
-						CCraftMgr::GetInstance()->Craft(pPlayer, eNum, MATERIAL_END);
+						pCursor->Add_Item(CCraftMgr::GetInstance()->Craft(pPlayer, eNum, MATERIAL_END));
 					}
 				}
 			}
 		}
 		else
+		{
+			if (m_bCollapse)
+			{
+				CUIItemFrame* pItemF = dynamic_cast<CUIItemFrame*>(Engine::Get_GameObject(L"Layer_UI", L"UI_ItemFrame"));
+
+				pItemF->Set_WindowDis();
+
+				m_pInventoryCom->Remove_Item(0);
+
+				m_bStay = false;
+			}
 			m_bCollapse = false;
+		}
 	}
+	else if (!m_bWindow && m_bCollapse)
+	{
+		CUIItemFrame* pItemF = dynamic_cast<CUIItemFrame*>(Engine::Get_GameObject(L"Layer_UI", L"UI_ItemFrame"));
+
+		pItemF->Set_WindowDis();
+
+		m_pInventoryCom->Remove_Item(0);
+
+		m_bStay = false;
+
+		m_bCollapse = false;
+	}
+
 	return iExit;
 }
 
@@ -199,6 +246,10 @@ HRESULT CUIStatueCraft::Add_Component()
 	pComponent = m_pColTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_UIInvSelected"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_ColTexture", pComponent });
+
+	pComponent = m_pInventoryCom = dynamic_cast<CInventory*>(Engine::Clone_Proto(L"Proto_OneSlotInventory"));
+	NULL_CHECK_RETURN(pComponent, E_FAIL);
+	m_mapComponent[ID_STATIC].insert({ L"Com_Inventory", pComponent });
 
 	/*
 	pComponent = m_pArrowTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_UITrashCan"));

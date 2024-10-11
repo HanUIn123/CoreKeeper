@@ -3,6 +3,7 @@
 #include "Define.h"
 #include "Item.h"
 #include "UICursor.h"
+#include "UIBuff.h"
 
 BEGIN(Engine)
 
@@ -14,11 +15,11 @@ class CTexture;
 
 END
 
-class CUIItemFrame : public Engine::CGameObject
+class CUIBuffFrame : public Engine::CGameObject
 {
 private:
-	explicit CUIItemFrame(LPDIRECT3DDEVICE9 pGraphicDev);
-	virtual ~CUIItemFrame();
+	explicit CUIBuffFrame(LPDIRECT3DDEVICE9 pGraphicDev);
+	virtual ~CUIBuffFrame();
 
 public:
 	virtual			HRESULT			Ready_GameObject(_vec2 vPos, _vec2 vSize);
@@ -27,13 +28,15 @@ public:
 	virtual			void			Render_GameObject();
 
 public:
-	void            Set_Window(CItem* _pItem, POINT _pt, _bool _bCraft = false);
+	void            Set_Window(CUIBuff::BUFFICONTYPE _BuffType, POINT _pt, _bool _bCraft = false);
 	void            Set_WindowDis() { m_bWindow = false; }
 
 	_bool           Map_Picked(POINT _screenPos) {
 		return  ::PtInRect(&m_BRect, _screenPos);
 	}
 
+private:
+	void            Set_BuffExplain();
 
 private:
 	HRESULT			Add_Component();
@@ -46,7 +49,9 @@ private:
 
 	RECT m_BRect;
 
-	CItem* m_pItem;
+	CUIBuff::BUFFICONTYPE m_eType;
+
+	map<_int, wstring> m_mapType;
 
 	_bool m_bCraft;
 
@@ -58,7 +63,7 @@ private:
 	Engine::CTexture* m_pSelTextureCom;
 
 public:
-	static CUIItemFrame* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec2 vPos, _vec2 vSize);
+	static CUIBuffFrame* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec2 vPos, _vec2 vSize);
 
 private:
 	virtual void		Free();
