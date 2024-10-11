@@ -7,6 +7,7 @@ class CObjectTex;
 class CTransform;
 class CCalculator;
 class CTexture;
+class CCollider;
 class CColliderCube;
 
 END
@@ -31,11 +32,15 @@ public:
 
 private:
 	HRESULT							Add_Component();
+	void							Set_Cast();
+
 public:
 	static CSlimeFloor*				Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 _vPos, _int _iTypeNum, const wstring _pickedFeatherName);
 
 private:
 	virtual void					Free();
+
+	CCollider*						m_pPlayerCollider;
 	_int							m_iTileTypeIndex;
 	_vec3							m_vFloorPos;
 };

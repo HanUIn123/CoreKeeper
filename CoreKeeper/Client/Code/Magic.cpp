@@ -82,6 +82,8 @@ _int CMagic::Update_GameObject(const _float& fTimeDelta)
 		if (m_fTime >= 0.5f || m_iSpeedWeight == 0)
 		{
 			m_fTime = 0;
+			if(m_iSpeedWeight == 0)
+				Engine::CSoundMgr::GetInstance()->Play(L"sunStaffProjectileImpact.wav", SOUND_PLAYER, 0.2f);
 			m_iSpeedWeight = 0;
 			m_bProjectileAttackSuccess = true;
 			m_bActive = false;

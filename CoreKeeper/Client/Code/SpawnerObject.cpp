@@ -2,9 +2,10 @@
 #include "../Header/SpawnerObject.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
+#include "../Header/Malugaz.h"
 
 CSpawnerObject::CSpawnerObject(LPDIRECT3DDEVICE9 pGraphicDev)
-    : CObject(pGraphicDev), m_iTextureNumber(0)
+    : CObject(pGraphicDev), m_iTextureNumber(0), m_bIsAlreadySpawn(false)
 {
 }
 
@@ -27,6 +28,17 @@ HRESULT CSpawnerObject::Ready_GameObject(_vec3 vPos, _int _iTypeNum)
 
 _int CSpawnerObject::Update_GameObject(const _float& fTimeDelta)
 {
+    // 말루가즈 스폰포인트와 충돌되고 있는지?
+    // 충돌중이면 말루가즈 활성화
+    
+    if (m_bIsAlreadySpawn)
+        return 0;
+
+    if (Check_Object_Interaction())
+    {
+        Interaction();
+    }
+
     Add_RenderGroup(RENDER_ALPHA, this);
 
     return Engine::CGameObject::Update_GameObject(fTimeDelta);
@@ -39,11 +51,13 @@ void CSpawnerObject::LateUpdate_GameObject()
 
 void CSpawnerObject::Render_GameObject()
 {
+    m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
+
     m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
 
-    m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+    m_pColliderCom->Update_Collider(m_pTransformCom->Get_WorldMatrix());
 
-    m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
+    m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
     FAILED_CHECK_RETURN(Setup_Material(), );
 
@@ -51,9 +65,34 @@ void CSpawnerObject::Render_GameObject()
 
     m_pBufferCom->Render_Buffer();
 
+    m_pColliderCom->Render_Collider();
+
     m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
+}
+
+void CSpawnerObject::Interaction()
+{
+    CMalugaz* pMalugaz = dynamic_cast<CMalugaz*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Malugaz"));
+
+    pMalugaz->Set_StopDraw(false);
+
+    m_bIsAlreadySpawn = true;
+}
+
+_bool CSpawnerObject::Check_Object_Interaction()
+{
+    Engine::CColliderCube* pMalgaLuzCollider = dynamic_cast<Engine::CColliderCube*>
+        (Engine::Get_Component(ID_DYNAMIC, L"Layer_Environment", L"MalgaSummonPoint", L"Com_Collider"));
+
+    // 말가루즈 소환진과 충돌
+    if (m_pColliderCom->Check_Collision(pMalgaLuzCollider))
+    {
+        return true;
+    }
+
+    return false;
 }
 
 HRESULT CSpawnerObject::Add_Component()
@@ -75,6 +114,10 @@ HRESULT CSpawnerObject::Add_Component()
     pComponent = m_pCalculCom = dynamic_cast<CCalculator*>(Engine::Clone_Proto(L"Proto_Calculator"));
     NULL_CHECK_RETURN(pComponent, E_FAIL);
     m_mapComponent[ID_STATIC].insert({ L"Com_Calculator", pComponent });
+
+    pComponent = m_pColliderCom = dynamic_cast<CColliderCube*>(Engine::Clone_Proto(L"Proto_MaluSpawnerCollider"));
+    NULL_CHECK_RETURN(pComponent, E_FAIL);
+    m_mapComponent[ID_STATIC].insert({ L"Com_Collider", pComponent });
 
     return S_OK;
 }

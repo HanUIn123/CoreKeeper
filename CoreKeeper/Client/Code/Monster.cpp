@@ -54,6 +54,7 @@ CMonster::CMonster(LPDIRECT3DDEVICE9 pGraphicDev)
 
 	m_fImmuneTime = 0.f;
 	m_fImmuneTimeLimit = 0.f;
+	m_bImmuneEnd = true;
 
 	m_iSpeedWeight = 1;
 
@@ -67,6 +68,8 @@ CMonster::CMonster(LPDIRECT3DDEVICE9 pGraphicDev)
 	m_bRespawned = false;
 	m_vRespawnPoint = { 0, 0, 0 };
 	m_fRespawnTimer = 0.f;
+
+	m_fSoundVolume = 0.f;
 
 	m_vecDropItem.reserve(3);
 
@@ -133,6 +136,7 @@ void CMonster::JumpY(const _float& fTimeDelta)
 	if (!m_bJumping)
 	{
 		m_bJumping = true;
+		Engine::CSoundMgr::GetInstance()->Play(L"slimeJump1.wav", SOUND_SLIME, m_fSoundVolume);
 		m_fJumpTime = 0;
 		m_fJumpHeight = m_fJumpY - m_fIdleY;
 		// 각 몬스터마다 점프 프레임 계산
@@ -234,9 +238,27 @@ void CMonster::Check_Hitted()
 		{
 
 			m_bHit = true;
-			
+			m_bImmuneEnd = false;
+
+			if(pPlayerHandedItem->Get_ItemNum() == ITEM_STAFF)
+				Engine::CSoundMgr::GetInstance()->Play(L"sunStaffProjectileImpact.wav", SOUND_PLAYER, 0.2f);
 			if (!m_bKnockBackStart)
 			{
+				switch (m_eType)
+				{
+				case MON_SLIME:
+					Engine::CSoundMgr::GetInstance()->Play(L"slimehurt.wav", SOUND_SLIME, m_fSoundVolume);
+					break;
+				case MON_SHROOMMAN:
+					Engine::CSoundMgr::GetInstance()->Play(L"damage.wav", SOUND_MUSHROOM, m_fSoundVolume);
+					break;
+				case MON_SHAMAN:
+					Engine::CSoundMgr::GetInstance()->Play(L"CavelingHurt.wav", SOUND_SHAMAN, m_fSoundVolume);
+					break;
+				case MON_HUNTER:
+					Engine::CSoundMgr::GetInstance()->Play(L"CavelingHurt.wav", SOUND_HUNTER, m_fSoundVolume);
+					break;
+				}
 				pPlayerHandedItem->Set_ProjectileAttackSuccess(true);
 				m_bKnockBackStart = true;
 				m_bKnockBackEnd = false;
@@ -395,11 +417,95 @@ void CMonster::Set_StuckFree(const _float& fTimeDelta)
 	{
 		if (m_pTerrain->Get_UnreachableByIndex(iIndex))
 		{
-			vDir = vCheckPos - _vec3(_int(vCheckPos.x + 0.5f * VTXITV), 0, _int(vCheckPos.z + 0.5f * VTXITV) * (VTXCNTX - 1));
-			D3DXVec3Normalize(&vDir, &vDir);
-			vDir.y = 0;
-			m_iSpeedWeight = 1;
-			m_pTransformCom->Move_Pos(&vDir, fTimeDelta, m_fSpeed * 10);
+
+			_int iLeft = iIndex - 1;
+			_int iRight = iIndex + 1;
+			_int iBottom = iIndex - (VTXCNTX - 1);
+			_int iTop = iIndex + (VTXCNTX - 1);
+			_int iTopLeft = iIndex - 1 + (VTXCNTX - 1);
+			_int iTopRight = iIndex + 1 + (VTXCNTX - 1);
+			_int iBottomLeft = iIndex - 1 - (VTXCNTX - 1);
+			_int iBottomRight = iIndex + 1 - (VTXCNTX - 1);
+			_float fX = 0.f, fZ = 0.f;
+			_vec3 vDestPoint;
+			if (0 <= iLeft && iLeft < (VTXCNTX - 1) * (VTXCNTZ - 1))
+			{
+				if (!m_pTerrain->Get_UnreachableByIndex(iLeft))
+				{
+					fX = (iLeft % (VTXCNTX - 1)) * VTXITV;
+					fZ = (iLeft / (VTXCNTX - 1)) * VTXITV;
+				}
+			}
+			if (0 <= iRight && iRight < (VTXCNTX - 1) * (VTXCNTZ - 1))
+			{
+				if (!m_pTerrain->Get_UnreachableByIndex(iRight))
+				{
+					fX = (iRight % (VTXCNTX - 1)) * VTXITV;
+					fZ = (iRight / (VTXCNTX - 1)) * VTXITV;
+				}
+			}
+			if (0 <= iBottom && iBottom < (VTXCNTX - 1) * (VTXCNTZ - 1))
+			{
+				if (!m_pTerrain->Get_UnreachableByIndex(iBottom))
+				{
+					fX = (iBottom % (VTXCNTX - 1)) * VTXITV;
+					fZ = (iBottom / (VTXCNTX - 1)) * VTXITV;
+				}
+			}
+			if (0 <= iTop && iTop < (VTXCNTX - 1) * (VTXCNTZ - 1))
+			{
+				if (!m_pTerrain->Get_UnreachableByIndex(iTop))
+				{
+					fX = (iTop % (VTXCNTX - 1)) * VTXITV;
+					fZ = (iTop / (VTXCNTX - 1)) * VTXITV;
+				}
+			}
+			if (0 <= iTopLeft && iTopLeft < (VTXCNTX - 1) * (VTXCNTZ - 1))
+			{
+				if (!m_pTerrain->Get_UnreachableByIndex(iTopLeft))
+				{
+					fX = (iTopLeft % (VTXCNTX - 1)) * VTXITV;
+					fZ = (iTopLeft / (VTXCNTX - 1)) * VTXITV;
+				}
+			}
+			if (0 <= iTopRight && iTopRight < (VTXCNTX - 1) * (VTXCNTZ - 1))
+			{
+				if (!m_pTerrain->Get_UnreachableByIndex(iTopRight))
+				{
+					fX = (iTopRight % (VTXCNTX - 1)) * VTXITV;
+					fZ = (iTopRight / (VTXCNTX - 1)) * VTXITV;
+				}
+			}
+			if (0 <= iBottomLeft && iBottomLeft < (VTXCNTX - 1) * (VTXCNTZ - 1))
+			{
+				if (!m_pTerrain->Get_UnreachableByIndex(iBottomLeft))
+				{
+					fX = (iBottomLeft % (VTXCNTX - 1)) * VTXITV;
+					fZ = (iBottomLeft / (VTXCNTX - 1)) * VTXITV;
+				}
+			}
+			if (0 <= iBottomRight && iBottomRight < (VTXCNTX - 1) * (VTXCNTZ - 1))
+			{
+				if (!m_pTerrain->Get_UnreachableByIndex(iBottomRight))
+				{
+					fX = (iBottomRight % (VTXCNTX - 1)) * VTXITV;
+					fZ = (iBottomRight / (VTXCNTX - 1)) * VTXITV;
+				}
+			}
+			if (fX == 0.f && fZ == 0.f)
+			{
+				m_pTransformCom->Set_Pos(m_vRespawnPoint.x, m_vRespawnPoint.y, m_vRespawnPoint.z);
+			}
+			else
+			{
+				vDestPoint = { fX, 0, fZ };
+				vDir = vDestPoint - vCheckPos;
+				D3DXVec3Normalize(&vDir, &vDir);
+				vDir.y = 0;
+				m_iSpeedWeight = 1;
+				m_pTransformCom->Move_Pos(&vDir, fTimeDelta, m_fSpeed * 2);
+			}
+			
 		}
 	}
 }
@@ -478,6 +584,22 @@ void CMonster::Set_RespawnTimer(const _float& fTimeDelta)
 			}
 		}
 	}
+}
+
+void CMonster::Set_SoundVolumeByDistance()
+{
+	_vec3 vPos, vPlayerPos;
+	m_pPlayerTransform->Get_Info(INFO_POS, &vPos);
+	m_pTransformCom->Get_Info(INFO_POS, &vPlayerPos);
+	_vec3 vLength = vPlayerPos - vPos;
+	_float fLength = D3DXVec3Length(&vLength);
+	
+	if (fLength < 10.f)
+	{
+		m_fSoundVolume = (10 - fLength) * 0.05f;
+	}
+	else
+		m_fSoundVolume = 0.f;
 }
 
 void CMonster::Check_WallWithPlayer()

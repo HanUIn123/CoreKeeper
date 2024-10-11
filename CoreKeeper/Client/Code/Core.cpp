@@ -41,6 +41,8 @@ _int CCore::Update_GameObject(const _float& fTimeDelta)
 
 	m_iRange = (m_bActiveCore[0] + m_bActiveCore[1] + m_bActiveCore[2]) * 10.f;
 
+	if (m_bActiveCore[0] && m_bActiveCore[1] && m_bActiveCore[2])
+		g_bOpen = true;
 	SetUp_Light(); // 조명 설정
 
 	Add_RenderGroup(RENDER_ALPHA, this);

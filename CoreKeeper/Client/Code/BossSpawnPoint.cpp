@@ -13,15 +13,11 @@ CBossSpawnPoint::~CBossSpawnPoint()
 {
 }
 
-HRESULT CBossSpawnPoint::Ready_GameObject(_vec3 vPos, _int _iTypeNum, const wstring _pickedSPName)
+HRESULT CBossSpawnPoint::Ready_GameObject(_vec3 vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
 	m_vSpawnPos = vPos;
-
-	m_iSpawnTextureNumber = _iTypeNum;
-
-	m_strPickedObjectName = _pickedSPName;
 
 	m_pTransformCom->Set_Pos(vPos.x, vPos.y, vPos.z);
 
@@ -44,15 +40,19 @@ void CBossSpawnPoint::Render_GameObject()
 {
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
 
+	m_pColliderCom->Update_Collider(m_pTransformCom->Get_WorldMatrix());
+
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
 
 	FAILED_CHECK_RETURN(Setup_Material(), );
 
-	m_pTextureCom->Set_Texture(m_iSpawnTextureNumber);
+	m_pTextureCom->Set_Texture();
 
 	m_pBufferCom->Render_Buffer();
+
+	m_pColliderCom->Render_Collider();
 
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 
@@ -93,14 +93,18 @@ HRESULT CBossSpawnPoint::Add_Component()
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_EmissiveTexture", pComponent });
 
+	pComponent = m_pColliderCom = dynamic_cast<CColliderCube*>(Engine::Clone_Proto(L"Proto_SpawnPointCollider"));
+	NULL_CHECK_RETURN(pComponent, E_FAIL);
+	m_mapComponent[ID_DYNAMIC].insert({ L"Com_Collider", pComponent });
+
 	return S_OK;
 }
 
-CBossSpawnPoint* CBossSpawnPoint::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos, _int _iTypeNum, const wstring _pickedSPName)
+CBossSpawnPoint* CBossSpawnPoint::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
 {
 	CBossSpawnPoint* pCore = new CBossSpawnPoint(pGraphicDev);
 
-	if (FAILED(pCore->Ready_GameObject(vPos, _iTypeNum, _pickedSPName)))
+	if (FAILED(pCore->Ready_GameObject(vPos)))
 	{
 		Safe_Release(pCore);
 		MSG_BOX("pCore Create Failed");

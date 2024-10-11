@@ -44,8 +44,16 @@ void CBuffMgr::Set_BuffStart(BUFFTYPE _eType, _float fTime)
 	{
 		_int iType = (_int)_eType;
 		m_pPlayer->Set_BuffState(_eType, true);
-		m_arrBuffState[iType].x += fTime;
-		m_arrBuffState[iType].y += fTime;
+		if (_eType == DEBUFF_SLOW)
+		{
+			m_arrBuffState[iType].x = fTime;
+			m_arrBuffState[iType].y = fTime;
+		}
+		else
+		{
+			m_arrBuffState[iType].x += fTime;
+			m_arrBuffState[iType].y += fTime;
+		}
 		m_vecUIBuff[iType]->Set_Window(_eType);
 		m_vecUIBuff[iType]->Set_BuffTime(m_arrBuffState[iType].x, m_arrBuffState[iType].y);
 		if (!m_vecUIBuff[iType]->Get_Allocate())

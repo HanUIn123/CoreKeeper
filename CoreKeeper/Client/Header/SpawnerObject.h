@@ -34,6 +34,9 @@ public:
 
 	_vec3							Get_SpawnPos() { return m_vMaluSpawnPos; }
 
+	virtual			void			Interaction();
+	_bool							Check_Object_Interaction();
+
 private:
 	HRESULT							Add_Component();
 
@@ -46,5 +49,6 @@ private:
 private:
 	_int							m_iTextureNumber;
 	_vec3							m_vMaluSpawnPos;
+	_bool							m_bIsAlreadySpawn;
 };
 

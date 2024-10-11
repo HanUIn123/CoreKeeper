@@ -12,7 +12,7 @@ CShroomMan::CShroomMan(LPDIRECT3DDEVICE9 pGraphicDev)
     m_eState = IDLE;
     m_bFlip = false;
     m_fAggroDistance = 8.f;
-
+    m_fImmuneTimeLimit = 0.5f;
     m_bHit = false;
 }
 
@@ -50,7 +50,7 @@ _int CShroomMan::Update_GameObject(const _float& fTimeDelta)
     }
 
     Set_Cast();
-
+    Set_SoundVolumeByDistance();
     if (g_bIsTopCamera)
     {
         if (m_vAttackPoint.x < 0)
@@ -59,8 +59,18 @@ _int CShroomMan::Update_GameObject(const _float& fTimeDelta)
             m_eDir = RIGHT;
     }
 
-    if (m_eState != DEAD)
+    if (m_eState != DEAD && m_bImmuneEnd)
         Check_Hitted();
+
+    if (!m_bImmuneEnd)
+    {
+        m_fImmuneTime += fTimeDelta;
+        if (m_fImmuneTime > m_fImmuneTimeLimit)
+        {
+            m_bImmuneEnd = true;
+            m_fImmuneTime = 0.f;
+        }
+    }
 
     if (m_bKnockBackEnd)
     {
@@ -86,7 +96,7 @@ _int CShroomMan::Update_GameObject(const _float& fTimeDelta)
         KnockBack(fTimeDelta, 1.8f);
 
     Flip();
-    //Set_StuckFree(fTimeDelta);
+    Set_StuckFree(fTimeDelta);
     m_pAnimatorCom->Update_Animation();
 
     if (m_eState == SWING)
@@ -214,7 +224,6 @@ HRESULT CShroomMan::Add_Component()
     NULL_CHECK_RETURN(pComponent, E_FAIL);
     m_mapComponent[ID_DYNAMIC].insert({ L"Com_Collider", pComponent });
 
-
     pComponent = m_pSmokeParticleCom = dynamic_cast<CSmoke*>(Engine::Clone_Proto(L"Proto_Smoke"));
     NULL_CHECK_RETURN(pComponent, E_FAIL);
     m_mapComponent[ID_STATIC].insert({ L"Com_Smoke", pComponent });
@@ -331,6 +340,9 @@ void CShroomMan::Pattern_Chase(const _float& fTimeDelta)
     m_pTransformCom->Get_Info(INFO_POS, &vPos);
 
     m_pAnimatorCom->Set_CurState(WALK, 27, 33, 8);
+    if(m_pAnimatorCom->Get_MotionIndex() == 30 && m_pAnimatorCom->Get_CurCount() == 0)
+        Engine::CSoundMgr::GetInstance()->Play(L"dansk1.wav", SOUND_MUSHROOM, m_fSoundVolume);
+
     if (m_pAnimatorCom->Get_MotionEnd())
     {
         m_fAttackDistance = 0.f;
@@ -353,24 +365,30 @@ void CShroomMan::Pattern_Attack(const _float& fTimeDelta)
     m_pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
 
     // 일정 스피드 이상일 때 충돌 처리
-    if (m_fAttackTime > 0.2f)
+    if (!m_bAttackSuccess)
     {
-        _vec3 vCheckPos = vPos + m_vAttackPoint * m_fSpeed * m_fAttackTime * 0.1f;
-        _int iIndex = _int(vCheckPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (vCheckPos.x + 0.5f * VTXITV);
-       
-        // 플레이어 충돌 시 공격 성공
-        if (m_pColliderCom->Check_Collision(m_pPlayerCollider))
+        if (m_fAttackTime > 0.2f)
         {
-            m_bAttackSuccess = true;
-            m_pPlayer->Set_KnockBack(vPos, m_pStateCom->Get_Stat()->iAttack, 1.5f, HIT_NORMAL);
-        }
-        // 벽 충돌
-        else if (0 <= iIndex && iIndex < VTXCNTX * VTXCNTZ)
-        {
-            if (m_pTerrain->Get_UnreachableByIndex(iIndex))
-                m_bAttackSuccess = true;
-        }
+            _vec3 vCheckPos = vPos + m_vAttackPoint * m_fSpeed * m_fAttackTime * 0.1f;
+            _int iIndex = _int(vCheckPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (vCheckPos.x + 0.5f * VTXITV);
 
+            // 플레이어 충돌 시 공격 성공
+            if (m_pColliderCom->Check_Collision(m_pPlayerCollider))
+            {
+                m_bAttackSuccess = true;
+                m_pPlayer->Set_KnockBack(vPos, m_pStateCom->Get_Stat()->iAttack, 1.5f, HIT_NORMAL);
+                Engine::CSoundMgr::GetInstance()->Play(L"damagePlayer.wav", SOUND_MUSHROOM, m_fSoundVolume);
+            }
+            // 벽 충돌
+            else if (0 <= iIndex && iIndex < VTXCNTX * VTXCNTZ)
+            {
+                if (m_pTerrain->Get_UnreachableByIndex(iIndex))
+                {
+                    m_bAttackSuccess = true;
+                    Engine::CSoundMgr::GetInstance()->Play(L"Wall_Clay_dmg_1.wav", SOUND_MUSHROOM, m_fSoundVolume);
+                }
+            }
+        }
     }
     // 공격 중 : 돌진
     if (!m_bAttackSuccess)
@@ -392,6 +410,9 @@ void CShroomMan::Pattern_Attack(const _float& fTimeDelta)
             m_pTransformCom->Move_Pos(&m_vAttackPoint, m_fAttackTime * 0.1f, m_fSpeed);
             m_fAttackDistance += m_fSpeed * m_fAttackTime * 0.1f;
         }
+        if(m_pAnimatorCom->Get_CurCount() == 0 && m_pAnimatorCom->Get_MotionIndex() % 3 == 0)
+            Engine::CSoundMgr::GetInstance()->Play(L"Footstep_Dirt.wav", SOUND_MUSHROOM, m_fSoundVolume);
+            
         // 정지
         if (m_fAttackDistance > 12.f)
             m_bAttackFailed = true;
@@ -399,7 +420,7 @@ void CShroomMan::Pattern_Attack(const _float& fTimeDelta)
     // 공격 성공 : 엉덩방아
     else
     {
-        m_pAnimatorCom->Set_CurState(SWING, 36, 44, 6);
+        m_pAnimatorCom->Set_CurState(SWING, 36, 44, 6);            
         if (m_pAnimatorCom->Get_MotionEnd())
         {
             if (m_pCalculatorCom->Check_Distance2D(&vPlayerPos, &vPos, m_fAggroDistance))
@@ -430,6 +451,8 @@ void CShroomMan::Pattern_Attack(const _float& fTimeDelta)
 void CShroomMan::Pattern_Dead()
 {
     m_pAnimatorCom->Set_CurState(DEAD, 40, 44, 4);
+    if(m_pAnimatorCom->Get_CurCount() == 0 && m_pAnimatorCom->Get_MotionIndex() == 41)
+        Engine::CSoundMgr::GetInstance()->Play(L"dansk2.wav", SOUND_MUSHROOM, m_fSoundVolume);
     if (m_pAnimatorCom->Get_MotionEnd())
     {
         m_bStopDraw = true;

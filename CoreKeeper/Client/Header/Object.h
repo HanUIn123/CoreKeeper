@@ -8,6 +8,7 @@ class CTransform;
 class CCalculator;
 class CTexture;
 class CColliderCube;
+class CCollider;
 class CInventory;
 
 END
@@ -36,6 +37,7 @@ private:
 public:
 	bool							Check_Interaction();
 
+
 public:
 	virtual			_int			Get_BuildImgNum() { return m_iBuildingImgNum; }
 	virtual			void			Set_BuildImgNum(_int _iBuildingNum) { m_iBuildingImgNum = _iBuildingNum; }
@@ -48,11 +50,16 @@ public:
 	virtual void					Set_PickedObjectName(wstring _pickObjectName) { m_strPickedObjectName = _pickObjectName; }
 
 protected:
+	void			Set_SoundVolumeByDistance();
+
+
+protected:
 	Engine::CObjectTex*				m_pBufferCom;
 	Engine::CTransform*				m_pTransformCom;
 	Engine::CCalculator*			m_pCalculCom;
 	Engine::CTexture*				m_pTextureCom;
-	Engine::CColliderCube*			m_pColliderCom;
+	//Engine::CCollider*				m_pColliderCom;
+	Engine::CColliderCube*				m_pColliderCom;
 	Engine::CInventory*				m_pInventoryCom;
 
 	Engine::PLACEOBJECT				m_eObjType;
@@ -66,8 +73,9 @@ private:
 protected:
 	_int							m_iBuildingImgNum;
 	_vec3							m_vBuildPosition;
+	CTransform*						m_pPlayerTransform;
 
-
+	_float							m_fSoundVolume;
 	_bool                           m_bCollision; // 플레이어와 충돌 체크
 
 	wstring							m_strPickedObjectName;
