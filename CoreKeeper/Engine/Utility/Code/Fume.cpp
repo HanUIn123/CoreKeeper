@@ -110,10 +110,22 @@ void CFume::update(float timeDelta, _vec3 vDir)
 void CFume::preRender()
 {
 	PSystem::preRender();
-
+	/*
+	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, true);
 	m_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_ONE);
 	m_pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
+	*/
 
+
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+
+	m_pGraphicDev->SetRenderState(D3DRS_TEXTUREFACTOR, D3DCOLOR_ARGB(100, 255, 255, 255));
+	m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
+	m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
+	m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_TFACTOR);
+	m_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+	m_pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 	// z¹öÆÛ ÀÐ±â ²û
 	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, false);
 }
@@ -121,6 +133,10 @@ void CFume::preRender()
 void CFume::postRender()
 {
 	PSystem::postRender();
+
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, false);
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, true);
+
 
 	m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, true);
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, false);

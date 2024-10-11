@@ -141,6 +141,7 @@
 #include "UIChestSort.h"
 #include "UIFurnace.h"
 #include "UICookingPot.h"
+#include "UIFont.h"
 
 // Map 
 #include "MiniMapFrame.h"

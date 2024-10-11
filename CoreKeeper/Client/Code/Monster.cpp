@@ -3,6 +3,7 @@
 #include "Export_Utility.h"
 #include "..\Header\Player.h"
 #include "DropItem.h"
+#include "../Header/UIFont.h"
 
 
 int	CMonster::m_iTagNumber = 10;
@@ -71,6 +72,9 @@ CMonster::CMonster(LPDIRECT3DDEVICE9 pGraphicDev)
 	m_fSoundVolume = 0.f;
 
 	m_vecDropItem.reserve(3);
+
+	m_vecFont.reserve(10);
+	m_iFontNum = 0;
 }
 
 CMonster::~CMonster()
@@ -265,6 +269,22 @@ void CMonster::Check_Hitted()
 				D3DXVec3Normalize(&m_vFallDir, &m_vFallDir);
 				m_vFallDir.y = 0;
 				m_pStateCom->Set_Damaged(m_pPlayerState->Get_Stat()->iAttack);
+
+				wstring string = std::to_wstring(m_pPlayerState->Get_Stat()->iAttack);
+		
+				//m_vecFont.push_back(string.c_str());
+
+				m_Font[m_iFontNum] = string.c_str();
+
+				CUIFont* pFont = dynamic_cast<CUIFont*>(Engine::Get_GameObject(L"Layer_UI", L"UI_Font"));
+
+				_matrix matWorld;
+				m_pTransformCom->Get_WorldMatrix(&matWorld);
+
+				pFont->Set_Font(matWorld, m_Font[m_iFontNum]);
+
+				m_iFontNum++;
+
 				if (m_pStateCom->Get_Dead())
 					m_eState = DEAD;
 			}
