@@ -23,8 +23,6 @@ HRESULT CMiniObject::Ready_GameObject(_vec3 vPos)
 
     m_pTransformCom->Set_Pos(vPos.x, vPos.y, vPos.z);
 
-    m_pTransformCom->Set_Scale(4.0f, 1.0f, 4.0f);
-
     return S_OK;
 }
 
@@ -42,7 +40,7 @@ _int CMiniObject::Update_GameObject(const _float& fTimeDelta)
             _vec3 vPlayerPos;
             pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
 
-            m_pTransformCom->Set_Scale(3.5f, 1.0f, 3.5f);
+            m_pTransformCom->Set_Scale(3.0f, 3.0f, 3.0f);
 
             m_pTransformCom->Set_Pos((vPlayerPos.x),0,((vPlayerPos.z)));
         }
@@ -54,7 +52,8 @@ _int CMiniObject::Update_GameObject(const _float& fTimeDelta)
             _vec3 vPlayerPos;
             pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
 
-            m_pTransformCom->Set_Scale(4.0f, 1.0f, 4.0f);
+            m_pTransformCom->Set_Scale(2.0f, 2.0f, 2.0f);
+
             m_pTransformCom->Set_Pos((vPlayerPos.x), 0, ((vPlayerPos.z)));
         }
     }

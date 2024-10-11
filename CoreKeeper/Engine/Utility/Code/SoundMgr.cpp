@@ -70,6 +70,24 @@ void CSoundMgr::PlayBGM(const TCHAR* pSoundKey, float fVolume)
 	if (iter == m_mapSound.end())
 		return;
 
+	// 현재 재생 중인 사운드가 동일한지 확인
+	bool isPlaying;
+	m_pChannelArr[SOUND_BGM]->isPlaying(&isPlaying);
+
+	if (isPlaying)
+	{
+		FMOD::Sound* pCurrentSound;
+		m_pChannelArr[SOUND_BGM]->getCurrentSound(&pCurrentSound);
+
+		// 같은 사운드라면 바로 return
+		if (pCurrentSound == iter->second)
+			return; 
+		// 다른 사운드면 기존의 BGM을 멈추기
+		else
+			m_pChannelArr[SOUND_BGM]->stop();
+		
+	}
+
 	m_pSystem->playSound(iter->second, nullptr, false, &m_pChannelArr[SOUND_BGM]);
 	m_pChannelArr[SOUND_BGM]->setMode(FMOD_LOOP_NORMAL);
 	m_pChannelArr[SOUND_BGM]->setVolume(fVolume);

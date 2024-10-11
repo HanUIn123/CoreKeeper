@@ -601,12 +601,24 @@ void CPlayer::Walk_Y(const _float& fTimeDelta)
         m_fWalkSoundTimeAcc = 0.f;
         _int iIndex = _int(vPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (vPos.x + 0.5f * VTXITV);
         _int iTileNum = m_pTerrain->Get_TextureNumber(iIndex);
+        
+        CStage* pStage = dynamic_cast<CStage*>(Engine::Get_Scene());
+
         if (iTileNum < 9)
+        {
             Engine::CSoundMgr::GetInstance()->Play(L"Footstep_Dirt.wav", SOUND_PLAYER, 0.1f);
+            pStage->Set_BGMNumber(0);
+        }
         else if (iTileNum < 18)
+        {
             Engine::CSoundMgr::GetInstance()->Play(L"footstepRock1.wav", SOUND_PLAYER, 0.1f);
+            pStage->Set_BGMNumber(1);
+        }
         else
+        {
             Engine::CSoundMgr::GetInstance()->Play(L"Footstep_Grass.wav", SOUND_PLAYER, 0.1f);
+            pStage->Set_BGMNumber(2);
+        }
     }
 
     if (vPos.y - vUp.y * fTimeDelta * m_fWalkYSpeed >= 0)

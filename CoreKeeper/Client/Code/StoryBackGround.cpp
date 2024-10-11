@@ -8,8 +8,8 @@ CStoryBackGround::CStoryBackGround(LPDIRECT3DDEVICE9 pGraphicDev)
 {
 	m_strMent[0] = L"머나먼 외딴 곳.      ";
 	m_strMent[1] = L"당신은 다른 탐험가들과 함께 숲을 지나고 있습니다.      ";
-	m_strMent[2] = L"이상한 존재를 느낀 당신은, 마루 사이에 무언가가 있다는 것을 알아챕니다.      ";
-	m_strMent[3] = L"당신은 그것에 이끌려, 이상한 유물에 다가가 손을 뻗습니다.      ";
+	m_strMent[2] = L"이상한 존재를 느낀 당신은, \n마루 사이에 무언가가 있다는 것을 알아챕니다.      ";
+	m_strMent[3] = L"당신은 그것에 이끌려, \n이상한 유물에 다가가 손을 뻗습니다.      ";
 	m_strMent[4] = L"유물의 표면에 손이 닿자 눈부신 빛이 당신을 에워쌉니다.      ";
 }
 
@@ -75,8 +75,8 @@ void CStoryBackGround::Render_GameObject()
 
 	wstring currentText = m_strMent[m_iTextureNum].substr(0, m_iCurrentIndex);
 
-	_vec2 LTpos(0, 570);
-	_vec2 RBpos(WINCX, 570);
+	_vec2 LTpos(0, 550);
+	_vec2 RBpos(WINCX, 550);
 
 	Engine::Render_Font_Custom(L"Font_Default", currentText.c_str(), &LTpos, &RBpos, DT_CENTER, D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
 }

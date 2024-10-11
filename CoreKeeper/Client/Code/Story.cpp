@@ -31,6 +31,8 @@ HRESULT CStory::Ready_Scene()
 
 _int CStory::Update_Scene(const _float& fTimeDelta)
 {
+	Engine::CSoundMgr::GetInstance()->PlayBGM(L"Intro.wav", 0.1f);
+
 	_int	iExit = Engine::CScene::Update_Scene(fTimeDelta);
 
 	if (true == m_pLoading->Get_Finish())

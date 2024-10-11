@@ -5,7 +5,7 @@
 
 
 CStage::CStage(LPDIRECT3DDEVICE9 pGraphicDev)
-    : Engine::CScene(pGraphicDev)
+    : Engine::CScene(pGraphicDev), m_iBgmNumber(0)
     , m_bInvCheck(false)
     , m_iLoadTileCount(0)
     , m_iLoadWallCount(0)
@@ -63,7 +63,21 @@ _int CStage::Update_Scene(const _float& fTimeDelta)
 	_int	iExit = Engine::CScene::Update_Scene(fTimeDelta);
 	CFarmMgr::GetInstance()->Update_Farm(fTimeDelta);
 	CBuffMgr::GetInstance()->Update_Buff(fTimeDelta);
-	return iExit;
+    switch (m_iBgmNumber)
+    {
+    case 0:
+        Engine::CSoundMgr::GetInstance()->PlayBGM(L"Dirt_Biome_3_R1.wav", 0.1f);
+        break;
+    case 1:
+        Engine::CSoundMgr::GetInstance()->PlayBGM(L"Stone_Biome_2_R1.wav", 0.1f);
+        //Stone_Biome_2_R1
+        break;
+    case 2:
+        Engine::CSoundMgr::GetInstance()->PlayBGM(L"Nature_Biome_1_R1.wav", 0.1f);
+        break;
+    }
+
+    return iExit;
 }
 
 void CStage::LateUpdate_Scene()

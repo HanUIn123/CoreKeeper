@@ -46,6 +46,7 @@ public:
 	void							Set_WallDropItemName(wstring wStr) { m_wsWallDropItemNameString.push_back(wStr); }
 	vector<wstring>*				Get_WallDropItemName() { return &m_wsWallDropItemNameString; }
 
+	void							Set_BGMNumber(int _iBgmNumber) { m_iBgmNumber = _iBgmNumber; }
 private:
 	virtual void					Free();
 	Engine::CGameObject*			m_pTerrainObject;
@@ -63,10 +64,10 @@ private:
 	HANDLE							m_hObjectFile;
 	HANDLE							m_hBigWallFile;
 
-	wstring							m_wsTileNameString[VTXCNTX * VTXCNTZ];
-	wstring							m_wsWallNameString[VTXCNTX * VTXCNTZ];
-	wstring							m_wsObjectNameString[VTXCNTX * VTXCNTZ];
-	wstring							m_wsMonsterNameString[VTXCNTX * VTXCNTZ];
+	wstring							m_wsTileNameString[(VTXCNTX - 1) * (VTXCNTZ - 1)];
+	wstring							m_wsWallNameString[(VTXCNTX - 1) * (VTXCNTZ - 1)];
+	wstring							m_wsObjectNameString[(VTXCNTX - 1) * (VTXCNTZ - 1)];
+	wstring							m_wsMonsterNameString[(VTXCNTX - 1) * (VTXCNTZ - 1)];
 	vector<wstring>					m_wsWallDropItemNameString;
 	wstring							m_wsBuffNameString[BUFFTYPE_END];
 	_int							m_iLoadTileCount;
@@ -81,5 +82,7 @@ private:
 
 	// È¤½Ã ¸ô¶ó, ÀÏ´Ü ¸â¹ö·Î »©¼­ ¸¸µé¾î µÒ.
 	CMiniMapCamera*					m_pMiniMapCamera;
+
+	int								m_iBgmNumber;
 };
 
