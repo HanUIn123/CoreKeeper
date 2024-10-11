@@ -24,6 +24,7 @@ CStage::~CStage()
 	CCraftMgr::DestroyInstance();
 	CFarmMgr::DestroyInstance();
 	CBuffMgr::DestroyInstance();
+    CBlackPlaneMgr::DestroyInstance();
 }
 
 HRESULT CStage::Ready_Scene()
@@ -32,6 +33,10 @@ HRESULT CStage::Ready_Scene()
 	CCraftMgr::GetInstance()->Ready_Craft(m_pGraphicDev);
 	CFarmMgr::GetInstance()->Ready_Farm(m_pGraphicDev);
 	CBuffMgr::GetInstance()->Ready_Buff(m_pGraphicDev);
+    CBlackPlaneMgr::GetInstance()->Ready_BlackPlane(m_pGraphicDev);
+
+   
+
 
     //FAILED_CHECK_RETURN(Ready_LightInfo(), E_FAIL);
     FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Layer_Environment"), E_FAIL);
@@ -63,6 +68,7 @@ _int CStage::Update_Scene(const _float& fTimeDelta)
 	_int	iExit = Engine::CScene::Update_Scene(fTimeDelta);
 	CFarmMgr::GetInstance()->Update_Farm(fTimeDelta);
 	CBuffMgr::GetInstance()->Update_Buff(fTimeDelta);
+    CBlackPlaneMgr::GetInstance()->Update_BlackPlane(fTimeDelta);
 	return iExit;
 }
 

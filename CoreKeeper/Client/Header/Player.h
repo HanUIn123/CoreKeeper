@@ -138,6 +138,9 @@ public:
 
 	_int			Get_LightRange() { return m_fLightRange; }
 
+
+	void			Check_MapOff();
+
 private:
 	void			KnockBack(const _float& fTimeDelta);
 

@@ -373,6 +373,16 @@ _uint CLoading::Loading_Stage()
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_AzeosSpawnerCollider", Engine::CColliderCube::Create(m_pGraphicDev, _vec3(-0.5f, -0.5f, -0.5f), _vec3(0.5f, 0.5f, 0.5f))), E_FAIL);
 
 
+
+
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_BlackTex", Engine::CRcTex::Create(m_pGraphicDev)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_BlackTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Logo/BlackScreen.png", TEX_NORMAL)), E_FAIL);
+    //FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_BlackTransform", Engine::CTransform::Create(m_pGraphicDev)), E_FAIL);
+
+
+
+
+
 #pragma endregion
 
     lstrcpy(m_szLoading, L"PRESS ENTER");
