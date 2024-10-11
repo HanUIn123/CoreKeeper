@@ -151,7 +151,7 @@ void CUIFont::Set_Font_Center(_matrix matWorld, const _tchar* tFont)
 	float f_ScreenY = f_ScreenNormalY * WINCY;
 
 	// 글자 길이의 반 * 폰트 너비만큼 빼주면 가운데에 옴
-	_vec2 vPos2 = { f_ScreenX - length * 0.5f * 30.f, f_ScreenY};
+	_vec2 vPos2 = { f_ScreenX - length * 0.5f * 20.f, f_ScreenY};
 
 	FONT sFont;
 	sFont.vPos = vPos2;
@@ -190,7 +190,7 @@ void CUIFont::Set_Font_Up(_matrix matWorld, const _tchar* tFont)
 	float f_ScreenY = f_ScreenNormalY * WINCY;
 
 	// 글자 길이의 반 * 폰트 너비만큼 빼주면 가운데에 옴
-	_vec2 vPos2 = { f_ScreenX - length * 0.5f * 30.f, f_ScreenY - 30.f };
+	_vec2 vPos2 = { f_ScreenX - length * 0.5f * 20.f, f_ScreenY - 60.f };
 
 	FONT sFont;
 	sFont.vPos = vPos2;

@@ -147,7 +147,16 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
         else if (m_fLookAroundTime < 7.f)
             m_eDir = RIGHT;
         else
+        {
             m_bLookAround = true;
+            
+            _matrix matWorld;
+            m_pTransformCom->Get_WorldMatrix(&matWorld);
+
+            CUIFont* pFont = dynamic_cast<CUIFont*>(Engine::Get_GameObject(L"Layer_UI", L"UI_Font"));
+            pFont->Set_Font_Up(matWorld, L"?");
+
+        }
 
         if (!m_bRespawned)
         {
@@ -2527,6 +2536,9 @@ void CPlayer::Respawn_Progress(const _float& fTimeDelta)
             CGameObject* pGraveStone = CGravestoneObject::Create(m_pGraphicDev, vPos);
             m_vecInstallObjectName.push_back(L"Player_Created_Gravestone_" + std::to_wstring(m_iInstallNumber));
             pScene->Create_GameObject(L"Layer_GameLogic", pGraveStone, m_vecInstallObjectName.back().c_str());
+
+            Engine::CSoundMgr::GetInstance()->Play(L"ouch.wav", SOUND_DEAD, 0.5f);
+
             // 인벤토리 아이템 전부 묘비로 옮기기
 
             m_pInventoryCom->Move_All_Item(dynamic_cast<CGravestoneObject*>(pGraveStone)->Get_Inventory());
