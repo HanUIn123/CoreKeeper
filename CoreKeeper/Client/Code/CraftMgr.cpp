@@ -660,51 +660,28 @@ void CCraftMgr::Set_Name()
     // 재료들의 이름
     // 재료로 쓰이는 것만 일단 추가해두겠습니다.
         
-    m_mapName[ITEM_BERRY] = L"원기 베리";
-    m_mapName[ITEM_PEPPER] = L"폭탄 후추";
-    m_mapName[ITEM_CARROT] = L"돌당근";
-    m_mapName[ITEM_MUSHROOM] = L"버섯";
-
-    m_mapName[ITEM_COPPER] = L"구리광석";
-    m_mapName[ITEM_IRON] = L"철광석";
-    m_mapName[ITEM_SCARLET] = L"진홍석";
-
-    m_mapName[ITEM_COPPER_BAR] = L"구리 주괴";
-    m_mapName[ITEM_IRON_BAR] = L"철 주괴";
-    m_mapName[ITEM_SCARLET_BAR] = L"진홍 바";
-
-    m_mapName[ITEM_DIRTWALL] = L"진흙 블록";
-    m_mapName[ITEM_STONEWALL] = L"돌 블록";
-    m_mapName[ITEM_GRASSWALL] = L"잔디 블록";
-
-    m_mapName[ITEM_WOOD] = L"나무";
-    m_mapName[ITEM_MUCUS] = L"슬라임";
-    m_mapName[ITEM_FIBER] = L"섬유질";
-    m_mapName[ITEM_SKULL_PIECE] = L"크리스탈 해골 조각";
-    m_mapName[ITEM_FEATHER_PIECE] = L"고대 깃털";
-
-    strCraftName[ITEM_BERRY] = L"원기 베리";
-    strCraftName[ITEM_PEPPER] = L"폭탄 후추";
-    strCraftName[ITEM_CARROT] = L"돌당근";
-    strCraftName[ITEM_MUSHROOM] = L"버섯";
-
-    strCraftName[ITEM_COPPER] = L"구리광석";
-    strCraftName[ITEM_IRON] = L"철광석";
-    strCraftName[ITEM_SCARLET] = L"진홍석";
-
-    strCraftName[ITEM_COPPER_BAR] = L"구리 주괴";
-    strCraftName[ITEM_IRON_BAR] = L"철 주괴";
-    strCraftName[ITEM_SCARLET_BAR] = L"진홍 바";
-
-    strCraftName[ITEM_DIRTWALL] = L"진흙 블록";
-    strCraftName[ITEM_STONEWALL] = L"돌 블록";
-    strCraftName[ITEM_GRASSWALL] = L"잔디 블록";
-
-    strCraftName[ITEM_WOOD] = L"나무";
-    strCraftName[ITEM_MUCUS] = L"슬라임";
-    strCraftName[ITEM_FIBER] = L"섬유질";
-    strCraftName[ITEM_SKULL_PIECE] = L"크리스탈 해골 조각";
-    strCraftName[ITEM_FEATHER_PIECE] = L"고대 깃털";
+    m_strIngredientName[ITEM_BERRY] = L"원기 베리";
+    m_strIngredientName[ITEM_PEPPER] = L"폭탄 후추";
+    m_strIngredientName[ITEM_CARROT] = L"돌당근";
+    m_strIngredientName[ITEM_MUSHROOM] = L"버섯";
+    
+    m_strIngredientName[ITEM_COPPER] = L"구리광석";
+    m_strIngredientName[ITEM_IRON] = L"철광석";
+    m_strIngredientName[ITEM_SCARLET] = L"진홍석";
+    
+    m_strIngredientName[ITEM_COPPER_BAR] = L"구리 주괴";
+    m_strIngredientName[ITEM_IRON_BAR] = L"철 주괴";
+    m_strIngredientName[ITEM_SCARLET_BAR] = L"진홍 바";
+    
+    m_strIngredientName[ITEM_DIRTWALL] = L"진흙 블록";
+    m_strIngredientName[ITEM_STONEWALL] = L"돌 블록";
+    m_strIngredientName[ITEM_GRASSWALL] = L"잔디 블록";
+    
+    m_strIngredientName[ITEM_WOOD] = L"나무";
+    m_strIngredientName[ITEM_MUCUS] = L"슬라임";
+    m_strIngredientName[ITEM_FIBER] = L"섬유질";
+    m_strIngredientName[ITEM_SKULL_PIECE] = L"크리스탈 해골 조각";
+    m_strIngredientName[ITEM_FEATHER_PIECE] = L"고대 깃털";
 }
 
 void CCraftMgr::Free()
