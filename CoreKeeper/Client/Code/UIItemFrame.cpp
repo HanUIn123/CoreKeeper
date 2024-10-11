@@ -2,9 +2,10 @@
 #include "..\Header\UIItemFrame.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
+#include "../Header/CraftMgr.h"
 
 CUIItemFrame::CUIItemFrame(LPDIRECT3DDEVICE9 pGraphicDev)
-	: Engine::CGameObject(pGraphicDev), m_bWindow(false), m_bCollapse(false)
+	: Engine::CGameObject(pGraphicDev), m_bWindow(false), m_bCollapse(false), m_bCraft(false)
 
 {
 	m_vPos = { 0, 0 };
@@ -115,116 +116,34 @@ void CUIItemFrame::Render_GameObject()
 			}
 		}
 
-		if (m_pItem->Get_UseMet())
+		if (m_bCraft)
 		{
-			const wstring sMFont = m_pItem->Get_Meterial();
+			CCraftMgr::Recipe sItemRecipe;
+			sItemRecipe = CCraftMgr::GetInstance()->Get_Recipe(make_pair(m_pItem->Get_ItemNum(), m_pItem->Get_ItemMaterial()));
 
-			const _tchar* tMFont = sMFont.c_str();
+			for (auto iter : sItemRecipe.vecIngredients)
+			{
+				const wstring sMFont = CCraftMgr::GetInstance()->Get_Name(iter.eIngredient) + L" " + std::to_wstring(iter.iQuantity);
 
-			Engine::Render_Font(L"Font_Status", tMFont, &vFPos, D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
+				const _tchar* tMFont = sMFont.c_str();
+
+				Engine::Render_Font(L"Font_Status", tMFont, &vFPos, D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
+
+				vFPos.y += 20.f;
+			}
 		}
-
-		/*
-		matWorld._41 = vFPos.x;
-		matWorld._42 = vFPos.y;
-
-		Engine::ITEMNUM eNum = m_pItem->Get_ItemNum();
-
-		switch (eNum)
-		{
-		case ITEM_SEED:
-			matWorld._11 = 10.f;
-			matWorld._22 = 10.f;
-			break;
-
-		case ITEM_SWORD:
-			matWorld._11 = 40.f;
-			matWorld._22 = 40.f;
-
-			matWorld._42 -= 8.f;
-			break;
-
-		case ITEM_WOOD:
-			matWorld._11 = 12.f;
-			matWorld._22 = 12.f;
-			break;
-
-		case ITEM_BOW:
-			matWorld._11 = 45.f;
-			matWorld._22 = 45.f;
-
-			matWorld._42 += 2.f;
-			break;
-
-		case ITEM_HOE:
-			matWorld._11 = 50.f;
-			matWorld._22 = 50.f;
-
-			matWorld._42 -= 8.f;
-			break;
-
-		case ITEM_PICKAXE:
-			matWorld._11 = 50.f;
-			matWorld._22 = 50.f;
-
-			matWorld._42 -= 8.f;
-			break;
-
-		case ITEM_SHOVEL:
-			matWorld._11 = 60.f;
-			matWorld._22 = 60.f;
-
-			matWorld._42 -= 8.f;
-			break;
-
-		case ITEM_STAFF:
-			matWorld._11 = 35.f;
-			matWorld._22 = 35.f;
-
-			matWorld._42 -= 8.f;
-			break;
-
-		case ITEM_HELMET:
-			matWorld._11 = 30.f;
-			matWorld._22 = 30.f;
-
-			matWorld._42 -= 13.f;
-			break;
-
-		case ITEM_CHEST:
-			matWorld._11 = 30.f;
-			matWorld._22 = 30.f;
-			break;
-
-		case ITEM_LEG:
-			matWorld._11 = 40.f;
-			matWorld._22 = 40.f;
-
-			matWorld._42 += 15.f;
-			break;
-
-		dafault:
-			matWorld._11 = 20.f;
-			matWorld._22 = 20.f;
-			break;
-		}
-
-		m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
-
-		m_pItem->Get_Texture()->Set_Texture();
-
-		m_pItem->Get_Buffer()->Render_First();
-		*/
 
 		m_pGraphicDev->SetRenderState(D3DRS_SCISSORTESTENABLE, FALSE);
 	}
 }
 
-void CUIItemFrame::Set_Window(CItem* _pItem, POINT _pt)
+void CUIItemFrame::Set_Window(CItem* _pItem, POINT _pt, _bool _bCraft)
 {
 	m_bWindow = true;
 
 	m_pItem = _pItem;
+
+	m_bCraft = _bCraft;
 
 	if ((_float)_pt.x > WINCX / 2.f)
 	{

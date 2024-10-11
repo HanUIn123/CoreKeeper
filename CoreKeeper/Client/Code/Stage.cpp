@@ -638,6 +638,14 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_ItemFrame", pGameObject), E_FAIL);
 
+
+    vPos = { 1000.f, 510.f };
+    vSize = { 100.f, 30.f };
+
+    pGameObject = CUIBuffFrame::Create(m_pGraphicDev, vPos, vSize);
+    NULL_CHECK_RETURN(pGameObject, E_FAIL);
+    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_BuffFrame", pGameObject), E_FAIL);
+
     /*
     pGameObject = CMiniMap::Create(m_pGraphicDev, vPos, vSize);
     NULL_CHECK_RETURN(pGameObject, E_FAIL);

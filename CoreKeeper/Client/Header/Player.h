@@ -122,6 +122,8 @@ public:
 	_bool           Get_CookingUI() { return m_bCookingPot; }
 	_bool           Get_StatueUI() { return m_bStatue; }
 	_bool           Get_CraftUI() { return m_bCraft; }
+	_bool           Get_ChestInv() { return m_bChestInventory; }
+	_bool           Get_Inventory() { return m_bInventory; }
 
 	void            UI_Disable();
 

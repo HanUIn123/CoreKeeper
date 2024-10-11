@@ -2746,12 +2746,6 @@ void CPlayer::Set_Status()
 
 void CPlayer::Set_ChestInventory(CInventory* pInventory)
 {
-    if (m_bMap || m_bCraft || m_bStatue || m_bCookingPot || m_bFurnace || m_bGraveInventory)
-    {
-        UI_Disable();
-        return;
-    }
-
     for (int i = 0; i < 18; ++i)
     {
         wstring string;
@@ -2781,12 +2775,7 @@ void CPlayer::Set_ChestInventory(CInventory* pInventory)
 
 void CPlayer::Set_GraveInventory(CInventory* pInventory)
 {
-    if (m_bMap || m_bChestInventory || m_bCraft || m_bStatue || m_bCookingPot || m_bFurnace)
-    {
-        UI_Disable();
-        return;
-    }
-
+ 
     if (m_bGraveInventory)
     {
         //CInventory* pGraveInventory = dynamic_cast<CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_Environment", L"AheadGrave", L"Com_Inventory"));
@@ -2850,12 +2839,6 @@ void CPlayer::Set_Statue(_int _StatueNum, _bool _bInteractioned)
 
 void CPlayer::Set_Furnace(CInventory* pInventory1, CInventory* pInventory2, _float* fTime)
 {
-    if (m_bMap || m_bChestInventory || m_bCraft || m_bStatue || m_bGraveInventory || m_bCookingPot)
-    {
-        UI_Disable();
-        return;
-    }
-
     if (m_bFurnace)
     {
         CUIFurnace* pFurnace = dynamic_cast<CUIFurnace*>(Engine::Get_GameObject(L"Layer_UI", L"UI_Furnace"));
@@ -2883,12 +2866,6 @@ void CPlayer::Set_Furnace(CInventory* pInventory1, CInventory* pInventory2, _flo
 
 void CPlayer::Set_CookingPot(CInventory* pInventory1, CInventory* pInventory2, _float* fTime)
 {
-    if (m_bMap || m_bChestInventory || m_bCraft || m_bStatue || m_bGraveInventory || m_bFurnace)
-    {
-        UI_Disable();
-        return;
-    }
-
     if (m_bCookingPot)
     {
         CUICookingPot* pPot = dynamic_cast<CUICookingPot*>(Engine::Get_GameObject(L"Layer_UI", L"UI_CookingPot"));

@@ -2,6 +2,7 @@
 #include "../Header/BoxObject.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
+#include "../Header/Player.h"
 
 CBoxObject::CBoxObject(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CObject(pGraphicDev)
@@ -23,6 +24,27 @@ HRESULT CBoxObject::Ready_GameObject(_vec3 vPos)
 
 _int CBoxObject::Update_GameObject(const _float& fTimeDelta)
 {
+	if (Check_Interaction())
+	{
+		Interaction();
+	}
+	else if (!Check_Interaction())
+	{
+		if (m_bCollision)
+		{
+			CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
+
+			if (pPlayer->Get_ChestInv() && pPlayer->Get_Inventory())
+			{
+				pPlayer->Set_ChestInventory();
+
+				//pPlayer->Set_Inventory();
+			}
+
+			m_bCollision = false;
+		}
+	}
+
 	Add_RenderGroup(RENDER_ALPHA, this);
 
 	return Engine::CGameObject::Update_GameObject(fTimeDelta);
@@ -39,6 +61,8 @@ void CBoxObject::Render_GameObject()
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
 
+	m_pColliderCom->Update_Collider(m_pTransformCom->Get_WorldMatrix());
+
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
 	FAILED_CHECK_RETURN(Setup_Material(), );
@@ -50,6 +74,20 @@ void CBoxObject::Render_GameObject()
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
+}
+
+void CBoxObject::Interaction()
+{
+	if (Engine::Key_Down(DIK_E))
+	{
+		CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
+
+		pPlayer->Set_ChestInventory(m_pInventoryCom);
+
+		//pPlayer->Set_Inventory();
+
+		m_bCollision = true;
+	}
 }
 
 HRESULT CBoxObject::Add_Component()
@@ -71,6 +109,14 @@ HRESULT CBoxObject::Add_Component()
 	pComponent = m_pCalculCom = dynamic_cast<CCalculator*>(Engine::Clone_Proto(L"Proto_Calculator"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Calculator", pComponent });
+
+	pComponent = m_pColliderCom = dynamic_cast<CColliderCube*>(Engine::Clone_Proto(L"Proto_NormalCubeCollider"));
+	NULL_CHECK_RETURN(pComponent, E_FAIL);
+	m_mapComponent[ID_STATIC].insert({ L"Com_Collider", pComponent });
+
+	pComponent = m_pInventoryCom = dynamic_cast<CInventory*>(Engine::Clone_Proto(L"Proto_ChestInventory"));
+	NULL_CHECK_RETURN(pComponent, E_FAIL);
+	m_mapComponent[ID_STATIC].insert({ L"Com_Inventory", pComponent });
 
 	return S_OK;
 }

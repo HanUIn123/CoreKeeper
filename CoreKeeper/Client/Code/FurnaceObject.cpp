@@ -41,12 +41,12 @@ _int CFurnaceObject::Update_GameObject(const _float& fTimeDelta)
 		{
 			CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
 
-			if (pPlayer->Get_FurnaceUI())
+			if (pPlayer->Get_FurnaceUI() && pPlayer->Get_Inventory())
 			{
-				pPlayer->Set_Furnace();
-
-				m_bCollision = false;
+				pPlayer->UI_Disable();
 			}
+
+			m_bCollision = false;
 		}
 	}
 	if (!m_pInventoryCom->Check_Empty(0))

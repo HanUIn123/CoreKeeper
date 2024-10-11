@@ -64,12 +64,14 @@ private:
 
 	_int   m_iIndex;
 
+	_bool m_bStay;
+
 private:
 	Engine::CRcTex* m_pBufferCom;
 	Engine::CTransform* m_pTransformCom;
 	Engine::CTexture* m_pTextureCom;
 	Engine::CTexture* m_pColTextureCom;
-	Engine::CInventory* m_pInventory;
+	Engine::CInventory* m_pInventoryCom;
 
 public:
 	static CUIStatueCraft* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec2 vPos, _vec2 vSize);

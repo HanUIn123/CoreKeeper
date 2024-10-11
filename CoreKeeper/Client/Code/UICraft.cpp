@@ -142,7 +142,7 @@ _int CUICraft::Check_Index()
 			break;
 
 		case TABLE_ANVIL:
-			iIndex = 1;
+			iIndex = 2;
 			break;
 
 		case TABLE_ALCHEMY:
@@ -162,7 +162,7 @@ _int CUICraft::Check_Index()
 			break;
 
 		case TABLE_ANVIL:
-			iIndex = 2;
+			iIndex = 1;
 			break;
 		}
 	}
