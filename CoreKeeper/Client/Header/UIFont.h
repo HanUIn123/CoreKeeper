@@ -34,7 +34,8 @@ public:
 
 public:
 	void Set_Font(_matrix matWorld, const _tchar* tFont);
-
+	void Set_Font_Center(_matrix matWorld, const _tchar* tFont);
+	void Set_Font_Up(_matrix matWorld, const _tchar* tFont);
 private:
 	HRESULT			Add_Component();
 

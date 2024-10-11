@@ -123,6 +123,84 @@ void CUIFont::Set_Font(_matrix matWorld, const _tchar* tFont)
 	m_vecFontPos.push_back(sFont);
 }
 
+void CUIFont::Set_Font_Center(_matrix matWorld, const _tchar* tFont)
+{
+	_matrix matView, matProj;
+
+	m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
+
+	m_pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
+	m_pGraphicDev->GetTransform(D3DTS_PROJECTION, &matProj);
+
+	_matrix m_WVP = matWorld * matView * matProj;
+
+	_vec4 m_vWorldToScreen(0, 0, 0, 1);
+	D3DXVec4Transform(&m_vWorldToScreen, &m_vWorldToScreen, &m_WVP);
+	
+	size_t length = wcslen(tFont);
+
+	float f_WorldToScreenX = m_vWorldToScreen.x / m_vWorldToScreen.w;
+	float f_WorldToScreenY = m_vWorldToScreen.y / m_vWorldToScreen.w;
+	float f_WorldToScreenZ = m_vWorldToScreen.z / m_vWorldToScreen.w;
+
+	float f_ScreenNormalX = (f_WorldToScreenX + 1) * 0.5f;
+	float f_ScreenNormalY = (f_WorldToScreenY + 1) * 0.5f;
+	f_ScreenNormalY = 1.f - f_ScreenNormalY;
+
+	float f_ScreenX = f_ScreenNormalX * WINCX;
+	float f_ScreenY = f_ScreenNormalY * WINCY;
+
+	// 글자 길이의 반 * 폰트 너비만큼 빼주면 가운데에 옴
+	_vec2 vPos2 = { f_ScreenX - length * 0.5f * 30.f, f_ScreenY};
+
+	FONT sFont;
+	sFont.vPos = vPos2;
+	sFont.tFont = tFont;
+	sFont.fCount = 1.f;
+	sFont.bDead = false;
+
+	m_vecFontPos.push_back(sFont);
+}
+
+void CUIFont::Set_Font_Up(_matrix matWorld, const _tchar* tFont)
+{
+	_matrix matView, matProj;
+
+	m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
+
+	m_pGraphicDev->GetTransform(D3DTS_VIEW, &matView);
+	m_pGraphicDev->GetTransform(D3DTS_PROJECTION, &matProj);
+
+	_matrix m_WVP = matWorld * matView * matProj;
+
+	_vec4 m_vWorldToScreen(0, 0, 0, 1);
+	D3DXVec4Transform(&m_vWorldToScreen, &m_vWorldToScreen, &m_WVP);
+
+	size_t length = wcslen(tFont);
+
+	float f_WorldToScreenX = m_vWorldToScreen.x / m_vWorldToScreen.w;
+	float f_WorldToScreenY = m_vWorldToScreen.y / m_vWorldToScreen.w;
+	float f_WorldToScreenZ = m_vWorldToScreen.z / m_vWorldToScreen.w;
+
+	float f_ScreenNormalX = (f_WorldToScreenX + 1) * 0.5f;
+	float f_ScreenNormalY = (f_WorldToScreenY + 1) * 0.5f;
+	f_ScreenNormalY = 1.f - f_ScreenNormalY;
+
+	float f_ScreenX = f_ScreenNormalX * WINCX;
+	float f_ScreenY = f_ScreenNormalY * WINCY;
+
+	// 글자 길이의 반 * 폰트 너비만큼 빼주면 가운데에 옴
+	_vec2 vPos2 = { f_ScreenX - length * 0.5f * 30.f, f_ScreenY - 30.f };
+
+	FONT sFont;
+	sFont.vPos = vPos2;
+	sFont.tFont = tFont;
+	sFont.fCount = 1.f;
+	sFont.bDead = false;
+
+	m_vecFontPos.push_back(sFont);
+}
+
 HRESULT CUIFont::Add_Component()
 {
 	CComponent* pComponent = NULL;

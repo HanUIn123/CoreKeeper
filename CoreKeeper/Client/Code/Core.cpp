@@ -3,6 +3,7 @@
 #include "Export_System.h"
 #include "Export_Utility.h"
 #include "..\Header\Player.h"
+#include "..\Header\UIFont.h"
 
 CCore::CCore(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CObject(pGraphicDev), m_iRange(0), m_bInFrustum(true)
@@ -32,7 +33,7 @@ _int CCore::Update_GameObject(const _float& fTimeDelta)
 {
 	int iExit = Engine::CGameObject::Update_GameObject(fTimeDelta);
 
-	m_bInFrustum = m_pCalculCom->In_Frustum(m_pTransformCom);
+	//m_bInFrustum = m_pCalculCom->In_Frustum(m_pTransformCom);
 
 	if (Check_Interaction())
 	{
@@ -82,23 +83,22 @@ void CCore::Interaction()
 {
 	if (Engine::Key_Down(DIK_E))
 	{
+		CUIFont* pFont = dynamic_cast<CUIFont*>(Engine::Get_GameObject(L"Layer_UI", L"UI_Font"));
+
+		_matrix matWorld;
+		m_pTransformCom->Get_WorldMatrix(&matWorld);
+
 		if (m_bActiveCore[0] && m_bActiveCore[1] && m_bActiveCore[2])
 		{
-			//_vec2 LTpos(0, 570);
-			//_vec2 RBpos(WINCX, 570);
-
-			//Engine::Render_Font_Custom(L"Font_Default", L"에너지가 필요한 것 같아", &LTpos, &RBpos, DT_CENTER, D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
+			pFont->Set_Font_Up(matWorld, L"위대한 벽에 손을 대면 벽이 열릴지어다.");
 		}
 		else
 		{
-			//_vec3 vPos;
-			//m_pTransformCom->Get_Info(INFO_POS, &vPos);
-
-			//_vec2 LTpos(0, 300);
-			//_vec2 RBpos(WINCX, 400);
-
-			//Engine::Render_Font_Custom(L"Font_Default", L"에너지가 필요한 것 같아", &LTpos, &RBpos, DT_CENTER, D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
-			//Engine::Render_Font_Custom(L"Font_Default", L"전원이 차단된 것 같아", &LTpos, &RBpos, DT_CENTER, D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
+			int iRandom = rand() % 2;
+			if(iRandom == 0)
+				pFont->Set_Font_Center(matWorld, L"에너지가 필요한 것 같아");
+			else
+				pFont->Set_Font_Center(matWorld, L"전원이 차단된 것 같아");
 		}
 	}
 }
@@ -159,7 +159,7 @@ void CCore::SetUp_Light()
 	light.Phi = D3DXToRadian(60.0f + m_iRange); // 외부 각도 (큰 값일수록 퍼지는 조명)
 
 	m_pGraphicDev->SetLight(m_iLightNum, &light);
-	m_pGraphicDev->LightEnable(m_iLightNum, m_bInFrustum);
+	m_pGraphicDev->LightEnable(m_iLightNum, true);
 }
 
 CCore* CCore::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)

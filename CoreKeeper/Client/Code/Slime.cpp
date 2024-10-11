@@ -27,7 +27,6 @@ HRESULT CSlime::Ready_GameObject(_vec3 vPos)
     m_pTransformCom->Set_Pos(m_vRespawnPoint.x, m_vRespawnPoint.y, m_vRespawnPoint.z);
     m_pStateCom->Set_Stat(100, 0, 10, 0);
     m_vecDropItem.push_back(ITEM_MUCUS);
-    m_vecDropItem.push_back(ITEM_WOOD);
     m_vecDropItem.push_back(ITEM_BERRY_SEED);
     Set_Speed(0.8f);
 

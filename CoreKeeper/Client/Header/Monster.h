@@ -153,7 +153,7 @@ protected:
 public:
 	vector<const _tchar*>         m_vecFont;
 
-	const _tchar* m_Font[10];
+	const _tchar* m_Font[100];
 
 	_int m_iFontNum;
 
