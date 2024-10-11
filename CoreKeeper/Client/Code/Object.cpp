@@ -10,6 +10,8 @@ CObject::CObject(LPDIRECT3DDEVICE9 pGraphicDev)
 	, m_pBufferCom(nullptr)
 	, m_iBuildingImgNum(0)
 	, m_bCollision(false)
+	, m_pPlayerTransform(nullptr)
+	, m_fSoundVolume(0.f)
 {
 }
 
@@ -73,6 +75,25 @@ bool CObject::Check_Interaction()
 	}
 
 	return false;
+}
+
+void CObject::Set_SoundVolumeByDistance()
+{
+	if (!m_pPlayerTransform)
+		m_pPlayerTransform = dynamic_cast<CTransform*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Transform"));
+
+	_vec3 vPos, vPlayerPos;
+	m_pPlayerTransform->Get_Info(INFO_POS, &vPos);
+	m_pTransformCom->Get_Info(INFO_POS, &vPlayerPos);
+	_vec3 vLength = vPlayerPos - vPos;
+	_float fLength = D3DXVec3Length(&vLength);
+
+	if (fLength < 10.f)
+	{
+		m_fSoundVolume = (10 - fLength) * 0.05f;
+	}
+	else
+		m_fSoundVolume = 0.f;
 }
 
 void CObject::Interaction()

@@ -50,6 +50,10 @@ public:
 	virtual void					Set_PickedObjectName(wstring _pickObjectName) { m_strPickedObjectName = _pickObjectName; }
 
 protected:
+	void			Set_SoundVolumeByDistance();
+
+
+protected:
 	Engine::CObjectTex*				m_pBufferCom;
 	Engine::CTransform*				m_pTransformCom;
 	Engine::CCalculator*			m_pCalculCom;
@@ -69,8 +73,9 @@ private:
 protected:
 	_int							m_iBuildingImgNum;
 	_vec3							m_vBuildPosition;
+	CTransform*						m_pPlayerTransform;
 
-
+	_float							m_fSoundVolume;
 	_bool                           m_bCollision; // 플레이어와 충돌 체크
 
 	wstring							m_strPickedObjectName;
