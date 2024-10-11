@@ -58,7 +58,7 @@ _int CUIChestSort::Update_GameObject(const _float& fTimeDelta)
 
 				CInventory* pPlayerInv = dynamic_cast<Engine::CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_GameLogic", L"Player", L"Com_Inventory"));
 			
-				m_pInventory->Put_Same_Item(pPlayerInv, m_pInventory);
+				pPlayerInv->Put_Same_Item(m_pInventory);
 			}
 			else if (Button_Up(DIM_LB))
 			{
