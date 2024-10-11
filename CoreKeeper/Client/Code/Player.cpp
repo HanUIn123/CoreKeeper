@@ -1953,6 +1953,29 @@ void CPlayer::Play_Instruments()
             }
             if (m_bPlayToggle)
             {
+                _vec3 vOffset = { 0, 0, 0 };
+                switch (eHandedNum)
+                {
+                case ITEM_INSTRUMENT_HARP:
+
+                    break;
+                case ITEM_INSTRUMENT_CELLO:
+
+                    break;
+                case ITEM_INSTRUMENT_FLUTE:
+
+                    break;
+                case ITEM_INSTRUMENT_OCARINA:
+
+                    break;
+                case ITEM_INSTRUMENT_DRUM:
+
+                    break;
+                case ITEM_INSTRUMENT_PIANO:
+                    vOffset = { 0.f, 1.3f, 0.4f };
+                    break;
+
+                }
                 _vec3 vPos;
                 m_pTransformCom->Get_Info(INFO_POS, &vPos);
                 m_pHandedTransformCom->Set_Scale(1.5f, 1.5f, 1.5f);
