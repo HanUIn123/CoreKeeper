@@ -144,7 +144,7 @@ _uint CLoading::Loading_Stage()
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_ProjectileSmoke", Engine::CSmoke::Create(m_pGraphicDev, &vPPos, 12, 6, 1.f, true)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Hit", Engine::CHit::Create(m_pGraphicDev, &vPPos, 1)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Smog", Engine::CSmog::Create(m_pGraphicDev, &vPPos, 30)), E_FAIL);
-    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Fume", Engine::CFume::Create(m_pGraphicDev, &vPPos, 20)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Fume", Engine::CFume::Create(m_pGraphicDev, &vPPos, 30)), E_FAIL);
 
 
     lstrcpy(m_szLoading, L"Texture Loading...");

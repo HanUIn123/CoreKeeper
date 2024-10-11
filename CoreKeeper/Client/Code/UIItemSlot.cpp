@@ -188,6 +188,53 @@ void CUIItemSlot::Render_GameObject()
 
 		switch (eNum)
 		{
+		case ITEM_SWORD:
+			matWorld._11 = 40.f;
+			matWorld._22 = 40.f;
+
+			matWorld._42 -= 8.f;
+			break;
+
+		case ITEM_WOOD:
+			matWorld._11 = 12.f;
+			matWorld._22 = 12.f;
+			break;
+
+		case ITEM_BOW:
+			matWorld._11 = 45.f;
+			matWorld._22 = 45.f;
+
+			matWorld._42 += 2.f;
+			break;
+
+		case ITEM_HOE:
+			matWorld._11 = 50.f;
+			matWorld._22 = 50.f;
+
+			matWorld._42 -= 8.f;
+			break;
+
+		case ITEM_PICKAXE:
+			matWorld._11 = 50.f;
+			matWorld._22 = 50.f;
+
+			matWorld._42 -= 8.f;
+			break;
+
+			//case ITEM_SHOVEL:
+			//	matWorld._11 = 60.f;
+			//	matWorld._22 = 60.f;
+
+			//	matWorld._42 -= 8.f;
+			//	break;
+
+		case ITEM_STAFF:
+			matWorld._11 = 35.f;
+			matWorld._22 = 35.f;
+
+			matWorld._42 -= 8.f;
+			break;
+
 		case ITEM_HELMET:
 			matWorld._11 = 30.f;
 			matWorld._22 = 30.f;
@@ -207,6 +254,45 @@ void CUIItemSlot::Render_GameObject()
 			matWorld._42 += 15.f;
 			break;
 
+		case ITEM_COPPER:
+			matWorld._11 = 20.f;
+			matWorld._22 = 20.f;
+			break;
+
+		case ITEM_IRON:
+			matWorld._11 = 20.f;
+			matWorld._22 = 20.f;
+			break;
+
+		case ITEM_SCARLET:
+			matWorld._11 = 20.f;
+			matWorld._22 = 20.f;
+			break;
+
+		case ITEM_COPPER_BAR:
+			matWorld._11 = 20.f;
+			matWorld._22 = 20.f;
+			break;
+
+		case ITEM_IRON_BAR:
+			matWorld._11 = 20.f;
+			matWorld._22 = 20.f;
+			break;
+
+		case ITEM_SCARLET_BAR:
+			matWorld._11 = 20.f;
+			matWorld._22 = 20.f;
+			break;
+
+		case ITEM_TORCH:
+			matWorld._11 = 25.f;
+			matWorld._22 = 25.f;
+			break;
+
+		default:
+			matWorld._11 = 20.f;
+			matWorld._22 = 20.f;
+			break;
 		}
 
 		m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);

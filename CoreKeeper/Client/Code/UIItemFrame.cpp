@@ -63,7 +63,7 @@ void CUIItemFrame::LateUpdate_GameObject()
 {
 	if (m_bWindow)
 	{
-		Add_RenderGroup(RENDER_UI, this);
+		Engine::Add_RenderGroup(RENDER_SUBORDINATE, this);
 	}
 	Engine::CGameObject::LateUpdate_GameObject();
 }

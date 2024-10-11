@@ -149,6 +149,13 @@ protected:
 
 	static int				m_iTagNumber;
 
+public:
+	vector<const _tchar*>         m_vecFont;
+
+	const _tchar* m_Font[10];
+
+	_int m_iFontNum;
+
 
 
 private:
