@@ -58,6 +58,7 @@ HRESULT CStage::Ready_Scene()
 
 _int CStage::Update_Scene(const _float& fTimeDelta)
 {
+    Engine::Set_Start(g_bStart);
 
 	_int	iExit = Engine::CScene::Update_Scene(fTimeDelta);
 	CFarmMgr::GetInstance()->Update_Farm(fTimeDelta);

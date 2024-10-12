@@ -152,7 +152,8 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
         else
         {
             m_bLookAround = true;
-            
+            g_bStart = true;
+
             _matrix matWorld;
             m_pTransformCom->Get_WorldMatrix(&matWorld);
 

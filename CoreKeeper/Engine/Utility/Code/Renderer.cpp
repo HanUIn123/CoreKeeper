@@ -12,6 +12,7 @@ CRenderer::CRenderer()
     : m_bExpandMinimap(false)
     , m_bCloseMinimap(false)
     , m_fZoomRatio(240.0f)
+    , m_bStart(false)
 {
     m_MainViewport.X = 0;
     m_MainViewport.Y = 0;
@@ -55,6 +56,12 @@ void CRenderer::Render_GameObject(LPDIRECT3DDEVICE9& pGraphicDev)
     Render_NonAlpha(pGraphicDev);
     Render_Alpha(pGraphicDev);
     Render_Wall(pGraphicDev);
+
+    if (!m_bStart)
+    {
+        Clear_RenderGroup();
+        return;
+    }
 
     // ¹Ì´Ï¸Ê Ãâ·Â
     if (!m_bCloseMinimap && pCamera)
