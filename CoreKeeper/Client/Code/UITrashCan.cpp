@@ -55,9 +55,9 @@ _int CUITrashCan::Update_GameObject(const _float& fTimeDelta)
 
 			if (Engine::Button_Down(DIM_LB))
 			{
+				Engine::CSoundMgr::GetInstance()->Play(L"thud.wav", SOUND_EFFECT, 0.2f);
 				m_pInventory->Remove_Item(0);
 			}
-			
 		}
 		else
 			m_bCollapse = false;

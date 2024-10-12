@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "../Header/FarmMgr.h"
+#include "Export_System.h"
 #include "Export_Utility.h"
 #include "GameObject.h"
 #include "../Header/Plant.h"
@@ -188,10 +189,14 @@ void CFarmMgr::Grow_Plant()
         CGameObject* pPlant = m_mapPlant.find(strBuffer)->second;
         CAnimator* pPlantAnimator = dynamic_cast<CAnimator*>(pPlant->Get_Component(ID_STATIC, L"Com_Animator"));
         _int iMotion = pPlantAnimator->Get_MotionIndex();
-        if (iMotion > 0 && iMotion < 5)
+        if (iMotion > 0 && iMotion <= 5)  
             m_vecPlantedState[i].y += 1;
+        
+        if (iMotion == 5 && m_vecPlantedState[i].y == 0)
+            Engine::CSoundMgr::GetInstance()->Play(L"plopCrop1.wav", SOUND_EFFECT, 0.3f);
+            
 
-        if (m_vecPlantedState[i].y > 60 * m_iGrowTime)
+        if (m_vecPlantedState[i].y > 60 * m_iGrowTime && iMotion < 5)
         {
             m_vecPlantedState[i].y = 0;
             iMotion++;
@@ -215,6 +220,8 @@ void CFarmMgr::Create_Result(ITEMNUM eItemNum, _vec3 vPos)
     CGameObject* pIngredient = CIngredient::Create(m_pGraphicDev, eItemNum, vPos);
     m_vecResultName.push_back(L"Result_" + std::to_wstring(iCreateNumber++));
     pScene->Create_GameObject(L"Layer_GameLogic", pIngredient, m_vecResultName.back().c_str());
+
+
     dynamic_cast<CItem*>(pIngredient)->Set_Drop(true);
 }
 
