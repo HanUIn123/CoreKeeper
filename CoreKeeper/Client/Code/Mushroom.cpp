@@ -36,9 +36,14 @@ HRESULT CMushroom::Ready_GameObject(_vec3 _vPos, _int _iTypeNum, const wstring _
 
 _int CMushroom::Update_GameObject(const _float& fTimeDelta)
 {
+    int iExit = Engine::CGameObject::Update_GameObject(fTimeDelta);
+
+    if (!m_pCalculCom->In_Frustum(m_pTransformCom))
+        return 0;
+
     Add_RenderGroup(RENDER_ALPHA, this);
 
-    return Engine::CGameObject::Update_GameObject(fTimeDelta);
+    return iExit;
 }
 
 void CMushroom::LateUpdate_GameObject()
@@ -80,6 +85,10 @@ HRESULT CMushroom::Add_Component()
     pComponent = m_pTransformCom = dynamic_cast<CTransform*>(Engine::Clone_Proto(L"Proto_Transform"));
     NULL_CHECK_RETURN(pComponent, E_FAIL);
     m_mapComponent[ID_DYNAMIC].insert({ L"Com_Transform", pComponent });
+
+    pComponent = m_pCalculCom = dynamic_cast<CCalculator*>(Engine::Clone_Proto(L"Proto_Calculator"));
+    NULL_CHECK_RETURN(pComponent, E_FAIL);
+    m_mapComponent[ID_STATIC].insert({ L"Com_Calculator", pComponent });
 
     pComponent = m_pColliderCom = dynamic_cast<CColliderCube*>(Engine::Clone_Proto(L"Proto_WallCollider"));
     NULL_CHECK_RETURN(pComponent, E_FAIL);

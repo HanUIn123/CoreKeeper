@@ -15,6 +15,9 @@ CHelmet::~CHelmet()
 
 HRESULT CHelmet::Ready_GameObject(MATERIAL _eMaterial, _vec3 vPos)
 {
+	if (!m_bUse && !m_bDrop && !m_bActive)
+		return 0;
+
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
 	m_eMaterial = _eMaterial;

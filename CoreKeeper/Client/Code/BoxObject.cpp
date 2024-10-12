@@ -3,9 +3,11 @@
 #include "Export_System.h"
 #include "Export_Utility.h"
 #include "../Header/Player.h"
+#include "../Header/PetItem.h"
+#include "../Header/Assistance.h"
 
 CBoxObject::CBoxObject(LPDIRECT3DDEVICE9 pGraphicDev)
-	: CObject(pGraphicDev)
+	: CObject(pGraphicDev), m_iTextureNum(0), m_bSpecial(false)
 {
 }
 
@@ -24,6 +26,11 @@ HRESULT CBoxObject::Ready_GameObject(_vec3 vPos)
 
 _int CBoxObject::Update_GameObject(const _float& fTimeDelta)
 {
+	int iExit = Engine::CGameObject::Update_GameObject(fTimeDelta);
+
+	if (!m_pCalculCom->In_Frustum(m_pTransformCom))
+		return 0;
+
 	if (Check_Interaction())
 	{
 		Interaction();
@@ -47,7 +54,7 @@ _int CBoxObject::Update_GameObject(const _float& fTimeDelta)
 
 	Add_RenderGroup(RENDER_ALPHA, this);
 
-	return Engine::CGameObject::Update_GameObject(fTimeDelta);
+	return iExit;
 }
 
 void CBoxObject::LateUpdate_GameObject()
@@ -67,7 +74,7 @@ void CBoxObject::Render_GameObject()
 
 	FAILED_CHECK_RETURN(Setup_Material(), );
 
-	m_pTextureCom->Set_Texture();
+	m_pTextureCom->Set_Texture(m_iTextureNum);
 
 	m_pBufferCom->Render_Buffer();
 
@@ -88,6 +95,21 @@ void CBoxObject::Interaction()
 
 		m_bCollision = true;
 	}
+}
+
+void CBoxObject::SetUp_Item(CScene* _pScene)
+{
+    CItem* pGameObject(nullptr);
+
+    pGameObject = CPetItem::Create(m_pGraphicDev);
+    m_pInventoryCom->Add_Item(pGameObject);
+    m_vecItemName.push_back(L"Special_Item_Pet");
+    FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, m_vecItemName.back().c_str()), );
+
+    pGameObject = CAssistance::Create(m_pGraphicDev, ASSISTANCE_FEATHER);
+    m_pInventoryCom->Add_Item(pGameObject);
+    m_vecItemName.push_back(L"Special_Item_Feather");
+    FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, m_vecItemName.back().c_str()), );
 }
 
 HRESULT CBoxObject::Add_Component()

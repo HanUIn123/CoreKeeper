@@ -23,9 +23,14 @@ HRESULT CSkeleton::Ready_GameObject(_vec3 vPos)
 
 _int CSkeleton::Update_GameObject(const _float& fTimeDelta)
 {
+	int iExit = Engine::CGameObject::Update_GameObject(fTimeDelta);
+
+	if (!m_pCalculCom->In_Frustum(m_pTransformCom))
+		return 0;
+
 	Add_RenderGroup(RENDER_ALPHA, this);
 
-	return Engine::CGameObject::Update_GameObject(fTimeDelta);
+	return iExit;
 }
 
 void CSkeleton::LateUpdate_GameObject()

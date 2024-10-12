@@ -42,14 +42,20 @@ HRESULT CStage::Ready_Scene()
     Load_MonsterData();
     Load_ObjectData();
 
+    dynamic_cast<CPlayer*>(m_pPlayer)->SetUp_Item(this);
 
     // ¹¦ºñ¿¡ ³Ö°í½ÍÀº ¾ÆÀÌÅÛ ÀÖÀ¸¸é ¹¦ºñ SetUpItem¿¡¼­ ÇÏ±â
-    CGravestoneObject* pGameObject = CGravestoneObject::Create(m_pGraphicDev, { VTXCNTX / 2 - 2.f, 0.5f, 13.f });
-    NULL_CHECK_RETURN(pGameObject, E_FAIL);
-    pGameObject->SetUp_Item(this);
-    this->Create_GameObject(L"Layer_GameLogic", pGameObject, L"AheadGrave");
+    CGravestoneObject* pGravestoneObject = CGravestoneObject::Create(m_pGraphicDev, { VTXCNTX / 2 - 2.f, 0.5f, 13.f });
+    NULL_CHECK_RETURN(pGravestoneObject, E_FAIL);
+    pGravestoneObject->SetUp_Item(this);
+    this->Create_GameObject(L"Layer_GameLogic", pGravestoneObject, L"AheadGrave");
 
-    dynamic_cast<CPlayer*>(m_pPlayer)->SetUp_Item(this);
+    // ½ºÆä¼È »óÀÚ (Æê, ±êÅÐ ½Àµæ)
+    CBoxObject* pBoxObject = CBoxObject::Create(m_pGraphicDev, { 51.f, 0.5f, 71.f });
+    NULL_CHECK_RETURN(pBoxObject, E_FAIL);
+    pBoxObject->SetUp_Item(this);
+    pBoxObject->Set_Special();
+    this->Create_GameObject(L"Layer_GameLogic", pBoxObject, L"Special_Box");
 
     m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 
@@ -257,34 +263,12 @@ HRESULT CStage::Ready_Layer_Environment(const _tchar* pLayerTag)
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Skeleton", pGameObject), E_FAIL);
 
-    pGameObject = CFurnaceObject::Create(m_pGraphicDev, { VTXCNTX / 2 - 3.f, 0.6f, 11.f });
-    NULL_CHECK_RETURN(pGameObject, E_FAIL);
-    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"FurnaceObject", pGameObject), E_FAIL);
-
-
-    pGameObject = CFurnaceObject::Create(m_pGraphicDev, { VTXCNTX / 2 - 3.f - 1.f, 0.6f, 11.f });
-    NULL_CHECK_RETURN(pGameObject, E_FAIL);
-    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"FurnaceObject2", pGameObject), E_FAIL);
-
-
-    pGameObject = CCookingPotObject::Create(m_pGraphicDev, { VTXCNTX / 2 - 3.f, 0.6f, 10.f });
-    NULL_CHECK_RETURN(pGameObject, E_FAIL);
-    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"CookingPotObject", pGameObject), E_FAIL);
-
-    pGameObject = CCookingPotObject::Create(m_pGraphicDev, { VTXCNTX / 2 - 3.f - 1.f, 0.6f, 10.f });
-    NULL_CHECK_RETURN(pGameObject, E_FAIL);
-    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"CookingPotObject2", pGameObject), E_FAIL);
-
-
-    
-
-
-    _vec3   spawnPos = { 14.0f, 0.1f, 71.0f };
+    _vec3   spawnPos = { 14.5f, 0.1f, 72.5f };
     pGameObject = CBossSpawnPoint::Create(m_pGraphicDev, spawnPos);
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"MalgaSummonPoint", pGameObject), E_FAIL);
 
-    _vec3   AzeosSpawnPos = { 42.0f, 0.0f,105.0f };
+    _vec3   AzeosSpawnPos = { 45.0f, -0.2f, 106.0f };
     pGameObject = CAzeosSpawnPoint::Create(m_pGraphicDev, AzeosSpawnPos);
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"AzeosSummonPoint", pGameObject), E_FAIL);
@@ -349,15 +333,16 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar* pLayerTag)
     // º¸½º
 #pragma region BOSS
 
-    pGameObject = CMalugaz::Create(m_pGraphicDev, {14.0f, 0.0f,71.0f});
+    pGameObject = CMalugaz::Create(m_pGraphicDev, { 14.5f, 0.1f, 72.5f });
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Malugaz", pGameObject), E_FAIL);
 
-    pGameObject = CAzeos::Create(m_pGraphicDev, { 42.0f, 0.0f,105.0f });
+    pGameObject = CAzeos::Create(m_pGraphicDev, { 45.0f, -0.2f, 106.0f });
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Azeos", pGameObject), E_FAIL);
 
 #pragma endregion
+
 
     m_mapLayer.insert({ pLayerTag , pLayer });
 

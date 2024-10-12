@@ -118,12 +118,6 @@ CItem* CCraftMgr::Craft(CInventory* _pInventory, ITEMNUM _eItemNum, MATERIAL _eM
     case ITEM_ACCESSORY_TABLE:
         pItem = CAccessoryTable::Create(m_pGraphicDev);
         break;
-    case ITEM_MUSIC_TABLE:
-        pItem = CMusicTable::Create(m_pGraphicDev);
-        break;
-    case ITEM_ANIMAL_TABLE:
-        pItem = CAnimalTable::Create(m_pGraphicDev);
-        break;
 
     case ITEM_ANVIL:
         pItem = CAnvil::Create(m_pGraphicDev, _eMaterial);
@@ -254,12 +248,6 @@ CItem* CCraftMgr::CraftExp(ITEMNUM _eItemNum, MATERIAL _eMaterial)
         break;
     case ITEM_ACCESSORY_TABLE:
         pItem = CAccessoryTable::Create(m_pGraphicDev);
-        break;
-    case ITEM_MUSIC_TABLE:
-        pItem = CMusicTable::Create(m_pGraphicDev);
-        break;
-    case ITEM_ANIMAL_TABLE:
-        pItem = CAnimalTable::Create(m_pGraphicDev);
         break;
 
     case ITEM_ANVIL:
@@ -556,12 +544,6 @@ void CCraftMgr::Set_Recipe()
     accessoryTableRecipe.vecIngredients.push_back({ ITEM_COPPER_BAR, 4 });
     accessoryTableRecipe.vecIngredients.push_back({ ITEM_IRON_BAR, 8 });
     m_mapRecipes[make_pair(ITEM_ACCESSORY_TABLE, MATERIAL_IRON)] = accessoryTableRecipe;
-
-    // 음악 작업대
-    Recipe musicTableRecipe;
-    musicTableRecipe.vecIngredients.push_back({ ITEM_FIBER, 5 });
-    musicTableRecipe.vecIngredients.push_back({ ITEM_WOOD, 8 });
-    m_mapRecipes[make_pair(ITEM_MUSIC_TABLE, MATERIAL_IRON)] = musicTableRecipe;
 
     // 구리 모루
     Recipe copperAnvilRecipe;

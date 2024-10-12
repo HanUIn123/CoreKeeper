@@ -331,12 +331,6 @@
     <Filter Include="02. GameObject\06. Item\06. Installation\00. Table\02. AccessoryTable">
       <UniqueIdentifier>{8d67c81e-63e4-41c1-959b-a20071ff1919}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\06. Item\06. Installation\00. Table\03. MusicTable">
-      <UniqueIdentifier>{a86ebdd4-eb23-42f9-b852-618edf53c4f6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\06. Item\06. Installation\00. Table\04. AnimalTable">
-      <UniqueIdentifier>{3047f56c-6b4b-4551-81e2-3531605563bc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\06. Item\99. Etc\09. Piece">
       <UniqueIdentifier>{e04f8601-5724-400a-80a9-2718805579ff}</UniqueIdentifier>
     </Filter>
@@ -426,9 +420,6 @@
     </Filter>
     <Filter Include="02. GameObject\08. Object\02. Table\02. AccessoryTable">
       <UniqueIdentifier>{816b4f61-b5be-4a2b-8379-072149d29b14}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\08. Object\02. Table\03. MusicTable">
-      <UniqueIdentifier>{468a1da1-99e8-4ba1-b33e-8836a31008ea}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameObject\08. Object\12. Torch">
       <UniqueIdentifier>{e1dd83b3-5b3f-4b6c-8f01-ea4fb054acff}</UniqueIdentifier>
@@ -903,12 +894,6 @@
     <ClInclude Include="..\Header\AccessoryTable.h">
       <Filter>02. GameObject\06. Item\06. Installation\00. Table\02. AccessoryTable</Filter>
     </ClInclude>
-    <ClInclude Include="..\Header\MusicTable.h">
-      <Filter>02. GameObject\06. Item\06. Installation\00. Table\03. MusicTable</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Header\AnimalTable.h">
-      <Filter>02. GameObject\06. Item\06. Installation\00. Table\04. AnimalTable</Filter>
-    </ClInclude>
     <ClInclude Include="..\Header\Plant.h">
       <Filter>02. GameObject\08. Object\10. Plant</Filter>
     </ClInclude>
@@ -953,9 +938,6 @@
     </ClInclude>
     <ClInclude Include="..\Header\PotionTableObject.h">
       <Filter>02. GameObject\08. Object\02. Table\01. PotionTable</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Header\MusicTableObject.h">
-      <Filter>02. GameObject\08. Object\02. Table\03. MusicTable</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\AccessoryTableObject.h">
       <Filter>02. GameObject\08. Object\02. Table\02. AccessoryTable</Filter>
@@ -1400,12 +1382,6 @@
     <ClCompile Include="..\Code\AccessoryTable.cpp">
       <Filter>02. GameObject\06. Item\06. Installation\00. Table\02. AccessoryTable</Filter>
     </ClCompile>
-    <ClCompile Include="..\Code\MusicTable.cpp">
-      <Filter>02. GameObject\06. Item\06. Installation\00. Table\03. MusicTable</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Code\AnimalTable.cpp">
-      <Filter>02. GameObject\06. Item\06. Installation\00. Table\04. AnimalTable</Filter>
-    </ClCompile>
     <ClCompile Include="..\Code\Plant.cpp">
       <Filter>02. GameObject\08. Object\10. Plant</Filter>
     </ClCompile>
@@ -1450,9 +1426,6 @@
     </ClCompile>
     <ClCompile Include="..\Code\PotionTableObject.cpp">
       <Filter>02. GameObject\08. Object\02. Table\01. PotionTable</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Code\MusicTableObject.cpp">
-      <Filter>02. GameObject\08. Object\02. Table\03. MusicTable</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\AccessoryTableObject.cpp">
       <Filter>02. GameObject\08. Object\02. Table\02. AccessoryTable</Filter>
