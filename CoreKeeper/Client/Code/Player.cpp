@@ -1907,15 +1907,15 @@ void CPlayer::Eat(ITEMNUM eHandedNum)
         CBuffMgr::GetInstance()->Set_BuffStart(BUFF_MINING, 120);
         break;
     case ITEM_POTION_HP:
-        soundName = L"bubble.wav";
+        soundName = L"drinking.wav";
         m_pStateCom->Set_Recover(200);
         break;
     case ITEM_POTION_ATT:
-        soundName = L"bubble.wav";
+        soundName = L"drinking.wav";
         CBuffMgr::GetInstance()->Set_BuffStart(BUFF_ATT, 300);
         break;
     case ITEM_POTION_DEF:
-        soundName = L"bubble.wav";
+        soundName = L"drinking.wav";
         CBuffMgr::GetInstance()->Set_BuffStart(BUFF_DEF, 300);
         break;
     }
@@ -2166,6 +2166,8 @@ void CPlayer::Set_UI()
 
     if (Engine::Key_Down(DIK_M))
     {
+        Engine::CSoundMgr::GetInstance()->Play(L"paper.wav", SOUND_EFFECT, 0.4f);
+
         if (!m_bInventory)
             Set_Map();
 
