@@ -2602,30 +2602,20 @@ void CPlayer::Respawn_Progress(const _float& fTimeDelta)
                 CBuffMgr::GetInstance()->Set_BuffEnd((BUFFTYPE)i);
         }
     }
-    else if (m_fRespawnProgress <= 5.f)
-    {
-        if (!m_bRespawnFirstFrame)
-        {
-            m_bRespawnFirstFrame = true;
-            // 리스폰 포인트로 이동 후 이펙트 생성
-
-        }
-        m_pTransformCom->Set_Pos(m_vRespawnPoint.x, m_vRespawnPoint.y, m_vRespawnPoint.z);
-    }
     else if (m_fRespawnProgress <= 6.f)
     {
         // 리스폰 완료
+        m_pTransformCom->Set_Pos(m_vRespawnPoint.x, m_vRespawnPoint.y, m_vRespawnPoint.z);
         m_pStateCom->Set_Revive();
         m_fRespawnProgress = 0.f;
+        m_bRespawnFirstFrame = true;
 
         m_pClothes[0]->Set_Active(true);
         m_pClothes[1]->Set_Active(true);
         m_pClothes[3]->Set_Active(true);
         m_pClothes[4]->Set_Active(true);
     }
-
 }
-
 void CPlayer::Set_InvWindow()
 {
     if (m_bInventory)
