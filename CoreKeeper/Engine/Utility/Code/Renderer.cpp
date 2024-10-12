@@ -57,14 +57,14 @@ void CRenderer::Render_GameObject(LPDIRECT3DDEVICE9& pGraphicDev)
     Render_Alpha(pGraphicDev);
     Render_Wall(pGraphicDev);
 
-    if (!m_bStart)
-    {
-        Clear_RenderGroup();
-        return;
-    }
+ 
+    //if (!m_bStart)
+    //{
+    //    return;
+    //}
 
     // ¹Ì´Ï¸Ê Ãâ·Â
-    if (!m_bCloseMinimap && pCamera)
+    if (m_bStart && !m_bCloseMinimap && pCamera)
     {
         if (!dynamic_cast<CDynamicCamera*>(pCamera)->Get_IsWorldMap())
         {
@@ -80,12 +80,16 @@ void CRenderer::Render_GameObject(LPDIRECT3DDEVICE9& pGraphicDev)
         pCamera->Set_Render(TYPE_ORTHOGRAPHIC);
         if (!dynamic_cast<CDynamicCamera*>(pCamera)->Get_IsWorldMap())
         {
-            Render_UI(pGraphicDev);
+            if(m_bStart)
+                Render_UI(pGraphicDev);
 
             Render_Subordinate(pGraphicDev);
         }
         else
-            Render_WorldMap(pGraphicDev);
+        {
+            if(m_bStart)
+                Render_WorldMap(pGraphicDev);
+        }
         pCamera->Set_Render(TYPE_PERSPECTIVE);
     }
 
