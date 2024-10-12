@@ -365,6 +365,9 @@ void CSlime::Pattern_Dead()
 
 STATE CSlime::State_Change()
 {
+    if (m_pPlayerState->Get_Dead() && m_bAttackSuccess)
+        return IDLE;
+
     _vec3 vPos, vPlayerPos;
     m_pTransformCom->Get_Info(INFO_POS, &vPos);
     m_pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
@@ -380,6 +383,7 @@ STATE CSlime::State_Change()
         if (!m_pCalculatorCom->Check_Distance2D(&vPlayerPos, &vPos, m_fAggroDistance))
             return IDLE;
     }
+
     return m_eState;
 }
 

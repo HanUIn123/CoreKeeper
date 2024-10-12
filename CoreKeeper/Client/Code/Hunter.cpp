@@ -76,9 +76,6 @@ _int CHunter::Update_GameObject(const _float& fTimeDelta)
     if (m_eState != DEAD && !Check_Wall())
         m_eState = State_Change();
 
-    if (m_pPlayerState->Get_Dead())
-        m_eState == IDLE;
-
     switch (m_eState)
     {
     case IDLE:
@@ -707,6 +704,9 @@ void CHunter::Pattern_Dead()
 
 STATE CHunter::State_Change()
 {
+    if (m_pPlayerState->Get_Dead())
+        return IDLE;
+
     _vec3 vPlayerPos, vPos;
     m_pTransformCom->Get_Info(INFO_POS, &vPos);
     m_pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
@@ -747,6 +747,10 @@ STATE CHunter::State_Change()
         }
         break;
     }
+
+    if (m_pPlayerState->Get_Dead())
+        m_eState = IDLE;
+
     return m_eState;
 }
 
