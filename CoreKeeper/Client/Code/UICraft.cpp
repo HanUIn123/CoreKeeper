@@ -30,6 +30,8 @@ HRESULT CUICraft::Ready_GameObject(_vec2 vPos, _vec2 vSize, _bool _bLRCheck)
 	m_pTransformCom->Set_Scale(vSize.x, vSize.y , 1.f);
 	m_pTransformCom->Set_Pos(x, y, 0);
 
+	m_vFirstPos = { x, y, 0 };
+
 	m_bLRCheck = _bLRCheck;
 
 	return S_OK;
@@ -113,7 +115,10 @@ void CUICraft::Set_Window(TABLETYPE _eType, MATERIAL _eMaterial)
 			CUICraftButton* pButton = dynamic_cast<CUICraftButton*>(Engine::Get_GameObject(L"Layer_UI", L"UI_CraftButton"));
 
 			pButton->Set_Window(_eType, _eMaterial);
+
 		}
+
+		m_pTransformCom->Set_Pos(m_vFirstPos.x, m_vFirstPos.y, m_vFirstPos.z);
 
 		if (_eType == TABLE_ALCHEMY || _eType == TABLE_MUSIC || _eType == TABLE_ACCESSORY)
 		{

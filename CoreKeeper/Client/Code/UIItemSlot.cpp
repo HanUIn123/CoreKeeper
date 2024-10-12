@@ -285,11 +285,42 @@ void CUIItemSlot::Render_GameObject()
 			matWorld._22 = 25.f;
 			break;
 
+		case ITEM_INSTRUMENT_PIANO:
+			matWorld._11 = 25.f;
+			matWorld._22 = 25.f;
+			break;
+
+		case ITEM_INSTRUMENT_CELLO:
+			matWorld._11 = 25.f;
+			matWorld._22 = 25.f;
+			break;
+
+		case ITEM_INSTRUMENT_HARP:
+			matWorld._11 = 25.f;
+			matWorld._22 = 25.f;
+			break;
+
+		case ITEM_INSTRUMENT_FLUTE:
+			matWorld._11 = 25.f;
+			matWorld._22 = 25.f;
+			break;
+
+		case ITEM_INSTRUMENT_OCARINA:
+			matWorld._11 = 25.f;
+			matWorld._22 = 25.f;
+			break;
+
+		case ITEM_INSTRUMENT_DRUM:
+			matWorld._11 = 25.f;
+			matWorld._22 = 25.f;
+			break;
+
 		default:
-			matWorld._11 = 20.f;
-			matWorld._22 = 20.f;
+			matWorld._11 = 15.f;
+			matWorld._22 = 15.f;
 			break;
 		}
+
 
 		m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
 

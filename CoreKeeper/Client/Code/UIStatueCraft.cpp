@@ -54,16 +54,22 @@ _int CUIStatueCraft::Update_GameObject(const _float& fTimeDelta)
 		case 1:
 			if (CCraftMgr::GetInstance()->Craftable(pPlayer, ITEM_PLAYER_SPAWNER, MATERIAL_END))
 				m_bEnough = true;
+			else
+				m_bEnough = false;
 			break;
 
 		case 3:
 			if (CCraftMgr::GetInstance()->Craftable(pPlayer, ITEM_MAL_SPAWNER, MATERIAL_END))
 				m_bEnough = true;
+			else
+				m_bEnough = false;
 			break;
 
 		case 5:
 			if (CCraftMgr::GetInstance()->Craftable(pPlayer, ITEM_AZEOS_SPAWNER, MATERIAL_END))
-				m_bEnough = true;
+				m_bEnough = true;	
+			else
+				m_bEnough = false;
 			break;
 		}
 
@@ -76,18 +82,15 @@ _int CUIStatueCraft::Update_GameObject(const _float& fTimeDelta)
 				switch (m_iIndex)
 				{
 				case 1:
-					if (m_pInventoryCom->Add_Item(CCraftMgr::GetInstance()->CraftExp(ITEM_PLAYER_SPAWNER, MATERIAL_END)))
-						m_bEnough = true;
+					m_pInventoryCom->Add_Item(CCraftMgr::GetInstance()->CraftExp(ITEM_PLAYER_SPAWNER, MATERIAL_END));
 					break;
 
 				case 3:
-					if (m_pInventoryCom->Add_Item(CCraftMgr::GetInstance()->CraftExp(ITEM_MAL_SPAWNER, MATERIAL_END)))
-						m_bEnough = true;
+					m_pInventoryCom->Add_Item(CCraftMgr::GetInstance()->CraftExp(ITEM_MAL_SPAWNER, MATERIAL_END));
 					break;
 
 				case 5:
-					if (m_pInventoryCom->Add_Item(CCraftMgr::GetInstance()->CraftExp(ITEM_AZEOS_SPAWNER, MATERIAL_END)))
-						m_bEnough = true;
+					m_pInventoryCom->Add_Item(CCraftMgr::GetInstance()->CraftExp(ITEM_AZEOS_SPAWNER, MATERIAL_END));
 					break;
 				}
 

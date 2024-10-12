@@ -114,6 +114,17 @@ _int CUIInventory::Update_GameObject(const _float& fTimeDelta)
 
 		Engine::Add_RenderGroup(RENDER_UI, this);
 	}
+	else if (!m_bShow && m_bCollapse)
+	{
+		CUIItemFrame* pItemF = dynamic_cast<CUIItemFrame*>(Engine::Get_GameObject(L"Layer_UI", L"UI_ItemFrame"));
+
+		pItemF->Set_WindowDis();
+
+		m_bStay = false;
+
+		m_bCollapse = false;
+	}
+
 	return iExit;
 }
 
@@ -169,7 +180,6 @@ void CUIInventory::Render_GameObject()
 
 		Engine::ITEMNUM eNum = pItem->Get_ItemNum();
 
-
 		switch (eNum)
 		{
 		case ITEM_SWORD:
@@ -205,12 +215,12 @@ void CUIInventory::Render_GameObject()
 			matWorld._42 -= 8.f;
 			break;
 
-		//case ITEM_SHOVEL:
-		//	matWorld._11 = 60.f;
-		//	matWorld._22 = 60.f;
+			//case ITEM_SHOVEL:
+			//	matWorld._11 = 60.f;
+			//	matWorld._22 = 60.f;
 
-		//	matWorld._42 -= 8.f;
-		//	break;
+			//	matWorld._42 -= 8.f;
+			//	break;
 
 		case ITEM_STAFF:
 			matWorld._11 = 35.f;
@@ -265,15 +275,58 @@ void CUIInventory::Render_GameObject()
 			break;
 
 		case ITEM_TORCH:
-			matWorld._11 = 30.f;
-			matWorld._22 = 30.f;
+			matWorld._11 = 25.f;
+			matWorld._22 = 25.f;
+			break;
+
+		case ITEM_INSTRUMENT_PIANO:
+			matWorld._11 = 35.f;
+			matWorld._22 = 35.f;
+			matWorld._41 += 4.f;
+			matWorld._42 += 14.f;
+			break;
+
+		case ITEM_INSTRUMENT_CELLO:
+			matWorld._11 = 35.f;
+			matWorld._22 = 35.f;
+			matWorld._41 += 10.f;
+			matWorld._42 += 4.f;
+			break;
+
+		case ITEM_INSTRUMENT_HARP:
+			matWorld._11 = 35.f;
+			matWorld._22 = 35.f;
+			matWorld._41 += 10.f;
+			matWorld._42 += 7.f;
+			break;
+
+		case ITEM_INSTRUMENT_FLUTE:
+			matWorld._11 = 45.f;
+			matWorld._22 = 45.f;
+			matWorld._41 += 6.f;
+			matWorld._42 += 14.f;
+			break;
+
+		case ITEM_INSTRUMENT_OCARINA:
+			matWorld._11 = 35.f;
+			matWorld._22 = 35.f;
+			matWorld._41 += 4.f;
+			matWorld._42 += 12.f;
+			break;
+
+		case ITEM_INSTRUMENT_DRUM:
+			matWorld._11 = 35.f;
+			matWorld._22 = 35.f;
+			matWorld._41 += 4.f;
+			matWorld._42 += 14.f;
 			break;
 
 		default:
-			matWorld._11 = 20.f;
-			matWorld._22 = 20.f;
+			matWorld._11 = 15.f;
+			matWorld._22 = 15.f;
 			break;
 		}
+
 
 		m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
 

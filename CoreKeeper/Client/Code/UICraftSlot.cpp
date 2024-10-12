@@ -137,6 +137,27 @@ _int CUICraftSlot::Update_GameObject(const _float& fTimeDelta)
 			else
 				m_bEnough = false;
 		}
+		else if (m_eItemType.eItemNum == ITEM_WATERINGCAN)
+		{
+			if (m_eItemType.eItemMat == MATERIAL_WOOD)
+			{
+				if (CCraftMgr::GetInstance()->Craftable(pPlayerInv, m_eItemType.eItemNum, MATERIAL_COPPER))
+				{
+					m_bEnough = true;
+				}
+				else
+					m_bEnough = false;
+			}
+			else
+			{
+				if (CCraftMgr::GetInstance()->Craftable(pPlayerInv, m_eItemType.eItemNum, MATERIAL_IRON))
+				{
+					m_bEnough = true;
+				}
+				else
+					m_bEnough = false;
+			}
+		}
 		else
 		{
 			if (CCraftMgr::GetInstance()->Craftable(pPlayerInv, m_eItemType.eItemNum, m_eItemType.eItemMat))
@@ -176,7 +197,7 @@ _int CUICraftSlot::Update_GameObject(const _float& fTimeDelta)
 						break;
 					}
 
-					m_pInventoryCom->Add_Item(CCraftMgr::GetInstance()->CraftExp(m_eItemType.eItemNum, m_eItemType.eItemMat));
+					m_pInventoryCom->Add_Item(CCraftMgr::GetInstance()->CraftExp(m_eItemType.eItemNum, eMat));
 				}
 				else if (m_eItemType.eItemNum == ITEM_TABLE)
 				{
@@ -193,7 +214,14 @@ _int CUICraftSlot::Update_GameObject(const _float& fTimeDelta)
 						break;
 					}
 
-					m_pInventoryCom->Add_Item(CCraftMgr::GetInstance()->CraftExp(m_eItemType.eItemNum, m_eItemType.eItemMat));
+					m_pInventoryCom->Add_Item(CCraftMgr::GetInstance()->CraftExp(m_eItemType.eItemNum, eMat));
+				}
+				else if (m_eItemType.eItemNum == ITEM_WATERINGCAN)
+				{
+					if(m_eItemType.eItemMat == MATERIAL_WOOD)
+						m_pInventoryCom->Add_Item(CCraftMgr::GetInstance()->CraftExp(m_eItemType.eItemNum, MATERIAL_COPPER));
+					if (m_eItemType.eItemMat == MATERIAL_IRON)
+						m_pInventoryCom->Add_Item(CCraftMgr::GetInstance()->CraftExp(m_eItemType.eItemNum, MATERIAL_IRON));
 				}
 				else if (m_eItemType.eItemNum == ITEM_ASSISTANCE)
 				{
@@ -209,7 +237,7 @@ _int CUICraftSlot::Update_GameObject(const _float& fTimeDelta)
 						break;
 					}
 
-					m_pInventoryCom->Add_Item(CCraftMgr::GetInstance()->CraftExp(m_eItemType.eItemNum, m_eItemType.eItemMat));
+					m_pInventoryCom->Add_Item(CCraftMgr::GetInstance()->CraftExp(m_eItemType.eItemNum, eMat));
 				}
 				else
 				{
@@ -219,7 +247,7 @@ _int CUICraftSlot::Update_GameObject(const _float& fTimeDelta)
 				CUIItemFrame* pFrame = dynamic_cast<CUIItemFrame*>(Engine::Get_GameObject(L"Layer_UI", L"UI_ItemFrame"));
 
 				pFrame->Set_Window(m_pInventoryCom->Get_Item(0), pt, true);
-
+				
 				m_bStay = true;
 			}
 
@@ -293,6 +321,15 @@ _int CUICraftSlot::Update_GameObject(const _float& fTimeDelta)
 						CInventory* pCursorInv = dynamic_cast<CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_UI", L"UI_Cursor", L"Com_Inventory"));
 
 						pCursorInv->Add_Item(CCraftMgr::GetInstance()->Craft(pPlayerInv, m_eItemType.eItemNum, eMat));
+					}
+					else if (m_eItemType.eItemNum == ITEM_WATERINGCAN)
+					{
+						CInventory* pCursorInv = dynamic_cast<CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_UI", L"UI_Cursor", L"Com_Inventory"));
+
+						if (m_eItemType.eItemMat == MATERIAL_WOOD)
+							pCursorInv->Add_Item(CCraftMgr::GetInstance()->Craft(pPlayerInv, m_eItemType.eItemNum, MATERIAL_COPPER));
+						else if(m_eItemType.eItemMat == MATERIAL_IRON)
+							pCursorInv->Add_Item(CCraftMgr::GetInstance()->Craft(pPlayerInv, m_eItemType.eItemNum, MATERIAL_IRON));
 					}
 					else
 					{
@@ -541,7 +578,7 @@ void CUICraftSlot::Set_Window(TABLETYPE _eTableType, MATERIAL _eMaterial, _bool 
 
 			for (; seconditer != mapItemType.end(); seconditer++)
 			{
-				if (seconditer->second.eItemMat == _eMaterial)
+				if (seconditer->second.eItemMat == _eMaterial && seconditer->first.second == _bDirection)
 					break;
 			}
 
@@ -663,8 +700,9 @@ void CUICraftSlot::Ready_Table()
 		UIITEM COOKINGPOT = { m_iIndex, ITEM_COOKINGPOT, MATERIAL_COPPER, 11};
 		mapItemType.insert({ make_pair(TABLE_CRAFT, FALSE), COOKINGPOT });
 
-		UIITEM ACCESSORYTABLE = { m_iIndex, ITEM_ACCESSORY_TABLE, MATERIAL_IRON, 27 };
-		mapItemType.insert({ make_pair(TABLE_CRAFT, FALSE), ACCESSORYTABLE });
+		UIITEM SPRINKLER = { m_iIndex, ITEM_SPRINKLER, MATERIAL_IRON, 25 };
+		mapItemType.insert({ make_pair(TABLE_CRAFT, FALSE), SPRINKLER });
+
 
 		UIITEM IRONBOW = { m_iIndex, ITEM_BOW, MATERIAL_IRON, 39 };
 		mapItemType.insert({ make_pair(TABLE_ANVIL, FALSE), IRONBOW });
@@ -701,14 +739,11 @@ void CUICraftSlot::Ready_Table()
 
 		// ¿ìÃø
 
-		UIITEM IRONTABLE = { m_iIndex, ITEM_TABLE, MATERIAL_COPPER, 19 };
-		mapItemType.insert({ make_pair(TABLE_CRAFT, FALSE), IRONTABLE });
+		UIITEM ACCESSORYTABLE = { m_iIndex, ITEM_ACCESSORY_TABLE, MATERIAL_COPPER, 27 };
+		mapItemType.insert({ make_pair(TABLE_CRAFT, FALSE), ACCESSORYTABLE });
 
 		UIITEM IRONANVIL = { m_iIndex, ITEM_ANVIL, MATERIAL_IRON, 26 };
 		mapItemType.insert({ make_pair(TABLE_CRAFT, FALSE), IRONANVIL });
-
-		UIITEM SPRINKLER = { m_iIndex, ITEM_SPRINKLER, MATERIAL_IRON, 25 };
-		mapItemType.insert({ make_pair(TABLE_CRAFT, FALSE), SPRINKLER });
 
 		break;
 	}
@@ -738,6 +773,8 @@ void CUICraftSlot::Ready_Table()
 		mapItemType.insert({ make_pair(TABLE_ANVIL, TRUE), IRONSHIELD });
 
 
+		UIITEM IRONTABLE = { m_iIndex, ITEM_TABLE, MATERIAL_COPPER, 19 };
+		mapItemType.insert({ make_pair(TABLE_CRAFT, FALSE), IRONTABLE });
 
 		break;
 	}
