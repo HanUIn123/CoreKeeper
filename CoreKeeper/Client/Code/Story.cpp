@@ -37,12 +37,23 @@ _int CStory::Update_Scene(const _float& fTimeDelta)
 
 	_int	iExit = Engine::CScene::Update_Scene(fTimeDelta);
 
+    CWhitePlane* pWhitePlane = dynamic_cast<CWhitePlane*>(Engine::Get_GameObject(L"Layer_Environment", L"WhitePlane"));
+    CStoryBackGround* pStoryBackGround = dynamic_cast<CStoryBackGround*>(Engine::Get_GameObject(L"Layer_Environment", L"StoryBackGround"));
+
     if (true == m_pLoading->Get_Finish())
     {
         if (GetAsyncKeyState(VK_RETURN) & 0x8000)
         {
-            //Engine::StopSound(SOUND_BGM);
+            pStoryBackGround->Set_Stop(true);
 
+            if (pStoryBackGround->Get_Stop())
+            {
+                pWhitePlane->Set_FadeOver(true);
+            }
+        }
+
+        if (pWhitePlane->Get_Opacity() == 240)
+        {
             Engine::CScene* pStage = CStage::Create(m_pGraphicDev);
             NULL_CHECK_RETURN(pStage, -1);
 
@@ -51,6 +62,7 @@ _int CStory::Update_Scene(const _float& fTimeDelta)
             return 0;
         }
     }
+
 
     return iExit;
 }
@@ -74,6 +86,11 @@ HRESULT CStory::Ready_Prototype()
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_StoryTex", Engine::CRcTex::Create(m_pGraphicDev)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_StoryTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Logo/Story_%d.png", TEX_NORMAL, 5)), E_FAIL);
 
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_WhiteTransform", Engine::CTransform::Create(m_pGraphicDev)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_WhiteTex", Engine::CRcTex::Create(m_pGraphicDev)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_WhiteTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Logo/BlackScreen2.png", TEX_NORMAL, 1)), E_FAIL);
+
+
     return S_OK;
 }
 
@@ -87,6 +104,10 @@ HRESULT CStory::Ready_Layer_Environment(const _tchar* pLayerTag)
     pGameObject = CStoryBackGround::Create(m_pGraphicDev);
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"StoryBackGround", pGameObject), E_FAIL);
+
+    pGameObject = CWhitePlane::Create(m_pGraphicDev);
+    NULL_CHECK_RETURN(pGameObject, E_FAIL);
+    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"WhitePlane", pGameObject), E_FAIL);
 
     m_mapLayer.insert({ pLayerTag , pLayer });
 
