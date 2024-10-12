@@ -30,5 +30,8 @@ public:
 	static	CStory* Create(LPDIRECT3DDEVICE9 pGraphicDev);
 private:
 	virtual void		Free();
+
+private:
+	bool				m_bFadeStart;
 };
 

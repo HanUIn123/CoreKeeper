@@ -12,11 +12,11 @@ class CInventory;
 
 END
 
-class CMusicTableObject : public CObject
+class CDollObject : public CObject
 {
 private:
-	explicit						CMusicTableObject(LPDIRECT3DDEVICE9 pGraphicDev);
-	virtual							~CMusicTableObject();
+	explicit						CDollObject(LPDIRECT3DDEVICE9 pGraphicDev);
+	virtual							~CDollObject();
 public:
 	virtual			HRESULT			Ready_GameObject(_vec3 vPos);
 	virtual			_int			Update_GameObject(const _float& fTimeDelta);
@@ -33,11 +33,16 @@ public:
 
 private:
 	HRESULT							Add_Component();
+	void							Update_Texture();
 
 public:
-	static CMusicTableObject* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);
+	static CDollObject* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);
 
 private:
 	virtual void					Free();
+
+private:
+	int								m_iTextureNum;
+	bool							m_bCheck;
 };
 

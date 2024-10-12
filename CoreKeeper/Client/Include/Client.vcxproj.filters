@@ -529,6 +529,12 @@
     <Filter Include="02. GameObject\00. BackGround\02.WhitePlane">
       <UniqueIdentifier>{62dd725e-e609-456c-bf9e-bf901352b24c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\06. Item\06. Installation\09. Doll">
+      <UniqueIdentifier>{09d69918-709c-4ea0-86fd-3a22e07a51f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\08. Object\19. DollObject">
+      <UniqueIdentifier>{90216a93-412a-4acc-a2a5-9cac98e493ea}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -1038,6 +1044,12 @@
     <ClInclude Include="..\Header\WhitePlane.h">
       <Filter>02. GameObject\00. BackGround\02.WhitePlane</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\Doll.h">
+      <Filter>02. GameObject\06. Item\06. Installation\09. Doll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\DollObject.h">
+      <Filter>02. GameObject\08. Object\19. DollObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1525,6 +1537,12 @@
     </ClCompile>
     <ClCompile Include="..\Code\WhitePlane.cpp">
       <Filter>02. GameObject\00. BackGround\02.WhitePlane</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Doll.cpp">
+      <Filter>02. GameObject\06. Item\06. Installation\09. Doll</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\DollObject.cpp">
+      <Filter>02. GameObject\08. Object\19. DollObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

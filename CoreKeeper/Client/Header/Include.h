@@ -63,8 +63,6 @@
 #include "Table.h"
 #include "PotionTable.h"
 #include "AccessoryTable.h"
-#include "MusicTable.h"
-#include "AnimalTable.h"
 
 #include "Anvil.h"
 #include "Furnace.h"
@@ -74,6 +72,7 @@
 #include "Box.h"
 #include "Gravestone.h"
 #include "Sprinkler.h"
+#include "Doll.h"
 
 #include "Potion.h"
 #include "Ingredient.h"

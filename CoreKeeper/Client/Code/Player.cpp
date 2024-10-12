@@ -556,6 +556,7 @@ void CPlayer::Mouse_Click(const _float& fTimeDelta)
                 case ITEM_SPRINKLER:
                 case ITEM_MAL_SPAWNER:
                 case ITEM_AZEOS_SPAWNER:
+                case ITEM_DOLL:
                     Install(eHandedNum);
                     break;
                     
@@ -1805,6 +1806,9 @@ void CPlayer::Install(ITEMNUM eHandedNum)
                     pInstallObject = CAzeosSpawner::Create(m_pGraphicDev, vInstallPos);
                     bPassable = false;
                     break;
+                case ITEM_DOLL:
+                    pInstallObject = CDollObject::Create(m_pGraphicDev, vInstallPos);
+                    break;
                 default:
                     return;
                 }
@@ -1998,7 +2002,16 @@ void CPlayer::Play_Instruments()
             {
                 m_bPlayToggle = m_bPlayToggle ? false : true;
                 if (m_bPlayToggle)
-                    Engine::Play(L"pianoCookServeDelicious3ItsDangerousToGoAlone.wav", SOUND_INSTRUMENTS, 0.1f);
+                {
+                    /*g_bFight = true;
+                    Engine::StopSound(SOUND_BGM);
+                    Engine::Play(L"harpItsABigWorldOutside.wav", SOUND_INSTRUMENTS, 0.1f);
+                    Engine::Play(L"celloItsABigWorldOutside.wav", SOUND_INSTRUMENTS, 0.1f);
+                    Engine::Play(L"fluteItsABigWorldOutside.wav", SOUND_INSTRUMENTS, 0.1f);
+                    Engine::Play(L"ocarinaItsABigWorldOutside.wav", SOUND_INSTRUMENTS, 0.1f);
+                    Engine::Play(L"drumItsABigWorldOutside.wav", SOUND_INSTRUMENTS, 0.1f);*/
+                    Engine::Play(L"pianoItsABigWorldOutside.wav", SOUND_INSTRUMENTS, 0.2f);
+                }
                 else
                     Engine::StopSound(SOUND_INSTRUMENTS);
             }
