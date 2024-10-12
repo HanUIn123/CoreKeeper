@@ -42,12 +42,12 @@ public:
 	Recipe		Get_Recipe(pair<ITEMNUM, MATERIAL> _pair) {
 		return m_mapRecipes[_pair]; }
 
-	wstring		Get_Name(ITEMNUM _eItemNum) { 
-		return strCraftName[_eItemNum]; 
-	}
+	wstring		Get_IngredientName(ITEMNUM _eItemNum) { return m_strIngredientName[_eItemNum]; }
+
 private:
 	void		Set_Recipe();
 	void		Set_Name();
+
 private:
 	virtual void		Free();
 
@@ -55,7 +55,7 @@ private:
 	LPDIRECT3DDEVICE9					m_pGraphicDev;
 
 	wstring								strCraftName[500];
-	map<ITEMNUM, wstring>				m_mapName;
+	wstring								m_strIngredientName[ITEM_END];
 	int									m_iCraftCount;
 
 	map<pair<ITEMNUM, MATERIAL>, Recipe> m_mapRecipes;

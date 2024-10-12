@@ -4,6 +4,7 @@
 #include "Export_System.h"
 #include "Item.h"
 #include "UIItemSlot.h"
+#include "Scene.h"
 
 BEGIN(Engine)
 
@@ -95,6 +96,9 @@ private:
 	void			Set_WallProjection();
 
 public:
+	// 플레이어가 미리 가지고 있을 아이템 설정
+	void			SetUp_Item(CScene* _pScene);
+
 	CItem*			Get_HandedItem()		{ return m_pHandedItem; }
 	STATE			Get_CurState()			{ return m_eState; }
 	// 손에 든 인벤토리 번호 가져오는 함수
@@ -240,6 +244,8 @@ private:
 
 	vector<wstring>			m_vecInstallObjectName;
 	_int					m_iInstallNumber;
+
+	vector<wstring>			m_vecItemName;
 
 	// 랜턴
 	_int					m_iLightNum;

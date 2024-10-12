@@ -106,6 +106,11 @@ inline void			OpenClose_MiniMap()
 	CRenderer::GetInstance()->OpenClose_MiniMap();
 }
 
+inline void			Set_Start(bool _bStart)
+{
+	CRenderer::GetInstance()->Set_Start(_bStart);
+}
+
 inline HRESULT			Ready_Light(LPDIRECT3DDEVICE9 pGraphicDev,
 	const D3DLIGHT9* pLightInfo,
 	const _uint& iIndex)

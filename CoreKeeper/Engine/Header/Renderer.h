@@ -27,7 +27,7 @@ public:
 	void			Set_CloseMap(_bool _bCloseMap);
 
 	void			OpenClose_MiniMap();
-
+	void			Set_Start(bool _bStart) { m_bStart = _bStart; }
 private:
 	void			Render_Priority(LPDIRECT3DDEVICE9& pGraphicDev);
 	void			Render_NonAlpha(LPDIRECT3DDEVICE9& pGraphicDev);
@@ -50,6 +50,7 @@ private:
 	_bool						m_bExpandMinimap;
 	_float						m_fZoomRatio;
 	_bool						m_bCloseMinimap;
+	_bool						m_bStart;
 private:
 	virtual void		Free();
 

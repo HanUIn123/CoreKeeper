@@ -65,22 +65,22 @@ _int CWall::Update_GameObject(const _float& fTimeDelta)
 
     m_bInFrustum = m_pCalculatorCom->In_Frustum(m_pTransformCom);
 
-    if (!m_bInFrustum && m_iWallImageNum != 48)
-    {
-        return 0;
-    }
-
     if (m_bDown && m_iWallImageNum == 45)
     {
         m_iWallImageNum = 48;
+    }
+
+    if (!m_bInFrustum && m_iWallImageNum != 48)
+    {
+        return 0;
     }
 
     if (m_iWallImageNum == 48)
     {
         _vec3 vUp;
         m_pTransformCom->Get_Info(INFO_UP, &vUp);
-        m_pTransformCom->Move_Pos(&vUp, fTimeDelta, -0.5f);
-        dynamic_cast<CDynamicCamera*>(Engine::Get_GameObject(L"Layer_Environment", L"DynamicCamera"))->Set_ShakeInfo(2.f, 5.f);
+        m_pTransformCom->Move_Pos(&vUp, fTimeDelta, -0.3f);
+        dynamic_cast<CDynamicCamera*>(Engine::Get_GameObject(L"Layer_Environment", L"DynamicCamera"))->Set_ShakeInfo(1.5f, 5.f);
 
         if (m_pTransformCom->Get_WorldMatrix()->_42 < -1.f)
         {

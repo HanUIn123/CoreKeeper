@@ -136,6 +136,9 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 
     if (!m_bLookAround)
     {
+        // 모든 사운드 안나게 하기
+        Engine::CSoundMgr::GetInstance()->StopAll();
+
         m_fLookAroundTime += fTimeDelta;
 
         if (m_fLookAroundTime < 2.f)
@@ -149,7 +152,8 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
         else
         {
             m_bLookAround = true;
-            
+            g_bStart = true;
+
             _matrix matWorld;
             m_pTransformCom->Get_WorldMatrix(&matWorld);
 
@@ -613,15 +617,20 @@ void CPlayer::Walk_Y(const _float& fTimeDelta)
         
         CStage* pStage = dynamic_cast<CStage*>(Engine::Get_Scene());
 
-        if (iTileNum < 9)
+        if (iTileNum < 9 || iTileNum == 27 || iTileNum == 28)
         {
             Engine::CSoundMgr::GetInstance()->Play(L"Footstep_Dirt.wav", SOUND_PLAYER, 0.1f);
             pStage->Set_BGMNumber(0);
         }
-        else if (iTileNum < 18)
+        else if (iTileNum < 18 || iTileNum == 29 || iTileNum == 30)
         {
             Engine::CSoundMgr::GetInstance()->Play(L"footstepRock1.wav", SOUND_PLAYER, 0.1f);
-            pStage->Set_BGMNumber(1);
+
+            // 농사지은 땅은 기본 bgm이 나올 수 있도록
+            if(iTileNum == 29 || iTileNum == 30)
+                pStage->Set_BGMNumber(0);
+            else
+                pStage->Set_BGMNumber(1);
         }
         else
         {
@@ -1232,60 +1241,76 @@ void CPlayer::Show_Equipment()
     CItem* pArmor;
     for (_int i = 0; i < CUIItemSlot::SLOT_END; i++)
     {
-        wstring	strObjectTag = L"UIItemSlot_";
+        wstring	strObjectTag = L"UIItemSlot_" + std::to_wstring(i);
+        pArmor = dynamic_cast<CUIItemSlot*>(Engine::Get_GameObject(L"Layer_UI", strObjectTag.c_str()))->Get_Item();
+        
+        int iTextureNum(0);
+
+        if (pArmor)
+        {
+            iTextureNum  = pArmor->Get_ItemMaterial() + 1;
+
+            if (pArmor->Get_ItemMaterial() == MATERIAL_SPECIAL)
+                iTextureNum--;
+        }
+
         switch (i)
         {
         case CUIItemSlot::SLOT_HELM:
-            strObjectTag += std::to_wstring(i);
-            pArmor = dynamic_cast<CUIItemSlot*>(Engine::Get_GameObject(L"Layer_UI", strObjectTag.c_str()))->Get_Item();
             if (pArmor)
             {
                 m_tEquipmentStat.iMaxHp += pArmor->Get_Stat()->iMaxHp;
                 m_tEquipmentStat.iDefense += pArmor->Get_Stat()->iDefense;
-                pArmor->Set_Active(true);
-                pArmor->Set_Follow();
-                if (pArmor->Get_ItemMaterial() != MATERIAL_WOOD)
+                /*pArmor->Set_Active(true);
+                pArmor->Set_Follow();*/
+
+                // 나무만 눈이 보이게
+                if (pArmor->Get_ItemMaterial() != MATERIAL_WOOD && pArmor->Get_ItemMaterial() != MATERIAL_SPECIAL)
                 {
                     m_pClothes[0]->Set_Active(false);
-                    m_pClothes[1]->Set_Active(false);
+                    //m_pClothes[1]->Set_Active(false);
                 }
-                else
-                    m_pClothes[1]->Set_TextureNumber((MATERIAL)1);
+                // 머리 (헬멧)
+                m_pClothes[1]->Set_TextureNumber(iTextureNum);
+                
+                if (pArmor->Get_ItemMaterial() == MATERIAL_SPECIAL)
+                    m_pClothes[0]->Set_TextureNumber(1);
             }
             else
             {
                 m_pClothes[0]->Set_Active(true);
-                m_pClothes[1]->Set_Active(true);
-                m_pClothes[1]->Set_TextureNumber((MATERIAL)0);
+                //m_pClothes[1]->Set_Active(true);
+                m_pClothes[1]->Set_TextureNumber(0);
             }
             break;
         case CUIItemSlot::SLOT_CHEST:
-            strObjectTag += std::to_wstring(i);
-            pArmor = dynamic_cast<CUIItemSlot*>(Engine::Get_GameObject(L"Layer_UI", strObjectTag.c_str()))->Get_Item();
             if (pArmor)
             {
                 m_tEquipmentStat.iMaxHp += pArmor->Get_Stat()->iMaxHp;
                 m_tEquipmentStat.iDefense += pArmor->Get_Stat()->iDefense;
-                pArmor->Set_Active(true);
-                pArmor->Set_Follow();
-                m_pClothes[3]->Set_Active(false);
+                /*pArmor->Set_Active(true);
+                pArmor->Set_Follow();*/
+                //m_pClothes[3]->Set_Active(false);
+                // 
+                // 상의
+                m_pClothes[3]->Set_TextureNumber(iTextureNum);
             }
             else
-                m_pClothes[3]->Set_Active(true);
+                m_pClothes[3]->Set_TextureNumber(0);
             break;
         case CUIItemSlot::SLOT_LEGGINGS:
-            strObjectTag += std::to_wstring(i);
-            pArmor = dynamic_cast<CUIItemSlot*>(Engine::Get_GameObject(L"Layer_UI", strObjectTag.c_str()))->Get_Item();
             if (pArmor)
             {
                 m_tEquipmentStat.iMaxHp += pArmor->Get_Stat()->iMaxHp;
                 m_tEquipmentStat.iDefense += pArmor->Get_Stat()->iDefense;
-                pArmor->Set_Active(true);
+                /*pArmor->Set_Active(true);
                 m_pClothes[4]->Set_Active(false);
-                pArmor->Set_Follow();
+                pArmor->Set_Follow();*/
+                // 하의
+                m_pClothes[4]->Set_TextureNumber(iTextureNum);
             }
             else
-                m_pClothes[4]->Set_Active(true);
+                m_pClothes[4]->Set_TextureNumber(0);
             break;
         }
     }
@@ -1768,6 +1793,7 @@ void CPlayer::Install(ITEMNUM eHandedNum)
                 case ITEM_GRAVESTONE:
                     pInstallObject = CGravestoneObject::Create(m_pGraphicDev, vInstallPos);
                     dynamic_cast<CGravestoneObject*>(pInstallObject)->Set_Self(true);
+                    bPassable = false;
                     break;
                 case ITEM_SPRINKLER:
                     pInstallObject = CSprinklerObject::Create(m_pGraphicDev, vInstallPos);
@@ -2325,6 +2351,28 @@ void CPlayer::Set_WallProjection()
             }
         }
     }
+}
+
+void CPlayer::SetUp_Item(CScene* _pScene)
+{
+    CItem* pGameObject(nullptr);
+
+    pGameObject = CLantern::Create(m_pGraphicDev, MATERIAL_WOOD);
+    m_pInventoryCom->Add_Item(pGameObject);
+    m_vecItemName.push_back(L"Player's_Lantern");
+    FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, m_vecItemName.back().c_str()), );
+
+    pGameObject = CLunch::Create(m_pGraphicDev);
+    pGameObject->Add_Count(2);
+    m_pInventoryCom->Add_Item(pGameObject);
+    m_vecItemName.push_back(L"Player's_Lunch");
+    FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, m_vecItemName.back().c_str()), );
+
+    pGameObject = CChocoBar::Create(m_pGraphicDev);
+    pGameObject->Add_Count(4);
+    m_pInventoryCom->Add_Item(pGameObject);
+    m_vecItemName.push_back(L"Player's_ChocoBar");
+    FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, m_vecItemName.back().c_str()), );
 }
 
 void CPlayer::Set_Buff(const _float& fTimeDelta)

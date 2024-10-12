@@ -72,6 +72,7 @@ inline void			Set_ExpandMap(_bool _bExpandMap);
 inline _bool		Get_CloseMap();
 inline void			Set_CloseMap(_bool _bCloseMap);
 inline void			OpenClose_MiniMap();
+inline void			Set_Start(bool _bStart);
 // light
 
 inline HRESULT			Ready_Light(LPDIRECT3DDEVICE9 pGraphicDev,

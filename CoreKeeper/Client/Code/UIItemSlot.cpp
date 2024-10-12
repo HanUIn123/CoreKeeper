@@ -236,22 +236,18 @@ void CUIItemSlot::Render_GameObject()
 			break;
 
 		case ITEM_HELMET:
-			matWorld._11 = 30.f;
-			matWorld._22 = 30.f;
-
-			matWorld._42 -= 13.f;
+			matWorld._11 = 20.f;
+			matWorld._22 = 20.f;
 			break;
 
 		case ITEM_CHEST:
-			matWorld._11 = 30.f;
-			matWorld._22 = 30.f;
+			matWorld._11 = 20.f;
+			matWorld._22 = 20.f;
 			break;
 
 		case ITEM_LEG:
-			matWorld._11 = 40.f;
-			matWorld._22 = 40.f;
-
-			matWorld._42 += 15.f;
+			matWorld._11 = 20.f;
+			matWorld._22 = 20.f;
 			break;
 
 		case ITEM_COPPER:

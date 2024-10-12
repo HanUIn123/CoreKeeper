@@ -134,7 +134,7 @@ void CUIItemFrame::Render_GameObject()
 
 			for (auto iter : sItemRecipe.vecIngredients)
 			{
-				const wstring sMFont = CCraftMgr::GetInstance()->Get_Name(iter.eIngredient) + L" " + std::to_wstring(iter.iQuantity);
+				const wstring sMFont = CCraftMgr::GetInstance()->Get_IngredientName(iter.eIngredient) + L" " + std::to_wstring(iter.iQuantity);
 
 				const _tchar* tMFont = sMFont.c_str();
 

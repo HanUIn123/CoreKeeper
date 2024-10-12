@@ -26,8 +26,13 @@ HRESULT CSlime::Ready_GameObject(_vec3 vPos)
     m_vRespawnPoint = { vPos.x, m_fIdleY, vPos.z };
     m_pTransformCom->Set_Pos(m_vRespawnPoint.x, m_vRespawnPoint.y, m_vRespawnPoint.z);
     m_pStateCom->Set_Stat(100, 0, 10, 0);
+
+    // 개수 추가해서 확률 조작
+    m_vecDropItem.push_back(ITEM_MUCUS);
+    m_vecDropItem.push_back(ITEM_MUCUS);
     m_vecDropItem.push_back(ITEM_MUCUS);
     m_vecDropItem.push_back(ITEM_BERRY_SEED);
+    m_vecDropItem.push_back(ITEM_FIBER_SEED);
     Set_Speed(0.8f);
 
     m_pHitParticleCom->init(L"../Bin/Resource/Texture/Effect/Hit_%d.png", 5, 1.0f);
