@@ -10,6 +10,7 @@ CMiniSpawn::CMiniSpawn(LPDIRECT3DDEVICE9 pGraphicDev)
     , m_pTransformCom(nullptr)
     , m_pTextureCom(nullptr)
     , m_bRevealed(false)
+    , m_bTeleport(false)
 {
 }
 
@@ -25,6 +26,8 @@ HRESULT CMiniSpawn::Ready_GameObject(_vec3 vPos)
 
     m_pTransformCom->Set_Scale(3.5f, 0.0f, 3.5f);
 
+    m_pHitEffectCom->init(L"../Bin/Resource/Texture/Effect/PlayerTeleport/Teleport_%d.png", 12, 3.5f);
+
     return S_OK;
 }
 
@@ -36,7 +39,28 @@ _int CMiniSpawn::Update_GameObject(const _float& fTimeDelta)
 
     Check_PlayerPos(m_bRevealed);
 
-    Add_RenderGroup(RENDER_MAP, this);
+    Engine::Add_RenderGroup(RENDER_MAP, this);
+
+
+    if (m_bTeleport)
+    {
+        m_pHitEffectCom->update(fTimeDelta);
+
+        if (m_pHitEffectCom->isDead())
+        {
+            m_pHitEffectCom->reset();
+
+            CTransform* pPlayerTransform = dynamic_cast<CTransform*>(Engine::Get_Component(ID_DYNAMIC, L"Layer_GameLogic", L"Player", L"Com_Transform"));
+
+            CBlackPlaneMgr::GetInstance()->StartFadeOut();
+
+            pPlayerTransform->Set_WorldMatrix(&m_TeleportWorld);
+
+            m_bTeleport = false;
+        }
+
+        Engine::Add_RenderGroup(RENDER_ALPHA, this);
+    }
 
     return Engine::CGameObject::Update_GameObject(fTimeDelta);
 }
@@ -48,6 +72,15 @@ void CMiniSpawn::LateUpdate_GameObject()
 
 void CMiniSpawn::Render_GameObject()
 {
+    if (m_bTeleport)
+    {
+        m_pGraphicDev->SetTransform(D3DTS_WORLD, &m_matEffectWorld);
+
+        m_pHitEffectCom->render();
+
+        return;
+    }
+
 
     m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
 
@@ -58,7 +91,6 @@ void CMiniSpawn::Render_GameObject()
         m_pTextureCom->Set_Texture();
         m_pBufferCom->Render_Buffer();
     }
-
 
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
@@ -78,6 +110,10 @@ HRESULT CMiniSpawn::Add_Component()
     pComponent = m_pTransformCom = dynamic_cast<CTransform*>(Engine::Clone_Proto(L"Proto_Transform"));
     NULL_CHECK_RETURN(pComponent, E_FAIL);
     m_mapComponent[ID_DYNAMIC].insert({ L"Com_Transform", pComponent });
+
+    pComponent = m_pHitEffectCom = dynamic_cast<CHit*>(Engine::Clone_Proto(L"Proto_Hit"));
+    NULL_CHECK_RETURN(pComponent, E_FAIL);
+    m_mapComponent[ID_STATIC].insert({ L"Com_Effect", pComponent });
 
     return S_OK;
 }
@@ -128,13 +164,14 @@ _bool CMiniSpawn::Piking_Teleport()
             else
                 m_pTransformCom->Set_Scale(3.5f, 0.0f, 3.5f);
 
-            if (Engine::Get_DIMouseState(DIM_RB) & 0x80 && !bClicked)
+            if (Engine::Button_Down(DIM_LB))
             {
-                CBlackPlaneMgr::GetInstance()->StartFadeOut();
                 pPlayer->Check_MapOff();
 
                 _matrix matWorld;
                 pPlayerTransform->Get_WorldMatrix(&matWorld);
+
+                m_matEffectWorld = matWorld;
 
                 if (i == 0)
                 {
@@ -155,7 +192,10 @@ _bool CMiniSpawn::Piking_Teleport()
                     matWorld._43 = spawnInGamePos[2].z;
                 }
 
-                pPlayerTransform->Set_WorldMatrix(&matWorld);
+                m_TeleportWorld = matWorld;
+
+               // pPlayerTransform->Set_WorldMatrix(&matWorld);
+                m_bTeleport = true;
 
                 bClicked = true;
             }

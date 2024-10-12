@@ -53,6 +53,7 @@ HRESULT CAzeos::Ready_GameObject(_vec3 vPos)
     Set_Speed(6.0f);
 
     m_pHitParticleCom->init(L"../Bin/Resource/Texture/Effect/Hit_%d.png", 5, 2.0f);
+    m_pTeleportCom->init(L"../Bin/Resource/Texture/Effect/BossTeleport/Teleport_%d.png", 10, 4.5f);
 
     m_vFirstPos = vPos;
 
@@ -97,6 +98,19 @@ _int CAzeos::Update_GameObject(const _float& fTimeDelta)
         m_bKnockBackEnd = true;
     }
 
+    if (m_bTeleport)
+    {
+        m_pTeleportCom->update(fTimeDelta);
+
+        if (m_pTeleportCom->isDead())
+        {
+            m_pTeleportCom->reset();
+
+            m_pTransformCom->Set_Pos(m_vTeleportPos.x, 2.6f, m_vTeleportPos.y);
+
+            m_bTeleport = false;
+        }
+    }
     if (m_bHit)
     {
         m_pHitParticleCom->update(fTimeDelta);
@@ -110,7 +124,7 @@ _int CAzeos::Update_GameObject(const _float& fTimeDelta)
     m_pTransformCom->Get_Info(INFO_POS, &m_vPos);
 
     Flip();
-    Set_StuckFree(fTimeDelta);
+   // Set_StuckFree(fTimeDelta);
     m_pAnimatorCom->Update_Animation();
     Add_RenderGroup(RENDER_ALPHA, this);
     return Engine::CGameObject::Update_GameObject(fTimeDelta);
@@ -126,6 +140,14 @@ void CAzeos::Render_GameObject()
 {
     if (m_bStopDraw)
         return;
+    
+    if (m_bTeleport)
+    {
+        m_pGraphicDev->SetTransform(D3DTS_WORLD, &m_TeleportWorld);
+
+        m_pTeleportCom->render();
+    }
+
     m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
     m_pColliderCom->Update_Collider(m_pTransformCom->Get_WorldMatrix());
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
@@ -179,6 +201,10 @@ HRESULT CAzeos::Add_Component()
     pComponent = m_pHitParticleCom = dynamic_cast<CHit*>(Engine::Clone_Proto(L"Proto_Hit"));
     NULL_CHECK_RETURN(pComponent, E_FAIL);
     m_mapComponent[ID_STATIC].insert({ L"Com_Hit", pComponent });
+
+    pComponent = m_pTeleportCom = dynamic_cast<CHit*>(Engine::Clone_Proto(L"Proto_Hit"));
+    NULL_CHECK_RETURN(pComponent, E_FAIL);
+    m_mapComponent[ID_STATIC].insert({ L"Com_Teleport", pComponent });
 
     return S_OK;
 
@@ -409,6 +435,8 @@ void CAzeos::Pattern_Teleport()
 
     if (iRand <= 3) // 75% 확률?
     {
+        m_pTransformCom->Get_WorldMatrix(&m_TeleportWorld);
+
         m_pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
 
         float randomAngle = static_cast<float>(rand()) / RAND_MAX * 360.0f;
@@ -416,7 +444,10 @@ void CAzeos::Pattern_Teleport()
         _float fX = vPlayerPos.x + 5.f * cosf(D3DXToRadian(randomAngle));
         _float fZ = vPlayerPos.z + 5.f * sinf(D3DXToRadian(randomAngle));
 
-        m_pTransformCom->Set_Pos(fX, 2.6f, fZ);
+        m_vTeleportPos = { fX, fZ };
+  //      m_pTransformCom->Set_Pos(fX, 2.6f, fZ);
+
+        m_bTeleport = true;
         //플레이어와 일정한 거리 안에서 랜덤하게 텔레포트
     }
 

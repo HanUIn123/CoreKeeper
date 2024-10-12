@@ -38,6 +38,8 @@ public:
 	_vec3           Get_Pos() { return m_vPos; }
 	_bool           Get_Crystal() { return m_bCrystal; }
 	void            Set_Crystal() { m_bCrystal = false; }
+private:
+	Engine::CHit* m_pTeleportCom;
 
 private:
 	_bool			m_bLightEnable;
@@ -70,6 +72,11 @@ private:
 	_int            m_iCrystalNumber;
 
 	_bool           m_bDead;
+
+	_bool           m_bTeleport;
+
+	_matrix         m_TeleportWorld;
+	_vec2           m_vTeleportPos;
 
 public:
 	static	CAzeos*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);

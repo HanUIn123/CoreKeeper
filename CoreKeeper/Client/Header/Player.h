@@ -129,8 +129,6 @@ public:
 	_bool           Get_ChestInv() { return m_bChestInventory; }
 	_bool           Get_Inventory() { return m_bInventory; }
 
-	CItem* Get_Clothes(_int iNum) { return m_pClothes[iNum]; }
-
 	void            UI_Disable();
 
 	void            Set_DisMove() { m_bNoMove = true; }
@@ -220,6 +218,7 @@ private:
 	_float                  m_fBleedTime;
 	_bool					m_bFire;
 	_float					m_fFireTickTime;
+	_bool                   m_bHeal;
 
 	_vec3					m_vStartPoint;
 	_vec3					m_vKnockBackDir;

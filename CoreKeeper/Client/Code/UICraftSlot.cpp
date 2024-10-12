@@ -205,6 +205,10 @@ _int CUICraftSlot::Update_GameObject(const _float& fTimeDelta)
 
 					switch (m_eItemType.iTextureNum)
 					{
+					case 2:
+						eMat = MATERIAL_WOOD;
+						break;
+
 					case 12:
 						eMat = MATERIAL_COPPER;
 						break;

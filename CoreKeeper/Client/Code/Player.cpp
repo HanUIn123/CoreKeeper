@@ -69,6 +69,7 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
     m_fBleedTime = 0.f;
     m_bFire = false;
     m_fFireTickTime = 0.f;
+    m_bHeal = false;
 
     m_bShootOnce = false;
     m_vMouseWorldPos = { 0, 0, 0 };
@@ -3062,7 +3063,10 @@ void CPlayer::Particle_Update(_float fTimeDelta)
 
         m_pFireParticleCom->reset();
     }
-    m_pFollowParticleCom->update(fTimeDelta);
+    if (m_bFire)
+        m_pFollowParticleCom->update(fTimeDelta);
+    else
+        m_pFollowParticleCom->reset();
 
     if (m_bDestroyWall)
     {

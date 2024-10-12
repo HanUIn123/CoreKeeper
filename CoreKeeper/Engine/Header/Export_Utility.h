@@ -26,6 +26,7 @@
 #include "Hit.h"
 #include "Smog.h"
 #include "Fume.h"
+#include "Heal.h"
 
 #include "Texture.h"
 #include "ShadowTex.h"

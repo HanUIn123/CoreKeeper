@@ -21,7 +21,7 @@ HRESULT CWallPiece::Ready_GameObject(ITEMNUM _eItemNum, _vec3 vPos)
 	m_iTextureNumber = m_eItemNum - ITEM_DIRTWALL;
 
 
-	switch (m_eMaterial)
+	switch (m_eItemNum)
 	{
 	case ITEM_DIRTWALL:
 		m_wItemName = L"¡¯»Î ∫Ì∑œ";
