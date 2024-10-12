@@ -1368,7 +1368,7 @@ void CPlayer::Shoot_Equipment()
         {
             m_bShootOnce = true;
             if (m_pHandedItem->Get_ItemNum() == ITEM_BOW)
-                Engine::CSoundMgr::GetInstance()->Play(L"cupidBowShoot.wav", SOUND_PLAYER, 0.2f);
+                Engine::CSoundMgr::GetInstance()->Play(L"whip.wav", SOUND_PLAYER, 0.2f);
             else
                 Engine::CSoundMgr::GetInstance()->Play(L"sunStaffProjectileSpawn.wav", SOUND_PLAYER, 0.2f);
             if (g_bIsTopCamera)

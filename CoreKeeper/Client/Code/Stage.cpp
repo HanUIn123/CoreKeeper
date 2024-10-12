@@ -71,19 +71,23 @@ _int CStage::Update_Scene(const _float& fTimeDelta)
 	CBuffMgr::GetInstance()->Update_Buff(fTimeDelta);
     CBlackPlaneMgr::GetInstance()->Update_BlackPlane(fTimeDelta);
 
-    switch (m_iBgmNumber)
+    if (!g_bFight)
     {
-    case 0:
-        Engine::CSoundMgr::GetInstance()->PlayBGM(L"Dirt_Biome_3_R1.wav", 0.1f);
-        break;
-    case 1:
-        Engine::CSoundMgr::GetInstance()->PlayBGM(L"Stone_Biome_2_R1.wav", 0.1f);
-        //Stone_Biome_2_R1
-        break;
-    case 2:
-        Engine::CSoundMgr::GetInstance()->PlayBGM(L"Nature_Biome_1_R1.wav", 0.1f);
-        break;
+        switch (m_iBgmNumber)
+        {
+        case 0:
+            Engine::CSoundMgr::GetInstance()->PlayBGM(L"Dirt_Biome_3_R1.wav", 0.1f);
+            break;
+        case 1:
+            Engine::CSoundMgr::GetInstance()->PlayBGM(L"Stone_Biome_2_R1.wav", 0.1f);
+            //Stone_Biome_2_R1
+            break;
+        case 2:
+            Engine::CSoundMgr::GetInstance()->PlayBGM(L"Nature_Biome_1_R1.wav", 0.1f);
+            break;
+        }
     }
+    
 
 	return iExit;
 }

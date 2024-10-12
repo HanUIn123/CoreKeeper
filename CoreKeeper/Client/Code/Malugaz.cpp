@@ -331,10 +331,12 @@ void CMalugaz::Pattern_Dead()
         m_pAnimatorCom->Set_CurState(DEAD, 0, 10, 8);
         if (m_pAnimatorCom->Get_MotionEnd())
         {
+            Engine::CSoundMgr::GetInstance()->StopSound(SOUND_BGM);
             m_pGraphicDev->LightEnable(m_iLightNum, FALSE); // 조명 비활성화
             m_bLightEnable = false;
             m_bStopDraw = true;
             Drop_All_Item();
+            g_bFight = false;
         }
     }
 }

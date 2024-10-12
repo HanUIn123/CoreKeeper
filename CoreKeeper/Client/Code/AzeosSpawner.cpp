@@ -72,6 +72,10 @@ void CAzeosSpawner::Interaction()
     pAzeos->Set_StopDraw(false);
 
     m_bIsAlreadySpawn = true;
+    g_bFight = true;
+
+    Engine::CSoundMgr::GetInstance()->StopSound(SOUND_BGM);
+    Engine::CSoundMgr::GetInstance()->PlayBGM(L"Malguaz_the_Corrupted_Shaman_R1.wav", 0.1f);
 }
 
 _bool CAzeosSpawner::Check_Object_Interaction()
