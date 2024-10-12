@@ -306,6 +306,7 @@ CItem* CCraftMgr::CraftExp(ITEMNUM _eItemNum, MATERIAL _eMaterial)
         pItem = CBar::Create(m_pGraphicDev, MATERIAL_SCARLET);
         break;
     }
+
     strCraftName[m_iCraftCount] = L"Craft_Item" + to_wstring(m_iCraftCount);
 
     CScene* pScene = Engine::Get_Scene();
@@ -547,14 +548,14 @@ void CCraftMgr::Set_Recipe()
     potionTableRecipe.vecIngredients.push_back({ ITEM_WOOD, 8 });
     potionTableRecipe.vecIngredients.push_back({ ITEM_MUCUS, 8 });
     potionTableRecipe.vecIngredients.push_back({ ITEM_COPPER_BAR, 5 });
-    m_mapRecipes[make_pair(ITEM_POTION_TABLE, MATERIAL_IRON)] = potionTableRecipe;
+    m_mapRecipes[make_pair(ITEM_POTION_TABLE, MATERIAL_COPPER)] = potionTableRecipe;
 
     // 장신구 작업대
     Recipe accessoryTableRecipe;
     accessoryTableRecipe.vecIngredients.push_back({ ITEM_WOOD, 8 });
     accessoryTableRecipe.vecIngredients.push_back({ ITEM_COPPER_BAR, 4 });
     accessoryTableRecipe.vecIngredients.push_back({ ITEM_IRON_BAR, 8 });
-    m_mapRecipes[make_pair(ITEM_ACCESSORY_TABLE, MATERIAL_COPPER)] = accessoryTableRecipe;
+    m_mapRecipes[make_pair(ITEM_ACCESSORY_TABLE, MATERIAL_IRON)] = accessoryTableRecipe;
 
     // 음악 작업대
     Recipe musicTableRecipe;

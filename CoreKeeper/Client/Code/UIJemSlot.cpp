@@ -69,6 +69,9 @@ _int CUIJemSlot::Update_GameObject(const _float& fTimeDelta)
 					{
 						CCore* pCore = dynamic_cast<CCore*>(Engine::Get_GameObject(L"Layer_Environment", L"Core"));
 						pCore->Set_ActiveCore(i / 2);
+
+						Engine::CSoundMgr::GetInstance()->Play(L"Bell.wav", SOUND_EFFECT, 0.1f);
+
 						switch (i)
 						{
 						case 0:

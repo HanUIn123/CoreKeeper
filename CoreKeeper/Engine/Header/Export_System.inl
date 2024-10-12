@@ -104,14 +104,25 @@ void Play(const TCHAR* pSoundKey, CHANNELID eID, float fVolume)
 	CSoundMgr::GetInstance()->Play(pSoundKey, eID, fVolume);
 }
 
+void PlayOnce(const TCHAR* pSoundKey, CHANNELID eID, float fVolume)
+{
+	CSoundMgr::GetInstance()->PlayOnce(pSoundKey, eID, fVolume);
+}
+
+
 void PlayBGM(const TCHAR* pSoundKey, float fVolume)
 {
 	CSoundMgr::GetInstance()->PlayBGM(pSoundKey, fVolume);
 }
 
-void PlayBGMOnce(const TCHAR* pSoundKey, CHANNELID eID, float fVolume)
+void PlaySelfish(const TCHAR* pSoundKey, CHANNELID eID, float fVolume)
 {
-	CSoundMgr::GetInstance()->PlayBGMOnce(pSoundKey, eID, fVolume);
+	CSoundMgr::GetInstance()->PlaySelfish(pSoundKey, eID, fVolume);
+}
+
+void PlayTimid(const TCHAR* pSoundKey, CHANNELID eID, float fVolume)
+{
+	CSoundMgr::GetInstance()->PlayTimid(pSoundKey, eID, fVolume);
 }
 
 void StopSound(CHANNELID eID)

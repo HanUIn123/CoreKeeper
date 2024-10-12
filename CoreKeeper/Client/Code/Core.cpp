@@ -91,6 +91,8 @@ void CCore::Interaction()
 		if (m_bActiveCore[0] && m_bActiveCore[1] && m_bActiveCore[2])
 		{
 			pFont->Set_Font_Up(matWorld, L"위대한 벽에 손을 대면 벽이 열릴지어다.");
+
+			Engine::CSoundMgr::GetInstance()->Play(L"coreSpeech.wav", SOUND_EFFECT, 0.1f);
 		}
 		else
 		{
@@ -99,6 +101,8 @@ void CCore::Interaction()
 				pFont->Set_Font_Center(matWorld, L"에너지가 필요한 것 같아");
 			else
 				pFont->Set_Font_Center(matWorld, L"전원이 차단된 것 같아");
+
+			Engine::CSoundMgr::GetInstance()->Play(L"playerInteractWithInactiveCore.wav", SOUND_EFFECT, 0.1f);
 		}
 	}
 }

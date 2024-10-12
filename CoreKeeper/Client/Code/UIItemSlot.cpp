@@ -129,6 +129,7 @@ _int CUIItemSlot::Update_GameObject(const _float& fTimeDelta)
 					vector<CItem*>* pPvecItem = pPlayerInv->Get_VecItemP();
 
 					pPlayerInv->Swap_Item(&(*pCvecItem)[0], &(*pPvecItem)[m_eSlotType]);
+					Engine::CSoundMgr::GetInstance()->Play(L"uiPickup.wav", SOUND_UI_INVENTORY, 0.2f);
 				}
 				else if (pCursorInv->Check_Empty(0) && !pPlayerInv->Check_Empty(m_eSlotType))
 				{
@@ -136,6 +137,7 @@ _int CUIItemSlot::Update_GameObject(const _float& fTimeDelta)
 					vector<CItem*>* pPvecItem = pPlayerInv->Get_VecItemP();
 					(*pPvecItem)[m_eSlotType]->Set_Follow(false);
 					pPlayerInv->Swap_Item(&(*pCvecItem)[0], &(*pPvecItem)[m_eSlotType]);
+					Engine::CSoundMgr::GetInstance()->Play(L"uiPickup.wav", SOUND_UI_INVENTORY, 0.2f);
 				}
 			}
 		}

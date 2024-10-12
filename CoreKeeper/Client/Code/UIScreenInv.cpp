@@ -159,13 +159,17 @@ _int CUIScreenInv::Update_GameObject(const _float& fTimeDelta)
 				{
 					(*pPvecItem)[iIndex]->Add_Count((*pCvecItem)[0]->Get_Count());
 					pCursorInv->Remove_Item(0);
+					Engine::CSoundMgr::GetInstance()->Play(L"uiPickup.wav", SOUND_UI_INVENTORY, 0.2f);
 				}
 				else if ((*pPvecItem)[iIndex]->Get_ItemNum() != (*pCvecItem)[0]->Get_ItemNum())
+				{
 					pPlayerInv->Swap_Item(&(*pCvecItem)[0], &(*pPvecItem)[iIndex]);
-
+					Engine::CSoundMgr::GetInstance()->Play(L"uiPickup.wav", SOUND_UI_INVENTORY, 0.2f);
+				}
 				else if (((*pPvecItem)[iIndex]->Get_ItemNum() == (*pCvecItem)[0]->Get_ItemNum()) && ((*pPvecItem)[iIndex]->Get_ItemMaterial() != (*pCvecItem)[0]->Get_ItemMaterial()))
 				{
 					pPlayerInv->Swap_Item(&(*pCvecItem)[0], &(*pPvecItem)[iIndex]);
+					Engine::CSoundMgr::GetInstance()->Play(L"uiPickup.wav", SOUND_UI_INVENTORY, 0.2f);
 				}
 			}
 			else
@@ -176,6 +180,7 @@ _int CUIScreenInv::Update_GameObject(const _float& fTimeDelta)
 					(*pPvecItem)[iIndex]->Set_Active(false);
 				}
 				pPlayerInv->Swap_Item(&(*pCvecItem)[0], &(*pPvecItem)[iIndex]);
+				Engine::CSoundMgr::GetInstance()->Play(L"uiPickup.wav", SOUND_UI_INVENTORY, 0.2f);
 			}
 				
 		}

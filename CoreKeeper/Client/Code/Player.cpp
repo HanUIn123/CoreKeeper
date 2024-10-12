@@ -1616,7 +1616,7 @@ void CPlayer::Hoe()
         {
             _int iIndex = _int(m_vMouseWorldPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (m_vMouseWorldPos.x + 0.5f * VTXITV);
             if (!m_pTerrain->Get_UnreachableByIndex(iIndex))
-                Engine::CSoundMgr::GetInstance()->Play(L"dirtImpact.wav", SOUND_PLAYER, 0.4f);
+                Engine::CSoundMgr::GetInstance()->Play(L"shoveldig.wav", SOUND_PLAYER, 0.4f);
 
             switch (m_pHandedItem->Get_ItemMaterial())
             {
@@ -1691,9 +1691,9 @@ void CPlayer::Watering()
             switch (m_pHandedItem->Get_ItemMaterial())
             {
             case MATERIAL_COPPER: // 1 x 1
-                CFarmMgr::GetInstance()->Watering_Plant(iIndex);
                 if (m_pTerrain->Get_TextureNumber(iIndex) == 27 || m_pTerrain->Get_TextureNumber(iIndex) == 29)
                     Engine::CSoundMgr::GetInstance()->Play(L"squish1.wav", SOUND_PLAYER, 0.4f);
+                CFarmMgr::GetInstance()->Watering_Plant(iIndex);
                 break;
             case MATERIAL_IRON: // 3 x 3
                 for (_int i = -1; i <= 1; i++)
@@ -1732,7 +1732,10 @@ void CPlayer::Plant(ITEMNUM eHandedNum)
             if (!m_pTerrain->Get_UnreachableByIndex(iIndex))
             {
                 if (CFarmMgr::GetInstance()->Create_Plant(iIndex, eHandedNum))
+                {
+                    Engine::CSoundMgr::GetInstance()->Play(L"shoop.wav", SOUND_PLAYER, 0.4f);
                     m_pInventoryCom->Minus_Item(eHandedNum, 1);
+                }
             }
         }
     }
@@ -1753,7 +1756,7 @@ void CPlayer::Install(ITEMNUM eHandedNum)
                 CGameObject* pInstallObject = nullptr;
                 _vec3 vInstallPos = { _float((iIndex % (VTXCNTX - 1)) * VTXITV), 0.5f, _float((iIndex / (VTXCNTX - 1)) * VTXITV) };
                 MATERIAL mat;
-                Engine::CSoundMgr::GetInstance()->Play(L"rugDamage2.wav", SOUND_PLAYER, 0.4f);
+                Engine::CSoundMgr::GetInstance()->Play(L"shoop.wav", SOUND_PLAYER, 0.4f);
 
                 // 통과할 수 있게 할건지 없게 할건지 여부
                 _bool   bPassable = true;
@@ -1826,6 +1829,8 @@ void CPlayer::Install(ITEMNUM eHandedNum)
 
 void CPlayer::Eat(ITEMNUM eHandedNum)
 {
+    wstring soundName = L"nom2.wav";
+
     switch (eHandedNum)
     {
     case ITEM_BERRY:
@@ -1902,12 +1907,15 @@ void CPlayer::Eat(ITEMNUM eHandedNum)
         CBuffMgr::GetInstance()->Set_BuffStart(BUFF_MINING, 120);
         break;
     case ITEM_POTION_HP:
+        soundName = L"bubble.wav";
         m_pStateCom->Set_Recover(200);
         break;
     case ITEM_POTION_ATT:
+        soundName = L"bubble.wav";
         CBuffMgr::GetInstance()->Set_BuffStart(BUFF_ATT, 300);
         break;
     case ITEM_POTION_DEF:
+        soundName = L"bubble.wav";
         CBuffMgr::GetInstance()->Set_BuffStart(BUFF_DEF, 300);
         break;
     }
@@ -1915,7 +1923,7 @@ void CPlayer::Eat(ITEMNUM eHandedNum)
     m_pHandedItem->Set_Active(false);
     m_pHandedItem->Set_Drop(false);
     m_pInventoryCom->Minus_Item(eHandedNum);
-    Engine::CSoundMgr::GetInstance()->Play(L"squish2.wav", SOUND_PLAYER, 0.4f);
+    Engine::CSoundMgr::GetInstance()->Play(soundName.c_str(), SOUND_PLAYER, 0.4f);
 }
 
 void CPlayer::Build(ITEMNUM eHandedNum)
@@ -2608,6 +2616,11 @@ void CPlayer::Respawn_Progress(const _float& fTimeDelta)
         // 리스폰 완료
         m_pStateCom->Set_Revive();
         m_fRespawnProgress = 0.f;
+
+        m_pClothes[0]->Set_Active(true);
+        m_pClothes[1]->Set_Active(true);
+        m_pClothes[3]->Set_Active(true);
+        m_pClothes[4]->Set_Active(true);
     }
 
 }
@@ -2690,6 +2703,7 @@ void CPlayer::Set_Craft(TABLETYPE eTableType, MATERIAL _eMaterial)
         }
 
         m_bCraft = false;
+        Engine::CSoundMgr::GetInstance()->PlayTimid(L"chestclose.wav", SOUND_UI_INVENTORY, 0.1f);
     }
     else
     {
@@ -2725,6 +2739,7 @@ void CPlayer::Set_Craft(TABLETYPE eTableType, MATERIAL _eMaterial)
         }
 
         m_bCraft = true;
+        Engine::CSoundMgr::GetInstance()->PlayTimid(L"chestopen.wav", SOUND_UI_INVENTORY, 0.1f);
     }
 }
 
@@ -2771,9 +2786,15 @@ void CPlayer::Set_Inventory()
     pSort->Set_Window();
 
     if (m_bInventory)
+    {
+        Engine::CSoundMgr::GetInstance()->PlayTimid(L"chestclose.wav", SOUND_UI_INVENTORY, 0.1f);
         m_bInventory = false;
+    }
     else
+    {
+        Engine::CSoundMgr::GetInstance()->PlayTimid(L"chestopen.wav", SOUND_UI_INVENTORY, 0.1f);
         m_bInventory = true;
+    }
 }
 
 void CPlayer::Set_Map()
@@ -2781,9 +2802,15 @@ void CPlayer::Set_Map()
     CRenderer::GetInstance()->Expand_MiniMap(m_pGraphicDev);
 
     if (m_bMap)
+    {
         m_bMap = false;
+        Engine::CSoundMgr::GetInstance()->Play(L"paper2", SOUND_EFFECT, 0.1f);
+    }
     else
+    {
         m_bMap = true;
+        Engine::CSoundMgr::GetInstance()->Play(L"paper", SOUND_EFFECT, 0.1f);
+    }
 }
 
 void CPlayer::Set_Status()
@@ -2813,9 +2840,15 @@ void CPlayer::Set_Status()
     }
 
     if (m_bStatus)
+    {
         m_bStatus = false;
+        Engine::CSoundMgr::GetInstance()->PlaySelfish(L"inventoryClose.wav", SOUND_UI_INVENTORY, 0.1f);
+    }
     else
+    {
         m_bStatus = true;
+        Engine::CSoundMgr::GetInstance()->PlaySelfish(L"inventoryOpen.wav", SOUND_UI_INVENTORY, 0.1f);
+    }
 }
 
 void CPlayer::Set_ChestInventory(CInventory* pInventory)

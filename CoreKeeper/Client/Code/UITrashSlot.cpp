@@ -70,10 +70,14 @@ _int CUITrashSlot::Update_GameObject(const _float& fTimeDelta)
 					{
 						(*pTvecItem)[0]->Add_Count((*pCvecItem)[0]->Get_Count());
 						pCursorInv->Remove_Item(0);
+						Engine::CSoundMgr::GetInstance()->Play(L"uiPickup.wav", SOUND_UI_INVENTORY, 0.2f);
 					}
 				}
 				else
+				{
 				    pTrashInv->Swap_Item(&(*pCvecItem)[0], &(*pTvecItem)[0]);
+					Engine::CSoundMgr::GetInstance()->Play(L"uiPickup.wav", SOUND_UI_INVENTORY, 0.2f);
+				}
 			}
 
 		}

@@ -281,6 +281,7 @@ _int CUICraftSlot::Update_GameObject(const _float& fTimeDelta)
 						CInventory* pCursorInv = dynamic_cast<CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_UI", L"UI_Cursor", L"Com_Inventory"));
 
 						pCursorInv->Add_Item(CCraftMgr::GetInstance()->Craft(pPlayerInv, m_eItemType.eItemNum, eMat));
+						Engine::CSoundMgr::GetInstance()->Play(L"uiPickup.wav", SOUND_UI_INVENTORY, 0.2f);
 					}
 					else if (m_eItemType.eItemNum == ITEM_TABLE)
 					{
@@ -303,6 +304,7 @@ _int CUICraftSlot::Update_GameObject(const _float& fTimeDelta)
 						CInventory* pCursorInv = dynamic_cast<CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_UI", L"UI_Cursor", L"Com_Inventory"));
 
 						pCursorInv->Add_Item(CCraftMgr::GetInstance()->Craft(pPlayerInv, m_eItemType.eItemNum, eMat));
+						Engine::CSoundMgr::GetInstance()->Play(L"uiPickup.wav", SOUND_UI_INVENTORY, 0.2f);
 					}
 					else if (m_eItemType.eItemNum == ITEM_ASSISTANCE)
 					{
@@ -321,15 +323,22 @@ _int CUICraftSlot::Update_GameObject(const _float& fTimeDelta)
 						CInventory* pCursorInv = dynamic_cast<CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_UI", L"UI_Cursor", L"Com_Inventory"));
 
 						pCursorInv->Add_Item(CCraftMgr::GetInstance()->Craft(pPlayerInv, m_eItemType.eItemNum, eMat));
+						Engine::CSoundMgr::GetInstance()->Play(L"uiPickup.wav", SOUND_UI_INVENTORY, 0.2f);
 					}
 					else if (m_eItemType.eItemNum == ITEM_WATERINGCAN)
 					{
 						CInventory* pCursorInv = dynamic_cast<CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_UI", L"UI_Cursor", L"Com_Inventory"));
 
 						if (m_eItemType.eItemMat == MATERIAL_WOOD)
+						{
 							pCursorInv->Add_Item(CCraftMgr::GetInstance()->Craft(pPlayerInv, m_eItemType.eItemNum, MATERIAL_COPPER));
+							Engine::CSoundMgr::GetInstance()->Play(L"uiPickup.wav", SOUND_UI_INVENTORY, 0.2f);
+						}
 						else if (m_eItemType.eItemMat == MATERIAL_IRON)
+						{
 							pCursorInv->Add_Item(CCraftMgr::GetInstance()->Craft(pPlayerInv, m_eItemType.eItemNum, MATERIAL_IRON));
+							Engine::CSoundMgr::GetInstance()->Play(L"uiPickup.wav", SOUND_UI_INVENTORY, 0.2f);
+						}
 					}
 					/*else if (m_eItemType.eItemNum == ITEM_POTION_HP || m_eItemType.eItemNum == ITEM_POTION_ATT || m_eItemType.eItemNum == ITEM_POTION_DEF)
 					{
@@ -342,6 +351,7 @@ _int CUICraftSlot::Update_GameObject(const _float& fTimeDelta)
 						CInventory* pCursorInv = dynamic_cast<CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_UI", L"UI_Cursor", L"Com_Inventory"));
 
 						pCursorInv->Add_Item(CCraftMgr::GetInstance()->Craft(pPlayerInv, m_eItemType.eItemNum, m_eItemType.eItemMat));
+						Engine::CSoundMgr::GetInstance()->Play(L"uiPickup.wav", SOUND_UI_INVENTORY, 0.2f);
 					}
 				}	
 			}

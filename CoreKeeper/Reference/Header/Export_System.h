@@ -58,8 +58,11 @@ inline void	Update_InputDev(void);
 inline	HRESULT Ready_Sound();
 
 inline	void Play(const TCHAR* pSoundKey, CHANNELID eID, float fVolume);
+inline	void PlayOnce(const TCHAR* pSoundKey, CHANNELID eID, float fVolume);
 inline	void PlayBGM(const TCHAR* pSoundKey, float fVolume);
-inline	void PlayBGMOnce(const TCHAR* pSoundKey, CHANNELID eID, float fVolume);
+inline	void PlaySelfish(const TCHAR* pSoundKey, CHANNELID eID, float fVolume);
+inline	void PlayTimid(const TCHAR* pSoundKey, CHANNELID eID, float fVolume);
+
 inline	void StopSound(CHANNELID eID);
 inline	void StopAll();
 inline	void SetChannelVolume(CHANNELID eID, float fVolume);

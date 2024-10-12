@@ -33,8 +33,11 @@ namespace Engine
         SOUND_SHAMAN, SOUND_MUSHROOM, SOUND_SLIME, SOUND_HUNTER,
         SOUND_PLANT, 
 
+        SOUND_WALL_DOWN,
         SOUND_ITEM_PICKUP, 
         
+        SOUND_UI_INVENTORY,
+
         MAXCHANNEL 
     };
 

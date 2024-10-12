@@ -155,6 +155,7 @@ _bool CMiniSpawn::Piking_Teleport()
                     matWorld._43 = spawnInGamePos[2].z;
                 }
 
+                Engine::CSoundMgr::GetInstance()->Play(L"darkgleam.wav", SOUND_EFFECT, 0.1f);
                 pPlayerTransform->Set_WorldMatrix(&matWorld);
 
                 bClicked = true;
