@@ -189,18 +189,26 @@ void CFarmMgr::Grow_Plant()
         CGameObject* pPlant = m_mapPlant.find(strBuffer)->second;
         CAnimator* pPlantAnimator = dynamic_cast<CAnimator*>(pPlant->Get_Component(ID_STATIC, L"Com_Animator"));
         _int iMotion = pPlantAnimator->Get_MotionIndex();
-        if (iMotion > 0 && iMotion <= 5)  
+        if (iMotion > 0 && iMotion < 5)  
             m_vecPlantedState[i].y += 1;
-        
-        if (iMotion == 5 && m_vecPlantedState[i].y == 0)
-            Engine::CSoundMgr::GetInstance()->Play(L"plopCrop1.wav", SOUND_EFFECT, 0.3f);
-            
 
-        if (m_vecPlantedState[i].y > 60 * m_iGrowTime && iMotion < 5)
+        if (m_vecPlantedState[i].y > 60 * m_iGrowTime)
         {
             m_vecPlantedState[i].y = 0;
             iMotion++;
             pPlantAnimator->Set_CurState(IDLE, iMotion, iMotion, 20);
+            if (iMotion == 5)
+            {
+                _vec3 vPos, vPlantPos;
+                dynamic_cast<CTransform*>(pPlant->Get_Component(ID_DYNAMIC, L"Com_Transform"))->Get_Info(INFO_POS, &vPlantPos);
+                dynamic_cast<CTransform*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player")->Get_Component(ID_DYNAMIC, L"Com_Transform"))->Get_Info(INFO_POS, &vPos);
+                _vec3 vLength = vPlantPos - vPos;
+                _float fLength = D3DXVec3Length(&vLength);
+                _float fSoundVolume = 0.f;
+                if (fLength < 10.f)
+                    fSoundVolume = (10 - fLength) * 0.05f;
+                Engine::CSoundMgr::GetInstance()->Play(L"plopCrop1.wav", SOUND_EFFECT, fSoundVolume);
+            }
         }
     }
 }
