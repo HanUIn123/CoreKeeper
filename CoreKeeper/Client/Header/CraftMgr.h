@@ -39,7 +39,8 @@ public:
 
 	CItem*		Cook(ITEMNUM _eItemNum1, ITEMNUM _eItemNum2);
 
-	Recipe		Get_Recipe(pair<ITEMNUM, MATERIAL> _pair) { return m_mapRecipes[_pair]; }
+	Recipe		Get_Recipe(pair<ITEMNUM, MATERIAL> _pair) {
+		return m_mapRecipes[_pair]; }
 
 	wstring		Get_IngredientName(ITEMNUM _eItemNum) { return m_strIngredientName[_eItemNum]; }
 
