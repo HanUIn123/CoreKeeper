@@ -129,6 +129,8 @@ void CUIItemFrame::Render_GameObject()
 				sItemRecipe = CCraftMgr::GetInstance()->Get_Recipe(make_pair(m_pItem->Get_ItemNum(), MATERIAL_IRON));
 			else if (m_pItem->Get_ItemNum() == ITEM_SPRINKLER)
 				sItemRecipe = CCraftMgr::GetInstance()->Get_Recipe(make_pair(m_pItem->Get_ItemNum(), MATERIAL_IRON));
+			else if (m_pItem->Get_ItemNum() == ITEM_POTION_ATT || m_pItem->Get_ItemNum() == ITEM_POTION_HP || m_pItem->Get_ItemNum() == ITEM_POTION_DEF)
+				sItemRecipe = CCraftMgr::GetInstance()->Get_Recipe(make_pair(m_pItem->Get_ItemNum(), MATERIAL_WOOD));
 			else
 				sItemRecipe = CCraftMgr::GetInstance()->Get_Recipe(make_pair(m_pItem->Get_ItemNum(), m_pItem->Get_ItemMaterial()));
 

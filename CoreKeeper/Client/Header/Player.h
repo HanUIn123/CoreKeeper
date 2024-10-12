@@ -129,6 +129,8 @@ public:
 	_bool           Get_ChestInv() { return m_bChestInventory; }
 	_bool           Get_Inventory() { return m_bInventory; }
 
+	CItem* Get_Clothes(_int iNum) { return m_pClothes[iNum]; }
+
 	void            UI_Disable();
 
 	void            Set_DisMove() { m_bNoMove = true; }

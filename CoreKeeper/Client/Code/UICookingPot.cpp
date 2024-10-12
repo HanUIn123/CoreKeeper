@@ -398,6 +398,13 @@ void CUICookingPot::Render_GameObject()
 
 		ITEMNUM eRNum = ITEM_END;
 
+		if (eUNum > eDNum)
+		{
+			ITEMNUM eTemp = eUNum;
+			eUNum = eDNum;
+			eDNum = eTemp;
+		}
+		
 		switch (eUNum)
 		{
 		case ITEM_BERRY:
