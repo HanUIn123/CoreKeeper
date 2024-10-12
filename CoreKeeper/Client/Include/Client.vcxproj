@@ -308,6 +308,7 @@ call Copy.bat</Command>
     <ClInclude Include="..\Header\Wall.h" />
     <ClInclude Include="..\Header\Ore.h" />
     <ClInclude Include="..\Header\Diary.h" />
+    <ClInclude Include="..\Header\WhitePlane.h" />
     <ClInclude Include="..\Header\Wood.h" />
     <ClInclude Include="..\Header\WorldMap.h" />
     <ClInclude Include="Client.h" />
@@ -478,6 +479,7 @@ call Copy.bat</Command>
     <ClCompile Include="..\Code\Wall.cpp" />
     <ClCompile Include="..\Code\Ore.cpp" />
     <ClCompile Include="..\Code\Diary.cpp" />
+    <ClCompile Include="..\Code\WhitePlane.cpp" />
     <ClCompile Include="..\Code\Wood.cpp" />
     <ClCompile Include="..\Code\WorldMap.cpp" />
     <ClCompile Include="Client.cpp" />

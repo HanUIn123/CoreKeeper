@@ -2,6 +2,7 @@
 #include "Scene.h"
 #include "StoryBackGround.h"
 #include "Loading.h"
+#include "WhitePlane.h"
 
 class CStory : public Engine::CScene
 {
