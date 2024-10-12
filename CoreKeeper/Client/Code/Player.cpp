@@ -1348,6 +1348,8 @@ void CPlayer::Swing_Equipment()
             m_pHandedTransformCom->Set_Pos(vPlayerPos.x + vPlayerLook.x * 0.2f + vPlayerRight.x * 0.3f, 1.f, vPlayerPos.z + vPlayerLook.z * 0.2f + vPlayerRight.z * 0.3f);
         }
         m_pHandedItem->Set_Swing(m_eDir, true);
+        if (!(m_pHandedItem->Get_ItemMaterial() == MATERIAL_WOOD && m_pHandedItem->Get_ItemNum() == ITEM_SWORD))
+            Engine::CSoundMgr::GetInstance()->Play(L"whip.wav", SOUND_PLAYER, 0.5f);
     }
 }
 void CPlayer::Shoot_Equipment()
