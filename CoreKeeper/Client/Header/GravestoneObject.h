@@ -51,5 +51,9 @@ private:
 	vector<wstring>					m_vecItemName;
 	int								m_iItemNameNum;
 	bool							m_bSelf;
+	bool							m_bActive;
+	bool							m_bCheck;
+	wstring							m_DropItemName;
+	static int						m_bDropItemNumber;
 };
 

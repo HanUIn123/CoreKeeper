@@ -213,6 +213,22 @@ bool CInventory::Check_Empty(_int iIndex)
 	return false;
 }
 
+bool CInventory::Empty()
+{
+	for (int i = 0; i < m_vecItems.size(); i++)
+	{
+		if (!m_vecItems[i])
+			continue;
+
+		if (m_vecItems[i] != nullptr || m_vecItems[i]->Get_Count() != 0)
+		{
+			return false;
+		}
+	}
+
+	return true;
+}
+
 void CInventory::Set_SlotCount(_int iCount)
 {
 	m_iSlotCount = iCount;

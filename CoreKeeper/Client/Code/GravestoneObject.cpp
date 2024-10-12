@@ -5,9 +5,12 @@
 #include "..\Header\Player.h"
 
 #include "..\Header\Include.h"
+#include "..\Header\Stage.h"
+
+int CGravestoneObject::m_bDropItemNumber = 0;
 
 CGravestoneObject::CGravestoneObject(LPDIRECT3DDEVICE9 pGraphicDev)
-	: CObject(pGraphicDev), m_iItemNameNum(0), m_bSelf(false)
+    : CObject(pGraphicDev), m_iItemNameNum(0), m_bSelf(false), m_bActive(true), m_bCheck(false)
 {
 }
 
@@ -26,6 +29,33 @@ HRESULT CGravestoneObject::Ready_GameObject(_vec3 vPos)
 
 _int CGravestoneObject::Update_GameObject(const _float& fTimeDelta)
 {
+    if (!m_bActive)
+        return 0;
+
+    if (m_bCheck && m_bActive && m_pInventoryCom->Empty())
+    {
+        m_bActive = false;
+
+        _vec3 vPos;
+        m_pTransformCom->Get_Info(INFO_POS, &vPos);
+
+        CScene* pScene = Engine::Get_Scene();
+        CStage* pStage = dynamic_cast<CStage*>(pScene);
+        CItem* pGameObject = nullptr;
+
+        vPos.y = 0.6f;
+
+        pGameObject = CGravestone::Create(m_pGraphicDev, vPos);
+        m_DropItemName = L"m_DropItemName" + std::to_wstring(m_bDropItemNumber++);
+        
+        if (pGameObject)
+        {
+            pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, m_DropItemName.c_str());
+            pGameObject->Set_Active(true);
+            pGameObject->Set_Drop(true);
+        }  
+    }
+
 	// 플레이어와 충돌했으면 상호작용해라.
 	if (!m_bSelf && Check_Interaction())
 	{
@@ -83,6 +113,8 @@ void CGravestoneObject::Interaction()
 {
 	if (Engine::Key_Down(DIK_E))
 	{
+        m_bCheck = true;
+
 		CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
 
 		pPlayer->Set_GraveInventory(m_pInventoryCom);

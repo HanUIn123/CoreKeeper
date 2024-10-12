@@ -26,6 +26,7 @@ public:
 
 	CItem*				Get_HandedItem(_int iHandNum);
 	bool				Check_Empty(_int iIndex);
+	bool				Empty();
 
 	vector<CItem*>		Get_VecItem()           { return m_vecItems; }
 	vector<CItem*>*		Get_VecItemP()          { return &m_vecItems; }

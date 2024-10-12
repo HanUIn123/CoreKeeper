@@ -613,15 +613,20 @@ void CPlayer::Walk_Y(const _float& fTimeDelta)
         
         CStage* pStage = dynamic_cast<CStage*>(Engine::Get_Scene());
 
-        if (iTileNum < 9)
+        if (iTileNum < 9 || iTileNum == 27 || iTileNum == 28)
         {
             Engine::CSoundMgr::GetInstance()->Play(L"Footstep_Dirt.wav", SOUND_PLAYER, 0.1f);
             pStage->Set_BGMNumber(0);
         }
-        else if (iTileNum < 18)
+        else if (iTileNum < 18 || iTileNum == 29 || iTileNum == 30)
         {
             Engine::CSoundMgr::GetInstance()->Play(L"footstepRock1.wav", SOUND_PLAYER, 0.1f);
-            pStage->Set_BGMNumber(1);
+
+            // 농사지은 땅은 기본 bgm이 나올 수 있도록
+            if(iTileNum == 29 || iTileNum == 30)
+                pStage->Set_BGMNumber(0);
+            else
+                pStage->Set_BGMNumber(1);
         }
         else
         {
@@ -1768,6 +1773,7 @@ void CPlayer::Install(ITEMNUM eHandedNum)
                 case ITEM_GRAVESTONE:
                     pInstallObject = CGravestoneObject::Create(m_pGraphicDev, vInstallPos);
                     dynamic_cast<CGravestoneObject*>(pInstallObject)->Set_Self(true);
+                    bPassable = false;
                     break;
                 case ITEM_SPRINKLER:
                     pInstallObject = CSprinklerObject::Create(m_pGraphicDev, vInstallPos);
