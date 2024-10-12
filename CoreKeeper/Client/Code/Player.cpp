@@ -136,6 +136,9 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 
     if (!m_bLookAround)
     {
+        // 모든 사운드 안나게 하기
+        Engine::CSoundMgr::GetInstance()->StopAll();
+
         m_fLookAroundTime += fTimeDelta;
 
         if (m_fLookAroundTime < 2.f)
@@ -2331,6 +2334,28 @@ void CPlayer::Set_WallProjection()
             }
         }
     }
+}
+
+void CPlayer::SetUp_Item(CScene* _pScene)
+{
+    CItem* pGameObject(nullptr);
+
+    pGameObject = CLantern::Create(m_pGraphicDev, MATERIAL_WOOD);
+    m_pInventoryCom->Add_Item(pGameObject);
+    m_vecItemName.push_back(L"Player's_Lantern");
+    FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, m_vecItemName.back().c_str()), );
+
+    pGameObject = CLunch::Create(m_pGraphicDev);
+    pGameObject->Add_Count(2);
+    m_pInventoryCom->Add_Item(pGameObject);
+    m_vecItemName.push_back(L"Player's_Lunch");
+    FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, m_vecItemName.back().c_str()), );
+
+    pGameObject = CChocoBar::Create(m_pGraphicDev);
+    pGameObject->Add_Count(4);
+    m_pInventoryCom->Add_Item(pGameObject);
+    m_vecItemName.push_back(L"Player's_ChocoBar");
+    FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, m_vecItemName.back().c_str()), );
 }
 
 void CPlayer::Set_Buff(const _float& fTimeDelta)

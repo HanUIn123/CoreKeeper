@@ -391,7 +391,7 @@ void CItem::In_Inventory()
 	// 인벤토리에 들어갔다
 	if (pPlayerInventory->Add_Item(this))
 	{
-		//Engine::CSoundMgr::GetInstance()->Play(L"cupidBowHit.wav", SOUND_ITEM_PICKUP, 0.2f);
+		Engine::CSoundMgr::GetInstance()->Play(L"twitch.wav", SOUND_ITEM_PICKUP, 0.1f);
 		m_bActive = false;
 		m_bDrop = false;
 	}

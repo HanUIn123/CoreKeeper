@@ -5,7 +5,7 @@
 
 
 CStage::CStage(LPDIRECT3DDEVICE9 pGraphicDev)
-    : Engine::CScene(pGraphicDev), m_iBgmNumber(0)
+    : Engine::CScene(pGraphicDev), m_iBgmNumber(0), m_pPlayer(nullptr)
     , m_bInvCheck(false)
     , m_iLoadTileCount(0)
     , m_iLoadWallCount(0)
@@ -35,27 +35,21 @@ HRESULT CStage::Ready_Scene()
 	CBuffMgr::GetInstance()->Ready_Buff(m_pGraphicDev);
     CBlackPlaneMgr::GetInstance()->Ready_BlackPlane(m_pGraphicDev);
 
-   
-
-
-    //FAILED_CHECK_RETURN(Ready_LightInfo(), E_FAIL);
     FAILED_CHECK_RETURN(Ready_Layer_Environment(L"Layer_Environment"), E_FAIL);
-
     FAILED_CHECK_RETURN(Ready_Layer_GameLogic(L"Layer_GameLogic"), E_FAIL);
-
-
     FAILED_CHECK_RETURN(Ready_Layer_UI(L"Layer_UI"), E_FAIL);
     Load_MapFile();
     Load_MonsterData();
     Load_ObjectData();
-    // 이거랑 Render_Scene() 주석 풀면 일단 stage를 위에서 꽂아서 보게됨.
-    //FAILED_CHECK_RETURN(Ready_Layer_MiniMap(L"Layer_MiniMap"), E_FAIL);
+
 
     // 묘비에 넣고싶은 아이템 있으면 묘비 SetUpItem에서 하기
     CGravestoneObject* pGameObject = CGravestoneObject::Create(m_pGraphicDev, { VTXCNTX / 2 - 2.f, 0.5f, 13.f });
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     pGameObject->SetUp_Item(this);
-    this->Create_GameObject(L"Layer_Environment", pGameObject, L"AheadGrave");
+    this->Create_GameObject(L"Layer_GameLogic", pGameObject, L"AheadGrave");
+
+    dynamic_cast<CPlayer*>(m_pPlayer)->SetUp_Item(this);
 
     m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 
@@ -309,9 +303,12 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar* pLayerTag)
 
     Engine::CGameObject* pGameObject = nullptr;
 
-    pGameObject = CPlayer::Create(m_pGraphicDev);
-    NULL_CHECK_RETURN(pGameObject, E_FAIL);
-    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Player", pGameObject), E_FAIL);
+    // 플레이어
+#pragma region PLAYER
+
+    m_pPlayer = CPlayer::Create(m_pGraphicDev);
+    NULL_CHECK_RETURN(m_pPlayer, E_FAIL);
+    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Player", m_pPlayer), E_FAIL);
 
     pGameObject = CEye::Create(m_pGraphicDev);
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
@@ -332,6 +329,10 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar* pLayerTag)
     pGameObject = CHairShade::Create(m_pGraphicDev);
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Player_HairShade", pGameObject), E_FAIL);
+#pragma endregion
+
+    // 펫
+#pragma region PET
 
     CPet* pPet = CPet::Create(m_pGraphicDev);
     NULL_CHECK_RETURN(pPet, E_FAIL);
@@ -342,42 +343,10 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar* pLayerTag)
     dynamic_cast<CPetTail*>(pGameObject)->Set_Pet(pPet);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"PetTail", pGameObject), E_FAIL);
 
-    pGameObject = CIngredient::Create(m_pGraphicDev, ITEM_BERRY_SEED);
-    NULL_CHECK_RETURN(pGameObject, E_FAIL);
-    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Berry", pGameObject), E_FAIL);
-    dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
+#pragma endregion
 
-    pGameObject = CIngredient::Create(m_pGraphicDev, ITEM_PEPPER_SEED);
-    NULL_CHECK_RETURN(pGameObject, E_FAIL);
-    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Pepper", pGameObject), E_FAIL);
-    dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
-
-    pGameObject = COre::Create(m_pGraphicDev, MATERIAL_COPPER);
-    NULL_CHECK_RETURN(pGameObject, E_FAIL);
-    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"CopperOre", pGameObject), E_FAIL);
-    dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
-
-    pGameObject = COre::Create(m_pGraphicDev, MATERIAL_SCARLET);
-    NULL_CHECK_RETURN(pGameObject, E_FAIL);
-    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"ScarletOre", pGameObject), E_FAIL);
-    dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
-
-    pGameObject = CLantern::Create(m_pGraphicDev, MATERIAL_WOOD);
-    NULL_CHECK_RETURN(pGameObject, E_FAIL);
-    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Player's_Lantern", pGameObject), E_FAIL);
-    dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
-
-    pGameObject = CLunch::Create(m_pGraphicDev);
-    NULL_CHECK_RETURN(pGameObject, E_FAIL);
-    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Player's_Lunch", pGameObject), E_FAIL);
-    dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
-    dynamic_cast<CItem*>(pGameObject)->Add_Count(2);
-
-    pGameObject = CChocoBar::Create(m_pGraphicDev);
-    NULL_CHECK_RETURN(pGameObject, E_FAIL);
-    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Player's_ChocoBar", pGameObject), E_FAIL);
-    dynamic_cast<CItem*>(pGameObject)->Set_Drop(true);
-    dynamic_cast<CItem*>(pGameObject)->Add_Count(1);
+    // 보스
+#pragma region BOSS
 
     pGameObject = CMalugaz::Create(m_pGraphicDev, {14.0f, 0.0f,71.0f});
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
@@ -387,6 +356,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar* pLayerTag)
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"Azeos", pGameObject), E_FAIL);
 
+#pragma endregion
 
     m_mapLayer.insert({ pLayerTag , pLayer });
 

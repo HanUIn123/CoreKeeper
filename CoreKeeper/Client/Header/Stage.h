@@ -80,7 +80,7 @@ private:
 
 	vector<CMiniSpawn*>				m_vecMiniSpawn;
 
-
+	CGameObject*					m_pPlayer;
 	// È¤½Ã ¸ô¶ó, ÀÏ´Ü ¸â¹ö·Î »©¼­ ¸¸µé¾î µÒ.
 	CMiniMapCamera*					m_pMiniMapCamera;
 
