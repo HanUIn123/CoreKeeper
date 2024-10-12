@@ -528,12 +528,15 @@
     </Filter>
     <Filter Include="02. GameObject\07. UI\10. UIBuff\00. UIBuffFrame">
       <UniqueIdentifier>{6c5e9487-9488-4db8-b079-37fe79eb2913}</UniqueIdentifier>
-	</Filter>
+    </Filter>
     <Filter Include="03. Manager\03.BlackPlaneMgr">
       <UniqueIdentifier>{28fb5f3b-4997-405f-bbda-6801585a2650}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameObject\98.BlackPlane">
       <UniqueIdentifier>{c4891d13-75bd-41a4-bcfb-39cab95ff9e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\00. BackGround\02.WhitePlane">
+      <UniqueIdentifier>{62dd725e-e609-456c-bf9e-bf901352b24c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1043,12 +1046,15 @@
     </ClInclude>
     <ClInclude Include="..\Header\UIBuffFrame.h">
       <Filter>02. GameObject\07. UI\10. UIBuff\00. UIBuffFrame</Filter>
-	</ClInclude>
+    </ClInclude>
     <ClInclude Include="..\Header\BlackPlaneMgr.h">
       <Filter>03. Manager\03.BlackPlaneMgr</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\BlackPlane.h">
       <Filter>02. GameObject\98.BlackPlane</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\WhitePlane.h">
+      <Filter>02. GameObject\00. BackGround\02.WhitePlane</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1537,12 +1543,15 @@
     </ClCompile>
     <ClCompile Include="..\Code\UIBuffFrame.cpp">
       <Filter>02. GameObject\07. UI\10. UIBuff\00. UIBuffFrame</Filter>
-	</ClCompile>
+    </ClCompile>
     <ClCompile Include="..\Code\BlackPlaneMgr.cpp">
       <Filter>03. Manager\03.BlackPlaneMgr</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\BlackPlane.cpp">
       <Filter>02. GameObject\98.BlackPlane</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\WhitePlane.cpp">
+      <Filter>02. GameObject\00. BackGround\02.WhitePlane</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -4,7 +4,7 @@
 #include "Export_System.h"
 
 CStoryBackGround::CStoryBackGround(LPDIRECT3DDEVICE9 pGraphicDev)
-	: Engine::CGameObject(pGraphicDev), m_iTextureNum(0), m_fElapsedTime(0.f), m_iCurrentIndex(0)
+	: Engine::CGameObject(pGraphicDev), m_iTextureNum(0), m_fElapsedTime(0.f), m_iCurrentIndex(0), m_bStop(false)
 {
 	m_strMent[0] = L"머나먼 외딴 곳.      ";
 	m_strMent[1] = L"당신은 다른 탐험가들과 함께 숲을 지나고 있습니다.      ";
@@ -25,13 +25,16 @@ HRESULT CStoryBackGround::Ready_GameObject()
 
 _int CStoryBackGround::Update_GameObject(const _float& fTimeDelta)
 {
-	_int iExit = Engine::CGameObject::Update_GameObject(fTimeDelta);
+	if (!m_bStop)
+	{
+		_int iExit = Engine::CGameObject::Update_GameObject(fTimeDelta);
 
-	m_fElapsedTime += fTimeDelta;
+		m_fElapsedTime += fTimeDelta;
 
-	Engine::Add_RenderGroup(RENDER_PRIORITY, this);
+		Engine::Add_RenderGroup(RENDER_PRIORITY, this);
 
-	return iExit;
+		return iExit;
+	}
 }
 
 void CStoryBackGround::LateUpdate_GameObject()

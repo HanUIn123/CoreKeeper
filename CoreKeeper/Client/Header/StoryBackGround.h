@@ -31,6 +31,9 @@ private:
 public:
 	static CStoryBackGround* Create(LPDIRECT3DDEVICE9 pGraphicDev);
 
+	bool				Get_Stop() { return m_bStop; }
+	void				Set_Stop(bool _bStop) { m_bStop = _bStop; }
+
 private:
 	virtual void		Free();
 
@@ -40,4 +43,7 @@ private:
 
 	float				m_fElapsedTime;
 	int					m_iCurrentIndex;
+
+
+	bool				m_bStop;
 };
