@@ -52,6 +52,9 @@ HRESULT CStatueCore::Ready_GameObject(ITEMNUM _eItemNum, _vec3 vPos)
 
 _int CStatueCore::Update_GameObject(const _float& fTimeDelta)
 {
+	if (!m_bUse && !m_bDrop && !m_bActive)
+		return 0;
+
 	m_pAnimatorCom->Update_Animation();
 
 	_vec3 vPos;

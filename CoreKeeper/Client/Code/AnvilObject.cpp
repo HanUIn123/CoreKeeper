@@ -27,6 +27,11 @@ HRESULT CAnvilObject::Ready_GameObject(_vec3 vPos, MATERIAL _eMaterial)
 
 _int CAnvilObject::Update_GameObject(const _float& fTimeDelta)
 {
+	int iExit = Engine::CGameObject::Update_GameObject(fTimeDelta);
+
+	if (!m_pCalculCom->In_Frustum(m_pTransformCom))
+		return 0;
+
 	if (Check_Interaction())
 	{
 		Interaction();
@@ -47,7 +52,7 @@ _int CAnvilObject::Update_GameObject(const _float& fTimeDelta)
 	}
 	Add_RenderGroup(RENDER_ALPHA, this);
 
-	return Engine::CGameObject::Update_GameObject(fTimeDelta);
+	return iExit;
 }
 
 void CAnvilObject::LateUpdate_GameObject()

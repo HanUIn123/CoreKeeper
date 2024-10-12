@@ -51,7 +51,6 @@ HRESULT CShaman::Ready_GameObject(_vec3 vPos)
     m_vecDropItem.push_back(ITEM_SKULL_PIECE);
     m_vecDropItem.push_back(ITEM_CARROT_SEED);
     m_vecDropItem.push_back(ITEM_FIBER_SEED);
-    m_vecDropItem.push_back(ITEM_ASSISTANCE);
 
     Set_Speed(1.5f);
 

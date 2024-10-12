@@ -29,6 +29,11 @@ HRESULT CGravestoneObject::Ready_GameObject(_vec3 vPos)
 
 _int CGravestoneObject::Update_GameObject(const _float& fTimeDelta)
 {
+    int iExit = Engine::CGameObject::Update_GameObject(fTimeDelta);
+
+    if (!m_pCalculCom->In_Frustum(m_pTransformCom))
+        return 0;
+
     if (!m_bActive)
         return 0;
 
@@ -78,7 +83,7 @@ _int CGravestoneObject::Update_GameObject(const _float& fTimeDelta)
 
 	Add_RenderGroup(RENDER_ALPHA, this);
 
-	return Engine::CGameObject::Update_GameObject(fTimeDelta);
+	return iExit;
 }
 
 void CGravestoneObject::LateUpdate_GameObject()

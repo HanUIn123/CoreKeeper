@@ -9,7 +9,7 @@ CMiniSpawn::CMiniSpawn(LPDIRECT3DDEVICE9 pGraphicDev)
     :Engine::CGameObject(pGraphicDev)
     , m_pTransformCom(nullptr)
     , m_pTextureCom(nullptr)
-    , m_bRevealed(false)
+    , m_bRevealed(true)
 {
 }
 

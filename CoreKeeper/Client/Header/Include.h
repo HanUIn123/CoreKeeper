@@ -112,6 +112,7 @@
 #include "TableObject.h"
 #include "FurnaceObject.h"
 #include "CookingPotObject.h"
+#include "BoxObject.h"
 
 // UI
 #include "UIPlayerStatus.h"

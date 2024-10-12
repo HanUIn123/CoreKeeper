@@ -547,7 +547,6 @@ void CPlayer::Mouse_Click(const _float& fTimeDelta)
                 case ITEM_TABLE:
                 case ITEM_POTION_TABLE:
                 case ITEM_ACCESSORY_TABLE:
-                case ITEM_MUSIC_TABLE:
                 case ITEM_ANVIL:
                 case ITEM_FURNACE:
                 case ITEM_COOKINGPOT:
@@ -559,7 +558,7 @@ void CPlayer::Mouse_Click(const _float& fTimeDelta)
                 case ITEM_AZEOS_SPAWNER:
                     Install(eHandedNum);
                     break;
-
+                    
                 case ITEM_BERRY:
                 case ITEM_PEPPER:
                 case ITEM_CARROT:
@@ -1772,9 +1771,6 @@ void CPlayer::Install(ITEMNUM eHandedNum)
                     break;
                 case ITEM_ACCESSORY_TABLE:
                     pInstallObject = CAccessoryTableObject::Create(m_pGraphicDev, vInstallPos);
-                    break;
-                case ITEM_MUSIC_TABLE:
-                    pInstallObject = CMusicTableObject::Create(m_pGraphicDev, vInstallPos);
                     break;
                 case ITEM_ANVIL:
                     mat = m_pHandedItem->Get_ItemMaterial();

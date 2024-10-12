@@ -41,6 +41,9 @@ _int CSlimeFloor::Update_GameObject(const _float& fTimeDelta)
     _int iExit = Engine::CGameObject::Update_GameObject(fTimeDelta);
     Set_Cast();
 
+    if (!m_pCalculCom->In_Frustum(m_pTransformCom))
+        return 0;
+
     if (m_pColliderCom->Check_Sphere_Collision(m_pPlayerCollider))
         CBuffMgr::GetInstance()->Set_BuffStart(DEBUFF_SLOW, fTimeDelta);
 

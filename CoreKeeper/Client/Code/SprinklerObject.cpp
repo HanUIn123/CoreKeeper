@@ -29,13 +29,18 @@ HRESULT CSprinklerObject::Ready_GameObject(_vec3 vPos)
 
 _int CSprinklerObject::Update_GameObject(const _float& fTimeDelta)
 {
+	int iExit = Engine::CGameObject::Update_GameObject(fTimeDelta);
+
+	if (!m_pCalculCom->In_Frustum(m_pTransformCom))
+		return 0;
+
 	m_pAnimatorCom->Update_Animation();
 
 	Add_RenderGroup(RENDER_ALPHA, this);
 	Set_SoundVolumeByDistance();
 	Sprinkler_Watering();
 
-	return Engine::CGameObject::Update_GameObject(fTimeDelta);
+	return iExit;
 }
 
 void CSprinklerObject::LateUpdate_GameObject()
