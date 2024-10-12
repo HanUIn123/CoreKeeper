@@ -6,7 +6,7 @@
 #include "../Header/CraftMgr.h"
 
 CFurnaceObject::CFurnaceObject(LPDIRECT3DDEVICE9 pGraphicDev)
-	: CObject(pGraphicDev), m_fTime(80.f)
+	: CObject(pGraphicDev), m_fTime(40.f)
 {
 }
 
@@ -69,7 +69,7 @@ _int CFurnaceObject::Update_GameObject(const _float& fTimeDelta)
 
 		if (m_fTime <= 0)
 		{
-			m_fTime = 80.f;
+			m_fTime = 40.f;
 
 			CItem* pItem = m_pInventoryCom->Get_Item(0);
 

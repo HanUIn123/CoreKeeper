@@ -328,9 +328,15 @@ _int CUICraftSlot::Update_GameObject(const _float& fTimeDelta)
 
 						if (m_eItemType.eItemMat == MATERIAL_WOOD)
 							pCursorInv->Add_Item(CCraftMgr::GetInstance()->Craft(pPlayerInv, m_eItemType.eItemNum, MATERIAL_COPPER));
-						else if(m_eItemType.eItemMat == MATERIAL_IRON)
+						else if (m_eItemType.eItemMat == MATERIAL_IRON)
 							pCursorInv->Add_Item(CCraftMgr::GetInstance()->Craft(pPlayerInv, m_eItemType.eItemNum, MATERIAL_IRON));
 					}
+					/*else if (m_eItemType.eItemNum == ITEM_POTION_HP || m_eItemType.eItemNum == ITEM_POTION_ATT || m_eItemType.eItemNum == ITEM_POTION_DEF)
+					{
+						CInventory* pCursorInv = dynamic_cast<CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_UI", L"UI_Cursor", L"Com_Inventory"));
+
+						pCursorInv->Add_Item(CCraftMgr::GetInstance()->Craft(pPlayerInv, m_eItemType.eItemNum, MATERIAL_END));
+					}*/
 					else
 					{
 						CInventory* pCursorInv = dynamic_cast<CInventory*>(Engine::Get_Component(ID_STATIC, L"Layer_UI", L"UI_Cursor", L"Com_Inventory"));

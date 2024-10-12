@@ -2,6 +2,7 @@
 #include "..\Header\UIPlayerStatus.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
+#include "../Header/Player.h"
 
 CUIPlayerStatus::CUIPlayerStatus(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CGameObject(pGraphicDev), m_bWindow(false), m_bFirst(true)
@@ -96,60 +97,21 @@ void CUIPlayerStatus::Render_GameObject()
 	m_pAnimBufferCom->Set_Index(m_pAnimatorCom->Get_MotionIndex());
 	m_pAnimBufferCom->Render_Buffer();
 
-	m_pEye->Get_EyeTexture()->Set_Texture();
-
-	m_pEye->Get_EyeBuffer()->Render_First();
-
-	m_pShirt->Get_ShirtTexture()->Set_Texture();
-
-	m_pShirt->Get_ShirtBuffer()->Render_First();
-
-	m_pPants->Get_PantsTexture()->Set_Texture();
-
-	m_pPants->Get_PantsBuffer()->Render_First();
-
-	m_pHair->Get_HairTexture()->Set_Texture();
+	m_pHair->Get_HairTexture()->Set_Texture(m_pHair->Get_TextureNumber());
 
 	m_pHair->Get_HairBuffer()->Render_First();
 
-	if (!m_pEquipInv->Check_Empty(0))
-	{
-		m_pItem[0] = m_pEquipInv->Get_Item(0);
+	m_pEye->Get_EyeTexture()->Set_Texture(m_pEye->Get_TextureNumber());
 
-		m_pItem[0]->Get_Texture()->Set_Texture();
+	m_pEye->Get_EyeBuffer()->Render_First();
 
-		m_pItem[0]->Get_Buffer()->Render_First();
+	m_pShirt->Get_ShirtTexture()->Set_Texture(m_pShirt->Get_TextureNumber());
 
-	}
+	m_pShirt->Get_ShirtBuffer()->Render_First();
 
-	if (!m_pEquipInv->Check_Empty(0))
-	{
-		m_pItem[0] = m_pEquipInv->Get_Item(0);
+	m_pPants->Get_PantsTexture()->Set_Texture(m_pPants->Get_TextureNumber());
 
-		m_pItem[0]->Get_Texture()->Set_Texture();
-
-		m_pItem[0]->Get_Buffer()->Render_First();
-
-	}
-
-	if (!m_pEquipInv->Check_Empty(3))
-	{
-		m_pItem[1] = m_pEquipInv->Get_Item(3);
-
-		m_pItem[1]->Get_Texture()->Set_Texture();
-
-		m_pItem[1]->Get_Buffer()->Render_First();
-	}
-
-	if (!m_pEquipInv->Check_Empty(5))
-	{
-		m_pItem[2] = m_pEquipInv->Get_Item(5);
-
-		m_pItem[2]->Get_Texture()->Set_Texture();
-
-		m_pItem[2]->Get_Buffer()->Render_First();
-	}
-
+	m_pPants->Get_PantsBuffer()->Render_First();
 }
 
 HRESULT CUIPlayerStatus::Add_Component()
