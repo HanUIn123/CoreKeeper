@@ -37,7 +37,7 @@ public:
 
 private:
 	HRESULT							Add_Component();
-
+	void							SetUp_Light();
 protected:
 	//Engine::CObjectTex* m_pEmissiveBufferCom;
 	Engine::CTexture* m_pEmissiveTextureCom;
@@ -52,5 +52,7 @@ private:
 	int								m_iTextureNum;
 	_int							m_iSpawnTextureNumber;
 	_vec3							m_vAzeSpawnPos;
+	bool							m_bInFrustum;
+	int								m_iLightNum;
 };
 

@@ -113,7 +113,7 @@ _uint CLoading::Loading_Stage()
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TileTex", Engine::CObjectTex::Create(m_pGraphicDev, 0.5f, 0.0f, 0.5f)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_CrystalObjectTex", Engine::CObjectTex::Create(m_pGraphicDev, 0.5f, 0.0f, 0.5f)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_BossSpawnPointTex", Engine::CObjectTex::Create(m_pGraphicDev, 1.0f, 0.0f, 1.0f)), E_FAIL);
-    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_AzeosSpawnPointTex", Engine::CObjectTex::Create(m_pGraphicDev, 1.0f, 0.0f, 1.0f)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_AzeosSpawnPointTex", Engine::CObjectTex::Create(m_pGraphicDev, 15.0f, 0.0f, 15.0f)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MaluSpawnTex", Engine::CObjectTex::Create(m_pGraphicDev, 0.5f, 0.0f, 0.5f)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_AzeosSpawnTex", Engine::CObjectTex::Create(m_pGraphicDev, 0.5f, 0.0f, 0.5f)), E_FAIL);
 
@@ -236,7 +236,7 @@ _uint CLoading::Loading_Stage()
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_CookingPotTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/CookingPot/CookingPot.png", TEX_NORMAL)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_WallPieceTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/WallPiece/WallPiece_%d.png", TEX_NORMAL, 4)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TorchTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Torch.png", TEX_NORMAL)), E_FAIL);
-    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_BoxTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Box.png", TEX_NORMAL)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_BoxTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Box_%d.png", TEX_NORMAL, 2)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_GravestoneTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Gravestone.png", TEX_NORMAL)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SprinklerTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Sprinkler.png", TEX_NORMAL)), E_FAIL);
 
@@ -375,7 +375,7 @@ _uint CLoading::Loading_Stage()
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SpawnPointCollider", Engine::CColliderCube::Create(m_pGraphicDev, _vec3(-0.5f, -0.5f, -0.5f), _vec3(0.5f, 0.5f, 0.5f))), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MaluSpawnerCollider", Engine::CColliderCube::Create(m_pGraphicDev, _vec3(-0.5f, -0.5f, -0.5f), _vec3(0.5f, 0.5f, 0.5f))), E_FAIL);
 
-    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_AzeosSpawnPointCollider", Engine::CColliderCube::Create(m_pGraphicDev, _vec3(-0.5f, -0.5f, -0.5f), _vec3(0.5f, 0.5f, 0.5f))), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_AzeosSpawnPointCollider", Engine::CColliderCube::Create(m_pGraphicDev, _vec3(-7.5f, -0.5f, -7.5f), _vec3(7.5f, 0.5f, 7.5f))), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_AzeosSpawnerCollider", Engine::CColliderCube::Create(m_pGraphicDev, _vec3(-0.5f, -0.5f, -0.5f), _vec3(0.5f, 0.5f, 0.5f))), E_FAIL);
 
 

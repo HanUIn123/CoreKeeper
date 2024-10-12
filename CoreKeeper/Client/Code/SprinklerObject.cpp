@@ -29,13 +29,19 @@ HRESULT CSprinklerObject::Ready_GameObject(_vec3 vPos)
 
 _int CSprinklerObject::Update_GameObject(const _float& fTimeDelta)
 {
+	int iExit = Engine::CGameObject::Update_GameObject(fTimeDelta);
+
+	if (!m_pCalculCom->In_Frustum(m_pTransformCom))
+		return 0;
+
 	m_pAnimatorCom->Update_Animation();
 
 	Add_RenderGroup(RENDER_ALPHA, this);
 	Set_SoundVolumeByDistance();
+	m_fSoundVolume *= 0.8f;
 	Sprinkler_Watering();
 
-	return Engine::CGameObject::Update_GameObject(fTimeDelta);
+	return iExit;
 }
 
 void CSprinklerObject::LateUpdate_GameObject()
@@ -76,9 +82,17 @@ HRESULT CSprinklerObject::Add_Component()
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Buffer", pComponent });
 
+	pComponent = m_pCalculCom = dynamic_cast<CCalculator*>(Engine::Clone_Proto(L"Proto_Calculator"));
+	NULL_CHECK_RETURN(pComponent, E_FAIL);
+	m_mapComponent[ID_STATIC].insert({ L"Com_Calculator", pComponent });
+
 	pComponent = m_pAnimatorCom = dynamic_cast<CAnimator*>(Engine::Clone_Proto(L"Proto_Animator"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Animator", pComponent });
+
+	pComponent = m_pCalculCom = dynamic_cast<CCalculator*>(Engine::Clone_Proto(L"Proto_Calculator"));
+	NULL_CHECK_RETURN(pComponent, E_FAIL);
+	m_mapComponent[ID_STATIC].insert({ L"Com_Calculator", pComponent });
 
 	return S_OK;
 }
@@ -88,7 +102,6 @@ void CSprinklerObject::Sprinkler_Watering()
 	_vec3 vPos;
 	m_pTransformCom->Get_Info(INFO_POS, &vPos);
 	_int iIndex = _int(vPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (vPos.x + 0.5f * VTXITV);
-
 	if (m_pAnimatorCom->Get_MotionIndex() == 0)
 	{
 		if (m_pAnimatorCom->Get_CurCount() == 0)

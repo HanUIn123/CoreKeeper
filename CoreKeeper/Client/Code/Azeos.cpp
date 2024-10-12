@@ -124,7 +124,7 @@ _int CAzeos::Update_GameObject(const _float& fTimeDelta)
     m_pTransformCom->Get_Info(INFO_POS, &m_vPos);
 
     Flip();
-   // Set_StuckFree(fTimeDelta);
+    //Set_StuckFree(fTimeDelta);
     m_pAnimatorCom->Update_Animation();
     Add_RenderGroup(RENDER_ALPHA, this);
     return Engine::CGameObject::Update_GameObject(fTimeDelta);

@@ -125,6 +125,7 @@ _int CUIStatueCraft::Update_GameObject(const _float& fTimeDelta)
 						}
 
 						pCursor->Add_Item(CCraftMgr::GetInstance()->Craft(pPlayer, eNum, MATERIAL_END));
+						Engine::CSoundMgr::GetInstance()->Play(L"uiPickup.wav", SOUND_UI_INVENTORY, 0.2f);
 					}
 				}
 			}

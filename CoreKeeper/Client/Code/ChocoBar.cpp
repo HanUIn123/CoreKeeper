@@ -35,6 +35,9 @@ HRESULT CChocoBar::Ready_GameObject(_vec3 vPos)
 
 _int CChocoBar::Update_GameObject(const _float& fTimeDelta)
 {
+	if (!m_bUse && !m_bDrop && !m_bActive)
+		return 0;
+
 	_vec3 vPos;
 	m_pTransformCom->Get_Info(INFO_POS, &vPos);
 	m_pShadowTransformCom->Set_Pos(vPos.x, 0.1f, vPos.z);

@@ -81,12 +81,19 @@ _int CUICookingPot::Update_GameObject(const _float& fTimeDelta)
 							{
 								(*pFvecItem)[0]->Add_Count((*pCvecItem)[0]->Get_Count());
 								pCursorInv->Remove_Item(0);
+								Engine::CSoundMgr::GetInstance()->Play(L"uiPickup.wav", SOUND_UI_INVENTORY, 0.2f);
 							}
 							else if ((*pFvecItem)[0]->Get_ItemNum() != (*pCvecItem)[0]->Get_ItemNum())
+							{
 								m_pInventoryCom->Swap_Item(&(*pCvecItem)[0], &(*pFvecItem)[0]);
+								Engine::CSoundMgr::GetInstance()->Play(L"uiPickup.wav", SOUND_UI_INVENTORY, 0.2f);
+							}
 						}
 						else
+						{
 							m_pInventoryCom->Swap_Item(&(*pCvecItem)[0], &(*pFvecItem)[0]);
+							Engine::CSoundMgr::GetInstance()->Play(L"uiPickup.wav", SOUND_UI_INVENTORY, 0.2f);
+						}
 					}
 				}
 				else if (pCursorInv->Check_Empty(0))
@@ -100,12 +107,19 @@ _int CUICookingPot::Update_GameObject(const _float& fTimeDelta)
 						{
 							(*pFvecItem)[0]->Add_Count((*pCvecItem)[0]->Get_Count());
 							pCursorInv->Remove_Item(0);
+							Engine::CSoundMgr::GetInstance()->Play(L"uiPickup.wav", SOUND_UI_INVENTORY, 0.2f);
 						}
 						else if ((*pFvecItem)[0]->Get_ItemNum() != (*pCvecItem)[0]->Get_ItemNum())
+						{
 							m_pInventoryCom->Swap_Item(&(*pCvecItem)[0], &(*pFvecItem)[0]);
+							Engine::CSoundMgr::GetInstance()->Play(L"uiPickup.wav", SOUND_UI_INVENTORY, 0.2f);
+						}
 					}
 					else
+					{
 						m_pInventoryCom->Swap_Item(&(*pCvecItem)[0], &(*pFvecItem)[0]);
+						Engine::CSoundMgr::GetInstance()->Play(L"uiPickup.wav", SOUND_UI_INVENTORY, 0.2f);
+					}
 				}
 			}
 		}
@@ -133,12 +147,19 @@ _int CUICookingPot::Update_GameObject(const _float& fTimeDelta)
 							{
 								(*pFvecItem)[1]->Add_Count((*pCvecItem)[0]->Get_Count());
 								pCursorInv->Remove_Item(0);
+								Engine::CSoundMgr::GetInstance()->Play(L"uiPickup.wav", SOUND_UI_INVENTORY, 0.2f);
 							}
 							else if ((*pFvecItem)[1]->Get_ItemNum() != (*pCvecItem)[0]->Get_ItemNum())
+							{
 								m_pInventoryCom->Swap_Item(&(*pCvecItem)[0], &(*pFvecItem)[1]);
+								Engine::CSoundMgr::GetInstance()->Play(L"uiPickup.wav", SOUND_UI_INVENTORY, 0.2f);
+							}
 						}
 						else
+						{
+							Engine::CSoundMgr::GetInstance()->Play(L"uiPickup.wav", SOUND_UI_INVENTORY, 0.2f);
 							m_pInventoryCom->Swap_Item(&(*pCvecItem)[0], &(*pFvecItem)[1]);
+						}
 					}
 				}
 				else if (pCursorInv->Check_Empty(0))
@@ -152,12 +173,19 @@ _int CUICookingPot::Update_GameObject(const _float& fTimeDelta)
 						{
 							(*pFvecItem)[1]->Add_Count((*pCvecItem)[0]->Get_Count());
 							pCursorInv->Remove_Item(0);
+							Engine::CSoundMgr::GetInstance()->Play(L"uiPickup.wav", SOUND_UI_INVENTORY, 0.2f);
 						}
 						else if ((*pFvecItem)[1]->Get_ItemNum() != (*pCvecItem)[0]->Get_ItemNum())
+						{
 							m_pInventoryCom->Swap_Item(&(*pCvecItem)[0], &(*pFvecItem)[0]);
+							Engine::CSoundMgr::GetInstance()->Play(L"uiPickup.wav", SOUND_UI_INVENTORY, 0.2f);
+						}
 					}
 					else
+					{
 						m_pInventoryCom->Swap_Item(&(*pCvecItem)[0], &(*pFvecItem)[1]);
+						Engine::CSoundMgr::GetInstance()->Play(L"uiPickup.wav", SOUND_UI_INVENTORY, 0.2f);
+					}
 				}
 			}
 		}
@@ -183,12 +211,19 @@ _int CUICookingPot::Update_GameObject(const _float& fTimeDelta)
 						{
 							(*pFvecItem)[0]->Add_Count((*pCvecItem)[0]->Get_Count());
 							pCursorInv->Remove_Item(0);
+							Engine::CSoundMgr::GetInstance()->Play(L"uiPickup.wav", SOUND_UI_INVENTORY, 0.2f);
 						}
 						else if ((*pFvecItem)[2]->Get_ItemNum() != (*pCvecItem)[0]->Get_ItemNum())
+						{
 							m_pSecondInventoryCom->Swap_Item(&(*pCvecItem)[0], &(*pFvecItem)[0]);
+							Engine::CSoundMgr::GetInstance()->Play(L"uiPickup.wav", SOUND_UI_INVENTORY, 0.2f);
+						}
 					}
 					else
+					{
 						m_pSecondInventoryCom->Swap_Item(&(*pCvecItem)[0], &(*pFvecItem)[0]);
+						Engine::CSoundMgr::GetInstance()->Play(L"uiPickup.wav", SOUND_UI_INVENTORY, 0.2f);
+					}
 				}
 			}
 		}

@@ -34,9 +34,14 @@ HRESULT CAzeosFeather::Ready_GameObject(_vec3 _vPos, _int _iTypeNum, const wstri
 
 _int CAzeosFeather::Update_GameObject(const _float& fTimeDelta)
 {
+    int iExit = Engine::CGameObject::Update_GameObject(fTimeDelta);
+
+    if (!m_pCalculCom->In_Frustum(m_pTransformCom))
+        return 0;
+
     Add_RenderGroup(RENDER_ALPHA, this);
 
-    return Engine::CGameObject::Update_GameObject(fTimeDelta);
+    return iExit;
 }
 
 void CAzeosFeather::LateUpdate_GameObject()
@@ -75,9 +80,9 @@ HRESULT CAzeosFeather::Add_Component()
     NULL_CHECK_RETURN(pComponent, E_FAIL);
     m_mapComponent[ID_DYNAMIC].insert({ L"Com_Transform", pComponent });
 
-    pComponent = m_pColliderCom = dynamic_cast<CColliderCube*>(Engine::Clone_Proto(L"Proto_WallCollider"));
+    pComponent = m_pCalculCom = dynamic_cast<CCalculator*>(Engine::Clone_Proto(L"Proto_Calculator"));
     NULL_CHECK_RETURN(pComponent, E_FAIL);
-    m_mapComponent[ID_STATIC].insert({ L"Com_Collider", pComponent });
+    m_mapComponent[ID_STATIC].insert({ L"Com_Calculator", pComponent });
 
     return S_OK;
 }

@@ -109,7 +109,7 @@ HRESULT CPlayer::Ready_GameObject()
 {
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-    m_tBasicStat = STAT(400, 100, 20, 0);
+    m_tBasicStat = STAT(200, 100, 20, 0);
     m_pStateCom->Set_Stat(m_tBasicStat.iMaxHp, m_tBasicStat.iMaxMp, m_tBasicStat.iAttack, m_tBasicStat.iDefense);
     m_pStateCom->Set_MaxHunger(100);
     m_pEquipInventoryCom->Set_SlotCount(10);
@@ -548,7 +548,6 @@ void CPlayer::Mouse_Click(const _float& fTimeDelta)
                 case ITEM_TABLE:
                 case ITEM_POTION_TABLE:
                 case ITEM_ACCESSORY_TABLE:
-                case ITEM_MUSIC_TABLE:
                 case ITEM_ANVIL:
                 case ITEM_FURNACE:
                 case ITEM_COOKINGPOT:
@@ -560,7 +559,7 @@ void CPlayer::Mouse_Click(const _float& fTimeDelta)
                 case ITEM_AZEOS_SPAWNER:
                     Install(eHandedNum);
                     break;
-
+                    
                 case ITEM_BERRY:
                 case ITEM_PEPPER:
                 case ITEM_CARROT:
@@ -1370,7 +1369,7 @@ void CPlayer::Shoot_Equipment()
         {
             m_bShootOnce = true;
             if (m_pHandedItem->Get_ItemNum() == ITEM_BOW)
-                Engine::CSoundMgr::GetInstance()->Play(L"cupidBowShoot.wav", SOUND_PLAYER, 0.2f);
+                Engine::CSoundMgr::GetInstance()->Play(L"whip.wav", SOUND_PLAYER, 0.2f);
             else
                 Engine::CSoundMgr::GetInstance()->Play(L"sunStaffProjectileSpawn.wav", SOUND_PLAYER, 0.2f);
             if (g_bIsTopCamera)
@@ -1617,7 +1616,7 @@ void CPlayer::Hoe()
         {
             _int iIndex = _int(m_vMouseWorldPos.z + 0.5f * VTXITV) * (VTXCNTX - 1) + (m_vMouseWorldPos.x + 0.5f * VTXITV);
             if (!m_pTerrain->Get_UnreachableByIndex(iIndex))
-                Engine::CSoundMgr::GetInstance()->Play(L"dirtImpact.wav", SOUND_PLAYER, 0.4f);
+                Engine::CSoundMgr::GetInstance()->Play(L"shoveldig.wav", SOUND_PLAYER, 0.4f);
 
             switch (m_pHandedItem->Get_ItemMaterial())
             {
@@ -1692,9 +1691,9 @@ void CPlayer::Watering()
             switch (m_pHandedItem->Get_ItemMaterial())
             {
             case MATERIAL_COPPER: // 1 x 1
-                CFarmMgr::GetInstance()->Watering_Plant(iIndex);
                 if (m_pTerrain->Get_TextureNumber(iIndex) == 27 || m_pTerrain->Get_TextureNumber(iIndex) == 29)
                     Engine::CSoundMgr::GetInstance()->Play(L"squish1.wav", SOUND_PLAYER, 0.4f);
+                CFarmMgr::GetInstance()->Watering_Plant(iIndex);
                 break;
             case MATERIAL_IRON: // 3 x 3
                 for (_int i = -1; i <= 1; i++)
@@ -1733,7 +1732,10 @@ void CPlayer::Plant(ITEMNUM eHandedNum)
             if (!m_pTerrain->Get_UnreachableByIndex(iIndex))
             {
                 if (CFarmMgr::GetInstance()->Create_Plant(iIndex, eHandedNum))
+                {
+                    Engine::CSoundMgr::GetInstance()->Play(L"shoop.wav", SOUND_PLAYER, 0.4f);
                     m_pInventoryCom->Minus_Item(eHandedNum, 1);
+                }
             }
         }
     }
@@ -1754,7 +1756,7 @@ void CPlayer::Install(ITEMNUM eHandedNum)
                 CGameObject* pInstallObject = nullptr;
                 _vec3 vInstallPos = { _float((iIndex % (VTXCNTX - 1)) * VTXITV), 0.5f, _float((iIndex / (VTXCNTX - 1)) * VTXITV) };
                 MATERIAL mat;
-                Engine::CSoundMgr::GetInstance()->Play(L"rugDamage2.wav", SOUND_PLAYER, 0.4f);
+                Engine::CSoundMgr::GetInstance()->Play(L"shoop.wav", SOUND_PLAYER, 0.4f);
 
                 // 통과할 수 있게 할건지 없게 할건지 여부
                 _bool   bPassable = true;
@@ -1770,9 +1772,6 @@ void CPlayer::Install(ITEMNUM eHandedNum)
                     break;
                 case ITEM_ACCESSORY_TABLE:
                     pInstallObject = CAccessoryTableObject::Create(m_pGraphicDev, vInstallPos);
-                    break;
-                case ITEM_MUSIC_TABLE:
-                    pInstallObject = CMusicTableObject::Create(m_pGraphicDev, vInstallPos);
                     break;
                 case ITEM_ANVIL:
                     mat = m_pHandedItem->Get_ItemMaterial();
@@ -1827,6 +1826,8 @@ void CPlayer::Install(ITEMNUM eHandedNum)
 
 void CPlayer::Eat(ITEMNUM eHandedNum)
 {
+    wstring soundName = L"nom2.wav";
+
     switch (eHandedNum)
     {
     case ITEM_BERRY:
@@ -1903,12 +1904,15 @@ void CPlayer::Eat(ITEMNUM eHandedNum)
         CBuffMgr::GetInstance()->Set_BuffStart(BUFF_MINING, 120);
         break;
     case ITEM_POTION_HP:
+        soundName = L"drinking.wav";
         m_pStateCom->Set_Recover(200);
         break;
     case ITEM_POTION_ATT:
+        soundName = L"drinking.wav";
         CBuffMgr::GetInstance()->Set_BuffStart(BUFF_ATT, 300);
         break;
     case ITEM_POTION_DEF:
+        soundName = L"drinking.wav";
         CBuffMgr::GetInstance()->Set_BuffStart(BUFF_DEF, 300);
         break;
     }
@@ -1916,7 +1920,7 @@ void CPlayer::Eat(ITEMNUM eHandedNum)
     m_pHandedItem->Set_Active(false);
     m_pHandedItem->Set_Drop(false);
     m_pInventoryCom->Minus_Item(eHandedNum);
-    Engine::CSoundMgr::GetInstance()->Play(L"squish2.wav", SOUND_PLAYER, 0.4f);
+    Engine::CSoundMgr::GetInstance()->Play(soundName.c_str(), SOUND_PLAYER, 0.4f);
 }
 
 void CPlayer::Build(ITEMNUM eHandedNum)
@@ -2159,6 +2163,8 @@ void CPlayer::Set_UI()
 
     if (Engine::Key_Down(DIK_M))
     {
+        Engine::CSoundMgr::GetInstance()->Play(L"paper.wav", SOUND_EFFECT, 0.4f);
+
         if (!m_bInventory)
             Set_Map();
 
@@ -2409,7 +2415,7 @@ void CPlayer::Set_Buff(const _float& fTimeDelta)
                 if (m_fFireTickTime == 0.f)
                     Engine::CSoundMgr::GetInstance()->Play(L"beamLoop.wav", SOUND_PLAYER, 0.1f);
                 m_fFireTickTime += fTimeDelta;
-                if (m_fFireTickTime >= 3.f)
+                if (m_fFireTickTime >= 1.f)
                 {
                     m_fFireTickTime = 0.f;
                     if (!m_bImmune)
@@ -2478,7 +2484,7 @@ void CPlayer::Set_Buff(const _float& fTimeDelta)
 
 void CPlayer::Set_Hungry(const _float& fTimeDelta)
 {
-    if (m_eState != IDLE)
+    if (m_eState != IDLE && !m_bImmune)
     {
         m_fHungerTime += fTimeDelta;
         if (m_fHungerTime >= 5.f)
@@ -2592,6 +2598,9 @@ void CPlayer::Respawn_Progress(const _float& fTimeDelta)
 
             m_pInventoryCom->Move_All_Item(dynamic_cast<CGravestoneObject*>(pGraveStone)->Get_Inventory());
 
+            // 버프 & 디버프 초기화
+            for (_int i = 0; i < BUFFTYPE_END; i++)
+                CBuffMgr::GetInstance()->Set_BuffEnd((BUFFTYPE)i);
         }
     }
     else if (m_fRespawnProgress <= 5.f)
@@ -2609,6 +2618,11 @@ void CPlayer::Respawn_Progress(const _float& fTimeDelta)
         // 리스폰 완료
         m_pStateCom->Set_Revive();
         m_fRespawnProgress = 0.f;
+
+        m_pClothes[0]->Set_Active(true);
+        m_pClothes[1]->Set_Active(true);
+        m_pClothes[3]->Set_Active(true);
+        m_pClothes[4]->Set_Active(true);
     }
 
 }
@@ -2691,6 +2705,7 @@ void CPlayer::Set_Craft(TABLETYPE eTableType, MATERIAL _eMaterial)
         }
 
         m_bCraft = false;
+        Engine::CSoundMgr::GetInstance()->PlayTimid(L"chestclose.wav", SOUND_UI_INVENTORY, 0.1f);
     }
     else
     {
@@ -2726,6 +2741,7 @@ void CPlayer::Set_Craft(TABLETYPE eTableType, MATERIAL _eMaterial)
         }
 
         m_bCraft = true;
+        Engine::CSoundMgr::GetInstance()->PlayTimid(L"chestopen.wav", SOUND_UI_INVENTORY, 0.1f);
     }
 }
 
@@ -2772,9 +2788,15 @@ void CPlayer::Set_Inventory()
     pSort->Set_Window();
 
     if (m_bInventory)
+    {
+        Engine::CSoundMgr::GetInstance()->PlayTimid(L"chestclose.wav", SOUND_UI_INVENTORY, 0.1f);
         m_bInventory = false;
+    }
     else
+    {
+        Engine::CSoundMgr::GetInstance()->PlayTimid(L"chestopen.wav", SOUND_UI_INVENTORY, 0.1f);
         m_bInventory = true;
+    }
 }
 
 void CPlayer::Set_Map()
@@ -2782,9 +2804,15 @@ void CPlayer::Set_Map()
     CRenderer::GetInstance()->Expand_MiniMap(m_pGraphicDev);
 
     if (m_bMap)
+    {
         m_bMap = false;
+        Engine::CSoundMgr::GetInstance()->Play(L"paper2", SOUND_EFFECT, 0.1f);
+    }
     else
+    {
         m_bMap = true;
+        Engine::CSoundMgr::GetInstance()->Play(L"paper", SOUND_EFFECT, 0.1f);
+    }
 }
 
 void CPlayer::Set_Status()
@@ -2814,9 +2842,15 @@ void CPlayer::Set_Status()
     }
 
     if (m_bStatus)
+    {
         m_bStatus = false;
+        Engine::CSoundMgr::GetInstance()->PlaySelfish(L"inventoryClose.wav", SOUND_UI_INVENTORY, 0.1f);
+    }
     else
+    {
         m_bStatus = true;
+        Engine::CSoundMgr::GetInstance()->PlaySelfish(L"inventoryOpen.wav", SOUND_UI_INVENTORY, 0.1f);
+    }
 }
 
 void CPlayer::Set_ChestInventory(CInventory* pInventory)

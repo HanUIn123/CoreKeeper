@@ -51,7 +51,6 @@ HRESULT CShaman::Ready_GameObject(_vec3 vPos)
     m_vecDropItem.push_back(ITEM_SKULL_PIECE);
     m_vecDropItem.push_back(ITEM_CARROT_SEED);
     m_vecDropItem.push_back(ITEM_FIBER_SEED);
-    m_vecDropItem.push_back(ITEM_ASSISTANCE);
 
     Set_Speed(1.5f);
 
@@ -78,6 +77,10 @@ _int CShaman::Update_GameObject(const _float& fTimeDelta)
 
     if (m_eState != DEAD && !Check_Wall())
         m_eState = State_Change();
+
+    if (m_pPlayerState->Get_Dead())
+        m_eState == IDLE;
+
     switch (m_eState)
     {
     case IDLE:

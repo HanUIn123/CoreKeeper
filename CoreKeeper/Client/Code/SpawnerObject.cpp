@@ -36,6 +36,7 @@ _int CSpawnerObject::Update_GameObject(const _float& fTimeDelta)
 
     if (Check_Object_Interaction())
     {
+        Engine::CSoundMgr::GetInstance()->Play(L"Bell.wav", SOUND_SPAWN_MALU, 0.3f);
         Interaction();
     }
 
@@ -79,6 +80,10 @@ void CSpawnerObject::Interaction()
     pMalugaz->Set_StopDraw(false);
 
     m_bIsAlreadySpawn = true;
+    g_bFight = true;
+
+    Engine::CSoundMgr::GetInstance()->StopSound(SOUND_BGM);
+    Engine::CSoundMgr::GetInstance()->PlayBGM(L"Malguaz_the_Corrupted_Shaman_R1.wav", 0.1f);
 }
 
 _bool CSpawnerObject::Check_Object_Interaction()

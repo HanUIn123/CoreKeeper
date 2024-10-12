@@ -1,3 +1,4 @@
+#include "SoundMgr.h"
 #include "..\..\Header\SoundMgr.h"
 
 IMPLEMENT_SINGLETON(CSoundMgr)
@@ -25,6 +26,7 @@ HRESULT CSoundMgr::Ready_Sound()
 	return S_OK;
 }
 
+// 같은 채널에 같은 사운드 넣어도 소리 남
 void CSoundMgr::Play(const TCHAR* pSoundKey, CHANNELID eID, float fVolume)
 {
 	map<const TCHAR*, FMOD::Sound*>::iterator iter;
@@ -39,17 +41,44 @@ void CSoundMgr::Play(const TCHAR* pSoundKey, CHANNELID eID, float fVolume)
 	if (iter == m_mapSound.end())
 		return;
 
-	//FMOD_BOOL bPlay = FALSE;
-	//
-	//bool isPlaying = false;
-	//if (m_pChannelArr[eID])
-	//{
-	//	m_pChannelArr[eID]->isPlaying(&isPlaying);
-	//	if (isPlaying)
-	//	{
-	//		m_pChannelArr[eID]->stop();
-	//	}
-	//}
+	m_pSystem->playSound(iter->second, nullptr, false, &m_pChannelArr[eID]);
+	m_pChannelArr[eID]->setVolume(fVolume);
+
+	m_pSystem->update();
+}
+
+// 같은 채널에 같은 사운드면 무시
+void CSoundMgr::PlayOnce(const TCHAR* pSoundKey, CHANNELID eID, float fVolume)
+{
+	map<const TCHAR*, FMOD::Sound*>::iterator iter;
+
+	// iter = find_if(m_mapSound.begin(), m_mapSound.end(), CTag_Finder(pSoundKey));
+	iter = find_if(m_mapSound.begin(), m_mapSound.end(),
+		[&](auto& iter)->bool
+		{
+			return !lstrcmp(pSoundKey, iter.first);
+		});
+
+	if (iter == m_mapSound.end())
+		return;
+
+	// 현재 재생 중인 사운드가 동일한지 확인
+	bool isPlaying;
+	m_pChannelArr[eID]->isPlaying(&isPlaying);
+
+	if (isPlaying)
+	{
+		FMOD::Sound* pCurrentSound;
+		m_pChannelArr[eID]->getCurrentSound(&pCurrentSound);
+
+		// 같은 사운드라면 바로 return
+		if (pCurrentSound == iter->second)
+			return;
+		// 다른 사운드면 기존의 BGM을 멈추기
+		else
+			m_pChannelArr[eID]->stop();
+
+	}
 
 	m_pSystem->playSound(iter->second, nullptr, false, &m_pChannelArr[eID]);
 	m_pChannelArr[eID]->setVolume(fVolume);
@@ -57,6 +86,7 @@ void CSoundMgr::Play(const TCHAR* pSoundKey, CHANNELID eID, float fVolume)
 	m_pSystem->update();
 }
 
+// 같은 비지엠이면 return 다른 비지엠이면 원래꺼 멈추고 내꺼
 void CSoundMgr::PlayBGM(const TCHAR* pSoundKey, float fVolume)
 {
 	map<const TCHAR*, FMOD::Sound*>::iterator iter;
@@ -95,7 +125,9 @@ void CSoundMgr::PlayBGM(const TCHAR* pSoundKey, float fVolume)
 	m_pSystem->update();
 }
 
-void CSoundMgr::PlayBGMOnce(const TCHAR* pSoundKey, CHANNELID eID, float fVolume)
+// 같은 채널에서 재생중이면 기존꺼 멈추고 내꺼로 재생
+// 이기적인 플레이 ㅋㅋ
+void CSoundMgr::PlaySelfish(const TCHAR* pSoundKey, CHANNELID eID, float fVolume)
 {
 	map<const TCHAR*, FMOD::Sound*>::iterator iter;
 
@@ -115,6 +147,37 @@ void CSoundMgr::PlayBGMOnce(const TCHAR* pSoundKey, CHANNELID eID, float fVolume
 		if (isPlaying)
 		{
 			m_pChannelArr[eID]->stop();
+		}
+	}
+
+	m_pSystem->playSound(iter->second, nullptr, false, &m_pChannelArr[eID]);
+	m_pChannelArr[eID]->setVolume(fVolume);
+
+	m_pSystem->update();
+}
+
+// 같은 채널에서 재생되고 있으면 다른 사운드여도 return
+// 소심한 플레이
+void CSoundMgr::PlayTimid(const TCHAR* pSoundKey, CHANNELID eID, float fVolume)
+{
+	map<const TCHAR*, FMOD::Sound*>::iterator iter;
+
+	// iter = find_if(m_mapSound.begin(), m_mapSound.end(), CTag_Finder(pSoundKey));
+	iter = find_if(m_mapSound.begin(), m_mapSound.end(), [&](auto& iter)->bool
+		{
+			return !lstrcmp(pSoundKey, iter.first);
+		});
+
+	if (iter == m_mapSound.end())
+		return;
+
+	bool isPlaying = false;
+	if (m_pChannelArr[eID])
+	{
+		m_pChannelArr[eID]->isPlaying(&isPlaying);
+		if (isPlaying)
+		{
+			return;
 		}
 	}
 

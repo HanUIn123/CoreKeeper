@@ -22,7 +22,7 @@ CRenderer::CRenderer()
     m_MainViewport.MaxZ = 1.0f;
 
     m_MiniViewport.X = 1020;
-    m_MiniViewport.Y = 90;
+    m_MiniViewport.Y = 25;
     m_MiniViewport.Width = 200;
     m_MiniViewport.Height = 140;
     m_MiniViewport.MinZ = 0.0f;
@@ -141,7 +141,7 @@ void CRenderer::Expand_MiniMap(LPDIRECT3DDEVICE9& pGraphicDev)
         {
             // 미니맵 축소
             m_MiniViewport.X = 1020;
-            m_MiniViewport.Y = 90;
+            m_MiniViewport.Y = 25;
             m_MiniViewport.Width = 200;
             m_MiniViewport.Height = 140;
             m_MiniViewport.MinZ = 0.0f;
@@ -277,7 +277,7 @@ void CRenderer::Render_MiniMap(LPDIRECT3DDEVICE9& pGraphicDev)
         else
         {
             //  현재 우리 터레인 65 / 129 x건드리면 맵 보여주는게 좌 우 로 이동함
-            float terrainCenterX = 65.0f / 2.0f + 15.0f;
+            float terrainCenterX = 65.0f / 2.0f + 14.0f;
             float terrainCenterZ = 129.0f / 2.0f + 30.0f;
 
             vEye = { terrainCenterX, 350.0f, terrainCenterZ };
@@ -291,8 +291,8 @@ void CRenderer::Render_MiniMap(LPDIRECT3DDEVICE9& pGraphicDev)
             // 카메라가 보여주는 영역 zoomratio로 너비 설정해주는 느낌. 직사각형으로 나오면 이상하니 그냥
             // 정사각형 비슷하게 해서 나오게함.
             D3DXMATRIX matOrtho;
-            float newOrthoWidth = m_fZoomRatio / 2.5f;
-            float newOrthoHeight = m_fZoomRatio * (129.0f / 65.0f) / 2.5f;
+            float newOrthoWidth = m_fZoomRatio / 2.6f;
+            float newOrthoHeight = m_fZoomRatio * (129.0f / 65.0f) / 2.6f;
             D3DXMatrixOrthoLH(&matOrtho, newOrthoWidth, newOrthoHeight, 0.1f, 1000.0f);
             pGraphicDev->SetTransform(D3DTS_PROJECTION, &matOrtho);
         }

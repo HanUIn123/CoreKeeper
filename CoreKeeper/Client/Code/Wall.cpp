@@ -82,6 +82,8 @@ _int CWall::Update_GameObject(const _float& fTimeDelta)
         m_pTransformCom->Move_Pos(&vUp, fTimeDelta, -0.3f);
         dynamic_cast<CDynamicCamera*>(Engine::Get_GameObject(L"Layer_Environment", L"DynamicCamera"))->Set_ShakeInfo(1.5f, 5.f);
 
+        Engine::CSoundMgr::GetInstance()->PlayOnce(L"EarthquakeLoop.wav", SOUND_WALL_DOWN, 0.1f);
+
         if (m_pTransformCom->Get_WorldMatrix()->_42 < -1.f)
         {
             CTerrain* pTerrain = dynamic_cast<CTerrain*>(Engine::Get_GameObject(L"Layer_Environment", L"Terrain"));

@@ -64,7 +64,7 @@ _int CMiniMapFrame::Update_GameObject(const _float& fTimeDelta)
         _vec3 vPos;
         m_pTransformCom->Set_Scale(100.0f, 75.0f, 0.0f);
         m_pTransformCom->Get_Info(INFO_POS, &vPos);
-        m_pTransformCom->Set_Pos(480.0f, 200.0f, 0.0f);
+        m_pTransformCom->Set_Pos(480.0f, 260.0f, 0.0f);
     }
 
     //Frame_Regulate();
