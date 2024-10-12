@@ -84,6 +84,8 @@ public:
 	void				Set_ProjectileDir(_vec3 vDir) { m_vProjectileDir = vDir; }
 	void				Set_ProjectileAttackSuccess(_bool bSuccess) { m_bProjectileAttackSuccess = bSuccess; }
 	_bool				Get_ProjectileAttackSuccess() { return m_bProjectileAttackSuccess; }
+
+	void				Set_TextureNumber(int iTextureNum) { m_iTextureNumber = iTextureNum; }
 	void				Set_TextureNumber(MATERIAL eMat) { m_iTextureNumber = eMat; }
 
 	Engine::MATERIAL    Get_ItemMaterial() { return m_eMaterial; }

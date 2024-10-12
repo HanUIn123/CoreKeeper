@@ -1240,60 +1240,76 @@ void CPlayer::Show_Equipment()
     CItem* pArmor;
     for (_int i = 0; i < CUIItemSlot::SLOT_END; i++)
     {
-        wstring	strObjectTag = L"UIItemSlot_";
+        wstring	strObjectTag = L"UIItemSlot_" + std::to_wstring(i);
+        pArmor = dynamic_cast<CUIItemSlot*>(Engine::Get_GameObject(L"Layer_UI", strObjectTag.c_str()))->Get_Item();
+        
+        int iTextureNum(0);
+
+        if (pArmor)
+        {
+            iTextureNum  = pArmor->Get_ItemMaterial() + 1;
+
+            if (pArmor->Get_ItemMaterial() == MATERIAL_SPECIAL)
+                iTextureNum--;
+        }
+
         switch (i)
         {
         case CUIItemSlot::SLOT_HELM:
-            strObjectTag += std::to_wstring(i);
-            pArmor = dynamic_cast<CUIItemSlot*>(Engine::Get_GameObject(L"Layer_UI", strObjectTag.c_str()))->Get_Item();
             if (pArmor)
             {
                 m_tEquipmentStat.iMaxHp += pArmor->Get_Stat()->iMaxHp;
                 m_tEquipmentStat.iDefense += pArmor->Get_Stat()->iDefense;
-                pArmor->Set_Active(true);
-                pArmor->Set_Follow();
-                if (pArmor->Get_ItemMaterial() != MATERIAL_WOOD)
+                /*pArmor->Set_Active(true);
+                pArmor->Set_Follow();*/
+
+                // 나무만 눈이 보이게
+                if (pArmor->Get_ItemMaterial() != MATERIAL_WOOD && pArmor->Get_ItemMaterial() != MATERIAL_SPECIAL)
                 {
                     m_pClothes[0]->Set_Active(false);
-                    m_pClothes[1]->Set_Active(false);
+                    //m_pClothes[1]->Set_Active(false);
                 }
-                else
-                    m_pClothes[1]->Set_TextureNumber((MATERIAL)1);
+                // 머리 (헬멧)
+                m_pClothes[1]->Set_TextureNumber(iTextureNum);
+                
+                if (pArmor->Get_ItemMaterial() == MATERIAL_SPECIAL)
+                    m_pClothes[0]->Set_TextureNumber(1);
             }
             else
             {
                 m_pClothes[0]->Set_Active(true);
-                m_pClothes[1]->Set_Active(true);
-                m_pClothes[1]->Set_TextureNumber((MATERIAL)0);
+                //m_pClothes[1]->Set_Active(true);
+                m_pClothes[1]->Set_TextureNumber(0);
             }
             break;
         case CUIItemSlot::SLOT_CHEST:
-            strObjectTag += std::to_wstring(i);
-            pArmor = dynamic_cast<CUIItemSlot*>(Engine::Get_GameObject(L"Layer_UI", strObjectTag.c_str()))->Get_Item();
             if (pArmor)
             {
                 m_tEquipmentStat.iMaxHp += pArmor->Get_Stat()->iMaxHp;
                 m_tEquipmentStat.iDefense += pArmor->Get_Stat()->iDefense;
-                pArmor->Set_Active(true);
-                pArmor->Set_Follow();
-                m_pClothes[3]->Set_Active(false);
+                /*pArmor->Set_Active(true);
+                pArmor->Set_Follow();*/
+                //m_pClothes[3]->Set_Active(false);
+                // 
+                // 상의
+                m_pClothes[3]->Set_TextureNumber(iTextureNum);
             }
             else
-                m_pClothes[3]->Set_Active(true);
+                m_pClothes[3]->Set_TextureNumber(0);
             break;
         case CUIItemSlot::SLOT_LEGGINGS:
-            strObjectTag += std::to_wstring(i);
-            pArmor = dynamic_cast<CUIItemSlot*>(Engine::Get_GameObject(L"Layer_UI", strObjectTag.c_str()))->Get_Item();
             if (pArmor)
             {
                 m_tEquipmentStat.iMaxHp += pArmor->Get_Stat()->iMaxHp;
                 m_tEquipmentStat.iDefense += pArmor->Get_Stat()->iDefense;
-                pArmor->Set_Active(true);
+                /*pArmor->Set_Active(true);
                 m_pClothes[4]->Set_Active(false);
-                pArmor->Set_Follow();
+                pArmor->Set_Follow();*/
+                // 하의
+                m_pClothes[4]->Set_TextureNumber(iTextureNum);
             }
             else
-                m_pClothes[4]->Set_Active(true);
+                m_pClothes[4]->Set_TextureNumber(0);
             break;
         }
     }

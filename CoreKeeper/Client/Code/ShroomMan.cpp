@@ -28,8 +28,13 @@ HRESULT CShroomMan::Ready_GameObject(_vec3 vPos)
     m_pTransformCom->Set_Pos(m_vRespawnPoint.x, m_vRespawnPoint.y, m_vRespawnPoint.z);
     m_pTransformCom->Set_Scale(0.6f, 0.6f, 0.6f);
     m_pStateCom->Set_Stat(200, 0, 25, 0);
+
+    m_vecDropItem.push_back(ITEM_MUSHROOM);
+    m_vecDropItem.push_back(ITEM_MUSHROOM);
     m_vecDropItem.push_back(ITEM_MUSHROOM);
     m_vecDropItem.push_back(ITEM_PEPPER_SEED);
+    m_vecDropItem.push_back(ITEM_FIBER_SEED);
+
     Set_Speed(1.0f);
 
     m_pSmokeParticleCom->init(L"../Bin/Resource/Texture/Particle/Puff_Particle/Puff_Particle_%d.png", 3, 0.3f);

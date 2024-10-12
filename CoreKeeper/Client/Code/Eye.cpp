@@ -37,7 +37,7 @@ void CEye::Render_GameObject()
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
-	m_pTextureCom->Set_Texture();
+	m_pTextureCom->Set_Texture(m_iTextureNumber);
 
 	m_pBufferCom->Set_Index(m_pAnimatorCom->Get_MotionIndex());
 	m_pBufferCom->Render_Buffer();

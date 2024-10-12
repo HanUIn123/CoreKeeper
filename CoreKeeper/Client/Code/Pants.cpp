@@ -41,7 +41,7 @@ void CPants::Render_GameObject()
 
 	FAILED_CHECK_RETURN(Setup_Material(), );
 
-	m_pTextureCom->Set_Texture();
+	m_pTextureCom->Set_Texture(m_iTextureNumber);
 
 	m_pBufferCom->Set_Index(m_pAnimatorCom->Get_MotionIndex());
 	m_pBufferCom->Render_Buffer();

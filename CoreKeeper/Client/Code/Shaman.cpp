@@ -45,9 +45,14 @@ HRESULT CShaman::Ready_GameObject(_vec3 vPos)
     m_pTransformCom->Set_Scale(1.2f, 1.2f, 1.2f);
     m_pColliderCom->Set_Offset(_vec3(-0.25f, 0, 0));
     m_pStateCom->Set_Stat(150, 0, 50, 0);
+
+    m_vecDropItem.push_back(ITEM_SKULL_PIECE);
+    m_vecDropItem.push_back(ITEM_SKULL_PIECE);
     m_vecDropItem.push_back(ITEM_SKULL_PIECE);
     m_vecDropItem.push_back(ITEM_CARROT_SEED);
+    m_vecDropItem.push_back(ITEM_FIBER_SEED);
     m_vecDropItem.push_back(ITEM_ASSISTANCE);
+
     Set_Speed(1.5f);
 
     m_pHitParticleCom->init(L"../Bin/Resource/Texture/Effect/Hit_%d.png", 5, 1.0f);

@@ -16,6 +16,7 @@ HWND	g_hWnd;
 bool    g_bIsTopCamera;
 int     g_iLightNum;
 bool    g_bOpen;
+bool    g_bStart;
 
 // 이 코드 모듈에 들어 있는 함수의 정방향 선언입니다.
 ATOM                MyRegisterClass(HINSTANCE hInstance);
