@@ -78,9 +78,6 @@ _int CShaman::Update_GameObject(const _float& fTimeDelta)
     if (m_eState != DEAD && !Check_Wall())
         m_eState = State_Change();
 
-    if (m_pPlayerState->Get_Dead())
-        m_eState == IDLE;
-
     switch (m_eState)
     {
     case IDLE:
@@ -471,6 +468,9 @@ void CShaman::Pattern_Dead()
 
 STATE CShaman::State_Change()
 {
+    if (m_pPlayerState->Get_Dead())
+        return IDLE;
+
     _vec3 vPlayerPos, vPos;
     CGameObject* pWeapon;
     m_pTransformCom->Get_Info(INFO_POS, &vPos);
@@ -513,6 +513,10 @@ STATE CShaman::State_Change()
         }
         break;
     }
+
+
+    if (m_pPlayerState->Get_Dead())
+        m_eState = IDLE;
     return m_eState;
 }
 

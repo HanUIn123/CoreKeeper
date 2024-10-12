@@ -81,9 +81,6 @@ _int CShroomMan::Update_GameObject(const _float& fTimeDelta)
         if (m_eState != DEAD && !Check_Wall())
             m_eState = State_Change();
 
-        if (m_pPlayerState->Get_Dead())
-            m_eState == IDLE;
-
         switch (m_eState)
         {
         case IDLE:
@@ -188,7 +185,7 @@ void CShroomMan::Render_GameObject()
     m_pBufferCom->Render_Buffer();
     m_pColliderCom->Render_Collider();
 
-    if (m_eState != IDLE)
+    if (m_eState != IDLE && !m_pPlayerState->Get_Dead())
     {
         m_pSmokeParticleCom->render();
     }
@@ -471,6 +468,12 @@ void CShroomMan::Pattern_Dead()
 
 STATE CShroomMan::State_Change()
 {
+    if (m_pPlayerState->Get_Dead())
+    {
+        Set_Speed(1.0f);
+        return IDLE;
+    }
+
     if (m_eState == IDLE)
     {
         CGameObject* pWeapon = m_pPlayer->Get_HandedItem();
@@ -481,6 +484,8 @@ STATE CShroomMan::State_Change()
         if (m_pCalculatorCom->Check_Distance2D(&vPlayerPos, &vPos, m_fAggroDistance))
             return WALK;
     }
+
+
     return m_eState;
 }
 
