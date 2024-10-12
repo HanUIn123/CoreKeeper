@@ -60,8 +60,9 @@ public:
 
 	void				Set_MaxHunger(_int iMax) { m_iMaxHunger = iMax; m_iHunger = m_iMaxHunger; }
 	_int				Get_Hunger() { return m_iHunger; }
+	void				Set_Hunger(_int iHunger) { m_iHunger = iHunger; }
 	_int				Get_MaxHunger() { return m_iMaxHunger; }
-	void				Set_HungerMinus(_int iMinus) { m_iHunger -= iMinus; }
+	void				Set_HungerMinus(_int iMinus) { m_iHunger -= iMinus; if (m_iHunger < 0) m_iHunger = 0; }
 	void				Set_HungerPlus(_int iPlus) { m_iHunger += iPlus; if (m_iHunger > m_iMaxHunger) m_iHunger = m_iMaxHunger; }
 
 	const STAT*			Get_Stat() { return &m_tStat; }

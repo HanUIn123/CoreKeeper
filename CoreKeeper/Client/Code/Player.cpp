@@ -108,7 +108,7 @@ HRESULT CPlayer::Ready_GameObject()
 {
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-    m_tBasicStat = STAT(400, 100, 20, 0);
+    m_tBasicStat = STAT(200, 100, 20, 0);
     m_pStateCom->Set_Stat(m_tBasicStat.iMaxHp, m_tBasicStat.iMaxMp, m_tBasicStat.iAttack, m_tBasicStat.iDefense);
     m_pStateCom->Set_MaxHunger(100);
     m_pEquipInventoryCom->Set_SlotCount(10);
@@ -1903,15 +1903,15 @@ void CPlayer::Eat(ITEMNUM eHandedNum)
         CBuffMgr::GetInstance()->Set_BuffStart(BUFF_MINING, 120);
         break;
     case ITEM_POTION_HP:
-        soundName = L"bubble.wav";
+        soundName = L"drinking.wav";
         m_pStateCom->Set_Recover(200);
         break;
     case ITEM_POTION_ATT:
-        soundName = L"bubble.wav";
+        soundName = L"drinking.wav";
         CBuffMgr::GetInstance()->Set_BuffStart(BUFF_ATT, 300);
         break;
     case ITEM_POTION_DEF:
-        soundName = L"bubble.wav";
+        soundName = L"drinking.wav";
         CBuffMgr::GetInstance()->Set_BuffStart(BUFF_DEF, 300);
         break;
     }
@@ -2162,6 +2162,8 @@ void CPlayer::Set_UI()
 
     if (Engine::Key_Down(DIK_M))
     {
+        Engine::CSoundMgr::GetInstance()->Play(L"paper.wav", SOUND_EFFECT, 0.4f);
+
         if (!m_bInventory)
             Set_Map();
 
@@ -2412,7 +2414,7 @@ void CPlayer::Set_Buff(const _float& fTimeDelta)
                 if (m_fFireTickTime == 0.f)
                     Engine::CSoundMgr::GetInstance()->Play(L"beamLoop.wav", SOUND_PLAYER, 0.1f);
                 m_fFireTickTime += fTimeDelta;
-                if (m_fFireTickTime >= 3.f)
+                if (m_fFireTickTime >= 1.f)
                 {
                     m_fFireTickTime = 0.f;
                     if (!m_bImmune)
@@ -2481,7 +2483,7 @@ void CPlayer::Set_Buff(const _float& fTimeDelta)
 
 void CPlayer::Set_Hungry(const _float& fTimeDelta)
 {
-    if (m_eState != IDLE)
+    if (m_eState != IDLE && !m_bImmune)
     {
         m_fHungerTime += fTimeDelta;
         if (m_fHungerTime >= 5.f)
@@ -2595,6 +2597,9 @@ void CPlayer::Respawn_Progress(const _float& fTimeDelta)
 
             m_pInventoryCom->Move_All_Item(dynamic_cast<CGravestoneObject*>(pGraveStone)->Get_Inventory());
 
+            // 버프 & 디버프 초기화
+            for (_int i = 0; i < BUFFTYPE_END; i++)
+                CBuffMgr::GetInstance()->Set_BuffEnd((BUFFTYPE)i);
         }
     }
     else if (m_fRespawnProgress <= 5.f)

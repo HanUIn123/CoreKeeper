@@ -29,6 +29,7 @@ _int CAzeosSpawner::Update_GameObject(const _float& fTimeDelta)
 
     if (Check_Object_Interaction())
     {
+        Engine::CSoundMgr::GetInstance()->Play(L"Bell.wav", SOUND_SPAWN_AZEOS, 0.3f);
         Interaction();
     }
 
