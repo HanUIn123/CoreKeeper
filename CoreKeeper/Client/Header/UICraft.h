@@ -44,6 +44,8 @@ private:
 	MATERIAL eTableMaterial;
 	TABLETYPE m_eTableType;
 
+	_vec3 m_vFirstPos;
+
 private:
 	Engine::CRcTex* m_pBufferCom;
 	Engine::CRcTex* m_pTitleBufferCom;

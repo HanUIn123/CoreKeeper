@@ -242,13 +242,39 @@ void CUICookingPot::Render_GameObject()
 
 		_int iNum = pItem->Get_TextureNumber();
 
+
+
+		matWorld._11 = 20.f;
+		matWorld._22 = 20.f;
+
+		m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
+
 		pItem->Get_Texture()->Set_Texture(iNum);
 
 		pItem->Get_Buffer()->Render_First();
+
+		_int iCount = pItem->Get_Count();
+
+		if (iCount != 1)
+		{
+			wstring sFont = std::to_wstring(iCount);
+
+			const _tchar* tFont = sFont.c_str();
+
+			_vec2 LTPos(m_BRect[0].right - 20.f, m_BRect[0].top + 25.f);
+			_vec2 RBPos(m_BRect[0].right + 10.f, m_BRect[0].bottom + 5.f);
+
+			Engine::Render_Font_Custom(L"Font_Item", tFont, &LTPos, &RBPos, DT_RIGHT | DT_BOTTOM, D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
+		}
 	}
 
 	if (m_bRectPicked[0])
 	{
+		matWorld._11 = 30.f;
+		matWorld._22 = 30.f;
+
+		m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
+
 		m_pColTextureCom->Set_Texture(0);
 
 		m_pColBufferCom->Render_Buffer();
@@ -271,13 +297,38 @@ void CUICookingPot::Render_GameObject()
 
 		_int iNum = pItem->Get_TextureNumber();
 
+
+		matWorld._11 = 20.f;
+		matWorld._22 = 20.f;
+
+		m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
+
 		pItem->Get_Texture()->Set_Texture(iNum);
 
 		pItem->Get_Buffer()->Render_First();
+
+		_int iCount = pItem->Get_Count();
+
+		if (iCount != 1)
+		{
+			wstring sFont = std::to_wstring(iCount);
+
+			const _tchar* tFont = sFont.c_str();
+
+			_vec2 LTPos(m_BRect[1].right - 20.f, m_BRect[1].top + 25.f);
+			_vec2 RBPos(m_BRect[1].right + 10.f, m_BRect[1].bottom + 5.f);
+
+			Engine::Render_Font_Custom(L"Font_Item", tFont, &LTPos, &RBPos, DT_RIGHT | DT_BOTTOM, D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
+		}
 	}
 
 	if (m_bRectPicked[1])
 	{
+		matWorld._11 = 30.f;
+		matWorld._22 = 30.f;
+
+		m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
+
 		m_pColTextureCom->Set_Texture(0);
 
 		m_pColBufferCom->Render_Buffer();
@@ -316,9 +367,28 @@ void CUICookingPot::Render_GameObject()
 
 		_int iNum = pItem->Get_TextureNumber();
 
+		matWorld._11 = 20.f;
+		matWorld._22 = 20.f;
+
+		m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
+
 		pItem->Get_Texture()->Set_Texture(iNum);
 
 		pItem->Get_Buffer()->Render_First();
+
+		_int iCount = pItem->Get_Count();
+
+		if (iCount != 1)
+		{
+			wstring sFont = std::to_wstring(iCount);
+
+			const _tchar* tFont = sFont.c_str();
+
+			_vec2 LTPos(m_BRect[2].right - 20.f, m_BRect[2].top + 25.f);
+			_vec2 RBPos(m_BRect[2].right + 10.f, m_BRect[2].bottom + 5.f);
+
+			Engine::Render_Font_Custom(L"Font_Item", tFont, &LTPos, &RBPos, DT_RIGHT | DT_BOTTOM, D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
+		}
 	}
 	else if (!m_pInventoryCom->Check_Empty(0) && !m_pInventoryCom->Check_Empty(1) && m_pSecondInventoryCom->Check_Empty(0))
 	{
@@ -378,6 +448,11 @@ void CUICookingPot::Render_GameObject()
 		}
 		_int iNum = eRNum - ITEM_BERRY_BERRY_FOOD;
 
+		matWorld._11 = 20.f;
+		matWorld._22 = 20.f;
+
+		m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
+
 		m_pFoodTextureCom->Set_Texture(iNum);
 
 		m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
@@ -401,6 +476,11 @@ void CUICookingPot::Render_GameObject()
 
 	if (m_bRectPicked[2])
 	{
+		matWorld._11 = 30.f;
+		matWorld._22 = 30.f;
+
+		m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
+
 		m_pColTextureCom->Set_Texture(0);
 
 		m_pColBufferCom->Render_Buffer();

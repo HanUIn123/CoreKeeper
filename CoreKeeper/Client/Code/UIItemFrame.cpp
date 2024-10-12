@@ -119,7 +119,18 @@ void CUIItemFrame::Render_GameObject()
 		if (m_bCraft)
 		{
 			CCraftMgr::Recipe sItemRecipe;
-			sItemRecipe = CCraftMgr::GetInstance()->Get_Recipe(make_pair(m_pItem->Get_ItemNum(), m_pItem->Get_ItemMaterial()));
+			if(m_pItem->Get_ItemNum() == ITEM_COOKINGPOT)
+				sItemRecipe = CCraftMgr::GetInstance()->Get_Recipe(make_pair(m_pItem->Get_ItemNum(), MATERIAL_COPPER));
+			else if (m_pItem->Get_ItemNum() == ITEM_FURNACE)
+				sItemRecipe = CCraftMgr::GetInstance()->Get_Recipe(make_pair(m_pItem->Get_ItemNum(), MATERIAL_WOOD));
+			else if (m_pItem->Get_ItemNum() == ITEM_ACCESSORY_TABLE)
+				sItemRecipe = CCraftMgr::GetInstance()->Get_Recipe(make_pair(m_pItem->Get_ItemNum(), MATERIAL_COPPER));
+			else if (m_pItem->Get_ItemNum() == ITEM_POTION_TABLE)
+				sItemRecipe = CCraftMgr::GetInstance()->Get_Recipe(make_pair(m_pItem->Get_ItemNum(), MATERIAL_IRON));
+			else if (m_pItem->Get_ItemNum() == ITEM_SPRINKLER)
+				sItemRecipe = CCraftMgr::GetInstance()->Get_Recipe(make_pair(m_pItem->Get_ItemNum(), MATERIAL_IRON));
+			else
+				sItemRecipe = CCraftMgr::GetInstance()->Get_Recipe(make_pair(m_pItem->Get_ItemNum(), m_pItem->Get_ItemMaterial()));
 
 			for (auto iter : sItemRecipe.vecIngredients)
 			{

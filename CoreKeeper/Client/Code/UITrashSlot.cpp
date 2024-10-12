@@ -236,11 +236,54 @@ void CUITrashSlot::Render_GameObject()
 			matWorld._22 = 25.f;
 			break;
 
+		case ITEM_INSTRUMENT_PIANO:
+			matWorld._11 = 35.f;
+			matWorld._22 = 35.f;
+			matWorld._41 += 4.f;
+			matWorld._42 += 14.f;
+			break;
+
+		case ITEM_INSTRUMENT_CELLO:
+			matWorld._11 = 35.f;
+			matWorld._22 = 35.f;
+			matWorld._41 += 10.f;
+			matWorld._42 += 4.f;
+			break;
+
+		case ITEM_INSTRUMENT_HARP:
+			matWorld._11 = 35.f;
+			matWorld._22 = 35.f;
+			matWorld._41 += 10.f;
+			matWorld._42 += 7.f;
+			break;
+
+		case ITEM_INSTRUMENT_FLUTE:
+			matWorld._11 = 45.f;
+			matWorld._22 = 45.f;
+			matWorld._41 += 6.f;
+			matWorld._42 += 14.f;
+			break;
+
+		case ITEM_INSTRUMENT_OCARINA:
+			matWorld._11 = 35.f;
+			matWorld._22 = 35.f;
+			matWorld._41 += 4.f;
+			matWorld._42 += 12.f;
+			break;
+
+		case ITEM_INSTRUMENT_DRUM:
+			matWorld._11 = 35.f;
+			matWorld._22 = 35.f;
+			matWorld._41 += 4.f;
+			matWorld._42 += 14.f;
+			break;
+
 		default:
 			matWorld._11 = 15.f;
 			matWorld._22 = 15.f;
 			break;
 		}
+
 
 
 		if (iCount != 1)
