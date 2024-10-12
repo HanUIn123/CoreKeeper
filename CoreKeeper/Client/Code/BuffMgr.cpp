@@ -44,7 +44,7 @@ void CBuffMgr::Set_BuffStart(BUFFTYPE _eType, _float fTime)
 	{
 		_int iType = (_int)_eType;
 		m_pPlayer->Set_BuffState(_eType, true);
-		if (_eType == DEBUFF_SLOW)
+		if (_eType == DEBUFF_SLOW || _eType == DEBUFF_FIRE)
 		{
 			m_arrBuffState[iType].x = fTime;
 			m_arrBuffState[iType].y = fTime;

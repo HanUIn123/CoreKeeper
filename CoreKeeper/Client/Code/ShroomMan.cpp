@@ -80,6 +80,10 @@ _int CShroomMan::Update_GameObject(const _float& fTimeDelta)
     {
         if (m_eState != DEAD && !Check_Wall())
             m_eState = State_Change();
+
+        if (m_pPlayerState->Get_Dead())
+            m_eState == IDLE;
+
         switch (m_eState)
         {
         case IDLE:
