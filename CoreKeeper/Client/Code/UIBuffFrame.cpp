@@ -4,7 +4,7 @@
 #include "../Header/CraftMgr.h"
 
 CUIBuffFrame::CUIBuffFrame(LPDIRECT3DDEVICE9 pGraphicDev)
-	: Engine::CGameObject(pGraphicDev), m_bWindow(false), m_bCollapse(false), m_bCraft(false)
+	: Engine::CGameObject(pGraphicDev), m_bWindow(false), m_bCollapse(false), m_bCraft(false), m_bDebuff(false)
 
 {
 	m_vPos = { 0, 0 };
@@ -81,9 +81,20 @@ void CUIBuffFrame::Render_GameObject()
 
 	m_pBufferCom->Render_Buffer();
 
-	auto iter = m_mapType.find(m_eType);
+	const _tchar* tChar = nullptr;
 
-	const _tchar* tChar = (iter->second).c_str();
+	if (m_eType == 31 && m_bDebuff == true)
+	{
+		auto iter = m_mapType.find(17);
+
+		tChar = (iter->second).c_str();
+	}
+	else
+	{
+		auto iter = m_mapType.find(m_eType);
+
+		tChar = (iter->second).c_str();
+	}
 
 	_vec3 vPos3 = {};
 
@@ -93,7 +104,7 @@ void CUIBuffFrame::Render_GameObject()
 	Engine::Render_Font(L"Font_Item", tChar, &vPos2, D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
 }
 
-void CUIBuffFrame::Set_Window(CUIBuff::BUFFICONTYPE _BuffType, POINT _pt, _bool _bCraft)
+void CUIBuffFrame::Set_Window(CUIBuff::BUFFICONTYPE _BuffType, POINT _pt, _bool _bCraft, _bool bDebuff)
 {
 	m_bWindow = true;
 
@@ -102,6 +113,8 @@ void CUIBuffFrame::Set_Window(CUIBuff::BUFFICONTYPE _BuffType, POINT _pt, _bool 
 	m_eType = _BuffType;
 
 	m_pTransformCom->Set_Pos((_float)_pt.x + 130.f - WINCX / 2.f, WINCY / 2.f - (_float)_pt.y - 10.f, 0.f);
+
+	m_bDebuff = bDebuff;
 }
 
 void CUIBuffFrame::Set_BuffExplain()
@@ -118,7 +131,7 @@ void CUIBuffFrame::Set_BuffExplain()
 	string = L"방어력 \n+5.0% 증가";
 	m_mapType.insert({ 15, string });
 
-	string = L"허기로 인해 \n피해 및 최대 체력 -5.0% 감소";
+	string = L"포만감으로 인해 \n피해 및 최대 체력 +5.0% 증가";
 	m_mapType.insert({ 17, string });
 
 	string = L"+10의 화상 피해";
@@ -130,7 +143,7 @@ void CUIBuffFrame::Set_BuffExplain()
 	string = L"슬라임으로 인해 \n이동속도 -40.0%";
 	m_mapType.insert({ 30, string });
 
-	string = L"포만감으로 인해 \n피해 및 최대 체력 +5.0% 증가";
+	string = L"허기로 인해 \n피해 및 최대 체력 -5.0% 감소";
 	m_mapType.insert({ 31, string });
 
 	string = L"잠시동안 이동 불가";
