@@ -85,7 +85,7 @@ void CSmoke::update(float timeDelta, _vec3 vDir)
 		//살아있는 파티클만 업데이트
 		if (i->_isAlive)
 		{
-			i->_color -= i->_colorFade * timeDelta;
+			//i->_color -= i->_colorFade * timeDelta;
 
 			i->_position += vDir;
 

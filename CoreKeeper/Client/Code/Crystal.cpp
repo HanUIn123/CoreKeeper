@@ -64,7 +64,7 @@ _int CCrystal::Update_GameObject(const _float& fTimeDelta)
 
 	if (D3DXVec3Length(&vTotal) < 4)
 	{
-
+		m_pAzeos->Set_Hp(1);
 	}
 
 	_vec3 vPos, vPlayerPos;

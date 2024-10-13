@@ -4,6 +4,8 @@
 #include "Export_Utility.h"
 #include "../Header/UIBuffFrame.h"
 
+bool CUIBuff::m_bCollapse[BUFF_ICON_END] = {};
+
 CUIBuff::CUIBuff(LPDIRECT3DDEVICE9 pGraphicDev)
 	: Engine::CGameObject(pGraphicDev), m_bWindow(false), m_eBuffIndex(BUFF), m_eBuffType(BUFF_ICON_END), m_fCurTime(0.f), m_fBuffTime(50.f), m_bAllocated(false)
 
@@ -16,6 +18,7 @@ CUIBuff::~CUIBuff()
 
 HRESULT CUIBuff::Ready_GameObject(_vec2 vPos, _vec2 vSize)
 {
+
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
 	_D3DVIEWPORT9 Viewport;
@@ -40,6 +43,9 @@ _int CUIBuff::Update_GameObject(const _float& fTimeDelta)
 {
 	_int iExit = Engine::CGameObject::Update_GameObject(fTimeDelta);
 
+	if(m_pFrame)
+		CUIBuffFrame* m_pFrame = dynamic_cast<CUIBuffFrame*>(Engine::Get_GameObject(L"Layer_UI", L"UI_BuffFrame"));
+
 	if (m_bAllocated)
 	{
 		m_pTransformCom->Set_Pos(m_vPos.x, m_vPos.y, 0);
@@ -50,17 +56,20 @@ _int CUIBuff::Update_GameObject(const _float& fTimeDelta)
 
 		if (Map_Picked(pt))
 		{
-			CUIBuffFrame* pFrame = dynamic_cast<CUIBuffFrame*>(Engine::Get_GameObject(L"Layer_UI", L"UI_BuffFrame"));
-			pFrame->Set_Window(m_eBuffType, pt);
+			m_pFrame = dynamic_cast<CUIBuffFrame*>(Engine::Get_GameObject(L"Layer_UI", L"UI_BuffFrame"));
+			m_pFrame->Set_Window(m_eBuffType, pt);
 
-			m_bCollapse = true;
+			m_bCollapse[m_eBuffType] = true;
 		}
-		else
+		else if(!Map_Picked(pt))
 		{
-			CUIBuffFrame* pFrame = dynamic_cast<CUIBuffFrame*>(Engine::Get_GameObject(L"Layer_UI", L"UI_BuffFrame"));
-			pFrame->Set_WindowDis();
+			m_bCollapse[m_eBuffType] = false;
+		}
 
-			m_bCollapse = false;
+		if (!m_bCollapse[0] && !m_bCollapse[1] && !m_bCollapse[6] && !m_bCollapse[15] && !m_bCollapse[17] && !m_bCollapse[24] && !m_bCollapse[29] && !m_bCollapse[30] && !m_bCollapse[31] && !m_bCollapse[38] && !m_bCollapse[40])
+		{
+			m_pFrame = dynamic_cast<CUIBuffFrame*>(Engine::Get_GameObject(L"Layer_UI", L"UI_BuffFrame"));
+			m_pFrame->Set_WindowDis();
 		}
 
 		m_Rect.top = (_float)m_BRect.top + ((_float)(m_BRect.bottom - m_BRect.top) - (_float(m_BRect.bottom - m_BRect.top) * m_fCurTime / m_fBuffTime));

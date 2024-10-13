@@ -40,25 +40,8 @@ void CHit::resetParticle(Attribute* attribute) // 파티클 리셋
 	attribute->_isAlive = true;
 	attribute->_position = _origin; // 처음위치로
 
+	attribute->_position.x = 0.2f;
 	attribute->_position.z = 0.4f;
-
-	/*
-	D3DXVECTOR3 min = D3DXVECTOR3(-1.0f, -1.0f, -1.0f); // 최소
-	D3DXVECTOR3 max = D3DXVECTOR3(1.0f, 1.0f, 1.0f); // 최대
-
-	//랜덤벡터 생성
-	d3d::GetRandomVector(
-		&attribute->_velocity,
-		&min,
-		&max);
-
-	// 구를 만들기 위한 초기화
-	D3DXVec3Normalize(
-		&attribute->_velocity,
-		&attribute->_velocity);
-
-	attribute->_velocity *= 100.0f; // 속도 지정
-	*/
 
 	attribute->_velocity = { 0.f, 0.f, 0.f };
 

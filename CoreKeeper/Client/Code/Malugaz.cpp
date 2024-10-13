@@ -5,6 +5,8 @@
 #include "../Header/Player.h"
 #include "../Header/Projectile.h"
 #include "../Header/Fire.h"
+#include "../Header/UIBossName.h"
+#include "../Header/UIBossBar.h"
 
 CMalugaz::CMalugaz(LPDIRECT3DDEVICE9 pGraphicDev)
     : CMonster(pGraphicDev), m_iPhase(1), m_iIdleCount(0), m_iTextureNum(0)
@@ -33,6 +35,8 @@ CMalugaz::CMalugaz(LPDIRECT3DDEVICE9 pGraphicDev)
 
     m_bStopDraw = true;
 
+    m_bTeleport = false;
+
     m_fSoundVolume = 0.5f;
 }
 
@@ -60,6 +64,8 @@ HRESULT CMalugaz::Ready_GameObject(_vec3 vPos)
 
     m_pHitParticleCom->init(L"../Bin/Resource/Texture/Effect/Hit_%d.png", 5, 2.0f);
 
+    m_pTeleportCom->init(L"../Bin/Resource/Texture/Effect/MalugazTeleport/Teleport_%d.png", 8, 4.5f);
+
     return S_OK;
 }
 
@@ -72,6 +78,14 @@ _int CMalugaz::Update_GameObject(const _float& fTimeDelta)
     Engine::CSoundMgr::GetInstance()->PlayBGM(L"Malguaz_the_Corrupted_Shaman_R1.wav", 0.1f);
 
     Set_Cast();
+
+    CUIBossName* pUIFont = dynamic_cast<CUIBossName*>(Engine::Get_GameObject(L"Layer_UI", L"UI_BossName"));
+
+    pUIFont->Set_Font(*m_pTransformCom->Get_WorldMatrix(), L"타락한\n말루가즈");
+
+    CUIBossBar* m_pUIBossBar = dynamic_cast<CUIBossBar*>(Engine::Get_GameObject(L"Layer_UI", L"UI_BossBar"));
+
+    m_pUIBossBar->Set_Bar(*m_pTransformCom->Get_WorldMatrix(), this);
 
     if (m_eState != DEAD)
         m_eState = State_Change();
@@ -115,6 +129,16 @@ _int CMalugaz::Update_GameObject(const _float& fTimeDelta)
         }
     }
 
+    if (m_bTeleport)
+    {
+        m_pTeleportCom->update(fTimeDelta);
+
+        if (m_pTeleportCom->isDead())
+        {
+            m_pTeleportCom->reset();
+            m_bTeleport = false;
+        }
+    }
     Flip();
     Set_StuckFree(fTimeDelta);
     m_pAnimatorCom->Update_Animation();
@@ -131,6 +155,12 @@ void CMalugaz::Render_GameObject()
 {
     if (m_bStopDraw)
         return;
+
+    if (m_bTeleport)
+    {
+        m_pGraphicDev->SetTransform(D3DTS_WORLD, &m_matTeleportWorld);
+        m_pTeleportCom->render();
+    }
 
     //m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
     m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
@@ -195,6 +225,10 @@ HRESULT CMalugaz::Add_Component()
     pComponent = m_pHitParticleCom = dynamic_cast<CHit*>(Engine::Clone_Proto(L"Proto_Hit"));
     NULL_CHECK_RETURN(pComponent, E_FAIL);
     m_mapComponent[ID_STATIC].insert({ L"Com_Hit", pComponent });
+
+    pComponent = m_pTeleportCom = dynamic_cast<CHit*>(Engine::Clone_Proto(L"Proto_Hit"));
+    NULL_CHECK_RETURN(pComponent, E_FAIL);
+    m_mapComponent[ID_STATIC].insert({ L"Com_Teleport", pComponent });
 
     return S_OK;
 
@@ -330,6 +364,12 @@ void CMalugaz::Pattern_Dead()
     }
     if (m_bKnockBackEnd)
     {
+        CUIBossName* pUIFont = dynamic_cast<CUIBossName*>(Engine::Get_GameObject(L"Layer_UI", L"UI_BossName"));
+        pUIFont->Set_Disable();
+
+        CUIBossBar* pBar = dynamic_cast<CUIBossBar*>(Engine::Get_GameObject(L"Layer_UI", L"UI_BossBar"));
+        pBar->Set_Disable();
+
         Engine::CSoundMgr::GetInstance()->PlayOnce(L"Malguaz_Death.wav", SOUND_MALUGAZ, 0.1f);
         m_pBufferCom = m_pBufferCom3;
         m_iTextureNum = 2;
@@ -525,6 +565,11 @@ void CMalugaz::Pattern_Teleport(const _float& fTimeDelta)
     _vec3 vPlayerPos;
     m_pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
     m_pTransformCom->Set_Pos(vPlayerPos.x, 2.6f, vPlayerPos.z);
+
+
+    m_pTransformCom->Get_WorldMatrix(&m_matTeleportWorld);
+
+    m_bTeleport = true;
 
     Engine::CSoundMgr::GetInstance()->Play(L"fireballImpact.wav", SOUND_MALUGAZ, 0.1f);
 }

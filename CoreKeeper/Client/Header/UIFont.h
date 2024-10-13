@@ -4,11 +4,7 @@
 
 BEGIN(Engine)
 
-class CRcTex;
 class CTransform;
-class CTexture;
-//class CCalculator;
-//class CAnimator;
 
 END
 
@@ -51,12 +47,6 @@ private:
 private:
 
 	Engine::CTransform* m_pTransformCom;
-	/*
-	Engine::CRcTex* m_pBufferCom;
-	Engine::CTransform* m_pTransformCom;
-	Engine::CTexture* m_pTextureCom;
-
-public:*/
 public:
 	static CUIFont* Create(LPDIRECT3DDEVICE9 pGraphicDev);
 

@@ -41,35 +41,17 @@ void CFollow::resetParticle(Attribute* attribute) // 파티클 리셋
 	attribute->_position = _origin; // 처음위치로
 	
 	attribute->_position.x = d3d::GetRandomFloat(-0.4f, 0.4f);
-	attribute->_position.y = d3d::GetRandomFloat(-0.2f, 0.3f);
-	attribute->_position.z = d3d::GetRandomFloat(-0.5f, 0.2f);
+	attribute->_position.y = d3d::GetRandomFloat(-0.3f, 1.f);
+	attribute->_position.z = d3d::GetRandomFloat(-0.5f, 0.0f);
 
 	D3DXVECTOR3 min = D3DXVECTOR3(-1.0f, -1.0f, -1.0f); // 최소
 	D3DXVECTOR3 max = D3DXVECTOR3(1.0f, 1.0f, 1.0f); // 최대
-
-	/*
-	//랜덤벡터 생성
-	d3d::GetRandomVector(
-		&attribute->_velocity,
-		&min,
-		&max);*/
 
 	attribute->_velocity.x = 0.f;
 	attribute->_velocity.y = 0.f;
 	attribute->_velocity.z = 0.f;
 
 	attribute->_iTextureNum = (_int)d3d::GetRandomFloat(0.f, (_float)m_iMaxTexture);
-
-	// 구를 만들기 위한 초기화
-	
-	/*
-	D3DXVec3Normalize(
-		&attribute->_velocity,
-		&attribute->_velocity);
-
-	attribute->_velocity *= 100.0f; // 속도 지정
-	*/
-
 	
 	attribute->_color = D3DXCOLOR(1.f, 1.f, 1.f, 1.f); // 랜덤 색 생성 (빨간색 X)
 		

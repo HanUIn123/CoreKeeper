@@ -15,6 +15,7 @@ class CTexture;
 
 END
 
+
 class CUIBuffFrame : public Engine::CGameObject
 {
 private:

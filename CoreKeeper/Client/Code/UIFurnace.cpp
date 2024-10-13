@@ -167,7 +167,7 @@ _int CUIFurnace::Update_GameObject(const _float& fTimeDelta)
 
 	if (!m_pInventoryCom->Check_Empty(0))
 	{
-		m_Rect.top = (_long)(m_FirstRect.top + ((_float)(m_FirstRect.bottom - m_FirstRect.top) - ((_float)(m_FirstRect.bottom - m_FirstRect.top) * (*m_fTime / 80.f))));
+		m_Rect.top = (_long)(m_FirstRect.top + ((_float)(m_FirstRect.bottom - m_FirstRect.top) - ((_float)(m_FirstRect.bottom - m_FirstRect.top) * (*m_fTime / 40.f))));
 	}
 
 	return iExit;

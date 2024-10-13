@@ -40,6 +40,8 @@ public:
 		}
 	}
 
+	void            Set_Disable() { m_bWindow = false; }
+
 private:
 	HRESULT			Add_Component();
 

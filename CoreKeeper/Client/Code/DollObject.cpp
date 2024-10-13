@@ -36,17 +36,16 @@ _int CDollObject::Update_GameObject(const _float& fTimeDelta)
 		{
 			CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
 
-			if (!pPlayer->Get_CraftUI())
+			if (pPlayer->Get_ChestInv() && pPlayer->Get_Inventory())
 			{
-				pPlayer->Set_Craft();
+				pPlayer->Set_ChestInventory();
 
-				pPlayer->Set_Inventory();
-
-				m_bCollision = false;
+				//pPlayer->Set_Inventory();
 			}
+
+			m_bCollision = false;
 		}
 	}
-
 	Add_RenderGroup(RENDER_ALPHA, this);
 
 	return Engine::CGameObject::Update_GameObject(fTimeDelta);
@@ -84,9 +83,9 @@ void CDollObject::Interaction()
 	{
 		CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
 
-		pPlayer->Set_Craft(TABLE_MUSIC);
+		pPlayer->Set_ChestInventory(m_pInventoryCom);
 
-		pPlayer->Set_Inventory();
+		//pPlayer->Set_Inventory();
 
 		m_bCollision = true;
 	}

@@ -69,6 +69,7 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
     m_fBleedTime = 0.f;
     m_bFire = false;
     m_fFireTickTime = 0.f;
+    m_bHeal = false;
 
     m_bShootOnce = false;
     m_vMouseWorldPos = { 0, 0, 0 };
@@ -916,6 +917,20 @@ void CPlayer::Set_ImmuneByToggle()
         CBuffMgr::GetInstance()->Set_BuffStart(DEBUFF_FIRE, 5.f);
     if (Engine::Key_Down(DIK_F4))
         CBuffMgr::GetInstance()->Set_BuffStart(DEBUFF_SLOW, 5.f);
+    if (Engine::Key_Down(DIK_F9))
+    {
+        CBuffMgr::GetInstance()->Set_BuffStart(BUFF_SPEED, 999.f);
+        CBuffMgr::GetInstance()->Set_BuffStart(BUFF_HP, 999.f);
+        CBuffMgr::GetInstance()->Set_BuffStart(BUFF_ATT, 999.f);
+        CBuffMgr::GetInstance()->Set_BuffStart(BUFF_DEF, 999.f);
+        CBuffMgr::GetInstance()->Set_BuffStart(BUFF_FULL, 999.f);
+        CBuffMgr::GetInstance()->Set_BuffStart(BUFF_IMMUNE, 999.f);
+        CBuffMgr::GetInstance()->Set_BuffStart(BUFF_MINING, 999.f);
+        CBuffMgr::GetInstance()->Set_BuffStart(DEBUFF_HUNGER, 999.f);
+        CBuffMgr::GetInstance()->Set_BuffStart(DEBUFF_FIRE, 999.f);
+        CBuffMgr::GetInstance()->Set_BuffStart(DEBUFF_SLOW, 999.f);
+        CBuffMgr::GetInstance()->Set_BuffStart(DEBUFF_STUN, 999.f);
+    }
 }
 
 
@@ -2859,24 +2874,60 @@ void CPlayer::Set_Status()
 
 void CPlayer::Set_ChestInventory(CInventory* pInventory)
 {
-    for (int i = 0; i < 18; ++i)
+    if (pInventory)
     {
-        wstring string;
+        if (!(pInventory->Get_SlotCount() == 1))
+        {
+            for (int i = 0; i < pInventory->Get_SlotCount(); ++i)
+            {
+                wstring string;
 
-        string = L"UI_ChestInventory_" + std::to_wstring(i);
+                string = L"UI_ChestInventory_" + std::to_wstring(i);
 
-        CUIChestInv* pChestInventory = dynamic_cast<CUIChestInv*>(Engine::Get_GameObject(L"Layer_UI", string.c_str()));
+                CUIChestInv* pChestInventory = dynamic_cast<CUIChestInv*>(Engine::Get_GameObject(L"Layer_UI", string.c_str()));
 
-        pChestInventory->Set_Show(pInventory);
+                pChestInventory->Set_Show(pInventory);
+            }
+
+            CUISort* pSort = dynamic_cast<CUISort*>(Engine::Get_GameObject(L"Layer_UI", L"UI_ChestSort"));
+
+            pSort->Set_Window();
+            pSort->Set_Inventory(pInventory);
+
+            CUIChestSort* pChestSort = dynamic_cast<CUIChestSort*>(Engine::Get_GameObject(L"Layer_UI", L"UI_ChestAddItem"));
+            pChestSort->Set_Window(pInventory);
+        }
+        else
+        {
+            wstring string;
+
+            string = L"UI_ChestInventory_" + std::to_wstring(0);
+
+            CUIChestInv* pChestInventory = dynamic_cast<CUIChestInv*>(Engine::Get_GameObject(L"Layer_UI", string.c_str()));
+
+            pChestInventory->Set_Show(pInventory, true);
+        }
     }
+    else
+    {
+        for (int i = 0; i < 18; ++i)
+        {
+            wstring string;
 
-    CUISort* pSort = dynamic_cast<CUISort*>(Engine::Get_GameObject(L"Layer_UI", L"UI_ChestSort"));
+            string = L"UI_ChestInventory_" + std::to_wstring(i);
 
-    pSort->Set_Window();
-    pSort->Set_Inventory(pInventory);
+            CUIChestInv* pChestInventory = dynamic_cast<CUIChestInv*>(Engine::Get_GameObject(L"Layer_UI", string.c_str()));
 
-    CUIChestSort* pChestSort = dynamic_cast<CUIChestSort*>(Engine::Get_GameObject(L"Layer_UI", L"UI_ChestAddItem"));
-    pChestSort->Set_Window(pInventory);
+            pChestInventory->Set_Disable();
+
+            CUISort* pSort = dynamic_cast<CUISort*>(Engine::Get_GameObject(L"Layer_UI", L"UI_ChestSort"));
+
+            pSort->Set_Disable();
+
+            CUIChestSort* pChestSort = dynamic_cast<CUIChestSort*>(Engine::Get_GameObject(L"Layer_UI", L"UI_ChestAddItem"));
+            pChestSort->Set_Disable();
+        }
+    }
 
     Set_Inventory();
 
@@ -3101,7 +3152,10 @@ void CPlayer::Particle_Update(_float fTimeDelta)
 
         m_pFireParticleCom->reset();
     }
-    m_pFollowParticleCom->update(fTimeDelta);
+    if (m_bFire)
+        m_pFollowParticleCom->update(fTimeDelta);
+    else
+        m_pFollowParticleCom->reset();
 
     if (m_bDestroyWall)
     {

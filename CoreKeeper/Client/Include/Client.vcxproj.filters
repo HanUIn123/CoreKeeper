@@ -529,6 +529,12 @@
     <Filter Include="02. GameObject\00. BackGround\02.WhitePlane">
       <UniqueIdentifier>{62dd725e-e609-456c-bf9e-bf901352b24c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\07. UI\15. UIFont\00. BossName">
+      <UniqueIdentifier>{b3bf102d-0fb9-486c-8436-27b5cac73a97}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\07. UI\02. UIStatus\00. UIBossBar">
+      <UniqueIdentifier>{b98fb58c-4461-4693-8388-a80c437b8344}</UniqueIdentifier>
+	</Filter>
     <Filter Include="02. GameObject\06. Item\06. Installation\09. Doll">
       <UniqueIdentifier>{09d69918-709c-4ea0-86fd-3a22e07a51f7}</UniqueIdentifier>
     </Filter>
@@ -1044,6 +1050,12 @@
     <ClInclude Include="..\Header\WhitePlane.h">
       <Filter>02. GameObject\00. BackGround\02.WhitePlane</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\UIBossName.h">
+      <Filter>02. GameObject\07. UI\15. UIFont\00. BossName</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\UIBossBar.h">
+      <Filter>02. GameObject\07. UI\02. UIStatus\00. UIBossBar</Filter>
+	</ClInclude>
     <ClInclude Include="..\Header\Doll.h">
       <Filter>02. GameObject\06. Item\06. Installation\09. Doll</Filter>
     </ClInclude>
@@ -1093,9 +1105,6 @@
     </ClCompile>
     <ClCompile Include="..\Code\UIScreenIcon.cpp">
       <Filter>02. GameObject\07. UI\01. UIScreenIcon</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Code\UIStatusBar.cpp">
-      <Filter>02. GameObject\07. UI\02. UIStatus</Filter>
     </ClCompile>
     <ClCompile Include="imgui.cpp">
       <Filter>99.Imgui</Filter>
@@ -1538,6 +1547,15 @@
     <ClCompile Include="..\Code\WhitePlane.cpp">
       <Filter>02. GameObject\00. BackGround\02.WhitePlane</Filter>
     </ClCompile>
+    <ClCompile Include="..\Code\UIBossName.cpp">
+      <Filter>02. GameObject\07. UI\15. UIFont\00. BossName</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\UIBossBar.cpp">
+      <Filter>02. GameObject\07. UI\02. UIStatus\00. UIBossBar</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\UIStatusBar.cpp">
+      <Filter>02. GameObject\07. UI\02. UIStatus</Filter>
+	</ClCompile>
     <ClCompile Include="..\Code\Doll.cpp">
       <Filter>02. GameObject\06. Item\06. Installation\09. Doll</Filter>
     </ClCompile>

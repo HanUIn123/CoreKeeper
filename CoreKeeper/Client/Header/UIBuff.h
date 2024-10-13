@@ -2,6 +2,8 @@
 #include "GameObject.h"
 #include "Define.h"
 
+class CUIBuffFrame;
+
 BEGIN(Engine)
 
 class CRcTex;
@@ -74,7 +76,7 @@ private:
 
 	_vec2 m_vPos;
 	_bool m_bWindow;
-	_bool m_bCollapse;
+	static _bool m_bCollapse[BUFF_ICON_END];
 
 	RECT m_BRect;
 	RECT m_Rect;
@@ -84,6 +86,8 @@ private:
 
 	_float   m_fBuffTime;
 	_float   m_fCurTime;
+
+	CUIBuffFrame* m_pFrame;
 
 private:
 	Engine::CRcTex* m_pBufferCom;
