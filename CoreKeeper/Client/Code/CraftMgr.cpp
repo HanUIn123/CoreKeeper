@@ -615,9 +615,9 @@ void CCraftMgr::Set_Recipe()
 
     // 아제오스 스포너
     Recipe azeosSpawnerRecipe;
-    azeosSpawnerRecipe.vecIngredients.push_back({ ITEM_COPPER_BAR, 10 });
-    azeosSpawnerRecipe.vecIngredients.push_back({ ITEM_IRON_BAR, 10 });
-    azeosSpawnerRecipe.vecIngredients.push_back({ ITEM_SCARLET_BAR, 10 });
+    azeosSpawnerRecipe.vecIngredients.push_back({ ITEM_COPPER_BAR, 5 });
+    azeosSpawnerRecipe.vecIngredients.push_back({ ITEM_IRON_BAR, 5 });
+    azeosSpawnerRecipe.vecIngredients.push_back({ ITEM_SCARLET_BAR, 5 });
     azeosSpawnerRecipe.vecIngredients.push_back({ ITEM_FEATHER_PIECE, 3 });
     m_mapRecipes[make_pair(ITEM_AZEOS_SPAWNER, MATERIAL_END)] = azeosSpawnerRecipe;
 

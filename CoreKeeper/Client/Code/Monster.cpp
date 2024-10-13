@@ -452,7 +452,7 @@ void CMonster::Drop_All_Item()
 			m_vecItemName.push_back(L"Monster_Created_Instrument" + std::to_wstring(m_iTagNumber++));
 			break;
 		case ITEM_DOLL:
-			pGameObject = CDoll::Create(m_pGraphicDev);
+			pGameObject = CDoll::Create(m_pGraphicDev, vRandomPos);
 			NULL_CHECK(pGameObject);
 			dynamic_cast<CDoll*>(pGameObject)->Add_Count(4);
 			m_vecItemName.push_back(L"Monster_Created_Doll" + std::to_wstring(m_iTagNumber++));

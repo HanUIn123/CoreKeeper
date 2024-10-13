@@ -39,7 +39,7 @@ HRESULT CAzeosShadow::Ready_GameObject(_vec3 _vPos)
 
 _int CAzeosShadow::Update_GameObject(const _float& fTimeDelta)
 {
-    if (m_fAppearTime >= 300)
+    if (m_fAppearTime >= 1)
     {
         m_bShow = true;
 
@@ -131,7 +131,7 @@ _int CAzeosShadow::Update_GameObject(const _float& fTimeDelta)
 
             m_fCoolTime++;
 
-            if (m_fCoolTime >= 600.f)
+            if (m_fCoolTime >= 450)
             {
                 Engine::CSoundMgr::GetInstance()->Play(L"birdScreech.wav", SOUND_AZEOS_SHADOW, 0.2f);
                 dynamic_cast<CDynamicCamera*>(Engine::Get_GameObject(L"Layer_Environment", L"DynamicCamera"))->Set_ShakeInfo(1.5f, 4.f);
