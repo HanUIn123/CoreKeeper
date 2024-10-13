@@ -404,7 +404,7 @@ void CCraftMgr::Set_Recipe()
 
     // ±∏∏Æ «Ô∏‰
     Recipe copperHelmetRecipe;
-    copperHelmetRecipe.vecIngredients.push_back({ ITEM_COPPER_BAR, 6 });
+    copperHelmetRecipe.vecIngredients.push_back({ ITEM_COPPER_BAR, 3 });
     m_mapRecipes[make_pair(ITEM_HELMET, MATERIAL_COPPER)] = copperHelmetRecipe;
 
     // √∂ «Ô∏‰
@@ -421,7 +421,7 @@ void CCraftMgr::Set_Recipe()
 
     // ±∏∏Æ ªÛ¿«
     Recipe copperChestRecipe;
-    copperChestRecipe.vecIngredients.push_back({ ITEM_COPPER_BAR, 8 });
+    copperChestRecipe.vecIngredients.push_back({ ITEM_COPPER_BAR, 4 });
     m_mapRecipes[make_pair(ITEM_CHEST, MATERIAL_COPPER)] = copperChestRecipe;
 
     // √∂ ªÛ¿«
@@ -438,7 +438,7 @@ void CCraftMgr::Set_Recipe()
 
     // ±∏∏Æ πŸ¡ˆ
     Recipe copperLegRecipe;
-    copperLegRecipe.vecIngredients.push_back({ ITEM_COPPER_BAR, 7 });
+    copperLegRecipe.vecIngredients.push_back({ ITEM_COPPER_BAR, 3 });
     m_mapRecipes[make_pair(ITEM_LEG, MATERIAL_COPPER)] = copperLegRecipe;
 
     // √∂ πŸ¡ˆ
