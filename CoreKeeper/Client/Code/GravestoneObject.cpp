@@ -243,6 +243,20 @@ void CGravestoneObject::SetUp_Item(CScene* _pScene)
     m_pInventoryCom->Add_Item(pGameObject);
     m_vecItemName.push_back(L"Woodcutter's_Item" + std::to_wstring(m_iItemNameNum++));
     FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, m_vecItemName.back().c_str()), );
+
+    // Èëº®
+    pGameObject = CWallPiece::Create(m_pGraphicDev, ITEM_DIRTWALL);
+    pGameObject->Add_Count(16);
+    m_pInventoryCom->Add_Item(pGameObject);
+    m_vecItemName.push_back(L"Woodcutter's_Item" + std::to_wstring(m_iItemNameNum++));
+    FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, m_vecItemName.back().c_str()), );
+
+    // µ¹º®
+    pGameObject = CWallPiece::Create(m_pGraphicDev, ITEM_STONEWALL);
+    pGameObject->Add_Count(7);
+    m_pInventoryCom->Add_Item(pGameObject);
+    m_vecItemName.push_back(L"Woodcutter's_Item" + std::to_wstring(m_iItemNameNum++));
+    FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, m_vecItemName.back().c_str()), );
 }
 
 CGravestoneObject* CGravestoneObject::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
