@@ -71,7 +71,7 @@ _int CStage::Update_Scene(const _float& fTimeDelta)
 	CBuffMgr::GetInstance()->Update_Buff(fTimeDelta);
     CBlackPlaneMgr::GetInstance()->Update_BlackPlane(fTimeDelta);
 
-    if (!g_bFight)
+    if (!(g_bFight || g_bPlay))
     {
         switch (m_iBgmNumber)
         {
@@ -80,7 +80,6 @@ _int CStage::Update_Scene(const _float& fTimeDelta)
             break;
         case 1:
             Engine::CSoundMgr::GetInstance()->PlayBGM(L"Stone_Biome_2_R1.wav", 0.1f);
-            //Stone_Biome_2_R1
             break;
         case 2:
             Engine::CSoundMgr::GetInstance()->PlayBGM(L"Nature_Biome_1_R1.wav", 0.1f);
@@ -1013,6 +1012,8 @@ HRESULT CStage::Load_MonsterData()
     _float	fX, fZ;
     DWORD	dwByte = 0;
 
+    int i = 0;
+
     while (true)
     {
         ReadFile(m_hFile, &iType, sizeof(_int), &dwByte, nullptr);
@@ -1050,11 +1051,11 @@ HRESULT CStage::Load_MonsterData()
             NULL_CHECK_RETURN(pGameObject, E_FAIL);
             FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsMonsterNameString[iIndex].c_str(), pGameObject), E_FAIL);
 
-            m_wsMonsterNameString[iIndex] = L"HunterEye_" + std::to_wstring(iIndex);
+            m_wsMonsterNameString[i] = L"HunterEye_" + std::to_wstring(i);
             pEye = CHunterEye::Create(m_pGraphicDev);
             NULL_CHECK_RETURN(pEye, E_FAIL);
             dynamic_cast<CHunterEye*>(pEye)->Set_Hunter(pGameObject);
-            FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsMonsterNameString[iIndex].c_str(), pEye), E_FAIL);
+            FAILED_CHECK_RETURN(iter->second->Add_GameObject(m_wsMonsterNameString[i++].c_str(), pEye), E_FAIL);
             break;
         }
 

@@ -51,8 +51,15 @@ HRESULT CAzeos::Ready_GameObject(_vec3 vPos)
     m_pTransformCom->Set_Scale(3.2f, 3.2f, 3.2f);
     m_pColliderCom->Set_Offset(_vec3(-0.25f, -0.5f, 0));
     m_pStateCom->Set_Stat(1000, 0, 25, 0);
-    //m_vecDropItem.push_back(ITEM_STAFF);
-    //m_vecDropItem.push_back(ITEM_WOOD);
+
+    m_vecDropItem.push_back(ITEM_INSTRUMENT_PIANO);
+    m_vecDropItem.push_back(ITEM_INSTRUMENT_DRUM);
+    m_vecDropItem.push_back(ITEM_INSTRUMENT_CELLO);
+    m_vecDropItem.push_back(ITEM_INSTRUMENT_OCARINA);
+    m_vecDropItem.push_back(ITEM_INSTRUMENT_HARP);
+    m_vecDropItem.push_back(ITEM_INSTRUMENT_FLUTE);
+    m_vecDropItem.push_back(ITEM_DOLL);
+
     Set_Speed(6.0f);
 
     m_pHitParticleCom->init(L"../Bin/Resource/Texture/Effect/Hit_%d.png", 5, 2.0f);
@@ -382,6 +389,7 @@ void CAzeos::Pattern_Dead()
         m_bLightEnable = false;
         m_bStopDraw = true;
         Drop_All_Item();
+        g_bFight = false;
     }
 
     CUIBossName* pUIFont = dynamic_cast<CUIBossName*>(Engine::Get_GameObject(L"Layer_UI", L"UI_BossName"));
@@ -465,8 +473,8 @@ void CAzeos::Pattern_Teleport()
 
         float randomAngle = static_cast<float>(rand()) / RAND_MAX * 360.0f;
 
-        _float fX = vPlayerPos.x + 5.f * cosf(D3DXToRadian(randomAngle));
-        _float fZ = vPlayerPos.z + 5.f * sinf(D3DXToRadian(randomAngle));
+        _float fX = vPlayerPos.x + 3.f * cosf(D3DXToRadian(randomAngle));
+        _float fZ = vPlayerPos.z + 3.f * sinf(D3DXToRadian(randomAngle));
 
         //m_vTeleportPos = { fX, fZ };
         m_pTransformCom->Set_Pos(fX, 2.6f, fZ);

@@ -191,7 +191,7 @@ void CBullet::Pattern_Chase(const _float& fTimeDelta)
     if (m_bFirstFrame)
     {
         m_bFirstFrame = false;
-        Engine::CSoundMgr::GetInstance()->Play(L"whip.wav", SOUND_HUNTER, m_fSoundVolume);
+        Engine::CSoundMgr::GetInstance()->Play(L"musketFire2.wav", SOUND_HUNTER, m_fSoundVolume);
         _vec3 vPlayerPos;
         m_pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
         m_vAttackPoint = vPlayerPos - m_vRespawnPoint;
@@ -214,7 +214,6 @@ void CBullet::Pattern_Attack(const _float& fTimeDelta)
             _vec3		vPos;
             m_pTransformCom->Get_Info(INFO_POS, &vPos);
             m_pPlayer->Set_KnockBack(vPos, m_pStateCom->Get_Stat()->iAttack, 2.f, HIT_BULLET);
-            Engine::CSoundMgr::GetInstance()->Play(L"bullethit.wav", SOUND_HUNTER, m_fSoundVolume);
         }
     }
 }

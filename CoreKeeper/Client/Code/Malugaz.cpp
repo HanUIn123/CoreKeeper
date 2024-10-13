@@ -61,6 +61,7 @@ HRESULT CMalugaz::Ready_GameObject(_vec3 vPos)
     m_vecDropItem.push_back(ITEM_ASSISTANCE); // BOOK
     m_vecDropItem.push_back(ITEM_NECKLACE); // SPECIAL
     m_vecDropItem.push_back(ITEM_RING); // SPECIAL
+    m_vecDropItem.push_back(ITEM_MAL_CORE); 
 
     Set_Speed(6.0f);
 

@@ -14,6 +14,7 @@
 
 // ¾Ç±â
 #include "..\Header\Instrument.h"
+#include "..\Header\Doll.h"
 
 // ±âÅ¸
 #include "..\Header\Seed.h"

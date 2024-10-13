@@ -29,7 +29,7 @@ HRESULT CSprinklerObject::Ready_GameObject(_vec3 vPos)
 
 	m_pAnimatorCom->Set_CurState(IDLE, 0, 7, 20);
 
-	m_pWaterCom->init(L"../Bin/Resource/Texture/Particle/Basic_Particle.png", 1.f, 0.2f);
+	m_pWaterCom->init(L"../Bin/Resource/Texture/Particle/Basic_Particle.png", 1.f, 0.1f);
 	m_pWaterCom2->init(L"../Bin/Resource/Texture/Particle/Basic_Particle.png", 1.f, 0.1f);
 
 	return S_OK;

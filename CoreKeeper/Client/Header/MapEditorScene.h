@@ -136,10 +136,10 @@ private:
 	bool									m_bReposed;
 
 	// Picking 가능한 타일 키 값 개수. 현재는 VTXCNTX * VTXCNTZ개
-	wstring									m_wsTileNameString[VTXCNTX * VTXCNTZ];
-	wstring									m_wsWallNameString[VTXCNTX * VTXCNTZ];
-	wstring									m_wsObjectNameString[VTXCNTX * VTXCNTZ];
-	wstring									m_wsMonsterNameString[VTXCNTX * VTXCNTZ];
+	wstring									m_wsTileNameString[(VTXCNTX - 1) * (VTXCNTZ - 1)];
+	wstring									m_wsWallNameString[(VTXCNTX - 1) * (VTXCNTZ - 1)];
+	wstring									m_wsObjectNameString[(VTXCNTX - 1) * (VTXCNTZ - 1)];
+	wstring									m_wsMonsterNameString[(VTXCNTX -1) * (VTXCNTZ - 1)];
 
 	// 저장 및 로드할 파일.
 	HANDLE									m_hBigWallFile;

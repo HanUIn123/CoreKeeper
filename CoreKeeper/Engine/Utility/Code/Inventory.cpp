@@ -170,7 +170,7 @@ void CInventory::Put_Same_Item(CInventory* _Inventory)
 		CItem* pItem = m_vecItems[i];
 
 		// 빈 슬롯이면 건너뛰기 (혹시 몰라서 카운트 0인것도 확인)
-		if (pItem == nullptr || pItem->Get_Count() == 0)
+		if (pItem == nullptr || pItem->Get_Count() == 0 || pItem->Get_ItemNum() < ITEM_ETC)
 			continue;
 
 		// 옮겨 담을 인벤토리에서 같은 아이템을 찾음

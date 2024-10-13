@@ -82,7 +82,7 @@ void CSpawnerObject::Interaction()
     m_bIsAlreadySpawn = true;
     g_bFight = true;
 
-    Engine::CSoundMgr::GetInstance()->StopSound(SOUND_BGM);
+    //Engine::CSoundMgr::GetInstance()->StopSound(SOUND_BGM);
 }
 
 _bool CSpawnerObject::Check_Object_Interaction()

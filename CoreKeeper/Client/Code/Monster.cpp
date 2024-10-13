@@ -359,59 +359,64 @@ void CMonster::Drop_All_Item()
 {
 	_vec3 vPos;
 	m_pTransformCom->Get_Info(INFO_POS, &vPos);
-	// x와 z좌표를 조금씩 밀어서 안겹치게 할까나
-	vPos.y = 0.6f;
 
 	CScene* pScene = Engine::Get_Scene();
 	CItem* pGameObject = nullptr;
 	_int iSize = m_vecDropItem.size();
 
+	
+
 	for (int i = 0; i < iSize; i++)
 	{
+		float fRandomX = (rand() % 7 - 3) / 10.f;
+		float fRandomZ = (rand() % 7 - 3) / 10.f;
+
+		_vec3 vRandomPos = { vPos.x + fRandomX, 0.6f, vPos.z + fRandomZ };
+
 		ITEMNUM eItem = m_vecDropItem[i];
 
 		switch (eItem)
 		{
 		case ITEM_HELMET:
-			pGameObject = CHelmet::Create(m_pGraphicDev, MATERIAL_SPECIAL, vPos);
+			pGameObject = CHelmet::Create(m_pGraphicDev, MATERIAL_SPECIAL, vRandomPos);
 			NULL_CHECK(pGameObject);
 			m_vecItemName.push_back(L"Monster_Created_Helmet" + std::to_wstring(m_iTagNumber++));
 			break;
 		case ITEM_CHEST:
-			pGameObject = CChest::Create(m_pGraphicDev, MATERIAL_SPECIAL, vPos);
+			pGameObject = CChest::Create(m_pGraphicDev, MATERIAL_SPECIAL, vRandomPos);
 			NULL_CHECK(pGameObject);
 			m_vecItemName.push_back(L"Monster_Created_Chest" + std::to_wstring(m_iTagNumber++));
 			break;
 		case ITEM_LEG:
-			pGameObject = CLeg::Create(m_pGraphicDev, MATERIAL_SPECIAL, vPos);
+			pGameObject = CLeg::Create(m_pGraphicDev, MATERIAL_SPECIAL, vRandomPos);
 			NULL_CHECK(pGameObject);
 			m_vecItemName.push_back(L"Monster_Created_Chest" + std::to_wstring(m_iTagNumber++));
 			break;
 		case ITEM_NECKLACE:
-			pGameObject = CNecklace::Create(m_pGraphicDev, MATERIAL_SPECIAL, vPos);
+			pGameObject = CNecklace::Create(m_pGraphicDev, MATERIAL_SPECIAL, vRandomPos);
 			NULL_CHECK(pGameObject);
 			m_vecItemName.push_back(L"Monster_Created_Necklace" + std::to_wstring(m_iTagNumber++));
 			break;
 		case ITEM_RING:
-			pGameObject = CRing::Create(m_pGraphicDev, MATERIAL_SPECIAL, vPos);
+			pGameObject = CRing::Create(m_pGraphicDev, MATERIAL_SPECIAL, vRandomPos);
 			NULL_CHECK(pGameObject);
 			m_vecItemName.push_back(L"Monster_Created_Ring" + std::to_wstring(m_iTagNumber++));
 			break;
 		case ITEM_STAFF:
-			pGameObject = CStaff::Create(m_pGraphicDev, vPos);
+			pGameObject = CStaff::Create(m_pGraphicDev, vRandomPos);
 			NULL_CHECK(pGameObject);
 			m_vecItemName.push_back(L"Monster_Created_Staff" + std::to_wstring(m_iTagNumber++));
 			break;
 		case ITEM_ASSISTANCE:
 			if (m_eType == MON_MALUGAZ)
 			{
-				pGameObject = CAssistance::Create(m_pGraphicDev, ASSISTANCE_BOOK, vPos);
+				pGameObject = CAssistance::Create(m_pGraphicDev, ASSISTANCE_BOOK, vRandomPos);
 				NULL_CHECK(pGameObject);
 				m_vecItemName.push_back(L"Monster_Created_Book" + std::to_wstring(m_iTagNumber++));
 			}
 			else if (m_eType == MON_AZEOS)
 			{
-				pGameObject = CAssistance::Create(m_pGraphicDev, ASSISTANCE_AZEOS_FEATHER, vPos);
+				pGameObject = CAssistance::Create(m_pGraphicDev, ASSISTANCE_AZEOS_FEATHER, vRandomPos);
 				NULL_CHECK(pGameObject);
 				m_vecItemName.push_back(L"Monster_Created_Feather" + std::to_wstring(m_iTagNumber++));
 			}
@@ -422,9 +427,15 @@ void CMonster::Drop_All_Item()
 		case ITEM_INSTRUMENT_OCARINA:
 		case ITEM_INSTRUMENT_DRUM:
 		case ITEM_INSTRUMENT_PIANO:
-			pGameObject = CInstrument::Create(m_pGraphicDev, eItem, vPos);
+			pGameObject = CInstrument::Create(m_pGraphicDev, eItem, vRandomPos);
 			NULL_CHECK(pGameObject);
 			m_vecItemName.push_back(L"Monster_Created_Instrument" + std::to_wstring(m_iTagNumber++));
+			break;
+		case ITEM_DOLL:
+			pGameObject = CDoll::Create(m_pGraphicDev);
+			NULL_CHECK(pGameObject);
+			dynamic_cast<CDoll*>(pGameObject)->Add_Count(4);
+			m_vecItemName.push_back(L"Monster_Created_Doll" + std::to_wstring(m_iTagNumber++));
 			break;
 		default:
 			break;

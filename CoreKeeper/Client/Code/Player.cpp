@@ -2051,13 +2051,13 @@ void CPlayer::Play_Instruments()
                     Engine::Play(L"fluteItsABigWorldOutside.wav", SOUND_INSTRUMENTS, 0.1f);
                     Engine::Play(L"ocarinaItsABigWorldOutside.wav", SOUND_INSTRUMENTS, 0.1f);
                     Engine::Play(L"drumItsABigWorldOutside.wav", SOUND_INSTRUMENTS, 0.1f);*/
-                    g_bFight = true;
+                    g_bPlay = true;
                     Engine::CSoundMgr::GetInstance()->StopSound(SOUND_BGM);
                     Engine::CSoundMgr::GetInstance()->PlayOnce(L"pianoItsABigWorldOutside.wav", SOUND_INSTRUMENTS_PIANO, 0.6f);
                 }
                 else
                 {
-                    g_bFight = false;
+                    g_bPlay = false;
                     Engine::CSoundMgr::GetInstance()->StopSound(SOUND_INSTRUMENTS_PIANO);
                     Engine::CSoundMgr::GetInstance()->StopSound(SOUND_INSTRUMENTS_HARP);
                     Engine::CSoundMgr::GetInstance()->StopSound(SOUND_INSTRUMENTS_CELLO);
@@ -2120,7 +2120,7 @@ void CPlayer::Play_Instruments()
             break;
         default:
             m_bPlayToggle = false;
-            g_bFight = false;
+            g_bPlay = false;
             Engine::CSoundMgr::GetInstance()->StopSound(SOUND_INSTRUMENTS_PIANO);
             Engine::CSoundMgr::GetInstance()->StopSound(SOUND_INSTRUMENTS_PIANO);
             Engine::CSoundMgr::GetInstance()->StopSound(SOUND_INSTRUMENTS_HARP);
@@ -2134,7 +2134,7 @@ void CPlayer::Play_Instruments()
     else
     {
         m_bPlayToggle = false;
-        g_bFight = false;
+        g_bPlay = false;
         Engine::CSoundMgr::GetInstance()->StopSound(SOUND_INSTRUMENTS_PIANO);
         Engine::CSoundMgr::GetInstance()->StopSound(SOUND_INSTRUMENTS_PIANO);
         Engine::CSoundMgr::GetInstance()->StopSound(SOUND_INSTRUMENTS_HARP);
@@ -3234,6 +3234,8 @@ void CPlayer::Particle_Update(_float fTimeDelta)
 
 void CPlayer::Set_KnockBack(_vec3 vEnemyPos, _int iDamage, _float fDist, PLAYERHITTYPE eHit)
 {
+    Engine::CSoundMgr::GetInstance()->Play(L"slimeAnticipation.wav", SOUND_PLAYER, 0.1f);
+
     if (!m_bImmune && !m_bImmuneByTime)
     {
         _vec3 vPos;
@@ -3265,6 +3267,7 @@ void CPlayer::Set_KnockBack(_vec3 vEnemyPos, _int iDamage, _float fDist, PLAYERH
         default:
             break;
         }
+
     }
 }
 

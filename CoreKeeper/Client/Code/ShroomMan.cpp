@@ -382,7 +382,6 @@ void CShroomMan::Pattern_Attack(const _float& fTimeDelta)
             {
                 m_bAttackSuccess = true;
                 m_pPlayer->Set_KnockBack(vPos, m_pStateCom->Get_Stat()->iAttack, 1.5f, HIT_NORMAL);
-                Engine::CSoundMgr::GetInstance()->Play(L"damagePlayer.wav", SOUND_MUSHROOM, m_fSoundVolume);
             }
             // º® Ãæµ¹
             else if (0 <= iIndex && iIndex < VTXCNTX * VTXCNTZ)
