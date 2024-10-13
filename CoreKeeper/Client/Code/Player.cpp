@@ -61,7 +61,7 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
     m_bNude = true;
 
     m_bRespawned = false;
-    m_vRespawnPoint = { VTXCNTX / 2, 0, 12.f };
+    m_vRespawnPoint = { VTXCNTX / 2, m_fFirstY, 12.f };
     m_bRespawnFirstFrame = true;
     m_fRespawnProgress = 0.f;
 
@@ -929,7 +929,7 @@ void CPlayer::Set_ImmuneByToggle()
         CBuffMgr::GetInstance()->Set_BuffStart(DEBUFF_HUNGER, 999.f);
         CBuffMgr::GetInstance()->Set_BuffStart(DEBUFF_FIRE, 999.f);
         CBuffMgr::GetInstance()->Set_BuffStart(DEBUFF_SLOW, 999.f);
-        CBuffMgr::GetInstance()->Set_BuffStart(DEBUFF_STUN, 999.f);
+        //CBuffMgr::GetInstance()->Set_BuffStart(DEBUFF_STUN, 999.f);
     }
 }
 
@@ -2428,16 +2428,20 @@ void CPlayer::Set_Buff(const _float& fTimeDelta)
                 Set_Speed(m_fNormalSpeed * 1.4f);
                 break;
             case BUFF_HP:
-                m_tBuffStat.iMaxHp = m_pStateCom->Get_Stat()->iMaxHp * 0.05f;
+                m_tBuffStat.iMaxHp += m_pStateCom->Get_Stat()->iMaxHp * 0.05f;
                 break;
             case BUFF_ATT:
-                m_tBuffStat.iAttack = m_pStateCom->Get_Stat()->iAttack * 0.05f;
+                m_tBuffStat.iAttack += m_pStateCom->Get_Stat()->iAttack * 0.05f;
                 break;
             case BUFF_DEF:
-                m_tBuffStat.iDefense = m_pStateCom->Get_Stat()->iDefense * 0.05f;
+                m_tBuffStat.iDefense += m_pStateCom->Get_Stat()->iDefense * 0.05f;
                 break;
             case BUFF_MINING:
                 m_fMiningBuff[1] = 2.f;
+                break;
+            case BUFF_FULL:
+                m_tBuffStat.iAttack += m_pStateCom->Get_Stat()->iAttack * 0.05f;
+                m_tBuffStat.iMaxHp += m_pStateCom->Get_Stat()->iMaxHp * 0.05f;
                 break;
             case DEBUFF_FIRE:
                 m_bFire = true;
@@ -2453,21 +2457,13 @@ void CPlayer::Set_Buff(const _float& fTimeDelta)
                 break;
             case DEBUFF_SLOW:
                 if (m_arrBuffState[BUFF_SPEED])
-                    Set_Speed(m_fNormalSpeed);
+                    Set_Speed(m_fNormalSpeed * 0.8f);
                 else
                     Set_Speed(m_fNormalSpeed * 0.6f);
                 break;
             case DEBUFF_HUNGER:
-                if (m_arrBuffState[BUFF_HP])
-                    m_tBuffStat.iMaxHp = 0;
-                else
-                    m_tBuffStat.iMaxHp = m_pStateCom->Get_Stat()->iMaxHp * -0.05f;
-
-                if (m_arrBuffState[BUFF_ATT])
-                    m_tBuffStat.iAttack = 0;
-                else
-                    m_tBuffStat.iAttack = m_pStateCom->Get_Stat()->iAttack * -0.05f;
-
+                m_tBuffStat.iMaxHp += m_pStateCom->Get_Stat()->iMaxHp * -0.05f;                    
+                m_tBuffStat.iAttack += m_pStateCom->Get_Stat()->iAttack * -0.05f;
                 break;
             case DEBUFF_STUN:
                 if (!m_bDash)
@@ -2635,10 +2631,12 @@ void CPlayer::Respawn_Progress(const _float& fTimeDelta)
     else if (m_fRespawnProgress <= 6.f)
     {
         // 리스폰 완료
-        m_pTransformCom->Set_Pos(m_vRespawnPoint.x, m_vRespawnPoint.y, m_vRespawnPoint.z);
+        m_bRespawned = false;
         m_pStateCom->Set_Revive();
         m_fRespawnProgress = 0.f;
         m_bRespawnFirstFrame = true;
+        m_bKnockBackEnd = true;
+        m_bKnockBackStart = false;
 
         m_pClothes[0]->Set_Active(true);
         m_pClothes[1]->Set_Active(true);

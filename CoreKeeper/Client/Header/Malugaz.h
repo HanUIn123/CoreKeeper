@@ -43,6 +43,9 @@ private:
 	vector<wstring>			m_vecProjectileName;
 	_int			m_iCurNumber;
 
+	_bool			m_bPatternShoot;
+	_bool			m_bPatternGenerate;
+
 	int				m_iPhase;
 	int				m_iIdleCount;
 	int				m_iTextureNum;
