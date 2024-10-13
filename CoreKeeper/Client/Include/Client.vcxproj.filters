@@ -537,12 +537,15 @@
     </Filter>
     <Filter Include="02. GameObject\07. UI\02. UIStatus\00. UIBossBar">
       <UniqueIdentifier>{b98fb58c-4461-4693-8388-a80c437b8344}</UniqueIdentifier>
-	</Filter>
+    </Filter>
     <Filter Include="02. GameObject\06. Item\06. Installation\09. Doll">
       <UniqueIdentifier>{09d69918-709c-4ea0-86fd-3a22e07a51f7}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameObject\08. Object\19. DollObject">
       <UniqueIdentifier>{90216a93-412a-4acc-a2a5-9cac98e493ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\06. Item\99. Etc\14. Instrument">
+      <UniqueIdentifier>{7a3cfa8e-d321-4db4-8e7b-8ba20c42181f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1017,9 +1020,6 @@
     <ClInclude Include="..\Header\AzeosFeather.h">
       <Filter>02. GameObject\08. Object\93.AzeosFeather</Filter>
     </ClInclude>
-    <ClInclude Include="..\Header\Instrument.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="..\Header\PetItem.h">
       <Filter>02. GameObject\06. Item\99. Etc\13. Pet</Filter>
     </ClInclude>
@@ -1061,12 +1061,15 @@
     </ClInclude>
     <ClInclude Include="..\Header\UIBossBar.h">
       <Filter>02. GameObject\07. UI\02. UIStatus\00. UIBossBar</Filter>
-	</ClInclude>
+    </ClInclude>
     <ClInclude Include="..\Header\Doll.h">
       <Filter>02. GameObject\06. Item\06. Installation\09. Doll</Filter>
     </ClInclude>
     <ClInclude Include="..\Header\DollObject.h">
       <Filter>02. GameObject\08. Object\19. DollObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Header\Instrument.h">
+      <Filter>02. GameObject\06. Item\99. Etc\14. Instrument</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1517,9 +1520,6 @@
     <ClCompile Include="..\Code\AzeosFeather.cpp">
       <Filter>02. GameObject\08. Object\93.AzeosFeather</Filter>
     </ClCompile>
-    <ClCompile Include="..\Code\Instrument.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="..\Code\PetItem.cpp">
       <Filter>02. GameObject\06. Item\99. Etc\13. Pet</Filter>
     </ClCompile>
@@ -1564,12 +1564,15 @@
     </ClCompile>
     <ClCompile Include="..\Code\UIStatusBar.cpp">
       <Filter>02. GameObject\07. UI\02. UIStatus</Filter>
-	</ClCompile>
+    </ClCompile>
     <ClCompile Include="..\Code\Doll.cpp">
       <Filter>02. GameObject\06. Item\06. Installation\09. Doll</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\DollObject.cpp">
       <Filter>02. GameObject\08. Object\19. DollObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Instrument.cpp">
+      <Filter>02. GameObject\06. Item\99. Etc\14. Instrument</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

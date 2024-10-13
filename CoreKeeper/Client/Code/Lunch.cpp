@@ -23,9 +23,11 @@ HRESULT CLunch::Ready_GameObject(_vec3 vPos)
 	m_pTransformCom->Set_Pos(vPos.x, vPos.y, vPos.z);
 	m_pShadowTransformCom->Set_Pos(vPos.x, 0.1f, vPos.z);
 
-	m_wItemName = L"도시락";
-	m_wItemExplain[0] = L"어머니가 싸준 도시락입니다.";
-	m_wItemExplain[1] = L"한입 먹을 때마다 어머니의 사랑이 느껴집니다.";
+	m_wItemName = L"전투 식량";
+	m_wItemExplain[0] = L"체력 +28";
+	m_wItemExplain[1] = L"음식 +12";
+	m_wItemExplain[2] = L"오래 보존되도록 만들어진 음식입니다.";
+	m_wItemExplain[3] = L"곧 더 나은 다른 음식을 찾아봐야 할 것입니다.";
 
 	// 원래의 Y 위치 저장
 	m_fFirstY = vPos.y;

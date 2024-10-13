@@ -24,12 +24,14 @@ HRESULT CInstrument::Ready_GameObject(ITEMNUM _eItemNum, _vec3 vPos)
 	{
 	case ITEM_INSTRUMENT_HARP:
 		m_wItemName = L"하프";
-		m_wItemExplain[0] = L"섬세한 현을 손끝으로 스치기만 해도 공기 중에 조화를 이루는 소리가 진동합니다.";
+		m_wItemExplain[0] = L"섬세한 현을 손끝으로 스치기만 해도";
+		m_wItemExplain[1] = L"공기 중에 조화를 이루는 소리가 진동합니다.";
 		break;
 	case ITEM_INSTRUMENT_CELLO:
 		m_wItemName = L"첼로";
 		m_wItemExplain[0] = L"나무로 만들어진 현악기입니다.";
-		m_wItemExplain[1] = L"세계 일류 작품은 아니지만 조용한 동굴을 하모니로 채우기에는 충분하지요.";
+		m_wItemExplain[1] = L"세계 일류 작품은 아니지만";
+		m_wItemExplain[2] = L"조용한 동굴을 하모니로 채우기에는 충분하지요.";
 		break;
 	case ITEM_INSTRUMENT_FLUTE:
 		m_wItemName = L"플루트";
@@ -42,11 +44,13 @@ HRESULT CInstrument::Ready_GameObject(ITEMNUM _eItemNum, _vec3 vPos)
 		break;
 	case ITEM_INSTRUMENT_DRUM:
 		m_wItemName = L"드럼 키트";
-		m_wItemExplain[0] = L"이웃을 짜증나게 하지만 올바르게 연주하면 매혹적인 리듬을 만들어 내는 악기입니다.";
+		m_wItemExplain[0] = L"이웃을 짜증나게 하지만 올바르게 연주하면";
+		m_wItemExplain[1] = L"매혹적인 리듬을 만들어 내는 악기입니다.";
 		break;
 	case ITEM_INSTRUMENT_PIANO:
 		m_wItemName = L"휴대용 피아노";
-		m_wItemExplain[0] = L"이 휴대용 건반 악기는 홀로 연주할 수도 있고, 오케스트라와 함께 연주해도 좋습니다.";
+		m_wItemExplain[0] = L"이 휴대용 건반 악기는 홀로 연주할 수도 있고,";
+		m_wItemExplain[1] = L"오케스트라와 함께 연주해도 좋습니다.";
 		break;
 	}
 

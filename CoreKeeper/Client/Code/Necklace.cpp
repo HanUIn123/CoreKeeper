@@ -24,17 +24,20 @@ HRESULT CNecklace::Ready_GameObject(MATERIAL _eMaterial, _vec3 vPos)
 	case MATERIAL_COPPER:
 		m_iTextureNumber = 0;
 		m_wItemName = L"구리 십자가 목걸이";
-		m_wItemExplain[0] = L"이 펜던트는 집중력을 높여 공격이 더욱 정확해집니다.";
+		m_wItemExplain[0] = L"물리 피해 +25";
+		m_wItemExplain[1] = L"이 펜던트는 집중력을 높여 공격이 더욱 정확해집니다.";
 		break;
 	case MATERIAL_IRON:
 		m_iTextureNumber = 1;
 		m_wItemName = L"철 덩어리 목걸이";
-		m_wItemExplain[0] = L"방어력을 높이는 무거운 장신구입니다.";
+		m_wItemExplain[0] = L"방어력 +20";
+		m_wItemExplain[1] = L"방어력을 높이는 무거운 장신구입니다.";
 		break;
 	case MATERIAL_SPECIAL:
 		m_iTextureNumber = 2;
 		m_wItemName = L"초승달 목걸이";
-		m_wItemExplain[0] = L"착용자가 더 깊은 곳으로부터 마력을 끌어올 수 있도록 도와줍니다.";
+		m_wItemExplain[0] = L"최대 마나 +30";
+		m_wItemExplain[1] = L"착용자가 더 깊은 곳으로부터 마력을 끌어올 수 있도록 도와줍니다.";
 		break;
 	default:
 		return E_FAIL;

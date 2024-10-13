@@ -181,6 +181,8 @@ void CInventory::Put_Same_Item(CInventory* _Inventory)
 			// 상자에 같은 아이템이 있는 경우, 수량을 더해줌
 			if (pChestItem != nullptr && pChestItem->Get_ItemNum() == pItem->Get_ItemNum())
 			{
+				pItem->Set_Use(false);
+				pItem->Set_Active(false);
 				pChestItem->Add_Count(pItem->Get_Count());
 				Remove_Item(i);  // 플레이어 인벤토리에서 아이템 제거
 				break;

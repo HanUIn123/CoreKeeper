@@ -31,14 +31,16 @@ HRESULT CBag::Ready_GameObject(MATERIAL _eMaterial, _vec3 vPos)
 	{
 	case MATERIAL_COPPER:
 		m_wItemName = L"벨트 주머니";
-		m_wItemExplain[0] = L"클립으로 고정하는 단순한 벨트 주머니입니다.";
-		m_wItemExplain[1] = L"부드럽게 만든 나무껍질로 만들었습니다.";
+		m_wItemExplain[0] = L"+5 소지품 슬롯";
+		m_wItemExplain[1] = L"클립으로 고정하는 단순한 벨트 주머니입니다.";
+		m_wItemExplain[2] = L"부드럽게 만든 나무껍질로 만들었습니다.";
 		break;
 
 	case MATERIAL_IRON:
 		m_wItemName = L"탐험가 배낭";
-		m_wItemExplain[0] = L"지하 동굴 탐험을 위해 만들어진 단순한 배낭입니다.";
-		m_wItemExplain[1] = L"꽤 많은 아이템이 들어갑니다.";
+		m_wItemExplain[0] = L"+10 소지품 슬롯";
+		m_wItemExplain[1] = L"지하 동굴 탐험을 위해 만들어진 단순한 배낭입니다.";
+		m_wItemExplain[2] = L"꽤 많은 아이템이 들어갑니다.";
 		break;
 	}
 

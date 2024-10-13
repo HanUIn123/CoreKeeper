@@ -25,22 +25,32 @@ HRESULT CFood::Ready_GameObject(ITEMNUM _eIngredient1, ITEMNUM _eIngredient2, _v
 		case ITEM_BERRY:
 			m_eItemNum = ITEM_BERRY_BERRY_FOOD;
 			m_wItemName = L"원기의 베리 푸딩";
-			m_wItemExplain[0] = L"";
+			m_wItemExplain[0] = L"체력 +28";
+			m_wItemExplain[1] = L"음식 +19";
+			m_wItemExplain[2] = L"최대 체력 증가";
 			break;
 		case ITEM_PEPPER:
 			m_eItemNum = ITEM_BERRY_PEPPER_FOOD;
 			m_wItemName = L"원기의 후추 랩";
-			m_wItemExplain[0] = L"";
+			m_wItemExplain[0] = L"체력 +28";
+			m_wItemExplain[1] = L"음식 +19";
+			m_wItemExplain[2] = L"이동속도 증가";
+			m_wItemExplain[3] = L"최대 체력 증가";
 			break;
 		case ITEM_CARROT:
 			m_eItemNum = ITEM_BERRY_CARROT_FOOD;
 			m_wItemName = L"바삭한 베리 푸딩";
-			m_wItemExplain[0] = L"";
+			m_wItemExplain[0] = L"체력 +42";
+			m_wItemExplain[1] = L"음식 +19";
+			m_wItemExplain[2] = L"이동속도 증가";
+			m_wItemExplain[3] = L"방어력 증가";
 			break;
 		case ITEM_MUSHROOM:
 			m_eItemNum = ITEM_BERRY_MUSHROOM_FOOD;
 			m_wItemName = L"버섯 향 베리 푸딩";
-			m_wItemExplain[0] = L"";
+			m_wItemExplain[0] = L"체력 +42";
+			m_wItemExplain[1] = L"음식 +19";
+			m_wItemExplain[3] = L"최대 체력 증가";
 			break;
 		}
 		break;
@@ -50,17 +60,22 @@ HRESULT CFood::Ready_GameObject(ITEMNUM _eIngredient1, ITEMNUM _eIngredient2, _v
 		case ITEM_PEPPER:
 			m_eItemNum = ITEM_PEPPER_PEPPER_FOOD;
 			m_wItemName = L"매콤한 후추 랩";
-			m_wItemExplain[0] = L"";
+			m_wItemExplain[0] = L"음식 +15";
+			m_wItemExplain[1] = L"이동속도 증가";
 			break;
 		case ITEM_CARROT:
 			m_eItemNum = ITEM_PEPPER_CARROT_FOOD;
 			m_wItemName = L"바삭한 후추 랩";
-			m_wItemExplain[0] = L"";
+			m_wItemExplain[0] = L"음식 +15";
+			m_wItemExplain[1] = L"이동속도 증가";
+			m_wItemExplain[2] = L"방어력 증가";
 			break;
 		case ITEM_MUSHROOM:
 			m_eItemNum = ITEM_PEPPER_MUSHROOM_FOOD;
 			m_wItemName = L"버섯 향 후추 랩";
-			m_wItemExplain[0] = L"";
+			m_wItemExplain[0] = L"체력 +42";
+			m_wItemExplain[1] = L"음식 +19";
+			m_wItemExplain[2] = L"이동 속도 증가";
 			break;
 		}
 		break;
@@ -70,19 +85,23 @@ HRESULT CFood::Ready_GameObject(ITEMNUM _eIngredient1, ITEMNUM _eIngredient2, _v
 		case ITEM_CARROT:
 			m_eItemNum = ITEM_CARROT_CARROT_FOOD;
 			m_wItemName = L"바삭한 돌 디핑 스낵";
-			m_wItemExplain[0] = L"";
+			m_wItemExplain[0] = L"음식 +15";
+			m_wItemExplain[1] = L"방어력 증가";
 			break;
 		case ITEM_MUSHROOM:
 			m_eItemNum = ITEM_CARROT_MUSHROOM_FOOD;
 			m_wItemName = L"바삭한 버섯 수프";
-			m_wItemExplain[0] = L"";
+			m_wItemExplain[0] = L"체력 +42";
+			m_wItemExplain[1] = L"음식 +20";
+			m_wItemExplain[2] = L"방어력 증가";
 			break;
 		}
 		break;
 	case ITEM_MUSHROOM:
 		m_eItemNum = ITEM_MUSHROOM_MUSHROOM_FOOD;
 		m_wItemName = L"버섯 향 버섯 수프";
-		m_wItemExplain[0] = L"";
+		m_wItemExplain[0] = L"체력 +42";
+		m_wItemExplain[1] = L"음식 +20";
 		break;
 	default:
 		return E_FAIL;

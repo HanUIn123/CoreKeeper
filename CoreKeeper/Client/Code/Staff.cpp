@@ -26,7 +26,9 @@ HRESULT CStaff::Ready_GameObject(_vec3 vPos)
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
 	m_wItemName = L"파이어볼 지팡이";
-	m_wItemExplain[0] = L"동굴인 주술사들이 의식을 치르거나 불청객을 상대하는데 사용하는 마법의 지팡이입니다.";
+	m_wItemExplain[0] = L"마법 피해 +100";
+	m_wItemExplain[1] = L"동굴인 주술사들이 의식을 치르거나";
+	m_wItemExplain[2] = L"불청객을 상대하는데 사용하는 마법의 지팡이입니다.";
 
 	m_pTransformCom->Set_Scale(1.2f, 1.2f, 1.2f);
 	m_pShadowTransformCom->Set_Scale(0.2f, 0.2f, 0.2f);

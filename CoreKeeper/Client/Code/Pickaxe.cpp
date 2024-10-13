@@ -30,19 +30,21 @@ HRESULT CPickaxe::Ready_GameObject(MATERIAL _eMaterial, _vec3 vPos)
 	{
 	case MATERIAL_WOOD:
 		m_wItemName = L"나무 곡괭이";
-		m_wItemExplain[0] = L"조잡한 도구로 벽을 부수는 데 유용합니다.";
+		m_wItemExplain[0] = L"물리 피해 +5";
+		m_wItemExplain[1] = L"채굴 피해 +5";
+		m_wItemExplain[2] = L"조잡한 도구로 벽을 부수는 데 유용합니다.";
 		break;
 	case MATERIAL_COPPER:
 		m_wItemName = L"구리 곡괭이";
-		m_wItemExplain[0] = L"벽을 손쉽게 부수는 데 알맞은 튼튼한 도구입니다.";
+		m_wItemExplain[0] = L"물리 피해 +10";
+		m_wItemExplain[1] = L"채굴 피해 +10";
+		m_wItemExplain[2] = L"벽을 손쉽게 부수는 데 알맞은 튼튼한 도구입니다.";
 		break;
 	case MATERIAL_IRON:
 		m_wItemName = L"철제 곡괭이";
-		m_wItemExplain[0] = L"딱딱한 벽을 허무는 데 아주 좋은 탁원한 도구입니다.";
-		break;
-	case MATERIAL_SCARLET:
-		m_wItemName = L"진홍 곡괭이";
-		m_wItemExplain[0] = L"극도로 단단한 벽을 허무는 데 아주 좋은 도구입니다.";
+		m_wItemExplain[0] = L"물리 피해 +15";
+		m_wItemExplain[1] = L"채굴 피해 +15";
+		m_wItemExplain[2] = L"딱딱한 벽을 허무는 데 아주 좋은 탁월한 도구입니다.";
 		break;
 	}
 

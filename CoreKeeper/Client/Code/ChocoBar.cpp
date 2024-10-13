@@ -24,8 +24,10 @@ HRESULT CChocoBar::Ready_GameObject(_vec3 vPos)
 	m_pShadowTransformCom->Set_Pos(vPos.x, 0.1f, vPos.z);
 
 	m_wItemName = L"초코바";
-	m_wItemExplain[0] = L"챙길까 말까 고민했던 초코바.";
-	m_wItemExplain[1] = L"챙겨오길 잘한 거 같네요!";
+	m_wItemExplain[0] = L"음식 +19";
+	m_wItemExplain[1] = L"채굴 피해 증가";
+	m_wItemExplain[2] = L"포장지에 싸인 두툼하고 달콤한 스낵입니다.";
+	m_wItemExplain[3] = L"힘이 솟는 기분입니다.";
 
 	// 원래의 Y 위치 저장
 	m_fFirstY = vPos.y;

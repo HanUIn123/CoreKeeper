@@ -25,7 +25,7 @@ HRESULT CDiary::Ready_GameObject(_vec3 vPos)
 
 	m_wItemName = L"낡은 일기장 조각";
 	m_wItemExplain[0] = L"'두 녀석을 해치웠다. 이제 남은 건 단 둘.'";
-	m_wItemExplain[1] = L"		— 나무꾼이 남긴 기록";
+	m_wItemExplain[1] = L"					— 나무꾼이 남긴 기록";
 	m_wItemExplain[2] = L"오래된 종이에서 나무 냄새가 납니다.";
 
 	// 원래의 Y 위치 저장

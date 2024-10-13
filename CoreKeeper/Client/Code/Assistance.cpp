@@ -24,26 +24,32 @@ HRESULT CAssistance::Ready_GameObject(ASSISTANCE _eAssistance, _vec3 vPos)
 	{
 	case ASSISTANCE_WOOD_SHIELD:
 		m_wItemName = L"나무 방패";
-		m_wItemExplain[0] = L"적의 공격을 막아 주는 유용한 보조장비 아이템입니다.";
+		m_wItemExplain[0] = L"방어력 +10";
+		m_wItemExplain[1] = L"적의 공격을 막아 주는 유용한 보조장비 아이템입니다.";
 		break;
 	case ASSISTANCE_FEATHER:
 		m_wItemName = L"신속 깃털";
-		m_wItemExplain[0] = L"위험에서 벗어나게 하는 수수께끼의 깃털입니다.";
+		m_wItemExplain[0] = L"보조장비 사용 : 앞을 향해 돌진";
+		m_wItemExplain[1] = L"위험에서 벗어나게 하는 수수께끼의 깃털입니다.";
 		break;
 	case ASSISTANCE_IRON_SHIELD:
 		m_wItemName = L"철 방패";
-		m_wItemExplain[0] = L"문장이 그려진 방패입니다.";
-		m_wItemExplain[1] = L"공격으로부터 상당한 보호를 제공합니다.";
+		m_wItemExplain[0] = L"방어력 +20";
+		m_wItemExplain[1] = L"최대 체력 +20";
+		m_wItemExplain[2] = L"문장이 그려진 방패입니다.";
+		m_wItemExplain[3] = L"공격으로부터 상당한 보호를 제공합니다.";
 		break;
 	case ASSISTANCE_AZEOS_FEATHER:
 		m_wItemName = L"아제오스의 돌진 깃털";
-		m_wItemExplain[0] = L"하늘 거인 아제오스의 다채로운 발톱 깃털입니다.";
-		m_wItemExplain[1] = L"쥐고 있으면 고속으로 돌진할 수 있습니다.";
+		m_wItemExplain[0] = L"보조장비 사용 : 앞을 향해 더 멀리 돌진";
+		m_wItemExplain[1] = L"하늘 거인 아제오스의 다채로운 발톱 깃털입니다.";
+		m_wItemExplain[2] = L"쥐고 있으면 고속으로 돌진할 수 있습니다.";
 		break;
 	case ASSISTANCE_BOOK:
 		m_wItemName = L"파랑 가죽 책";
-		m_wItemExplain[0] = L"파란색 커버가 봉제된 고대의 책입니다.";
-		m_wItemExplain[1] = L"설마 피부로 표지를 만든 건가요?";
+		m_wItemExplain[0] = L"마법 피해 +50";
+		m_wItemExplain[1] = L"파란색 커버가 봉제된 고대의 책입니다.";
+		m_wItemExplain[2] = L"설마 피부로 표지를 만든 건가요?";
 		break;
 	}
 

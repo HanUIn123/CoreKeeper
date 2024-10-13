@@ -23,17 +23,20 @@ HRESULT CStatueCore::Ready_GameObject(ITEMNUM _eItemNum, _vec3 vPos)
 	case ITEM_SLIME_CORE:
 		m_iTextureNumber = 0;
 		m_wItemName = L"글러치 눈";
-		m_wItemExplain[0] = L"여러 슬라임이 거대한 하나의 슬라임으로 융합된 볼록한 보석입니다.";
+		m_wItemExplain[0] = L"여러 슬라임이 거대한 하나의 슬라임으로 융합된";
+		m_wItemExplain[1] = L"볼록한 보석입니다.";
 		break;
 	case ITEM_LARVA_CORE:
 		m_iTextureNumber = 1;
 		m_wItemName = L"고름의 뿔";
-		m_wItemExplain[0] = L"애벌레가 최대 크기를 훌쩍 넘어 자랄 수 있게 하는 뾰족한 보석입니다.";
+		m_wItemExplain[0] = L"애벌레가 최대 크기를 훌쩍 넘어 자랄 수 있게 하는";
+		m_wItemExplain[1] = L"뾰족한 보석입니다.";
 		break;
 	case ITEM_MAL_CORE:
 		m_iTextureNumber = 2;
 		m_wItemName = L"도둑맞은 크리스탈 심장";
-		m_wItemExplain[0] = L"소유자를 흉물스러운 존재로 변형시킨 거대한 고대 보석입니다. 원래 군집의 어머니가 지니고 있었지만, 힘에 굶주린 동굴인이 뽑아버렸습니다.";
+		m_wItemExplain[0] = L"소유자를 흉물스러운 존재로 변형시킨";
+		m_wItemExplain[1] = L"거대한 고대 보석입니다.";
 		break;
 	}
 

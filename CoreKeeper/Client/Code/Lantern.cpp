@@ -26,19 +26,22 @@ HRESULT CLantern::Ready_GameObject(MATERIAL _eMaterial, _vec3 vPos)
 	{
 	case MATERIAL_WOOD:
 		m_wItemName = L"소형 등불";
-		m_wItemExplain[0] = L"벨트에 장착할 수 있는 전등입니다.";
-		m_wItemExplain[1] = L"약한 빛을 냅니다.";
+		m_wItemExplain[0] = L"불빛 +3";
+		m_wItemExplain[1] = L"벨트에 장착할 수 있는 전등입니다.";
+		m_wItemExplain[2] = L"약한 빛을 냅니다.";
 		break;
 
 	case MATERIAL_COPPER:
 		m_wItemName = L"등불";
-		m_wItemExplain[0] = L"손 슬롯을 차지하지 않는 작고 유용한 등입니다.";
+		m_wItemExplain[0] = L"불빛 +4";
+		m_wItemExplain[1] = L"손 슬롯을 차지하지 않는 작고 유용한 등입니다.";
 		break;
 
 	case MATERIAL_IRON:
 		m_wItemName = L"구체 등불";
-		m_wItemExplain[0] = L"벨트에 장착할 수 있는 개선된 전등입니다.";
-		m_wItemExplain[1] = L"더 밝은 빛을 냅니다.";
+		m_wItemExplain[0] = L"불빛 +5";
+		m_wItemExplain[1] = L"벨트에 장착할 수 있는 개선된 전등입니다.";
+		m_wItemExplain[2] = L"더 밝은 빛을 냅니다.";
 		break;
 	}
 

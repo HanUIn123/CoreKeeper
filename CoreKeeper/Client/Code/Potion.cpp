@@ -28,19 +28,23 @@ HRESULT CPotion::Ready_GameObject(ITEMNUM _eItemNum, _vec3 vPos)
 		m_iTextureNumber = 0;
 		m_tStat.iMaxHp = 10;
 		m_wItemName = L"치유 물약";
-		m_wItemExplain[0] = L"몸에 좋은 물약으로, 마시면 즉시 치유됩니다. 물론 맛도 좋습니다.";
+		m_wItemExplain[0] = L"체력 +200";
+		m_wItemExplain[1] = L"몸에 좋은 물약으로, 마시면 즉시 치유됩니다.";
+		m_wItemExplain[2] = L"물론 맛도 좋습니다.";
 		break;
 	case ITEM_POTION_ATT:
 		m_iTextureNumber = 1;
 		m_tStat.iAttack = 10;
 		m_wItemName = L"격노 물약";
-		m_wItemExplain[0] = L"근육을 강화하고 화를 돋우는 강력한 물약입니다.";
+		m_wItemExplain[0] = L"물리 피해, 마법 피해 증가";
+		m_wItemExplain[1] = L"근육을 강화하고 화를 돋우는 강력한 물약입니다.";
 		break;
 	case ITEM_POTION_DEF:
 		m_iTextureNumber = 2;
 		m_tStat.iDefense = 10;
 		m_wItemName = L"암석 피부 물약";
-		m_wItemExplain[0] = L"피부를 단단하게 만들고 회복력을 높이는 짭짤한 물약입니다.";
+		m_wItemExplain[0] = L"방어력 증가";
+		m_wItemExplain[1] = L"피부를 단단하게 만들고 회복력을 높이는 짭짤한 물약입니다.";
 		break;
 	}
 
