@@ -171,7 +171,7 @@ void CGravestoneObject::SetUp_Item(CScene* _pScene)
 
     // 나무
     pGameObject = CWood::Create(m_pGraphicDev);
-    pGameObject->Add_Count(128);
+    pGameObject->Add_Count(150);
     m_pInventoryCom->Add_Item(pGameObject);
     m_vecItemName.push_back(L"Woodcutter's_Item" + std::to_wstring(m_iItemNameNum++));
     FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, m_vecItemName.back().c_str()), );
@@ -190,7 +190,7 @@ void CGravestoneObject::SetUp_Item(CScene* _pScene)
 
     // 원기베리
     pGameObject = CSeed::Create(m_pGraphicDev, ITEM_BERRY_SEED);
-    pGameObject->Add_Count(21);
+    pGameObject->Add_Count(14);
     m_pInventoryCom->Add_Item(pGameObject);
     m_vecItemName.push_back(L"Woodcutter's_Item" + std::to_wstring(m_iItemNameNum++));
     FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, m_vecItemName.back().c_str()), );
@@ -204,14 +204,14 @@ void CGravestoneObject::SetUp_Item(CScene* _pScene)
 
     // 돌당근
     pGameObject = CSeed::Create(m_pGraphicDev, ITEM_CARROT_SEED);
-    pGameObject->Add_Count(7);
+    pGameObject->Add_Count(14);
     m_pInventoryCom->Add_Item(pGameObject);
     m_vecItemName.push_back(L"Woodcutter's_Item" + std::to_wstring(m_iItemNameNum++));
     FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, m_vecItemName.back().c_str()), );
 
     // 섬유질
     pGameObject = CSeed::Create(m_pGraphicDev, ITEM_FIBER_SEED);
-    pGameObject->Add_Count(17);
+    pGameObject->Add_Count(14);
     m_pInventoryCom->Add_Item(pGameObject);
     m_vecItemName.push_back(L"Woodcutter's_Item" + std::to_wstring(m_iItemNameNum++));
     FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, m_vecItemName.back().c_str()), );
