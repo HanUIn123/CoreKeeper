@@ -203,7 +203,7 @@ void CGravestoneObject::SetUp_Item(CScene* _pScene)
     FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, m_vecItemName.back().c_str()), );
 
     // µ¹´ç±Ù
-    pGameObject = CSeed::Create(m_pGraphicDev, ITEM_PEPPER_SEED);
+    pGameObject = CSeed::Create(m_pGraphicDev, ITEM_CARROT_SEED);
     pGameObject->Add_Count(7);
     m_pInventoryCom->Add_Item(pGameObject);
     m_vecItemName.push_back(L"Woodcutter's_Item" + std::to_wstring(m_iItemNameNum++));
