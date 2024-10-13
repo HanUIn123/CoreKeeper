@@ -6,6 +6,8 @@
 #include "..\Header\PlayerInclude.h"
 #include "..\Header\DynamicCamera.h"
 
+#include "../Header/UIFont.h"
+
 CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
     : Engine::CGameObject(pGraphicDev), m_fLightRange(0.f), m_fTorchRange(10.f)
 {
@@ -3307,6 +3309,12 @@ void CPlayer::Set_KnockBack(_vec3 vEnemyPos, _int iDamage, _float fDist, PLAYERH
         m_pStateCom->Set_Damaged(iDamage * (1 - (m_pStateCom->Get_Stat()->iDefense / 200)));
         Set_ImmuneByTime(0.2f);
 
+        CUIFont* pFont = dynamic_cast<CUIFont*>(Engine::Get_GameObject(L"Layer_UI", L"UI_Font"));
+
+        _int iFont = iDamage* (1 - (m_pStateCom->Get_Stat()->iDefense / 200));
+
+        wstring wstFont = std::to_wstring(iFont);
+        pFont->Set_Font(*m_pTransformCom->Get_WorldMatrix(), wstFont.c_str());
         // 여기에 이펙트 추가
         switch (eHit)
         {
