@@ -2027,22 +2027,31 @@ void CPlayer::Play_Instruments()
         case ITEM_INSTRUMENT_OCARINA:
         case ITEM_INSTRUMENT_DRUM:
         case ITEM_INSTRUMENT_PIANO:
-            if (Engine::Key_Down(DIK_E))
+            if (Engine::Key_Down(DIK_R))
             {
                 m_bPlayToggle = m_bPlayToggle ? false : true;
                 if (m_bPlayToggle)
                 {
-                    /*g_bFight = true;
-                    Engine::StopSound(SOUND_BGM);
+                    /*
                     Engine::Play(L"harpItsABigWorldOutside.wav", SOUND_INSTRUMENTS, 0.1f);
                     Engine::Play(L"celloItsABigWorldOutside.wav", SOUND_INSTRUMENTS, 0.1f);
                     Engine::Play(L"fluteItsABigWorldOutside.wav", SOUND_INSTRUMENTS, 0.1f);
                     Engine::Play(L"ocarinaItsABigWorldOutside.wav", SOUND_INSTRUMENTS, 0.1f);
                     Engine::Play(L"drumItsABigWorldOutside.wav", SOUND_INSTRUMENTS, 0.1f);*/
-                    Engine::Play(L"pianoItsABigWorldOutside.wav", SOUND_INSTRUMENTS, 0.2f);
+                    g_bFight = true;
+                    Engine::CSoundMgr::GetInstance()->StopSound(SOUND_BGM);
+                    Engine::CSoundMgr::GetInstance()->PlayOnce(L"pianoItsABigWorldOutside.wav", SOUND_INSTRUMENTS_PIANO, 0.6f);
                 }
                 else
-                    Engine::StopSound(SOUND_INSTRUMENTS);
+                {
+                    g_bFight = false;
+                    Engine::CSoundMgr::GetInstance()->StopSound(SOUND_INSTRUMENTS_PIANO);
+                    Engine::CSoundMgr::GetInstance()->StopSound(SOUND_INSTRUMENTS_HARP);
+                    Engine::CSoundMgr::GetInstance()->StopSound(SOUND_INSTRUMENTS_CELLO);
+                    Engine::CSoundMgr::GetInstance()->StopSound(SOUND_INSTRUMENTS_FLUTE);
+                    Engine::CSoundMgr::GetInstance()->StopSound(SOUND_INSTRUMENTS_OCARINA);
+                    Engine::CSoundMgr::GetInstance()->StopSound(SOUND_INSTRUMENTS_DRUM);
+                }
             }
             if (m_bPlayToggle)
             {
@@ -2098,14 +2107,28 @@ void CPlayer::Play_Instruments()
             break;
         default:
             m_bPlayToggle = false;
-            Engine::StopSound(SOUND_INSTRUMENTS);
+            g_bFight = false;
+            Engine::CSoundMgr::GetInstance()->StopSound(SOUND_INSTRUMENTS_PIANO);
+            Engine::CSoundMgr::GetInstance()->StopSound(SOUND_INSTRUMENTS_PIANO);
+            Engine::CSoundMgr::GetInstance()->StopSound(SOUND_INSTRUMENTS_HARP);
+            Engine::CSoundMgr::GetInstance()->StopSound(SOUND_INSTRUMENTS_CELLO);
+            Engine::CSoundMgr::GetInstance()->StopSound(SOUND_INSTRUMENTS_FLUTE);
+            Engine::CSoundMgr::GetInstance()->StopSound(SOUND_INSTRUMENTS_OCARINA);
+            Engine::CSoundMgr::GetInstance()->StopSound(SOUND_INSTRUMENTS_DRUM);
             break;
         }
     }
     else
     {
         m_bPlayToggle = false;
-        Engine::StopSound(SOUND_INSTRUMENTS);
+        g_bFight = false;
+        Engine::CSoundMgr::GetInstance()->StopSound(SOUND_INSTRUMENTS_PIANO);
+        Engine::CSoundMgr::GetInstance()->StopSound(SOUND_INSTRUMENTS_PIANO);
+        Engine::CSoundMgr::GetInstance()->StopSound(SOUND_INSTRUMENTS_HARP);
+        Engine::CSoundMgr::GetInstance()->StopSound(SOUND_INSTRUMENTS_CELLO);
+        Engine::CSoundMgr::GetInstance()->StopSound(SOUND_INSTRUMENTS_FLUTE);
+        Engine::CSoundMgr::GetInstance()->StopSound(SOUND_INSTRUMENTS_OCARINA);
+        Engine::CSoundMgr::GetInstance()->StopSound(SOUND_INSTRUMENTS_DRUM);
     }
 }
 

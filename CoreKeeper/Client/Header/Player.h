@@ -143,7 +143,7 @@ public:
 	void			Set_Speed(_float fSpeed) { m_fSpeed = fSpeed; m_fDiagSpeed = sqrt(pow(m_fSpeed, 2) / 2); }
 
 	_int			Get_LightRange() { return m_fLightRange; }
-
+	_bool			Get_InstrumentToggle() { return m_bPlayToggle; }
 
 	void			Check_MapOff();
 
