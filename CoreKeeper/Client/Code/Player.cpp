@@ -109,7 +109,7 @@ HRESULT CPlayer::Ready_GameObject()
 {
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-    m_tBasicStat = STAT(200, 100, 20, 0);
+    m_tBasicStat = STAT(100, 100, 20, 0);
     m_pStateCom->Set_Stat(m_tBasicStat.iMaxHp, m_tBasicStat.iMaxMp, m_tBasicStat.iAttack, m_tBasicStat.iDefense);
     m_pStateCom->Set_MaxHunger(100);
     m_pEquipInventoryCom->Set_SlotCount(10);
@@ -3184,7 +3184,7 @@ void CPlayer::Set_KnockBack(_vec3 vEnemyPos, _int iDamage, _float fDist, PLAYERH
         m_fKnockBackDist = fDist;
 
         m_pStateCom->Set_Damaged(iDamage * (1 - (m_pStateCom->Get_Stat()->iDefense / 200)));
-        Set_ImmuneByTime();
+        Set_ImmuneByTime(0.2f);
 
         // 여기에 이펙트 추가
         switch (eHit)
