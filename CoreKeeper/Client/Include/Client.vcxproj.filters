@@ -529,6 +529,9 @@
     <Filter Include="02. GameObject\00. BackGround\02.WhitePlane">
       <UniqueIdentifier>{62dd725e-e609-456c-bf9e-bf901352b24c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\08. Object\19.AzeosShadow">
+      <UniqueIdentifier>{b2af3f80-d959-4bd9-b055-de5116eae68b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -1038,6 +1041,9 @@
     <ClInclude Include="..\Header\WhitePlane.h">
       <Filter>02. GameObject\00. BackGround\02.WhitePlane</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\AzeosShadow.h">
+      <Filter>02. GameObject\08. Object\19.AzeosShadow</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1525,6 +1531,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\WhitePlane.cpp">
       <Filter>02. GameObject\00. BackGround\02.WhitePlane</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\AzeosShadow.cpp">
+      <Filter>02. GameObject\08. Object\19.AzeosShadow</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
