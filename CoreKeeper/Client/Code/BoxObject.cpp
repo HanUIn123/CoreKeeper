@@ -5,6 +5,7 @@
 #include "../Header/Player.h"
 #include "../Header/PetItem.h"
 #include "../Header/Assistance.h"
+#include "../Header/Bar.h"
 
 CBoxObject::CBoxObject(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CObject(pGraphicDev), m_iTextureNum(0), m_bSpecial(false)
@@ -110,6 +111,18 @@ void CBoxObject::SetUp_Item(CScene* _pScene)
     m_pInventoryCom->Add_Item(pGameObject);
     m_vecItemName.push_back(L"Special_Item_Feather");
     FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, m_vecItemName.back().c_str()), );
+
+	pGameObject = CBar::Create(m_pGraphicDev, MATERIAL_COPPER);
+	pGameObject->Add_Count(20);
+	m_pInventoryCom->Add_Item(pGameObject);
+	m_vecItemName.push_back(L"Special_Item_Feather");
+	FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, m_vecItemName.back().c_str()), );
+
+	pGameObject = CBar::Create(m_pGraphicDev, MATERIAL_IRON);
+	pGameObject->Add_Count(40);
+	m_pInventoryCom->Add_Item(pGameObject);
+	m_vecItemName.push_back(L"Special_Item_Feather");
+	FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, m_vecItemName.back().c_str()), );
 }
 
 HRESULT CBoxObject::Add_Component()

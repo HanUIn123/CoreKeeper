@@ -103,12 +103,14 @@ void CUIItemFrame::Render_GameObject()
 			if (i == 0) {
 				Engine::Render_Font(L"Font_Status", tFont[i], &vFPos, D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
 
-				vFPos.y += 15.f;
+				vFPos.y += 20.f;
 			}
 			else
+			{
 				Engine::Render_Font(L"Font_Status", tFont[i], &vFPos, D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
+				vFPos.y += 20.f;
+			}
 
-			vFPos.y += 15.f;
 
 			if (sFont[i] == wsEmpty)
 			{

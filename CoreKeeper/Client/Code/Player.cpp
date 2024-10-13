@@ -99,6 +99,7 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
     m_bPlayToggle = false;
     m_bLookAround = false;
     m_fLookAroundTime = 0.f;
+    m_bLookCamera = false;
 }
 
 CPlayer::~CPlayer()
@@ -112,6 +113,7 @@ HRESULT CPlayer::Ready_GameObject()
     m_tBasicStat = STAT(100, 100, 20, 0);
     m_pStateCom->Set_Stat(m_tBasicStat.iMaxHp, m_tBasicStat.iMaxMp, m_tBasicStat.iAttack, m_tBasicStat.iDefense);
     m_pStateCom->Set_MaxHunger(100);
+    m_pStateCom->Set_HungerMinus(30);
     m_pEquipInventoryCom->Set_SlotCount(10);
 
     m_pFireParticleCom->init(L"../Bin/Resource/Texture/Particle/Basic_Particle.png", 1, 0.1f); // 파티클 시작
@@ -137,6 +139,13 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 
     if (!m_bLookAround)
     {
+        if (!m_bLookCamera)
+        {
+            m_bLookCamera = true;
+            g_bIsTopCamera = false;
+            CUICursor* pCursor = dynamic_cast<CUICursor*>(Engine::Get_GameObject(L"Layer_UI", L"UI_Cursor"));
+            pCursor->Set_Cursor_Disable();
+        }
         // 모든 사운드 안나게 하기
         Engine::CSoundMgr::GetInstance()->StopAll();
 
@@ -155,12 +164,15 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
             m_bLookAround = true;
             g_bStart = true;
 
+
             _matrix matWorld;
             m_pTransformCom->Get_WorldMatrix(&matWorld);
 
             CUIFont* pFont = dynamic_cast<CUIFont*>(Engine::Get_GameObject(L"Layer_UI", L"UI_Font"));
             pFont->Set_Font_Up(matWorld, L"?");
-
+            g_bIsTopCamera = true;
+            CUICursor* pCursor = dynamic_cast<CUICursor*>(Engine::Get_GameObject(L"Layer_UI", L"UI_Cursor"));
+            pCursor->Set_Cursor_Disable();
         }
 
         if (!m_bRespawned)
