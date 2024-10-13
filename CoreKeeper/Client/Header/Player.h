@@ -19,6 +19,7 @@ class CInventory;
 class CFall;
 class CFollow;
 class CHeal;
+class CHit;
 
 END
 
@@ -169,6 +170,7 @@ private:
 	Engine::CFollow*        m_pFollowParticleCom; // 파티클 컴퍼넌트
 	Engine::CFall*          m_pDirtParticleCom;
 	Engine::CHeal*          m_pHealParticleCom;
+	Engine::CHit*           m_pTeleportCom;
 
 
 	Engine::DIRECTION		m_eDir;

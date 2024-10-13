@@ -101,7 +101,7 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
     m_fLookAroundTime = 0.f;
     m_bLookCamera = false;
 
-    m_bTeleportCore = true;
+    m_bTeleportCore = false;
     m_fTeleportProcess = 0.f;
 }
 
@@ -123,6 +123,7 @@ HRESULT CPlayer::Ready_GameObject()
     m_pFollowParticleCom->init(L"../Bin/Resource/Texture/Particle/Fire_Particle/Fire_Particle_%d.png", 5); // 파티클 시작
     m_pDirtParticleCom->init(L"../Bin/Resource/Texture/Particle/Basic_Particle.png", 1, 0.1f);
     m_pHealParticleCom->init(L"../Bin/Resource/Texture/Particle/Health_Particle.png", 1, 0.2f);
+    m_pTeleportCom->init(L"../Bin/Resource/Texture/Effect/PlayerTeleport/Teleport_%d.png", 12, 4.f);
 
     return S_OK;
 }
@@ -311,6 +312,11 @@ void CPlayer::Render_GameObject()
     if (m_bHeal)
         m_pHealParticleCom->render();
 
+    if (m_bTeleportCore)
+    {
+        m_pTeleportCom->render();
+    }
+
     if (m_bDestroyWall)
     {
         m_pGraphicDev->SetTransform(D3DTS_WORLD, &m_bPickaxeMatrix);
@@ -373,6 +379,10 @@ HRESULT CPlayer::Add_Component()
     pComponent = m_pHealParticleCom = dynamic_cast<CHeal*>(Engine::Clone_Proto(L"Proto_Heal"));
     NULL_CHECK_RETURN(pComponent, E_FAIL);
     m_mapComponent[ID_DYNAMIC].insert({ L"Com_Heal", pComponent });
+
+    pComponent = m_pTeleportCom = dynamic_cast<CHit*>(Engine::Clone_Proto(L"Proto_Hit"));
+    NULL_CHECK_RETURN(pComponent, E_FAIL);
+    m_mapComponent[ID_STATIC].insert({ L"Com_Teleport", pComponent });
     ///m_pFireParticleCom
     return S_OK;
 }
@@ -2716,9 +2726,12 @@ void CPlayer::Teleport_Core(const _float& fTimeDelta)
 {
     if (m_bTeleportCore)
     {
+        
+
+        /* 변경하겠습니다
         if (m_fTeleportProcess == 0.f)
         {
-            // 이펙트 추가 좀
+
         }
         m_fTeleportProcess += fTimeDelta;
         if (m_fTeleportProcess >= 2.f)
@@ -2726,7 +2739,7 @@ void CPlayer::Teleport_Core(const _float& fTimeDelta)
             m_bRespawned = false;
             m_bTeleportCore = false;
             m_fTeleportProcess = 0.f;
-        }
+        }*/
     }
 }
 void CPlayer::Set_InvWindow()
@@ -3259,6 +3272,18 @@ void CPlayer::Particle_Update(_float fTimeDelta)
         {
             m_pHealParticleCom->reset();
             m_bHeal = false;
+        }
+    }
+
+    if (m_bTeleportCore)
+    {
+        m_pTeleportCom->update(fTimeDelta);
+
+        if (m_pTeleportCom->isDead())
+        {
+            m_pTeleportCom->reset();
+            m_bRespawned = false;
+            m_bTeleportCore = false;
         }
     }
 }

@@ -117,8 +117,8 @@ void CUIBuffFrame::Set_BuffExplain()
 
 	string = L"방어력 \n+5.0% 증가";
 	m_mapType.insert({ 15, string });
-	
-	string = L"포만감으로 인해 \n피해 및 최대 체력 +5.0% 증가";
+
+	string = L"허기로 인해 \n피해 및 최대 체력 -5.0% 감소";
 	m_mapType.insert({ 17, string });
 
 	string = L"+10의 화상 피해";
@@ -130,7 +130,7 @@ void CUIBuffFrame::Set_BuffExplain()
 	string = L"슬라임으로 인해 \n이동속도 -40.0%";
 	m_mapType.insert({ 30, string });
 
-	string = L"허기로 인해 \n피해 및 최대 체력 -5.0% 감소";
+	string = L"포만감으로 인해 \n피해 및 최대 체력 +5.0% 증가";
 	m_mapType.insert({ 31, string });
 
 	string = L"잠시동안 이동 불가";
