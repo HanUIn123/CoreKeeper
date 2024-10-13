@@ -89,6 +89,7 @@ private:
 	void			Set_Hungry(const _float& fTimeDelta);
 	void			Set_ManaRecover(const _float& fTimeDelta);
 	void			Respawn_Progress(const _float& fTimeDelta);
+	void			Teleport_Core(const _float& fTimeDelta);
 
 	void			Set_MouseWorldPos();
 	void            Set_UI();
@@ -269,6 +270,9 @@ private:
 	_bool					m_bLookAround;
 	_float					m_fLookAroundTime;
 	_bool					m_bLookCamera;
+
+	_bool					m_bTeleportCore;
+	_float					m_fTeleportProcess;
 
 	CUIItemSlot* m_pEtcItems[CUIItemSlot::SLOT_END];
 public:
