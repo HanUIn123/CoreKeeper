@@ -38,6 +38,7 @@ namespace Engine
         SOUND_SPAWN_MALU, SOUND_SPAWN_AZEOS, 
         SOUND_MALUGAZ, SOUND_AZEOS,
 
+        SOUND_AZEOS_SHADOW,
 
 
         SOUND_WALL_DOWN,
