@@ -37,6 +37,8 @@
 #include "BossSpawnPoint.h"
 #include "AzeosSpawnPoint.h"
 
+#include "AzeosShadow.h"
+
 
 // Item
 #include "Pickaxe.h"

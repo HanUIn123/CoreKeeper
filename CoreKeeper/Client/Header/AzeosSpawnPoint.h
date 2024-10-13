@@ -35,6 +35,8 @@ public:
 	_int							Get_ObjectType() { return AZEOS_SUMMON; }
 	_vec3							Get_SpawnPos() { return m_vAzeSpawnPos; }
 
+	virtual			void			Interaction();
+
 private:
 	HRESULT							Add_Component();
 	void							SetUp_Light();

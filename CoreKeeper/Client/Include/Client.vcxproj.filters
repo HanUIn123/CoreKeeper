@@ -529,6 +529,9 @@
     <Filter Include="02. GameObject\00. BackGround\02.WhitePlane">
       <UniqueIdentifier>{62dd725e-e609-456c-bf9e-bf901352b24c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\08. Object\19.AzeosShadow">
+      <UniqueIdentifier>{b2af3f80-d959-4bd9-b055-de5116eae68b}</UniqueIdentifier>
+    </Filter>
     <Filter Include="02. GameObject\07. UI\15. UIFont\00. BossName">
       <UniqueIdentifier>{b3bf102d-0fb9-486c-8436-27b5cac73a97}</UniqueIdentifier>
     </Filter>
@@ -1050,6 +1053,9 @@
     <ClInclude Include="..\Header\WhitePlane.h">
       <Filter>02. GameObject\00. BackGround\02.WhitePlane</Filter>
     </ClInclude>
+    <ClInclude Include="..\Header\AzeosShadow.h">
+      <Filter>02. GameObject\08. Object\19.AzeosShadow</Filter>
+    </ClInclude>
     <ClInclude Include="..\Header\UIBossName.h">
       <Filter>02. GameObject\07. UI\15. UIFont\00. BossName</Filter>
     </ClInclude>
@@ -1546,6 +1552,9 @@
     </ClCompile>
     <ClCompile Include="..\Code\WhitePlane.cpp">
       <Filter>02. GameObject\00. BackGround\02.WhitePlane</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\AzeosShadow.cpp">
+      <Filter>02. GameObject\08. Object\19.AzeosShadow</Filter>
     </ClCompile>
     <ClCompile Include="..\Code\UIBossName.cpp">
       <Filter>02. GameObject\07. UI\15. UIFont\00. BossName</Filter>

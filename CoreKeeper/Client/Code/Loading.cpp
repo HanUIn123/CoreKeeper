@@ -118,6 +118,9 @@ _uint CLoading::Loading_Stage()
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_AzeosSpawnTex", Engine::CObjectTex::Create(m_pGraphicDev, 0.5f, 0.0f, 0.5f)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_DollTex", Engine::CObjectTex::Create(m_pGraphicDev, 0.75f, 0.75f, 0.0f)), E_FAIL);
 
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_AzeosShadowTex", Engine::CObjectTex::Create(m_pGraphicDev, 10.0f, 0.0f, 10.0f)), E_FAIL);
+
+
 
     // Place Object Tex
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_SlimeFloorTex", Engine::CObjectTex::Create(m_pGraphicDev, 0.5f, 0.0f, 0.5f)), E_FAIL);
@@ -295,6 +298,9 @@ _uint CLoading::Loading_Stage()
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_BossSpawnPointEmissiveTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/PlaceObject/Emissive_0.png", TEX_NORMAL, 1)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_AzeosSpawnPointTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/PlaceObject/Azeos_Summon.png", TEX_NORMAL, 1)), E_FAIL);
 
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_AzeosShadowTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/PlaceObject/AzeosShadow.png", TEX_NORMAL, 1)), E_FAIL);
+
+
 
 
 #pragma endregion
@@ -378,6 +384,7 @@ _uint CLoading::Loading_Stage()
 
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_AzeosSpawnPointCollider", Engine::CColliderCube::Create(m_pGraphicDev, _vec3(-7.5f, -0.5f, -7.5f), _vec3(7.5f, 0.5f, 7.5f))), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_AzeosSpawnerCollider", Engine::CColliderCube::Create(m_pGraphicDev, _vec3(-0.5f, -0.5f, -0.5f), _vec3(0.5f, 0.5f, 0.5f))), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_AzeosShadowCollider", Engine::CColliderCube::Create(m_pGraphicDev, _vec3(-4.5f, -0.5f, -4.5f), _vec3(4.5f, 0.5f, 4.5f))), E_FAIL);
 
 
 
