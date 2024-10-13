@@ -503,6 +503,12 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Hunger", pGameObject), E_FAIL);
 
+    vSize = { 420.f, 7.f };
+
+    pGameObject = CUIStatusBar::Create(m_pGraphicDev, vPos, vSize, 7);
+    NULL_CHECK_RETURN(pGameObject, E_FAIL);
+    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Hunger", pGameObject), E_FAIL);
+
     for (int i = 0; i < 10; i++)
     {
         if (i == 0)
@@ -729,6 +735,17 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
     pGameObject = CUIFont::Create(m_pGraphicDev);
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Font", pGameObject), E_FAIL);
+
+    pGameObject = CUIBossName::Create(m_pGraphicDev);
+    NULL_CHECK_RETURN(pGameObject, E_FAIL);
+    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_BossName", pGameObject), E_FAIL);
+
+    vSize = { 60.f, 10.f };
+
+    pGameObject = CUIBossBar::Create(m_pGraphicDev, vPos, vSize, 10);
+    NULL_CHECK_RETURN(pGameObject, E_FAIL);
+    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_BossBar", pGameObject), E_FAIL);
+
 
     m_mapLayer.insert({ pLayerTag , pLayer });
 

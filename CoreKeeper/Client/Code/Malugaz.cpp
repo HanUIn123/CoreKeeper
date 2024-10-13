@@ -33,6 +33,8 @@ CMalugaz::CMalugaz(LPDIRECT3DDEVICE9 pGraphicDev)
 
     m_bStopDraw = true;
 
+    m_bTeleport = false;
+
 }
 
 CMalugaz::~CMalugaz()
@@ -58,6 +60,8 @@ HRESULT CMalugaz::Ready_GameObject(_vec3 vPos)
     Set_Speed(6.0f);
 
     m_pHitParticleCom->init(L"../Bin/Resource/Texture/Effect/Hit_%d.png", 5, 2.0f);
+
+    m_pTeleportCom->init(L"../Bin/Resource/Texture/Effect/MalugazTeleport/Teleport_%d.png", 8, 4.5f);
 
     return S_OK;
 }
@@ -112,6 +116,16 @@ _int CMalugaz::Update_GameObject(const _float& fTimeDelta)
         }
     }
 
+    if (m_bTeleport)
+    {
+        m_pTeleportCom->update(fTimeDelta);
+
+        if (m_pTeleportCom->isDead())
+        {
+            m_pTeleportCom->reset();
+            m_bTeleport = false;
+        }
+    }
     Flip();
     Set_StuckFree(fTimeDelta);
     m_pAnimatorCom->Update_Animation();
@@ -128,6 +142,12 @@ void CMalugaz::Render_GameObject()
 {
     if (m_bStopDraw)
         return;
+
+    if (m_bTeleport)
+    {
+        m_pGraphicDev->SetTransform(D3DTS_WORLD, &m_matTeleportWorld);
+        m_pTeleportCom->render();
+    }
 
     //m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
     m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
@@ -192,6 +212,10 @@ HRESULT CMalugaz::Add_Component()
     pComponent = m_pHitParticleCom = dynamic_cast<CHit*>(Engine::Clone_Proto(L"Proto_Hit"));
     NULL_CHECK_RETURN(pComponent, E_FAIL);
     m_mapComponent[ID_STATIC].insert({ L"Com_Hit", pComponent });
+
+    pComponent = m_pTeleportCom = dynamic_cast<CHit*>(Engine::Clone_Proto(L"Proto_Hit"));
+    NULL_CHECK_RETURN(pComponent, E_FAIL);
+    m_mapComponent[ID_STATIC].insert({ L"Com_Teleport", pComponent });
 
     return S_OK;
 
@@ -519,6 +543,11 @@ void CMalugaz::Pattern_Teleport(const _float& fTimeDelta)
     _vec3 vPlayerPos;
     m_pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
     m_pTransformCom->Set_Pos(vPlayerPos.x, 2.6f, vPlayerPos.z);
+
+
+    m_pTransformCom->Get_WorldMatrix(&m_matTeleportWorld);
+
+    m_bTeleport = true;
 }
 
 void CMalugaz::Pattern_Generate(const _float& fTimeDelta)

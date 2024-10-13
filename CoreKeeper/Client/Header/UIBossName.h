@@ -8,19 +8,11 @@ class CTransform;
 
 END
 
-class CUIFont : public Engine::CGameObject
+class CUIBossName : public Engine::CGameObject
 {
 private:
-	typedef struct FONTPOS{
-		_vec2 vPos;
-		wstring tFont;
-		_float fCount;
-
-		_bool bDead;
-	}FONT;
-private:
-	explicit CUIFont(LPDIRECT3DDEVICE9 pGraphicDev);
-	virtual ~CUIFont();
+	explicit CUIBossName(LPDIRECT3DDEVICE9 pGraphicDev);
+	virtual ~CUIBossName();
 
 public:
 	virtual			HRESULT			Ready_GameObject();
@@ -30,8 +22,7 @@ public:
 
 public:
 	void Set_Font(_matrix matWorld, const _tchar* tFont);
-	void Set_Font_Center(_matrix matWorld, const _tchar* tFont);
-	void Set_Font_Up(_matrix matWorld, const _tchar* tFont);
+	void Set_Disable() { m_bWindow = false; }
 private:
 	HRESULT			Add_Component();
 
@@ -39,16 +30,18 @@ private:
 	_vec3 vUIPos;
 	_matrix m_UIMatrix;
 
-	vector<FONT> m_vecFontPos;
+	_bool m_bWindow;
 
 	_int m_iFontCount;
 
-	const _tchar* m_tFont[100];
-private:
+	const _tchar* m_tFont;
 
+	_vec2 m_vPos;
+private:
 	Engine::CTransform* m_pTransformCom;
+
 public:
-	static CUIFont* Create(LPDIRECT3DDEVICE9 pGraphicDev);
+	static CUIBossName* Create(LPDIRECT3DDEVICE9 pGraphicDev);
 
 private:
 	virtual void		Free();

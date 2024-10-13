@@ -226,6 +226,8 @@ call Copy.bat</Command>
     <ClInclude Include="..\Header\Furnace.h" />
     <ClInclude Include="..\Header\Anvil.h" />
     <ClInclude Include="..\Header\Table.h" />
+    <ClInclude Include="..\Header\UIBossBar.h" />
+    <ClInclude Include="..\Header\UIBossName.h" />
     <ClInclude Include="..\Header\UIBuffFrame.h" />
     <ClInclude Include="..\Header\UIChestSort.h" />
     <ClInclude Include="..\Header\UICookingPot.h" />
@@ -397,6 +399,8 @@ call Copy.bat</Command>
     <ClCompile Include="..\Code\Furnace.cpp" />
     <ClCompile Include="..\Code\Anvil.cpp" />
     <ClCompile Include="..\Code\Table.cpp" />
+    <ClCompile Include="..\Code\UIBossBar.cpp" />
+    <ClCompile Include="..\Code\UIBossName.cpp" />
     <ClCompile Include="..\Code\UIBuffFrame.cpp" />
     <ClCompile Include="..\Code\UIChestSort.cpp" />
     <ClCompile Include="..\Code\UICookingPot.cpp" />

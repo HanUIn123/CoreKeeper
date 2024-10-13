@@ -1,6 +1,8 @@
 #pragma once
 #include "Monster.h"
 
+#include "../Header/UIBossBar.h"
+
 class CAzeos : public CMonster
 {
 private:
@@ -38,6 +40,10 @@ public:
 	_vec3           Get_Pos() { return m_vPos; }
 	_bool           Get_Crystal() { return m_bCrystal; }
 	void            Set_Crystal() { m_bCrystal = false; }
+
+	_int            Get_Hp();
+	void            Set_Hp(_int iHp);
+
 private:
 	Engine::CHit* m_pTeleportCom;
 
@@ -77,6 +83,8 @@ private:
 
 	_matrix         m_TeleportWorld;
 	_vec2           m_vTeleportPos;
+
+	CUIBossBar*     m_pUIBossBar;
 
 public:
 	static	CAzeos*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);

@@ -20,9 +20,17 @@ HRESULT CSprinklerObject::Ready_GameObject(_vec3 vPos)
 	m_pTransformCom->Set_Pos(vPos.x, 0.001f, vPos.z);
 	m_pTransformCom->Set_Scale(0.5f, 0.5f, 0.5f);
 
+	m_pWaterTransformCom->Set_Pos(vPos.x, 0.001f, vPos.z);
+
+	m_pWaterTransformCom2->Set_Pos(vPos.x, 0.001f, vPos.z);
+	m_pWaterTransformCom2->Set_Angle(0.f, D3DXToRadian(180.f), 0.f);
+
 	m_pTransformCom->Set_Angle(D3DXToRadian(90.f), 0.f, 0.f);
 
 	m_pAnimatorCom->Set_CurState(IDLE, 0, 7, 20);
+
+	m_pWaterCom->init(L"../Bin/Resource/Texture/Particle/Basic_Particle.png", 1.f, 0.2f);
+	m_pWaterCom2->init(L"../Bin/Resource/Texture/Particle/Basic_Particle.png", 1.f, 0.2f);
 
 	return S_OK;
 }
@@ -41,6 +49,9 @@ _int CSprinklerObject::Update_GameObject(const _float& fTimeDelta)
 	m_fSoundVolume *= 0.8f;
 	Sprinkler_Watering();
 
+	m_pWaterCom->update(fTimeDelta);
+	m_pWaterCom2->update(fTimeDelta);
+
 	return iExit;
 }
 
@@ -52,10 +63,17 @@ void CSprinklerObject::LateUpdate_GameObject()
 void CSprinklerObject::Render_GameObject()
 {
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
-	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
 	FAILED_CHECK_RETURN(Setup_Material(), );
+
+	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pWaterTransformCom->Get_WorldMatrix());
+	m_pWaterCom->render();
+
+	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pWaterTransformCom2->Get_WorldMatrix());
+	m_pWaterCom2->render();
+
+	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
 
 	m_pTextureCom->Set_Texture();
 
@@ -93,6 +111,23 @@ HRESULT CSprinklerObject::Add_Component()
 	pComponent = m_pCalculCom = dynamic_cast<CCalculator*>(Engine::Clone_Proto(L"Proto_Calculator"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Calculator", pComponent });
+
+	pComponent = m_pWaterCom = dynamic_cast<CWater*>(Engine::Clone_Proto(L"Proto_Water"));
+	NULL_CHECK_RETURN(pComponent, E_FAIL);
+	m_mapComponent[ID_STATIC].insert({ L"Com_Water", pComponent });
+
+	pComponent = m_pWaterCom2 = dynamic_cast<CWater*>(Engine::Clone_Proto(L"Proto_Water"));
+	NULL_CHECK_RETURN(pComponent, E_FAIL);
+	m_mapComponent[ID_STATIC].insert({ L"Com_Water2", pComponent });
+
+	pComponent = m_pWaterTransformCom = dynamic_cast<CTransform*>(Engine::Clone_Proto(L"Proto_Transform"));
+	NULL_CHECK_RETURN(pComponent, E_FAIL);
+	m_mapComponent[ID_DYNAMIC].insert({ L"Com_WaterTransform1", pComponent });
+
+	pComponent = m_pWaterTransformCom2 = dynamic_cast<CTransform*>(Engine::Clone_Proto(L"Proto_Transform"));
+	NULL_CHECK_RETURN(pComponent, E_FAIL);
+	m_mapComponent[ID_DYNAMIC].insert({ L"Com_WaterTransform2", pComponent });
+	//m_pWaterTransformCom
 
 	return S_OK;
 }

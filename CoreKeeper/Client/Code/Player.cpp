@@ -916,6 +916,20 @@ void CPlayer::Set_ImmuneByToggle()
         CBuffMgr::GetInstance()->Set_BuffStart(DEBUFF_FIRE, 5.f);
     if (Engine::Key_Down(DIK_F4))
         CBuffMgr::GetInstance()->Set_BuffStart(DEBUFF_SLOW, 5.f);
+    if (Engine::Key_Down(DIK_F9))
+    {
+        CBuffMgr::GetInstance()->Set_BuffStart(BUFF_SPEED, 999.f);
+        CBuffMgr::GetInstance()->Set_BuffStart(BUFF_HP, 999.f);
+        CBuffMgr::GetInstance()->Set_BuffStart(BUFF_ATT, 999.f);
+        CBuffMgr::GetInstance()->Set_BuffStart(BUFF_DEF, 999.f);
+        CBuffMgr::GetInstance()->Set_BuffStart(BUFF_FULL, 999.f);
+        CBuffMgr::GetInstance()->Set_BuffStart(BUFF_IMMUNE, 999.f);
+        CBuffMgr::GetInstance()->Set_BuffStart(BUFF_MINING, 999.f);
+        CBuffMgr::GetInstance()->Set_BuffStart(DEBUFF_HUNGER, 999.f);
+        CBuffMgr::GetInstance()->Set_BuffStart(DEBUFF_FIRE, 999.f);
+        CBuffMgr::GetInstance()->Set_BuffStart(DEBUFF_SLOW, 999.f);
+        CBuffMgr::GetInstance()->Set_BuffStart(DEBUFF_STUN, 999.f);
+    }
 }
 
 

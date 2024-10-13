@@ -11,6 +11,7 @@ class CColliderCube;
 class CInventory;
 class CAnimTex;
 class CAnimator;
+class CWater;
 
 END
 
@@ -38,6 +39,10 @@ private:
 private:
 	Engine::CAnimTex* m_pAnimBufferCom;
 	Engine::CAnimator* m_pAnimatorCom;
+	Engine::CWater* m_pWaterCom;
+	Engine::CWater* m_pWaterCom2;
+	Engine::CTransform* m_pWaterTransformCom;
+	Engine::CTransform* m_pWaterTransformCom2;
 
 public:
 	static CSprinklerObject* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);

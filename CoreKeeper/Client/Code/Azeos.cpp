@@ -6,6 +6,9 @@
 #include "../Header/Fire.h"
 #include "../Header/Thunder.h"
 #include "../Header/Crystal.h"
+#include "../Header/UIFont.h"
+#include "../Header/UIBossName.h"
+#include "../Header/UIBossBar.h"
 #include <math.h>
 
 CAzeos::CAzeos(LPDIRECT3DDEVICE9 pGraphicDev)
@@ -67,6 +70,14 @@ _int CAzeos::Update_GameObject(const _float& fTimeDelta)
 
     Set_Cast();
 
+    CUIBossName* pUIFont = dynamic_cast<CUIBossName*>(Engine::Get_GameObject(L"Layer_UI", L"UI_BossName"));
+
+    pUIFont->Set_Font(*m_pTransformCom->Get_WorldMatrix(), L"천둥거인\n아제오스");
+
+    m_pUIBossBar = dynamic_cast<CUIBossBar*>(Engine::Get_GameObject(L"Layer_UI", L"UI_BossBar"));
+
+    m_pUIBossBar->Set_Bar(*m_pTransformCom->Get_WorldMatrix(), this);
+
     if (m_eState != DEAD)
         m_eState = State_Change();
     switch (m_eState)
@@ -106,7 +117,7 @@ _int CAzeos::Update_GameObject(const _float& fTimeDelta)
         {
             m_pTeleportCom->reset();
 
-            m_pTransformCom->Set_Pos(m_vTeleportPos.x, 2.6f, m_vTeleportPos.y);
+           // m_pTransformCom->Set_Pos(m_vTeleportPos.x, 2.6f, m_vTeleportPos.y);
 
             m_bTeleport = false;
         }
@@ -363,6 +374,9 @@ void CAzeos::Pattern_Dead()
         m_bStopDraw = true;
         Drop_All_Item();
     }
+
+    CUIBossName* pUIFont = dynamic_cast<CUIBossName*>(Engine::Get_GameObject(L"Layer_UI", L"UI_BossName"));
+    pUIFont->Set_Disable();
 }
 
 STATE CAzeos::State_Change()
@@ -435,8 +449,6 @@ void CAzeos::Pattern_Teleport()
 
     if (iRand <= 3) // 75% 확률?
     {
-        m_pTransformCom->Get_WorldMatrix(&m_TeleportWorld);
-
         m_pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
 
         float randomAngle = static_cast<float>(rand()) / RAND_MAX * 360.0f;
@@ -444,8 +456,10 @@ void CAzeos::Pattern_Teleport()
         _float fX = vPlayerPos.x + 5.f * cosf(D3DXToRadian(randomAngle));
         _float fZ = vPlayerPos.z + 5.f * sinf(D3DXToRadian(randomAngle));
 
-        m_vTeleportPos = { fX, fZ };
-  //      m_pTransformCom->Set_Pos(fX, 2.6f, fZ);
+        //m_vTeleportPos = { fX, fZ };
+        m_pTransformCom->Set_Pos(fX, 2.6f, fZ);
+
+        m_pTransformCom->Get_WorldMatrix(&m_TeleportWorld);
 
         m_bTeleport = true;
         //플레이어와 일정한 거리 안에서 랜덤하게 텔레포트
@@ -612,6 +626,18 @@ void CAzeos::Generate_Circle()
 
 void CAzeos::Check_CrystalCollide()
 {
+}
+
+_int CAzeos::Get_Hp()
+{
+    STAT pState = *m_pStateCom->Get_Stat();
+
+    return pState.iHp;
+}
+
+void CAzeos::Set_Hp(_int iHp)
+{
+    m_pStateCom->Set_Recover(iHp);
 }
 
 void CAzeos::Pattern_GenerateCrystal()

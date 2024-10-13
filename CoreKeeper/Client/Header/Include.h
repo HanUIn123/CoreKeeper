@@ -144,6 +144,8 @@
 #include "UIFurnace.h"
 #include "UICookingPot.h"
 #include "UIFont.h"
+#include "UIBossName.h"
+#include "UIBossBar.h"
 
 // Map 
 #include "MiniMapFrame.h"

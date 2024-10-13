@@ -158,6 +158,24 @@ _int CUICraftSlot::Update_GameObject(const _float& fTimeDelta)
 					m_bEnough = false;
 			}
 		}
+		else if (m_eItemType.eItemNum == ITEM_POTION_TABLE)
+		{
+			if (CCraftMgr::GetInstance()->Craftable(pPlayerInv, m_eItemType.eItemNum, MATERIAL_IRON))
+			{
+				m_bEnough = true;
+			}
+			else
+				m_bEnough = false;
+		}
+		else if (m_eItemType.eItemNum == ITEM_ACCESSORY_TABLE)
+		{
+			if (CCraftMgr::GetInstance()->Craftable(pPlayerInv, m_eItemType.eItemNum, MATERIAL_COPPER))
+			{
+				m_bEnough = true;
+			}
+			else
+				m_bEnough = false;
+		}
 		else
 		{
 			if (CCraftMgr::GetInstance()->Craftable(pPlayerInv, m_eItemType.eItemNum, m_eItemType.eItemMat))
@@ -242,6 +260,14 @@ _int CUICraftSlot::Update_GameObject(const _float& fTimeDelta)
 					}
 
 					m_pInventoryCom->Add_Item(CCraftMgr::GetInstance()->CraftExp(m_eItemType.eItemNum, eMat));
+				}
+				else if (m_eItemType.eItemNum == ITEM_POTION_TABLE)
+				{
+					m_pInventoryCom->Add_Item(CCraftMgr::GetInstance()->CraftExp(m_eItemType.eItemNum, MATERIAL_IRON));
+				}
+				else if (m_eItemType.eItemNum == ITEM_ACCESSORY_TABLE)
+				{
+					m_pInventoryCom->Add_Item(CCraftMgr::GetInstance()->CraftExp(m_eItemType.eItemNum, MATERIAL_COPPER));
 				}
 				else
 				{

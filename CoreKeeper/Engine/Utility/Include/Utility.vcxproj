@@ -179,7 +179,7 @@ call CopyUtility.bat</Command>
     <ClCompile Include="..\Code\Smoke.cpp" />
     <ClCompile Include="..\Code\SphereCol.cpp" />
     <ClCompile Include="..\Code\State.cpp" />
-    <ClCompile Include="..\Code\Teleport.cpp" />
+    <ClCompile Include="..\Code\Water.cpp" />
     <ClCompile Include="..\Code\TerrainTex.cpp" />
     <ClCompile Include="..\Code\Texture.cpp" />
     <ClCompile Include="..\Code\TileTex.cpp" />
@@ -227,7 +227,7 @@ call CopyUtility.bat</Command>
     <ClInclude Include="..\..\Header\Smoke.h" />
     <ClInclude Include="..\..\Header\SphereCol.h" />
     <ClInclude Include="..\..\Header\State.h" />
-    <ClInclude Include="..\..\Header\Teleport.h" />
+    <ClInclude Include="..\..\Header\Water.h" />
     <ClInclude Include="..\..\Header\TerrainTex.h" />
     <ClInclude Include="..\..\Header\Texture.h" />
     <ClInclude Include="..\..\Header\TileTex.h" />

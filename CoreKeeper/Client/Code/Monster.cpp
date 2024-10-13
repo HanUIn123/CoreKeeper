@@ -681,3 +681,8 @@ void CMonster::Free()
 {
 	Engine::CGameObject::Free();
 }
+
+STAT CMonster::Get_State()
+{
+	return *m_pStateCom->Get_Stat(); 
+}
