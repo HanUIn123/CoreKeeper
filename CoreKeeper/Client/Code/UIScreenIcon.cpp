@@ -114,6 +114,10 @@ _int CUIScreenIcon::Update_GameObject(const _float& fTimeDelta)
 		m_bCollapse = false;
 	}
 
+	CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
+
+	//pPlayer->Get_Collider()->Check_Collision();
+
 	Engine::Add_RenderGroup(RENDER_UI, this);
 
 	return iExit;
@@ -175,6 +179,8 @@ void CUIScreenIcon::Render_GameObject()
 
 	else if (m_bExit && m_iIndex == ICON_HAND)
 		m_pBufferCom->Render_Buffer();
+
+	m_bCollision = false;
 }
 
 void CUIScreenIcon::Set_Inventory()

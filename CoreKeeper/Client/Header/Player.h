@@ -18,6 +18,7 @@ class CState;
 class CInventory;
 class CFall;
 class CFollow;
+class CHeal;
 
 END
 
@@ -131,6 +132,8 @@ public:
 
 	void            UI_Disable();
 
+	CCollider*      Get_Collider() { return m_pColliderCom; }
+
 	void            Set_DisMove() { m_bNoMove = true; }
 	void            Set_EnaMove() { m_bNoMove = false; }
 
@@ -164,6 +167,7 @@ private:
 	Engine::CFall*			m_pFireParticleCom; // 파티클 컴퍼넌트
 	Engine::CFollow*        m_pFollowParticleCom; // 파티클 컴퍼넌트
 	Engine::CFall*          m_pDirtParticleCom;
+	Engine::CHeal*          m_pHealParticleCom;
 
 
 	Engine::DIRECTION		m_eDir;

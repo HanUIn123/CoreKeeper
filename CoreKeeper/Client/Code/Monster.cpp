@@ -275,16 +275,16 @@ void CMonster::Check_Hitted()
 
 				wstring string = std::to_wstring(m_pPlayerState->Get_Stat()->iAttack);
 		
-				//m_vecFont.push_back(string.c_str());
+				m_vecFont.push_back(string.c_str());
 
-				m_Font[m_iFontNum] = string.c_str();
+				//m_Font[m_iFontNum] = string.c_str();
 
 				CUIFont* pFont = dynamic_cast<CUIFont*>(Engine::Get_GameObject(L"Layer_UI", L"UI_Font"));
 
 				_matrix matWorld;
 				m_pTransformCom->Get_WorldMatrix(&matWorld);
 
-				pFont->Set_Font(matWorld, m_Font[m_iFontNum]);
+				pFont->Set_Font(matWorld, m_vecFont[m_iFontNum]);
 
 				m_iFontNum++;
 
@@ -417,10 +417,30 @@ void CMonster::Drop_All_Item()
 			}
 			break;
 		case ITEM_INSTRUMENT_HARP:
+			pGameObject = CInstrument::Create(m_pGraphicDev, eItem, vPos);
+			NULL_CHECK(pGameObject);
+			m_vecItemName.push_back(L"Monster_Created_Instrument" + std::to_wstring(m_iTagNumber++));
+			break;
 		case ITEM_INSTRUMENT_CELLO:
+			pGameObject = CInstrument::Create(m_pGraphicDev, eItem, vPos);
+			NULL_CHECK(pGameObject);
+			m_vecItemName.push_back(L"Monster_Created_Instrument" + std::to_wstring(m_iTagNumber++));
+			break;
 		case ITEM_INSTRUMENT_FLUTE:
+			pGameObject = CInstrument::Create(m_pGraphicDev, eItem, vPos);
+			NULL_CHECK(pGameObject);
+			m_vecItemName.push_back(L"Monster_Created_Instrument" + std::to_wstring(m_iTagNumber++));
+			break;
 		case ITEM_INSTRUMENT_OCARINA:
+			pGameObject = CInstrument::Create(m_pGraphicDev, eItem, vPos);
+			NULL_CHECK(pGameObject);
+			m_vecItemName.push_back(L"Monster_Created_Instrument" + std::to_wstring(m_iTagNumber++));
+			break;
 		case ITEM_INSTRUMENT_DRUM:
+			pGameObject = CInstrument::Create(m_pGraphicDev, eItem, vPos);
+			NULL_CHECK(pGameObject);
+			m_vecItemName.push_back(L"Monster_Created_Instrument" + std::to_wstring(m_iTagNumber++));
+			break;
 		case ITEM_INSTRUMENT_PIANO:
 			pGameObject = CInstrument::Create(m_pGraphicDev, eItem, vPos);
 			NULL_CHECK(pGameObject);

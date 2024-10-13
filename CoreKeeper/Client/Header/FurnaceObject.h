@@ -45,6 +45,12 @@ private:
 
 	_float m_fTime;
 
+	static vector<_bool> m_vecCollision;
+
+	static _int iIndex;
+
+	_int m_iIndex;
+
 public:
 	static CFurnaceObject* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);
 

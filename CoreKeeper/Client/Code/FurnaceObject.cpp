@@ -4,6 +4,11 @@
 #include "Export_System.h"
 #include "Export_Utility.h"
 #include "../Header/CraftMgr.h"
+#include "../Header/UIScreenIcon.h"
+
+vector<_bool> CFurnaceObject::m_vecCollision;
+
+_int        CFurnaceObject::iIndex = 0;
 
 CFurnaceObject::CFurnaceObject(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CObject(pGraphicDev), m_fTime(40.f)
@@ -26,6 +31,12 @@ HRESULT CFurnaceObject::Ready_GameObject(_vec3 vPos)
 
 	m_pFumeParticleCom->init(L"../Bin/Resource/Texture/Particle/Puff_Particle/Puff_Particle_%d.png", 3, 0.2f);
 
+	m_vecCollision.push_back(false);
+
+	m_iIndex = iIndex;
+
+	iIndex++;
+
 	return S_OK;
 }
 
@@ -34,6 +45,10 @@ _int CFurnaceObject::Update_GameObject(const _float& fTimeDelta)
 	if (Check_Interaction())
 	{
 		Interaction();
+
+		CUIScreenIcon* pIcon = dynamic_cast<CUIScreenIcon*>(Engine::Get_GameObject(L"Layer_UI", L"UIScreenicon_Hand"));
+
+		pIcon->Set_Collision();
 	}
 	else if (!Check_Interaction())
 	{
@@ -49,6 +64,8 @@ _int CFurnaceObject::Update_GameObject(const _float& fTimeDelta)
 			m_bCollision = false;
 		}
 	}
+
+
 	if (!m_pInventoryCom->Check_Empty(0))
 	{
 		m_pAnimatorCom->Set_CurState(WALK, 1, 4, 10);
