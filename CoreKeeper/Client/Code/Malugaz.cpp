@@ -33,7 +33,7 @@ CMalugaz::CMalugaz(LPDIRECT3DDEVICE9 pGraphicDev)
 
     m_iCurNumber = 0;
 
-    m_bStopDraw = false;
+    m_bStopDraw = true;
 
     m_bTeleport = false;
 
