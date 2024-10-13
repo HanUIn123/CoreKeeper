@@ -74,7 +74,7 @@ void CBuffMgr::BuffTimer(const _float& fTimeDelta)
 		{
 			if (m_arrBuffState[i].x > 0)
 			{
-				if (m_arrBuffState[i].x <= 999)
+				if (m_arrBuffState[i].x < 999)
 					m_arrBuffState[i].x -= fTimeDelta;
 				m_vecUIBuff[i]->Set_BuffTime(m_arrBuffState[i].x, m_arrBuffState[i].y);
 			}
