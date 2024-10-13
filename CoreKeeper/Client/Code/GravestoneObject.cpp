@@ -190,21 +190,28 @@ void CGravestoneObject::SetUp_Item(CScene* _pScene)
 
     // ¿ø±âº£¸®
     pGameObject = CSeed::Create(m_pGraphicDev, ITEM_BERRY_SEED);
-    pGameObject->Add_Count(10);
+    pGameObject->Add_Count(21);
     m_pInventoryCom->Add_Item(pGameObject);
     m_vecItemName.push_back(L"Woodcutter's_Item" + std::to_wstring(m_iItemNameNum++));
     FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, m_vecItemName.back().c_str()), );
 
     // ÆøÅº ÈÄÃß
     pGameObject = CSeed::Create(m_pGraphicDev, ITEM_PEPPER_SEED);
-    pGameObject->Add_Count(19);
+    pGameObject->Add_Count(14);
+    m_pInventoryCom->Add_Item(pGameObject);
+    m_vecItemName.push_back(L"Woodcutter's_Item" + std::to_wstring(m_iItemNameNum++));
+    FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, m_vecItemName.back().c_str()), );
+
+    // µ¹´ç±Ù
+    pGameObject = CSeed::Create(m_pGraphicDev, ITEM_PEPPER_SEED);
+    pGameObject->Add_Count(7);
     m_pInventoryCom->Add_Item(pGameObject);
     m_vecItemName.push_back(L"Woodcutter's_Item" + std::to_wstring(m_iItemNameNum++));
     FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, m_vecItemName.back().c_str()), );
 
     // ¼¶À¯Áú
     pGameObject = CSeed::Create(m_pGraphicDev, ITEM_FIBER_SEED);
-    pGameObject->Add_Count(8);
+    pGameObject->Add_Count(17);
     m_pInventoryCom->Add_Item(pGameObject);
     m_vecItemName.push_back(L"Woodcutter's_Item" + std::to_wstring(m_iItemNameNum++));
     FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, m_vecItemName.back().c_str()), );
