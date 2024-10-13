@@ -157,6 +157,7 @@ call Copy.bat</Command>
     <ClInclude Include="..\Header\Assistance.h" />
     <ClInclude Include="..\Header\AzeosFeather.h" />
     <ClInclude Include="..\Header\AzeosPoop.h" />
+    <ClInclude Include="..\Header\AzeosShadow.h" />
     <ClInclude Include="..\Header\AzeosSpawner.h" />
     <ClInclude Include="..\Header\AzeosSpawnPoint.h" />
     <ClInclude Include="..\Header\BlackPlane.h" />
@@ -333,6 +334,7 @@ call Copy.bat</Command>
     <ClCompile Include="..\Code\Assistance.cpp" />
     <ClCompile Include="..\Code\AzeosFeather.cpp" />
     <ClCompile Include="..\Code\AzeosPoop.cpp" />
+    <ClCompile Include="..\Code\AzeosShadow.cpp" />
     <ClCompile Include="..\Code\AzeosSpawner.cpp" />
     <ClCompile Include="..\Code\AzeosSpawnPoint.cpp" />
     <ClCompile Include="..\Code\BlackPlane.cpp" />

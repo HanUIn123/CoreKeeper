@@ -230,7 +230,10 @@ void CFarmMgr::Create_Result(ITEMNUM eItemNum, _vec3 vPos)
     pScene->Create_GameObject(L"Layer_GameLogic", pIngredient, m_vecResultName.back().c_str());
     dynamic_cast<CItem*>(pIngredient)->Set_Drop(true);
 
-    Create_Seed(eItemNum, vPos);
+    _vec3 vSeedPos = vPos;
+    vSeedPos.x += rand() % 5 * 0.1f + 0.1f;
+    vSeedPos.z += rand() % 5 * 0.1f + 0.1f;
+    Create_Seed(eItemNum, vSeedPos);
 }
 
 void CFarmMgr::Free()

@@ -1,7 +1,9 @@
 #include "pch.h"
 #include "../Header/AzeosSpawnPoint.h"
+#include "../Header/AzeosShadow.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
+
 
 CAzeosSpawnPoint::CAzeosSpawnPoint(LPDIRECT3DDEVICE9 pGraphicDev)
     : CObject(pGraphicDev), m_iTextureNum(0), m_bInFrustum(false)
@@ -37,6 +39,20 @@ _int CAzeosSpawnPoint::Update_GameObject(const _float& fTimeDelta)
         return 0;
     }
 
+    if (Check_Interaction())
+    {
+        Interaction();
+    }
+    else
+    {
+        CAzeosShadow* pAzeosShadow = dynamic_cast<CAzeosShadow*>(Engine::Get_GameObject(L"Layer_GameLogic", L"AzeosShadow"));
+
+        pAzeosShadow->Set_ApeearTime(0);
+
+        pAzeosShadow->Set_Show(false);
+    }
+
+
     Add_RenderGroup(RENDER_ALPHA, this);
     return iExit;
 }
@@ -67,6 +83,13 @@ void CAzeosSpawnPoint::Render_GameObject()
     m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
+}
+
+void CAzeosSpawnPoint::Interaction()
+{
+    CAzeosShadow* pAzeosShadow = dynamic_cast<CAzeosShadow*>(Engine::Get_GameObject(L"Layer_GameLogic", L"AzeosShadow"));
+
+    pAzeosShadow->StartCount_AppearTime(1);
 }
 
 HRESULT CAzeosSpawnPoint::Add_Component()
