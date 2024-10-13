@@ -61,7 +61,7 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
     m_bNude = true;
 
     m_bRespawned = false;
-    m_vRespawnPoint = { VTXCNTX / 2, 0, 12.f };
+    m_vRespawnPoint = { VTXCNTX / 2, m_fFirstY, 12.f };
     m_bRespawnFirstFrame = true;
     m_fRespawnProgress = 0.f;
 
@@ -2635,10 +2635,12 @@ void CPlayer::Respawn_Progress(const _float& fTimeDelta)
     else if (m_fRespawnProgress <= 6.f)
     {
         // 리스폰 완료
-        m_pTransformCom->Set_Pos(m_vRespawnPoint.x, m_vRespawnPoint.y, m_vRespawnPoint.z);
+        m_pTransformCom->Set_Pos(m_vRespawnPoint.x, m_fFirstY, m_vRespawnPoint.z);
         m_pStateCom->Set_Revive();
         m_fRespawnProgress = 0.f;
         m_bRespawnFirstFrame = true;
+        m_bKnockBackEnd = true;
+        m_bKnockBackStart = false;
 
         m_pClothes[0]->Set_Active(true);
         m_pClothes[1]->Set_Active(true);
