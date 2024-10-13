@@ -33,11 +33,13 @@ CMalugaz::CMalugaz(LPDIRECT3DDEVICE9 pGraphicDev)
 
     m_iCurNumber = 0;
 
-    m_bStopDraw = true;
+    m_bStopDraw = false;
 
     m_bTeleport = false;
 
     m_fSoundVolume = 0.5f;
+    m_bPatternShoot = false;
+    m_bPatternGenerate = false;
 }
 
 CMalugaz::~CMalugaz()
@@ -313,7 +315,7 @@ void CMalugaz::Pattern_Idle(const _float& fTimeDelta)
 }
 
 
-// 플레이어 방향으로 이동, 추후 A스타 알고리즘으로 변경
+// 플레이어 방향으로 이동
 void CMalugaz::Pattern_Chase(const _float& fTimeDelta)
 {
     if (m_iPhase == 1)
@@ -330,12 +332,19 @@ void CMalugaz::Pattern_Attack(const _float& fTimeDelta)
 {
     if (m_iPhase == 1)
     {
-        int iRandom = rand();
-
-        if(iRandom % 10 < 7)
+        if (m_bPatternShoot)
             Pattern_Shoot(fTimeDelta);
-        else
+        else if(m_bPatternGenerate)
             Pattern_Generate(fTimeDelta);
+        else
+        {
+            _int iRandom = rand();
+
+            if (iRandom % 10 < 7)
+                Pattern_Shoot(fTimeDelta);
+            else
+                Pattern_Generate(fTimeDelta);
+        }
     }
     else
     {
@@ -489,6 +498,7 @@ void CMalugaz::Set_Direction(_vec3* vPlayerPos)
 
 void CMalugaz::Pattern_Shoot(const _float& fTimeDelta)
 {
+    m_bPatternShoot = true;
     m_bAttackSuccess = false;
     _vec3 vPlayerPos;
     m_pPlayerTransform->Get_Info(INFO_POS, &vPlayerPos);
@@ -521,6 +531,10 @@ void CMalugaz::Pattern_Shoot(const _float& fTimeDelta)
 
     // 차징 시
     if (iFrame % 10 < 4)
+        iFrameSpeed = 6;
+    else
+        iFrameSpeed = 8;
+    if(iFrame % 10 == 6)
     {
         if (m_bLightEnable)
         {
@@ -529,7 +543,7 @@ void CMalugaz::Pattern_Shoot(const _float& fTimeDelta)
             CScene* pScene = Engine::Get_Scene();
             _vec3 vPos;
             m_pTransformCom->Get_Info(INFO_POS, &vPos);
-            vPos.y -= 2.f;
+            vPos.z -= 0.1f;
             pProjectile = CProjectile::Create(m_pGraphicDev, vPos);
             NULL_CHECK(pProjectile);
             dynamic_cast<CProjectile*>(pProjectile)->Set_ChargeActive(false);
@@ -538,23 +552,19 @@ void CMalugaz::Pattern_Shoot(const _float& fTimeDelta)
             FAILED_CHECK_RETURN(pScene->Create_GameObject(L"Layer_GameLogic", pProjectile, m_vecProjectileName.back().c_str()), );
             Engine::CSoundMgr::GetInstance()->PlayOnce(L"FireWhoosh2.wav", SOUND_MALUGAZ, 0.1f);
         }
-        iFrameSpeed = 6;
-    }
-    else
-    {
-        iFrameSpeed = 8;
     }
 
 
     if (m_iFrameCount++ > iFrameSpeed)
     {
         m_iFrameCount = 0;
-        if (++m_iAttackAnimProgress >= 8)
+        if (++m_iAttackAnimProgress >= 10)
         {
             if (!m_bLightEnable)
                 m_bLightEnable = true;
             m_bAttackSuccess = true;
             m_iAttackAnimProgress = 0;
+            m_bPatternShoot = false;
         }
         m_pAnimatorCom->Set_CurState(SWING, iFrame, iFrame, -1);
     }
@@ -576,6 +586,7 @@ void CMalugaz::Pattern_Teleport(const _float& fTimeDelta)
 
 void CMalugaz::Pattern_Generate(const _float& fTimeDelta)
 {
+    m_bPatternGenerate = true;
     m_bAttackSuccess = false;
 
     _vec3 vPlayerPos;
@@ -650,12 +661,13 @@ void CMalugaz::Pattern_Generate(const _float& fTimeDelta)
     if (m_iFrameCount++ > iFrameSpeed)
     {
         m_iFrameCount = 0;
-        if (++m_iAttackAnimProgress >= 8)
+        if (++m_iAttackAnimProgress >= 7)
         {
             if (!m_bLightEnable)
                 m_bLightEnable = true;
             m_bAttackSuccess = true;
             m_iAttackAnimProgress = 0;
+            m_bPatternGenerate = false;
         }
         m_pAnimatorCom->Set_CurState(SWING, iFrame, iFrame, -1);
     }
