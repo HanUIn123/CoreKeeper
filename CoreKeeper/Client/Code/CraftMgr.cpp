@@ -370,7 +370,7 @@ void CCraftMgr::Set_Recipe()
 
     // Ã¶ ¹°»Ñ¸®°³
     Recipe ironWateringCanRecipe;
-    ironWateringCanRecipe.vecIngredients.push_back({ ITEM_IRON_BAR, 10 });
+    ironWateringCanRecipe.vecIngredients.push_back({ ITEM_IRON_BAR, 5 });
     m_mapRecipes[make_pair(ITEM_WATERINGCAN, MATERIAL_IRON)] = ironWateringCanRecipe;
 
     // ³ª¹« Ä®
@@ -386,14 +386,14 @@ void CCraftMgr::Set_Recipe()
     // Ã¶ Ä®
     Recipe ironSwordRecipe;
     ironSwordRecipe.vecIngredients.push_back({ ITEM_COPPER_BAR, 1 });
-    ironSwordRecipe.vecIngredients.push_back({ ITEM_IRON_BAR, 8 });
+    ironSwordRecipe.vecIngredients.push_back({ ITEM_IRON_BAR, 4 });
     m_mapRecipes[make_pair(ITEM_SWORD, MATERIAL_IRON)] = ironSwordRecipe;
 
     // Ã¶ È°
     Recipe ironBowRecipe;
     ironBowRecipe.vecIngredients.push_back({ ITEM_WOOD, 5 });
     ironBowRecipe.vecIngredients.push_back({ ITEM_COPPER_BAR, 1 });
-    ironBowRecipe.vecIngredients.push_back({ ITEM_IRON_BAR, 7 });
+    ironBowRecipe.vecIngredients.push_back({ ITEM_IRON_BAR, 3 });
     m_mapRecipes[make_pair(ITEM_BOW, MATERIAL_IRON)] = ironBowRecipe;
     m_mapRecipes[make_pair(ITEM_BOW, MATERIAL_END)] = ironBowRecipe;
 
@@ -409,9 +409,9 @@ void CCraftMgr::Set_Recipe()
 
     // Ã¶ Çï¸ä
     Recipe ironHelmetRecipe;
-    ironHelmetRecipe.vecIngredients.push_back({ ITEM_FIBER, 5 });
+    ironHelmetRecipe.vecIngredients.push_back({ ITEM_FIBER, 2 });
     ironHelmetRecipe.vecIngredients.push_back({ ITEM_COPPER_BAR, 1 });
-    ironHelmetRecipe.vecIngredients.push_back({ ITEM_IRON_BAR, 4 });
+    ironHelmetRecipe.vecIngredients.push_back({ ITEM_IRON_BAR, 2 });
     m_mapRecipes[make_pair(ITEM_HELMET, MATERIAL_IRON)] = ironHelmetRecipe;
 
     // ³ª¹« »óÀÇ
@@ -426,9 +426,9 @@ void CCraftMgr::Set_Recipe()
 
     // Ã¶ »óÀÇ
     Recipe ironChestRecipe;
-    ironChestRecipe.vecIngredients.push_back({ ITEM_FIBER, 6 });
+    ironChestRecipe.vecIngredients.push_back({ ITEM_FIBER, 3 });
     ironChestRecipe.vecIngredients.push_back({ ITEM_COPPER_BAR, 3 });
-    ironChestRecipe.vecIngredients.push_back({ ITEM_IRON_BAR, 15 });
+    ironChestRecipe.vecIngredients.push_back({ ITEM_IRON_BAR, 3 });
     m_mapRecipes[make_pair(ITEM_CHEST, MATERIAL_IRON)] = ironChestRecipe;
 
     // ³ª¹« ¹ÙÁö
@@ -443,19 +443,19 @@ void CCraftMgr::Set_Recipe()
 
     // Ã¶ ¹ÙÁö
     Recipe ironLegRecipe;
-    ironLegRecipe.vecIngredients.push_back({ ITEM_FIBER, 6 });
+    ironLegRecipe.vecIngredients.push_back({ ITEM_FIBER, 2 });
     ironLegRecipe.vecIngredients.push_back({ ITEM_COPPER_BAR, 2 });
-    ironLegRecipe.vecIngredients.push_back({ ITEM_IRON_BAR, 13 });
+    ironLegRecipe.vecIngredients.push_back({ ITEM_IRON_BAR, 2 });
     m_mapRecipes[make_pair(ITEM_LEG, MATERIAL_IRON)] = ironLegRecipe;
 
     // ±¸¸® ¸ñ°ÉÀÌ
     Recipe copperNecklaceRecipe;
-    copperNecklaceRecipe.vecIngredients.push_back({ ITEM_COPPER_BAR, 10 });
+    copperNecklaceRecipe.vecIngredients.push_back({ ITEM_COPPER_BAR, 5 });
     m_mapRecipes[make_pair(ITEM_NECKLACE, MATERIAL_COPPER)] = copperNecklaceRecipe;
 
     // Ã¶ µ¢¾î¸® ¸ñ°ÉÀÌ
     Recipe ironNecklaceRecipe;
-    ironNecklaceRecipe.vecIngredients.push_back({ ITEM_IRON_BAR, 10 });
+    ironNecklaceRecipe.vecIngredients.push_back({ ITEM_IRON_BAR, 5 });
     m_mapRecipes[make_pair(ITEM_NECKLACE, MATERIAL_IRON)] = ironNecklaceRecipe;
 
     // µ¹ ¹ÝÁö
@@ -468,7 +468,7 @@ void CCraftMgr::Set_Recipe()
     // ½Å¼Ó ¹ÝÁö
     Recipe speedRingRecipe;
     speedRingRecipe.vecIngredients.push_back({ ITEM_FEATHER_PIECE, 3 });
-    speedRingRecipe.vecIngredients.push_back({ ITEM_IRON_BAR, 10 });
+    speedRingRecipe.vecIngredients.push_back({ ITEM_IRON_BAR, 5 });
     m_mapRecipes[make_pair(ITEM_RING, MATERIAL_IRON)] = speedRingRecipe;
 
     // º§Æ® ÁÖ¸Ó´Ï
@@ -527,8 +527,8 @@ void CCraftMgr::Set_Recipe()
     // Ã¶Á¦ ÀÛ¾÷´ë
     Recipe ironTableRecipe;
     ironTableRecipe.vecIngredients.push_back({ ITEM_WOOD, 10 });
-    ironTableRecipe.vecIngredients.push_back({ ITEM_COPPER_BAR, 10 });
-    ironTableRecipe.vecIngredients.push_back({ ITEM_IRON_BAR, 15 });
+    ironTableRecipe.vecIngredients.push_back({ ITEM_COPPER_BAR, 7 });
+    ironTableRecipe.vecIngredients.push_back({ ITEM_IRON_BAR, 7 });
     m_mapRecipes[make_pair(ITEM_TABLE, MATERIAL_IRON)] = ironTableRecipe;
 
     // ¿¬±Ý¼ú ÀÛ¾÷´ë
@@ -542,7 +542,7 @@ void CCraftMgr::Set_Recipe()
     Recipe accessoryTableRecipe;
     accessoryTableRecipe.vecIngredients.push_back({ ITEM_WOOD, 8 });
     accessoryTableRecipe.vecIngredients.push_back({ ITEM_COPPER_BAR, 4 });
-    accessoryTableRecipe.vecIngredients.push_back({ ITEM_IRON_BAR, 8 });
+    accessoryTableRecipe.vecIngredients.push_back({ ITEM_IRON_BAR, 4 });
     m_mapRecipes[make_pair(ITEM_ACCESSORY_TABLE, MATERIAL_COPPER)] = accessoryTableRecipe;
 
     // ±¸¸® ¸ð·ç
@@ -552,7 +552,7 @@ void CCraftMgr::Set_Recipe()
     
     // Ã¶Á¦ ¸ð·ç
     Recipe ironAnvilRecipe;
-    ironAnvilRecipe.vecIngredients.push_back({ ITEM_IRON_BAR, 10 });
+    ironAnvilRecipe.vecIngredients.push_back({ ITEM_IRON_BAR, 5 });
     m_mapRecipes[make_pair(ITEM_ANVIL, MATERIAL_IRON)] = ironAnvilRecipe;
 
     // ¿ë±¤·Î
@@ -578,8 +578,8 @@ void CCraftMgr::Set_Recipe()
 
     // ½ºÇÁ¸µÄð·¯
     Recipe sprinklerRecipe;
-    sprinklerRecipe.vecIngredients.push_back({ ITEM_IRON_BAR, 8 });
-    sprinklerRecipe.vecIngredients.push_back({ ITEM_SCARLET_BAR, 8 });
+    sprinklerRecipe.vecIngredients.push_back({ ITEM_IRON_BAR, 4 });
+    sprinklerRecipe.vecIngredients.push_back({ ITEM_SCARLET_BAR, 4 });
     m_mapRecipes[make_pair(ITEM_SPRINKLER, MATERIAL_IRON)] = sprinklerRecipe;
 
     // HP Æ÷¼Ç

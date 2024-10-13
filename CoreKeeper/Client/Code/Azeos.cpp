@@ -422,6 +422,7 @@ void CAzeos::Pattern_Dead()
         m_bStopDraw = true;
         Drop_All_Item();
         g_bFight = false;
+        g_bEnd = true;
     }
 
     CUIBossName* pUIFont = dynamic_cast<CUIBossName*>(Engine::Get_GameObject(L"Layer_UI", L"UI_BossName"));

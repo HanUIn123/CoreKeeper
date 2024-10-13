@@ -18,6 +18,7 @@ int     g_iLightNum;
 bool    g_bOpen;
 bool    g_bStart;
 bool    g_bFight;
+bool    g_bEnd;
 bool    g_bPlay;
 
 // 이 코드 모듈에 들어 있는 함수의 정방향 선언입니다.

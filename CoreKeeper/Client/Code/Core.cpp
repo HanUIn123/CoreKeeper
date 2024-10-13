@@ -88,6 +88,14 @@ void CCore::Interaction()
 		_matrix matWorld;
 		m_pTransformCom->Get_WorldMatrix(&matWorld);
 
+		if (g_bEnd)
+		{
+			pFont->Set_Font_Up(matWorld, L"음이 울리면 길이 드러나리라.");
+			Engine::CSoundMgr::GetInstance()->Play(L"coreSpeech.wav", SOUND_EFFECT, 0.1f);
+
+			return;
+		}
+		
 		if (m_bActiveCore[0] && m_bActiveCore[1] && m_bActiveCore[2])
 		{
 			pFont->Set_Font_Up(matWorld, L"위대한 벽에 손을 대면 벽이 열릴지어다.");
