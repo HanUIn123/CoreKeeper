@@ -100,6 +100,9 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
     m_bLookAround = false;
     m_fLookAroundTime = 0.f;
     m_bLookCamera = false;
+
+    m_bTeleportCore = true;
+    m_fTeleportProcess = 0.f;
 }
 
 CPlayer::~CPlayer()
@@ -201,7 +204,7 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 
         Play_Instruments();
 
-        if (!m_bNoMove && !m_bInventory && !m_bCraft && !m_bMap) // m_bNoMove -> UICursor에서 적용
+        if (!m_bNoMove && !m_bInventory && !m_bCraft && !m_bMap && !m_bTeleportCore) // m_bNoMove -> UICursor에서 적용
             Mouse_Click(fTimeDelta);
         else
         {
@@ -209,7 +212,9 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
             m_bShoot = false;
         }
 
-        if (m_bKnockBackEnd)
+        Teleport_Core(fTimeDelta);
+
+        if (m_bKnockBackEnd && !m_bTeleportCore)
         {
             if (g_bIsTopCamera)
             {
@@ -599,6 +604,14 @@ void CPlayer::Mouse_Click(const _float& fTimeDelta)
                 case ITEM_STONEWALL:
                 case ITEM_GRASSWALL:
                     Build(eHandedNum);
+                    break;
+
+                case ITEM_PLAYER_SPAWNER:
+                    m_bTeleportCore = true;
+                    m_pInventoryCom->Minus_Item(eHandedNum);
+                    m_pHandedItem->Set_Use(false);
+                    m_pHandedItem->Set_Active(false);
+                    m_pHandedItem->Set_Drop(false);
                     break;
 
                 default:
@@ -2677,6 +2690,23 @@ void CPlayer::Respawn_Progress(const _float& fTimeDelta)
         m_pClothes[1]->Set_Active(true);
         m_pClothes[3]->Set_Active(true);
         m_pClothes[4]->Set_Active(true);
+    }
+}
+void CPlayer::Teleport_Core(const _float& fTimeDelta)
+{
+    if (m_bTeleportCore)
+    {
+        if (m_fTeleportProcess == 0.f)
+        {
+            // 이펙트 추가 좀
+        }
+        m_fTeleportProcess += fTimeDelta;
+        if (m_fTeleportProcess >= 2.f)
+        {
+            m_bRespawned = false;
+            m_bTeleportCore = false;
+            m_fTeleportProcess = 0.f;
+        }
     }
 }
 void CPlayer::Set_InvWindow()
