@@ -2522,7 +2522,7 @@ void CPlayer::Set_Hungry(const _float& fTimeDelta)
             if (m_pStateCom->Get_Hunger() <= 0)
                 m_pStateCom->Set_Damaged(5);
             else
-                m_pStateCom->Set_HungerMinus(5);
+                m_pStateCom->Set_HungerMinus(2);
         }
     }
 
