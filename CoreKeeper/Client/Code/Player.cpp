@@ -626,6 +626,7 @@ void CPlayer::Mouse_Click(const _float& fTimeDelta)
                     break;
 
                 case ITEM_PLAYER_SPAWNER:
+                    Engine::CSoundMgr::GetInstance()->Play(L"darkgleam.wav", SOUND_PLAYER, 0.1f);
                     m_bTeleportCore = true;
                     m_pInventoryCom->Minus_Item(eHandedNum);
                     m_pHandedItem->Set_Use(false);
@@ -3290,10 +3291,11 @@ void CPlayer::Particle_Update(_float fTimeDelta)
 
 void CPlayer::Set_KnockBack(_vec3 vEnemyPos, _int iDamage, _float fDist, PLAYERHITTYPE eHit)
 {
-    Engine::CSoundMgr::GetInstance()->Play(L"slimeAnticipation.wav", SOUND_PLAYER, 0.1f);
 
     if (!m_bImmune && !m_bImmuneByTime)
     {
+        Engine::CSoundMgr::GetInstance()->Play(L"damagePlayer.wav", SOUND_PLAYER, 0.5f);
+
         _vec3 vPos;
         m_pTransformCom->Get_Info(INFO_POS, &vPos);
         m_bKnockBackStart = true;
