@@ -354,7 +354,7 @@ HRESULT CStage::Ready_Layer_GameLogic(const _tchar* pLayerTag)
 
     // 아제오스 그릠자 
     // 45.0f, -0.2f, 106.0
-    _vec3   AzeosShadowPos = { 45.0f, 0.2f, 106.0f };
+    _vec3   AzeosShadowPos = { 36.0f, 0.2f, 106.0f };
     pGameObject = CAzeosShadow::Create(m_pGraphicDev, AzeosShadowPos);
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"AzeosShadow", pGameObject), E_FAIL);
