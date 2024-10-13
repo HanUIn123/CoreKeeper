@@ -150,6 +150,7 @@ _uint CLoading::Loading_Stage()
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Smog", Engine::CSmog::Create(m_pGraphicDev, &vPPos, 30)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Fume", Engine::CFume::Create(m_pGraphicDev, &vPPos, 30)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Heal", Engine::CHeal::Create(m_pGraphicDev, &vPPos, 15)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_BossHeal", Engine::CHeal::Create(m_pGraphicDev, &vPPos, 5, true)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Water", Engine::CWater::Create(m_pGraphicDev, &vPPos, 5)), E_FAIL);
 
 

@@ -51,7 +51,7 @@ void CWater::resetParticle(Attribute* attribute) // 파티클 리셋
 
 	attribute->_velocity *= 3.0f;
 
-	attribute->_color = D3DXCOLOR(1.f, 1.f, 1.f, 1.f); 
+	attribute->_color = D3DCOLOR_ARGB(255, 255 ,255 , 255); 
 
 	attribute->_iTextureNum = 0;
 
@@ -178,9 +178,7 @@ void CWater::update(float timeDelta, _vec3 vDir)
 void CWater::preRender()
 {
 	PSystem::preRender();
-	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, true);
-	//m_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_ONE);
-	//m_pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
+	//m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, true);
 	
 	// z버퍼 읽기 끔
 	//m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, false);
@@ -191,7 +189,6 @@ void CWater::postRender()
 	PSystem::postRender();
 
 	//m_pGraphicDev->SetRenderState(D3DRS_ZWRITEENABLE, true);
-	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, false);
 }
 
 void CWater::reset()
@@ -211,7 +208,7 @@ void CWater::resetParticles(Attribute* attribute)
 	attribute->_velocity.x = 2.5f * cosf(D3DXToRadian(attribute->_lifeTime));
 	attribute->_velocity.z = 2.5f * sinf(D3DXToRadian(attribute->_lifeTime));
 
-	attribute->_color = D3DXCOLOR(1.f, 1.f, 1.f, 1.f);
+	attribute->_color = D3DCOLOR_ARGB(255, 255, 255, 255);
 
 	attribute->_iTextureNum = 0;
 

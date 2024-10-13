@@ -3,6 +3,7 @@
 #include "Export_System.h"
 #include "Export_Utility.h"
 #include "../Header/Player.h"
+#include "../Header/UIScreenIcon.h"
 
 CAnvilObject::CAnvilObject(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CObject(pGraphicDev), m_eMaterial(MATERIAL_END), m_iTextureNum(0)
@@ -35,6 +36,10 @@ _int CAnvilObject::Update_GameObject(const _float& fTimeDelta)
 	if (Check_Interaction())
 	{
 		Interaction();
+
+		CUIScreenIcon* pIcon = dynamic_cast<CUIScreenIcon*>(Engine::Get_GameObject(L"Layer_UI", L"UIScreenicon_Hand"));
+
+		pIcon->Set_Collision();
 	}
 	else if (!Check_Interaction())
 	{

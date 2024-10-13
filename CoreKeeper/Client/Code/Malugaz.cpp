@@ -365,7 +365,7 @@ void CMalugaz::Pattern_Dead()
         m_fImmuneTime = 0.f;
         m_bKnockBackStart = true;
         m_bKnockBackEnd = false;
-
+        
         m_pBufferCom = m_pBufferCom2;
         m_iTextureNum = 1;
         m_pAnimatorCom->Set_CurState(IDLE, 0, 5, 8);

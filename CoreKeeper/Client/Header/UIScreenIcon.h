@@ -48,7 +48,9 @@ public:
 	void           Set_Map();
 	void           Set_Craft();
 
-	void           Set_Collision() { m_bCollision = true; }
+	void           Set_Collision() {
+		m_bCollision = true;
+	}
 	void           Set_DisCollision() { m_bCollision = false; }
 private:
 	HRESULT			Add_Component();

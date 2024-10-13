@@ -3,9 +3,10 @@
 #include "Export_System.h"
 #include "Export_Utility.h"
 #include "..\Header\Player.h"
+#include "../Header/UIScreenIcon.h"
 
 CPotionTableObject::CPotionTableObject(LPDIRECT3DDEVICE9 pGraphicDev)
-	: CObject(pGraphicDev)
+	: CObject(pGraphicDev), m_bHandCollision(false)
 {
 }
 
@@ -32,6 +33,10 @@ _int CPotionTableObject::Update_GameObject(const _float& fTimeDelta)
 	if (Check_Interaction())
 	{
 		Interaction();
+
+		CUIScreenIcon* pIcon = dynamic_cast<CUIScreenIcon*>(Engine::Get_GameObject(L"Layer_UI", L"UIScreenicon_Hand"));
+
+		pIcon->Set_Collision();
 	}
 	else if (!Check_Interaction())
 	{
@@ -46,6 +51,10 @@ _int CPotionTableObject::Update_GameObject(const _float& fTimeDelta)
 
 			m_bCollision = false;
 		}
+
+		CUIScreenIcon* pIcon = dynamic_cast<CUIScreenIcon*>(Engine::Get_GameObject(L"Layer_UI", L"UIScreenicon_Hand"));
+
+		pIcon->Set_DisCollision();
 	}
 
 	Add_RenderGroup(RENDER_ALPHA, this);

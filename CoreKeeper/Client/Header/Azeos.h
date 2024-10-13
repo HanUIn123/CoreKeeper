@@ -3,6 +3,12 @@
 
 #include "../Header/UIBossBar.h"
 
+BEGIN(Engine)
+
+class CHeal;
+
+END
+
 class CAzeos : public CMonster
 {
 private:
@@ -46,6 +52,7 @@ public:
 
 private:
 	Engine::CHit* m_pTeleportCom;
+	Engine::CHeal* m_pHealCom;
 
 private:
 	_bool			m_bLightEnable;
@@ -86,6 +93,8 @@ private:
 
 	CUIBossBar*     m_pUIBossBar;
 
+	_float          m_PreHp;
+	_bool           m_bHeal;
 public:
 	static	CAzeos*	Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);
 
