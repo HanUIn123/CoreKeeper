@@ -422,28 +422,33 @@ void CMonster::Drop_All_Item()
 				m_vecItemName.push_back(L"Monster_Created_Feather" + std::to_wstring(m_iTagNumber++));
 			}
 			break;
+		case ITEM_MAL_CORE:
+			pGameObject = CStatueCore::Create(m_pGraphicDev, eItem, vRandomPos);
+			NULL_CHECK(pGameObject);
+			m_vecItemName.push_back(L"Monster_Created_Core" + std::to_wstring(m_iTagNumber++));
+			break;
 		case ITEM_INSTRUMENT_HARP:
-			pGameObject = CInstrument::Create(m_pGraphicDev, eItem, vPos);
+			pGameObject = CInstrument::Create(m_pGraphicDev, eItem, vRandomPos);
 			NULL_CHECK(pGameObject);
 			m_vecItemName.push_back(L"Monster_Created_Instrument" + std::to_wstring(m_iTagNumber++));
 			break;
 		case ITEM_INSTRUMENT_CELLO:
-			pGameObject = CInstrument::Create(m_pGraphicDev, eItem, vPos);
+			pGameObject = CInstrument::Create(m_pGraphicDev, eItem, vRandomPos);
 			NULL_CHECK(pGameObject);
 			m_vecItemName.push_back(L"Monster_Created_Instrument" + std::to_wstring(m_iTagNumber++));
 			break;
 		case ITEM_INSTRUMENT_FLUTE:
-			pGameObject = CInstrument::Create(m_pGraphicDev, eItem, vPos);
+			pGameObject = CInstrument::Create(m_pGraphicDev, eItem, vRandomPos);
 			NULL_CHECK(pGameObject);
 			m_vecItemName.push_back(L"Monster_Created_Instrument" + std::to_wstring(m_iTagNumber++));
 			break;
 		case ITEM_INSTRUMENT_OCARINA:
-			pGameObject = CInstrument::Create(m_pGraphicDev, eItem, vPos);
+			pGameObject = CInstrument::Create(m_pGraphicDev, eItem, vRandomPos);
 			NULL_CHECK(pGameObject);
 			m_vecItemName.push_back(L"Monster_Created_Instrument" + std::to_wstring(m_iTagNumber++));
 			break;
 		case ITEM_INSTRUMENT_DRUM:
-			pGameObject = CInstrument::Create(m_pGraphicDev, eItem, vPos);
+			pGameObject = CInstrument::Create(m_pGraphicDev, eItem, vRandomPos);
 			NULL_CHECK(pGameObject);
 			m_vecItemName.push_back(L"Monster_Created_Instrument" + std::to_wstring(m_iTagNumber++));
 			break;

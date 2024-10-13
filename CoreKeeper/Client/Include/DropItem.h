@@ -23,4 +23,4 @@
 #include "..\Header\Ore.h"
 #include "..\Header\Ingredient.h"
 #include "..\Header\Piece.h"
-
+#include "..\Header\StatueCore.h"
