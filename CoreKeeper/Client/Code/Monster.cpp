@@ -319,6 +319,7 @@ void CMonster::Drop_Item()
 	case ITEM_BERRY_SEED:
 	case ITEM_PEPPER_SEED:
 	case ITEM_CARROT_SEED:
+	case ITEM_FIBER_SEED:
 		pGameObject = CSeed::Create(m_pGraphicDev, eItem, vPos);
 		NULL_CHECK(pGameObject);
 		m_vecItemName.push_back(L"Monster_Created_Ingredients" + std::to_wstring(m_iTagNumber++));
