@@ -88,7 +88,7 @@ void CUIBuffFrame::Render_GameObject()
 	_vec3 vPos3 = {};
 
 	m_pTransformCom->Get_Info(INFO_POS, &vPos3);
-	_vec2 vPos2 = { vPos3.x + WINCX/ 2.f - 90.f, WINCY / 2.f - vPos3.y - 20.f };
+	_vec2 vPos2 = { vPos3.x + WINCX/ 2.f - 120.f, WINCY / 2.f - vPos3.y - 20.f };
 
 	Engine::Render_Font(L"Font_Item", tChar, &vPos2, D3DXCOLOR(1.f, 1.f, 1.f, 1.f));
 }
@@ -101,7 +101,7 @@ void CUIBuffFrame::Set_Window(CUIBuff::BUFFICONTYPE _BuffType, POINT _pt, _bool 
 
 	m_eType = _BuffType;
 
-	m_pTransformCom->Set_Pos((_float)_pt.x + 100.f - WINCX / 2.f, WINCY / 2.f - (_float)_pt.y - 10.f, 0.f);
+	m_pTransformCom->Set_Pos((_float)_pt.x + 130.f - WINCX / 2.f, WINCY / 2.f - (_float)_pt.y - 10.f, 0.f);
 }
 
 void CUIBuffFrame::Set_BuffExplain()
@@ -117,8 +117,8 @@ void CUIBuffFrame::Set_BuffExplain()
 
 	string = L"방어력 \n+5.0% 증가";
 	m_mapType.insert({ 15, string });
-	
-	string = L"포만감으로 인해 \n피해 및 최대 체력 +5.0% 증가";
+
+	string = L"허기로 인해 \n피해 및 최대 체력 -5.0% 감소";
 	m_mapType.insert({ 17, string });
 
 	string = L"+10의 화상 피해";
@@ -130,7 +130,7 @@ void CUIBuffFrame::Set_BuffExplain()
 	string = L"슬라임으로 인해 \n이동속도 -40.0%";
 	m_mapType.insert({ 30, string });
 
-	string = L"허기로 인해 \n피해 및 최대 체력 -5.0% 감소";
+	string = L"포만감으로 인해 \n피해 및 최대 체력 +5.0% 증가";
 	m_mapType.insert({ 31, string });
 
 	string = L"잠시동안 이동 불가";

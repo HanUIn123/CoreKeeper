@@ -36,6 +36,8 @@ CAzeos::CAzeos(LPDIRECT3DDEVICE9 pGraphicDev)
     m_bDead = false;
 
     m_bStopDraw = true;
+
+    m_bHeal = false;
 }
 
 CAzeos::~CAzeos()
@@ -59,11 +61,13 @@ HRESULT CAzeos::Ready_GameObject(_vec3 vPos)
     m_vecDropItem.push_back(ITEM_INSTRUMENT_HARP);
     m_vecDropItem.push_back(ITEM_INSTRUMENT_FLUTE);
     m_vecDropItem.push_back(ITEM_DOLL);
+    m_vecDropItem.push_back(ITEM_ASSISTANCE);
 
     Set_Speed(6.0f);
 
     m_pHitParticleCom->init(L"../Bin/Resource/Texture/Effect/Hit_%d.png", 5, 2.0f);
     m_pTeleportCom->init(L"../Bin/Resource/Texture/Effect/BossTeleport/Teleport_%d.png", 10, 4.5f);
+    m_pHealCom->init(L"../Bin/Resource/Texture/Particle/Health_Particle.png", 1, 0.2f);
 
     m_vFirstPos = vPos;
 
@@ -77,12 +81,28 @@ _int CAzeos::Update_GameObject(const _float& fTimeDelta)
 
     int iExit = Engine::CGameObject::Update_GameObject(fTimeDelta);
     Engine::CSoundMgr::GetInstance()->PlayBGM(L"Azeos_the_Sky_Titan.wav", 0.1f);
-
+    
     Set_Cast();
+
+    STAT sStat = *m_pStateCom->Get_Stat();
+
+    if (sStat.iHp - m_PreHp > 0)
+    {
+        m_pHealCom->update(fTimeDelta);
+
+        if (m_pHealCom->isDead())
+            m_pHealCom->reset();
+
+        m_bHeal = true;
+    }
+    else
+    {
+        m_bHeal = false;
+    }
 
     CUIBossName* pUIFont = dynamic_cast<CUIBossName*>(Engine::Get_GameObject(L"Layer_UI", L"UI_BossName"));
 
-    pUIFont->Set_Font(*m_pTransformCom->Get_WorldMatrix(), L"천둥거인\n아제오스");
+    pUIFont->Set_Font(*m_pTransformCom->Get_WorldMatrix(), L"하늘거인\n아제오스");
 
     m_pUIBossBar = dynamic_cast<CUIBossBar*>(Engine::Get_GameObject(L"Layer_UI", L"UI_BossBar"));
 
@@ -144,6 +164,8 @@ _int CAzeos::Update_GameObject(const _float& fTimeDelta)
     }
     m_pTransformCom->Get_Info(INFO_POS, &m_vPos);
 
+    m_PreHp = sStat.iHp;
+
     Flip();
     //Set_StuckFree(fTimeDelta);
     m_pAnimatorCom->Update_Animation();
@@ -182,6 +204,10 @@ void CAzeos::Render_GameObject()
     if (m_bHit)
     {
         m_pHitParticleCom->render();
+    }
+    if (m_bHeal)
+    {
+        m_pHealCom->render();
     }
 
     m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
@@ -226,6 +252,11 @@ HRESULT CAzeos::Add_Component()
     pComponent = m_pTeleportCom = dynamic_cast<CHit*>(Engine::Clone_Proto(L"Proto_Hit"));
     NULL_CHECK_RETURN(pComponent, E_FAIL);
     m_mapComponent[ID_STATIC].insert({ L"Com_Teleport", pComponent });
+
+    pComponent = m_pHealCom = dynamic_cast<CHeal*>(Engine::Clone_Proto(L"Proto_Heal"));
+    NULL_CHECK_RETURN(pComponent, E_FAIL);
+    m_mapComponent[ID_STATIC].insert({ L"Com_Heal", pComponent });
+
 
     return S_OK;
 
@@ -384,6 +415,7 @@ void CAzeos::Pattern_Dead()
 
     if (m_pAnimatorCom->Get_MotionIndex() == 18 && m_iEndCount >= 300)
     {
+        Engine::CSoundMgr::GetInstance()->StopSound(SOUND_BGM);
         m_iEndCount = 0;
        // m_pGraphicDev->LightEnable(m_iLightNum, FALSE); // 조명 비활성화
         m_bLightEnable = false;

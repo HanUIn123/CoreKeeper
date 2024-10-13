@@ -631,7 +631,7 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
 
 
     vPos = { 1000.f, 510.f };
-    vSize = { 100.f, 30.f };
+    vSize = { 130.f, 30.f };
 
     pGameObject = CUIBuffFrame::Create(m_pGraphicDev, vPos, vSize);
     NULL_CHECK_RETURN(pGameObject, E_FAIL);

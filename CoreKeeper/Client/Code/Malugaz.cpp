@@ -366,7 +366,7 @@ void CMalugaz::Pattern_Dead()
         m_fImmuneTime = 0.f;
         m_bKnockBackStart = true;
         m_bKnockBackEnd = false;
-
+        
         m_pBufferCom = m_pBufferCom2;
         m_iTextureNum = 1;
         m_pAnimatorCom->Set_CurState(IDLE, 0, 5, 8);
@@ -748,6 +748,11 @@ void CMalugaz::Pattern_Punch(const _float& fTimeDelta)
 
     // Â÷Â¡ ½Ã
     if (iFrame % 6 < 2)
+        iFrameSpeed = 9;
+    else
+        iFrameSpeed = 8;
+
+    if(iFrame % 6 == 3)
     {
         if (m_bLightEnable)
         {
@@ -764,11 +769,6 @@ void CMalugaz::Pattern_Punch(const _float& fTimeDelta)
                 Engine::CSoundMgr::GetInstance()->PlayOnce(L"Crack3.wav", SOUND_MALUGAZ, 0.1f);
             }
         }
-        iFrameSpeed = 9;
-    }
-    else
-    {
-        iFrameSpeed = 8;
     }
 
 

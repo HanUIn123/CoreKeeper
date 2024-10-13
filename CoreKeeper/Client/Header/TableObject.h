@@ -43,5 +43,7 @@ private:
 private:
 	MATERIAL						m_eMaterial;
 	int								m_iTextureNum;
+
+	static _bool                    m_bHandCollision[10];
 };
 

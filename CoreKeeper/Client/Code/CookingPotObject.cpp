@@ -4,6 +4,7 @@
 #include "Export_System.h"
 #include "Export_Utility.h"
 #include "../Header/CraftMgr.h"
+#include "../Header/UIScreenIcon.h"
 
 CCookingPotObject::CCookingPotObject(LPDIRECT3DDEVICE9 pGraphicDev)
 	: CObject(pGraphicDev), m_fTime(80.f)
@@ -34,6 +35,10 @@ _int CCookingPotObject::Update_GameObject(const _float& fTimeDelta)
 	if (Check_Interaction())
 	{
 		Interaction();
+
+		CUIScreenIcon* pIcon = dynamic_cast<CUIScreenIcon*>(Engine::Get_GameObject(L"Layer_UI", L"UIScreenicon_Hand"));
+
+		pIcon->Set_Collision();
 	}
 	else if (!Check_Interaction())
 	{

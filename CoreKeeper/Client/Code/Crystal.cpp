@@ -82,6 +82,8 @@ _int CCrystal::Update_GameObject(const _float& fTimeDelta)
 			if (m_pSphereColliderCom->Check_Cube_Collision(pHandedItemCollider))
 			{
 				m_iHp -= 10.f;
+
+				CSoundMgr::GetInstance()->PlayOnce(L"crystalDmg1.wav", SOUND_PLAYER, 0.5f);
 			}
 		}
 	}
