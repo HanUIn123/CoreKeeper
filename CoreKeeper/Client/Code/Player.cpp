@@ -2874,24 +2874,60 @@ void CPlayer::Set_Status()
 
 void CPlayer::Set_ChestInventory(CInventory* pInventory)
 {
-    for (int i = 0; i < 18; ++i)
+    if (pInventory)
     {
-        wstring string;
+        if (!(pInventory->Get_SlotCount() == 1))
+        {
+            for (int i = 0; i < pInventory->Get_SlotCount(); ++i)
+            {
+                wstring string;
 
-        string = L"UI_ChestInventory_" + std::to_wstring(i);
+                string = L"UI_ChestInventory_" + std::to_wstring(i);
 
-        CUIChestInv* pChestInventory = dynamic_cast<CUIChestInv*>(Engine::Get_GameObject(L"Layer_UI", string.c_str()));
+                CUIChestInv* pChestInventory = dynamic_cast<CUIChestInv*>(Engine::Get_GameObject(L"Layer_UI", string.c_str()));
 
-        pChestInventory->Set_Show(pInventory);
+                pChestInventory->Set_Show(pInventory);
+            }
+
+            CUISort* pSort = dynamic_cast<CUISort*>(Engine::Get_GameObject(L"Layer_UI", L"UI_ChestSort"));
+
+            pSort->Set_Window();
+            pSort->Set_Inventory(pInventory);
+
+            CUIChestSort* pChestSort = dynamic_cast<CUIChestSort*>(Engine::Get_GameObject(L"Layer_UI", L"UI_ChestAddItem"));
+            pChestSort->Set_Window(pInventory);
+        }
+        else
+        {
+            wstring string;
+
+            string = L"UI_ChestInventory_" + std::to_wstring(0);
+
+            CUIChestInv* pChestInventory = dynamic_cast<CUIChestInv*>(Engine::Get_GameObject(L"Layer_UI", string.c_str()));
+
+            pChestInventory->Set_Show(pInventory, true);
+        }
     }
+    else
+    {
+        for (int i = 0; i < 18; ++i)
+        {
+            wstring string;
 
-    CUISort* pSort = dynamic_cast<CUISort*>(Engine::Get_GameObject(L"Layer_UI", L"UI_ChestSort"));
+            string = L"UI_ChestInventory_" + std::to_wstring(i);
 
-    pSort->Set_Window();
-    pSort->Set_Inventory(pInventory);
+            CUIChestInv* pChestInventory = dynamic_cast<CUIChestInv*>(Engine::Get_GameObject(L"Layer_UI", string.c_str()));
 
-    CUIChestSort* pChestSort = dynamic_cast<CUIChestSort*>(Engine::Get_GameObject(L"Layer_UI", L"UI_ChestAddItem"));
-    pChestSort->Set_Window(pInventory);
+            pChestInventory->Set_Disable();
+
+            CUISort* pSort = dynamic_cast<CUISort*>(Engine::Get_GameObject(L"Layer_UI", L"UI_ChestSort"));
+
+            pSort->Set_Disable();
+
+            CUIChestSort* pChestSort = dynamic_cast<CUIChestSort*>(Engine::Get_GameObject(L"Layer_UI", L"UI_ChestAddItem"));
+            pChestSort->Set_Disable();
+        }
+    }
 
     Set_Inventory();
 

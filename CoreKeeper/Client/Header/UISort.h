@@ -38,6 +38,8 @@ public:
 			m_bWindow = true;
 	}
 
+	void            Set_Disable() { m_bWindow = false; }
+
 	void            Set_Inventory(CInventory* _pInventory) { pChestInv = _pInventory; }
 
 private:

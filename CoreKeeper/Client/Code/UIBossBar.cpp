@@ -130,7 +130,7 @@ void CUIBossBar::Set_Bar(_matrix matWorld, CMonster* pMonster)
 	float f_ScreenX = f_ScreenNormalX * WINCX;
 	float f_ScreenY = f_ScreenNormalY * WINCY;
 
-	m_pTransformCom->Set_Pos(f_ScreenX, f_ScreenY - 40.f, 0.f );
+	m_pTransformCom->Set_Pos(f_ScreenX - WINCX / 2.f + 55.f, WINCY / 2.f - f_ScreenY + 50.f, 0.f );
 
 	m_pMonster = pMonster;
 

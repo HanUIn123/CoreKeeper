@@ -220,6 +220,8 @@ private:
 	_float					m_fFireTickTime;
 	_bool                   m_bHeal;
 
+	_int                    m_iChestInventoryCount;
+
 	_vec3					m_vStartPoint;
 	_vec3					m_vKnockBackDir;
 	_bool					m_bKnockBackStart;

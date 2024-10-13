@@ -30,7 +30,7 @@ HRESULT CSprinklerObject::Ready_GameObject(_vec3 vPos)
 	m_pAnimatorCom->Set_CurState(IDLE, 0, 7, 20);
 
 	m_pWaterCom->init(L"../Bin/Resource/Texture/Particle/Basic_Particle.png", 1.f, 0.2f);
-	m_pWaterCom2->init(L"../Bin/Resource/Texture/Particle/Basic_Particle.png", 1.f, 0.2f);
+	m_pWaterCom2->init(L"../Bin/Resource/Texture/Particle/Basic_Particle.png", 1.f, 0.1f);
 
 	return S_OK;
 }
@@ -66,6 +66,13 @@ void CSprinklerObject::Render_GameObject()
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
 	FAILED_CHECK_RETURN(Setup_Material(), );
+	
+	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
+
+	m_pTextureCom->Set_Texture();
+
+	m_pAnimBufferCom->Set_Index(m_pAnimatorCom->Get_MotionIndex());
+	m_pAnimBufferCom->Render_Buffer();
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pWaterTransformCom->Get_WorldMatrix());
 	m_pWaterCom->render();
@@ -73,12 +80,6 @@ void CSprinklerObject::Render_GameObject()
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pWaterTransformCom2->Get_WorldMatrix());
 	m_pWaterCom2->render();
 
-	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pTransformCom->Get_WorldMatrix());
-
-	m_pTextureCom->Set_Texture();
-
-	m_pAnimBufferCom->Set_Index(m_pAnimatorCom->Get_MotionIndex());
-	m_pAnimBufferCom->Render_Buffer();
 
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);

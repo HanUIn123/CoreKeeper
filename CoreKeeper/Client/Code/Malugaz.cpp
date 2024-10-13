@@ -5,6 +5,8 @@
 #include "../Header/Player.h"
 #include "../Header/Projectile.h"
 #include "../Header/Fire.h"
+#include "../Header/UIBossName.h"
+#include "../Header/UIBossBar.h"
 
 CMalugaz::CMalugaz(LPDIRECT3DDEVICE9 pGraphicDev)
     : CMonster(pGraphicDev), m_iPhase(1), m_iIdleCount(0), m_iTextureNum(0)
@@ -76,6 +78,14 @@ _int CMalugaz::Update_GameObject(const _float& fTimeDelta)
     Engine::CSoundMgr::GetInstance()->PlayBGM(L"Malguaz_the_Corrupted_Shaman_R1.wav", 0.1f);
 
     Set_Cast();
+
+    CUIBossName* pUIFont = dynamic_cast<CUIBossName*>(Engine::Get_GameObject(L"Layer_UI", L"UI_BossName"));
+
+    pUIFont->Set_Font(*m_pTransformCom->Get_WorldMatrix(), L"타락한\n말루가즈");
+
+    CUIBossBar* m_pUIBossBar = dynamic_cast<CUIBossBar*>(Engine::Get_GameObject(L"Layer_UI", L"UI_BossBar"));
+
+    m_pUIBossBar->Set_Bar(*m_pTransformCom->Get_WorldMatrix(), this);
 
     if (m_eState != DEAD)
         m_eState = State_Change();
@@ -354,6 +364,12 @@ void CMalugaz::Pattern_Dead()
     }
     if (m_bKnockBackEnd)
     {
+        CUIBossName* pUIFont = dynamic_cast<CUIBossName*>(Engine::Get_GameObject(L"Layer_UI", L"UI_BossName"));
+        pUIFont->Set_Disable();
+
+        CUIBossBar* pBar = dynamic_cast<CUIBossBar*>(Engine::Get_GameObject(L"Layer_UI", L"UI_BossBar"));
+        pBar->Set_Disable();
+
         Engine::CSoundMgr::GetInstance()->PlayOnce(L"Malguaz_Death.wav", SOUND_MALUGAZ, 0.1f);
         m_pBufferCom = m_pBufferCom3;
         m_iTextureNum = 2;

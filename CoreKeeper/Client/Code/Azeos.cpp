@@ -386,6 +386,9 @@ void CAzeos::Pattern_Dead()
 
     CUIBossName* pUIFont = dynamic_cast<CUIBossName*>(Engine::Get_GameObject(L"Layer_UI", L"UI_BossName"));
     pUIFont->Set_Disable();
+
+    CUIBossBar* pBar = dynamic_cast<CUIBossBar*>(Engine::Get_GameObject(L"Layer_UI", L"UI_BossBar"));
+    pBar->Set_Disable();
 }
 
 STATE CAzeos::State_Change()
