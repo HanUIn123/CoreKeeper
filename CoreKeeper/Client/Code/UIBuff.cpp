@@ -56,9 +56,16 @@ _int CUIBuff::Update_GameObject(const _float& fTimeDelta)
 
 		if (Map_Picked(pt))
 		{
-			m_pFrame = dynamic_cast<CUIBuffFrame*>(Engine::Get_GameObject(L"Layer_UI", L"UI_BuffFrame"));
-			m_pFrame->Set_Window(m_eBuffType, pt);
-
+			if (m_eBuffIndex == DEBUFF)
+			{
+				m_pFrame = dynamic_cast<CUIBuffFrame*>(Engine::Get_GameObject(L"Layer_UI", L"UI_BuffFrame"));
+				m_pFrame->Set_Window(m_eBuffType, pt);
+			}
+			else if (m_eBuffIndex == BUFF)
+			{
+				m_pFrame = dynamic_cast<CUIBuffFrame*>(Engine::Get_GameObject(L"Layer_UI", L"UI_BuffFrame"));
+				m_pFrame->Set_Window(m_eBuffType, pt, false, true);
+			}
 			m_bCollapse[m_eBuffType] = true;
 		}
 		else if(!Map_Picked(pt))

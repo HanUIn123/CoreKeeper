@@ -29,7 +29,7 @@ public:
 	virtual			void			Render_GameObject();
 
 public:
-	void            Set_Window(CUIBuff::BUFFICONTYPE _BuffType, POINT _pt, _bool _bCraft = false);
+	void            Set_Window(CUIBuff::BUFFICONTYPE _BuffType, POINT _pt, _bool _bCraft = false, _bool bDebuff = false);
 	void            Set_WindowDis() { m_bWindow = false; }
 
 	_bool           Map_Picked(POINT _screenPos) {
@@ -55,6 +55,8 @@ private:
 	map<_int, wstring> m_mapType;
 
 	_bool m_bCraft;
+
+	_bool m_bDebuff;
 
 private:
 	Engine::CRcTex* m_pBufferCom;
