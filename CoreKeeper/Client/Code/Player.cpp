@@ -2428,16 +2428,20 @@ void CPlayer::Set_Buff(const _float& fTimeDelta)
                 Set_Speed(m_fNormalSpeed * 1.4f);
                 break;
             case BUFF_HP:
-                m_tBuffStat.iMaxHp = m_pStateCom->Get_Stat()->iMaxHp * 0.05f;
+                m_tBuffStat.iMaxHp += m_pStateCom->Get_Stat()->iMaxHp * 0.05f;
                 break;
             case BUFF_ATT:
-                m_tBuffStat.iAttack = m_pStateCom->Get_Stat()->iAttack * 0.05f;
+                m_tBuffStat.iAttack += m_pStateCom->Get_Stat()->iAttack * 0.05f;
                 break;
             case BUFF_DEF:
-                m_tBuffStat.iDefense = m_pStateCom->Get_Stat()->iDefense * 0.05f;
+                m_tBuffStat.iDefense += m_pStateCom->Get_Stat()->iDefense * 0.05f;
                 break;
             case BUFF_MINING:
                 m_fMiningBuff[1] = 2.f;
+                break;
+            case BUFF_FULL:
+                m_tBuffStat.iAttack += m_pStateCom->Get_Stat()->iAttack * 0.05f;
+                m_tBuffStat.iMaxHp += m_pStateCom->Get_Stat()->iMaxHp * 0.05f;
                 break;
             case DEBUFF_FIRE:
                 m_bFire = true;
@@ -2458,16 +2462,8 @@ void CPlayer::Set_Buff(const _float& fTimeDelta)
                     Set_Speed(m_fNormalSpeed * 0.6f);
                 break;
             case DEBUFF_HUNGER:
-                if (m_arrBuffState[BUFF_HP])
-                    m_tBuffStat.iMaxHp = 0;
-                else
-                    m_tBuffStat.iMaxHp = m_pStateCom->Get_Stat()->iMaxHp * -0.05f;
-
-                if (m_arrBuffState[BUFF_ATT])
-                    m_tBuffStat.iAttack = 0;
-                else
-                    m_tBuffStat.iAttack = m_pStateCom->Get_Stat()->iAttack * -0.05f;
-
+                m_tBuffStat.iMaxHp += m_pStateCom->Get_Stat()->iMaxHp * -0.05f;                    
+                m_tBuffStat.iAttack += m_pStateCom->Get_Stat()->iAttack * -0.05f;
                 break;
             case DEBUFF_STUN:
                 if (!m_bDash)
