@@ -12,6 +12,7 @@ class CInventory;
 
 END
 
+class CPlayer;
 class CDollObject : public CObject
 {
 private:
@@ -34,6 +35,7 @@ public:
 private:
 	HRESULT							Add_Component();
 	void							Update_Texture();
+	void							Play_Instrument();
 
 public:
 	static CDollObject* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);
@@ -42,6 +44,9 @@ private:
 	virtual void					Free();
 
 private:
+	CPlayer*						m_pPlayer;
+	_bool							m_bIsPlaying;
+	_bool							m_bPlayOnce;
 	int								m_iTextureNum;
 	bool							m_bCheck;
 };
