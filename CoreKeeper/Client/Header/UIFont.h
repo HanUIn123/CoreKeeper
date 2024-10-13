@@ -17,6 +17,8 @@ private:
 		_float fCount;
 
 		_bool bDead;
+
+		_bool bPlayer;
 	}FONT;
 private:
 	explicit CUIFont(LPDIRECT3DDEVICE9 pGraphicDev);

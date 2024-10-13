@@ -66,29 +66,17 @@ void CUIFont::Render_GameObject()
 {
 	for (const auto iter : m_vecFontPos)
 	{
-		Engine::Render_Font(L"Font_Default", iter.tFont.c_str(), &iter.vPos, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+		if (iter.bPlayer)
+		{
+			Engine::Render_Font(L"Font_Default", iter.tFont.c_str(), &iter.vPos, D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f));
+		}
+		else
+			Engine::Render_Font(L"Font_Default", iter.tFont.c_str(), &iter.vPos, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 	}
 }
 
 void CUIFont::Set_Font(_matrix matWorld, const _tchar* tFont)
 {
-	/*
-	_float m_fRotAngle;
-
-	_matrix m_World;
-	D3DXMatrixIdentity(&m_World);
-
-	_matrix m_Rot;
-	D3DXMatrixRotationZ(&m_Rot, 0.f);
-
-	_matrix m_Translation;
-	D3DXMatrixTranslation(&m_Translation, vPos.x, vPos.y, vPos.z);
-
-	m_World = m_Rot * m_Translation;
-	m_pGraphicDev->SetTransform(D3DTS_WORLD, &m_World);
-
-	_matrix m_wvp = m_World * 
-	*/
 	_matrix matView, matProj;
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, &matWorld);
@@ -101,6 +89,8 @@ void CUIFont::Set_Font(_matrix matWorld, const _tchar* tFont)
 	_vec4 m_vWorldToScreen(0, 0, 0, 1);
 	D3DXVec4Transform(&m_vWorldToScreen, &m_vWorldToScreen, &m_WVP);
 
+	size_t length = wcslen(tFont);
+
 	float f_WorldToScreenX = m_vWorldToScreen.x / m_vWorldToScreen.w;
 	float f_WorldToScreenY = m_vWorldToScreen.y / m_vWorldToScreen.w;
 	float f_WorldToScreenZ = m_vWorldToScreen.z / m_vWorldToScreen.w;
@@ -111,14 +101,19 @@ void CUIFont::Set_Font(_matrix matWorld, const _tchar* tFont)
 
 	float f_ScreenX = f_ScreenNormalX * WINCX;
 	float f_ScreenY = f_ScreenNormalY * WINCY;
-
-	_vec2 vPos2 = { f_ScreenX, f_ScreenY + 1.f };
+	_vec2 vPos2;
+	// 글자 길이의 반 * 폰트 너비만큼 빼주면 가운데에 옴
+	if (!g_bIsTopCamera)
+		vPos2 = { f_ScreenX - length * 0.5f * 20.f, f_ScreenY - 220.f };
+	else
+		vPos2 = { f_ScreenX - length * 0.5f * 20.f, f_ScreenY - 60.f };
 
 	FONT sFont;
 	sFont.vPos = vPos2;
 	sFont.tFont = tFont;
 	sFont.fCount = 1.f;
 	sFont.bDead = false;
+	sFont.bPlayer = true;
 
 	m_vecFontPos.push_back(sFont);
 }
@@ -158,6 +153,7 @@ void CUIFont::Set_Font_Center(_matrix matWorld, const _tchar* tFont)
 	sFont.tFont = tFont;
 	sFont.fCount = 1.f;
 	sFont.bDead = false;
+	sFont.bPlayer = false;
 
 	m_vecFontPos.push_back(sFont);
 }
@@ -201,6 +197,7 @@ void CUIFont::Set_Font_Up(_matrix matWorld, const _tchar* tFont)
 	sFont.tFont = tFont;
 	sFont.fCount = 1.f;
 	sFont.bDead = false;
+	sFont.bPlayer = false;
 
 	m_vecFontPos.push_back(sFont);
 }

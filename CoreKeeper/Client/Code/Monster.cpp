@@ -284,7 +284,7 @@ void CMonster::Check_Hitted()
 				_matrix matWorld;
 				m_pTransformCom->Get_WorldMatrix(&matWorld);
 
-				pFont->Set_Font(matWorld, m_vecFont[m_iFontNum]);
+				pFont->Set_Font_Up(matWorld, m_vecFont[m_iFontNum]);
 
 				m_iFontNum++;
 
