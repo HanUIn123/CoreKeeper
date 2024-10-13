@@ -27,12 +27,12 @@ _int CUICursor::Update_GameObject(const _float& fTimeDelta)
 {
 	_int iExit = Engine::CGameObject::Update_GameObject(fTimeDelta);
 
-	if (m_bFirst)
-	{
-		m_bDisable = false;
+	//if (m_bFirst)
+	//{
+	//	m_bDisable = false;
 
-		m_bFirst = false;
-	}
+	//	m_bFirst = false;
+	//}
 
 	POINT pt;
 	GetCursorPos(&pt);
