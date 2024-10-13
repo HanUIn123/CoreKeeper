@@ -24,12 +24,14 @@ HRESULT CInstrument::Ready_GameObject(ITEMNUM _eItemNum, _vec3 vPos)
 	{
 	case ITEM_INSTRUMENT_HARP:
 		m_wItemName = L"하프";
-		m_wItemExplain[0] = L"섬세한 현을 손끝으로 스치기만 해도 공기 중에 조화를 이루는 소리가 진동합니다.";
+		m_wItemExplain[0] = L"섬세한 현을 손끝으로 스치기만 해도";
+		m_wItemExplain[1] = L"공기 중에 조화를 이루는 소리가 진동합니다.";
 		break;
 	case ITEM_INSTRUMENT_CELLO:
 		m_wItemName = L"첼로";
 		m_wItemExplain[0] = L"나무로 만들어진 현악기입니다.";
-		m_wItemExplain[1] = L"세계 일류 작품은 아니지만 조용한 동굴을 하모니로 채우기에는 충분하지요.";
+		m_wItemExplain[1] = L"세계 일류 작품은 아니지만";
+		m_wItemExplain[2] = L"조용한 동굴을 하모니로 채우기에는 충분하지요.";
 		break;
 	case ITEM_INSTRUMENT_FLUTE:
 		m_wItemName = L"플루트";
@@ -42,11 +44,13 @@ HRESULT CInstrument::Ready_GameObject(ITEMNUM _eItemNum, _vec3 vPos)
 		break;
 	case ITEM_INSTRUMENT_DRUM:
 		m_wItemName = L"드럼 키트";
-		m_wItemExplain[0] = L"이웃을 짜증나게 하지만 올바르게 연주하면 매혹적인 리듬을 만들어 내는 악기입니다.";
+		m_wItemExplain[0] = L"이웃을 짜증나게 하지만 올바르게 연주하면";
+		m_wItemExplain[1] = L"매혹적인 리듬을 만들어 내는 악기입니다.";
 		break;
 	case ITEM_INSTRUMENT_PIANO:
 		m_wItemName = L"휴대용 피아노";
-		m_wItemExplain[0] = L"이 휴대용 건반 악기는 홀로 연주할 수도 있고, 오케스트라와 함께 연주해도 좋습니다.";
+		m_wItemExplain[0] = L"이 휴대용 건반 악기는 홀로 연주할 수도 있고,";
+		m_wItemExplain[1] = L"오케스트라와 함께 연주해도 좋습니다.";
 		break;
 	}
 
@@ -137,12 +141,28 @@ void CInstrument::Render_GameObject()
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pShadowTransformCom->Get_WorldMatrix());
 
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+
+	m_pGraphicDev->SetRenderState(D3DRS_TEXTUREFACTOR, D3DCOLOR_ARGB(100, 255, 255, 255));
+	m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
+	m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
+	m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_TFACTOR);
+	m_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+	m_pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+
 	m_pShadowTextureCom->Set_Texture(1);
 
 	if (m_bDrop)
 	{
 		m_pShadowBufferCom->Render_Buffer();
 	}
+
+	m_pGraphicDev->SetRenderState(D3DRS_TEXTUREFACTOR, 0xffffffff);
+
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
+
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
 
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);

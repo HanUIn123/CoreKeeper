@@ -27,21 +27,33 @@ HRESULT CChest::Ready_GameObject(MATERIAL _eMaterial, _vec3 vPos)
 	{
 	case MATERIAL_WOOD:
 		m_wItemName = L"나무 몸통 방어구";
-		m_wItemExplain[0] = L"조잡한 상체 방어구 입니다.";
-		m_wItemExplain[1] = L"몸을 어느 정도 보호해줍니다.";
+		m_wItemExplain[0] = L"방어력 +10";
+		m_wItemExplain[1] = L"최대 체력 +20";
+		m_wItemExplain[2] = L"조잡한 상체 방어구 입니다.";
+		m_wItemExplain[3] = L"몸을 어느 정도 보호해줍니다.";
 		break;
+
 	case MATERIAL_COPPER:
 		m_wItemName = L"구리 갑옷";
-		m_wItemExplain[0] = L"식스팩이 없다고요? 하나 만들어 보세요!";
+		m_wItemExplain[0] = L"방어력 +20";
+		m_wItemExplain[1] = L"최대 체력 +40";
+		m_wItemExplain[2] = L"식스팩이 없다고요? 하나 만들어 보세요!";
 		break;
+
 	case MATERIAL_IRON:
 		m_wItemName = L"철제 갑옷";
-		m_wItemExplain[0] = L"이 영웅적인 갑옷을 입고 전투에 뛰어들어 보세요.";
+		m_wItemExplain[0] = L"방어력 +30";
+		m_wItemExplain[1] = L"최대 체력 +60";
+		m_wItemExplain[2] = L"이 영웅적인 갑옷을 입고 전투에 뛰어들어 보세요.";
 		break;
+
 	case MATERIAL_SPECIAL:
 		m_iTextureNumber--;
 		m_wItemName = L"마술사 로브";
-		m_wItemExplain[0] = L"직물이 공격을 견딜 수 있게 해주는 마법이 부여된 튼튼한 로브입니다.";
+		m_wItemExplain[0] = L"방어력 +40";
+		m_wItemExplain[1] = L"최대 체력 +80";
+		m_wItemExplain[2] = L"직물이 공격을 견딜 수 있게 해주는";
+		m_wItemExplain[3] = L"마법이 부여된 튼튼한 로브입니다.";
 		break;
 	}
 
@@ -131,12 +143,28 @@ void CChest::Render_GameObject()
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pShadowTransformCom->Get_WorldMatrix());
 
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+
+	m_pGraphicDev->SetRenderState(D3DRS_TEXTUREFACTOR, D3DCOLOR_ARGB(100, 255, 255, 255));
+	m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
+	m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
+	m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_TFACTOR);
+	m_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+	m_pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+
 	m_pShadowTextureCom->Set_Texture(1);
 
 	if (m_bDrop)
 	{
 		m_pShadowBufferCom->Render_Buffer();
 	}
+
+	m_pGraphicDev->SetRenderState(D3DRS_TEXTUREFACTOR, 0xffffffff);
+
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
+
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
 
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);

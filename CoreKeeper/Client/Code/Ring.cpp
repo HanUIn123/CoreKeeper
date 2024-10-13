@@ -24,17 +24,21 @@ HRESULT CRing::Ready_GameObject(MATERIAL _eMaterial, _vec3 vPos)
 	case MATERIAL_COPPER:
 		m_iTextureNumber = 0;
 		m_wItemName = L"돌 반지";
-		m_wItemExplain[0] = L"돌을 조각해 만든 단순한 반지입니다.";
+		m_wItemExplain[0] = L"채굴 피해 증가";
+		m_wItemExplain[1] = L"돌을 조각해 만든 단순한 반지입니다.";
 		break;
 	case MATERIAL_IRON:
 		m_iTextureNumber = 1;
 		m_wItemName = L"신속 반지";
-		m_wItemExplain[0] = L"이 날개 달린 반지를 착용하면 착용자를 앞으로 나아가게 하는 미풍이 생겨납니다.";
+		m_wItemExplain[0] = L"이동 속도 증가";
+		m_wItemExplain[1] = L"이 날개 달린 반지를 착용하면";
+		m_wItemExplain[2] = L"착용자를 앞으로 나아가게 하는 미풍이 생겨납니다.";
 		break;
 	case MATERIAL_SPECIAL:
 		m_iTextureNumber = 2;
 		m_wItemName = L"초승달 반지";
-		m_wItemExplain[0] = L"착용자가 더 깊은 곳으로부터 지혜를 끌어낼 수 있게 해줍니다.";
+		m_wItemExplain[0] = L"최대 마나 +20";
+		m_wItemExplain[1] = L"착용자가 더 깊은 곳으로부터 지혜를 끌어낼 수 있게 해줍니다.";
 		break;
 	default:
 		return E_FAIL;
@@ -126,12 +130,28 @@ void CRing::Render_GameObject()
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pShadowTransformCom->Get_WorldMatrix());
 
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+
+	m_pGraphicDev->SetRenderState(D3DRS_TEXTUREFACTOR, D3DCOLOR_ARGB(100, 255, 255, 255));
+	m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
+	m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
+	m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_TFACTOR);
+	m_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+	m_pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+
 	m_pShadowTextureCom->Set_Texture(1);
 
 	if (m_bDrop)
 	{
 		m_pShadowBufferCom->Render_Buffer();
 	}
+
+	m_pGraphicDev->SetRenderState(D3DRS_TEXTUREFACTOR, 0xffffffff);
+
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
+
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
 
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);

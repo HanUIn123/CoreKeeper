@@ -106,37 +106,37 @@ void CUIBuffFrame::Set_Window(CUIBuff::BUFFICONTYPE _BuffType, POINT _pt, _bool 
 
 void CUIBuffFrame::Set_BuffExplain()
 {
-	wstring string = L"최대 체력 +5.0% 증가";
+	wstring string = L"최대 체력 \n+5.0% 증가";
 	m_mapType.insert({ 0, string });
 
-	string = L"1분동안 피해 +5.0% 증가";
+	string = L"피해 \n+5.0% 증가";
 	m_mapType.insert({ 1, string });
 
-	string = L"10분동안 체굴 피해 +50";
+	string = L"체굴 피해 \n+50 증가";
 	m_mapType.insert({ 6, string });
 
-	string = L"1분동안 방어력 +5.0% 증가";
+	string = L"방어력 \n+5.0% 증가";
 	m_mapType.insert({ 15, string });
 	
-	string = L"허기로 인해 피해 및 최대 체력 -5.0% 감소";
+	string = L"포만감으로 인해 \n피해 및 최대 체력 +5.0% 증가";
 	m_mapType.insert({ 17, string });
 
-	string = L"8초동안 매초마다 +13의 화상 피해";
+	string = L"+10의 화상 피해";
 	m_mapType.insert({ 24, string });
 
 	string = L"이동속도 증가";
 	m_mapType.insert({ 29, string });
 
-	string = L"슬라임으로 인해 이동속도 -40.0%";
+	string = L"슬라임으로 인해 \n이동속도 -40.0%";
 	m_mapType.insert({ 30, string });
 
-	string = L"포만감으로 인해 피해 및 최대 체력 +5.0% 증가";
+	string = L"허기로 인해 \n피해 및 최대 체력 -5.0% 감소";
 	m_mapType.insert({ 31, string });
 
 	string = L"잠시동안 이동 불가";
 	m_mapType.insert({ 38, string });
 
-	string = L"신 모드";
+	string = L"신세계의 \n신이 되는 거다!";
 	m_mapType.insert({ 40, string });
 }
 

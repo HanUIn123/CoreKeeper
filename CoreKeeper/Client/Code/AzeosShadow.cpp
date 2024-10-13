@@ -3,6 +3,7 @@
 #include "../Header/Player.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
+#include "../Header/DynamicCamera.h"
 
 CAzeosShadow::CAzeosShadow(LPDIRECT3DDEVICE9 _pGraphicDev)
     : CObject(_pGraphicDev)
@@ -11,7 +12,7 @@ CAzeosShadow::CAzeosShadow(LPDIRECT3DDEVICE9 _pGraphicDev)
     , m_bShow(false)
     , m_bChangePattern(false)
     , m_vMoveDirection(0, 0, 0)
-    , m_fSpeed(15.0f)
+    , m_fSpeed(13.0f)
     , m_fRotationAngle(0.0f)
     , m_fCoolTime(0.0f)
     , m_fAppearTime(0.0f)
@@ -39,7 +40,15 @@ HRESULT CAzeosShadow::Ready_GameObject(_vec3 _vPos)
 _int CAzeosShadow::Update_GameObject(const _float& fTimeDelta)
 {
     if (m_fAppearTime >= 300)
+    {
         m_bShow = true;
+
+        if (m_fCoolTime == 0)
+        {
+            Engine::CSoundMgr::GetInstance()->Play(L"birdScreech.wav", SOUND_AZEOS_SHADOW, 0.2f);
+            dynamic_cast<CDynamicCamera*>(Engine::Get_GameObject(L"Layer_Environment", L"DynamicCamera"))->Set_ShakeInfo(1.5f, 4.f);
+        }
+    }
 
     if (g_bFight)
         return 0;
@@ -48,6 +57,7 @@ _int CAzeosShadow::Update_GameObject(const _float& fTimeDelta)
     {
         if (!m_bChangePattern)
         {
+            
             switch (m_eShadowDirection)
             {
                 // 오른쪽 이동.
@@ -115,6 +125,7 @@ _int CAzeosShadow::Update_GameObject(const _float& fTimeDelta)
                 break;
             }
 
+            
             m_pTransformCom->Set_Angle(0.0f, m_fRotationAngle, 0.0f);
             m_pTransformCom->Set_Pos(m_vShadowPos.x, 0.1f, m_vShadowPos.z);
 
@@ -122,6 +133,8 @@ _int CAzeosShadow::Update_GameObject(const _float& fTimeDelta)
 
             if (m_fCoolTime >= 600.f)
             {
+                Engine::CSoundMgr::GetInstance()->Play(L"birdScreech.wav", SOUND_AZEOS_SHADOW, 0.2f);
+                dynamic_cast<CDynamicCamera*>(Engine::Get_GameObject(L"Layer_Environment", L"DynamicCamera"))->Set_ShakeInfo(1.5f, 4.f);
                 m_fCoolTime = 0.0f;
                 m_bChangePattern = true;
             }

@@ -49,5 +49,6 @@ private:
 	bool			m_bActiveCore[3];
 	bool			m_bInFrustum;
 	int				m_iRange;
+	int				m_iInteractCount;
 };
 

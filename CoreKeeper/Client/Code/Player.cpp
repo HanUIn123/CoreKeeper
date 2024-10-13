@@ -61,7 +61,7 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
     m_bNude = true;
 
     m_bRespawned = false;
-    m_vRespawnPoint = { VTXCNTX / 2, 0, 12.f };
+    m_vRespawnPoint = { VTXCNTX / 2, m_fFirstY, 12.f };
     m_bRespawnFirstFrame = true;
     m_fRespawnProgress = 0.f;
 
@@ -99,6 +99,10 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
     m_bPlayToggle = false;
     m_bLookAround = false;
     m_fLookAroundTime = 0.f;
+    m_bLookCamera = false;
+
+    m_bTeleportCore = true;
+    m_fTeleportProcess = 0.f;
 }
 
 CPlayer::~CPlayer()
@@ -112,6 +116,7 @@ HRESULT CPlayer::Ready_GameObject()
     m_tBasicStat = STAT(100, 100, 20, 0);
     m_pStateCom->Set_Stat(m_tBasicStat.iMaxHp, m_tBasicStat.iMaxMp, m_tBasicStat.iAttack, m_tBasicStat.iDefense);
     m_pStateCom->Set_MaxHunger(100);
+    m_pStateCom->Set_HungerMinus(30);
     m_pEquipInventoryCom->Set_SlotCount(10);
 
     m_pFireParticleCom->init(L"../Bin/Resource/Texture/Particle/Basic_Particle.png", 1, 0.1f); // 파티클 시작
@@ -139,6 +144,13 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 
     if (!m_bLookAround)
     {
+        if (!m_bLookCamera)
+        {
+            m_bLookCamera = true;
+            g_bIsTopCamera = false;
+            CUICursor* pCursor = dynamic_cast<CUICursor*>(Engine::Get_GameObject(L"Layer_UI", L"UI_Cursor"));
+            pCursor->Set_Cursor_Disable();
+        }
         // 모든 사운드 안나게 하기
         Engine::CSoundMgr::GetInstance()->StopAll();
 
@@ -157,12 +169,15 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
             m_bLookAround = true;
             g_bStart = true;
 
+
             _matrix matWorld;
             m_pTransformCom->Get_WorldMatrix(&matWorld);
 
             CUIFont* pFont = dynamic_cast<CUIFont*>(Engine::Get_GameObject(L"Layer_UI", L"UI_Font"));
             pFont->Set_Font_Up(matWorld, L"?");
-
+            g_bIsTopCamera = true;
+            CUICursor* pCursor = dynamic_cast<CUICursor*>(Engine::Get_GameObject(L"Layer_UI", L"UI_Cursor"));
+            pCursor->Set_Cursor_Disable();
         }
 
         if (!m_bRespawned)
@@ -191,7 +206,7 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
 
         Play_Instruments();
 
-        if (!m_bNoMove && !m_bInventory && !m_bCraft && !m_bMap) // m_bNoMove -> UICursor에서 적용
+        if (!m_bNoMove && !m_bInventory && !m_bCraft && !m_bMap && !m_bTeleportCore) // m_bNoMove -> UICursor에서 적용
             Mouse_Click(fTimeDelta);
         else
         {
@@ -199,7 +214,9 @@ _int CPlayer::Update_GameObject(const _float& fTimeDelta)
             m_bShoot = false;
         }
 
-        if (m_bKnockBackEnd)
+        Teleport_Core(fTimeDelta);
+
+        if (m_bKnockBackEnd && !m_bTeleportCore)
         {
             if (g_bIsTopCamera)
             {
@@ -598,6 +615,14 @@ void CPlayer::Mouse_Click(const _float& fTimeDelta)
                     Build(eHandedNum);
                     break;
 
+                case ITEM_PLAYER_SPAWNER:
+                    m_bTeleportCore = true;
+                    m_pInventoryCom->Minus_Item(eHandedNum);
+                    m_pHandedItem->Set_Use(false);
+                    m_pHandedItem->Set_Active(false);
+                    m_pHandedItem->Set_Drop(false);
+                    break;
+
                 default:
                     break;
                 }
@@ -938,7 +963,7 @@ void CPlayer::Set_ImmuneByToggle()
         CBuffMgr::GetInstance()->Set_BuffStart(DEBUFF_HUNGER, 999.f);
         CBuffMgr::GetInstance()->Set_BuffStart(DEBUFF_FIRE, 999.f);
         CBuffMgr::GetInstance()->Set_BuffStart(DEBUFF_SLOW, 999.f);
-        CBuffMgr::GetInstance()->Set_BuffStart(DEBUFF_STUN, 999.f);
+        //CBuffMgr::GetInstance()->Set_BuffStart(DEBUFF_STUN, 999.f);
     }
 }
 
@@ -2035,22 +2060,31 @@ void CPlayer::Play_Instruments()
         case ITEM_INSTRUMENT_OCARINA:
         case ITEM_INSTRUMENT_DRUM:
         case ITEM_INSTRUMENT_PIANO:
-            if (Engine::Key_Down(DIK_E))
+            if (Engine::Key_Down(DIK_R))
             {
                 m_bPlayToggle = m_bPlayToggle ? false : true;
                 if (m_bPlayToggle)
                 {
-                    /*g_bFight = true;
-                    Engine::StopSound(SOUND_BGM);
+                    /*
                     Engine::Play(L"harpItsABigWorldOutside.wav", SOUND_INSTRUMENTS, 0.1f);
                     Engine::Play(L"celloItsABigWorldOutside.wav", SOUND_INSTRUMENTS, 0.1f);
                     Engine::Play(L"fluteItsABigWorldOutside.wav", SOUND_INSTRUMENTS, 0.1f);
                     Engine::Play(L"ocarinaItsABigWorldOutside.wav", SOUND_INSTRUMENTS, 0.1f);
                     Engine::Play(L"drumItsABigWorldOutside.wav", SOUND_INSTRUMENTS, 0.1f);*/
-                    Engine::Play(L"pianoItsABigWorldOutside.wav", SOUND_INSTRUMENTS, 0.2f);
+                    g_bFight = true;
+                    Engine::CSoundMgr::GetInstance()->StopSound(SOUND_BGM);
+                    Engine::CSoundMgr::GetInstance()->PlayOnce(L"pianoItsABigWorldOutside.wav", SOUND_INSTRUMENTS_PIANO, 0.6f);
                 }
                 else
-                    Engine::StopSound(SOUND_INSTRUMENTS);
+                {
+                    g_bFight = false;
+                    Engine::CSoundMgr::GetInstance()->StopSound(SOUND_INSTRUMENTS_PIANO);
+                    Engine::CSoundMgr::GetInstance()->StopSound(SOUND_INSTRUMENTS_HARP);
+                    Engine::CSoundMgr::GetInstance()->StopSound(SOUND_INSTRUMENTS_CELLO);
+                    Engine::CSoundMgr::GetInstance()->StopSound(SOUND_INSTRUMENTS_FLUTE);
+                    Engine::CSoundMgr::GetInstance()->StopSound(SOUND_INSTRUMENTS_OCARINA);
+                    Engine::CSoundMgr::GetInstance()->StopSound(SOUND_INSTRUMENTS_DRUM);
+                }
             }
             if (m_bPlayToggle)
             {
@@ -2106,14 +2140,28 @@ void CPlayer::Play_Instruments()
             break;
         default:
             m_bPlayToggle = false;
-            Engine::StopSound(SOUND_INSTRUMENTS);
+            g_bFight = false;
+            Engine::CSoundMgr::GetInstance()->StopSound(SOUND_INSTRUMENTS_PIANO);
+            Engine::CSoundMgr::GetInstance()->StopSound(SOUND_INSTRUMENTS_PIANO);
+            Engine::CSoundMgr::GetInstance()->StopSound(SOUND_INSTRUMENTS_HARP);
+            Engine::CSoundMgr::GetInstance()->StopSound(SOUND_INSTRUMENTS_CELLO);
+            Engine::CSoundMgr::GetInstance()->StopSound(SOUND_INSTRUMENTS_FLUTE);
+            Engine::CSoundMgr::GetInstance()->StopSound(SOUND_INSTRUMENTS_OCARINA);
+            Engine::CSoundMgr::GetInstance()->StopSound(SOUND_INSTRUMENTS_DRUM);
             break;
         }
     }
     else
     {
         m_bPlayToggle = false;
-        Engine::StopSound(SOUND_INSTRUMENTS);
+        g_bFight = false;
+        Engine::CSoundMgr::GetInstance()->StopSound(SOUND_INSTRUMENTS_PIANO);
+        Engine::CSoundMgr::GetInstance()->StopSound(SOUND_INSTRUMENTS_PIANO);
+        Engine::CSoundMgr::GetInstance()->StopSound(SOUND_INSTRUMENTS_HARP);
+        Engine::CSoundMgr::GetInstance()->StopSound(SOUND_INSTRUMENTS_CELLO);
+        Engine::CSoundMgr::GetInstance()->StopSound(SOUND_INSTRUMENTS_FLUTE);
+        Engine::CSoundMgr::GetInstance()->StopSound(SOUND_INSTRUMENTS_OCARINA);
+        Engine::CSoundMgr::GetInstance()->StopSound(SOUND_INSTRUMENTS_DRUM);
     }
 }
 
@@ -2448,16 +2496,20 @@ void CPlayer::Set_Buff(const _float& fTimeDelta)
                 Set_Speed(m_fNormalSpeed * 1.4f);
                 break;
             case BUFF_HP:
-                m_tBuffStat.iMaxHp = m_pStateCom->Get_Stat()->iMaxHp * 0.05f;
+                m_tBuffStat.iMaxHp += m_pStateCom->Get_Stat()->iMaxHp * 0.05f;
                 break;
             case BUFF_ATT:
-                m_tBuffStat.iAttack = m_pStateCom->Get_Stat()->iAttack * 0.05f;
+                m_tBuffStat.iAttack += m_pStateCom->Get_Stat()->iAttack * 0.05f;
                 break;
             case BUFF_DEF:
-                m_tBuffStat.iDefense = m_pStateCom->Get_Stat()->iDefense * 0.05f;
+                m_tBuffStat.iDefense += m_pStateCom->Get_Stat()->iDefense * 0.05f;
                 break;
             case BUFF_MINING:
                 m_fMiningBuff[1] = 2.f;
+                break;
+            case BUFF_FULL:
+                m_tBuffStat.iAttack += m_pStateCom->Get_Stat()->iAttack * 0.05f;
+                m_tBuffStat.iMaxHp += m_pStateCom->Get_Stat()->iMaxHp * 0.05f;
                 break;
             case DEBUFF_FIRE:
                 m_bFire = true;
@@ -2473,21 +2525,13 @@ void CPlayer::Set_Buff(const _float& fTimeDelta)
                 break;
             case DEBUFF_SLOW:
                 if (m_arrBuffState[BUFF_SPEED])
-                    Set_Speed(m_fNormalSpeed);
+                    Set_Speed(m_fNormalSpeed * 0.8f);
                 else
                     Set_Speed(m_fNormalSpeed * 0.6f);
                 break;
             case DEBUFF_HUNGER:
-                if (m_arrBuffState[BUFF_HP])
-                    m_tBuffStat.iMaxHp = 0;
-                else
-                    m_tBuffStat.iMaxHp = m_pStateCom->Get_Stat()->iMaxHp * -0.05f;
-
-                if (m_arrBuffState[BUFF_ATT])
-                    m_tBuffStat.iAttack = 0;
-                else
-                    m_tBuffStat.iAttack = m_pStateCom->Get_Stat()->iAttack * -0.05f;
-
+                m_tBuffStat.iMaxHp += m_pStateCom->Get_Stat()->iMaxHp * -0.05f;                    
+                m_tBuffStat.iAttack += m_pStateCom->Get_Stat()->iAttack * -0.05f;
                 break;
             case DEBUFF_STUN:
                 if (!m_bDash)
@@ -2655,15 +2699,34 @@ void CPlayer::Respawn_Progress(const _float& fTimeDelta)
     else if (m_fRespawnProgress <= 6.f)
     {
         // 리스폰 완료
-        m_pTransformCom->Set_Pos(m_vRespawnPoint.x, m_vRespawnPoint.y, m_vRespawnPoint.z);
+        m_bRespawned = false;
         m_pStateCom->Set_Revive();
         m_fRespawnProgress = 0.f;
         m_bRespawnFirstFrame = true;
+        m_bKnockBackEnd = true;
+        m_bKnockBackStart = false;
 
         m_pClothes[0]->Set_Active(true);
         m_pClothes[1]->Set_Active(true);
         m_pClothes[3]->Set_Active(true);
         m_pClothes[4]->Set_Active(true);
+    }
+}
+void CPlayer::Teleport_Core(const _float& fTimeDelta)
+{
+    if (m_bTeleportCore)
+    {
+        if (m_fTeleportProcess == 0.f)
+        {
+            // 이펙트 추가 좀
+        }
+        m_fTeleportProcess += fTimeDelta;
+        if (m_fTeleportProcess >= 2.f)
+        {
+            m_bRespawned = false;
+            m_bTeleportCore = false;
+            m_fTeleportProcess = 0.f;
+        }
     }
 }
 void CPlayer::Set_InvWindow()

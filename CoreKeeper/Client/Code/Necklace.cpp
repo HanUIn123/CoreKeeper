@@ -24,17 +24,20 @@ HRESULT CNecklace::Ready_GameObject(MATERIAL _eMaterial, _vec3 vPos)
 	case MATERIAL_COPPER:
 		m_iTextureNumber = 0;
 		m_wItemName = L"구리 십자가 목걸이";
-		m_wItemExplain[0] = L"이 펜던트는 집중력을 높여 공격이 더욱 정확해집니다.";
+		m_wItemExplain[0] = L"물리 피해 +25";
+		m_wItemExplain[1] = L"이 펜던트는 집중력을 높여 공격이 더욱 정확해집니다.";
 		break;
 	case MATERIAL_IRON:
 		m_iTextureNumber = 1;
 		m_wItemName = L"철 덩어리 목걸이";
-		m_wItemExplain[0] = L"방어력을 높이는 무거운 장신구입니다.";
+		m_wItemExplain[0] = L"방어력 +20";
+		m_wItemExplain[1] = L"방어력을 높이는 무거운 장신구입니다.";
 		break;
 	case MATERIAL_SPECIAL:
 		m_iTextureNumber = 2;
 		m_wItemName = L"초승달 목걸이";
-		m_wItemExplain[0] = L"착용자가 더 깊은 곳으로부터 마력을 끌어올 수 있도록 도와줍니다.";
+		m_wItemExplain[0] = L"최대 마나 +30";
+		m_wItemExplain[1] = L"착용자가 더 깊은 곳으로부터 마력을 끌어올 수 있도록 도와줍니다.";
 		break;
 	default:
 		return E_FAIL;
@@ -126,12 +129,28 @@ void CNecklace::Render_GameObject()
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pShadowTransformCom->Get_WorldMatrix());
 
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+
+	m_pGraphicDev->SetRenderState(D3DRS_TEXTUREFACTOR, D3DCOLOR_ARGB(100, 255, 255, 255));
+	m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
+	m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
+	m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_TFACTOR);
+	m_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+	m_pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+
 	m_pShadowTextureCom->Set_Texture(1);
 
 	if (m_bDrop)
 	{
 		m_pShadowBufferCom->Render_Buffer();
 	}
+
+	m_pGraphicDev->SetRenderState(D3DRS_TEXTUREFACTOR, 0xffffffff);
+
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
+
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
 
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);

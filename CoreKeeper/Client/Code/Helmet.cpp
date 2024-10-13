@@ -30,20 +30,34 @@ HRESULT CHelmet::Ready_GameObject(MATERIAL _eMaterial, _vec3 vPos)
 	{
 	case MATERIAL_WOOD:
 		m_wItemName = L"나무 투구";
-		m_wItemExplain[0] = L"머리를 약간 보호해주지만 곧 더 나은 옵션을 찾아봐야 합니다.";
+		m_wItemExplain[0] = L"방어력 +10";
+		m_wItemExplain[1] = L"최대 체력 +20";
+		m_wItemExplain[2] = L"머리를 약간 보호해주지만";
+		m_wItemExplain[3] = L"곧 더 나은 옵션을 찾아봐야 합니다.";
 		break;
+
 	case MATERIAL_COPPER:
 		m_wItemName = L"구리 투구";
-		m_wItemExplain[0] = L"투구라기 보다는 양동이를 더 닮았지만, 머리를 강력한 타격으로부터 보호해줍니다.";
+		m_wItemExplain[0] = L"방어력 +20";
+		m_wItemExplain[1] = L"최대 체력 +40";
+		m_wItemExplain[2] = L"투구라기 보다는 양동이를 더 닮았지만,";
+		m_wItemExplain[3] = L"머리를 강력한 타격으로부터 보호해줍니다.";
 		break;
+
 	case MATERIAL_IRON:
 		m_wItemName = L"철제 투구";
-		m_wItemExplain[0] = L"기사에게 어울리는 튼튼한 투구입니다. 얼굴 가리개와 화려한 깃털이 붙어 있습니다.";
+		m_wItemExplain[0] = L"방어력 +30";
+		m_wItemExplain[1] = L"최대 체력 +60";
+		m_wItemExplain[2] = L"기사에게 어울리는 튼튼한 투구입니다.";
+		m_wItemExplain[3] = L"얼굴 가리개와 화려한 깃털이 붙어 있습니다.";
 		break;
+
 	case MATERIAL_SPECIAL:
 		m_iTextureNumber--;
 		m_wItemName = L"마술사 후드";
-		m_wItemExplain[0] = L"시험을 통과한 마술사가 걸치는 후드입니다.";
+		m_wItemExplain[0] = L"방어력 +40";
+		m_wItemExplain[1] = L"최대 체력 +80";
+		m_wItemExplain[2] = L"시험을 통과한 마술사가 걸치는 후드입니다.";
 		break;
 	}
 
@@ -130,12 +144,28 @@ void CHelmet::Render_GameObject()
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pShadowTransformCom->Get_WorldMatrix());
 
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+
+	m_pGraphicDev->SetRenderState(D3DRS_TEXTUREFACTOR, D3DCOLOR_ARGB(100, 255, 255, 255));
+	m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
+	m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
+	m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_TFACTOR);
+	m_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+	m_pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+
 	m_pShadowTextureCom->Set_Texture(1);
 
 	if (m_bDrop)
 	{
 		m_pShadowBufferCom->Render_Buffer();
 	}
+
+	m_pGraphicDev->SetRenderState(D3DRS_TEXTUREFACTOR, 0xffffffff);
+
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
+
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
 
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);

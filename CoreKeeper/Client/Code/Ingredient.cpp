@@ -22,25 +22,33 @@ HRESULT CIngredient::Ready_GameObject(ITEMNUM _eItemNum, _vec3 vPos)
 		m_eItemNum = ITEM_BERRY;
 		m_iTextureNumber = 0;
 		m_wItemName = L"원기 베리";
-		m_wItemExplain[0] = L"몸에 활력을 주는 달콤하고 과즙이 가득한 베리입니다.";
+		m_wItemExplain[0] = L"체력 +28";
+		m_wItemExplain[1] = L"음식 +9";
+		m_wItemExplain[2] = L"몸에 활력을 주는 달콤하고 과즙이 가득한 베리입니다.";
 		break;
 	case ITEM_PEPPER_SEED:
 		m_eItemNum = ITEM_PEPPER;
 		m_iTextureNumber = 1;
 		m_wItemName = L"폭탄 후추";
-		m_wItemExplain[0] = L"음식에 풍미를 더하는 강렬한 맛의 채소입니다.";
+		m_wItemExplain[0] = L"체력 -11";
+		m_wItemExplain[1] = L"음식 +5";
+		m_wItemExplain[2] = L"음식에 풍미를 더하는 강렬한 맛의 채소입니다.";
 		break;
 	case ITEM_CARROT_SEED:
 		m_eItemNum = ITEM_CARROT;
 		m_iTextureNumber = 2;
 		m_wItemName = L"돌당근";
-		m_wItemExplain[0] = L"먹는 사람을 단련시켜주는 돌처럼 딱딱한 채소입니다.";
+		m_wItemExplain[0] = L"체력 +41";
+		m_wItemExplain[1] = L"음식 +7";
+		m_wItemExplain[2] = L"먹는 사람을 단련시켜주는 돌처럼 딱딱한 채소입니다.";
 		break;
 	case ITEM_END:
 		m_eItemNum = ITEM_MUSHROOM;
 		m_iTextureNumber = 3;
 		m_wItemName = L"버섯";
-		m_wItemExplain[0] = L"작은 동굴 버섯으로 가볍게 먹기에 아주 좋습니다.";
+		m_wItemExplain[0] = L"체력 +21";
+		m_wItemExplain[1] = L"음식 +9";
+		m_wItemExplain[2] = L"작은 동굴 버섯으로 가볍게 먹기에 아주 좋습니다.";
 		break;
 	case ITEM_FIBER_SEED:
 		m_eItemNum = ITEM_FIBER;
@@ -126,12 +134,28 @@ void CIngredient::Render_GameObject()
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pShadowTransformCom->Get_WorldMatrix());
 
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+
+	m_pGraphicDev->SetRenderState(D3DRS_TEXTUREFACTOR, D3DCOLOR_ARGB(100, 255, 255, 255));
+	m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
+	m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
+	m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_TFACTOR);
+	m_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+	m_pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+
 	m_pShadowTextureCom->Set_Texture(1);
 
 	if (m_bDrop)
 	{
 		m_pShadowBufferCom->Render_Buffer();
 	}
+
+	m_pGraphicDev->SetRenderState(D3DRS_TEXTUREFACTOR, 0xffffffff);
+
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
+
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
 
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);

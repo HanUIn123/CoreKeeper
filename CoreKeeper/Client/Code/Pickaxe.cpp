@@ -30,19 +30,21 @@ HRESULT CPickaxe::Ready_GameObject(MATERIAL _eMaterial, _vec3 vPos)
 	{
 	case MATERIAL_WOOD:
 		m_wItemName = L"나무 곡괭이";
-		m_wItemExplain[0] = L"조잡한 도구로 벽을 부수는 데 유용합니다.";
+		m_wItemExplain[0] = L"물리 피해 +5";
+		m_wItemExplain[1] = L"채굴 피해 +5";
+		m_wItemExplain[2] = L"조잡한 도구로 벽을 부수는 데 유용합니다.";
 		break;
 	case MATERIAL_COPPER:
 		m_wItemName = L"구리 곡괭이";
-		m_wItemExplain[0] = L"벽을 손쉽게 부수는 데 알맞은 튼튼한 도구입니다.";
+		m_wItemExplain[0] = L"물리 피해 +10";
+		m_wItemExplain[1] = L"채굴 피해 +10";
+		m_wItemExplain[2] = L"벽을 손쉽게 부수는 데 알맞은 튼튼한 도구입니다.";
 		break;
 	case MATERIAL_IRON:
 		m_wItemName = L"철제 곡괭이";
-		m_wItemExplain[0] = L"딱딱한 벽을 허무는 데 아주 좋은 탁원한 도구입니다.";
-		break;
-	case MATERIAL_SCARLET:
-		m_wItemName = L"진홍 곡괭이";
-		m_wItemExplain[0] = L"극도로 단단한 벽을 허무는 데 아주 좋은 도구입니다.";
+		m_wItemExplain[0] = L"물리 피해 +15";
+		m_wItemExplain[1] = L"채굴 피해 +15";
+		m_wItemExplain[2] = L"딱딱한 벽을 허무는 데 아주 좋은 탁월한 도구입니다.";
 		break;
 	}
 
@@ -132,12 +134,28 @@ void CPickaxe::Render_GameObject()
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pShadowTransformCom->Get_WorldMatrix());
 
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+
+	m_pGraphicDev->SetRenderState(D3DRS_TEXTUREFACTOR, D3DCOLOR_ARGB(100, 255, 255, 255));
+	m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
+	m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
+	m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_TFACTOR);
+	m_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+	m_pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+
 	m_pShadowTextureCom->Set_Texture(1);
 
 	if (m_bDrop)
 	{
 		m_pShadowBufferCom->Render_Buffer();
 	}
+
+	m_pGraphicDev->SetRenderState(D3DRS_TEXTUREFACTOR, 0xffffffff);
+
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
+
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
 
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);

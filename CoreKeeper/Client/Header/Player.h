@@ -90,6 +90,7 @@ private:
 	void			Set_Hungry(const _float& fTimeDelta);
 	void			Set_ManaRecover(const _float& fTimeDelta);
 	void			Respawn_Progress(const _float& fTimeDelta);
+	void			Teleport_Core(const _float& fTimeDelta);
 
 	void			Set_MouseWorldPos();
 	void            Set_UI();
@@ -146,7 +147,7 @@ public:
 	void			Set_Speed(_float fSpeed) { m_fSpeed = fSpeed; m_fDiagSpeed = sqrt(pow(m_fSpeed, 2) / 2); }
 
 	_int			Get_LightRange() { return m_fLightRange; }
-
+	_bool			Get_InstrumentToggle() { return m_bPlayToggle; }
 
 	void			Check_MapOff();
 
@@ -272,6 +273,10 @@ private:
 	_bool					m_bPlayToggle;
 	_bool					m_bLookAround;
 	_float					m_fLookAroundTime;
+	_bool					m_bLookCamera;
+
+	_bool					m_bTeleportCore;
+	_float					m_fTeleportProcess;
 
 	CUIItemSlot* m_pEtcItems[CUIItemSlot::SLOT_END];
 public:

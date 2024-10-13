@@ -26,19 +26,22 @@ HRESULT CLantern::Ready_GameObject(MATERIAL _eMaterial, _vec3 vPos)
 	{
 	case MATERIAL_WOOD:
 		m_wItemName = L"소형 등불";
-		m_wItemExplain[0] = L"벨트에 장착할 수 있는 전등입니다.";
-		m_wItemExplain[1] = L"약한 빛을 냅니다.";
+		m_wItemExplain[0] = L"불빛 +3";
+		m_wItemExplain[1] = L"벨트에 장착할 수 있는 전등입니다.";
+		m_wItemExplain[2] = L"약한 빛을 냅니다.";
 		break;
 
 	case MATERIAL_COPPER:
 		m_wItemName = L"등불";
-		m_wItemExplain[0] = L"손 슬롯을 차지하지 않는 작고 유용한 등입니다.";
+		m_wItemExplain[0] = L"불빛 +4";
+		m_wItemExplain[1] = L"손 슬롯을 차지하지 않는 작고 유용한 등입니다.";
 		break;
 
 	case MATERIAL_IRON:
 		m_wItemName = L"구체 등불";
-		m_wItemExplain[0] = L"벨트에 장착할 수 있는 개선된 전등입니다.";
-		m_wItemExplain[1] = L"더 밝은 빛을 냅니다.";
+		m_wItemExplain[0] = L"불빛 +5";
+		m_wItemExplain[1] = L"벨트에 장착할 수 있는 개선된 전등입니다.";
+		m_wItemExplain[2] = L"더 밝은 빛을 냅니다.";
 		break;
 	}
 
@@ -131,12 +134,28 @@ void CLantern::Render_GameObject()
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pShadowTransformCom->Get_WorldMatrix());
 
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+
+	m_pGraphicDev->SetRenderState(D3DRS_TEXTUREFACTOR, D3DCOLOR_ARGB(100, 255, 255, 255));
+	m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
+	m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
+	m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_TFACTOR);
+	m_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+	m_pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+
 	m_pShadowTextureCom->Set_Texture(1);
 
 	if (m_bDrop)
 	{
 		m_pShadowBufferCom->Render_Buffer();
 	}
+
+	m_pGraphicDev->SetRenderState(D3DRS_TEXTUREFACTOR, 0xffffffff);
+
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
+
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
 
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);

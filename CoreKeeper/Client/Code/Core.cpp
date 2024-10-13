@@ -6,7 +6,7 @@
 #include "..\Header\UIFont.h"
 
 CCore::CCore(LPDIRECT3DDEVICE9 pGraphicDev)
-	: CObject(pGraphicDev), m_iRange(0), m_bInFrustum(true)
+	: CObject(pGraphicDev), m_iRange(0), m_bInFrustum(true), m_iInteractCount(0)
 {
 	m_iLightNum = g_iLightNum++;
 	ZeroMemory(&m_bActiveCore, sizeof(bool) * 3);
@@ -96,8 +96,9 @@ void CCore::Interaction()
 		}
 		else
 		{
-			int iRandom = rand() % 2;
-			if(iRandom == 0)
+			m_iInteractCount++;
+
+			if(m_iInteractCount % 2 == 0)
 				pFont->Set_Font_Center(matWorld, L"에너지가 필요한 것 같아");
 			else
 				pFont->Set_Font_Center(matWorld, L"전원이 차단된 것 같아");

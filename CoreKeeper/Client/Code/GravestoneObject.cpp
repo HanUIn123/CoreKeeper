@@ -163,21 +163,93 @@ void CGravestoneObject::SetUp_Item(CScene* _pScene)
 {
 	CItem* pGameObject(nullptr);
 
+    // 일기장
+    pGameObject = CDiary::Create(m_pGraphicDev);
+    m_pInventoryCom->Add_Item(pGameObject);
+    m_vecItemName.push_back(L"Woodcutter's_Item" + std::to_wstring(m_iItemNameNum++));
+    FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, m_vecItemName.back().c_str()), );
+
+    // 나무
     pGameObject = CWood::Create(m_pGraphicDev);
     pGameObject->Add_Count(128);
     m_pInventoryCom->Add_Item(pGameObject);
     m_vecItemName.push_back(L"Woodcutter's_Item" + std::to_wstring(m_iItemNameNum++));
     FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, m_vecItemName.back().c_str()), );
 
+    // 슬라임 코어
     pGameObject = CStatueCore::Create(m_pGraphicDev, ITEM_SLIME_CORE);
     m_pInventoryCom->Add_Item(pGameObject);
     m_vecItemName.push_back(L"Woodcutter's_Item" + std::to_wstring(m_iItemNameNum++));
     FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, m_vecItemName.back().c_str()), );
 
+    // 애벌레 코어
     pGameObject = CStatueCore::Create(m_pGraphicDev, ITEM_LARVA_CORE);
     m_pInventoryCom->Add_Item(pGameObject);
     m_vecItemName.push_back(L"Woodcutter's_Item" + std::to_wstring(m_iItemNameNum++));
     FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, m_vecItemName.back().c_str()), );
+
+    // 원기베리
+    pGameObject = CIngredient::Create(m_pGraphicDev, ITEM_BERRY_SEED);
+    pGameObject->Add_Count(10);
+    m_pInventoryCom->Add_Item(pGameObject);
+    m_vecItemName.push_back(L"Woodcutter's_Item" + std::to_wstring(m_iItemNameNum++));
+    FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, m_vecItemName.back().c_str()), );
+
+    // 폭탄 후추
+    pGameObject = CIngredient::Create(m_pGraphicDev, ITEM_PEPPER_SEED);
+    pGameObject->Add_Count(19);
+    m_pInventoryCom->Add_Item(pGameObject);
+    m_vecItemName.push_back(L"Woodcutter's_Item" + std::to_wstring(m_iItemNameNum++));
+    FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, m_vecItemName.back().c_str()), );
+
+    // 섬유질
+    pGameObject = CIngredient::Create(m_pGraphicDev, ITEM_FIBER_SEED);
+    pGameObject->Add_Count(8);
+    m_pInventoryCom->Add_Item(pGameObject);
+    m_vecItemName.push_back(L"Woodcutter's_Item" + std::to_wstring(m_iItemNameNum++));
+    FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, m_vecItemName.back().c_str()), );
+
+    // 버섯
+    pGameObject = CIngredient::Create(m_pGraphicDev, ITEM_END);
+    pGameObject->Add_Count(14);
+    m_pInventoryCom->Add_Item(pGameObject);
+    m_vecItemName.push_back(L"Woodcutter's_Item" + std::to_wstring(m_iItemNameNum++));
+    FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, m_vecItemName.back().c_str()), );
+
+    // 해골조각
+    pGameObject = CPiece::Create(m_pGraphicDev, ITEM_SKULL_PIECE);
+    pGameObject->Add_Count(1);
+    m_pInventoryCom->Add_Item(pGameObject);
+    m_vecItemName.push_back(L"Woodcutter's_Item" + std::to_wstring(m_iItemNameNum++));
+    FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, m_vecItemName.back().c_str()), );
+
+    // 슬라임 점액
+    pGameObject = CMucus::Create(m_pGraphicDev);
+    pGameObject->Add_Count(56);
+    m_pInventoryCom->Add_Item(pGameObject);
+    m_vecItemName.push_back(L"Woodcutter's_Item" + std::to_wstring(m_iItemNameNum++));
+    FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, m_vecItemName.back().c_str()), );
+
+    pGameObject = CSeed::Create(m_pGraphicDev, ITEM_BERRY_SEED);
+    pGameObject->Add_Count(3);
+    m_pInventoryCom->Add_Item(pGameObject);
+    m_vecItemName.push_back(L"Woodcutter's_Item" + std::to_wstring(m_iItemNameNum++));
+    FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, m_vecItemName.back().c_str()), );
+
+    pGameObject = CSeed::Create(m_pGraphicDev, ITEM_PEPPER_SEED);
+    pGameObject->Add_Count(9);
+    m_pInventoryCom->Add_Item(pGameObject);
+    m_vecItemName.push_back(L"Woodcutter's_Item" + std::to_wstring(m_iItemNameNum++));
+    FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, m_vecItemName.back().c_str()), );
+
+    pGameObject = CSeed::Create(m_pGraphicDev, ITEM_FIBER);
+    pGameObject->Add_Count(7);
+    m_pInventoryCom->Add_Item(pGameObject);
+    m_vecItemName.push_back(L"Woodcutter's_Item" + std::to_wstring(m_iItemNameNum++));
+    FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, m_vecItemName.back().c_str()), );
+
+
+#pragma region TEST ITEM
 
     pGameObject = CBar::Create(m_pGraphicDev, MATERIAL_COPPER);
     pGameObject->Add_Count(99);
@@ -191,42 +263,6 @@ void CGravestoneObject::SetUp_Item(CScene* _pScene)
     m_vecItemName.push_back(L"Woodcutter's_Item" + std::to_wstring(m_iItemNameNum++));
     FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, m_vecItemName.back().c_str()), );
 
-    pGameObject = CPiece::Create(m_pGraphicDev, ITEM_SKULL_PIECE);
-    pGameObject->Add_Count(5);
-    m_pInventoryCom->Add_Item(pGameObject);
-    m_vecItemName.push_back(L"Woodcutter's_Item" + std::to_wstring(m_iItemNameNum++));
-    FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, m_vecItemName.back().c_str()), );
-
-    pGameObject = CMucus::Create(m_pGraphicDev);
-    pGameObject->Add_Count(56);
-    m_pInventoryCom->Add_Item(pGameObject);
-    m_vecItemName.push_back(L"Woodcutter's_Item" + std::to_wstring(m_iItemNameNum++));
-    FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, m_vecItemName.back().c_str()), );
-
-    pGameObject = CIngredient::Create(m_pGraphicDev, ITEM_BERRY_SEED);
-    pGameObject->Add_Count(10);
-    m_pInventoryCom->Add_Item(pGameObject);
-    m_vecItemName.push_back(L"Woodcutter's_Item" + std::to_wstring(m_iItemNameNum++));
-    FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, m_vecItemName.back().c_str()), );
-
-    pGameObject = CIngredient::Create(m_pGraphicDev, ITEM_PEPPER_SEED);
-    pGameObject->Add_Count(19);
-    m_pInventoryCom->Add_Item(pGameObject);
-    m_vecItemName.push_back(L"Woodcutter's_Item" + std::to_wstring(m_iItemNameNum++));
-    FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, m_vecItemName.back().c_str()), );
-
-    pGameObject = CIngredient::Create(m_pGraphicDev, ITEM_END);
-    pGameObject->Add_Count(14);
-    m_pInventoryCom->Add_Item(pGameObject);
-    m_vecItemName.push_back(L"Woodcutter's_Item" + std::to_wstring(m_iItemNameNum++));
-    FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, m_vecItemName.back().c_str()), );
-
-    pGameObject = CDiary::Create(m_pGraphicDev);
-    m_pInventoryCom->Add_Item(pGameObject);
-    m_vecItemName.push_back(L"Woodcutter's_Item" + std::to_wstring(m_iItemNameNum++));
-    FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, m_vecItemName.back().c_str()), );
-
-#pragma region TEST ITEM
     pGameObject = CDoll::Create(m_pGraphicDev);
     pGameObject->Add_Count(4);
     m_pInventoryCom->Add_Item(pGameObject);
@@ -238,10 +274,6 @@ void CGravestoneObject::SetUp_Item(CScene* _pScene)
     m_vecItemName.push_back(L"Woodcutter's_Item" + std::to_wstring(m_iItemNameNum++));
     FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, m_vecItemName.back().c_str()), );
 
-    pGameObject = CPetItem::Create(m_pGraphicDev);
-    m_pInventoryCom->Add_Item(pGameObject);
-    m_vecItemName.push_back(L"Woodcutter's_Item" + std::to_wstring(m_iItemNameNum++));
-    FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, m_vecItemName.back().c_str()), );
 
     pGameObject = CPickaxe::Create(m_pGraphicDev, MATERIAL_IRON);
     m_pInventoryCom->Add_Item(pGameObject);
@@ -254,24 +286,6 @@ void CGravestoneObject::SetUp_Item(CScene* _pScene)
     FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, m_vecItemName.back().c_str()), );
 
     pGameObject = CSpawner::Create(m_pGraphicDev, ITEM_AZEOS_SPAWNER);
-    m_pInventoryCom->Add_Item(pGameObject);
-    m_vecItemName.push_back(L"Woodcutter's_Item" + std::to_wstring(m_iItemNameNum++));
-    FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, m_vecItemName.back().c_str()), );
-
-    pGameObject = CSeed::Create(m_pGraphicDev, ITEM_BERRY_SEED);
-    pGameObject->Add_Count(30);
-    m_pInventoryCom->Add_Item(pGameObject);
-    m_vecItemName.push_back(L"Woodcutter's_Item" + std::to_wstring(m_iItemNameNum++));
-    FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, m_vecItemName.back().c_str()), );
-
-    pGameObject = CSeed::Create(m_pGraphicDev, ITEM_CARROT_SEED);
-    pGameObject->Add_Count(30);
-    m_pInventoryCom->Add_Item(pGameObject);
-    m_vecItemName.push_back(L"Woodcutter's_Item" + std::to_wstring(m_iItemNameNum++));
-    FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, m_vecItemName.back().c_str()), );
-
-    pGameObject = CSeed::Create(m_pGraphicDev, ITEM_FIBER_SEED);
-    pGameObject->Add_Count(30);
     m_pInventoryCom->Add_Item(pGameObject);
     m_vecItemName.push_back(L"Woodcutter's_Item" + std::to_wstring(m_iItemNameNum++));
     FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, m_vecItemName.back().c_str()), );
@@ -316,7 +330,11 @@ void CGravestoneObject::SetUp_Item(CScene* _pScene)
     m_vecItemName.push_back(L"Woodcutter's_Item" + std::to_wstring(m_iItemNameNum++));
     FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, m_vecItemName.back().c_str()), );
 
-    
+    pGameObject = CSpawner::Create(m_pGraphicDev, ITEM_PLAYER_SPAWNER);
+    m_pInventoryCom->Add_Item(pGameObject);
+    m_vecItemName.push_back(L"Woodcutter's_Item" + std::to_wstring(m_iItemNameNum++));
+    FAILED_CHECK_RETURN(_pScene->Create_GameObject(L"Layer_GameLogic", pGameObject, m_vecItemName.back().c_str()), );
+
 #pragma endregion
 }
 

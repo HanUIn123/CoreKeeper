@@ -28,12 +28,16 @@ HRESULT CSpawner::Ready_GameObject(ITEMNUM _eItemNum, _vec3 vPos)
 	case ITEM_MAL_SPAWNER:
 		m_iTextureNumber = 1;
 		m_wItemName = L"타락한 주술사의 해골";
-		m_wItemExplain[0] = L"고대 기도문을 읊조리는 다시 이어붙인 크리스털 해골입니다. 이 물건은 왕좌의 방 인장 위로 두어야 한다는 욕구가 듭니다.";
+		m_wItemExplain[0] = L"고대 기도문을 읊조리는";
+		m_wItemExplain[1] = L"다시 이어붙인 크리스털 해골입니다.";
+		m_wItemExplain[2] = L"이 물건은 왕좌의 방 인장 위로 두어야 한다는";
+		m_wItemExplain[3] = L"욕구가 듭니다.";
 		break;
 	case ITEM_AZEOS_SPAWNER:
 		m_iTextureNumber = 2;
 		m_wItemName = L"반짝이고 깜빡이는 거대한 물건";
-		m_wItemExplain[0] = L"크리스털 같은 계란 모양의 물건입니다. 먼 거리에서도 눈길을 사로잡습니다.";
+		m_wItemExplain[0] = L"크리스털 같은 계란 모양의 물건입니다.";
+		m_wItemExplain[1] = L"먼 거리에서도 눈길을 사로잡습니다.";
 		break;
 	}
 	
@@ -113,12 +117,28 @@ void CSpawner::Render_GameObject()
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pShadowTransformCom->Get_WorldMatrix());
 
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+
+	m_pGraphicDev->SetRenderState(D3DRS_TEXTUREFACTOR, D3DCOLOR_ARGB(100, 255, 255, 255));
+	m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
+	m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
+	m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_TFACTOR);
+	m_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+	m_pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+
 	m_pShadowTextureCom->Set_Texture(1);
 
 	if (m_bDrop)
 	{
 		m_pShadowBufferCom->Render_Buffer();
 	}
+
+	m_pGraphicDev->SetRenderState(D3DRS_TEXTUREFACTOR, 0xffffffff);
+
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
+
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
 
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);

@@ -5,7 +5,7 @@
 #include "..\Header\Player.h"
 
 CDollObject::CDollObject(LPDIRECT3DDEVICE9 pGraphicDev)
-	: CObject(pGraphicDev), m_iTextureNum(0), m_bCheck(false)
+	: CObject(pGraphicDev), m_iTextureNum(0), m_bCheck(false), m_pPlayer(nullptr), m_bIsPlaying(false), m_bPlayOnce(false)
 {
 }
 
@@ -24,6 +24,9 @@ HRESULT CDollObject::Ready_GameObject(_vec3 vPos)
 
 _int CDollObject::Update_GameObject(const _float& fTimeDelta)
 {
+	if (!m_pPlayer)
+		m_pPlayer = dynamic_cast<CPlayer*>(Get_GameObject(L"Layer_GameLogic", L"Player"));
+
 	Update_Texture();
 
 	if (Check_Interaction())
@@ -46,6 +49,8 @@ _int CDollObject::Update_GameObject(const _float& fTimeDelta)
 			m_bCollision = false;
 		}
 	}
+
+	Play_Instrument();
 	Add_RenderGroup(RENDER_ALPHA, this);
 
 	return Engine::CGameObject::Update_GameObject(fTimeDelta);
@@ -124,18 +129,61 @@ HRESULT CDollObject::Add_Component()
 
 void CDollObject::Update_Texture()
 {
-	if (m_bCheck)
-		return;
-
 	if (m_pInventoryCom->Check_Empty(0))
 		m_iTextureNum = 0;
-
 	else
 	{
 		ITEMNUM eItemNum = m_pInventoryCom->Get_Item(0)->Get_ItemNum();
 
 		m_iTextureNum = eItemNum - ITEM_INSTRUMENT_HARP + 1;
-		m_bCheck = true;
+	}
+}
+
+void CDollObject::Play_Instrument()
+{
+	// 인벤토리 비어있으면 정지
+	if (m_pInventoryCom->Check_Empty(0))
+	{
+		m_bIsPlaying = false;
+		m_bPlayOnce = false;
+	}
+	else
+	{
+		// 인벤토리에 악기가 들어와있고 플레이어가 연주 중이면 연주 시작
+		if (m_pPlayer->Get_InstrumentToggle())
+			m_bIsPlaying = true;
+		else
+		{
+			m_bIsPlaying = false;
+			m_bPlayOnce = false;
+		}
+	}
+
+	if (m_bIsPlaying)
+	{
+		if (!m_bPlayOnce)
+		{
+			m_bPlayOnce = true;
+			ITEMNUM eItemNum = m_pInventoryCom->Get_Item(0)->Get_ItemNum();
+			switch (eItemNum)
+			{
+			case ITEM_INSTRUMENT_HARP:
+				Engine::CSoundMgr::GetInstance()->PlayOnce(L"harpItsABigWorldOutside.wav", SOUND_INSTRUMENTS_HARP, 0.3f);
+				break;
+			case ITEM_INSTRUMENT_CELLO:
+				Engine::CSoundMgr::GetInstance()->PlayOnce(L"celloItsABigWorldOutside.wav", SOUND_INSTRUMENTS_CELLO, 0.6f);
+				break;
+			case ITEM_INSTRUMENT_FLUTE:
+				Engine::CSoundMgr::GetInstance()->PlayOnce(L"fluteItsABigWorldOutside.wav", SOUND_INSTRUMENTS_FLUTE, 0.4f);
+				break;
+			case ITEM_INSTRUMENT_OCARINA:
+				Engine::CSoundMgr::GetInstance()->PlayOnce(L"ocarinaItsABigWorldOutside.wav", SOUND_INSTRUMENTS_OCARINA, 0.3f);
+				break;
+			case ITEM_INSTRUMENT_DRUM:
+				Engine::CSoundMgr::GetInstance()->PlayOnce(L"drumsItsABigWorldOutside.wav", SOUND_INSTRUMENTS_DRUM, 0.8f);
+				break;
+			}
+		}
 	}
 }
 

@@ -27,20 +27,29 @@ HRESULT CLeg::Ready_GameObject(MATERIAL _eMaterial, _vec3 vPos)
 	{
 	case MATERIAL_WOOD:
 		m_wItemName = L"나무 바지";
-		m_wItemExplain[0] = L"하체 방어구에 차선책으로 쓸 수 있습니다.";
+		m_wItemExplain[0] = L"방어력 +10";
+		m_wItemExplain[1] = L"최대 체력 +20";
+		m_wItemExplain[2] = L"하체 방어구에 차선책으로 쓸 수 있습니다.";
 		break;
 	case MATERIAL_COPPER:
 		m_wItemName = L"구리 바지";
-		m_wItemExplain[0] = L"정강이를 확실하게 보호해줍니다.";
+		m_wItemExplain[0] = L"방어력 +20";
+		m_wItemExplain[1] = L"최대 체력 +40";
+		m_wItemExplain[2] = L"정강이를 확실하게 보호해줍니다.";
 		break;
 	case MATERIAL_IRON:
 		m_wItemName = L"철제 바지";
-		m_wItemExplain[0] = L"강철 다리의 소유자이시네요!";
+		m_wItemExplain[0] = L"방어력 +30";
+		m_wItemExplain[1] = L"최대 체력 +60";
+		m_wItemExplain[2] = L"강철 다리의 소유자이시네요!";
 		break;
 	case MATERIAL_SPECIAL:
 		m_iTextureNumber--;
 		m_wItemName = L"마술사 바지";
-		m_wItemExplain[0] = L"마법 장신구를 넣을 주머니가 많이 달린 튼튼한 바지입니다.";
+		m_wItemExplain[0] = L"방어력 +40";
+		m_wItemExplain[1] = L"최대 체력 +80";
+		m_wItemExplain[2] = L"마법 장신구를 넣을 주머니가";
+		m_wItemExplain[3] = L"많이 달린 튼튼한 바지입니다.";
 		break;
 	}
 
@@ -129,12 +138,28 @@ void CLeg::Render_GameObject()
 
 	m_pGraphicDev->SetTransform(D3DTS_WORLD, m_pShadowTransformCom->Get_WorldMatrix());
 
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+
+	m_pGraphicDev->SetRenderState(D3DRS_TEXTUREFACTOR, D3DCOLOR_ARGB(100, 255, 255, 255));
+	m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
+	m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
+	m_pGraphicDev->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_TFACTOR);
+	m_pGraphicDev->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+	m_pGraphicDev->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+
 	m_pShadowTextureCom->Set_Texture(1);
 
 	if (m_bDrop)
 	{
 		m_pShadowBufferCom->Render_Buffer();
 	}
+
+	m_pGraphicDev->SetRenderState(D3DRS_TEXTUREFACTOR, 0xffffffff);
+
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
+
+	m_pGraphicDev->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
 
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, FALSE);
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
