@@ -21,6 +21,7 @@ public:
 	virtual			void			Render_GameObject();
 
 	int								Get_TextureNum() { return m_iTextureNum; }
+	bool							Get_End() { return m_bEnd; }
 private:
 	HRESULT			Add_Component();
 
@@ -46,4 +47,5 @@ private:
 
 
 	bool				m_bStop;
+	bool				m_bEnd;
 };

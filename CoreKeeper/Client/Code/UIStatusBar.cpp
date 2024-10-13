@@ -133,17 +133,6 @@ void CUIStatusBar::Render_GameObject()
 
 		_fCurLength = (m_fLength * fPercentage) / (_iMaxHp / 25);
 	}
-
-	//if (_iCurHp % 25 == 0)
-	//{
-	//	iCount = _iMaxHp / 25 - 1;
-//	}
-//	else
-	//iCount = _iMaxHp / 25;
-		
-	
-	//_float _fCurLength = fPercentage / 
-
 	matWorld._41 -= m_fLength - 5.f;
 
 	iCount = m_iHp / 25.f;

@@ -338,6 +338,43 @@ void CUIChestInv::Render_GameObject()
 	}
 }
 
+void CUIChestInv::Set_Show(CInventory* _pInventory, _bool _bOne)
+{
+	if (m_bShow)
+		m_bShow = false;
+	else
+	{
+		m_bShow = true;
+
+		m_pChestInv = _pInventory;
+
+		m_bOne = _bOne;
+
+		if (m_bOne)
+		{
+			m_pTransformCom->Get_Info(INFO_POS, &vOnePos);
+
+			m_pTransformCom->Set_Pos(0.f, 100.f, 0);
+
+			m_BRect = { (_long)((WINCX / 2.f) - 15.f), (_long)(WINCY / 2.f - 100.f - 15.f), (_long)((WINCX / 2.f) + 15.f), (_long)(WINCY / 2.f - 100.f + 15.f) };
+		}
+	}
+}
+
+void CUIChestInv::Set_Disable()
+{
+	m_bShow = false;
+
+	if (m_bOne)
+	{
+		m_pTransformCom->Set_Pos(vOnePos.x, vOnePos.y, vOnePos.z);
+
+		m_BRect = { (_long)(vOnePos.x + (WINCX / 2.f) - 15.f), (_long)(WINCY / 2.f - vOnePos.y - 15.f), (_long)(vOnePos.x + (WINCX / 2.f) + 15.f), (_long)(WINCY / 2.f - vOnePos.y + 15.f) };
+
+		m_bOne = false;
+	}
+}
+
 HRESULT CUIChestInv::Add_Component()
 {
 	CComponent* pComponent = NULL;

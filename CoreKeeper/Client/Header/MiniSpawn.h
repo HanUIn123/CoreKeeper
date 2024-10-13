@@ -7,6 +7,7 @@ BEGIN(Engine)
 class CTransform;
 class CTexture;
 class CObjectTex;
+class CHit;
 
 END
 class CMiniSpawn : public Engine::CGameObject
@@ -26,10 +27,15 @@ private:
 
     _bool                                                   m_bRevealed;
 
+    _matrix                                                 m_TeleportWorld;
+    _matrix                                                 m_matEffectWorld;
+    _bool                                                   m_bTeleport;
+
 private:
     Engine::CTransform*                                     m_pTransformCom;
     Engine::CTexture*                                       m_pTextureCom;
     Engine::CObjectTex*                                     m_pBufferCom;
+    Engine::CHit*                                           m_pHitEffectCom;
 
 public:
     static CMiniSpawn*                                      Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);

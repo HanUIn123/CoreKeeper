@@ -139,6 +139,12 @@
     <Filter Include="04. Component\08. Particles\07. Fume">
       <UniqueIdentifier>{017b494e-d092-4bd0-b3dc-7a0f4f469a3a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04. Component\08. Particles\08. Heal">
+      <UniqueIdentifier>{a3e16ff2-9f88-4e0a-91d2-3775f3855a5a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Component\08. Particles\09. Watering">
+      <UniqueIdentifier>{980b2b9e-8d4c-49ec-80c7-a8bc876a316c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Code\Scene.cpp">
@@ -266,6 +272,12 @@
     </ClCompile>
     <ClCompile Include="..\Code\Fume.cpp">
       <Filter>04. Component\08. Particles\07. Fume</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Heal.cpp">
+      <Filter>04. Component\08. Particles\08. Heal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Code\Water.cpp">
+      <Filter>04. Component\08. Particles\09. Watering</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -400,6 +412,12 @@
     </ClInclude>
     <ClInclude Include="..\..\Header\Fume.h">
       <Filter>04. Component\08. Particles\07. Fume</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Header\Heal.h">
+      <Filter>04. Component\08. Particles\08. Heal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Header\Water.h">
+      <Filter>04. Component\08. Particles\09. Watering</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

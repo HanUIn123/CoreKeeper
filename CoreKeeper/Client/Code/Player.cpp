@@ -69,6 +69,7 @@ CPlayer::CPlayer(LPDIRECT3DDEVICE9 pGraphicDev)
     m_fBleedTime = 0.f;
     m_bFire = false;
     m_fFireTickTime = 0.f;
+    m_bHeal = false;
 
     m_bShootOnce = false;
     m_vMouseWorldPos = { 0, 0, 0 };
@@ -108,7 +109,7 @@ HRESULT CPlayer::Ready_GameObject()
 {
     FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
-    m_tBasicStat = STAT(200, 100, 20, 0);
+    m_tBasicStat = STAT(100, 100, 20, 0);
     m_pStateCom->Set_Stat(m_tBasicStat.iMaxHp, m_tBasicStat.iMaxMp, m_tBasicStat.iAttack, m_tBasicStat.iDefense);
     m_pStateCom->Set_MaxHunger(100);
     m_pEquipInventoryCom->Set_SlotCount(10);
@@ -556,6 +557,7 @@ void CPlayer::Mouse_Click(const _float& fTimeDelta)
                 case ITEM_SPRINKLER:
                 case ITEM_MAL_SPAWNER:
                 case ITEM_AZEOS_SPAWNER:
+                case ITEM_DOLL:
                     Install(eHandedNum);
                     break;
                     
@@ -915,6 +917,20 @@ void CPlayer::Set_ImmuneByToggle()
         CBuffMgr::GetInstance()->Set_BuffStart(DEBUFF_FIRE, 5.f);
     if (Engine::Key_Down(DIK_F4))
         CBuffMgr::GetInstance()->Set_BuffStart(DEBUFF_SLOW, 5.f);
+    if (Engine::Key_Down(DIK_F9))
+    {
+        CBuffMgr::GetInstance()->Set_BuffStart(BUFF_SPEED, 999.f);
+        CBuffMgr::GetInstance()->Set_BuffStart(BUFF_HP, 999.f);
+        CBuffMgr::GetInstance()->Set_BuffStart(BUFF_ATT, 999.f);
+        CBuffMgr::GetInstance()->Set_BuffStart(BUFF_DEF, 999.f);
+        CBuffMgr::GetInstance()->Set_BuffStart(BUFF_FULL, 999.f);
+        CBuffMgr::GetInstance()->Set_BuffStart(BUFF_IMMUNE, 999.f);
+        CBuffMgr::GetInstance()->Set_BuffStart(BUFF_MINING, 999.f);
+        CBuffMgr::GetInstance()->Set_BuffStart(DEBUFF_HUNGER, 999.f);
+        CBuffMgr::GetInstance()->Set_BuffStart(DEBUFF_FIRE, 999.f);
+        CBuffMgr::GetInstance()->Set_BuffStart(DEBUFF_SLOW, 999.f);
+        CBuffMgr::GetInstance()->Set_BuffStart(DEBUFF_STUN, 999.f);
+    }
 }
 
 
@@ -1807,6 +1823,9 @@ void CPlayer::Install(ITEMNUM eHandedNum)
                     pInstallObject = CAzeosSpawner::Create(m_pGraphicDev, vInstallPos);
                     bPassable = false;
                     break;
+                case ITEM_DOLL:
+                    pInstallObject = CDollObject::Create(m_pGraphicDev, vInstallPos);
+                    break;
                 default:
                     return;
                 }
@@ -2000,7 +2019,16 @@ void CPlayer::Play_Instruments()
             {
                 m_bPlayToggle = m_bPlayToggle ? false : true;
                 if (m_bPlayToggle)
-                    Engine::Play(L"pianoCookServeDelicious3ItsDangerousToGoAlone.wav", SOUND_INSTRUMENTS, 0.1f);
+                {
+                    /*g_bFight = true;
+                    Engine::StopSound(SOUND_BGM);
+                    Engine::Play(L"harpItsABigWorldOutside.wav", SOUND_INSTRUMENTS, 0.1f);
+                    Engine::Play(L"celloItsABigWorldOutside.wav", SOUND_INSTRUMENTS, 0.1f);
+                    Engine::Play(L"fluteItsABigWorldOutside.wav", SOUND_INSTRUMENTS, 0.1f);
+                    Engine::Play(L"ocarinaItsABigWorldOutside.wav", SOUND_INSTRUMENTS, 0.1f);
+                    Engine::Play(L"drumItsABigWorldOutside.wav", SOUND_INSTRUMENTS, 0.1f);*/
+                    Engine::Play(L"pianoItsABigWorldOutside.wav", SOUND_INSTRUMENTS, 0.2f);
+                }
                 else
                     Engine::StopSound(SOUND_INSTRUMENTS);
             }
@@ -2494,7 +2522,7 @@ void CPlayer::Set_Hungry(const _float& fTimeDelta)
             if (m_pStateCom->Get_Hunger() <= 0)
                 m_pStateCom->Set_Damaged(5);
             else
-                m_pStateCom->Set_HungerMinus(5);
+                m_pStateCom->Set_HungerMinus(2);
         }
     }
 
@@ -2846,24 +2874,60 @@ void CPlayer::Set_Status()
 
 void CPlayer::Set_ChestInventory(CInventory* pInventory)
 {
-    for (int i = 0; i < 18; ++i)
+    if (pInventory)
     {
-        wstring string;
+        if (!(pInventory->Get_SlotCount() == 1))
+        {
+            for (int i = 0; i < pInventory->Get_SlotCount(); ++i)
+            {
+                wstring string;
 
-        string = L"UI_ChestInventory_" + std::to_wstring(i);
+                string = L"UI_ChestInventory_" + std::to_wstring(i);
 
-        CUIChestInv* pChestInventory = dynamic_cast<CUIChestInv*>(Engine::Get_GameObject(L"Layer_UI", string.c_str()));
+                CUIChestInv* pChestInventory = dynamic_cast<CUIChestInv*>(Engine::Get_GameObject(L"Layer_UI", string.c_str()));
 
-        pChestInventory->Set_Show(pInventory);
+                pChestInventory->Set_Show(pInventory);
+            }
+
+            CUISort* pSort = dynamic_cast<CUISort*>(Engine::Get_GameObject(L"Layer_UI", L"UI_ChestSort"));
+
+            pSort->Set_Window();
+            pSort->Set_Inventory(pInventory);
+
+            CUIChestSort* pChestSort = dynamic_cast<CUIChestSort*>(Engine::Get_GameObject(L"Layer_UI", L"UI_ChestAddItem"));
+            pChestSort->Set_Window(pInventory);
+        }
+        else
+        {
+            wstring string;
+
+            string = L"UI_ChestInventory_" + std::to_wstring(0);
+
+            CUIChestInv* pChestInventory = dynamic_cast<CUIChestInv*>(Engine::Get_GameObject(L"Layer_UI", string.c_str()));
+
+            pChestInventory->Set_Show(pInventory, true);
+        }
     }
+    else
+    {
+        for (int i = 0; i < 18; ++i)
+        {
+            wstring string;
 
-    CUISort* pSort = dynamic_cast<CUISort*>(Engine::Get_GameObject(L"Layer_UI", L"UI_ChestSort"));
+            string = L"UI_ChestInventory_" + std::to_wstring(i);
 
-    pSort->Set_Window();
-    pSort->Set_Inventory(pInventory);
+            CUIChestInv* pChestInventory = dynamic_cast<CUIChestInv*>(Engine::Get_GameObject(L"Layer_UI", string.c_str()));
 
-    CUIChestSort* pChestSort = dynamic_cast<CUIChestSort*>(Engine::Get_GameObject(L"Layer_UI", L"UI_ChestAddItem"));
-    pChestSort->Set_Window(pInventory);
+            pChestInventory->Set_Disable();
+
+            CUISort* pSort = dynamic_cast<CUISort*>(Engine::Get_GameObject(L"Layer_UI", L"UI_ChestSort"));
+
+            pSort->Set_Disable();
+
+            CUIChestSort* pChestSort = dynamic_cast<CUIChestSort*>(Engine::Get_GameObject(L"Layer_UI", L"UI_ChestAddItem"));
+            pChestSort->Set_Disable();
+        }
+    }
 
     Set_Inventory();
 
@@ -3088,7 +3152,10 @@ void CPlayer::Particle_Update(_float fTimeDelta)
 
         m_pFireParticleCom->reset();
     }
-    m_pFollowParticleCom->update(fTimeDelta);
+    if (m_bFire)
+        m_pFollowParticleCom->update(fTimeDelta);
+    else
+        m_pFollowParticleCom->reset();
 
     if (m_bDestroyWall)
     {
@@ -3117,7 +3184,7 @@ void CPlayer::Set_KnockBack(_vec3 vEnemyPos, _int iDamage, _float fDist, PLAYERH
         m_fKnockBackDist = fDist;
 
         m_pStateCom->Set_Damaged(iDamage * (1 - (m_pStateCom->Get_Stat()->iDefense / 200)));
-        Set_ImmuneByTime();
+        Set_ImmuneByTime(0.2f);
 
         // 여기에 이펙트 추가
         switch (eHit)

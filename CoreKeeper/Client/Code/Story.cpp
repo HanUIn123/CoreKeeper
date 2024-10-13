@@ -9,7 +9,7 @@
 #include "../Header/BlackPlaneMgr.h"
 
 CStory::CStory(LPDIRECT3DDEVICE9 pGraphicDev)
-    : Engine::CScene(pGraphicDev), m_pLoading(nullptr)
+    : Engine::CScene(pGraphicDev), m_pLoading(nullptr), m_bFadeStart(false)
 {
 }
 
@@ -42,12 +42,17 @@ _int CStory::Update_Scene(const _float& fTimeDelta)
 
     if (true == m_pLoading->Get_Finish())
     {
-        if (GetAsyncKeyState(VK_RETURN) & 0x8000)
+        if ((GetAsyncKeyState(VK_RETURN) & 0x8000) || (!m_bFadeStart && pStoryBackGround->Get_End()))
         {
+            m_bFadeStart = true;
+
+            Engine::CSoundMgr::GetInstance()->StopSound(SOUND_BGM);
+
             pStoryBackGround->Set_Stop(true);
 
             if (pStoryBackGround->Get_Stop())
             {
+                Engine::CSoundMgr::GetInstance()->PlayOnce(L"Bell.wav", SOUND_EFFECT, 0.1f);
                 pWhitePlane->Set_FadeOver(true);
             }
         }

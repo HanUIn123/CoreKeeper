@@ -116,6 +116,7 @@ _uint CLoading::Loading_Stage()
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_AzeosSpawnPointTex", Engine::CObjectTex::Create(m_pGraphicDev, 15.0f, 0.0f, 15.0f)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MaluSpawnTex", Engine::CObjectTex::Create(m_pGraphicDev, 0.5f, 0.0f, 0.5f)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_AzeosSpawnTex", Engine::CObjectTex::Create(m_pGraphicDev, 0.5f, 0.0f, 0.5f)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_DollTex", Engine::CObjectTex::Create(m_pGraphicDev, 0.75f, 0.75f, 0.0f)), E_FAIL);
 
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_AzeosShadowTex", Engine::CObjectTex::Create(m_pGraphicDev, 10.0f, 0.0f, 10.0f)), E_FAIL);
 
@@ -148,6 +149,8 @@ _uint CLoading::Loading_Stage()
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Hit", Engine::CHit::Create(m_pGraphicDev, &vPPos, 1)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Smog", Engine::CSmog::Create(m_pGraphicDev, &vPPos, 30)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Fume", Engine::CFume::Create(m_pGraphicDev, &vPPos, 30)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Heal", Engine::CHeal::Create(m_pGraphicDev, &vPPos, 15)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_Water", Engine::CWater::Create(m_pGraphicDev, &vPPos, 5)), E_FAIL);
 
 
     lstrcpy(m_szLoading, L"Texture Loading...");
@@ -230,8 +233,7 @@ _uint CLoading::Loading_Stage()
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_TableTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Table/Table_%d.png", TEX_NORMAL, 3)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_PotionTableTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Table/PotionTable.png", TEX_NORMAL)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_AccessoryTableTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Table/AccessoryTable.png", TEX_NORMAL)), E_FAIL);
-    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_MusicTableTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Table/MusicTable.png", TEX_NORMAL)), E_FAIL);
-    //FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_AnimalTableTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Table/Table_%d.png", TEX_NORMAL, 3)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_DollTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Doll/BlueDoll_%d.png", TEX_NORMAL, 6)), E_FAIL);
     
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_AnvilTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Anvil/Anvil_%d.png", TEX_NORMAL, 3)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_FurnaceTexture", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/Item/Furnace/Furnace.png", TEX_NORMAL)), E_FAIL);
@@ -309,7 +311,7 @@ _uint CLoading::Loading_Stage()
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UITex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/UI_%d.png", TEX_NORMAL, 2)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UIIconTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/UI_Icon/UI_Icon_%d.png", TEX_NORMAL, 7)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UIColTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/UI_Collapse.png", TEX_NORMAL)), E_FAIL);
-    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UIHealthTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/UI_Health_%d.png", TEX_NORMAL, 9)), E_FAIL);
+    FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UIHealthTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/UI_Health_%d.png", TEX_NORMAL, 11)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UIScreenInvTex", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/UI_HandInv_%d.png", TEX_NORMAL, 2)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UINumber", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/UI_Font_%d.png", TEX_NORMAL, 10)), E_FAIL);
     FAILED_CHECK_RETURN(Engine::Ready_Proto(L"Proto_UIItemNumber", Engine::CTexture::Create(m_pGraphicDev, L"../Bin/Resource/Texture/UI/UI_Item_Font_%d.png", TEX_NORMAL, 10)), E_FAIL);

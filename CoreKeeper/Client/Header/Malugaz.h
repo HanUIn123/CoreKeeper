@@ -47,9 +47,13 @@ private:
 	int				m_iIdleCount;
 	int				m_iTextureNum;
 
+	_bool           m_bTeleport;
+	_matrix         m_matTeleportWorld;
+
 private:
 	Engine::CAnimTex* m_pBufferCom2;
 	Engine::CAnimTex* m_pBufferCom3;
+	Engine::CHit*     m_pTeleportCom;
 
 public:
 	static CMalugaz* Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos);

@@ -741,6 +741,17 @@ HRESULT CStage::Ready_Layer_UI(const _tchar* pLayerTag)
     NULL_CHECK_RETURN(pGameObject, E_FAIL);
     FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_Font", pGameObject), E_FAIL);
 
+    pGameObject = CUIBossName::Create(m_pGraphicDev);
+    NULL_CHECK_RETURN(pGameObject, E_FAIL);
+    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_BossName", pGameObject), E_FAIL);
+
+    vSize = { 120.f, 10.f };
+
+    pGameObject = CUIBossBar::Create(m_pGraphicDev, vPos, vSize, 10);
+    NULL_CHECK_RETURN(pGameObject, E_FAIL);
+    FAILED_CHECK_RETURN(pLayer->Add_GameObject(L"UI_BossBar", pGameObject), E_FAIL);
+
+
     m_mapLayer.insert({ pLayerTag , pLayer });
 
     return S_OK;

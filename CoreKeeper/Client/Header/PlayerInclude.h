@@ -10,7 +10,6 @@
 #include "..\Header\TableObject.h"
 #include "..\Header\PotionTableObject.h"
 #include "..\Header\AccessoryTableObject.h"
-#include "..\Header\MusicTableObject.h"
 #include "..\Header\AnvilObject.h"
 #include "..\Header\FurnaceObject.h"
 #include "..\Header\CookingPotObject.h"
@@ -20,6 +19,7 @@
 #include "..\Header\TorchObject.h"
 #include "..\Header\SpawnerObject.h"
 #include "..\Header\AzeosSpawner.h"
+#include "..\Header\DollObject.h"
 
 
 // UI

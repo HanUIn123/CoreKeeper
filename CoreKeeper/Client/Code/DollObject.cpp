@@ -1,19 +1,19 @@
 #include "pch.h"
-#include "../Header/MusicTableObject.h"
+#include "../Header/DollObject.h"
 #include "Export_System.h"
 #include "Export_Utility.h"
 #include "..\Header\Player.h"
 
-CMusicTableObject::CMusicTableObject(LPDIRECT3DDEVICE9 pGraphicDev)
-	: CObject(pGraphicDev)
+CDollObject::CDollObject(LPDIRECT3DDEVICE9 pGraphicDev)
+	: CObject(pGraphicDev), m_iTextureNum(0), m_bCheck(false)
 {
 }
 
-CMusicTableObject::~CMusicTableObject()
+CDollObject::~CDollObject()
 {
 }
 
-HRESULT CMusicTableObject::Ready_GameObject(_vec3 vPos)
+HRESULT CDollObject::Ready_GameObject(_vec3 vPos)
 {
 	FAILED_CHECK_RETURN(Add_Component(), E_FAIL);
 
@@ -22,8 +22,10 @@ HRESULT CMusicTableObject::Ready_GameObject(_vec3 vPos)
 	return S_OK;
 }
 
-_int CMusicTableObject::Update_GameObject(const _float& fTimeDelta)
+_int CDollObject::Update_GameObject(const _float& fTimeDelta)
 {
+	Update_Texture();
+
 	if (Check_Interaction())
 	{
 		Interaction();
@@ -34,28 +36,27 @@ _int CMusicTableObject::Update_GameObject(const _float& fTimeDelta)
 		{
 			CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
 
-			if (!pPlayer->Get_CraftUI())
+			if (pPlayer->Get_ChestInv() && pPlayer->Get_Inventory())
 			{
-				pPlayer->Set_Craft();
+				pPlayer->Set_ChestInventory();
 
-				pPlayer->Set_Inventory();
-
-				m_bCollision = false;
+				//pPlayer->Set_Inventory();
 			}
+
+			m_bCollision = false;
 		}
 	}
-
 	Add_RenderGroup(RENDER_ALPHA, this);
 
 	return Engine::CGameObject::Update_GameObject(fTimeDelta);
 }
 
-void CMusicTableObject::LateUpdate_GameObject()
+void CDollObject::LateUpdate_GameObject()
 {
 	Engine::CGameObject::LateUpdate_GameObject();
 }
 
-void CMusicTableObject::Render_GameObject()
+void CDollObject::Render_GameObject()
 {
 	m_pGraphicDev->SetRenderState(D3DRS_LIGHTING, TRUE);
 
@@ -67,7 +68,7 @@ void CMusicTableObject::Render_GameObject()
 
 	FAILED_CHECK_RETURN(Setup_Material(), );
 
-	m_pTextureCom->Set_Texture();
+	m_pTextureCom->Set_Texture(m_iTextureNum);
 
 	m_pBufferCom->Render_Buffer();
 
@@ -76,29 +77,29 @@ void CMusicTableObject::Render_GameObject()
 	m_pGraphicDev->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
-void CMusicTableObject::Interaction()
+void CDollObject::Interaction()
 {
 	if (Engine::Key_Down(DIK_E))
 	{
 		CPlayer* pPlayer = dynamic_cast<CPlayer*>(Engine::Get_GameObject(L"Layer_GameLogic", L"Player"));
 
-		pPlayer->Set_Craft(TABLE_MUSIC);
+		pPlayer->Set_ChestInventory(m_pInventoryCom);
 
-		pPlayer->Set_Inventory();
+		//pPlayer->Set_Inventory();
 
 		m_bCollision = true;
 	}
 }
 
-HRESULT CMusicTableObject::Add_Component()
+HRESULT CDollObject::Add_Component()
 {
 	CComponent* pComponent = NULL;
 
-	pComponent = m_pBufferCom = dynamic_cast<CObjectTex*>(Engine::Clone_Proto(L"Proto_ObjectTex"));
+	pComponent = m_pBufferCom = dynamic_cast<CObjectTex*>(Engine::Clone_Proto(L"Proto_DollTex"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Buffer", pComponent });
 
-	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_MusicTableTexture"));
+	pComponent = m_pTextureCom = dynamic_cast<CTexture*>(Engine::Clone_Proto(L"Proto_DollTexture"));
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Texture", pComponent });
 
@@ -114,12 +115,33 @@ HRESULT CMusicTableObject::Add_Component()
 	NULL_CHECK_RETURN(pComponent, E_FAIL);
 	m_mapComponent[ID_STATIC].insert({ L"Com_Collider", pComponent });
 
+	pComponent = m_pInventoryCom = dynamic_cast<CInventory*>(Engine::Clone_Proto(L"Proto_OneSlotInventory"));
+	NULL_CHECK_RETURN(pComponent, E_FAIL);
+	m_mapComponent[ID_STATIC].insert({ L"Com_Inventory", pComponent });
+
 	return S_OK;
 }
 
-CMusicTableObject* CMusicTableObject::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
+void CDollObject::Update_Texture()
 {
-	CMusicTableObject* pCore = new CMusicTableObject(pGraphicDev);
+	if (m_bCheck)
+		return;
+
+	if (m_pInventoryCom->Check_Empty(0))
+		m_iTextureNum = 0;
+
+	else
+	{
+		ITEMNUM eItemNum = m_pInventoryCom->Get_Item(0)->Get_ItemNum();
+
+		m_iTextureNum = eItemNum - ITEM_INSTRUMENT_HARP + 1;
+		m_bCheck = true;
+	}
+}
+
+CDollObject* CDollObject::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec3 vPos)
+{
+	CDollObject* pCore = new CDollObject(pGraphicDev);
 
 	if (FAILED(pCore->Ready_GameObject(vPos)))
 	{
@@ -131,7 +153,7 @@ CMusicTableObject* CMusicTableObject::Create(LPDIRECT3DDEVICE9 pGraphicDev, _vec
 	return pCore;
 }
 
-void CMusicTableObject::Free()
+void CDollObject::Free()
 {
 	Engine::CGameObject::Free();
 }

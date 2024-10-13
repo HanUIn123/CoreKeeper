@@ -82,7 +82,7 @@ namespace Engine
 
         ITEM_ETC = 50,
 
-        ITEM_PET,
+        ITEM_PET, ITEM_DOLL,
 
         ITEM_TORCH, ITEM_BOX, ITEM_GRAVESTONE, ITEM_SPRINKLER,
 

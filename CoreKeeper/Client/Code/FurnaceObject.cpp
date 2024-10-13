@@ -104,7 +104,7 @@ _int CFurnaceObject::Update_GameObject(const _float& fTimeDelta)
 	}
 	else
 	{
-		m_fTime = 80.f;
+		m_fTime = 40.f;
 	}
 
 	Engine::Add_RenderGroup(RENDER_ALPHA, this);

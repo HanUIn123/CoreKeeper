@@ -164,6 +164,7 @@ call Copy.bat</Command>
     <ClInclude Include="..\Header\BlackPlaneMgr.h" />
     <ClInclude Include="..\Header\BuffMgr.h" />
     <ClInclude Include="..\Header\Bullet.h" />
+    <ClInclude Include="..\Header\DollObject.h" />
     <ClInclude Include="..\Header\PetItem.h" />
     <ClInclude Include="..\Header\ChocoBar.h" />
     <ClInclude Include="..\Header\Lunch.h" />
@@ -227,6 +228,8 @@ call Copy.bat</Command>
     <ClInclude Include="..\Header\Furnace.h" />
     <ClInclude Include="..\Header\Anvil.h" />
     <ClInclude Include="..\Header\Table.h" />
+    <ClInclude Include="..\Header\UIBossBar.h" />
+    <ClInclude Include="..\Header\UIBossName.h" />
     <ClInclude Include="..\Header\UIBuffFrame.h" />
     <ClInclude Include="..\Header\UIChestSort.h" />
     <ClInclude Include="..\Header\UICookingPot.h" />
@@ -236,6 +239,7 @@ call Copy.bat</Command>
     <ClInclude Include="..\Header\UIJemSlot.h" />
     <ClInclude Include="..\Header\UIStatue.h" />
     <ClInclude Include="..\Header\UIStatueCraft.h" />
+    <ClInclude Include="..\Header\Doll.h" />
     <ClInclude Include="..\Header\WallPiece.h" />
     <ClInclude Include="..\Header\Piece.h" />
     <ClInclude Include="..\Header\Spawner.h" />
@@ -337,6 +341,7 @@ call Copy.bat</Command>
     <ClCompile Include="..\Code\BlackPlaneMgr.cpp" />
     <ClCompile Include="..\Code\BuffMgr.cpp" />
     <ClCompile Include="..\Code\Bullet.cpp" />
+    <ClCompile Include="..\Code\DollObject.cpp" />
     <ClCompile Include="..\Code\PetItem.cpp" />
     <ClCompile Include="..\Code\Crystal.cpp" />
     <ClCompile Include="..\Code\ChocoBar.cpp" />
@@ -399,6 +404,8 @@ call Copy.bat</Command>
     <ClCompile Include="..\Code\Furnace.cpp" />
     <ClCompile Include="..\Code\Anvil.cpp" />
     <ClCompile Include="..\Code\Table.cpp" />
+    <ClCompile Include="..\Code\UIBossBar.cpp" />
+    <ClCompile Include="..\Code\UIBossName.cpp" />
     <ClCompile Include="..\Code\UIBuffFrame.cpp" />
     <ClCompile Include="..\Code\UIChestSort.cpp" />
     <ClCompile Include="..\Code\UICookingPot.cpp" />
@@ -409,6 +416,7 @@ call Copy.bat</Command>
     <ClCompile Include="..\Code\UICraft.cpp" />
     <ClCompile Include="..\Code\UIStatue.cpp" />
     <ClCompile Include="..\Code\UIStatueCraft.cpp" />
+    <ClCompile Include="..\Code\Doll.cpp" />
     <ClCompile Include="..\Code\WallPiece.cpp" />
     <ClCompile Include="..\Code\Piece.cpp" />
     <ClCompile Include="..\Code\Spawner.cpp" />

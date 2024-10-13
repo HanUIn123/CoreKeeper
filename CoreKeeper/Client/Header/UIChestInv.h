@@ -33,18 +33,9 @@ public:
 
 	void            Set_CurInv(_int _iCurInv) { m_iCurInv = _iCurInv; }
 
-	void            Set_Show(CInventory* _pInventory) {
-		if (m_bShow)
-			m_bShow = false;
-		else
-		{
-			m_bShow = true;
+	void            Set_Show(CInventory* _pInventory, _bool _bOne = false);
 
-			m_pChestInv = _pInventory;
-		}
-	}
-
-	void            Set_Disable() { m_bShow = false; }
+	void            Set_Disable();
 private:
 	HRESULT			Add_Component();
 
@@ -64,6 +55,10 @@ private:
 	CItem* pItem;
 
 	CInventory* m_pChestInv;
+
+	_bool m_bOne;
+
+	_vec3 vOnePos;
 
 private:
 	Engine::CAnimTex* m_pBufferCom;

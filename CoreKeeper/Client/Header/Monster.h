@@ -29,6 +29,8 @@ public:
 	virtual			void			LateUpdate_GameObject() PURE;
 	virtual			void			Render_GameObject() PURE;
 
+	STAT                            Get_State(); 
+
 protected:
 	virtual			void			Pattern_Idle(const _float& fTimeDelta) PURE;
 	virtual			void			Pattern_Chase(const _float& fTimeDelta) PURE;
