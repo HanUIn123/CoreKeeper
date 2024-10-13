@@ -33,7 +33,7 @@ CMalugaz::CMalugaz(LPDIRECT3DDEVICE9 pGraphicDev)
 
     m_iCurNumber = 0;
 
-    m_bStopDraw = false;
+    m_bStopDraw = true;
 
     m_bTeleport = false;
 
@@ -753,16 +753,20 @@ void CMalugaz::Pattern_Punch(const _float& fTimeDelta)
 
     if(iFrame % 6 == 3)
     {
-        // 샤먼 차징 시 조명 끄고 실제 불덩이 생성하여 조명 적용
-        CScene* pScene = Engine::Get_Scene();
-        for (int i = 0; i < 6; i++)
+        if (m_bLightEnable)
         {
-            pFire = CFire::Create(m_pGraphicDev, vFirePos[i]);
-            dynamic_cast<CFire*>(pFire)->Set_Burn();
-            NULL_CHECK(pFire);
-            m_vecProjectileName.push_back(L"Monster_Created_Fireball" + std::to_wstring(m_iTagNumber++));
-            FAILED_CHECK_RETURN(pScene->Create_GameObject(L"Layer_GameLogic", pFire, m_vecProjectileName.back().c_str()), );
-            Engine::CSoundMgr::GetInstance()->PlayOnce(L"Crack3.wav", SOUND_MALUGAZ, 0.1f);
+            m_bLightEnable = false;
+            // 샤먼 차징 시 조명 끄고 실제 불덩이 생성하여 조명 적용
+            CScene* pScene = Engine::Get_Scene();
+            for (int i = 0; i < 6; i++)
+            {
+                pFire = CFire::Create(m_pGraphicDev, vFirePos[i]);
+                dynamic_cast<CFire*>(pFire)->Set_Burn();
+                NULL_CHECK(pFire);
+                m_vecProjectileName.push_back(L"Monster_Created_Fireball" + std::to_wstring(m_iTagNumber++));
+                FAILED_CHECK_RETURN(pScene->Create_GameObject(L"Layer_GameLogic", pFire, m_vecProjectileName.back().c_str()), );
+                Engine::CSoundMgr::GetInstance()->PlayOnce(L"Crack3.wav", SOUND_MALUGAZ, 0.1f);
+            }
         }
     }
 
