@@ -68,6 +68,9 @@ _int CAzeos::Update_GameObject(const _float& fTimeDelta)
     if (m_bStopDraw)
         return 0;
 
+    int iExit = Engine::CGameObject::Update_GameObject(fTimeDelta);
+    Engine::CSoundMgr::GetInstance()->PlayBGM(L"Azeos_the_Sky_Titan.wav", 0.1f);
+
     Set_Cast();
 
     CUIBossName* pUIFont = dynamic_cast<CUIBossName*>(Engine::Get_GameObject(L"Layer_UI", L"UI_BossName"));
@@ -138,7 +141,7 @@ _int CAzeos::Update_GameObject(const _float& fTimeDelta)
     //Set_StuckFree(fTimeDelta);
     m_pAnimatorCom->Update_Animation();
     Add_RenderGroup(RENDER_ALPHA, this);
-    return Engine::CGameObject::Update_GameObject(fTimeDelta);
+    return iExit;
 }
 
 void CAzeos::LateUpdate_GameObject()
@@ -248,6 +251,9 @@ void CAzeos::Pattern_Chase(const _float& fTimeDelta)
     //    m_eState = IDLE;
    // else // 아닐 경우 텔레포트
    // {
+
+    Engine::CSoundMgr::GetInstance()->PlayOnce(L"Bird_Boss_Teleport.wav", SOUND_AZEOS, 0.1f);
+
         Pattern_Teleport();
 
         m_eState = IDLE;
@@ -258,6 +264,7 @@ void CAzeos::Pattern_Attack(const _float& fTimeDelta)
 {
     m_pAnimatorCom->Set_CurState(SWING, 8, 20, 8);
 
+    Engine::CSoundMgr::GetInstance()->PlayOnce(L"birdScreech.wav", SOUND_AZEOS, 0.1f);
 
     if (m_pAnimatorCom->Get_MotionIndex() == 20)
     {
@@ -356,6 +363,8 @@ void CAzeos::Pattern_Dead()
 {  
     if(!m_bDead)
         m_pAnimatorCom->Set_CurState(DEAD, 9, 18, 12);
+
+    Engine::CSoundMgr::GetInstance()->PlayOnce(L"Bird_Boss_Death.wav", SOUND_AZEOS, 0.1f);
 
     m_iEndCount++;
 

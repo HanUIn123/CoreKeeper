@@ -35,6 +35,7 @@ CMalugaz::CMalugaz(LPDIRECT3DDEVICE9 pGraphicDev)
 
     m_bTeleport = false;
 
+    m_fSoundVolume = 0.5f;
 }
 
 CMalugaz::~CMalugaz()
@@ -72,6 +73,8 @@ _int CMalugaz::Update_GameObject(const _float& fTimeDelta)
         return 0;
 
     int iExit = Engine::CGameObject::Update_GameObject(fTimeDelta);
+    Engine::CSoundMgr::GetInstance()->PlayBGM(L"Malguaz_the_Corrupted_Shaman_R1.wav", 0.1f);
+
     Set_Cast();
 
     if (m_eState != DEAD)
@@ -335,6 +338,7 @@ void CMalugaz::Pattern_Dead()
 {
     if (m_iPhase == 1)
     {
+        Engine::CSoundMgr::GetInstance()->Play(L"boss1.wav", SOUND_MALUGAZ, 0.1f);
         m_iPhase = 2;
         m_pStateCom->Set_Stat(1000, 0, 25, 0);
         m_pStateCom->Set_Revive();
@@ -350,6 +354,7 @@ void CMalugaz::Pattern_Dead()
     }
     if (m_bKnockBackEnd)
     {
+        Engine::CSoundMgr::GetInstance()->PlayOnce(L"Malguaz_Death.wav", SOUND_MALUGAZ, 0.1f);
         m_pBufferCom = m_pBufferCom3;
         m_iTextureNum = 2;
         m_pAnimatorCom->Set_CurState(DEAD, 0, 10, 8);
@@ -515,6 +520,7 @@ void CMalugaz::Pattern_Shoot(const _float& fTimeDelta)
             dynamic_cast<CProjectile*>(pProjectile)->Set_ChargingTime(10);
             m_vecProjectileName.push_back(L"Monster_Created_Fireball" + std::to_wstring(m_iTagNumber++));
             FAILED_CHECK_RETURN(pScene->Create_GameObject(L"Layer_GameLogic", pProjectile, m_vecProjectileName.back().c_str()), );
+            Engine::CSoundMgr::GetInstance()->PlayOnce(L"FireWhoosh2.wav", SOUND_MALUGAZ, 0.1f);
         }
         iFrameSpeed = 6;
     }
@@ -548,6 +554,8 @@ void CMalugaz::Pattern_Teleport(const _float& fTimeDelta)
     m_pTransformCom->Get_WorldMatrix(&m_matTeleportWorld);
 
     m_bTeleport = true;
+
+    Engine::CSoundMgr::GetInstance()->Play(L"fireballImpact.wav", SOUND_MALUGAZ, 0.1f);
 }
 
 void CMalugaz::Pattern_Generate(const _float& fTimeDelta)
@@ -724,6 +732,7 @@ void CMalugaz::Pattern_Punch(const _float& fTimeDelta)
                 NULL_CHECK(pFire);
                 m_vecProjectileName.push_back(L"Monster_Created_Fireball" + std::to_wstring(m_iTagNumber++));
                 FAILED_CHECK_RETURN(pScene->Create_GameObject(L"Layer_GameLogic", pFire, m_vecProjectileName.back().c_str()), );
+                Engine::CSoundMgr::GetInstance()->PlayOnce(L"Crack3.wav", SOUND_MALUGAZ, 0.1f);
             }
         }
         iFrameSpeed = 9;

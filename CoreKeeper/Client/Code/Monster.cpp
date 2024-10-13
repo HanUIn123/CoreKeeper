@@ -258,6 +258,9 @@ void CMonster::Check_Hitted()
 				case MON_HUNTER:
 					Engine::CSoundMgr::GetInstance()->Play(L"CavelingHurt.wav", SOUND_HUNTER, m_fSoundVolume);
 					break;
+				case MON_MALUGAZ:
+					Engine::CSoundMgr::GetInstance()->Play(L"Malguaz_Hurt3.wav", SOUND_MALUGAZ, m_fSoundVolume);
+					break;
 				}
 				pPlayerHandedItem->Set_ProjectileAttackSuccess(true);
 				m_bKnockBackStart = true;

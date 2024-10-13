@@ -83,7 +83,6 @@ void CSpawnerObject::Interaction()
     g_bFight = true;
 
     Engine::CSoundMgr::GetInstance()->StopSound(SOUND_BGM);
-    Engine::CSoundMgr::GetInstance()->PlayBGM(L"Malguaz_the_Corrupted_Shaman_R1.wav", 0.1f);
 }
 
 _bool CSpawnerObject::Check_Object_Interaction()
