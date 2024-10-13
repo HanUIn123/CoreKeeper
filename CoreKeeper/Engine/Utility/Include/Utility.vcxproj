@@ -199,7 +199,6 @@ call CopyUtility.bat</Command>
     <ClInclude Include="..\..\Header\ComponentMgr.h" />
     <ClInclude Include="..\..\Header\CubeTex.h" />
     <ClInclude Include="..\..\Header\d3dUtility.h" />
-    <ClInclude Include="..\..\Header\Dash.h" />
     <ClInclude Include="..\..\Header\Export_Utility.h" />
     <ClInclude Include="..\..\Header\Fall.h" />
     <ClInclude Include="..\..\Header\Followers.h" />
