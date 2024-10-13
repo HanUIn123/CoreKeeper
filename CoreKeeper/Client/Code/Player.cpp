@@ -929,7 +929,7 @@ void CPlayer::Set_ImmuneByToggle()
         CBuffMgr::GetInstance()->Set_BuffStart(DEBUFF_HUNGER, 999.f);
         CBuffMgr::GetInstance()->Set_BuffStart(DEBUFF_FIRE, 999.f);
         CBuffMgr::GetInstance()->Set_BuffStart(DEBUFF_SLOW, 999.f);
-        CBuffMgr::GetInstance()->Set_BuffStart(DEBUFF_STUN, 999.f);
+        //CBuffMgr::GetInstance()->Set_BuffStart(DEBUFF_STUN, 999.f);
     }
 }
 
@@ -2457,7 +2457,7 @@ void CPlayer::Set_Buff(const _float& fTimeDelta)
                 break;
             case DEBUFF_SLOW:
                 if (m_arrBuffState[BUFF_SPEED])
-                    Set_Speed(m_fNormalSpeed);
+                    Set_Speed(m_fNormalSpeed * 0.8f);
                 else
                     Set_Speed(m_fNormalSpeed * 0.6f);
                 break;
@@ -2631,7 +2631,7 @@ void CPlayer::Respawn_Progress(const _float& fTimeDelta)
     else if (m_fRespawnProgress <= 6.f)
     {
         // 리스폰 완료
-        m_pTransformCom->Set_Pos(m_vRespawnPoint.x, m_fFirstY, m_vRespawnPoint.z);
+        m_bRespawned = false;
         m_pStateCom->Set_Revive();
         m_fRespawnProgress = 0.f;
         m_bRespawnFirstFrame = true;
