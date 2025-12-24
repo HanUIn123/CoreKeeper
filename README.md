@@ -49,6 +49,9 @@
 - 오브젝트와 미니맵 간 실시간 연동 작업  
 - 기타 오브젝트 상호작용 처리
 
+| 맵 데이터 로딩 테스트 | 타일 설치 기능 | 몬스터 배치 기능 | 벽면 제거 기능 |
+| :---: | :---: | :---: | :---: |
+| ![Loading](CoreMapttolShorts/Loading.gif) | ![PuttingTiles](CoreMapttolShorts/PuttingTiles.gif) | ![PuttingMonsters](CoreMapttolShorts/PuttingMonsters.gif) | ![DeletingWalls](CoreMapttolShorts/DeletingWalls.gif) |
 ---
 
 ## ■ 성과
