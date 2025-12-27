@@ -23,7 +23,7 @@
 - 개발 도구: Visual Studio 2022, Windows API, ImGui Library, Git, SourceTree
 - 그래픽 API: DirectX9
 - 개발 인원: 4명
-- 개발 기간: 2024.09 ~ 2024.10
+- 개발 기간: 2024.09 ~ 2024.11
 
 ---
 
