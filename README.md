@@ -29,8 +29,18 @@
 
 ## ■ 시연 영상
 - [CoreKeeper 시연 영상 재생](https://youtu.be/p2AZdOhzHo4)
-<img src="ThumbNails/CoreKeeper.png" width="300"> <img src="ThumbNails/3.png" width="300">
-<img src="ThumbNails/1.png" width="300"> <img src="ThumbNails/2.png" width="300"> 
+
+<table border="0">
+  <tr>
+    <td align="center"><img src="ThumbNails/CoreKeeper.png" width="300"></td>
+    <td align="center"><img src="ThumbNails/3.png" width="300"></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="ThumbNails/1.png" width="300"></td>
+    <td align="center"><img src="ThumbNails/2.png" width="300"></td>
+  </tr>
+</table>
+
 ---
 
 ## ■ 진행 이유
