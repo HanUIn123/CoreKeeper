@@ -29,8 +29,8 @@
 
 ## ■ 시연 영상
 - [CoreKeeper 시연 영상 재생](https://youtu.be/p2AZdOhzHo4)
-![코어키퍼 썸네일](./ThumbNails/CoreKeeper.png)
-
+![코어키퍼 썸네일](./ThumbNails/CoreKeeper.png) <img src="ThumbNails/3.png" width="300">
+<img src="ThumbNails/1.png" width="300"> <img src="ThumbNails/2.png" width="300"> 
 ---
 
 ## ■ 진행 이유
